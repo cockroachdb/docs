@@ -1,91 +1,30 @@
 ---
 title: IMPORT
-summary: Import CSV data into your CockroachDB cluster.
+summary: Import data into your CockroachDB cluster.
 toc: true
 ---
 
-The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g., CSVs) into a single table.
+The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
-{{site.data.alerts.callout_info}}For details about importing SQL dumps, see <a href="import-data.html">Import Data</a>.{{site.data.alerts.end}}
+- [CSV/TSV][csv]
+- [Postgres dump files][postgres]
+- [MySQL dump files][mysql]
 
+{{site.data.alerts.callout_success}}
+This page has reference information about the `IMPORT` statement.  For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
+{{site.data.alerts.end}}
 
-## Requirements
+{{site.data.alerts.callout_danger}}
+Note that `IMPORT` only works for creating new tables.  It does not support adding data to existing tables.
+{{site.data.alerts.end}}
 
-Before using [`IMPORT`](import.html), you should have:
+## Required privileges
 
-- The schema of the table you want to import.
-- The tabular data you want to import (e.g., CSV), preferably hosted on cloud storage. This location *must* be accessible to all nodes using the same address. This means that you cannot use a node's local file storage.
-
-    For ease of use, we recommend using cloud storage. However, if that isn't readily available to you, we also have a [guide on easily creating your own file server](create-a-file-server.html).
-
-## Details
-
-### Import targets
-
-Imported tables must not exist and must be created in the [`IMPORT`](import.html) statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
-
-You can only import a single table at a time.
-
-You can specify the target database in the table name in the [`IMPORT`](import.html) statement. If it's not specified there, the active database in the SQL session is used.
-
-### Create table
-
-Your [`IMPORT`](import.html) statement must include a `CREATE TABLE` statement (representing the schema of the data you want to import) using one of the following methods:
-
-- A reference to a file that contains a `CREATE TABLE` statement
-- An inline `CREATE TABLE` statement
-
-We also recommend [all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to add secondary indexes later, but it is significantly faster to specify them during import.
-
-### CSV data
-
-The tabular data to import must be valid [CSV files](https://tools.ietf.org/html/rfc4180), with the caveat that the comma [delimiter](#delimiter) can be set to another single character. In particular:
-
-- Files must be UTF-8 encoded.
-- If the delimiter (`,` by default), a double quote (`"`), newline (`\n`), or carriage return (`\r`) appears in a field, the field must be enclosed by double quotes.
-- If double quotes are used to enclose fields, then a double quote appearing inside a field must be escaped by preceding it with another double quote.  For example:
-  `"aaa","b""bb","ccc"`
-
-CockroachDB-specific requirements:
-
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
-
-### Object dependencies
-
-When importing tables, you must be mindful of the following rules because [`IMPORT`](import.html) only creates single tables which must not already exist:
-
-- Objects that the imported table depends on must already exist
-- Objects that depend on the imported table can only be created after the import completes
-
-### Available storage requirements
-
-Each node in the cluster is assigned an equal part of the converted CSV data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage to hold its portion of the data.
-
-On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
-
-### Import file location
-
-You can store the tabular data you want to import using remote cloud storage (Amazon S3, Google Cloud Platform, etc.). Alternatively, you can use an [HTTP server](create-a-file-server.html) accessible from all nodes.
-
-For simplicity's sake, it's **strongly recommended** to use cloud/remote storage for the data you want to import. Local files are supported; however, they must be accessible identically from all nodes in the cluster.
-
-### Table users and privileges
-
-Imported tables are treated as new tables, so you must [`GRANT`](grant.html) privileges to them.
-
-## Performance
-
-All nodes are used during tabular data conversion into key-value data, which means all nodes' CPU and RAM will be partially consumed by the [`IMPORT`](import.html) task in addition to serving normal traffic.
-
-## Viewing and controlling import jobs
-
-After CockroachDB successfully initiates an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
-
-After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
-
-{{site.data.alerts.callout_danger}}Pausing and then resuming an <code>`IMPORT`</code> job will cause it to restart from the beginning.{{site.data.alerts.end}}
+Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
+
+XXX: regenerate diagram
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/import.html %}
@@ -93,160 +32,117 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
-## Required privileges
-
-Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
-
 ## Parameters
+
+XXX: update after regenerating diagram
 
  Parameter | Description
 -----------|-------------
  `table_name` | The name of the table you want to import/create.
- `create_table_file` | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-create-table-statement-from-a-file)).
- `table_elem_list` | The table definition you want to use (see [this example for syntax](#use-create-table-statement-from-a-statement)).
+ `create_table_file` | The URL of a plain text file containing the [`CREATE TABLE`](create-table.html) statement you want to use (see [this example for syntax](#use-a-create-table-statement-from-a-file)).
+ `table_elem_list` | The table definition you want to use (see [this example for syntax](#issue-a-create-table-statement-directly)).
  `file_to_import` | The URL of the file you want to import.
  `WITH kv_option` | Control your import's behavior with [these options](#import-options).
 
 ### Import file URLs
 
-URLs for the files you want to import must use the following format:
+URLs for the files you want to import must use the format shown below.  For examples, see [Example file URLs](#example-file-urls).
 
 {% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Import options
 
-You can control the [`IMPORT`](import.html) process's behavior using any of the following key-value pairs as a `kv_option`.
+You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `kv_option`.
 
-#### `delimiter`
+<a name="delimiter"></a>
 
-If not using comma as your column delimiter, you can specify another Unicode character as the delimiter.
+| Key                 | Context         | Value                                                                                                                                                                                       | Required? | Example                                                                                           |
+|---------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------------------------------------------------------------------------------------------------|
+| `delimiter`         | CSV             | The unicode character that delimits columns in your rows. **Default: `,`**.                                                                                                                 | No        | To use tab-delimited values: `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t'` |
+| `comment`           | CSV             | The unicode character that identifies rows to skip.                                                                                                                                         | No        | `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH comment = '#'`                                  |
+| `nullif`            | CSV             | The string that should be converted to *NULL*.                                                                                                                                              | No        | To use empty columns as *NULL*: `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH nullif = ''`    |
+| `skip`              | CSV             | The number of rows to be skipped while importing a file. **Default: `'0'`**.                                                                                                                | No        | To import CSV files with column headers: `IMPORT ... CSV DATA ('file.csv') WITH skip = '1'`       |
+| `decompress`        | CSV             | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression. | No        | `IMPORT ... CSV DATA ... WITH decompress = 'bzip'`                                                |
+| `oversample`        | General         | Decrease variance in data distribution among nodes while importing data. **Default: `'3'`**.  Most users should not need this.  Recommend setting between 5 - 10 if needed.                 | No        | `IMPORT ... CSV DATA ... WITH oversample = '5'`                                                   |
+| `skip_foreign_keys` | Postgres, MySQL | Ignore foreign key constraints in the dump file's DDL. **Off by default**.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.          | No        | `IMPORT TABLE foo FROM MYSQLDUMP 'dump.sql' WITH skip_foreign_keys`                               |
+| `max_row_size`      | Postgres        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.       | No        | `IMPORT PGDUMP DATA ... WITH max_row_size = '5MB'`                                                |
 
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>delimiter</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The unicode character that delimits columns in your rows</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To use tab-delimited values: <code>WITH delimiter = e'\t'</code></td>
-		</tr>
-	</tbody>
-</table>
+For examples showing how to use these options, see the [Examples](#examples) section below.
 
-#### `comment`
+For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
 
-Do not import rows that begin with this character.
+## Requirements
 
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>comment</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The unicode character that identifies rows to skip</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td><code>WITH comment = '#'</code></td>
-		</tr>
-	</tbody>
-</table>
+### Prerequisites
 
-#### `nullif`
+Before using `IMPORT`, you should have:
 
-Convert values to SQL *NULL* if they match the specified string.
+- The schema of the table you want to import.
+- The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>nullif</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The string that should be converted to <em>NULL</em></td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To use empty columns as <em>NULL</em>: <code>WITH nullif = ''</code></td>
-		</tr>
-	</tbody>
-</table>
+### Import targets
 
-#### `skip`
+Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
 
-Skip the first *n* lines of a CSV file.
+You can specify the target database in the table name in the `IMPORT` statement. If it's not specified there, the active database in the SQL session is used.
 
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>skip</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The number of rows to be skipped while importing a file</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To import CSV files with column headers: <code>WITH skip = '1'</code></td>
-		</tr>
-	</tbody>
-</table>
+### Create table
 
-#### `decompress`
+Your `IMPORT` statement must reference a `CREATE TABLE` statement representing the schema of the data you want to import.  You have several options:
 
-Import compressed files.
+- Specify the `CREATE TABLE` statement explicitly from the [SQL client](use-the-built-in-sql-client.html).  For an example, see [Issue a `CREATE TABLE` statement directly](#issue-a-create-table-statement-directly) below.
 
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>decompress</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The decompression codec to be used: <code>gzip</code>, <code>bzip</code>, <code>auto</code>, or <code>none</code>. <br><br>The default option is <code>auto</code> which guesses the codec based on the filename, matching the common extensions `.gz` or `.bz2` and `.bz` <br><br> <code>none</code> can be used to disable any attempts at decompression.</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To import a file compressed using the <code>bzip</code> codec: <code>WITH decompress = 'bzip'</code></td>
-		</tr>
-	</tbody>
-</table>
+- Load a file that already contains a `CREATE TABLE` statement.  For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
 
+We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
+### Object dependencies
+
+When importing single tables rather than entire databases, you must be mindful of the following rules because `IMPORT` only creates new tables; it will fail if those tables already exist:
+
+- Objects that the imported table depends on must already exist
+- Objects that depend on the imported table can only be created after the import completes
+
+### Available storage
+
+Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage to hold its portion of the data.
+
+On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
+
+### Import file location
+
+We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.) for the data you want to import.
+
+Local files are supported; however, they must be accessible to all nodes in the cluster using identical [Import file URLs](#import-file-urls).
+
+To import a local file, you have the following options:
+
+- Option 1. Run a [local file server](create-a-file-server.html) to make the file accessible from all nodes.
+
+- Option 2. Make the file accessible from each local node's store:
+    1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](start-a-node.html#general), but will look something like `/path/to/cockroach-data/extern/`.
+    2. Copy the file to each node's `extern` directory.
+    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal:///data.sql'`.
+
+### Table users and privileges
+
+Imported tables are treated as new tables, so you must [`GRANT`](grant.html) privileges to them.
+
+## Performance
+
+All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
+
+## Viewing and controlling import jobs
+
+After CockroachDB successfully initiates an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+
+After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+
+{{site.data.alerts.callout_danger}}Pausing and then resuming an <code>IMPORT</code> job will cause it to restart from the beginning.{{site.data.alerts.end}}
 
 ## Examples
 
-### Use `CREATE TABLE` statement from a file
+### Use a `CREATE TABLE` statement from a file
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -256,7 +152,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
-### Use `CREATE TABLE` statement from a statement
+### Issue a `CREATE TABLE` statement directly
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -359,6 +255,46 @@ WITH
 ;
 ~~~
 
+### Import a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+
+### Import a single table from a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that don't exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+
+### Import a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+
+### Import a table from a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys
+~~~
+
+If the table schema specifies foreign keys into tables that don't exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+
 ## Known limitation
 
 `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
@@ -371,4 +307,13 @@ WITH
 ## See also
 
 - [Create a File Server](create-a-file-server.html)
-- [Importing Data](import-data.html)
+- [Migration Overview](migration-overview.html)
+- [Migrate from MySQL][mysql]
+- [Migrate from Postgres][postgres]
+- [Migrate from CSV][csv]
+
+<!-- Reference Links -->
+
+[postgres]: migrate-from-postgres.html
+[mysql]: migrate-from-mysql.html
+[csv]: migrate-from-csv.html
