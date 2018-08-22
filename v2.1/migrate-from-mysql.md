@@ -1,0 +1,200 @@
+---
+title: Migrate from MySQL
+summary: Learn how to migrate data from MySQL into a CockroachDB cluster.
+toc: true
+---
+
+{% include {{page.version.version}}/misc/beta-warning.md %}
+
+This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
+
+The examples below use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
+
+## Considerations
+
+In addition to the general considerations listed in the [Migration Overview](migration-overview.html), there is also the following MySQL-specific information to consider as you prepare your migration.
+
+### String case sensitivity
+
+MySQL strings are case-insensitive by default, but strings in CockroachDB are case-sensitive.  This means that you may need to edit your MySQL dump file to get the results you expect from CockroachDB.  For example, you may have been doing string comparisons in MySQL that will need to be changed to work with CockroachDB.
+
+For more information about the case sensitivity of strings in MySQL, see [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity.html) from the MySQL documentation.  For more information about CockroachDB strings, see [`STRING`](string.html).
+
+## Step 1. Dump the MySQL database
+
+There are several ways to dump data from MySQL to be imported into CockroachDB:
+
+- [Dump the entire database](#dump-the-entire-database)
+- [Dump one table at a time](#dump-one-table-at-a-time)
+
+### Dump the entire database
+
+Most users will want to import their entire MySQL database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).  To dump the entire database, run the [`mysqldump`][mysqldump] command shown below:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ mysqldump -uroot employees > /tmp/employees-full.sql
+~~~
+
+If you only want one table from a database dump, see [Import a table from a full database dump](#import-a-table-from-a-full-database-dump) below.
+
+### Dump one table at a time
+
+To dump the `employees` table from a MySQL database also named `employees`, run the [`mysqldump`][mysqldump] command shown below.  You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ mysqldump -uroot employees employees > employees.sql
+~~~
+
+## Step 2. Host the files where the cluster can access them
+
+Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [Import File URLs](import.html#import-file-urls).
+
+{{site.data.alerts.callout_success}}
+We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
+{{site.data.alerts.end}}
+
+## Step 3. Import the MySQL dump file
+
+You can choose from several variants of the [`IMPORT`][import] statement, depending on whether you want to import an entire database or just one table:
+
+- [Import a full database dump](#import-a-full-database-dump)
+- [Import a table from a full database dump](#import-a-table-from-a-full-database-dump)
+- [Import a table from a table dump](#import-a-table-from-a-table-dump)
+
+All of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
+
+### Import a full database dump
+
+This example assumes you [dumped the entire database](#dump-the-entire-database).
+
+The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including `CREATE TABLE` and [foreign key constraints](foreign-key.html)) from the full database dump.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS employees;
+> USE employees;
+> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees-full.sql';
+~~~
+
+~~~
+       job_id       |  status   | fraction_completed |  rows   | index_entries | system_records |   bytes
+--------------------+-----------+--------------------+---------+---------------+----------------+-----------
+ 382716507639906305 | succeeded |                  1 | 3919015 |        331636 |              0 | 110104816
+(1 row)
+~~~
+
+### Import a table from a full database dump
+
+This example assumes you [dumped the entire database](#dump-the-entire-database).
+
+[`IMPORT`][import] can import one table's data from a full database dump.  It reads the data and applies any `CREATE TABLE` statements from the dump file.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS employees;
+> USE employees;
+> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql';
+~~~
+
+~~~
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
+--------------------+-----------+--------------------+--------+---------------+----------------+----------
+ 383839294913871873 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
+(1 row)
+~~~
+
+### Import a table from a table dump
+
+The examples below assume you [dumped one table](#dump-one-table-at-a-time).
+
+The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as shown below.  It reads the table data and any `CREATE TABLE` statements from the dump file.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS employees;
+> USE employees;
+> IMPORT TABLE employees FROM MYSQLDUMP 'nodelocal:///employees.sql';
+~~~
+
+~~~
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+--------------------+-----------+--------------------+--------+---------------+----------------+----------
+ 383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
+(1 row)
+~~~
+
+If you need to specify the table's columns for some reason, you can use an [`IMPORT TABLE`][import] statement like the one below, which will import data but ignore any `CREATE TABLE` statements in the dump file, instead relying on the columns you specify.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS employees;
+> USE employees;
+> IMPORT TABLE employees (
+    emp_no INT PRIMARY KEY,
+    birth_date DATE NOT NULL,
+    first_name STRING NOT NULL,
+    last_name STRING NOT NULL,
+    gender STRING NOT NULL,
+    hire_date DATE NOT NULL
+  )
+  MYSQLDUMP DATA ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql');
+~~~
+
+## Configuration Options
+
+The following options are available to `IMPORT ... MYSQLDUMP`:
+
++ [Oversampling](#oversampling)
++ [Skip foreign keys](#skip-foreign-keys)
+
+### Oversampling
+
+The `oversample` option is used to decrease variance in data distribution among nodes while importing data.  **Default: 3**.  On clusters with many nodes and smallish disks, doing an [`IMPORT`][import] that is within an order of magnitude of the free space on the disks can lead to filling the disk.  This happens because the sampling algorithm (by design) has a relatively high standard deviation in its error rate.  The `oversample` setting can be set to some higher number to apportion the data being imported more evenly among nodes.  **Recommended (only if necessary): between 5 and 10**.
+
+Note that increasing oversampling means more rows are returned to the gateway node during the sampling phase.  Oversampling too much can cause the gateway node to run out of disk space.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees (
+    emp_no INT PRIMARY KEY,
+    birth_date DATE NOT NULL,
+    first_name STRING NOT NULL,
+    last_name STRING NOT NULL,
+    gender STRING NOT NULL,
+    hire_date DATE NOT NULL
+  ) MYSQLDUMP DATA ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH oversample = 5;
+~~~
+
+### Skip foreign keys
+
+By default, [`IMPORT ... MYSQLDUMP`][import] supports foreign keys.  **Default: false**.  Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL.  [Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) commands after importing the data.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+~~~
+
+## See also
+
+- [`IMPORT`](import.html)
+- [Migrate from CSV][csv]
+- [Migrate from Postgres][postgres]
+- [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [SQL Dump (Export)](sql-dump.html)
+- [Back up Data](back-up-data.html)
+- [Restore Data](restore-data.html)
+- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Other Cockroach Commands](cockroach-commands.html)
+
+<!-- Reference Links -->
+
+[postgres]: migrate-from-postgres.html
+[csv]: migrate-from-csv.html
+[import]: import.html
+[mysqldump]: https://dev.mysql.com/doc/refman/8.0/en/mysqldump-sql-format.html
