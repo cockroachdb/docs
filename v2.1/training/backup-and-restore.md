@@ -1,5 +1,5 @@
 ---
-title: Back and Restore
+title: Backup and Restore
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
