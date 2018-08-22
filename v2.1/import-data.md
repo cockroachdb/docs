@@ -210,7 +210,6 @@ If you decide to load the data from the `extern` subdirectory, you will need to 
 
 - [`IMPORT`](import.html)
 - [SQL Dump (Export)](sql-dump.html)
-- [Back up Data](back-up-data.html)
-- [Restore Data](restore-data.html)
+- [Backup and Restore Data](backup-and-restore.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
