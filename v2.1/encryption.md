@@ -12,7 +12,7 @@ Encryption At Rest provides transparent encryption for node data on local disk.
 
 ## Overview
 
-Encryption at rest allows encryption of all files on disk using AES in counter mode, with all key
+Encryption At Rest allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
 sizes allowed.
 
 Encryption is performed in the [storage layer](architecture/storage-layer.html) and configured per store.
@@ -39,7 +39,7 @@ CockroachDB does not currently force re-encryption of older files but instead re
 
 ## Rotating keys
 
-Key rotation is necessary for encryption at rest for multiple reasons:
+Key rotation is necessary for Encryption At Rest for multiple reasons:
 
 * prevent key reuse with the same encryption parameters (after many files)
 * reduce the risk of key exposure
@@ -147,7 +147,7 @@ The allowed components in the flag are:
 | path            | required | Path of the store to apply encryption to |
 | key             | required | Path to the key file to encrypt data with, or `plain` for plaintext |
 | old-key         | required | Path to key file the data is encrypted with, or `plain` for plaintext |
-| rotation-period | optional | How often data keys should be automatically rotated |
+| rotation-period | optional | How often data keys should be automatically rotated. Default: one week |
 
 The `key` and `old-key` components must **always** be specified. They allow for transitions between
 encryption algorithms, and between plaintext and encrypted.
