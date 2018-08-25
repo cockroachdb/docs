@@ -27,7 +27,7 @@ You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an e
 
 To reproduce the performance demonstrated in this tutorial:
 
-- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine time (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.
+- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.
 - For running the client application workload, you'll use smaller instances, such as `n1-standard-1`.
 
 ### Schema
