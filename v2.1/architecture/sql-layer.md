@@ -51,19 +51,33 @@ After your node ultimately receives a SQL request from a client, CockroachDB par
 
 Received queries are parsed against our `yacc` file (which describes our supported syntax), and converts the string version of each query into [abstract syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
-#### Planning
+#### Logical planning
 
-With the AST, CockroachDB begins planning the query's execution by generating a tree of `planNodes`. Each of the `planNodes` contain a set of code that uses KV operations; this is ultimately how SQL statements are converted into KV operations.
+The AST is subsequently transformed into a query plan in three phases:
 
-This step also includes steps analyzing the client's SQL statements against the expected AST expressions, which include things like type checking.
+1. The AST is transformed into a high-level logical query plan. During this transformation, CockroachDB also performs [semantic analysis](https://en.wikipedia.org/wiki/Semantic_analysis_(compilers)), which includes checking whether the query is valid, resolving names, eliminating unneeded intermediate computations, and finalizing which data types to use for intermediate results.
 
-You can see the `planNodes` a query generates using [`EXPLAIN`](../explain.html).
+2. The logical plan is *simplified* using transformation optimizations that are always valid.
 
-#### Executing
+3. The logical plan is *optimized* using a [search algorithm](../sql-optimizer.html) that evaluates many possible ways to execute a query and selects an execution plan with the least costs.
 
-`planNodes` are then executed, which begins by communicating with the transaction layer.
+The result of the optimization phase is an optimized logical plan. This can be observed with [`EXPLAIN`](../explain.html).
 
-This step also includes encoding values from your statements, as well as decoding values returned from lower layers.
+#### Physical planning
+
+The physical planning phase decides which nodes will participate in
+the execution of the query, based on range locality information. This
+is where CockroachDB decides to distribute a query to perform some
+computations close to where the data is stored.
+
+The result of physical planning is a physical plan and can be observed
+with [`EXPLAIN(DISTSQL)`](../explain.html).
+
+#### Query execution
+
+Components of the physical plan are sent to one or more nodes for execution. On each node, CockroachDB spawns a *logical processor* to compute a part of the query. Logical processors inside or across nodes communicate with each other over a *logical flow* of data. The combined results of the query are sent back to the first node where the query was received, to be sent further to the SQL client.
+
+Each processor uses an encoded form for the scalar values manipulated by the query. This is a binary form which is different from that used in SQL. So the values listed in the SQL query must be encoded, and the data communicated between logical processors, and read from disk, must be decoded before it is sent back to the SQL client.
 
 ### Encoding
 
