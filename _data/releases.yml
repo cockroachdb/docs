@@ -49,6 +49,8 @@
       version: v1.0
 - title: Testing Releases
   releases:
+    - date: Aug 27, 2018
+      version: v2.1.0-beta.20180827
     - date: Jul 30, 2018
       version: v2.1.0-alpha.20180730
     - date: Jul 02, 2018
