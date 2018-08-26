@@ -14,7 +14,7 @@ App Language | Recommended Driver
 -------------|-------------------
 Go | [pq](https://godoc.org/github.com/lib/pq)
 Python | [psycopg2](http://initd.org/psycopg/)
-Ruby | [pg](https://rubygems.org/gems/pg)
+Ruby | [pg](https://rubygems.org/gems/pg) or [activerecord-cockroachdb-adapter](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) if using Ruby on Rails
 Java | [jdbc](https://jdbc.postgresql.org)
 Node.js | [pg](https://www.npmjs.com/package/pg)
 C | [libpq](http://www.postgresql.org/docs/9.5/static/libpq.html)
