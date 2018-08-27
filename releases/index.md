@@ -1,7 +1,7 @@
 ---
 title: Releases
 summary: Release notes for older versions of CockroachDB.
-toc: false
+toc: true
 redirect_from: /releases.html
 ---
 
