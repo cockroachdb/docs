@@ -1,5 +1,5 @@
 ---
-title: Orchestrate a Single-Region CockroachDB with Kubernetes
+title: Orchestrate a Single-Region CockroachDB Cluster with Kubernetes
 summary: How to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 secure: true
