@@ -129,7 +129,7 @@ Now that you have a load balancer running in front of your cluster, download and
     -concurrency 3 \
     -splits 50 \
     -max-rate 100 \
-    'postgresql://root@localhost:4000?sslmode=disable'
+    'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
     This command initiates 3 concurrent client workloads for 20 minutes, but limits the benchmark to just 100 operations per second (since you're running everything on a single machine).
@@ -278,11 +278,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     gc:
       ttlseconds: 3600
     num_replicas: 5
+    constraints: []
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
+    $ echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
     ~~~
 
     ~~~
@@ -296,7 +297,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    echo 'num_replicas: 5' | ./cockroach zone set .system --insecure -f -
+    $ echo 'num_replicas: 5' | ./cockroach zone set .system --insecure -f -
     ~~~
 
     ~~~

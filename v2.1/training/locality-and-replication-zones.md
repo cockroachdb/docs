@@ -355,11 +355,29 @@ Because you used the `--locality` flag to indicate the region for each of your n
     $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek --insecure -f -
     ~~~
 
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 90000
+    num_replicas: 3
+    constraints: [+region=eu]
+    ~~~
+
 2. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'constraints: [+region=us]' | ./cockroach zone set intro --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 90000
+    num_replicas: 3
+    constraints: [+region=us]
     ~~~
 
 ## Step 8. Verify data distribution
