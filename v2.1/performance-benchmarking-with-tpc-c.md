@@ -99,7 +99,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./workload.LATEST fixtures load tpcc \
-    --warehouses=1000 \
+    --warehouses=10000 \
     "postgres://root@<node1 address>:26257?sslmode=disable"
     ~~~
 
@@ -260,7 +260,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     {% include copy-clipboard.html %}
     ~~~ shell
     $  ./workload.LATEST fixtures load tpcc \
-    --warehouses=10000 \
+    --warehouses=100000 \
     "postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable [...space separated list]"
     ~~~
 
