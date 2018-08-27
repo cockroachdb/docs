@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
-1. In a new terminal, start node 1 in locality us-east-1:
+1. In a new terminal, start node 1 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -38,7 +38,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-2. In the same terminal, start node 2 in locality us-east-1:
+2. In the same terminal, start node 2 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -53,7 +53,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-3. In the same terminal, start node 3 in locality us-east-1:
+3. In the same terminal, start node 3 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -68,7 +68,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-4. In the same terminal, start node 4 in locality us-east-2:
+4. In the same terminal, start node 4 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -83,7 +83,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-5. In the same terminal, start node 5 in locality us-east-2:
+5. In the same terminal, start node 5 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -98,7 +98,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-6. In the same terminal, start node 6 in locality us-east-2:
+6. In the same terminal, start node 6 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -113,7 +113,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-7. In the same terminal, start node 7 in locality us-east-3:
+7. In the same terminal, start node 7 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -128,7 +128,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-8. In the same terminal, start node 8 in locality us-east-3:
+8. In the same terminal, start node 8 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -143,7 +143,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-9. In the same terminal, start node 9 in locality us-east-3:
+9. In the same terminal, start node 9 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -165,11 +165,11 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     $ ./cockroach init --insecure
     ~~~
 
-## Step 2. Simulate the problem
+## Step 2. Prepare to simulate the problem
 
 In preparation, add a table and use a replication zone to force the table's data onto the new nodes.
 
-1. Generate an `intro` database with a `mytable` table:
+1. In a new terminal, generate an `intro` database with a `mytable` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -269,7 +269,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 ## Step 5. Resolve the problem
 
-1. Restart the stopped nodes:
+1. In a new terminal, restart the stopped nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

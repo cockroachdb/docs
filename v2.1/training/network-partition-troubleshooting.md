@@ -88,21 +88,25 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
     ~~~
     {
-      "nodeId": 4,
+      "nodeId": 3,
       "address": {
         "networkField": "tcp",
-        "addressField": "e2f31c1f1e80:26257"
+        "addressField": "roach-5:26257"
       },
       "buildInfo": {
-        "goVersion": "go1.8.3",
-        "tag": "v1.1.5",
-        "time": "2018/02/05 17:40:57",
-        "revision": "ec52ded95a5235d71f26b6cbc59924bd6733fb3a",
+        "goVersion": "go1.10",
+        "tag": "v2.0.0",
+        "time": "2018/04/03 20:56:09",
+        "revision": "a6b498b7aff14234bcde23107b9e7fa14e6a34a8",
         "cgoCompiler": "gcc 6.3.0",
+        "cgoTargetTriple": "x86_64-unknown-linux-gnu",
         "platform": "linux amd64",
         "distribution": "CCL",
-        "type": "release-gnu"
+        "type": "release",
+        "channel": "official-binary",
+        "dependencies": null
       }
+    }
     ~~~
 
 3. Check whether the "Suspect" nodes consider themselves live by hitting their `/_admin/v1/health` endpoints:

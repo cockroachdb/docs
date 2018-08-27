@@ -106,7 +106,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 ## Step 2. Simulate the problem
 
-1. In the same terminal, look in the data directory of node3:
+1. In the same terminal, look in the data directory of `node3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
