@@ -7,16 +7,17 @@ The **Statements** page helps you identify the frequently executed or high laten
 
 To view the **Statements** page, open [http://localhost:8080/#/statements](http://localhost:8080/#/statements) in your browser (replacing `localhost` and `8080` with your node's host and port).
 
-
 {{site.data.alerts.callout_danger}}
 **This feature is a work in progress**. It will change leading up to the v2.1 release.
 {{site.data.alerts.end}}
 
-## Limitations
+## Limitation
 
-- If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications; however, there is no way to map the statements to the applications. Also, the **Statements Details** page shows the values only for the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. From the next CockroachDB alpha release, you will be able to choose the application on the **Statements** page and, by extension, the **Statement Details** page.
-- The **Statements** page provides the SQL statement details only for statements sent to the node from which the Admin UI is accessed (that is, the [gateway node](architecture/sql-layer.html#overview)). To view the details for other nodes, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) from that node and navigate to `http://<node address>:8080/#/statements` from the browser.
-- The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+
+## Selecting an application
+
+If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the particular application from the **App** dropdown menu.
 
 ## Understanding the Statements page
 
@@ -87,6 +88,10 @@ Overhead | Red
 ### Row Count
 
 The **Row Count** table provides the mean and standard deviation values of cumulative count of rows returned or affected by the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as a bar graph.
+
+### By Gateway Node
+
+The **By Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides details about the cumulative time taken to execute the statement, the total number of times the SQL statement (or multiple statements having the same fingerprint) is executed, the mean number of rows affected, and the mean latency.
 
 ### Statistics
 
