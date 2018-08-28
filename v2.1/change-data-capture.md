@@ -12,7 +12,6 @@ toc: true
 In v2.1, CDC will be an enterprise feature and will have a core version.
 {{site.data.alerts.end}}
 
-
 ## What is change data capture?
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
@@ -24,6 +23,8 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 - In the common case, each version of a row will be emitted once. However, some (infrequent) conditions will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
 
 - Once a row has been emitted with some timestamp, no previously unseen versions of that row will be emitted with a lower timestamp.
+
+    Previously seen values can be sent out of order, but you'll never see a new change for that row at an earlier timestamp. For example, you can see `k=a ts=1` then `k=a ts=2` then `k=a ts=1` again, but you'll never see `k=a ts=2 `then `k=a ts=1` without seeing `k=a ts=1` first.
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
@@ -98,6 +99,10 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 ## Usage example
 
 ### Create a changefeed connected to Kafka
+
+{{site.data.alerts.callout_info}}
+When used with Kafka, `CREATE CHANGEFEED` is an enterprise feature.
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
@@ -217,7 +222,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-The following are limitations in the July 30, 2018 alpha release, and will be addressed before the v2.1 release.
+The following are limitations in the v2.1 release, and will be addressed in the future.
 
 - Changefeeds created with the alpha may not be compatible with future alphas and the final v2.1 release.
 
@@ -229,14 +234,14 @@ The following are limitations in the July 30, 2018 alpha release, and will be ad
 - Changefeed progress is not exposed to the user.
 - The SQL interface is not final and may change.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
-- Changefeeds do not work on [interleaved tables](interleave-in-parent.html).
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause undefined behavior on a changefeed watching the affected tables.
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables.
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
 - Changefeed internal buffering does not respect memory use limitations.
 - Changefeeds do not scale horizontally or to high traffic workloads.
 - Changefeeds use a pull model, but will use a push model in v2.1, lowering latencies considerably.
 - Changefeeds are slow on data recently loaded via [`RESTORE`](restore.html) or [`IMPORT`](import.html).
+- Changefeeds cannot be altered. To alter, cancel the changefeed and create a new one with updated settings from where it left off.
 - Additional format options will be added, including Avro.
 - Additional envelope options will be added, including one that displays the old and new values for the changed row.
 - Additional target options will be added, including partitions and ranges of primary key rows.

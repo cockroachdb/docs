@@ -13,30 +13,23 @@ For more information, see [Change Data Capture](change-data-capture.html).
 {{site.data.alerts.callout_danger}}
 **This feature is under active development** and only works for a targeted a use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
 
-In v2.1, CDC will be an enterprise feature and will have a core version.
+In v2.1, CDC with Kafka is an enterprise feature. There will have a core version.
 {{site.data.alerts.end}}
-
 
 ## Required privileges
 
-Only an `admin` user can create a changefeed.
+Changefeeds can only be created by superusers, i.e., members of the `admin` role. The admin role exists by default with `root` as the member.
 
 ## Synopsis
 
 ~~~
 
-CREATE CHANGEFEED FOR <targets...> INTO <sink...>
+CREATE CHANGEFEED FOR TABLE <table_name> INTO <location...>
        [ WITH <option> [= <value>] [, ...] ]
 
-Targets:
-    TABLE <table_name>
-    DATABASE <database_name>
-
-Sink:
-    '[scheme]://[host]:[port][?topic_prefix=[foo]]'
-
 Options:
-    timestamps
+    UPDATED
+    RESOLVED
     envelope=[key_only|row]
     cursor=<timestamp>
     format=json
@@ -46,11 +39,14 @@ Options:
 
 Parameter | Description
 ----------|------------
-`INTO location` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. There are query parameters that vary per type. Currently, the `kafka` scheme only has `topic_prefix`, which adds a prefix to all of the topic names. <br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`WITH timestamps` | Turns on updated and resolved timestamps.
-`WITH envelope=[key_only/row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
-`WITH cursor=<timestamp>` | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.
-`WITH format=json` | _(Default)_ Format of the emitted record.
+`table_name` | The name of the table to create a changefeed for.
+`location` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. There are query parameters that vary per type. Currently, the `kafka` scheme only has `topic_prefix`, which adds a prefix to all of the topic names.<br><br>Sink URI scheme: `'[scheme]://[host]:[port][?topic_prefix=[foo]]'` <br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`timestamps` | Turns on updated and resolved timestamps.
+`UPDATED` | Include updated timestamps in records.
+`RESOLVED` | Periodically emit resolved timestamps to the changefeed.
+`envelope=[key_only/row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
+`cursor=<timestamp>` | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.
+`format=json` | _(Default)_ Format of the emitted record.
 
 <!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
 `name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
@@ -61,9 +57,13 @@ Parameter | Description
 
 ### Create a changefeed
 
+{{site.data.alerts.callout_info}}
+When used with Kafka, `CREATE CHANGEFEED` is an enterprise feature.
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port';
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port' WITH UPDATED, RESOLVED;
 ~~~
 ~~~
 +--------------------+
@@ -81,7 +81,7 @@ For for information on how to create a changefeed connected to Kafka, see [Chang
 Use the following SQL statements to pause, resume, and cancel a changefeed.
 
 {{site.data.alerts.callout_info}}
-Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in the v2.1 release.
+Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in the future.
 {{site.data.alerts.end}}
 
 #### Pause a changefeed
