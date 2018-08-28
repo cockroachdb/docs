@@ -4,7 +4,7 @@ summary: The RESUME JOB statement lets you resume jobs that were previously paus
 toc: true
 ---
 
- The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html) jobs.
+ The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and, as of v2.1, [`changefeeds`](change-data-capture.html).
 
 {{site.data.alerts.callout_info}}You cannot pause schema changes.{{site.data.alerts.end}}
 
@@ -75,3 +75,4 @@ All jobs created by `maxroach` will be resumed.
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`IMPORT`](import.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)

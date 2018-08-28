@@ -132,9 +132,9 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, or `IMPORT` job.
-[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, or `IMPORT` job.
-[`RESUME JOB`](resume-job.html) | Resume paused `BACKUP`, `RESTORE`, or `IMPORT` jobs.
+[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
 ## Backup and restore statements (Enterprise)
@@ -150,3 +150,15 @@ Statement | Usage
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
+
+## Changefeed statements (Enterprise)
+
+<span class="version-tag">New in v2.1:</span> [Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into Apache Kafka for downstream processing.
+
+{{site.data.alerts.callout_info}}
+CDC is an enterprise feature. There will be a core version in a future release.
+{{site.data.alerts.end}}
+
+Statement | Usage
+----------|------------
+[`CREATE CHANGEFEED`](create-changefeed.html) | Create a new changefeed, which provides row-level change subscriptions.

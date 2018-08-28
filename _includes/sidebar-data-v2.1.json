@@ -292,7 +292,7 @@
                 ]
               },
               {
-                "title": "Change Data Capture",
+                "title": "Change Data Capture (Enterprise)",
                 "urls": [
                   "/${VERSION}/change-data-capture.html"
                 ]
@@ -628,7 +628,7 @@
                 ]
               },
               {
-                "title": "<code>CREATE CHANGEFEED</code>",
+                "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/create-changefeed.html"
                 ]
