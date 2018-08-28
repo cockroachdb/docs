@@ -17,6 +17,7 @@ Requirements:
 import argparse
 import json
 import os
+import re
 import requests
 
 parser = argparse.ArgumentParser(
@@ -39,11 +40,12 @@ if milestone == "2.0.x":
 
 bullets_with_comments = 0
 issues_created = 0
+rebullet = re.compile(r"^\s*-")
 
 with open("../releases/" + release_notes) as file:
     for line in file:
         # Find release note bullets for which we need docs issues.
-        if line.startswith("-") and line.endswith("{% endcomment %}\n"):
+        if rebullet.search(line) and line.endswith("{% endcomment %}\n"):
             bullets_with_comments += 1
 
             # For each bullet, get the title of the corresponding PR
