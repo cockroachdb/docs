@@ -91,3 +91,4 @@ To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sa
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
+- [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html)
