@@ -2,11 +2,12 @@
 title: Orchestrate CockroachDB Across Multiple Kubernetes Clusters
 summary: How to use Kubernetes to orchestrate the deployment, management, and monitoring of an insecure CockroachDB cluster across multiple Kubernetes clusters in different regions.
 toc: true
+redirect_from: orchetrate-cockroachdb-with-kubernetes-multi-region.html
 ---
 
 This page shows you how to orchestrate a secure CockroachDB deployment across three [Kubernetes](http://kubernetes.io/) clusters, each in a different geographic region, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature to manage the containers within each cluster and linking them together via DNS.
 
-To deploy in a single Kubernetes cluster instead, see [Orchestrate a Single-Region CockroachDB Cluster with Kubernetes](orchestrate-cockroachdb-with-kubernetes-insecure.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+To deploy in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
 ## Before you begin
 

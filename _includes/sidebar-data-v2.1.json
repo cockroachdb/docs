@@ -241,7 +241,7 @@
               {
                 "title": "Kubernetes Multi-Cluster Deployment",
                 "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-region.html"
+                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
                 ]
               },
               {
