@@ -35,9 +35,15 @@ endif
 .PHONY: all
 all: bootstrap
 
-.PHONY: serve
-serve: bootstrap
-	bundle exec jekyll serve --incremental
+.PHONY: standard
+standard: bootstrap
+	python scripts/exclude_from_standard_docs.py
+	bundle exec jekyll serve --incremental --config _config.yml
+
+.PHONY: managed
+managed: bootstrap
+	python scripts/exclude_from_managed_docs.py
+	bundle exec jekyll serve --incremental --config _config_managed.yml --port 4001
 
 .PHONY: test
 test: bootstrap
