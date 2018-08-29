@@ -10,7 +10,11 @@
 <meta name="robots" content="nocache">
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
+{% if page.build_for_managed == true and page.managed_only != true %}
+<link rel="canonical" href="{{ page.canonical | absolute_url | replace: "/managed", "" }}">
+{% else %}
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
+{% endif %}
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 <link rel="stylesheet" type="text/css" href="{{ 'css/font-awesome.min.css' | relative_url }}">

@@ -10,8 +10,11 @@ twitter: false
 contribute: false
 ---
 
-CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
 <div class="landing-page">
+{% if page.build_for_managed %}
+Cockroach Cloud is a fully-managed cloud database developed by the same people that build CockroachDB. Cockroach Cloud handles all the complexity of deploying, managing, and healing your deployments on the cloud service provider of your choice (AWS, Azure, and GCP). Follow the links below to get started.
+{% else %}
+CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
   <div class="landing-page__tutorial">
     <a class="landing-page__tutorial--tile install" href="install-cockroachdb.html">
       <i class="landing-page__tutorial--tile-icon"></i>
@@ -29,4 +32,5 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
   <div class="landing-page__video-wrapper">
     <iframe width="560" height="349" src="https://www.youtube.com/embed/91IqMUwAdnc?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
   </div>
+{% endif %}
 </div>
