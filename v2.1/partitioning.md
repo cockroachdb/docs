@@ -160,7 +160,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 ~~~ shell
 # Start the node in the US datacenter:
 $ cockroach start --insecure \
---locality=region=us-1  \
+--locality=region=us1  \
 --store=node1 \
 --host=<node1 hostname> \
 --port=26257 \
@@ -172,7 +172,7 @@ $ cockroach start --insecure \
 ~~~ shell
 # Start the node in the AUS datacenter:
 $ cockroach start --insecure \
---locality=region=aus-1 \
+--locality=region=aus1 \
 --store=node2 \
 --host=<node2 hostname> \
 --port=26258 \
@@ -380,7 +380,7 @@ Start a node in the US datacenter:
 ~~~ shell
 $ cockroach start --insecure \
 --host=<node1 hostname> \
---locality=datacenter=us-1 \
+--locality=datacenter=us1 \
 --store=path=/mnt/1,attrs=ssd \
 --store=path=/mnt/2,attrs=hdd \
 ~~~
@@ -391,7 +391,7 @@ Start a node in the AUS datacenter:
 ~~~ shell
 $ cockroach start --insecure \
 --host=<node2 hostname> \
---locality=datacenter=aus-1 \
+--locality=datacenter=aus1 \
 --store=path=/mnt/3,attrs=ssd \
 --store=path=/mnt/4,attrs=hdd \
 --join=<node1 hostname>:26257
