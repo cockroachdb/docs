@@ -1,10 +1,7 @@
 ---
 title: SQL Basics
-toc: false
-toc_not_nested: true
+toc: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /training/cluster-basics.html
-block_search: true
 ---
 
 <style>
@@ -78,11 +75,9 @@ Now that you have a table, insert some data into it.
     ~~~
 
     ~~~~
-    +-------------+-------+---------------------------------+
-    | customer_id | name  |             address             |
-    +-------------+-------+---------------------------------+
-    |           1 | Petee | 101 5th Ave, New York, NY 10003 |
-    +-------------+-------+---------------------------------+
+      customer_id | name  |                    address
+    +-------------+-------+------------------------------------------------+
+                1 | Petee | 101 5th Ave, New York, NY 10003
     (1 row)
     ~~~~
 
@@ -112,14 +107,12 @@ Now that you have a table, insert some data into it.
     ~~~
 
     ~~~
+      customer_id | name  |                    address
     +-------------+-------+------------------------------------------------+
-    | customer_id | name  |                    address                     |
-    +-------------+-------+------------------------------------------------+
-    |           1 | Petee | 101 5th Ave, New York, NY 10003                |
-    |           2 | Carl  | NULL                                           |
-    |           3 | Lola  | NULL                                           |
-    |           4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500 |
-    +-------------+-------+------------------------------------------------+
+                1 | Petee | 101 5th Ave, New York, NY 10003
+                2 | Carl  | NULL
+                3 | Lola  | NULL
+                4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500
     (4 rows)
     ~~~
 
@@ -184,7 +177,7 @@ Now that you have a place to store personal information about customers, create 
     pq: foreign key violation: values [1] in columns [customer_id] referenced in table "accounts"
     ~~~
 
-    You weren't able to deleting Petee's information because the customer still has accounts open (i.e., there are records in the `accounts` table).
+    You weren't able to delete Petee's information because the customer still has accounts open (i.e., there are records in the `accounts` table).
 
 5. Delete a customer's account:
 
@@ -220,13 +213,11 @@ Now that you have a place to store personal information about customers, create 
     ~~~
 
     ~~~
+        type   | balance  | customer_id
     +----------+----------+-------------+
-    |   type   | balance  | customer_id |
-    +----------+----------+-------------+
-    | checking |   250.00 |           2 |
-    | savings  |   314.15 |           2 |
-    | savings  | 42000.00 |           4 |
-    +----------+----------+-------------+
+      checking |   250.00 |           2
+      savings  |   314.15 |           2
+      savings  | 42000.00 |           4
     (3 rows)
     ~~~
 
@@ -238,13 +229,11 @@ Now that you have a place to store personal information about customers, create 
     ~~~
 
     ~~~
+      customer_id | name  |                    address                     |   type   | balance
     +-------------+-------+------------------------------------------------+----------+----------+
-    | customer_id | name  |                    address                     |   type   | balance  |
-    +-------------+-------+------------------------------------------------+----------+----------+
-    |           2 | Carl  | NULL                                           | checking |   250.00 |
-    |           2 | Carl  | NULL                                           | savings  |   314.15 |
-    |           4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500 | savings  | 42000.00 |
-    +-------------+-------+------------------------------------------------+----------+----------+
+                2 | Carl  | NULL                                           | checking |   250.00
+                2 | Carl  | NULL                                           | savings  |   314.15
+                4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500 | savings  | 42000.00
     (3 rows)
     ~~~
 
@@ -269,17 +258,15 @@ Now that you have a place to store personal information about customers, create 
     ~~~
 
     ~~~
+      customer_id | name  |                    address                     |   type   | balance
     +-------------+-------+------------------------------------------------+----------+----------+
-    | customer_id | name  |                    address                     |   type   | balance  |
-    +-------------+-------+------------------------------------------------+----------+----------+
-    |           2 | Carl  | 4 Privet Drive, Little Whinging, England       | checking |   250.00 |
-    |           2 | Carl  | 4 Privet Drive, Little Whinging, England       | savings  |   314.15 |
-    |           4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500 | savings  | 42000.00 |
-    +-------------+-------+------------------------------------------------+----------+----------+
+                2 | Carl  | 4 Privet Drive, Little Whinging, England       | checking |   250.00
+                2 | Carl  | 4 Privet Drive, Little Whinging, England       | savings  |   314.15
+                4 | Ernie | 1600 Pennsylvania Ave NW, Washington, DC 20500 | savings  | 42000.00
     (3 rows)
     ~~~
 
-    If you only one big table, you'd have to remember to update Carl's address on every account, and the multiple copies would likely get out of sync.
+    If you only had one big table, you'd have to remember to update Carl's address on every account, and the multiple copies would likely get out of sync.
 
     {{site.data.alerts.callout_info}}
     Designing a schema so that there is exactly one copy of each piece of data is called **normalization**, and is a key concept in relational databases.
@@ -293,11 +280,10 @@ Here's how that would look (don't run this example yet):
 
 ~~~ sql
 > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+
+  balance >= 250
 +----------------+
-| balance >= 250 |
-+----------------+
-|      true      |
-+----------------+
+       true      
 (1 row)
 
 -- If false, quit. Otherwise, continue.
@@ -307,7 +293,7 @@ Here's how that would look (don't run this example yet):
 
 This would work most of the time, but there's a security flaw. Suppose Carl issues two transfer requests for $250 at the exact same time; let's call them transfer A and transfer B.
 
-First, transfer A checks to see if there's at least $250 in Carl's checking account. There is, so it proceeds with the transfer. But before transfer A can deduct the $250 from his account, transfer B checks to see if there's $250 in the account. Transfer A hasn't deducted the money yet, so transfer B sees enough money and decides to proceed too. When the two transfers complete, Carl will have withdrawn $250 that wasn't in his account, and the bank will have to cover the loss.
+First, transfer A checks to see if there's at least $250 in Carl's checking account. There is, so it proceeds with the transfer. But before transfer A can deduct the $250 from his account, transfer B checks to see if there's $250 in the account. Transfer A hasn't deducted the money yet, so transfer B sees enough money and decides to proceed, too. When the two transfers complete, Carl will have withdrawn $250 that wasn't in his account, and the bank will have to cover the loss.
 
 This issue can be solved by using a **transaction**. If two transactions attempt to modify the same data at the same time, one of the transactions will get canceled.
 
@@ -323,11 +309,10 @@ Here's the above example in a transaction. Again, don't run this example yet.
 -- You can also use \show to display the statements entered so far.
                         -> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
                         -> -- press Enter again
+
+  balance >= 250
 +----------------+
-| balance >= 250 |
-+----------------+
-|      true      |
-+----------------+
+       true      
 (1 row)
 
 -- If false, issue a ROLLBACK statement. Otherwise, continue.
@@ -359,40 +344,50 @@ Now try running two copies of the above transaction in parallel:
     > BEGIN;
     ~~~
 
-3. Back in the first SQL shell, run and press enter:
+3. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+    OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
-3. Back in the second SQL shell, run the same and press enter:
+4. Press enter.
+
+5. Back in the second SQL shell, run the same:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+    OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
-4. Back in the first SQL shell, run and press enter:
+6. Press enter.
+
+7. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
+    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
     ~~~
 
-5. Back in the second SQL shell, run the same and press enter:
+8. Press enter.
+
+9. Back in the second SQL shell, run the same:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
+    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
     ~~~
 
-5. Back in the first SQL shell, run and press enter:
+10. Press enter.
+
+11. Back in the first SQL shell, run:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > COMMIT;
+    OPEN> COMMIT;
     ~~~
+
+12. Press enter.
 
 6. Back in the second SQL shell, run the same and press enter:
 
@@ -425,11 +420,9 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
     ~~~
 
     ~~~
+        sum
     +----------+
-    |   sum    |
-    +----------+
-    | 42564.15 |
-    +----------+
+      42314.15
     (1 row)
     ~~~
 
@@ -441,12 +434,10 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
     ~~~
 
     ~~~
+        type   |   sum
     +----------+----------+
-    |   type   |   sum    |
-    +----------+----------+
-    | checking |   250.00 |
-    | savings  | 42314.15 |
-    +----------+----------+
+      checking |   250.00
+      savings  | 42064.15
     (2 rows)
     ~~~
 
