@@ -50,8 +50,7 @@ In this module, you'll run a load generator to simulate multiple client connecti
     ~~~ shell
     $ ./cockroach gen haproxy \
     --insecure \
-    --host=localhost \
-    --port=26257
+    --host=localhost:26257
     ~~~
 
     This command generates an `haproxy.cfg` file automatically configured to work with the nodes of your running cluster.
@@ -73,7 +72,7 @@ In this module, you'll run a load generator to simulate multiple client connecti
         option              clitcpka
 
     listen psql
-        bind :26257
+        bind :26000
         mode tcp
         balance roundrobin
         option httpchk GET /health?ready=1
@@ -106,7 +105,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl {{site.url}}/docs/v2.0/training/resources/crdb-ycsb-mac.tar.gz \
+    $ curl {{site.url}}/docs/v2.1/training/resources/crdb-ycsb-mac.tar.gz \
     | tar -xJ
     ~~~
     </div>
@@ -114,7 +113,7 @@ Now that you have a load balancer running in front of your cluster, download and
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- {{site.url}}/docs/v2.0/training/resources/crdb-ycsb-linux.tar.gz \
+    $ wget -qO- {{site.url}}/docs/v2.1/training/resources/crdb-ycsb-linux.tar.gz \
     | tar xvz
     ~~~
     </div>
@@ -142,21 +141,21 @@ Initially, the load generator creates a new database called `ycsb`, creates a `u
 
 1. To check the SQL queries getting executed, go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **Metrics** on the left, and hover over the **SQL Queries** graph at the top:
 
-    <img src="{{ 'images/v2.0/training-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 2. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **SQL Connections** graph:
 
-    <img src="{{ 'images/v2.0/training-5.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-5.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice 3 client connections for the 3 concurrent workloads from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to each of the first three nodes. For each node, you'll see a single client connection.
 
 3. To see more details about the `ycsb` database and `usertable` table, click **Databases** in the upper left and then scroll down until you see **ycsb**:
 
-    <img src="{{ 'images/v2.0/training-6.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-6.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You can also view the schema of the `usertable` by clicking the table name:
 
-    <img src="{{ 'images/v2.0/training-6.1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />    
+    <img src="{{ 'images/v2.1/training-6.1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />    
 
 ## Step 4. Simulate a single node failure
 
@@ -168,7 +167,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
+    --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
 2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
@@ -184,7 +183,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 1. Go back to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-    <img src="{{ 'images/v2.0/training-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
@@ -198,11 +197,9 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
+      count
     +-------+
-    | count |
-    +-------+
-    | 13760 |
-    +-------+
+      10080
     (1 row)
     ~~~
 
@@ -214,11 +211,9 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
+      count
     +-------+
-    | count |
-    +-------+
-    | 13975 |
-    +-------+
+      10305
     (1 row)
     ~~~
 
@@ -226,7 +221,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 Scroll down to the **Replicas per Node** graph:
 
-<img src="{{ 'images/v2.0/training-8.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-8.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, you'll see the replica count on node 5 drop to 0 and the replica count on the other nodes increase. This shows the cluster repairing itself by re-replicating missing replicas.
 
@@ -240,12 +235,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -265,9 +260,53 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     constraints: []
     ~~~
 
+4. In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. Use the [`cockroach zone`](../configure-replication-zones.html) command to change the cluster's meta, liveness, and system replication factor to 5:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set .meta --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 3600
+    num_replicas: 5
+    constraints: []
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 600
+    num_replicas: 5
+    constraints: []
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set .system --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 90000
+    num_replicas: 5
+    constraints: []
+    ~~~
+
 3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
 
-    <img src="{{ 'images/v2.0/training-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
 
@@ -289,7 +328,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 1. Like before, go to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite 2 nodes being offline:
 
-    <img src="{{ 'images/v2.0/training-10.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-10.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 
@@ -303,11 +342,9 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    +----------+
-    | count(*) |
-    +----------+
-    |    24066 |
-    +----------+
+      count
+    +-------+
+      12046
     (1 row)
     ~~~
 
@@ -319,11 +356,9 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    +----------+
-    | count(*) |
-    +----------+
-    |    24092 |
-    +----------+
+      count
+    +-------+
+      12194
     (1 row)
     ~~~
 

@@ -28,7 +28,9 @@ $ mkdir cockroachdb-training
 $ cd cockroachdb-training
 ~~~
 
-{{site.data.alerts.callout_info}}From this point on, you'll start nodes and run all other commands from inside the <code>cockroachdb-training</code> directory.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+From this point on, you'll start nodes and run all other commands from inside the `cockroachdb-training` directory.
+{{site.data.alerts.end}}
 
 ## Step 2. Install CockroachDB
 
@@ -83,9 +85,9 @@ Use the [`cockroach start`](../start-a-node.html) command to start a node:
 $ ./cockroach start \
 --insecure \
 --store=node1 \
---host=localhost \
---port=26257 \
---http-port=8080 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -129,12 +131,12 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
@@ -142,12 +144,12 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -201,13 +203,12 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
-    +----+-----------------+--------+---------------------+---------------------+
-    | id |     address     | build  |     updated_at      |     started_at      |
-    +----+-----------------+--------+---------------------+---------------------+
-    |  1 | localhost:26257 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
-    |  2 | localhost:26259 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
-    |  3 | localhost:26258 | {{page.release_info.version}} | 2018-02-02 16:48:27 | 2018-02-02 16:48:17 |
-    +----+-----------------+--------+---------------------+---------------------+
+
+      id |     address     |        build         |            started_at            |            updated_at            | is_live
+    +----+-----------------+----------------------+----------------------------------+----------------------------------+---------+
+       1 | localhost:26257 | v2.1.0-beta.20180827 | 2018-08-29 14:38:41.088076+00:00 | 2018-08-29 14:39:12.657203+00:00 | true
+       2 | localhost:26258 | v2.1.0-beta.20180827 | 2018-08-29 14:38:42.141988+00:00 | 2018-08-29 14:39:13.748036+00:00 | true
+       3 | localhost:26259 | v2.1.0-beta.20180827 | 2018-08-29 14:38:42.828228+00:00 | 2018-08-29 14:39:14.404132+00:00 | true
     (3 rows)
     ~~~
 
@@ -222,13 +223,11 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
+      database_name
     +---------------+
-    | database_name |
-    +---------------+
-    | defaultdb     |
-    | postgres      |
-    | system        |
-    +---------------+
+      defaultdb
+      postgres
+      system
     (3 rows)
     ~~~
 
@@ -245,10 +244,10 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and view the **Node List**:
 
-    <img src="{{ 'images/v2.0/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    Note that the **Replicas** count is **20** on all three nodes. This indicates:
-    - There are 20 initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
+    Note that the **Replicas** count is the same on all three nodes. This indicates:
+    - There are this many initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
     - Each range has been replicated 3 times (according to the CockroachDB default).
     - For each range, each replica is stored on different nodes.
 
@@ -260,12 +259,12 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node4 \
-    --host=localhost \
-    --port=26260 \
-    --http-port=8083 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
@@ -273,12 +272,12 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -288,11 +287,11 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
 Go back to the **Live Nodes** list in the Admin UI and watch how the **Replicas** are automatically rebalanced to utilize the additional capacity of the new nodes:
 
-<img src="{{ 'images/v2.0/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 Another way to observe this is to click **Metrics** in the upper left and scroll down to the **Replicas per Node** graph:
 
-<img src="{{ 'images/v2.0/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's next?
 

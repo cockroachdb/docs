@@ -96,36 +96,39 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In another terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 {{site.data.alerts.callout_info}}There's no need to run <code>cockroach init</code> again since the cluster was initialized earlier. However, the cluster will restart only after a majority of nodes are back online (2/3).{{site.data.alerts.end}}
@@ -144,17 +147,19 @@ Restart the nodes using the same commands you used to start them initially, but 
     ~~~
 
     ~~~
+                                 quote                            | characters | stardate | episode
     +-------------------------------------------------------------+------------+----------+---------+
-    |                            quote                            | characters | stardate | episode |
-    +-------------------------------------------------------------+------------+----------+---------+
-    | There is a multi-legged creature crawling on your shoulder. | Spock      |   3193.9 |      23 |
-    +-------------------------------------------------------------+------------+----------+---------+
+      There is a multi-legged creature crawling on your shoulder. | Spock      |   3193.9 |      23
     (1 row)
     ~~~
 
 ## Step 5. Authenticate a user (via password)
 
 Although we recommend always using TLS certificates to authenticate users, it's possible to authenticate a user with just a password.
+
+{{site.data.alerts.callout_info}}
+For multiple users to access the Admin UI, the `root` user must create users with passwords.
+{{site.data.alerts.end}}
 
 1. As the `root` user, create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
 
@@ -197,15 +202,30 @@ Although we recommend always using TLS certificates to authenticate users, it's 
     You'll then see the response:
 
     ~~~
+                       quote                   |  characters   | stardate | episode
     +------------------------------------------+---------------+----------+---------+
-    |                  quote                   |  characters   | stardate | episode |
-    +------------------------------------------+---------------+----------+---------+
-    | Insufficient facts always invite danger. | Spock         |   3141.9 |      22 |
-    | Power is danger.                         | The Centurion |   1709.2 |      14 |
-    +------------------------------------------+---------------+----------+---------+
+      Insufficient facts always invite danger. | Spock         |   3141.9 |      22
+      Power is danger.                         | The Centurion |   1709.2 |      14
     (2 rows)
     ~~~
 
+## Clean up
+
+In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
+
+1. Stop all CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3 my-safe-directory certs
+    ~~~
 ## What's next?
 
 [Production Deployment](production-deployment.html)
