@@ -84,9 +84,7 @@ To successfully connect the user, you must first either generate a client certif
     This time, the connection attempt succeeds:
 
     ~~~
-    +---------------+
-    | database_name |
-    +---------------+
+      database_name
     +---------------+
     (0 rows)
     ~~~
@@ -136,9 +134,7 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-+---------------+
-| database_name |
-+---------------+
+database_name
 +---------------+
 (0 rows)
 ~~~

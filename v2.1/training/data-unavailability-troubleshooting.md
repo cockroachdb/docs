@@ -31,9 +31,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -46,9 +46,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -61,9 +61,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -76,9 +76,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node4 \
-    --host=localhost \
-    --port=26260 \
-    --http-port=8083 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -91,9 +91,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -106,9 +106,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259  \
     --background
     ~~~
@@ -121,9 +121,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node7 \
-    --host=localhost \
-    --port=26263 \
-    --http-port=8086 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26263 \
+    --http-addr=localhost:8086 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -136,9 +136,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --host=localhost \
-    --port=26264 \
-    --http-port=8087 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -151,9 +151,9 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --host=localhost \
-    --port=26265 \
-    --http-port=8088 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -202,11 +202,9 @@ In preparation, add a table and use a replication zone to force the table's data
     ~~~
 
     ~~~
+      start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-    | start_key | end_key | range_id | replicas | lease_holder |
-    +-----------+---------+----------+----------+--------------+
-    | NULL      | NULL    | 16       | {3,6,9}  |            9 |
-    +-----------+---------+----------+----------|--------------+
+      NULL      | NULL    | 16       | {3,6,9}  |            9
     (1 row)
     ~~~
 
@@ -277,9 +275,9 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --host=localhost \
-    --port=26264 \
-    --http-port=8087 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -290,9 +288,9 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --host=localhost \
-    --port=26265 \
-    --http-port=8088 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~

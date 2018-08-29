@@ -28,9 +28,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
@@ -41,9 +41,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -54,9 +54,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -103,9 +103,9 @@ To bring the cluster back to a safe state, you need to either restart the down n
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 

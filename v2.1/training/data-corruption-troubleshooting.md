@@ -28,9 +28,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~~
@@ -42,9 +42,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~
@@ -56,9 +56,9 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~
@@ -96,11 +96,9 @@ Before you can manually corrupt data, you need to import enough data so that the
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
 
     ~~~
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    | 374750372146053121 | succeeded |                  1 |    0 |             0 |              0 |     0 |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+            job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
+    +--------------------+-----------+--------------------+--------+---------------+----------------+----------+
+      378521252933861377 | succeeded |                  1 | 187500 |        375000 |              0 | 26346739
     (1 row)
     ~~~
 
@@ -131,9 +129,9 @@ Before you can manually corrupt data, you need to import enough data so that the
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~
@@ -173,9 +171,9 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~

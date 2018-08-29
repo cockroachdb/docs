@@ -75,9 +75,9 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -89,9 +89,9 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    ---advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -103,9 +103,9 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -129,9 +129,9 @@ The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr`
 ~~~ shell
 $ ./cockroach start \
 --store=node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259 \
 --logtostderr=WARNING
 ~~~
@@ -169,9 +169,9 @@ To successfully join the node to the cluster, start the node again, but this tim
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -188,9 +188,9 @@ In a new terminal, try to add another node:
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node5 \
---host=localhost \
---port=26261 \
---http-port=8084 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --join=localhost:20000 \
 --logtostderr=WARNING
 ~~~
@@ -215,9 +215,9 @@ These warnings tell you that the node cannot establish a connection with the add
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -234,9 +234,9 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085
     ~~~
 
     The startup process succeeds but, because a `--join` address wasn't specified, the node initializes itself as a new cluster instead of joining the existing cluster. You can see this in the `status` field printed to `stdout`:
@@ -262,9 +262,9 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~
@@ -291,9 +291,9 @@ $ rm -rf node6
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node6 \
---host=localhost \
---port=26262 \
---http-port=8085 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26262 \
+--http-addr=localhost:8085 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
