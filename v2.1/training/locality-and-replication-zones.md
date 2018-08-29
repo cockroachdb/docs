@@ -34,9 +34,9 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -49,9 +49,9 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -64,9 +64,9 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -98,9 +98,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node4 \
-    --host=localhost \
-    --port=26260 \
-    --http-port=8083 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -113,9 +113,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -128,9 +128,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -145,9 +145,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node7 \
-    --host=localhost \
-    --port=26263 \
-    --http-port=8086 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26263 \
+    --http-addr=localhost:8086 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -160,9 +160,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node8 \
-    --host=localhost \
-    --port=26264 \
-    --http-port=8087 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -175,9 +175,9 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node9 \
-    --host=localhost \
-    --port=26265 \
-    --http-port=8088 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -207,31 +207,29 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~
 
     ~~~
+      l  |                          v
     +----+------------------------------------------------------+
-    | l  |                          v                           |
-    +----+------------------------------------------------------+
-    |  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,  |
-    |  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^  |
-    |  4 | !                    "?##mW##?"-                     |
-    |  6 | !  C O N G R A T S  _am#Z??A#ma,           Y         |
-    |  8 | !                 _ummY"    "9#ma,       A           |
-    | 10 | !                vm#Z(        )Xmms    Y             |
-    | 12 | !              .j####mmm#####mm#m##6.                |
-    | 14 | !   W O W !    jmm###mm######m#mmm##6                |
-    | 16 | !             ]#me*Xm#m#mm##m#m##SX##c               |
-    | 18 | !             dm#||+*$##m#mm#m#Svvn##m               |
-    | 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A        |
-    | 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M        |
-    | 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A        |
-    | 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z        |
-    | 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E        |
-    | 30 | !       I       4#ma+|++]mmhvnnvq##P`       !        |
-    | 32 | !        D I     ?$#q%+|dmmmvnnm##!                  |
-    | 34 | !           T     -4##wu#mm#pw##7'                   |
-    | 36 | !                   -?$##m####Y'                     |
-    | 38 | !             !!       "Y##Y"-                       |
-    | 40 | !                                                    |
-    +----+------------------------------------------------------+
+       0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
+       2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
+       4 | !                    "?##mW##?"-
+       6 | !  C O N G R A T S  _am#Z??A#ma,           Y
+       8 | !                 _ummY"    "9#ma,       A
+      10 | !                vm#Z(        )Xmms    Y
+      12 | !              .j####mmm#####mm#m##6.
+      14 | !   W O W !    jmm###mm######m#mmm##6
+      16 | !             ]#me*Xm#m#mm##m#m##SX##c
+      18 | !             dm#||+*$##m#mm#m#Svvn##m
+      20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
+      22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
+      24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
+      26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
+      28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
+      30 | !       I       4#ma+|++]mmhvnnvq##P`       !
+      32 | !        D I     ?$#q%+|dmmmvnnm##!
+      34 | !           T     -4##wu#mm#pw##7'
+      36 | !                   -?$##m####Y'
+      38 | !             !!       "Y##Y"-
+      40 | !
     (21 rows)
     ~~~
 
@@ -245,11 +243,9 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~
 
     ~~~
+      start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-    | start_key | end_key | range_id | replicas | lease_holder |
-    +-----------+---------+----------+----------+--------------+
-    | NULL      | NULL    |       32 | {1,6,7}  |            6 |
-    +-----------+---------+----------+----------+--------------+
+      NULL      | NULL    |       24 | {1,6,9}  |            9
     (1 row)
     ~~~
 
@@ -267,9 +263,9 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node10 \
-    --host=localhost \
-    --port=26266 \
-    --http-port=8089 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26266 \
+    --http-addr=localhost:8089 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -282,9 +278,9 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node11 \
-    --host=localhost \
-    --port=26267 \
-    --http-port=8090 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26267 \
+    --http-addr=localhost:8090 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -297,9 +293,9 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node12 \
-    --host=localhost \
-    --port=26268 \
-    --http-port=8091 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26268 \
+    --http-addr=localhost:8091 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -326,21 +322,17 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
     ~~~
 
     ~~~
-    +----+--------+-----+------------------------------+----------+
-    | id | season | num |            title             | stardate |
-    +----+--------+-----+------------------------------+----------+
-    |  1 |      1 |   1 | The Man Trap                 |   1531.1 |
-    |  2 |      1 |   2 | Charlie X                    |   1533.6 |
-    |  3 |      1 |   3 | Where No Man Has Gone Before |   1312.4 |
-    |  4 |      1 |   4 | The Naked Time               |   1704.2 |
-    |  5 |      1 |   5 | The Enemy Within             |   1672.1 |
-    +----+--------+-----+------------------------------+----------+
+      id | season | num |            title             |  stardate
+    +----+--------+-----+------------------------------+-------------+
+       1 |      1 |   1 | The Man Trap                 | 1531.100000
+       2 |      1 |   2 | Charlie X                    | 1533.600000
+       3 |      1 |   3 | Where No Man Has Gone Before | 1312.400000
+       4 |      1 |   4 | The Naked Time               | 1704.200000
+       5 |      1 |   5 | The Enemy Within             | 1672.100000
     (5 rows)
+                        quote
     +--------------------------------------------+
-    |                   quote                    |
-    +--------------------------------------------+
-    | "Beauty is transitory." "Beauty survives." |
-    +--------------------------------------------+
+      "Beauty is transitory." "Beauty survives."
     (1 row)
     ~~~
 
@@ -396,23 +388,17 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~
 
     ~~~
+      start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-    | start_key | end_key | range_id | replicas | lease_holder |
-    +-----------+---------+----------+----------+--------------+
-    | NULL      | NULL    |       32 | {1,6,7}  |            7 |
-    +-----------+---------+----------+----------+--------------+
+      NULL      | NULL    |       24 | {1,5,9}  |            9
     (1 row)
+      start_key | end_key | range_id |  replicas  | lease_holder
     +-----------+---------+----------+------------+--------------+
-    | start_key | end_key | range_id | replicas   | lease_holder |
-    +-----------+---------+----------+------------+--------------+
-    | NULL      | NULL    |       42 | {10,11,12} |           11 |
-    +-----------+---------+----------+------------+--------------+
+      NULL      | NULL    |       42 | {10,11,12} |           10
     (1 row)
+      start_key | end_key | range_id |  replicas  | lease_holder
     +-----------+---------+----------+------------+--------------+
-    | start_key | end_key | range_id | replicas   | lease_holder |
-    +-----------+---------+----------+------------+--------------+
-    | NULL      | NULL    |       43 | {10,11,12} |           12 |
-    +-----------+---------+----------+------------+--------------+
+      NULL      | NULL    |       43 | {10,11,12} |           11
     (1 row)
     ~~~
 

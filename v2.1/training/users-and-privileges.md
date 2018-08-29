@@ -35,18 +35,16 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     You'll see that only the `root` user (and `admin` role to which `root` belongs) has access to the database:
 
     ~~~
-    +----------+--------------------+-------+------------+
-    | Database |       Schema       | User  | Privileges |
-    +----------+--------------------+-------+------------+
-    | startrek | crdb_internal      | admin | ALL        |
-    | startrek | crdb_internal      | root  | ALL        |
-    | startrek | information_schema | admin | ALL        |
-    | startrek | information_schema | root  | ALL        |
-    | startrek | pg_catalog         | admin | ALL        |
-    | startrek | pg_catalog         | root  | ALL        |
-    | startrek | public             | admin | ALL        |
-    | startrek | public             | root  | ALL        |
-    +----------+--------------------+-------+------------+
+      database_name |    schema_name     | grantee | privilege_type
+    +---------------+--------------------+---------+----------------+
+      startrek      | crdb_internal      | admin   | ALL
+      startrek      | crdb_internal      | root    | ALL
+      startrek      | information_schema | admin   | ALL
+      startrek      | information_schema | root    | ALL
+      startrek      | pg_catalog         | admin   | ALL
+      startrek      | pg_catalog         | root    | ALL
+      startrek      | public             | admin   | ALL
+      startrek      | public             | root    | ALL
     (8 rows)
     ~~~
 
@@ -62,14 +60,12 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     Again, you'll see that only the `root` user (and `admin` role to which `root` belongs) has access to the database:
 
     ~~~
-    +----------+--------+----------+-------+------------+
-    | Database | Schema |  Table   | User  | Privileges |
-    +----------+--------+----------+-------+------------+
-    | startrek | public | episodes | admin | ALL        |
-    | startrek | public | episodes | root  | ALL        |
-    | startrek | public | quotes   | admin | ALL        |
-    | startrek | public | quotes   | root  | ALL        |
-    +----------+--------+----------+-------+------------+
+      database_name | schema_name | table_name | grantee | privilege_type
+    +---------------+-------------+------------+---------+----------------+
+      startrek      | public      | episodes   | admin   | ALL
+      startrek      | public      | episodes   | root    | ALL
+      startrek      | public      | quotes     | admin   | ALL
+      startrek      | public      | quotes     | root    | ALL
     (4 rows)
     ~~~
 
@@ -130,17 +126,15 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~
 
     ~~~
-    +----------+--------+----------+-------+------------+
-    | Database | Schema |  Table   | User  | Privileges |
-    +----------+--------+----------+-------+------------+
-    | startrek | public | episodes | admin | ALL        |
-    | startrek | public | episodes | root  | ALL        |
-    | startrek | public | episodes | spock | SELECT     |
-    | startrek | public | quotes   | admin | ALL        |
-    | startrek | public | quotes   | root  | ALL        |
-    | startrek | public | quotes   | spock | INSERT     |
-    | startrek | public | quotes   | spock | SELECT     |
-    +----------+--------+----------+-------+------------+
+      database_name | schema_name | table_name | grantee | privilege_type
+    +---------------+-------------+------------+---------+----------------+
+      startrek      | public      | episodes   | admin   | ALL
+      startrek      | public      | episodes   | root    | ALL
+      startrek      | public      | episodes   | spock   | SELECT
+      startrek      | public      | quotes     | admin   | ALL
+      startrek      | public      | quotes     | root    | ALL
+      startrek      | public      | quotes     | spock   | INSERT
+      startrek      | public      | quotes     | spock   | SELECT
     (7 rows)
     ~~~
 
@@ -160,17 +154,13 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     Because `spock` has the `SELECT` privilege on the tables, the query succeeds:
 
     ~~~
-    +----------+
-    | count(*) |
-    +----------+
-    |      200 |
-    +----------+
+      count
+    +-------+
+        200
     (1 row)
-    +----------+
-    | count(*) |
-    +----------+
-    |       79 |
-    +----------+
+      count
+    +-------+
+         79
     (1 row)
     ~~~
 
@@ -219,17 +209,15 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~
 
     ~~~
-    +----------+--------+----------+-------+------------+
-    | Database | Schema |  Table   | User  | Privileges |
-    +----------+--------+----------+-------+------------+
-    | startrek | public | episodes | admin | ALL        |
-    | startrek | public | episodes | root  | ALL        |
-    | startrek | public | episodes | spock | SELECT     |
-    | startrek | public | quotes   | admin | ALL        |
-    | startrek | public | quotes   | root  | ALL        |
-    | startrek | public | quotes   | spock | INSERT     |
-    | startrek | public | quotes   | spock | SELECT     |
-    +----------+--------+----------+-------+------------+
+      database_name | schema_name | table_name | grantee | privilege_type
+    +---------------+-------------+------------+---------+----------------+
+      startrek      | public      | episodes   | admin   | ALL
+      startrek      | public      | episodes   | root    | ALL
+      startrek      | public      | episodes   | spock   | SELECT
+      startrek      | public      | quotes     | admin   | ALL
+      startrek      | public      | quotes     | root    | ALL
+      startrek      | public      | quotes     | spock   | INSERT
+      startrek      | public      | quotes     | spock   | SELECT
     (7 rows)
     ~~~
 
@@ -254,16 +242,14 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     Note that `spock` no longer has the `SELECT` privilege on the `episodes` table.
 
     ~~~
-    +----------+--------+----------+-------+------------+
-    | Database | Schema |  Table   | User  | Privileges |
-    +----------+--------+----------+-------+------------+
-    | startrek | public | episodes | admin | ALL        |
-    | startrek | public | episodes | root  | ALL        |
-    | startrek | public | quotes   | admin | ALL        |
-    | startrek | public | quotes   | root  | ALL        |
-    | startrek | public | quotes   | spock | INSERT     |
-    | startrek | public | quotes   | spock | SELECT     |
-    +----------+--------+----------+-------+------------+
+      database_name | schema_name | table_name | grantee | privilege_type
+    +---------------+-------------+------------+---------+----------------+
+      startrek      | public      | episodes   | admin   | ALL
+      startrek      | public      | episodes   | root    | ALL
+      startrek      | public      | quotes     | admin   | ALL
+      startrek      | public      | quotes     | root    | ALL
+      startrek      | public      | quotes     | spock   | INSERT
+      startrek      | public      | quotes     | spock   | SELECT
     (6 rows)
     ~~~
 

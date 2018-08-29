@@ -96,9 +96,9 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~~
@@ -110,9 +110,9 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -124,9 +124,9 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
@@ -147,11 +147,9 @@ Restart the nodes using the same commands you used to start them initially, but 
     ~~~
 
     ~~~
+                                 quote                            | characters | stardate | episode
     +-------------------------------------------------------------+------------+----------+---------+
-    |                            quote                            | characters | stardate | episode |
-    +-------------------------------------------------------------+------------+----------+---------+
-    | There is a multi-legged creature crawling on your shoulder. | Spock      |   3193.9 |      23 |
-    +-------------------------------------------------------------+------------+----------+---------+
+      There is a multi-legged creature crawling on your shoulder. | Spock      |   3193.9 |      23
     (1 row)
     ~~~
 
@@ -204,12 +202,10 @@ For multiple users to access the Admin UI, the `root` user must create users wit
     You'll then see the response:
 
     ~~~
+                       quote                   |  characters   | stardate | episode
     +------------------------------------------+---------------+----------+---------+
-    |                  quote                   |  characters   | stardate | episode |
-    +------------------------------------------+---------------+----------+---------+
-    | Insufficient facts always invite danger. | Spock         |   3141.9 |      22 |
-    | Power is danger.                         | The Centurion |   1709.2 |      14 |
-    +------------------------------------------+---------------+----------+---------+
+      Insufficient facts always invite danger. | Spock         |   3141.9 |      22
+      Power is danger.                         | The Centurion |   1709.2 |      14
     (2 rows)
     ~~~
 

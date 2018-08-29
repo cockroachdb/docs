@@ -50,8 +50,7 @@ In this module, you'll run a load generator to simulate multiple client connecti
     ~~~ shell
     $ ./cockroach gen haproxy \
     --insecure \
-    --host=localhost \
-    --port=26257
+    --host=localhost:26257
     ~~~
 
     This command generates an `haproxy.cfg` file automatically configured to work with the nodes of your running cluster.
@@ -198,11 +197,9 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
+      count
     +-------+
-    | count |
-    +-------+
-    | 12559 |
-    +-------+
+      10080
     (1 row)
     ~~~
 
@@ -214,11 +211,9 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~
 
     ~~~
+      count
     +-------+
-    | count |
-    +-------+
-    | 12688 |
-    +-------+
+      10305
     (1 row)
     ~~~
 
@@ -240,12 +235,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    ./cockroach start \
     --insecure \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -347,11 +342,9 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    +----------+
-    | count(*) |
-    +----------+
-    |    12325 |
-    +----------+
+      count
+    +-------+
+      12046
     (1 row)
     ~~~
 
@@ -363,11 +356,9 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
 
     ~~~
-    +----------+
-    | count(*) |
-    +----------+
-    |    12437 |
-    +----------+
+      count
+    +-------+
+      12194
     (1 row)
     ~~~
 
