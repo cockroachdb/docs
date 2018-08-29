@@ -36,7 +36,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
     ~~~
 
     Databases don't directly store any data; you need to describe the
-    shape of the data you intend to store by [creating tables](../create-tables.html) within your database.
+    shape of the data you intend to store by [creating tables](../create-table.html) within your database.
 
 2. Create a table:
 
@@ -49,7 +49,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
     );
     ~~~
 
-    You created a table called `customers` in the `bank` database with three columns: `customer_id`, `name`, and `address`. Each column has a [data type](../data-types.html). This means that the column will only accept the specified data type (i.e., `customer_id` can only be an [`INTEGER`](../integer.html), `name` can only be a [`STRING`](../string.html), and `address` can only be a `STRING`).
+    You created a table called `customers` in the `bank` database with three columns: `customer_id`, `name`, and `address`. Each column has a [data type](../data-types.html). This means that the column will only accept the specified data type (i.e., `customer_id` can only be an [`INTEGER`](../int.html), `name` can only be a [`STRING`](../string.html), and `address` can only be a `STRING`).
 
     The `customer_id` column is also the table's [primary key](../primary-key.html). In CockroachDB, and most SQL databases, it is always more efficient to search a table by primary key than by any other field because there can only be one primary key column, and the primary key column must be unique for every row. Therefore, the `name` column would be an unsuitable primary key because it's likely that your bank will eventually have two customers with the same name.
 
@@ -141,7 +141,7 @@ Now that you have a place to store personal information about customers, create 
 
     The first new feature is the balance column's [`DECIMAL` type](../decimal.html), which is capable of storing fractional numbers (the previously used `INTEGER` columns can only store whole numbers). The numbers in parenthesis indicate the maximum size of the decimal number. `DECIMAL(8, 2)` means that a number with up to eight digits can be stored with up to two digits past the decimal point. This means we can store account balances as large as `999999.99`, but no larger.
 
-    The second new feature is the [foreign key](../foreign-key) created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real
+    The second new feature is the [foreign key](../foreign-key.html) created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real
     customer. Let's verify this works as intended.
 
 2. Try to open an account for a customer that doesn't exist:
