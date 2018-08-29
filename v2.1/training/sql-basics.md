@@ -26,7 +26,7 @@ $ ./cockroach sql --insecure
 
 ## Step 2. Create your first database and table
 
-In this training, you'll create a bank with customers and accounts. First, you'll need to create a **database** on your Cockroach cluster to store this information.
+In this training, you'll create a bank with customers and accounts. First, you'll need to [create a database](../create-database.html) on your Cockroach cluster to store this information.
 
 1. In the built-in SQL client, create a database:
 
@@ -36,7 +36,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
     ~~~
 
     Databases don't directly store any data; you need to describe the
-    shape of the data you intend to store by creating **tables** within your database.
+    shape of the data you intend to store by [creating tables](../create-tables.html) within your database.
 
 2. Create a table:
 
@@ -49,13 +49,13 @@ In this training, you'll create a bank with customers and accounts. First, you'l
     );
     ~~~
 
-    You created a table called `customers` in the `bank` database with three columns: `customer_id`, `name`, and `address`. Each column has a data type. This means that the column will only accept the specified data type (i.e., `customer_id` can only be an `INTEGER`, `name` can only be a `STRING`, and `address` can only be a `STRING`).
+    You created a table called `customers` in the `bank` database with three columns: `customer_id`, `name`, and `address`. Each column has a [data type](../data-types.html). This means that the column will only accept the specified data type (i.e., `customer_id` can only be an [`INTEGER`](../integer.html), `name` can only be a [`STRING`](../string.html), and `address` can only be a `STRING`).
 
-    The `customer_id` column is also the table's **primary key**. In CockroachDB, and most SQL databases, it is always more efficient to search a table by primary key than by any other field because there can only be one primary key column, and the primary key column must be unique for every row. Therefore, the `name` column would be an unsuitable primary key because it's likely that your bank will eventually have two customers with the same name.
+    The `customer_id` column is also the table's [primary key](../primary-key.html). In CockroachDB, and most SQL databases, it is always more efficient to search a table by primary key than by any other field because there can only be one primary key column, and the primary key column must be unique for every row. Therefore, the `name` column would be an unsuitable primary key because it's likely that your bank will eventually have two customers with the same name.
 
 ## Step 3. Insert data into your first table
 
-Now that you have a table, insert some data into it.
+Now that you have a table, [insert](../insert.html) some data into it.
 
 1. Insert a row into the table:
 
@@ -67,7 +67,7 @@ Now that you have a table, insert some data into it.
 
     `INSERT` statements add new rows to a table. Values must be specified in the same order that the columns were declared in the `CREATE TABLE` statement. Note that a string needs to be surrounded with single quotes (`'`), but integers do not.
 
-2. Verify that the data was inserted successfully by using a `SELECT` statement to retrieve data from the table:
+2. Verify that the data was inserted successfully by using a [`SELECT` statement](../select.html) to retrieve data from the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -139,9 +139,9 @@ Now that you have a place to store personal information about customers, create 
 
     This table demonstrates two new SQL features.
 
-    The first new feature is the balance column's `DECIMAL` type, which is capable of storing fractional numbers (the previously used `INTEGER` columns can only store whole numbers). The numbers in parenthesis indicate the maximum size of the decimal number. `DECIMAL(8, 2)` means that a number with up to eight digits can be stored with up to two digits past the decimal point. This means we can store account balances as large as `999999.99`, but no larger.
+    The first new feature is the balance column's [`DECIMAL` type](../decimal.html), which is capable of storing fractional numbers (the previously used `INTEGER` columns can only store whole numbers). The numbers in parenthesis indicate the maximum size of the decimal number. `DECIMAL(8, 2)` means that a number with up to eight digits can be stored with up to two digits past the decimal point. This means we can store account balances as large as `999999.99`, but no larger.
 
-    The second new feature is the foreign key created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real
+    The second new feature is the [foreign key](../foreign-key) created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real
     customer. Let's verify this works as intended.
 
 2. Try to open an account for a customer that doesn't exist:
@@ -164,7 +164,7 @@ Now that you have a place to store personal information about customers, create 
     > INSERT INTO bank.accounts VALUES ('checking', 0.00, 1);
     ~~~
 
-4. Try to delete a customer record:
+4. Try to [delete](../delete.html) a customer record:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -221,7 +221,7 @@ Now that you have a place to store personal information about customers, create 
     (3 rows)
     ~~~
 
-2. Use a **join** to match customer IDs with the name and address in the `customers` table:
+2. Use a [join](../joins.html) to match customer IDs with the name and address in the `customers` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -241,7 +241,7 @@ Now that you have a place to store personal information about customers, create 
 
     While you could create one big table with all the above information, it's recommended that you create separate tables and join them. With this setup, you would only need to update data in one place.
 
-3. Update Carl's address:
+3. [Update](../update.html) Carl's address:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -295,10 +295,9 @@ This would work most of the time, but there's a security flaw. Suppose Carl issu
 
 First, transfer A checks to see if there's at least $250 in Carl's checking account. There is, so it proceeds with the transfer. But before transfer A can deduct the $250 from his account, transfer B checks to see if there's $250 in the account. Transfer A hasn't deducted the money yet, so transfer B sees enough money and decides to proceed, too. When the two transfers complete, Carl will have withdrawn $250 that wasn't in his account, and the bank will have to cover the loss.
 
-This issue can be solved by using a **transaction**. If two transactions attempt to modify the same data at the same time, one of the transactions will get canceled.
+This issue can be solved by using a [transaction](../transactions.html). If two transactions attempt to modify the same data at the same time, one of the transactions will get canceled.
 
-Using transactions is as simple as issuing a `BEGIN` statement to start a transaction and a `COMMIT` statement to finish it. You can also `ROLLBACK` a transaction midway if, for example, you discover that the transfer has
-insufficient funds.
+Using transactions is as simple as issuing a [`BEGIN` statement](../begin-transaction.html) to start a transaction and a [`COMMIT` statement](../commit-transaction.html) to finish it. You can also [`ROLLBACK` a transaction](../rollback-transaction.html) midway if, for example, you discover that the transfer has insufficient funds.
 
 Here's the above example in a transaction. Again, don't run this example yet.
 
@@ -389,7 +388,7 @@ Now try running two copies of the above transaction in parallel:
 
 12. Press enter.
 
-6. Back in the second SQL shell, run the same and press enter:
+13. Back in the second SQL shell, run the same and press enter:
 
     {% include copy-clipboard.html %}
     ~~~ sql
