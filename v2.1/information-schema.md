@@ -149,14 +149,14 @@ Column | Description
 `constraint_catalog` | Name of the database containing the constraint.
 `constraint_schema` | Name of the schema containing the constraint.
 `constraint_name` | Name of the constraint.
-`unique_constraint_catalog` | Name of the database containing the unique or primary key constraint that the foreign key constraint references (always the current database).
-`unique_constraint_schema` | Name of the schema containing the unique or primary key constraint that the foreign key constraint references.
-`unique_constraint_name` | Name of the unique or primary key constraint.
+`unique_constraint_catalog` | Name of the database containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references (always the current database).
+`unique_constraint_schema` | Name of the schema containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references.
+`unique_constraint_name` | Name of the `UNIQUE` or `PRIMARY KEY` constraint.
 `match_option` | Match option of the foreign key constraint: `FULL`, `PARTIAL`, or `NONE`.
 `update_rule` | Update rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
 `delete_rule` | Delete rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
 `table_name` | Name of the table containing the constraint.
-`referenced_table_name` | Name of the table containing the unique or primary key constraint that the foreign key constraint references.
+`referenced_table_name` | Name of the table containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references.
 
 ### role_table_grants
 

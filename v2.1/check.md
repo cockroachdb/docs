@@ -34,15 +34,15 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 {% include {{ page.version.version }}/sql/diagrams/check_column_level.html %}
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating. 
- `column_name` | The name of the constrained column. 
- `column_type` | The constrained column's [data type](data-types.html). 
+ `table_name` | The name of the table you're creating.
+ `column_name` | The name of the constrained column.
+ `column_type` | The constrained column's [data type](data-types.html).
  `check_expr` | An expression that returns a Boolean value; if the expression evaluates to `FALSE`, the value cannot be inserted.
- `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. 
- `column_def` | Definitions for any other columns in the table. 
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. 
+ `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+ `column_def` | Definitions for any other columns in the table.
+ `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
 
 **Example**
 
@@ -59,13 +59,13 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 {% include {{ page.version.version }}/sql/diagrams/check_table_level.html %}
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating. 
- `column_def` | Definitions for any other columns in the table. 
- `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). 
+ `table_name` | The name of the table you're creating.
+ `column_def` | Definitions for any other columns in the table.
+ `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
  `check_expr` | An expression that returns a Boolean value; if the expression evaluates to `FALSE`, the value cannot be inserted.
- `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply. 
+ `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
 
 **Example**
 
@@ -101,9 +101,9 @@ pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
-- [Default Value constraint](default-value.html)
-- [Foreign Key constraint](foreign-key.html)
-- [Not Null constraint](not-null.html)
-- [Primary Key constraint](primary-key.html)
-- [Unique constraint](unique.html)
+- [`DEFAULT` constraint](default-value.html)
+- [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
+- [`NOT NULL` constraint](not-null.html)
+- [`PRIMARY KEY` constraint](primary-key.html)
+- [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

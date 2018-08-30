@@ -194,7 +194,7 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 ROLLBACK
 ~~~
 
-## See Also
+## See also
 
 + [How online schema changes are possible in CockroachDB][blog]: Blog post with more technical details about how our schema change engine works.
 + [`ALTER TABLE`][alter-table]

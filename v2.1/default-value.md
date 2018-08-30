@@ -20,15 +20,15 @@ You can only apply the Default Value constraint to individual columns.
 
 <section> {% include {{ page.version.version }}/sql/diagrams/default_value_column_level.html %} </section>
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating. 
- `column_name` | The name of the constrained column. 
- `column_type` | The constrained column's [data type](data-types.html). 
+ `table_name` | The name of the table you're creating.
+ `column_name` | The name of the constrained column.
+ `column_type` | The constrained column's [data type](data-types.html).
  `default_value` | The value you want to insert by default, which must evaluate to the same [data type](data-types.html) as the `column_type`.
  `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
- `column_def` | Definitions for any other columns in the table. 
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. 
+ `column_def` | Definitions for any other columns in the table.
+ `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
 
 ## Example
 
@@ -71,9 +71,9 @@ If the Default Value constraint is not specified and an explicit value is not gi
 
 - [Constraints](constraints.html)
 - [`ALTER COLUMN`](alter-column.html)
-- [Check constraint](check.html)
-- [Foreign Key constraint](foreign-key.html)
-- [Not Null constraint](not-null.html)
-- [Primary Key constraint](primary-key.html)
-- [Unique constraint](unique.html)
+- [`CHECK` constraint](check.html)
+- [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
+- [`NOT NULL` constraint](not-null.html)
+- [`PRIMARY KEY` constraint](primary-key.html)
+- [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

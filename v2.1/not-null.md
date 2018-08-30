@@ -9,7 +9,7 @@ The Not Null [constraint](constraints.html) specifies a column may not contain *
 
 ## Details
 
-- `INSERT` or `UPDATE` statements containing *NULL* values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [Default Value constraint](default-value.html). 
+- `INSERT` or `UPDATE` statements containing *NULL* values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [Default Value constraint](default-value.html).
 
   For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a Default Value), when you run the following command:
 
@@ -17,27 +17,29 @@ The Not Null [constraint](constraints.html) specifies a column may not contain *
   > INSERT INTO foo (a) VALUES (1);
   ~~~
 
-  CockroachDB tries to write a *NULL* value into column `b`. If that column has the Not Null constraint, the `INSERT` statement is rejected.
+  CockroachDB tries to write a *NULL* value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
 
-- You can only define the Not Null constraint when [creating a table](#syntax); you cannot add it to an existing table. However, you can [migrate data](constraints.html#table-migrations-to-add-or-change-immutable-constraints) from your current table to a new table with the constraint you want to use.
-  {{site.data.alerts.callout_info}}In the future we plan to support adding the Not Null constraint to existing tables.{{site.data.alerts.end}}
+- You can only define the `NOT NULL` constraint when [creating a table](#syntax); you cannot add it to an existing table. However, you can [migrate data](constraints.html#table-migrations-to-add-or-change-immutable-constraints) from your current table to a new table with the constraint you want to use.
+  {{site.data.alerts.callout_info}}
+  In the future we plan to support adding the `NOT NULL` constraint to existing tables.
+  {{site.data.alerts.end}}
 
 - For more information about *NULL*, see [Null Handling](null-handling.html).
 
 ## Syntax
 
-You can only apply the Not Null constraint to individual columns.
+You can only apply the `NOT NULL` constraint to individual columns.
 
 {% include {{ page.version.version }}/sql/diagrams/not_null_column_level.html %}
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating. 
- `column_name` | The name of the constrained column. 
- `column_type` | The constrained column's [data type](data-types.html). 
- `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. 
- `column_def` | Definitions for any other columns in the table. 
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. 
+ `table_name` | The name of the table you're creating.
+ `column_name` | The name of the constrained column.
+ `column_type` | The constrained column's [data type](data-types.html).
+ `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+ `column_def` | Definitions for any other columns in the table.
+ `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
 
 ## Usage example
 
@@ -72,9 +74,9 @@ pq: null value in column "cust_email" violates not-null constraint
 
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
-- [Check constraint](check.html)
-- [Default Value constraint](default-value.html)
-- [Foreign Key constraint](foreign-key.html)
-- [Primary Key constraint](primary-key.html)
-- [Unique constraint](unique.html)
+- [`CHECK` constraint](check.html)
+- [`DEFAULT` constraint](default-value.html)
+- [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
+- [`PRIMARY KEY` constraint](primary-key.html)
+- [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

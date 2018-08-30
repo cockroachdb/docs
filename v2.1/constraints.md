@@ -26,20 +26,22 @@ For example, the Unique constraint requires that all values in a column be uniqu
 
 How you add constraints depends on the number of columns you want to constrain, as well as whether or not the table is new.
 
-- **One column of a new table** has its constraints defined after the column's data type. For example, this statement applies the Primary Key constraint to `foo.a`:
+- **One column of a new table** has its constraints defined after the column's data type. For example, this statement applies the `PRIMARY KEY` constraint to `foo.a`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a INT PRIMARY KEY);
     ~~~
-- **Multiple columns of a new table** have their constraints defined after the table's columns. For example, this statement applies the Primary Key constraint to `foo`'s columns `a` and `b`:
+- **Multiple columns of a new table** have their constraints defined after the table's columns. For example, this statement applies the `PRIMARY KEY` constraint to `foo`'s columns `a` and `b`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
     ~~~
 
-  {{site.data.alerts.callout_info}}The Default Value and Not Null constraints cannot be applied to multiple columns.{{site.data.alerts.end}}
+  {{site.data.alerts.callout_info}}
+  The `DEFAULT` and `NOT NULL` constraints cannot be applied to multiple columns.
+  {{site.data.alerts.end}}
 
 - **Existing tables** can have the following constraints added:
   - **Check**, **Foreign Key**, and **Unique** constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](add-constraint.html). For example, this statement adds the Unique constraint to `baz.id`:
@@ -99,7 +101,7 @@ The procedure for changing a constraint depends on its type:
 
 | Constraint Type | Procedure |
 |-----------------|-----------|
-| [Check](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new Check constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
+| [Check](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 | [Default Value](default-value.html) | The Default Value can be changed through [`ALTER COLUMN`](alter-column.html). |
 | [Foreign Keys](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new Foreign Key constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)). |
 | [Not Null](not-null.html) | The Not Null constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints). |

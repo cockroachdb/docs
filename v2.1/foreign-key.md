@@ -47,7 +47,7 @@ Multiple-column foreign keys only accept _NULL_ values in these scenarios:
 
 For example, if you have a Foreign Key constraint on columns `(A, B)` and try to insert `(1, NULL)`, the write would fail unless the row with the value `1` for `(A)` contained a _NULL_ value for `(B)`. However, inserting `(NULL, NULL)` would succeed.
 
-However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [Not Null constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
+However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [`NOT NULL` constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
 ### Foreign key actions
 
@@ -241,7 +241,7 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 +------+----------+
 ~~~
 
-### Use a Foreign Key Constraint with `CASCADE` 
+### Use a Foreign Key Constraint with `CASCADE`
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
@@ -351,7 +351,7 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 +-----+--------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET NULL` 
+### Use a Foreign Key Constraint with `SET NULL`
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
@@ -478,7 +478,7 @@ Let's check to make sure the row in `orders_3` where `customers_id = 2` was upda
 +-----+-------------+
 ~~~
 
-### Use a Foreign Key Constraint with `SET DEFAULT` 
+### Use a Foreign Key Constraint with `SET DEFAULT`
 
 In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
 
@@ -607,9 +607,9 @@ Let's check to make sure the corresponding `customer_id` value to `id = 101`, wa
 - [Constraints](constraints.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ADD CONSTRAINT`](add-constraint.html)
-- [Check constraint](check.html)
-- [Default Value constraint](default-value.html)
-- [Not Null constraint](not-null.html)
-- [Primary Key constraint](primary-key.html)
-- [Unique constraint](unique.html)
+- [`CHECK` constraint](check.html)
+- [`DEFAULT` constraint](default-value.html)
+- [`NOT NULL` constraint](not-null.html)
+- [`PRIMARY KEY` constraint](primary-key.html)
+- [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

@@ -44,7 +44,7 @@ Its operation can be described as follows (numbered steps listed here correspond
 
 ## Caveats
 
-The most important part of working with window functions is understanding what data will be in the frame that the window function will be operating on. By default, the window frame includes all of the rows of the partition. If you order the partition, the default frame includes all rows from the first row in the partition to the current row. In other words, adding an `ORDER BY` clause when you create the window frame (e.g. `PARTITION BY x ORDER by y`) has the following effects:
+The most important part of working with window functions is understanding what data will be in the frame that the window function will be operating on. By default, the window frame includes all of the rows of the partition. If you order the partition, the default frame includes all rows from the first row in the partition to the current row. In other words, adding an `ORDER BY` clause when you create the window frame (e.g., `PARTITION BY x ORDER by y`) has the following effects:
 
 - It makes the rows inside the window frame ordered.
 - It changes what rows the function is called on - no longer all of the rows in the window frame, but a subset between the "first" row and the current row.
@@ -399,7 +399,7 @@ To find out the total number of riders and total revenue generated thus far by t
 ~~~ sql
 > SELECT DISTINCT(city), SUM(revenue) OVER (PARTITION BY city) AS city_revenue FROM rides ORDER BY city_revenue DESC;
 ~~~
- 
+
 ~~~
 +---------------+--------------+
 |    (city)     | city_revenue |
@@ -417,7 +417,7 @@ To find out the total number of riders and total revenue generated thus far by t
 (9 rows)
 ~~~
 
-## See Also
+## See also
 
 - [Simple `SELECT` clause][simple-select]
 - [Selection Queries][selection-query]

@@ -90,7 +90,7 @@ CockroachDB attempts to disable core files at startup when encryption is request
 Key management is the most dangerous aspect of encryption. The following rules should be kept in mind:
 
 * make sure only the unix user running the `cockroach` process has access to the keys
-* do not store the keys on the same partition/drive as the cockroach data. It is best to load keys at run time from a separate system (eg: keywhiz, vault)
+* do not store the keys on the same partition/drive as the cockroach data. It is best to load keys at run time from a separate system (e.g., keywhiz, vault)
 * rotate store keys frequently (every few weeks to months)
 * keep the data key rotation period low (default is one week)
 
