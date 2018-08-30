@@ -3,10 +3,13 @@ message: Prefer '%s' over '%s'
 ignorecase: false
 level: warning
 swap:
+  cockroachdb: CockroachDB
   raft: Raft
   Raft Group: Raft group
   admin UI: Admin UI
   admin ui: Admin UI
+  web UI: Admin UI
+  web UI: Admin UI
   ui: UI
   Distribution Layer: distribution layer
   Replication Layer: replication layer
@@ -15,6 +18,7 @@ swap:
   Transaction Layer: transaction layer
   Leaseholder: leaseholder
   Key-Value: key-value
+  Replication Zone: replication zone
   Replication Zones: replication zones
   Write Intent: write intent
   Transaction Record: transaction record
