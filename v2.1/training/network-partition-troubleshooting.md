@@ -17,7 +17,7 @@ redirect_from: /training/network-partition-troubleshooting.html
 
 ## Before you begin
 
-Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have Docker Compose on your local machine, so you may just want to observe this one.
+Note that this lab involves running a cluster in Docker so that you can use it to fake a partition between datacenters. You will need to have [Docker Compose](https://docs.docker.com/compose/install/) on your local machine, so you may just want to observe this one.
 
 ## Step 1. Create a cluster in Docker across 3 simulated datacenters
 
@@ -32,14 +32,14 @@ Note that this lab involves running a cluster in Docker so that you can use it t
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.0/training/resources/docker-compose.yaml
+    $ curl -O {{site.url}}/docs/v2.1/training/resources/docker-compose.yaml
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v1.1/training/resources/docker-compose.yaml
+    $ wget {{site.url}}/docs/v2.1/training/resources/docker-compose.yaml
     ~~~
     </div>
 
@@ -77,7 +77,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 1. The Admin UI should now show that 2 of the nodes in the cluster have changed from "Healthy" to "Suspect":
 
-    <img src="{{ 'images/v2.0/training-22.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-22.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 2. Check whether the "Suspect" nodes are still running by hitting their `/health` endpoints:
 
@@ -88,21 +88,25 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
     ~~~
     {
-      "nodeId": 4,
+      "nodeId": 3,
       "address": {
         "networkField": "tcp",
-        "addressField": "e2f31c1f1e80:26257"
+        "addressField": "roach-5:26257"
       },
       "buildInfo": {
-        "goVersion": "go1.8.3",
-        "tag": "v1.1.5",
-        "time": "2018/02/05 17:40:57",
-        "revision": "ec52ded95a5235d71f26b6cbc59924bd6733fb3a",
+        "goVersion": "go1.10",
+        "tag": "v2.0.0",
+        "time": "2018/04/03 20:56:09",
+        "revision": "a6b498b7aff14234bcde23107b9e7fa14e6a34a8",
         "cgoCompiler": "gcc 6.3.0",
+        "cgoTargetTriple": "x86_64-unknown-linux-gnu",
         "platform": "linux amd64",
         "distribution": "CCL",
-        "type": "release-gnu"
+        "type": "release",
+        "channel": "official-binary",
+        "dependencies": null
       }
+    }
     ~~~
 
 3. Check whether the "Suspect" nodes consider themselves live by hitting their `/_admin/v1/health` endpoints:
@@ -135,7 +139,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 5. Check whether the majority nodes are able to talk to the minority nodes at all by looking at the network latency debug page at <a href="http://localhost:8080/#/reports/network" data-proofer-ignore>http://localhost:8080/#/reports/network</a>:
 
-    <img src="{{ 'images/v2.0/training-23.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-23.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 6. If you really want to confirm that the network isn't working, try manually pinging a node in `dc-2` from a node in `dc-0`:
 

@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
-1. In a new terminal, start node 1 in locality us-east-1:
+1. In a new terminal, start node 1 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -31,13 +31,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In the same terminal, start node 2 in locality us-east-1:
+2. In the same terminal, start node 2 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -45,13 +46,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-3. In the same terminal, start node 3 in locality us-east-1:
+3. In the same terminal, start node 3 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -59,13 +61,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-4. In the same terminal, start node 4 in locality us-east-2:
+4. In the same terminal, start node 4 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -73,13 +76,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node4 \
-    --host=localhost \
-    --port=26260 \
-    --http-port=8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-5. In the same terminal, start node 5 in locality us-east-2:
+5. In the same terminal, start node 5 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -87,13 +91,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-6. In the same terminal, start node 6 in locality us-east-2:
+6. In the same terminal, start node 6 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -101,13 +106,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
+    --join=localhost:26257,localhost:26258,localhost:26259  \
+    --background
     ~~~
 
-7. In the same terminal, start node 7 in locality us-east-3:
+7. In the same terminal, start node 7 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -115,13 +121,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node7 \
-    --host=localhost \
-    --port=26263 \
-    --http-port=8086 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26263 \
+    --http-addr=localhost:8086 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-8. In the same terminal, start node 8 in locality us-east-3:
+8. In the same terminal, start node 8 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -129,13 +136,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --host=localhost \
-    --port=26264 \
-    --http-port=8087 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-9. In the same terminal, start node 9 in locality us-east-3:
+9. In the same terminal, start node 9 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -143,10 +151,11 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --host=localhost \
-    --port=26265 \
-    --http-port=8088 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 10. In the same terminal, perform a one-time initialization of the cluster:
@@ -156,11 +165,11 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     $ ./cockroach init --insecure
     ~~~
 
-## Step 2. Simulate the problem
+## Step 2. Prepare to simulate the problem
 
 In preparation, add a table and use a replication zone to force the table's data onto the new nodes.
 
-1. Generate an `intro` database with a `mytable` table:
+1. In a new terminal, generate an `intro` database with a `mytable` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -193,11 +202,9 @@ In preparation, add a table and use a replication zone to force the table's data
     ~~~
 
     ~~~
+      start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-    | start_key | end_key | range_id | replicas | lease_holder |
-    +-----------+---------+----------+----------+--------------+
-    | NULL      | NULL    | 16       | {3,6,9}  |            9 |
-    +-----------+---------+----------+----------|--------------+
+      NULL      | NULL    | 16       | {3,6,9}  |            9
     (1 row)
     ~~~
 
@@ -246,21 +253,21 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 4. Hover over the **Ranges** graph:
 
-    <img src="{{ 'images/v2.0/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You should see that 1 range is now unavailable. If the unavailable count is larger than 1, that would mean that some system ranges had a majority of replicas on the down nodes as well.
 
     The **Summary** panel on the right should tell you the same thing:
 
-    <img src="{{ 'images/v2.0/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
+    <img src="{{ 'images/v2.1/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
 
 5. For more insight into the ranges that are unavailable, go to the **Problem Ranges Report** at <a href="http://localhost:8080/#/reports/problemranges" data-proofer-ignore>http://localhost:8080/#/reports/problemranges</a>.
 
-    <img src="{{ 'images/v2.0/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Resolve the problem
 
-1. Restart the stopped nodes:
+1. In a new terminal, restart the stopped nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -268,10 +275,11 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --host=localhost \
-    --port=26264 \
-    --http-port=8087 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
     {% include copy-clipboard.html %}
@@ -280,10 +288,11 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --host=localhost \
-    --port=26265 \
-    --http-port=8088 \
-    --join=localhost:26257,localhost:26258,localhost:26259 &
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 3. Go back to the Admin UI, click **Metrics** on the left, and verify that ranges are no longer unavailable.

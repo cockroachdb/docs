@@ -55,9 +55,9 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -68,9 +68,9 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -79,13 +79,11 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     All ranges have a majority of their replicas again, and so the query executes and succeeds:
 
     ~~~
+      database_name
     +---------------+
-    | database_name |
-    +---------------+
-    | defaultdb     |
-    | postgres      |
-    | system        |
-    +---------------+
+      defaultdb
+      postgres
+      system
     (3 rows)
     ~~~
 

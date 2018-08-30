@@ -21,8 +21,6 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 ### Step 1. Generate security certificates
 
-{{site.data.alerts.callout_success}}If you have these resources still in place from the <a href="security.html">Security</a> module, you can skip this step.{{site.data.alerts.end}}
-
 1. Create two directories:
 
     {% include copy-clipboard.html %}
@@ -77,39 +75,42 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    ---advertise-addr=localhost \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In another terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-4. In another terminal, perform a one-time initialization of the cluster:
+4. Perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -120,15 +121,17 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 In the same terminal, try to add another node, but leave out the `--certs-dir` flag:
 
-{{site.data.alerts.callout_info}}The <code>--logtostderr=WARNING</code> flag will make warnings and errors print to <code>stderr</code> so you do not have to manually look in the logs.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr` so you do not have to manually look in the logs.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ ./cockroach start \
 --store=node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259 \
 --logtostderr=WARNING
 ~~~
@@ -136,12 +139,21 @@ $ ./cockroach start \
 The startup process will fail, and you'll see the following printed to `stderr`:
 
 ~~~
-W180208 15:41:15.531967 1 cli/start.go:697  Using the default setting for --cache (128 MiB).
+W180817 16:54:49.514313 1 cli/start.go:853  Using the default setting for --cache (128 MiB).
   A significantly larger value is usually needed for good performance.
-  If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
-E180208 15:41:15.642980 1 cli/error.go:68  failed to start server: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+  If you have a dedicated server a reasonable setting is --cache=.25 (2.0 GiB).
+W180817 16:54:49.514693 1 cli/start.go:866  Using the default setting for --max-sql-memory (128 MiB).
+  A significantly larger value is usually needed in production.
+  If you have a dedicated server a reasonable setting is --max-sql-memory=.25 (2.0 GiB).
+E180817 16:54:49.621930 1 cli/error.go:230  cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+problem with CA certificate: not found
 *
-* ERROR: failed to start server: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+* ERROR: cannot load certificates.
+* Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+*
+* problem with CA certificate: not found
 *
 Failed running "start"
 ~~~
@@ -157,9 +169,9 @@ To successfully join the node to the cluster, start the node again, but this tim
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -176,24 +188,21 @@ In a new terminal, try to add another node:
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node5 \
---host=localhost \
---port=26261 \
---http-port=8084 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --join=localhost:20000 \
 --logtostderr=WARNING
 ~~~
 
-The startup process will hang, and you'll see the following printed to `stderr`:
+The process will never complete, and you'll see a continuous stream of warnings like this:
 
 ~~~
-W180208 16:13:57.687021 1 cli/start.go:697  Using the default setting for --cache (128 MiB).
-  A significantly larger value is usually needed for good performance.
-  If you have a dedicated server a reasonable setting is --cache=25% (2.0 GiB).
-W180208 16:13:57.809502 20 gossip/gossip.go:1241  [n?] no incoming or outgoing connections
-W180208 16:13:57.812632 13 gossip/client.go:123  [n?] failed to start gossip client to localhost:20000: rpc error: code = Unavailable desc = grpc: the connection is unavailable
+W180817 17:01:56.506968 886 vendor/google.golang.org/grpc/clientconn.go:942  Failed to dial localhost:20000: grpc: the connection is closing; please retry.
+W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293  grpc: addrConn.createTransport failed to connect to {localhost:20000 0  <nil>}. Err :connection error: desc = "transport: Error while dialing dial tcp [::1]:20000: connect: connection refused". Reconnecting...
 ~~~
 
-The last warning tells you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
+These warnings tell you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
 
 ### Step 2. Resolve the problem
 
@@ -206,9 +215,9 @@ The last warning tells you that the node cannot establish a connection with the 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node5 \
-    --host=localhost \
-    --port=26261 \
-    --http-port=8084 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -225,9 +234,9 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085
     ~~~
 
     The startup process succeeds but, because a `--join` address wasn't specified, the node initializes itself as a new cluster instead of joining the existing cluster. You can see this in the `status` field printed to `stdout`:
@@ -253,9 +262,9 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --host=localhost \
-    --port=26262 \
-    --http-port=8085 \
+    --advertise-addr=localhost \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --logtostderr=WARNING
     ~~~
@@ -263,13 +272,10 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     The startup process fails because the cluster notices that the node's cluster ID does not match the cluster ID of the nodes it is trying to join to:   
 
     ~~~
-    F180208 16:41:20.387821 136 storage/replica.go:5217  [n1,s1,r1/1:/{Min-System/}] store 1 belongs to cluster cfcd80ee-9005-4975-9ae9-9c36d9aaa57e, but attempted to join cluster 5007b180-9b08-4a08-a882-53915fb459a1 via gossip
-    goroutine 136 [running]:
-    github.com/cockroachdb/cockroach/pkg/util/log.getStacks(0x69fe700, 0x0, 0x0, 0x12)
-    	/go/src/github.com/cockroachdb/cockroach/pkg/util/log/clog.go:872 +0xa7
-    github.com/cockroachdb/cockroach/pkg/util/log.(*loggingT).outputLogEntry(0x69fe700, 0xc400000004, 0x6475169, 0x12, 0x1461, 0xc4208580b0, 0xaa)
-    ...
+    W180815 17:21:00.316845 237 gossip/client.go:123  [n1] failed to start gossip client to localhost:26258: initial connection heartbeat failed: rpc error: code = Unknown desc = client cluster ID "9a6ed934-50e8-472a-9d55-c6ecf9130984" doesn't match server cluster ID "ab6960bb-bb61-4e6f-9190-992f219102c6"
     ~~~
+
+4. Press **CTRL-C** to stop the new node.
 
 ### Step 2. Resolve the problem
 
@@ -285,9 +291,9 @@ $ rm -rf node6
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node6 \
---host=localhost \
---port=26262 \
---http-port=8085 \
+--advertise-addr=localhost \
+--listen-addr=localhost:26262 \
+--http-addr=localhost:8085 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
