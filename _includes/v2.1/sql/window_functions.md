@@ -35,8 +35,6 @@
 </span></td></tr>
 <tr><td><code>first_value(val: oid) &rarr; oid</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the first row of the window frame.</p>
 </span></td></tr>
-<tr><td><code>first_value(val: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the first row of the window frame.</p>
-</span></td></tr>
 <tr><td><code>lag(val: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the previous row within current row’s partition; if there is no such row, instead returns null.</p>
 </span></td></tr>
 <tr><td><code>lag(val: <a href="bool.html">bool</a>, n: <a href="int.html">int</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows before the current row within its partition; if there is no such row, instead returns null. <code>n</code> is evaluated with respect to the current row.</p>
@@ -127,12 +125,6 @@
 </span></td></tr>
 <tr><td><code>lag(val: oid, n: <a href="int.html">int</a>, default: oid) &rarr; oid</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows before the current row within its partition; if there is no such, row, instead returns <code>default</code> (which must be of the same type as <code>val</code>). Both <code>n</code> and <code>default</code> are evaluated with respect to the current row.</p>
 </span></td></tr>
-<tr><td><code>lag(val: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the previous row within current row’s partition; if there is no such row, instead returns null.</p>
-</span></td></tr>
-<tr><td><code>lag(val: timetz, n: <a href="int.html">int</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows before the current row within its partition; if there is no such row, instead returns null. <code>n</code> is evaluated with respect to the current row.</p>
-</span></td></tr>
-<tr><td><code>lag(val: timetz, n: <a href="int.html">int</a>, default: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows before the current row within its partition; if there is no such, row, instead returns <code>default</code> (which must be of the same type as <code>val</code>). Both <code>n</code> and <code>default</code> are evaluated with respect to the current row.</p>
-</span></td></tr>
 <tr><td><code>last_value(val: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the last row of the window frame.</p>
 </span></td></tr>
 <tr><td><code>last_value(val: <a href="bytes.html">bytes</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the last row of the window frame.</p>
@@ -162,8 +154,6 @@
 <tr><td><code>last_value(val: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the last row of the window frame.</p>
 </span></td></tr>
 <tr><td><code>last_value(val: oid) &rarr; oid</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the last row of the window frame.</p>
-</span></td></tr>
-<tr><td><code>last_value(val: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the last row of the window frame.</p>
 </span></td></tr>
 <tr><td><code>lead(val: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the following row within current row’s partition; if there is no such row, instead returns null.</p>
 </span></td></tr>
@@ -255,12 +245,6 @@
 </span></td></tr>
 <tr><td><code>lead(val: oid, n: <a href="int.html">int</a>, default: oid) &rarr; oid</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows after the current row within its partition; if there is no such, row, instead returns <code>default</code> (which must be of the same type as <code>val</code>). Both <code>n</code> and <code>default</code> are evaluated with respect to the current row.</p>
 </span></td></tr>
-<tr><td><code>lead(val: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the following row within current row’s partition; if there is no such row, instead returns null.</p>
-</span></td></tr>
-<tr><td><code>lead(val: timetz, n: <a href="int.html">int</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows after the current row within its partition; if there is no such row, instead returns null. <code>n</code> is evaluated with respect to the current row.</p>
-</span></td></tr>
-<tr><td><code>lead(val: timetz, n: <a href="int.html">int</a>, default: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is <code>n</code> rows after the current row within its partition; if there is no such, row, instead returns <code>default</code> (which must be of the same type as <code>val</code>). Both <code>n</code> and <code>default</code> are evaluated with respect to the current row.</p>
-</span></td></tr>
 <tr><td><code>nth_value(val: <a href="bool.html">bool</a>, n: <a href="int.html">int</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the <code>n</code>th row of the window frame (counting from 1); null if no such row.</p>
 </span></td></tr>
 <tr><td><code>nth_value(val: <a href="bytes.html">bytes</a>, n: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the <code>n</code>th row of the window frame (counting from 1); null if no such row.</p>
@@ -291,8 +275,6 @@
 </span></td></tr>
 <tr><td><code>nth_value(val: oid, n: <a href="int.html">int</a>) &rarr; oid</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the <code>n</code>th row of the window frame (counting from 1); null if no such row.</p>
 </span></td></tr>
-<tr><td><code>nth_value(val: timetz, n: <a href="int.html">int</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns <code>val</code> evaluated at the row that is the <code>n</code>th row of the window frame (counting from 1); null if no such row.</p>
-</span></td></tr>
 <tr><td><code>ntile(n: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates an integer ranging from 1 to <code>n</code>, dividing the partition as equally as possible.</p>
 </span></td></tr>
 <tr><td><code>percent_rank() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the relative rank of the current row: (rank - 1) / (total rows - 1).</p>
@@ -302,4 +284,3 @@
 <tr><td><code>row_number() &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of the current row within its partition, counting from 1.</p>
 </span></td></tr></tbody>
 </table>
-
