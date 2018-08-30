@@ -12,9 +12,9 @@ The definition of the customized dashboard is encoded in the URL. To share the d
 
 To get to the **Custom Chart** debug page, [open the Admin UI](admin-ui-access-and-navigate.html), and either:
 
-- Open <http://localhost:8080/#/debug/chart> in your browser (replacing `localhost` and `8080` with your node's host and port).
+- Open <a href="http://localhost:8080/#/debug/chart" data-proofer-ignore>http://localhost:8080/#/debug/chart</a> in your browser (replacing `localhost` and `8080` with your node's host and port).
 
-- Open any node's Admin UI debug page at <http://localhost:8080/#/debug> in your browser (replacing `localhost` and `8080` with your node's host and port), scroll down to the **UI Debugging** section, and click **Custom Time-Series Chart**.
+- Open any node's Admin UI debug page at <a href="http://localhost:8080/#/debug" data-proofer-ignore>http://localhost:8080/#/debug</a> in your browser (replacing `localhost` and `8080` with your node's host and port), scroll down to the **UI Debugging** section, and click **Custom Time-Series Chart**.
 
 ## Query options
 

@@ -45,7 +45,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-### Check constraints with `INSERT ... ON CONFLICT`
+### `CHECK` constraints with `INSERT ... ON CONFLICT`
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180702.html">v2.1.0-alpha.20180702</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26642">#26642</a>.{{site.data.alerts.end}}
 
@@ -56,7 +56,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 > CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
 ~~~
 
-A simple `INSERT` statement that fails the Check constraint fails as it should:
+A simple `INSERT` statement that fails the `CHECK` constraint fails as it should:
 
 {% include copy-clipboard.html %}
 ~~~ sql

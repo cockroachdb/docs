@@ -410,7 +410,7 @@ Now verify that the data for the table in the `intro` database is located on US-
     10 - 12 | EU
 
 {{site.data.alerts.callout_info}}
-You can also use the Web UI's [Data Distribution matrix](http://localhost:8080/#/data-distribution) to view the distribution of data across nodes.
+You can also use the Web UI's <a href="http://localhost:8080/#/data-distribution" data-proofer-ignore>Data Distribution matrix</a> to view the distribution of data across nodes.
 {{site.data.alerts.end}}
 
 ## Step 9. Clean up

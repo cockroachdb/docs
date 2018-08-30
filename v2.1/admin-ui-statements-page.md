@@ -5,7 +5,7 @@ toc: true
 
 The **Statements** page helps you identify the frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
 
-To view the **Statements** page, open [http://localhost:8080/#/statements](http://localhost:8080/#/statements) in your browser (replacing `localhost` and `8080` with your node's host and port).
+To view the **Statements** page, open <a href="http://localhost:8080/#/statements" data-proofer-ignore>http://localhost:8080/#/statements</a> in your browser (replacing `localhost` and `8080` with your node's host and port).
 
 {{site.data.alerts.callout_danger}}
 **This feature is a work in progress**. It will change leading up to the v2.1 release.
@@ -27,7 +27,7 @@ The **Statements** page displays the details of SQL statement fingerprints inste
 
 A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the literal values with underscores (`_`). Grouping similar SQL statements as fingerprints helps you quickly identify the frequently executed SQL statements and their latencies.
 
-A statement fingerprint is generated when two or more statements are the same after any literal values in them (e.g. numbers and strings) are replaced with underscores. For example, the following statements have the same once their numbers have been replaced with underscores:
+A statement fingerprint is generated when two or more statements are the same after any literal values in them (e.g.,numbers and strings) are replaced with underscores. For example, the following statements have the same once their numbers have been replaced with underscores:
 
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`

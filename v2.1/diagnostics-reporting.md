@@ -71,7 +71,7 @@ Column | Metadata about each column in a table, such as its internal ID and type
 Column Families | Metadata about [column families](column-families.html) in a table, such as its internal ID and the columns included in the family. Family and column names are replaced with underscores.
 Indexes | Metadata about the primary index and any secondary indexes on the table, such as the internal ID of an index and the columns covered by an index. All index, column, and other strings are replaced with underscores.
 Privileges | Metadata about user [privileges](privileges.html) on the table, such as the number of privileges granted to each user. Usernames are replaced with underscores.
-Checks | Metadata about any [check constraints](check.html) on the table. Check constraint names and expressions are replaced with underscores.
+Checks | Metadata about any [`CHECK` constraints](check.html) on the table. `CHECK` constraint names and expressions are replaced with underscores.
 
 #### Example
 

@@ -210,21 +210,21 @@ the second operand is `NULL`.
 
 `AND`, `OR` and `IS` implement ternary logic, as follows.
 
- |Expression        | Result | 
+ |Expression        | Result |
 -------------------|---------
- `FALSE AND FALSE` | `FALSE` 
- `FALSE AND TRUE`  | `FALSE` 
- `FALSE AND NULL`  | `FALSE` 
- `TRUE AND FALSE`  | `FALSE` 
+ `FALSE AND FALSE` | `FALSE`
+ `FALSE AND TRUE`  | `FALSE`
+ `FALSE AND NULL`  | `FALSE`
+ `TRUE AND FALSE`  | `FALSE`
  `TRUE AND TRUE`   | `TRUE`  
  `TRUE AND NULL`   | `NULL`  
- `NULL AND FALSE`  | `FALSE` 
+ `NULL AND FALSE`  | `FALSE`
  `NULL AND TRUE`   | `NULL`  
  `NULL AND NULL`   | `NULL`  
 
 | Expression       | Result |
 ------------------|---------
- `FALSE OR FALSE` | `FALSE` 
+ `FALSE OR FALSE` | `FALSE`
  `FALSE OR TRUE`  | `TRUE`  
  `FALSE OR NULL`  | `NULL`  
  `TRUE OR FALSE`  | `TRUE`  
@@ -236,13 +236,13 @@ the second operand is `NULL`.
 | Expression       | Result  |
 ------------------|---------
  `FALSE IS FALSE` | `TRUE`  
- `FALSE IS TRUE`  | `FALSE` 
- `FALSE IS NULL`  | `FALSE` 
- `TRUE IS FALSE`  | `FALSE` 
+ `FALSE IS TRUE`  | `FALSE`
+ `FALSE IS NULL`  | `FALSE`
+ `TRUE IS FALSE`  | `FALSE`
  `TRUE IS TRUE`   | `TRUE`  
- `TRUE IS NULL`   | `FALSE` 
- `NULL IS FALSE`  | `FALSE` 
- `NULL IS TRUE`   | `FALSE` 
+ `TRUE IS NULL`   | `FALSE`
+ `NULL IS FALSE`  | `FALSE`
+ `NULL IS TRUE`   | `FALSE`
  `NULL IS NULL`   | `TRUE`  
 ## NULLs and arithmetic
 
@@ -470,7 +470,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 ## NULLs and CHECK Constraints
 
-A [Check constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual Not Null constraint can be used along side a Check constraint.
+A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used along side a Check constraint.
 
 {% include copy-clipboard.html %}
 ~~~ sql
