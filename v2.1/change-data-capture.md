@@ -22,15 +22,13 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
 - In the common case, each version of a row will be emitted once. However, some (infrequent) conditions will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
 
-- Once a row has been emitted with some timestamp, no previously unseen versions of that row will be emitted with a lower timestamp.
-
-    Previously seen values can be sent out of order, but you'll never see a new change for that row at an earlier timestamp. For example, you can see `k=a ts=1` then `k=a ts=2` then `k=a ts=1` again, but you'll never see `k=a ts=2 `then `k=a ts=1` without seeing `k=a ts=1` first.
+- Once a row has been emitted with some timestamp, no previously unseen versions of that row will be emitted with a lower timestamp. That is, duplicates of values you already saw can be emitted out of order, but you will never see a _new_ change for that row at an earlier timestamp.
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
-- The `WITH timestamps` option adds an **update timestamp** to each emitted row. It also causes periodic **resolved timestamp** messages to be emitted to each Kafka partition. A resolved timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `WITH UPDATED` option adds an **update timestamp** to each emitted row. You can also use the `WITH RESOLVED` option to emit periodic **resolved timestamp** messages to each Kafka partition. A resolved timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 

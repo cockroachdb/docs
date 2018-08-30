@@ -41,11 +41,10 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table to create a changefeed for.
 `location` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. There are query parameters that vary per type. Currently, the `kafka` scheme only has `topic_prefix`, which adds a prefix to all of the topic names.<br><br>Sink URI scheme: `'[scheme]://[host]:[port][?topic_prefix=[foo]]'` <br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`timestamps` | Turns on updated and resolved timestamps.
 `UPDATED` | Include updated timestamps in records.
 `RESOLVED` | Periodically emit resolved timestamps to the changefeed.
-`envelope=[key_only/row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
-`cursor=<timestamp>` | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.
+`envelope=[key_only|row]` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `WITH envelope=row `
+`cursor=<timestamp>` | Emits any changes after the given [timestamp](timestamp.html), but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>Example: `cursor=TIMESTAMP '2018-08-30 12:30:02.00-05:00'`
 `format=json` | _(Default)_ Format of the emitted record.
 
 <!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
