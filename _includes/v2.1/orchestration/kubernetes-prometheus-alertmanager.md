@@ -74,7 +74,7 @@ Before starting, make sure the email address associated with your Google Cloud a
         $ kubectl port-forward prometheus-cockroachdb-0 9090
         ~~~
 
-    2. Go to [http://localhost:9090](http://localhost:9090) in your browser.
+    2. Go to <a href="http://localhost:9090" data-proofer-ignore>http://localhost:9090</a> in your browser.
 
     3. To verify that each CockroachDB node is connected to Prometheus, go to **Status > Targets**. The screen should look like this:
 
@@ -85,7 +85,7 @@ Before starting, make sure the email address associated with your Google Cloud a
         <img src="{{ 'images/v2.1/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_success}}
-    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the Admin UI](#step-6-access-the-admin-ui){% else %}[Access the Admin UI](#step-5-access-the-admin-ui){% endif %} and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
+    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the Admin UI](#step-6-access-the-admin-ui){% else %}[Access the Admin UI](#step-5-access-the-admin-ui){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
 
     For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
     {{site.data.alerts.end}}
@@ -143,11 +143,11 @@ Active monitoring helps you spot problems early, but it is also essential to sen
         $ kubectl port-forward alertmanager-cockroachdb-0 9093
         ~~~
 
-    2. Go to [http://localhost:9093](http://localhost:9093) in your browser. The screen should look like this:
+    2. Go to <a href="http://localhost:9093" data-proofer-ignore>http://localhost:9093</a> in your browser. The screen should look like this:
 
         <img src="{{ 'images/v2.1/kubernetes-alertmanager-home.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-6. Ensure that the Alertmanagers are visible to Prometheus by opening [http://localhost:9090/status](http://localhost:9090/status). The screen should look like this:
+6. Ensure that the Alertmanagers are visible to Prometheus by opening <a href="http://localhost:9090/status" data-proofer-ignore>http://localhost:9090/status</a>. The screen should look like this:
 
     <img src="{{ 'images/v2.1/kubernetes-prometheus-alertmanagers.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
@@ -162,11 +162,11 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     prometheusrule "prometheus-cockroachdb-rules" created
     ~~~
 
-8. Ensure that the rules are visible to Prometheus by opening [http://localhost:9090/rules](http://localhost:9090/rules). The screen should look like this:
+8. Ensure that the rules are visible to Prometheus by opening <a href="http://localhost:9090/rules" data-proofer-ignore>http://localhost:9090/rules</a>. The screen should look like this:
 
     <img src="{{ 'images/v2.1/kubernetes-prometheus-alertrules.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-9. Verify that the example alert is firing by opening [http://localhost:9090/alerts](http://localhost:9090/alerts). The screen should look like this:
+9. Verify that the example alert is firing by opening <a href="http://localhost:9090/alerts" data-proofer-ignore>http://localhost:9090/alerts</a>. The screen should look like this:
 
     <img src="{{ 'images/v2.1/kubernetes-prometheus-alerts.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
