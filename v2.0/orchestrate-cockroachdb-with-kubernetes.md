@@ -11,14 +11,9 @@ drift: true
   <a href="orchestrate-cockroachdb-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
-This page shows you how to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+This page shows you how to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
 
-If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
-
-{{site.data.alerts.callout_success}}
-For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
-{{site.data.alerts.end}}
-
+To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
 ## Before you begin
 
@@ -35,7 +30,11 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster.
 [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
+### Limitations
+
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
+
+## Step 1. Start Kubernetes
 
 {% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
@@ -484,5 +483,6 @@ To shut down the CockroachDB cluster:
 
 ## See also
 
+- [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

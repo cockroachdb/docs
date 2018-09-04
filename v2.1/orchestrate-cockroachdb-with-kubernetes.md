@@ -482,5 +482,6 @@ To shut down the CockroachDB cluster:
 
 ## See also
 
+- [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
