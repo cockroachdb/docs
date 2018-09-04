@@ -567,6 +567,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER TYPE</code>",
+                "urls": [
+                  "/${VERSION}/alter-type.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER USER</code>",
                 "urls": [
                   "/${VERSION}/alter-user.html"
