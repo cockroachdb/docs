@@ -28,14 +28,16 @@ Term | Definition
 
 - When deploying in a single datacenter:
     - To be able to tolerate the failure of any 1 node, use at least 3 nodes with the [default 3-way replication factor](configure-replication-zones.html#view-the-default-replication-zone). In this case, if 1 node fails, each range retains 2 of its 3 replicas, a majority.
-    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the replication factor to 5](configure-replication-zones.html#edit-the-default-replication-zone). In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
+    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes, [increase the default replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to 5, and [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
 - When deploying across multiple datacenters in one or more regions:
     - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more details). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
     - When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
         - CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. However, locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
         - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must [increase the replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to match the total number of datacenters.
-        - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.        
+        - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.
+
+- When running a cluster of 5 nodes or more, it's safest to [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5, even if you don't do so for user data. For the cluster as a whole to remain available, the ranges for this internal data must always retain a majority of their replicas.
 
 {{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
 
@@ -54,7 +56,10 @@ Term | Definition
 
 - For best resilience:
     - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
-    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
+    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) (enterprise-only).
+        {{site.data.alerts.callout_danger}}
+        Changes to the [cluster-wide replication zone](configure-replication-zones.html#edit-the-default-replication-zone) are not automatically applied to other existing replication zones. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) as well.
+        {{site.data.alerts.end}}
 
 ### Cloud-Specific Recommendations
 
