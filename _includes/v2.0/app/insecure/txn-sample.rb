@@ -38,10 +38,7 @@ conn = PG.connect(
   dbname: 'bank',
   host: 'localhost',
   port: 26257,
-  sslmode: 'require',
-  sslrootcert: 'certs/ca.crt',
-  sslkey:'certs/client.maxroach.key',
-  sslcert:'certs/client.maxroach.crt'
+  sslmode: 'disable'
 )
 
 run_transaction(conn) do |txn|
