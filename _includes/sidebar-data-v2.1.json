@@ -1469,9 +1469,15 @@
         "title": "Admin UI",
         "items": [
           {
-            "title": "Overview",
+            "title": "Admin UI Overview",
             "urls": [
               "/${VERSION}/admin-ui-overview.html"
+            ]
+          },
+          {
+            "title": "Cluster Overview Page",
+            "urls": [
+              "/${VERSION}/admin-ui-cluster-overview-page.html"
             ]
           },
           {
