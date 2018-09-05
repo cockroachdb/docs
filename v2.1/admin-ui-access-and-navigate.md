@@ -34,7 +34,7 @@ The main panel displays changes for each page:
 Page | Main Panel Component
 -----------|------------
 Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-cluster-overview-page.html)</li><li>[Node List](admin-ui-cluster-overview-page.html#node-list) </li> <li>[Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-cluster-overview-page.html#node-map-enterprise) view. </li></ul>
-Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-cluster-overview-page.html#cluster-metrics)</li><li>[Summary Panel](admin-ui-access-and-navigate.html#summary-panel)</li><li>[Events List](admin-ui-access-and-navigate.html#events-panel)</li></ul>
+Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html#cluster-metrics)</li><li>[Summary Panel](admin-ui-access-and-navigate.html#summary-panel)</li><li>[Events List](admin-ui-access-and-navigate.html#events-panel)</li></ul>
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Statements | Information about the SQL [statements](admin-ui-statements-page.html) running in the cluster .
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
@@ -73,8 +73,8 @@ The **Summary** panel provides the following metrics:
 
 Metric | Description
 --------|----
-Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-access-and-navigate.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](#node-list).
-Dead Nodes | The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.
+Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-cluster-overview-page.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](admin-ui-cluster-overview-page.html#node-list).
+Dead Nodes | The number of [dead nodes](admin-ui-cluster-overview-page.html#dead-nodes) in the cluster.
 Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The number of SQL queries executed per second.

@@ -15,7 +15,7 @@ The **Cluster Overview** panel provides the following metrics:
 Metric | Description
 --------|----
 Capacity Usage | <ul><li>The storage capacity used as a percentage of total storage capacity allocated across all nodes.</li><li>The current capacity usage.</li></ul>
-Node Status | <ul><li>The number of [live nodes](admin-ui-access-and-navigate.html#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](admin-ui-access-and-navigate.html#dead-nodes) in the cluster.</li>
+Node Status | <ul><li>The number of [live nodes](#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](#dead-nodes) in the cluster.</li>
 Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
 ## Node List
