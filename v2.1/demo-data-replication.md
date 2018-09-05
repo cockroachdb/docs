@@ -6,7 +6,6 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
 
-
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
@@ -163,7 +162,7 @@ Open the Admin UI at `http://localhost:8080` to see that all three nodes are lis
 
 ## Step 5. Increase the replication factor
 
-As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
+As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, use the [`cockroach zone`](configure-replication-zones.html) command change the cluster's default replication factor to 5:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -175,6 +174,50 @@ range_min_bytes: 1048576
 range_max_bytes: 67108864
 gc:
   ttlseconds: 86400
+num_replicas: 5
+constraints: []
+~~~
+
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called [system ranges](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). It's important to increase the replication factor for some of these system ranges as well:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | ./cockroach zone set .meta --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 3600
+num_replicas: 5
+constraints: []
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 600
+num_replicas: 5
+constraints: []
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | ./cockroach zone set .system --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 90000
 num_replicas: 5
 constraints: []
 ~~~

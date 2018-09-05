@@ -260,7 +260,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     constraints: []
     ~~~
 
-4. In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. Use the [`cockroach zone`](../configure-replication-zones.html) command to change the cluster's meta, liveness, and system replication factor to 5:
+3. In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called [system ranges](../configure-replication-zones.html#create-a-replication-zone-for-a-system-range). It's important to increase the replication factor for some of these system ranges as well:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -304,7 +304,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     constraints: []
     ~~~
 
-3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
+4. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
 
     <img src="{{ 'images/v2.1/training-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
