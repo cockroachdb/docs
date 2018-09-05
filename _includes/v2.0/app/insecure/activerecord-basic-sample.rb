@@ -10,12 +10,8 @@ ActiveRecord::Base.establish_connection(
   database:    'bank',
   host:        'localhost',
   port:        26257,
-  sslmode:     'require',
-  sslrootcert: 'certs/ca.crt',
-  sslkey:      'certs/client.maxroach.key',
-  sslcert:     'certs/client.maxroach.crt'
+  sslmode:     'disable'
 )
-
 
 # Define the Account model.
 # In Rails, this would go in app/models/ as usual.

@@ -120,6 +120,10 @@ To check the account balances, issue the following statement:
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
+## Step 2. Create the `maxroach` user and `bank` database
+
+{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
+
 ## Step 3. Run the Ruby code
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).

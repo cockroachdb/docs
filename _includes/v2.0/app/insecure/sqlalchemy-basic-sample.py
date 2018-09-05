@@ -15,10 +15,7 @@ class Account(Base):
 # for the engine URL indicates that we are connecting to CockroachDB.
 engine = create_engine('cockroachdb://maxroach@localhost:26257/bank',
                        connect_args = {
-                           'sslmode' : 'require',
-                           'sslrootcert': 'certs/ca.crt',
-                           'sslkey':'certs/client.maxroach.key',
-                           'sslcert':'certs/client.maxroach.crt'
+                           'sslmode' : 'disable'
                        })
 Session = sessionmaker(bind=engine)
 
