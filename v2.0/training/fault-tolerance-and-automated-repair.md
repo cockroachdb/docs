@@ -249,13 +249,11 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-2. In a new terminal, use the [`cockroach zone`](../configure-replication-zones.html) command to change the cluster's default replication factor to 5:
+2. In a new terminal, use the [`cockroach zone`](../configure-replication-zones.html) command to change the cluster's `.default` replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ echo 'num_replicas: 5' | ./cockroach zone set .default --insecure -f -
-    $ echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
-    $ echo 'num_replicas: 5' | ./cockroach zone set .meta --insecure -f -
     ~~~
 
     ~~~
@@ -267,7 +265,65 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     constraints: []
     ~~~
 
-3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
+3. In addition to the `.default` replication zone for database and table data, CockroachDB comes with pre-configured replication zones for [important internal data](../configure-replication-zones.html#create-a-replication-zone-for-a-system-range). To list these pre-configured zones, use the `cockroach zone ls` subcommand:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach zone ls --insecure
+    ~~~
+
+    ~~~
+    .default
+    .liveness
+    .meta
+    system.jobs
+    ~~~
+
+4. For the cluster as a whole to remain available, the "system ranges" for this internal data must always retain a majority of their replicas. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for these replication zones as well:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set .liveness --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 600
+    num_replicas: 5
+    constraints: []
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set .meta --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 3600
+    num_replicas: 5
+    constraints: []
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ echo 'num_replicas: 5' | ./cockroach zone set system.jobs --insecure -f -
+    ~~~
+
+    ~~~
+    range_min_bytes: 1048576
+    range_max_bytes: 67108864
+    gc:
+      ttlseconds: 600
+    num_replicas: 5
+    constraints: []
+    ~~~
+
+5. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
 
     <img src="{{ 'images/v2.0/training-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
