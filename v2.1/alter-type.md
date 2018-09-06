@@ -25,15 +25,15 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table with the column whose data type you want to change. |
-| `column_name` | The name of the column whose data type you want to change. |
-| `typename` | The new [data type](data-types.html) you want to use. |
+| Parameter | Description
+|-----------|-------------
+| `table_name` | The name of the table with the column whose data type you want to change.
+| `column_name` | The name of the column whose data type you want to change.
+| `typename` | The new [data type](data-types.html) you want to use.
 
 ## Examples
 
-The [TPC-C](performance-benchmarking-with-tpc-c.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose we want to change the data type to `DECIMAL (12,2)`:
+The [TPC-C](performance-benchmarking-with-tpc-c.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -73,3 +73,4 @@ pq: type conversion not yet implemented
 ## See also
 
 - [`ALTER TABLE`](alter-table.html)
+- [Other SQL Statements](sql-statements.html)
