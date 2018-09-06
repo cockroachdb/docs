@@ -347,7 +347,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 4. Press enter.
@@ -356,7 +356,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 6. Press enter.
@@ -365,7 +365,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
+    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 8. Press enter.
@@ -374,7 +374,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
+    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 10. Press enter.
@@ -383,7 +383,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> COMMIT;
+    > COMMIT;
     ~~~
 
 12. Press enter.
