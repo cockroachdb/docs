@@ -8,8 +8,10 @@ toc: true
 
 {{site.data.alerts.callout_danger}}
 **This feature is under active development** and only works for a targeted use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
+{{site.data.alerts.end}}
 
-In v2.1, CDC will be an enterprise feature and will have a core version.
+{{site.data.alerts.callout_info}}
+CDC is an enterprise feature. There will be a core version in v2.2.
 {{site.data.alerts.end}}
 
 ## What is change data capture?
@@ -23,6 +25,37 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 - In the common case, each version of a row will be emitted once. However, some (infrequent) conditions will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
 
 - Once a row has been emitted with some timestamp, no previously unseen versions of that row will be emitted with a lower timestamp. That is, duplicates of values you already saw can be emitted out of order, but you will never see a _new_ change for that row at an earlier timestamp.
+
+    For example, if you ran the following:
+
+    ~~~ sql
+    > CREATE TABLE foo (id SERIAL PRIMARY KEY, name STRING);
+    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH UPDATED;
+    > INSERT INTO foo VALUES (1, 'Carl');
+    > UPDATE foo SET name = 'Petee' WHERE id = 1;
+    ~~~
+
+    You'd expect the changefeed to emit:
+
+    ~~~ shell
+    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
+    ~~~
+
+    It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
+
+    ~~~ shell
+    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
+    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    ~~~
+
+    However, you will never see an out of order duplicate that you never saw before:
+
+    ~~~ shell
+    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
+    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    ~~~
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
@@ -97,10 +130,6 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 ## Usage example
 
 ### Create a changefeed connected to Kafka
-
-{{site.data.alerts.callout_info}}
-When used with Kafka, `CREATE CHANGEFEED` is an enterprise feature.
-{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
@@ -222,23 +251,18 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 The following are limitations in the v2.1 release, and will be addressed in the future.
 
-- Changefeeds created with the alpha may not be compatible with future alphas and the final v2.1 release.
+- Changefeeds created with the alpha or beta may not be compatible with future alphas, betas, or the final v2.2 release.
 
     {{site.data.alerts.callout_danger}}
     Do not use this feature on production data.
     {{site.data.alerts.end}}
 
 - The CockroachDB core changefeed is not ready for external testing.
-- Changefeed progress is not exposed to the user.
-- The SQL interface is not final and may change.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables.
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computer column, adding a `NOT NULL` column, dropping a column) will cause errors on a changefeed.
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
-- Changefeed internal buffering does not respect memory use limitations.
-- Changefeeds do not scale horizontally or to high traffic workloads.
-- Changefeeds use a pull model, but will use a push model in v2.1, lowering latencies considerably.
-- Changefeeds are slow on data recently loaded via [`RESTORE`](restore.html) or [`IMPORT`](import.html).
+- Changefeeds use a pull model, but will use a push model in v2.2, lowering latencies considerably.
 - Changefeeds cannot be altered. To alter, cancel the changefeed and create a new one with updated settings from where it left off.
 - Additional format options will be added, including Avro.
 - Additional envelope options will be added, including one that displays the old and new values for the changed row.
