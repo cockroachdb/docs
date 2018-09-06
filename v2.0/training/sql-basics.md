@@ -329,7 +329,7 @@ Here's the above example in a transaction. Again, don't run this example yet.
 
 -- If false, issue a ROLLBACK statement. Otherwise, continue.
 
-OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
+OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
 UPDATE 1;
 OPEN> COMMIT;
 COMMIT
@@ -378,7 +378,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
+    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 8. Press enter.
@@ -387,7 +387,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'savings' AND customer_id = 2;
+    OPEN> UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
 10. Press enter.
