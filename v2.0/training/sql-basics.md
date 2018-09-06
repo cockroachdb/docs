@@ -9,7 +9,6 @@ sidebar_data: sidebar-data-training.json
     content: "Hands-on Lab"
   }
 </style>
-<div id="toc"></div>
 
 ## Before you begin
 
