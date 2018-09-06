@@ -9,7 +9,7 @@ The built-in Admin UI gives you essential metrics about a cluster's health, such
 
 ## Access the Admin UI
 
-For insecure clusters, any user can access and view the Admin UI. For secure clusters, only authorized users can [access and view the Admin UI](#accessing-the-admin-ui-for-a-secure-cluster).
+For insecure clusters, anyone can access and view the Admin UI. For secure clusters, only authorized users can [access and view the Admin UI](#accessing-the-admin-ui-for-a-secure-cluster).
 
 You can access the Admin UI from any node in the cluster.
 
@@ -36,7 +36,7 @@ Page | Main Panel Component
 Cluster Overview | <ul><li>[Cluster Overview panel](admin-ui-cluster-overview-page.html)</li><li>[Node List](admin-ui-cluster-overview-page.html#node-list) </li> <li>[Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-cluster-overview-page.html#node-map-enterprise) view. </li></ul>
 Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html#cluster-metrics)</li><li>[Summary Panel](admin-ui-access-and-navigate.html#summary-panel)</li><li>[Events List](admin-ui-access-and-navigate.html#events-panel)</li></ul>
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
-Statements | Information about the SQL [statements](admin-ui-statements-page.html) running in the cluster .
+Statements | Information about the SQL [statements](admin-ui-statements-page.html) running in the cluster.
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
 
 ### Cluster Metrics
