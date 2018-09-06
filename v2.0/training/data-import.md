@@ -386,4 +386,4 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 
 ## What's Next?
 
-[Users and Privileges](users-and-privileges.html)
+[SQL Basics](sql-basics.html)
