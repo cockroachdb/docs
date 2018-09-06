@@ -176,7 +176,7 @@ num_replicas: 5
 constraints: []
 ~~~
 
-In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called [system ranges](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). It's important to increase the replication factor for some of these system ranges as well:
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores important internal data in what are called [system ranges](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). For the cluster as a whole to remain available, certain system ranges must always retain a majority of their replicas. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for these system ranges as well:
 
 {% include copy-clipboard.html %}
 ~~~ shell

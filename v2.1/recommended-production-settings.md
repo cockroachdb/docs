@@ -57,7 +57,7 @@ Term | Definition
     - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
     - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition) (enterprise-only).
         {{site.data.alerts.callout_danger}}
-        Changes to the [cluster-wide replication zone](configure-replication-zones.html#edit-the-default-replication-zone) are not automatically applied to other existing replication zones. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) as well.
+        {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
         {{site.data.alerts.end}}
 
 ### Cloud-specific recommendations

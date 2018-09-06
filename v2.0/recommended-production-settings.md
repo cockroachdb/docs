@@ -28,7 +28,7 @@ Term | Definition
 
 - When deploying in a single datacenter:
     - To be able to tolerate the failure of any 1 node, use at least 3 nodes with the [default 3-way replication factor](configure-replication-zones.html#view-the-default-replication-zone). In this case, if 1 node fails, each range retains 2 of its 3 replicas, a majority.
-    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes, [increase the default replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to 5, and [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
+    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes, [increase the default replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to 5, and [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5 as well. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
 - When deploying across multiple datacenters in one or more regions:
     - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more details). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
@@ -58,7 +58,7 @@ Term | Definition
     - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
     - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) (enterprise-only).
         {{site.data.alerts.callout_danger}}
-        Changes to the [cluster-wide replication zone](configure-replication-zones.html#edit-the-default-replication-zone) are not automatically applied to other existing replication zones. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) as well.
+        {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
         {{site.data.alerts.end}}
 
 ### Cloud-Specific Recommendations
