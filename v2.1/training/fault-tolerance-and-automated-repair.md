@@ -244,7 +244,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-2. In a new terminal, use the [`cockroach zone`](../configure-replication-zones.html) command change the cluster's default replication factor to 5:
+2. In a new terminal, use the [`cockroach zone`](../configure-replication-zones.html) command to change the cluster's default replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell

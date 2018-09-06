@@ -17,12 +17,13 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 $ cockroach start \
 --insecure \
 --store=repdemo-node1 \
---host=localhost
+--host=localhost \
+--background
 ~~~
 
 ## Step 2. Write data
 
-In a new terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
+Use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -31,27 +32,36 @@ $ cockroach gen example-data intro | cockroach sql --insecure
 
 ~~~
 CREATE DATABASE
+
+Time: 848.074µs
+
 SET
+
+Time: 253.739µs
+
 DROP TABLE
+
+Time: 25.106168ms
+
 CREATE TABLE
+
+Time: 3.344921ms
+
 INSERT 1
+
+Time: 5.453535ms
+
 INSERT 1
-INSERT 1
-INSERT 1
+
+Time: 641.897µs
 ...
 ~~~
 
-In the same terminal, open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
+Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
-~~~
-
-~~~
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 {% include copy-clipboard.html %}
@@ -60,14 +70,12 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
+database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| intro         |
-| postgres      |
-| system        |
-+---------------+
+defaultdb
+intro
+postgres
+system
 (4 rows)
 ~~~
 
@@ -77,11 +85,9 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
+table_name
 +------------+
-| table_name |
-+------------+
-| mytable    |
-+------------+
+mytable
 (1 row)
 ~~~
 
@@ -91,31 +97,29 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+----+-----------------------------------------------------+
-| l  |                          v                          |
-+----+-----------------------------------------------------+
-|  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
-|  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
-|  4 | !                    "?##mW##?"-                    |
-|  6 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
-|  8 | !                 _ummY"    "9#ma,       A          |
-| 10 | !                vm#Z(        )Xmms    Y            |
-| 12 | !              .j####mmm#####mm#m##6.               |
-| 14 | !   W O W !    jmm###mm######m#mmm##6               |
-| 16 | !             ]#me*Xm#m#mm##m#m##SX##c              |
-| 18 | !             dm#||+*$##m#mm#m#Svvn##m              |
-| 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
-| 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
-| 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
-| 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
-| 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
-| 30 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
-| 32 | !        D I     ?$#q%+|dmmmvnnm##!                 |
-| 34 | !           T     -4##wu#mm#pw##7'                  |
-| 36 | !                   -?$##m####Y'                    |
-| 38 | !             !!       "Y##Y"-                      |
-| 40 | !                                                   |
-+----+-----------------------------------------------------+
+l  |                          v
++----+------------------------------------------------------+
+ 0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
+ 2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
+ 4 | !                    "?##mW##?"-
+ 6 | !  C O N G R A T S  _am#Z??A#ma,           Y
+ 8 | !                 _ummY"    "9#ma,       A
+10 | !                vm#Z(        )Xmms    Y
+12 | !              .j####mmm#####mm#m##6.
+14 | !   W O W !    jmm###mm######m#mmm##6
+16 | !             ]#me*Xm#m#mm##m#m##SX##c
+18 | !             dm#||+*$##m#mm#m#Svvn##m
+20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
+22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
+24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
+26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
+28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
+30 | !       I       4#ma+|++]mmhvnnvq##P`       !
+32 | !        D I     ?$#q%+|dmmmvnnm##!
+34 | !           T     -4##wu#mm#pw##7'
+36 | !                   -?$##m####Y'
+38 | !             !!       "Y##Y"-
+40 | !
 (21 rows)
 ~~~
 
@@ -128,7 +132,7 @@ Exit the SQL shell:
 
 ## Step 3. Add two nodes
 
-In a new terminal, add node 2:
+Add node 2:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -138,10 +142,11 @@ $ cockroach start \
 --host=localhost \
 --port=26258 \
 --http-port=8081 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
-In a new terminal, add node 3:
+Add node 3:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -151,12 +156,13 @@ $ cockroach start \
 --host=localhost \
 --port=26259 \
 --http-port=8082 \
---join=localhost:26257
+--join=localhost:26257 \
+--background
 ~~~
 
 ## Step 4. Watch data replicate to the new nodes
 
-Open the Admin UI at `http://localhost:8080` to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 <img src="{{ 'images/v2.1/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
