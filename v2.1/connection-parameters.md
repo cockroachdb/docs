@@ -13,34 +13,30 @@ establish this network connection.
 
 ## Supported connection parameters
 
-There are two principal ways a client can connect to CockroachDB:
+Most client apps, including `cockroach`  client commands, determine
+which CockroachDB server to connect to using a [PostgreSQL connection
+URL](#connect-using-a-url). When using a URL, a client can also
+specify additional SQL-level parameters. This mode provides the most
+configuration flexibility.
 
-- Most client apps, including most `cockroach` commands, use a SQL connection
-  established via a [PostgreSQL connection URL](#connect-using-a-url). When using a URL,
-  a client can also specify SSL/TLS settings and additional SQL-level parameters. This mode provides the most configuration flexibility.
-- Most `cockroach` commands also provide [discrete connection parameters](#connect-using-discrete-parameters) that
-  can specify the connection parameters separately from a URL. This mode is somewhat less flexible than using a URL.
-- Some `cockroach` commands support connections using either a URL
-  connection string or discrete parameters, whereas some only support
-  discrete connection parameters.
+In addition, all `cockroach` client commands also accept [discrete
+connection parameters](#connect-using-discrete-parameters) that can
+specify the connection parameters separately from a URL.
 
-The following table summarizes which client supports which connection parameters:
+## When to use a URL and when to use discrete parameters
 
-Client | Supports [connection by URL](#connect-using-a-url) | Supports [discrete connection parameters](#connect-using-discrete-parameters)
--------|----------------------------|-----------------------------------
-Client apps using a PostgreSQL driver | ✓ | Application-dependent
-[`cockroach init`](initialize-a-cluster.html) | ✗ | ✓
-[`cockroach quit`](stop-a-node.html) | ✗ | ✓
-[`cockroach sql`](use-the-built-in-sql-client.html) | ✓ | ✓
-[`cockroach user`](create-and-manage-users.html) | ✓ | ✓
-[`cockroach zone`](configure-replication-zones.html) | ✓ | ✓
-[`cockroach node`](view-node-details.html) | ✓ | ✓
-[`cockroach dump`](sql-dump.html) | ✓ | ✓
-[`cockroach debug zip`](debug-zip.html) | ✗ | ✓
+Specifying client parameters using a URL may be more convenient during
+experimentation, as it facilitates copy-pasting the connection
+parameters (the URL) between different tools: the output of `cockroach
+start`, other `cockroach` commands, GUI database visualizer,
+programming tools, etc.
+
+
+Discrete parameters may be more convenient in automation, where the
+components of the configuration are filled in separately from
+different variables in a script or a service manager.
 
 ## Connect using a URL
-
-SQL clients, including some [`cockroach` commands](cockroach-commands.html) can connect using a URL.
 
 A connection URL has the following format:
 
@@ -53,24 +49,24 @@ postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
  `<username>`   | The [SQL user](create-and-manage-users.html) that will own the client session.                                                                                                                            | ✗
  `<password>`   | The user's password. It is not recommended to pass the password in the URL directly.<br><br>[Find more detail about how CockroachDB handles passwords](create-and-manage-users.html#user-authentication). | ✗
  `<host>`       | The host name or address of a CockroachDB node or load balancer.                                                                                                                                          | Required by most client drivers.
- `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer.                                                                                                                            | Required by most client drivers.
+ `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The standard port number for CockroachDB is 26257, use this value when in doubt.                                           | Required by most client drivers.
  `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`.                                                                                         | ✗
  `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings.                                                                                            | ✗
 
-{{site.data.alerts.callout_info}}You can specify the URL for
-<code>cockroach</code> commands that accept a URL with the
-command-line flag <code>--url</code>. If <code>--url</code> is not
-specified but the environment variable <code>COCKROACH_URL</code> is
-defined, the environment variable is used. Otherwise, the
-<code>cockroach</code> command will use <a
-href="#connect-using-discrete-parameters">discrete connection parameters</a>
-as described below.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+You can specify the URL for `cockroach` commands that accept a URL
+with the command-line flag `--url`. If `--url` is not specified but
+the environment variable `COCKROACH_URL` is defined, the environment
+variable is used. Otherwise, the `cockroach` command will use
+[discrete connection parameters](#connect-using-discrete-parameters)
+as described below.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}The <code>&lt;database&gt;</code>
-part should not be specified for any <a
-href="cockroach-commands.html"><code>cockroach</code> command</a>
-other than <a href="use-the-built-in-sql-client.html"><code>cockroach
-sql</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `<database>` part should not be specified for any [`cockroach`
+command](cockroach-commands.html) other than [`cockroach
+sql`](use-the-built-in-sql-client.html).
+{{site.data.alerts.end}}
 
 ### Additional connection parameters
 
@@ -97,11 +93,11 @@ Parameter | Description | Recommended for use
 `sslmode=verify-ca` | Force a secure connection and verify that the server certificate is signed by a known CA. |
 `sslmode=verify-full` | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments](secure-a-cluster.html).
 
-{{site.data.alerts.callout_danger}}Some client drivers and the
-<code>cockroach</code> commands do not support
-<code>sslmode=allow</code> and <code>sslmode=prefer</code>. Check the
-documentation of your SQL driver to determine whether these options
-are supported.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+Some client drivers and the `cockroach` commands do not support
+`sslmode=allow` and `sslmode=prefer`. Check the documentation of your
+SQL driver to determine whether these options are supported.
+{{site.data.alerts.end}}
 
 ### Example URL for an insecure connection
 
@@ -120,7 +116,7 @@ current database. `sslmode=disable` makes the connection insecure.
 The following URL is suitable to connect to a CockroachDB node using a secure connection:
 
 ~~~
-postgres://root@servername:26257/mydb?sslmode=verify-full&sslrootcert=path/to/ca.crt&sslcert=path/to/client.crt&sslkey=path/to/client.key
+postgres://root@servername:26257/mydb?sslmode=verify-full&sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key
 ~~~
 
 This uses the following components:
@@ -130,8 +126,8 @@ This uses the following components:
 - Current database `mydb`
 - SSL/TLS mode `verify-full`:
   - Root CA certificate `path/to/ca.crt`
-  - Client certificate `path/to/client.crt`
-  - Client key `path/to/client.key`
+  - Client certificate `path/to/client.username.crt`
+  - Client key `path/to/client.username.key`
 
 For details about how to create and manage SSL/TLS certificates, see
 [Create Security Certificates](create-security-certificates.html) and
@@ -150,20 +146,13 @@ variable is used when the command-line flag is not specified.
 
 {% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
-{{site.data.alerts.callout_info}}The command-line flag
-<code>--url</code> is only supported for <code>cockroach</code>
-commands that use a SQL connection. See <a
-href="#supported-connection-parameters">Supported Connection
-Parameters</a> for details.{{site.data.alerts.end}}
-
 ### Example command-line flags for an insecure connection
 
 The following command-line flags establish an insecure connection:
 
 ~~~
 --user root \
- --host servername \
- --port 26257 \
+ --host servername:26257 \
  --insecure
 ~~~
 
@@ -177,8 +166,7 @@ The following command-line flags establish a secure connection:
 
 ~~~
 --user root \
- --host servername \
- --port 26257 \
+ --host servername:26257 \
  --certs-dir path/to/certs
 ~~~
 
@@ -191,37 +179,20 @@ This uses the following components:
   - Client certificate `path/to/client.<user>.crt` (`path/to/certs/client.root.crt` with `--user root`)
   - Client key `path/to/client.<user>.key` (`path/to/certs/client.root.key` with `--user root`)
 
-{{site.data.alerts.callout_info}}When using discrete connection
-parameters, the file names of the CA and client certificates and
-client key are derived automatically from the value of <code>--certs-dir</code>,
-and cannot be customized. To use customized file names, use a <a
-href="#connect-using-a-url">connection URL</a>
-instead.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+When using discrete connection parameters, the file names of the CA
+and client certificates and client key are derived automatically from
+the value of `--certs-dir`.
+{{site.data.alerts.end}}
 
 ## Using both URL and client parameters
 
-Several [`cockroach` commands](cockroach-commands.html) support both a
-[connection URL](#connect-using-a-url) with `--url` (or `COCKROACH_URL`) and [discrete connection
-parameters](#connect-using-discrete-parameters).
-
-They can be combined as follows: the URL has highest priority, then
-the discrete parameters.
+Most `cockroach` commands accept both a URL and client parameters.
+The information contained therein is combined in the order it appears
+in the command line.
 
 This combination is useful so that discrete command-line flags can
 override settings not otherwise set in the URL.
-
-In other words:
-
-- If a URL is specified:
-  - For any URL component that is specified, that information is used
-    and the corresponding discrete parameter is ignored.
-  - For any URL component that is missing, if a corresponding discrete
-    parameter is specified (either via command-line flag or as
-    environment variable), the discrete parameter is used.
-  - If a component is missing in the URL and no corresponding discrete
-    parameter is specified, the default value is used.
-- If no URL is specified, the discrete parameters are used. For every
-  component not specified, the default value is used.
 
 ### Example override of the current database
 
