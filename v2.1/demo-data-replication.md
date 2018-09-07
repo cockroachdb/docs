@@ -6,7 +6,6 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
 
-
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
@@ -30,29 +29,11 @@ In a new terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html
 $ cockroach gen example-data intro | cockroach sql --insecure
 ~~~
 
-~~~
-CREATE DATABASE
-SET
-DROP TABLE
-CREATE TABLE
-INSERT 1
-INSERT 1
-INSERT 1
-INSERT 1
-...
-~~~
-
 In the same terminal, open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
-~~~
-
-~~~
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 {% include copy-clipboard.html %}
@@ -61,14 +42,12 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| intro         |
-| postgres      |
-| system        |
-+---------------+
+  defaultdb
+  intro
+  postgres
+  system
 (4 rows)
 ~~~
 
@@ -78,11 +57,9 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
+  table_name
 +------------+
-| table_name |
-+------------+
-| mytable    |
-+------------+
+  mytable
 (1 row)
 ~~~
 
@@ -92,31 +69,29 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+----+-----------------------------------------------------+
-| l  |                          v                          |
-+----+-----------------------------------------------------+
-|  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,, |
-|  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^ |
-|  4 | !                    "?##mW##?"-                    |
-|  6 | !  C O N G R A T S  _am#Z??A#ma,           Y        |
-|  8 | !                 _ummY"    "9#ma,       A          |
-| 10 | !                vm#Z(        )Xmms    Y            |
-| 12 | !              .j####mmm#####mm#m##6.               |
-| 14 | !   W O W !    jmm###mm######m#mmm##6               |
-| 16 | !             ]#me*Xm#m#mm##m#m##SX##c              |
-| 18 | !             dm#||+*$##m#mm#m#Svvn##m              |
-| 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A       |
-| 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M       |
-| 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A       |
-| 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z       |
-| 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E       |
-| 30 | !       I       4#ma+|++]mmhvnnvq##P`       !       |
-| 32 | !        D I     ?$#q%+|dmmmvnnm##!                 |
-| 34 | !           T     -4##wu#mm#pw##7'                  |
-| 36 | !                   -?$##m####Y'                    |
-| 38 | !             !!       "Y##Y"-                      |
-| 40 | !                                                   |
-+----+-----------------------------------------------------+
+  l  |                          v
++----+------------------------------------------------------+
+   0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
+   2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
+   4 | !                    "?##mW##?"-
+   6 | !  C O N G R A T S  _am#Z??A#ma,           Y
+   8 | !                 _ummY"    "9#ma,       A
+  10 | !                vm#Z(        )Xmms    Y
+  12 | !              .j####mmm#####mm#m##6.
+  14 | !   W O W !    jmm###mm######m#mmm##6
+  16 | !             ]#me*Xm#m#mm##m#m##SX##c
+  18 | !             dm#||+*$##m#mm#m#Svvn##m
+  20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
+  22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
+  24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
+  26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
+  28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
+  30 | !       I       4#ma+|++]mmhvnnvq##P`       !
+  32 | !        D I     ?$#q%+|dmmmvnnm##!
+  34 | !           T     -4##wu#mm#pw##7'
+  36 | !                   -?$##m####Y'
+  38 | !             !!       "Y##Y"-
+  40 | !
 (21 rows)
 ~~~
 
@@ -157,13 +132,13 @@ $ cockroach start \
 
 ## Step 4. Watch data replicate to the new nodes
 
-Open the Admin UI at `http://localhost:8080` to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> to see that all three nodes are listed. At first, the replica count will be lower for nodes 2 and 3. Very soon, the replica count will be identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
 
 <img src="{{ 'images/v2.1/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Increase the replication factor
 
-As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, edit the default [replication zone](configure-replication-zones.html) to replicate data 5 times:
+As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, use the [`cockroach zone`](configure-replication-zones.html) command change the cluster's `.default` replication factor to 5:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -174,7 +149,65 @@ $ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
 range_min_bytes: 1048576
 range_max_bytes: 67108864
 gc:
-  ttlseconds: 86400
+  ttlseconds: 90000
+num_replicas: 5
+constraints: []
+~~~
+
+In addition to the `.default` replication zone for database and table data, CockroachDB comes with pre-configured replication zones for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). To list these pre-configured zones, use the `cockroach zone ls` subcommand:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach zone ls --insecure
+~~~
+
+~~~
+.default
+.liveness
+.meta
+system.jobs
+~~~
+
+For the cluster as a whole to remain available, the "system ranges" for this internal data must always retain a majority of their replicas. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for these replication zones as well:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .liveness --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 600
+num_replicas: 5
+constraints: []
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set .meta --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 3600
+num_replicas: 5
+constraints: []
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ echo 'num_replicas: 5' | cockroach zone set system.jobs --insecure -f -
+~~~
+
+~~~
+range_min_bytes: 1048576
+range_max_bytes: 67108864
+gc:
+  ttlseconds: 600
 num_replicas: 5
 constraints: []
 ~~~
@@ -216,7 +249,9 @@ Back in the Admin UI, you'll see that there are now 5 nodes listed. Again, at fi
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last 2 nodes, the shutdown process will take longer (about a minute) and will eventually force kill the nodes. This is because, with only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time in the nodes' terminals.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For the last 2 nodes, the shutdown process will take longer (about a minute) and will eventually force kill the nodes. This is because, with only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. To speed up the process, press **CTRL-C** a second time in the nodes' terminals.
+{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

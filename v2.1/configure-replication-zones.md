@@ -11,7 +11,6 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}
 
-
 ## Overview
 
 ### Replication zone levels
@@ -39,7 +38,9 @@ When replicating data, whether table or system, CockroachDB always uses the most
 3. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
 4. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
 
-{{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other existing replication zones. If you increase the replication factor for <code>.default</code>, for example, you may also want to increase the replication factor for <a href="#create-a-replication-zone-for-a-system-range">important internal data</a> as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+{{site.data.alerts.end}}
 
 ### Replication zone format
 
@@ -222,7 +223,9 @@ constraints: []
 
 ### Edit the default replication zone
 
-{{site.data.alerts.callout_danger}}Changes to the <code>.default</code> replication zone are not automatically applied to other existing replication zones. If you increase the replication factor for <code>.default</code>, for example, you may also want to increase the replication factor for <a href="#create-a-replication-zone-for-a-system-range">important internal data</a> as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+{{site.data.alerts.end}}
 
 To edit the default replication zone, create a YAML file defining only the values you want to change (other values will be copied from the `.default` zone), and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
 
