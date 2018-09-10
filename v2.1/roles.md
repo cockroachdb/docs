@@ -22,7 +22,7 @@ To get started, basic role terminology is outlined below:
 
 Term | Description
 -----|------------
-Role | A group containing any number of [users](create-and-manage-users.html) or other roles.
+Role | A group containing any number of [users](create-and-manage-users.html) or other roles.<br><br>Note: All users belong to the `public` role, to which you can grant and revoke privileges.
 Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 Superuser / Admin | A member of the `admin` role. Only superusers can [`CREATE ROLE`](create-role.html) or [`DROP ROLE`](drop-role.html). The `admin` role is created by default and cannot be dropped.
 `root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.

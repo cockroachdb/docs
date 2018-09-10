@@ -121,6 +121,14 @@ Parameter | Description
 (4 rows)
 ~~~
 
+### Make a table readable to every user in the system
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT SELECT ON TABLE myTable TO public;
+~~~
+
+
 ## See also
 
 - [Privileges](privileges.html)
