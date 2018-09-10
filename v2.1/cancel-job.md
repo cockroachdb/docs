@@ -24,10 +24,11 @@ By default, only the `root` user can cancel a job.
 Parameter | Description
 ----------|------------
 `job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`](show-jobs.html).
+`select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to cancel.
 
 ## Examples
 
-### Cancel a restore
+### Cancel a single job
 
 ~~~ sql
 > SHOW JOBS;
@@ -42,6 +43,30 @@ Parameter | Description
 ~~~ sql
 > CANCEL JOB 27536791415282;
 ~~~
+
+### Cancel multiple jobs
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW JOBS;
+~~~
+
+~~~
+job_id             |  job_type  |         description                              
+-------------------+------------+-------------------------------------------...                        
+378762176538771457 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE demo INTO 'kaf...
+27536791415282     |  RESTORE   | RESTORE db.* FROM 'azure://backup/db/tbl' ...
+~~~
+
+To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL JOBS (SELECT job_id FROM [SHOW JOBS]
+      WHERE user_name = 'maxroach');
+~~~
+
+All jobs created by `maxroach` will be cancelled.
 
 ## See also
 
