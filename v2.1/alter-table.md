@@ -19,6 +19,7 @@ Subcommand | Description
 [`ADD COLUMN`](add-column.html) | Add columns to tables.
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns.
 [`ALTER COLUMN`](alter-column.html) | Change or drop a column's [`DEFAULT` constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
+[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns.
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns.

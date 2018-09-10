@@ -40,6 +40,7 @@ Statement | Usage
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
+[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
