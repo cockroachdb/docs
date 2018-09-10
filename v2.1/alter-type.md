@@ -10,8 +10,8 @@ The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alt
 
 You can use the `ALTER TYPE` subcommand if the following conditions are met:
 
-- On-disk representation of the column remains unchanged (e.g., you can't change the column data type from `STRING` to an `INT`, even if the string is just a number).
-- The existing data remains valid (e.g., you can change the column data type from `STRING[10]` to `STRING[20]`, but not to `STRING [5]` since that will invalidate the existing data).
+- On-disk representation of the column remains unchanged. For example, you can't change the column data type from `STRING` to an `INT`, even if the string is just a number.
+- The existing data remains valid. For example, you can change the column data type from `STRING[10]` to `STRING[20]`, but not to `STRING [5]` since that will invalidate the existing data.
 
 ## Synopsis
 
@@ -33,6 +33,8 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Examples
 
+### Success scenario
+
 The [TPC-C](performance-benchmarking-with-tpc-c.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
@@ -48,7 +50,7 @@ Time: 80.814044ms
 
 ### Error scenarios
 
-Attempting to change the column data type from `DECIMAL` to `INT` will change the on-disk representation of the column, and hence will result in an error:
+Changing a column data type from `DECIMAL` to `INT` would change the on-disk representation of the column. Therefore, attempting to do so results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -59,7 +61,7 @@ Attempting to change the column data type from `DECIMAL` to `INT` will change th
 pq: type conversion not yet implemented
 ~~~
 
-Attempting to change the column data type from `DECIMAL (12,2)` to `DECIMAL (8,2)` will invalidate the existing data, and hence will result in an error:
+Changing a column data type from `DECIMAL(12,2)` to `DECIMAL (8,2)` would invalidate the existing data. Therefore, attempting to do so results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
