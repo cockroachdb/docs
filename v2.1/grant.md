@@ -128,6 +128,20 @@ Parameter | Description
 > GRANT SELECT ON TABLE myTable TO public;
 ~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TABLE myTable;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee | privilege_type
++---------------+-------------+------------+---------+----------------+
+  defaultdb     | public      | mytable    | admin   | ALL
+  defaultdb     | public      | mytable    | public  | SELECT
+  defaultdb     | public      | mytable    | root    | ALL
+(3 rows)
+~~~
+
 
 ## See also
 
