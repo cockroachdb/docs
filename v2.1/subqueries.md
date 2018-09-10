@@ -42,10 +42,6 @@ query only observes 1 row using [`LIMIT`](limit-offset.html).
 A subquery is said to be "correlated" when it uses table or column
 names defined in the surrounding query.
 
-At this time, CockroachDB only supports non-correlated subqueries: all the table and column names listed in the subquery must be defined in the subquery itself.
-
-If you find yourself wanting to use a correlated subquery, consider that a correlated subquery can often be transformed into a non-correlated subquery using a [join expression](joins.html).
-
 For example:
 
 {% include copy-clipboard.html %}
@@ -57,21 +53,7 @@ For example:
 ~~~
 
 The subquery is correlated because it uses `c` defined in the
-surrounding query. It is thus not yet supported by CockroachDB;
-however, it can be transformed to the equivalent query:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT DISTINCT ON(c.id) c.name
-    FROM customers c CROSS JOIN orders o
-   WHERE c.id = o.customer_id;
-~~~
-
-See also [this question on Stack Overflow: Procedurally transform subquery into join](https://stackoverflow.com/questions/1772609/procedurally-transform-subquery-into-join).
-
-{{site.data.alerts.callout_info}}
-CockroachDB is currently undergoing major changes to introduce support for correlated subqueries. This limitation is expected to be lifted in a future release.
-{{site.data.alerts.end}}
+surrounding query.
 
 ## Performance best practices
 

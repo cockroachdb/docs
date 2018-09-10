@@ -93,7 +93,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E061-09 | Subqueries in comparison predicate | Yes |
 |  E061-11 | Subqueries in IN predicate | Yes |
 |  E061-12 | Subqueries in quantified comparison predicate | Yes |
-|  E061-13 | Correlated subqueries | No |
+|  E061-13 | Correlated subqueries | Partial |
 |  E061-14 | Search condition | Yes |
 |  **E071** | **Basic query expressions** | **Partial** |
 |  E071-01 | UNION DISTINCT table operator | Yes |
