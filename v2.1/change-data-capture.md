@@ -7,7 +7,7 @@ toc: true
 <span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
 {{site.data.alerts.callout_danger}}
-**This feature is under active development** and only works for a targeted use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
+**This feature is under active development** and only works for a targeted use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the roadmap.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -18,7 +18,7 @@ CDC is an enterprise feature. There will be a core version in v2.2.
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of databases and tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
@@ -38,23 +38,23 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
     You'd expect the changefeed to emit:
 
     ~~~ shell
-    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
-    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
+    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     ~~~
 
     It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
 
     ~~~ shell
-    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
-    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
-    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
+    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     ~~~
 
-    However, you will never see an out of order duplicate that you never saw before:
+    However, you will never see an out of order row that you never saw before:
 
     ~~~ shell
-    [1]	{"__crdb__": {"updated": "1535558022832467901.0000000000"}, "id": 1, "name": "Petee"}
-    [1]	{"__crdb__": {"updated": "1535558012223402739.0000000000"}, "id": 1, "name": "Carl"}
+    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
+    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     ~~~
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
@@ -169,7 +169,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach sql --insecure
     ~~~
 
-6. Create a database called `test`:
+6. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -232,7 +232,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {"id": 2, "name": "Carl"}
     ~~~
 
-    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is missing).
+    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
 11. Back in the SQL client, insert more data:
 
@@ -259,7 +259,7 @@ The following are limitations in the v2.1 release, and will be addressed in the 
 
 - The CockroachDB core changefeed is not ready for external testing.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computer column, adding a `NOT NULL` column, dropping a column) will cause errors on a changefeed.
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) will cause the changefeed to stop and will require operator intervention.
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
 - Changefeeds use a pull model, but will use a push model in v2.2, lowering latencies considerably.
