@@ -55,7 +55,7 @@ Flag | Description
 -----|------------
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise.
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](use-the-built-in-sql-client.html#session-and-output-types); `tsv` otherwise.
 
 ### Client connection
 
