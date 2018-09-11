@@ -17,6 +17,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
     - Must contain only letters, numbers, or underscores
     - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
+- All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
 ## Required privileges
@@ -35,7 +36,7 @@ table td:first-child {
 }
 </style>
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 `password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
