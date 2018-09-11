@@ -281,6 +281,67 @@ This JSON example shows what anonymized Admin UI page views information looks li
 }
 ~~~
 
+### Replication Zone Details <span class="version-tag">New in v2.0</span>
+
+CockroachDB collects anonymized data about [replication zone](configure-replication-zones.html#replication-zone-format) usage on an hourly basis.
+
+#### Example
+
+This JSON example shows an excerpt of what replication zone details look like when sent to Cockroach Labs. Note that all names and other strings have been scrubbed from the queries and replaced with `"unknown"`.
+
+~~~ json
+{
+  "zone_configs": {
+		"0": {
+			"range_min_bytes": 1048576,
+			"range_max_bytes": 67108864,
+			"gc": {
+				"ttl_seconds": 90000
+			},
+			"num_replicas": 3,
+			"constraints": [],
+			"lease_preferences": [],
+			"subzones": [],
+			"subzone_spans": null
+		},
+		"1": {
+			"range_min_bytes": 1048576,
+			"range_max_bytes": 67108864,
+			"gc": {
+				"ttl_seconds": 90000
+			},
+			"num_replicas": 3,
+			"constraints": [
+				{
+					"num_replicas": 1,
+					"constraints": [
+						{
+							"type": 1,
+							"key": "unknown",
+							"value": "unknown"
+						}
+					]
+				},
+				{
+					"num_replicas": 2,
+					"constraints": [
+						{
+							"type": 1,
+							"key": "unknown",
+							"value": "unknown"
+						}
+					]
+				}
+			],
+			"lease_preferences": [],
+			"subzones": [],
+			"subzone_spans": null
+		},
+    ...
+  }
+}  
+~~~
+
 ## Opt Out of Diagnostics Reporting
 
 ### At Cluster Initialization
