@@ -8,29 +8,13 @@ The **Hardware** dashboard lets you monitor CPU usage, disk throughput, network 
 
 The **Hardware** dashboard displays the following time series graphs:
 
-## User CPU Percent
+## CPU Percent
 
-<img src="{{ 'images/v2.1/admin_ui_user_cpu.png' | relative_url }}" alt="CockroachDB Admin UI User CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_cpu_percent.png' | relative_url }}" alt="CockroachDB Admin UI CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the amount of CPU resources used by the CockroachDB process for the selected node.
+- In the node view, the graph shows the amount of CPU resources used by the CockroachDB process as well as the CockroachDB system-level operations for the selected node.
 
-- In the cluster view, the graph shows the amount of CPU resources used by the CockroachDB process across all nodes.
-
-{{site.data.alerts.callout_info}}
-For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
-{{site.data.alerts.end}}
-
-## System CPU Percent
-
-<img src="{{ 'images/v2.1/admin_ui_system_cpu.png' | relative_url }}" alt="CockroachDB Admin UI System CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
-
-- In the node view, the graph shows the amount of CPU resources used for CockroachDB system-level operations for the selected node.
-
-- In the cluster view, the graph shows the amount of CPU resources used for CockroachDB system-level operations across all nodes.
-
-{{site.data.alerts.callout_info}}
-For multi-core systems, the system CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the system CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
-{{site.data.alerts.end}}
+- In the cluster view, the graph shows the amount of CPU resources used by the CockroachDB process as well as the CockroachDB system-level operations across all nodes.
 
 ## Memory Usage
 
@@ -56,6 +40,38 @@ For multi-core systems, the system CPU percent can be greater than 100%. Full ut
 
 - In the cluster view, the graph shows the 10-second average of the number of bytes written per second by all processes, including CockroachDB, across all nodes.
 
+## Disk Read Time
+
+<img src="{{ 'images/v2.1/admin_ui_disk_read_time.png' | relative_url }}" alt="CockroachDB Admin UI Disk Read Time graph" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the 10-second average of the disk read time per second for all processes, including CockroachDB, for the selected node.
+
+- In the cluster view, the graph shows the 10-second average of the disk read time per second for all processes, including CockroachDB, across all nodes.
+
+## Disk Write Time
+
+<img src="{{ 'images/v2.1/admin_ui_disk_write_time.png' | relative_url }}" alt="CockroachDB Admin UI Disk Write Time graph" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the 10-second average of the disk write time per second for all processes, including CockroachDB, for the node.
+
+- In the cluster view, the graph shows the 10-second average of the disk write time per second for all processes, including CockroachDB, across all nodes.
+
+## Disk Read Ops
+
+<img src="{{ 'images/v2.1/admin_ui_disk_read_ops.png' | relative_url }}" alt="CockroachDB Admin UI Disk Read Ops graph" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the 10-second average of the number of disk read ops per second for all processes, including CockroachDB, for the selected node.
+
+- In the cluster view, the graph shows the 10-second average of the number of disk read ops per second for all processes, including CockroachDB, across all nodes.
+
+## Disk Write Ops
+
+<img src="{{ 'images/v2.1/admin_ui_disk_write_ops.png' | relative_url }}" alt="CockroachDB Admin UI Disk Write Ops graph" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the 10-second average of the number of disk write ops per second for all processes, including CockroachDB, for the node.
+
+- In the cluster view, the graph shows the 10-second average of the number of disk write ops per second for all processes, including CockroachDB, across all nodes.
+
 ## Disk IOPS in Progress
 
 <img src="{{ 'images/v2.1/admin_ui_disk_iops.png' | relative_url }}" alt="CockroachDB Admin UI Disk IOPS in Progress graph" style="border:1px solid #eee;max-width:100%" />
@@ -68,23 +84,13 @@ For multi-core systems, the system CPU percent can be greater than 100%. Full ut
 For Mac OS, this graph is not populated and shows zero disk IOPS in progress. This is a [known limitation](https://github.com/cockroachdb/cockroach/issues/27927) that may be lifted in the future.
 {{site.data.alerts.end}}
 
-## Disk Capacity
+## Available Disk Capacity
 
-<img src="{{ 'images/v2.1/admin_ui_disk_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Disk Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_available_disk_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Disk Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Disk Capacity** graph to determine when additional storage is needed.
+- In the node view, the graph shows the available storage capacity for the selected node.
 
-- In the node view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB for the selected node.
-
-- In the cluster view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB across all nodes in the cluster.
-
-Hover over the graph to view the values for the following metrics:
-
-Metric | Description
---------|----
-**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](start-a-node.html#store).
-**Available** | The free storage capacity available to CockroachDB.
-**Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
+- In the cluster view, the graph shows the available storage capacity across all nodes in the cluster.
 
 {{site.data.alerts.callout_info}}
 {% include v2.1/misc/available-capacity-metric.md %}
