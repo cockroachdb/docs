@@ -41,16 +41,8 @@ To dump the `employees` table from a PostgreSQL database also named `employees`,
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pg_dump --inserts --no-privileges -t employees --no-owner employees > /tmp/employees.sql
+$ pg_dump -t employees employees > /tmp/employees.sql
 ~~~
-
-The following options are required:
-
- Option            | Description
--------------------+--------------------------------------------------------------------------------------------------------------------------------------
- `--inserts`       | Required until CockroachDB implements support for the PostgreSQL [`COPY`](https://www.postgresql.org/docs/current/static/sql-copy.html) statement.
- `--no-owner`      | Required until CockroachDB implements support for PostgreSQL's object ownership statements.
- `--no-privileges` | Required until CockroachDB implements support for PostgreSQL's access privilege statements.
 
 ### Step 2. `IMPORT` the PostgreSQL dump file
 
