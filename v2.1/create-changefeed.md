@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v2.1:</span> The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.
 
-Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format ([`JSON`](jsonb.html)) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 For more information, see [Change Data Capture](change-data-capture.html).
 
@@ -15,7 +15,7 @@ For more information, see [Change Data Capture](change-data-capture.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an enterprise feature. There will be a core version in v2.2.
+`CREATE CHANGEFEED` is an enterprise feature. There will be a core version in a future version.
 {{site.data.alerts.end}}
 
 ## Required privileges

@@ -11,14 +11,14 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CDC is an enterprise feature. There will be a core version in v2.2.
+CDC is an enterprise feature. There will be a core version in a future release.
 {{site.data.alerts.end}}
 
 ## What is change data capture?
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format ([`JSON`](jsonb.html)) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
@@ -251,7 +251,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 The following are limitations in the v2.1 release, and will be addressed in the future.
 
-- Changefeeds created with the alpha or beta may not be compatible with future alphas, betas, or the final v2.2 release.
+- Changefeeds created with the alpha or beta may not be compatible with future alphas, betas, or the final release.
 
     {{site.data.alerts.callout_danger}}
     This feature is undergoing stability testing. Use on production data with caution.
@@ -262,7 +262,7 @@ The following are limitations in the v2.1 release, and will be addressed in the 
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) will cause the changefeed to stop and will require operator intervention.
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
-- Changefeeds use a pull model, but will use a push model in v2.2, lowering latencies considerably.
+- Changefeeds use a pull model, but will use a push model in the future, lowering latencies considerably.
 - Changefeeds cannot be altered. To alter, cancel the changefeed and create a new one with updated settings from where it left off.
 - Additional format options will be added, including Avro.
 - Additional envelope options will be added, including one that displays the old and new values for the changed row.
