@@ -22,7 +22,7 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
 
-To log out of the Admin UI, click the **Sign Out** link at the bottom of the left-hand navigation bar.
+To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar.
 
 ## Navigate the Admin UI
 
