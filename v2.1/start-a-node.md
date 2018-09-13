@@ -134,26 +134,30 @@ When you run `cockroach start`, some helpful details are printed to the standard
 ~~~ shell
 CockroachDB node starting at {{page.release_info.start_time}}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:               http://ROACHs-MBP:8080
-sql:                 postgresql://root@ROACHs-MBP:26257?sslmode=disable
-logs:                node1/logs
-temp dir:            /node1/cockroach-temp430873933
-external I/O path:   /node1/extern
+webui:               http://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslmode=disable
+client flags:        cockroach --listen-addr=localhost:26257 --insecure
+logs:                /cockroach-data/logs
+temp dir:            /cockroach-data/cockroach-temp430873933
+external I/O path:   /cockroach-data/extern
 attrs:               ram:64gb
 locality:            datacenter=us-east1
-store[0]:            path=node1,attrs=ssd
+store[0]:            path=cockroach-data,attrs=ssd
 status:              initialized new cluster
 clusterID:           7b9329d0-580d-4035-8319-53ba8b74b213
 nodeID:              1
 ~~~
 
-{{site.data.alerts.callout_success}}These details are also written to the <code>INFO</code> log in the <code>/logs</code> directory in case you need to refer to them at a later time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+These details are also written to the <code>INFO</code> log in the `/logs` directory in case you need to refer to them at a later time.
+{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
 `build` | The version of CockroachDB you are running.
-`admin` | The URL for accessing the Admin UI.
+`webui` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
+`client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
 `logs` | The directory containing debug log data.
 `temp dir` | The temporary store directory of the node.
 `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.
@@ -180,7 +184,7 @@ To start a single-node cluster, run the `cockroach start` command without the `-
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node1 address> \
+--advertise-addr=<node1 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -191,7 +195,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node1 address> \
+--advertise-addr=<node1 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -211,7 +215,7 @@ To start a multi-node cluster, run the `cockroach start` command for each node, 
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node1 address> \
+--advertise-addr=<node1 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -221,7 +225,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node2 address> \
+--advertise-addr=<node2 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -231,7 +235,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node3 address> \
+--advertise-addr=<node3 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -243,7 +247,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node1 address> \
+--advertise-addr=<node1 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -253,7 +257,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node2 address> \
+--advertise-addr=<node2 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -263,7 +267,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node3 address> \
+--advertise-addr=<node3 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -277,7 +281,7 @@ Then run the [`cockroach init`](initialize-a-cluster.html) command against any n
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
---host=<address of any node>
+--host=<address of any node>:26257
 ~~~
 </div>
 
@@ -286,7 +290,7 @@ $ cockroach init \
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=<address of any node>
+--host=<address of any node>:26257
 ~~~
 </div>
 
@@ -297,14 +301,14 @@ $ cockroach init \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addressess of 3-5 of the nodes already in the cluster:
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addresses of 3-5 of the nodes already in the cluster:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node4 address> \
+--advertise-addr=<node4 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25
@@ -316,7 +320,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node4 address> \
+--advertise-addr=<node4 address>:26257 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25

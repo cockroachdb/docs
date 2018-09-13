@@ -59,7 +59,7 @@ Start Node 1:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1a  \
---host=<node1 address> \
+--advertise-addr=<node1 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
@@ -72,7 +72,7 @@ Start Node 2:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1b \
---host=<node2 address> \
+--advertise-addr=<node2 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
@@ -85,7 +85,7 @@ Start Node 3:
 $ cockroach start \
 --insecure \
 --locality=region=us-west-1,datacenter=us-west-1a \
---host=<node3 address> \
+--advertise-addr=<node3 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
@@ -98,7 +98,7 @@ Start Node 4:
 $ cockroach start \
 --insecure \
 --locality=region=eu-west-1,datacenter=eu-west-1a \
---host=<node4 address> \
+--advertise-addr=<node4 address>:26257 \
 --cache=.25 \
 --max-sql-memory=.25 \
 --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
@@ -108,7 +108,7 @@ Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-t
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach init --insecure
+$ cockroach init --insecure --host=<address of any node>:26257
 ~~~
 
 [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
@@ -127,7 +127,7 @@ Launch the built-in SQL client:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=<address of any node>
+$ cockroach sql --insecure --host=<address of any node>:26257
 ~~~
 
 Insert the approximate latitudes and longitudes of each region into the `system.locations` table:

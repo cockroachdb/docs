@@ -166,13 +166,15 @@ For each node in your cluster, complete the following steps.
 
 5. Start the node to have it rejoin the cluster.
 
-    Without a process manager like `systemd`, run this command to start the node:
+    Without a process manager like `systemd`, re-run the [`cockroach start`](start-a-node.html) command that you used to start the node initially, for example:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --join=[IP address of any other node] [other flags]
+    $ cockroach start \
+    --certs-dir=certs \
+    --advertise-addr=<node address>:26257 \
+    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257
     ~~~
-    `[other flags]` includes any flags you [use to a start node](start-a-node.html), such as it `--host`.
 
     If you are using `systemd` as the process manager, run this command to start the node:
 

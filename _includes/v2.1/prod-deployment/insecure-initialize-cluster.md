@@ -2,11 +2,11 @@ On your local machine, complete the node startup process and have them join toge
 
 1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
 
-2. Run the [`cockroach init`](initialize-a-cluster.html) command, with the `--host` flag set to the address of any node:
+2. Run the [`cockroach init`](initialize-a-cluster.html) command, with the `--host` flag set to the address and port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node>:26257
     ~~~
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the admin UI, and the SQL URL for clients.

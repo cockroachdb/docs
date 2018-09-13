@@ -2,11 +2,11 @@ CockroachDB replicates and distributes data for you behind-the-scenes and uses a
 
 To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
-1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any node:
+1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address and port of any node:
 
     {% include copy-clipboard.html %}
 	~~~ shell
-	$ cockroach sql --insecure --host=<address of any node>
+	$ cockroach sql --insecure --host=<address of any node>:26257
 	~~~
 
 2. Create an `insecurenodetest` database:
@@ -18,11 +18,11 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 3. Use `\q` or `ctrl-d` to exit the SQL shell.
 
-4. Launch the built-in SQL client, with the `--host` flag set to the address of a different node:
+4. Launch the built-in SQL client, with the `--host` flag set to the address and port of a different node:
 
     {% include copy-clipboard.html %}
 	~~~ shell
-	$ cockroach sql --insecure --host=<address of different node>
+	$ cockroach sql --insecure --host=<address of different node>:26257
 	~~~
 
 5. View the cluster's databases, which will include `insecurenodetest`:
@@ -45,4 +45,4 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 	(5 rows)
 	~~~
 
-6. Use `\q` or `ctrl-d` to exit the SQL shell.
+6. Use `\q` to exit the SQL shell.

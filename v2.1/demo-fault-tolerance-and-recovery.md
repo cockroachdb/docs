@@ -21,9 +21,8 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 $ cockroach start \
 --insecure \
 --store=fault-node1 \
---host=localhost \
---port=26257 \
---http-port=8080 \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -33,9 +32,8 @@ $ cockroach start \
 $ cockroach start \
 --insecure \
 --store=fault-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -45,9 +43,8 @@ $ cockroach start \
 $ cockroach start \
 --insecure \
 --store=fault-node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -59,8 +56,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ## Step 3. Verify that the cluster is live
@@ -69,7 +65,7 @@ In a new terminal, use the [`cockroach sql`](use-the-built-in-sql-client.html) c
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26257
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
@@ -103,7 +99,7 @@ Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost:26258
 ~~~
 
 ~~~
@@ -117,7 +113,7 @@ Switch to the terminal for the built-in SQL shell and reconnect the shell to nod
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
@@ -151,7 +147,7 @@ In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.h
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --insecure
+$ cockroach gen example-data startrek | cockroach sql --insecure --host=localhost:26257
 ~~~
 
 ~~~
@@ -169,7 +165,7 @@ Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
@@ -242,9 +238,8 @@ Switch to the terminal for node 2, and rejoin the node to the cluster, using the
 ~~~ shell
 $ cockroach start --insecure \
 --store=fault-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257
 ~~~
 
@@ -266,7 +261,7 @@ Switch to the terminal for the built-in SQL shell, connect the shell to the rejo
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26258
+$ cockroach sql --insecure --host=loalhost:26258
 ~~~
 
 {% include copy-clipboard.html %}
@@ -309,9 +304,8 @@ Now, to prepare the cluster for a permanent node failure, open a new terminal an
 $ cockroach start \
 --insecure \
 --store=fault-node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -335,7 +329,7 @@ Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost:26258
 ~~~
 
 ~~~

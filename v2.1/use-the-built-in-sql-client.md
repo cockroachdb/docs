@@ -9,7 +9,7 @@ CockroachDB comes with a built-in client for executing SQL statements from an in
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
 {{site.data.alerts.callout_success}}
-If you want to experiment with CockroachDB SQL but don't have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster. 
+If you want to experiment with CockroachDB SQL but don't have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -197,8 +197,7 @@ In these examples, we connect a SQL shell to a **secure cluster**.
 $ cockroach sql \
 --certs-dir=certs \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -216,8 +215,7 @@ In these examples, we connect a SQL shell to an **insecure cluster**.
 # Using standard connection flags:
 $ cockroach sql --insecure \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -267,8 +265,7 @@ In these examples, we use the `--execute` flag to execute statements from the co
 $ cockroach sql --insecure \
 --execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -284,8 +281,7 @@ $ cockroach sql --insecure \
 --execute="CREATE TABLE roaches (name STRING, country STRING)" \
 --execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -299,7 +295,7 @@ In this example, we use the `echo` command to execute statements from the comman
 {% include copy-clipboard.html %}
 ~~~ shell
 # Statements with the echo command:
-$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=12.345.67.89 --port=26257 --database=critterdb
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=12.345.67.89:26257 --database=critterdb
 ~~~
 
 ~~~
@@ -327,8 +323,7 @@ When the standard output is a terminal, `--format` defaults to `pretty` and tabl
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -348,8 +343,7 @@ $ cockroach sql --insecure \
 --format=tsv \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -365,8 +359,7 @@ $ cockroach sql --insecure \
 --format=html \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -386,8 +379,7 @@ When piping output to another command or a file, `--format` defaults to `tsv`:
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -410,8 +402,7 @@ $ cockroach sql --insecure \
 --format=pretty \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -438,8 +429,7 @@ To make it possible to select from the output of `SHOW` statements, set `--forma
 $ cockroach sql --insecure \
 --format=raw \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb
 ~~~
 
@@ -505,8 +495,7 @@ INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbande
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=critterdb \
 < statements.sql
 ~~~
@@ -675,8 +664,7 @@ $ cockroach sql --insecure \
 --execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
 --execute="INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')" \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=db1
 --echo-sql
 ~~~
@@ -697,8 +685,7 @@ In this example, we start the interactive SQL shell and enable the `echo` shell 
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
---host=12.345.67.89 \
---port=26257 \
+--host=12.345.67.89:26257 \
 --database=db1
 ~~~
 

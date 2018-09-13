@@ -92,14 +92,14 @@ SSH to the machine where the node is running and execute the [`cockroach quit`](
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --decommission --certs-dir=certs --host=<address of node to remove>
+$ cockroach quit --decommission --certs-dir=certs --host=<address of node to remove>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --decommission --insecure --host=<address of node to remove>
+$ cockroach quit --decommission --insecure --host=<address of node to remove>:26257
 ~~~
 </div>
 
@@ -184,14 +184,14 @@ SSH to any live node in the cluster and run the [`cockroach node decommission`](
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 --certs-dir=certs --host=<address of live node>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --insecure --host=<address of live node>
+$ cockroach node decommission 4 --insecure --host=<address of live node>:26257
 ~~~
 </div>
 
@@ -245,14 +245,14 @@ SSH to any live node in the cluster and run the [`cockroach node decommission`](
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 5 --wait=live --certs-dir=certs --host=<address of live node>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --insecure --host=<address of live node>
+$ cockroach node decommission 4 5 --wait=live --insecure --host=<address of live node>:26257
 ~~~
 </div>
 
@@ -313,14 +313,14 @@ For each decommissioned node, SSH to the machine running the node and execute th
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --certs-dir=certs --host=<address of decommissioned node>
+$ cockroach quit --certs-dir=certs --host=<address of decommissioned node>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --host=<address of decommissioned node>
+$ cockroach quit --insecure --host=<address of decommissioned node>:26257
 ~~~
 </div>
 
@@ -346,14 +346,14 @@ SSH to one of the live nodes and execute the [`cockroach node recommission`](vie
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node recommission 4 --certs-dir=certs --host=<address of live node>
+$ cockroach node recommission 4 --certs-dir=certs --host=<address of live node>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node recommision 4 --insecure --host=<address of live node>
+$ cockroach node recommision 4 --insecure --host=<address of live node>:26257
 ~~~
 </div>
 
@@ -374,14 +374,14 @@ SSH to each machine with a recommissioned node and run the same `cockroach start
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --certs-dir=certs --host=<address of node to restart> --join=<address of node 1>:26257 --background
+$ cockroach start --certs-dir=certs --advertise-addr=<address of node to restart>:26257 --join=<address of node 1>:26257 --background
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure --host=<address of node to restart> --join=<address of node 1>:26257 --background
+$ cockroach start --insecure --advertise-addr=<address of node to restart>:26257 --join=<address of node 1>:26257 --background
 ~~~
 </div>
 
@@ -399,14 +399,14 @@ To check the progress of decommissioning nodes, you can run the `cockroach node 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --decommission --certs-dir=certs --host=<address of any live node>
+$ cockroach node status --decommission --certs-dir=certs --host=<address of any live node>:26257
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --decommission --insecure --host=<address of any live node>
+$ cockroach node status --decommission --insecure --host=<address of any live node>:26257
 ~~~
 </div>
 

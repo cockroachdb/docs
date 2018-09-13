@@ -108,7 +108,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=<address of node to stop>
+    $ cockroach quit --certs-dir=certs --host=<address of node to stop>:26257
     ~~~
 </section>
 
@@ -119,7 +119,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --host=<address of node to stop>
+    $ cockroach quit --insecure --host=<address of node to stop>:26257
     ~~~
 </section>
 

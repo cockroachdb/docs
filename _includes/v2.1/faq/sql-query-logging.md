@@ -35,7 +35,7 @@ Alternatively, if you are testing CockroachDB locally and want to log queries ex
 Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](start-a-node.html) command. For example, to start a single node locally and log all SQL queries it executes, you'd run:
 
 ~~~ shell
-$ cockroach start --insecure --host=localhost --vmodule=exec_log=2
+$ cockroach start --insecure --listen-addr=localhost:26257 --vmodule=exec_log=2
 ~~~
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):

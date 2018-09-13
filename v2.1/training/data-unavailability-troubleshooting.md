@@ -31,7 +31,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -46,7 +45,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -61,7 +59,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-1 \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -76,7 +73,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node4 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -91,7 +87,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node5 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -106,7 +101,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-2 \
     --store=node6 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259  \
@@ -121,7 +115,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node7 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26263 \
     --http-addr=localhost:8086 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -136,7 +129,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26264 \
     --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -151,7 +143,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26265 \
     --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -162,7 +153,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -173,14 +164,19 @@ In preparation, add a table and use a replication zone to force the table's data
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data intro | ./cockroach sql --insecure
+    $ ./cockroach gen example-data intro | ./cockroach sql \
+    --insecure \
+    --host=localhost:26257
     ~~~
 
 2. Create a [replication zone](../configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+datacenter=us-east-3]' | ./cockroach zone set intro.mytable --insecure -f -
+    $ echo 'constraints: [+datacenter=us-east-3]' | ./cockroach zone set intro.mytable \
+    --insecure \
+    --host=localhost:26257 \
+    -f -
     ~~~
 
     ~~~
@@ -198,6 +194,7 @@ In preparation, add a table and use a replication zone to force the table's data
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \    
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
     ~~~
 
@@ -222,14 +219,14 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     ~~~ shell
     $ ./cockroach quit \
     --insecure \
-    --port=26264
+    --host=localhost:26264
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach quit \
     --insecure \
-    --port=26265
+    --host=localhost:26265
     ~~~
 
 ## Step 4. Troubleshoot the problem
@@ -240,7 +237,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --port=26257 \
+    --host=localhost:26257 \
     --execute="INSERT INTO intro.mytable VALUES (42, '')" \
     --logtostderr=WARNING
     ~~~
@@ -275,7 +272,6 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node8 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26264 \
     --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -288,7 +284,6 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --insecure \
     --locality=datacenter=us-east-3 \
     --store=node9 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26265 \
     --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \

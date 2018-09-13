@@ -8,7 +8,6 @@ This page explains the `cockroach init` [command](cockroach-commands.html), whic
 
 {{site.data.alerts.callout_info}}When <a href="start-a-node.html#start-a-single-node-cluster">starting a single-node cluster</a>, you do not need to use the <code>cockroach init</code> command. You can simply run the <code>cockroach start</code> command without the <code>--join</code> flag to start and initialize the single-node cluster.{{site.data.alerts.end}}
 
-
 ## Synopsis
 
 Perform a one-time initialization of a cluster:
@@ -57,11 +56,11 @@ These examples assume that nodes have already been started with [`cockroach star
 
 2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
 
-3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address and port of the current node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs --host=<address of this node>
+    $ cockroach init --certs-dir=certs --host=<address of this node>:26257
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
@@ -70,11 +69,11 @@ These examples assume that nodes have already been started with [`cockroach star
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. SSH to the machine where the node has been started.
 
-2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
+2. Run the `cockroach init` command with the `--host` flag set to the address and port of the current node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of this node>
+    $ cockroach init --insecure --host=<address of this node>:26257
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
@@ -92,11 +91,11 @@ These examples assume that nodes have already been started with [`cockroach star
 
 2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
 
-3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of any node:
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address and port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs --host=<address of any node>
+    $ cockroach init --certs-dir=certs --host=<address of any node>:26257
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
@@ -105,11 +104,11 @@ These examples assume that nodes have already been started with [`cockroach star
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
-2. Run the `cockroach init` command with the `--host` flag set to the address of any node:
+2. Run the `cockroach init` command with the `--host` flag set to the address and port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node>:26257
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.

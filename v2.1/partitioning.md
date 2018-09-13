@@ -159,25 +159,29 @@ We want to geo-partition the table to keep the students' data closer to their lo
 {% include copy-clipboard.html %}
 ~~~ shell
 # Start the node in the US datacenter:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --locality=region=us1  \
---store=node1 \
---host=<node1 hostname> \
---port=26257 \
---http-port=8080 \
+--advertise-addr=<node1 hostname>:26257 \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # Start the node in the AUS datacenter:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --locality=region=aus1 \
---store=node2 \
---host=<node2 hostname> \
---port=26258 \
---http-port=8081 \
+--advertise-addr=<node2 hostname>:26257 \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+# Initialize the cluster:
+$ cockroach init \
+--insecure \
+--host=<address of any node>:26257
 ~~~
 
 #### Step 3. Set the enterprise license
@@ -221,12 +225,18 @@ Apply zone configurations to corresponding partitions:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_list.north_america --insecure  -f north_america.zone.yml
+$ cockroach zone set roachlearn.students_by_list.north_america \
+--insecure \
+--host=<address of any node>:26257 \
+-f north_america.zone.yml
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_list.australia --insecure  -f australia.zone.yml
+$ cockroach zone set roachlearn.students_by_list.australia \
+--insecure \
+--host=<address of any node>:26257 \
+-f australia.zone.yml
 ~~~
 
 #### Step 6. Verify table partitions
@@ -273,22 +283,28 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 
 {% include copy-clipboard.html %}
 ~~~ shell
+# Start the first node:
 $ cockroach start --insecure \
 --store=path=/mnt/1,attrs=ssd \
---host=<node1 hostname> \
---port=26257 \
---http-port=8080 \
+--advertise-addr=<node1 hostname>:26257 \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
+# Start the first node:
 $ cockroach start --insecure \
 --store=path=/mnt/2,attrs=hdd \
---host=<node2 hostname> \
---port=26258 \
---http-port=8081 \
+--advertise-addr=<node2 hostname>:26257 \
 --join=<node1 hostname>:26257,<node2 hostname>:26258
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+# Initialize the cluster:
+$ cockroach init \
+--insecure \
+--host=<address of any node>:26257
 ~~~
 
 #### Step 4. Create a table with the appropriate partitions
@@ -327,12 +343,18 @@ Apply zone configurations to corresponding partitions:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_range.current --insecure  -f current.zone.yml
+$ cockroach zone set roachlearn.students_by_range.current \
+--insecure \
+--host=<address of any node>:26257 \
+-f current.zone.yml
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_range.graduated --insecure  -f graduated.zone.yml
+$ cockroach zone set roachlearn.students_by_range.graduated \
+--insecure \
+--host=<address of any node>:26257 \
+-f graduated.zone.yml
 ~~~
 
 #### Step 6. Verify table partitions
@@ -378,30 +400,33 @@ Start a node in the US datacenter:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
---host=<node1 hostname> \
+$ cockroach start \
+--insecure \
+--advertise-addr=<node1 hostname>:26257 \
 --locality=datacenter=us1 \
 --store=path=/mnt/1,attrs=ssd \
 --store=path=/mnt/2,attrs=hdd \
+--join=<node1 hostname>:26257,<node2 hostname>:26257
 ~~~
 
 Start a node in the AUS datacenter:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
---host=<node2 hostname> \
+$ cockroach start \
+--insecure \
+--advertise-addr=<node2 hostname>:26257 \
 --locality=datacenter=aus1 \
 --store=path=/mnt/3,attrs=ssd \
 --store=path=/mnt/4,attrs=hdd \
---join=<node1 hostname>:26257
+--join=<node1 hostname>:26257,<node2 hostname>:26257
 ~~~
 
 Initialize the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach init --insecure --host=<node1 hostname>
+$ cockroach init --insecure --host=<address of any node>:26257
 ~~~
 
 #### Step 3. Set the enterprise license
@@ -459,12 +484,18 @@ Apply zone configurations to corresponding partitions:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students.current_us --insecure -f current_us.zone.yml
+$ cockroach zone set roachlearn.students.current_us \
+--insecure \
+--host=<address of any node>:26257 \
+-f current_us.zone.yml
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students.graduated_us --insecure -f graduated_us.zone.yml
+$ cockroach zone set roachlearn.students.graduated_us \
+--insecure \
+--host=<address of any node>:26257 \
+-f graduated_us.zone.yml
 ~~~
 
 {% include copy-clipboard.html %}
@@ -474,7 +505,10 @@ $ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zon
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students.graduated_au --insecure -f graduated_au.zone.yml
+$ cockroach zone set roachlearn.students.graduated_au \
+--insecure \
+--host=<address of any node>:26257 \
+-f graduated_au.zone.yml
 ~~~
 
 #### Step 6. Verify table partitions

@@ -58,7 +58,7 @@ This configuration is intended for performance benchmarking only. For production
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --advertise-host=<node1 internal address> \
+    --advertise-addr=<node1 internal address>:26257 \
     --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
     --cache=.25 \
     --max-sql-memory=.25 \
@@ -71,7 +71,7 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=localhost
+    $ cockroach init --insecure --host=<address of any node>:26257
     ~~~
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
@@ -194,7 +194,7 @@ This configuration is intended for performance benchmarking only. For production
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --advertise-host=<node1 internal address> \
+    --advertise-addr=<node1 internal address>:26257 \
     --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257, [...] \
     --cache=.25 \
     --max-sql-memory=.25 \
@@ -210,7 +210,7 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=localhost
+    $ cockroach init --insecure --host=<address of any node>:26257
     ~~~
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
@@ -225,7 +225,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure
+    $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 2. Add your enterprise license:
@@ -282,7 +282,7 @@ To [increase the snapshot rate](cluster-settings.html), which helps speed up thi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure
+    $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 2. Set the cluster setting to increase the snapshot rate:

@@ -28,7 +28,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -41,7 +40,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -54,7 +52,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -64,7 +61,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Simulate the problem
@@ -75,6 +72,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
     ~~~
 
@@ -103,7 +101,6 @@ To bring the cluster back to a safe state, you need to either restart the down n
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259

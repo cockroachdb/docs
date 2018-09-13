@@ -37,7 +37,7 @@ For each initial node of your cluster, complete the following steps:
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
-    --advertise-host=<node1 address> \
+    --advertise-addr=<node1 address>:26257 \
     --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
     --cache=.25 \
     --max-sql-memory=.25 \
@@ -49,14 +49,14 @@ For each initial node of your cluster, complete the following steps:
     Flag | Description
     -----|------------
     `--certs-dir` | Specifies the directory where you placed the `ca.crt` file and the `node.crt` and `node.key` files for the node.
-    `--advertise-host` | Specifies the IP address or hostname to tell other nodes to use. This value must route to an IP address the node is listening on (with `--host` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-host` and/or `--host` differently. For more details, see [Networking](recommended-production-settings.html#networking).
+    `--advertise-addr` | Specifies the IP address/hostname and port to tell other nodes to use. This value must route to an IP address the node is listening on (with `--listen-addr` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-addr` and/or `--listen-addr` differently. For more details, see [Networking](recommended-production-settings.html#networking).
     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
     `--cache`<br>`--max-sql-memory` | Increases the node's cache and temporary SQL memory size to 25% of available system memory to improve read performance and increase capacity for in-memory SQL processing. For more details, see [Cache and SQL Memory Size](recommended-production-settings.html#cache-and-sql-memory-size).
     `--background` | Starts the node in the background so you gain control of the terminal to issue more commands.
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](start-a-node.html#locality).
 
-	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data`, binds internal and client communication to `--port=26257`, and binds Admin UI HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](start-a-node.html).
+	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds Admin UI HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node](start-a-node.html).
 
 5. Repeat these steps for each additional node that you want in your cluster.
 
@@ -133,21 +133,21 @@ For each initial node of your cluster, complete the following steps:
 
     Flag | Description
     -----|------------
-    `--advertise-host` | Specifies the IP address or hostname to tell other nodes to use. This value must route to an IP address the node is listening on (with `--host` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-host` and/or `--host` differently. For more details, see [Networking](recommended-production-settings.html#networking).
+    `--advertise-addr` | Specifies the IP address/hostname and port to tell other nodes to use. This value must route to an IP address the node is listening on (with `--listen-addr` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-addr` and/or `--listen-addr` differently. For more details, see [Networking](recommended-production-settings.html#networking).
     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](start-a-node.html#locality).
 
- 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data`, binds internal and client communication to `--port=26257`, and binds Admin UI HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](start-a-node.html).
+ 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds Admin UI HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](start-a-node.html).
 
-10.  Start the CockroachDB cluster:
+10. Start the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ systemctl start securecockroachdb
     ~~~
 
-11.  Repeat these steps for each additional node that you want in your cluster.
+11. Repeat these steps for each additional node that you want in your cluster.
 
 {{site.data.alerts.callout_info}}
 `systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run `systemctl stop securecockroachdb`
