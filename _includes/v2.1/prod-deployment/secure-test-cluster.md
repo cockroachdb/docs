@@ -5,16 +5,9 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 1. On your local machine, launch the built-in SQL client:
 
     {% include copy-clipboard.html %}
-	~~~ shell
-	$ cockroach sql --certs-dir=certs --host=<address of any node>:26257
-	~~~
-
-    This command requires the following flags:
-
-    Flag | Description
-    -----|------------
-    `--certs-dir` | Specifies the directory where you placed the `ca.crt` file and the `client.root.crt` and `client.root.key` files for the `root` user.
-    `--host` | Specifies the address and port of any node in the cluster.
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --host=<address of any node>
+    ~~~
 
 2.  Create a `securenodetest` database:
 
@@ -29,7 +22,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=<address of different node>:26257
+    $ cockroach sql --certs-dir=certs --host=<address of different node>
     ~~~
 
 5. View the cluster's databases, which will include `securenodetest`:

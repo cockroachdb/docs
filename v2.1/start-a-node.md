@@ -6,8 +6,9 @@ toc: true
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
-{{site.data.alerts.callout_info}}Node-level settings are defined by flags passed to the <code>cockroach start</code> command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see <a href="cluster-settings.html">Cluster Settings</a>.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+Node-level settings are defined by flags passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -58,8 +59,8 @@ Flag | Description
 
 Flag | Description
 -----|-----------
-`--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]:26257` or `[fe80::f6f2:::]:26257`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
-`--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]:26257` or `[fe80::f6f2:::]:26257`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
+`--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
+`--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
@@ -103,7 +104,9 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
-{{site.data.alerts.callout_info}}In-memory storage is not suitable for production deployments at this time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In-memory storage is not suitable for production deployments at this time.
+{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
@@ -136,7 +139,7 @@ CockroachDB node starting at {{page.release_info.start_time}}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
-client flags:        cockroach --listen-addr=localhost:26257 --insecure
+client flags:        cockroach <client cmd> --listen-addr=localhost:26257 --insecure
 logs:                /cockroach-data/logs
 temp dir:            /cockroach-data/cockroach-temp430873933
 external I/O path:   /cockroach-data/extern
@@ -149,7 +152,7 @@ nodeID:              1
 ~~~
 
 {{site.data.alerts.callout_success}}
-These details are also written to the <code>INFO</code> log in the `/logs` directory in case you need to refer to them at a later time.
+These details are also written to the `INFO` log in the `/logs` directory in case you need to refer to them at a later time.
 {{site.data.alerts.end}}
 
 Field | Description
@@ -184,7 +187,7 @@ To start a single-node cluster, run the `cockroach start` command without the `-
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---advertise-addr=<node1 address>:26257 \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -195,7 +198,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node1 address>:26257 \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -215,8 +218,8 @@ To start a multi-node cluster, run the `cockroach start` command for each node, 
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---advertise-addr=<node1 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -225,8 +228,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---advertise-addr=<node2 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -235,8 +238,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---advertise-addr=<node3 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -247,8 +250,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node1 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -257,8 +260,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node2 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -267,8 +270,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node3 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -281,7 +284,7 @@ Then run the [`cockroach init`](initialize-a-cluster.html) command against any n
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
---host=<address of any node>:26257
+--host=<address of any node>
 ~~~
 </div>
 
@@ -290,7 +293,7 @@ $ cockroach init \
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=<address of any node>:26257
+--host=<address of any node>
 ~~~
 </div>
 
@@ -308,8 +311,8 @@ To add a node to an existing cluster, run the `cockroach start` command, setting
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---advertise-addr=<node4 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -320,8 +323,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node4 address>:26257 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~

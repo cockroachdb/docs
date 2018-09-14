@@ -172,8 +172,8 @@ For each node in your cluster, complete the following steps.
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
-    --advertise-addr=<node address>:26257 \
-    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257
+    --advertise-addr=<node address> \
+    --join=<node1 address>,<node2 address>,<node3 address>
     ~~~
 
     If you are using `systemd` as the process manager, run this command to start the node:

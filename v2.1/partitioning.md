@@ -6,8 +6,9 @@ toc: true
 
 CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
-{{site.data.alerts.callout_info}}Table partitioning is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+Table partitioning is an [enterprise-only](enterprise-licensing.html) feature.
+{{site.data.alerts.end}}
 
 ## Why use table partitioning
 
@@ -162,8 +163,8 @@ We want to geo-partition the table to keep the students' data closer to their lo
 $ cockroach start \
 --insecure \
 --locality=region=us1  \
---advertise-addr=<node1 hostname>:26257 \
---join=<node1 hostname>:26257,<node2 hostname>:26258
+--advertise-addr=<node1 hostname> \
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 {% include copy-clipboard.html %}
@@ -172,8 +173,8 @@ $ cockroach start \
 $ cockroach start \
 --insecure \
 --locality=region=aus1 \
---advertise-addr=<node2 hostname>:26257 \
---join=<node1 hostname>:26257,<node2 hostname>:26258
+--advertise-addr=<node2 hostname> \
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 {% include copy-clipboard.html %}
@@ -181,7 +182,7 @@ $ cockroach start \
 # Initialize the cluster:
 $ cockroach init \
 --insecure \
---host=<address of any node>:26257
+--host=<address of any node>
 ~~~
 
 #### Step 3. Set the enterprise license
@@ -227,7 +228,7 @@ Apply zone configurations to corresponding partitions:
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_list.north_america \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f north_america.zone.yml
 ~~~
 
@@ -235,7 +236,7 @@ $ cockroach zone set roachlearn.students_by_list.north_america \
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_list.australia \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f australia.zone.yml
 ~~~
 
@@ -286,8 +287,8 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 # Start the first node:
 $ cockroach start --insecure \
 --store=path=/mnt/1,attrs=ssd \
---advertise-addr=<node1 hostname>:26257 \
---join=<node1 hostname>:26257,<node2 hostname>:26258
+--advertise-addr=<node1 hostname> \
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 {% include copy-clipboard.html %}
@@ -295,8 +296,8 @@ $ cockroach start --insecure \
 # Start the first node:
 $ cockroach start --insecure \
 --store=path=/mnt/2,attrs=hdd \
---advertise-addr=<node2 hostname>:26257 \
---join=<node1 hostname>:26257,<node2 hostname>:26258
+--advertise-addr=<node2 hostname> \
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 {% include copy-clipboard.html %}
@@ -304,7 +305,7 @@ $ cockroach start --insecure \
 # Initialize the cluster:
 $ cockroach init \
 --insecure \
---host=<address of any node>:26257
+--host=<address of any node>
 ~~~
 
 #### Step 4. Create a table with the appropriate partitions
@@ -345,7 +346,7 @@ Apply zone configurations to corresponding partitions:
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_range.current \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f current.zone.yml
 ~~~
 
@@ -353,7 +354,7 @@ $ cockroach zone set roachlearn.students_by_range.current \
 ~~~ shell
 $ cockroach zone set roachlearn.students_by_range.graduated \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f graduated.zone.yml
 ~~~
 
@@ -402,11 +403,11 @@ Start a node in the US datacenter:
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node1 hostname>:26257 \
+--advertise-addr=<node1 hostname> \
 --locality=datacenter=us1 \
 --store=path=/mnt/1,attrs=ssd \
 --store=path=/mnt/2,attrs=hdd \
---join=<node1 hostname>:26257,<node2 hostname>:26257
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 Start a node in the AUS datacenter:
@@ -415,18 +416,18 @@ Start a node in the AUS datacenter:
 ~~~ shell
 $ cockroach start \
 --insecure \
---advertise-addr=<node2 hostname>:26257 \
+--advertise-addr=<node2 hostname> \
 --locality=datacenter=aus1 \
 --store=path=/mnt/3,attrs=ssd \
 --store=path=/mnt/4,attrs=hdd \
---join=<node1 hostname>:26257,<node2 hostname>:26257
+--join=<node1 hostname>,<node2 hostname>
 ~~~
 
 Initialize the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach init --insecure --host=<address of any node>:26257
+$ cockroach init --insecure --host=<address of any node>
 ~~~
 
 #### Step 3. Set the enterprise license
@@ -486,7 +487,7 @@ Apply zone configurations to corresponding partitions:
 ~~~ shell
 $ cockroach zone set roachlearn.students.current_us \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f current_us.zone.yml
 ~~~
 
@@ -494,7 +495,7 @@ $ cockroach zone set roachlearn.students.current_us \
 ~~~ shell
 $ cockroach zone set roachlearn.students.graduated_us \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f graduated_us.zone.yml
 ~~~
 
@@ -507,7 +508,7 @@ $ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zon
 ~~~ shell
 $ cockroach zone set roachlearn.students.graduated_au \
 --insecure \
---host=<address of any node>:26257 \
+--host=<address of any node> \
 -f graduated_au.zone.yml
 ~~~
 

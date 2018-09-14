@@ -14,9 +14,9 @@ You can access the Admin UI from any node in the cluster.
 By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to [enable user authentication](#secure-the-admin-ui) to restrict access to the Admin UI to authorized users.
 {{site.data.alerts.end}}
 
-By default, you can access it via HTTP on port `8080` of the IP address/hostname you set in the `--advertise-addr` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general), for example, `http://<any node hostname>:8080` for an insecure cluster or `https://<any node hostname>:8080` for a secure cluster.
+The Admin UI is reachable at the the IP address/hostname and port set via the `--http-addr` flag when [starting each node](start-a-node.html), for example, `http://<address from --http-addr>:<port from --http-addr>` for an insecure cluster or `https://<address from --http-addr>:<port from --http-addr>` for a secure cluster.
 
-You can also set the CockroachDB Admin UI to a custom IP address/hostname and port using `--http-addr` when [starting each node](start-a-node.html). For example, if you set both a custom hostname and port, you'd use `http://<hostname from --http-addr>:<port from --http-addr>` for an insecure cluster or `https://<hostname from --http-addr>:<port from --http-addr>` for a secure cluster.
+If `--http-addr` is not specified when starting a node, the Admin UI is reachable at the IP address/hostname set via the `--listen-addr` flag and port `8080`.
 
 For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
@@ -187,7 +187,7 @@ By default, CockroachDB allows all users to access and view the Admin UI. Howeve
     {% include copy-clipboard.html %}
     ~~~ shell
     $ COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE \
-      ./cockroach start --advertise-addr=<node1 hostname>:26257 --certs-dir=certs
+      ./cockroach start --advertise-addr=<node1 hostname> --certs-dir=certs
     ~~~
 
 2. For each user who should have access to the Admin UI, [create a user with a password](create-user.html).

@@ -177,7 +177,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     build:               CCL {{page.release_info.version}} @ 2018/09/10 19:49:42 (go1.10.3)
     webui:               http://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslmode=disable
-    client flags:        ./cockroach --host=localhost:26257 --insecure
+    client flags:        ./cockroach <client cmd> --host=localhost:26257 --insecure
     logs:                /Users/<username>/cockroachdb-training/node1/logs
     temp dir:            /Users/<username>/cockroachdb-training/node1/cockroach-temp462678173
     external I/O path:   /Users/<username>/cockroachdb-training/node1/extern

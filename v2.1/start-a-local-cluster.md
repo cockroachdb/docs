@@ -40,7 +40,7 @@ CockroachDB node starting at 2018-09-13 01:25:57.878119479 +0000 UTC (took 0.3s)
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
-client flags:        cockroach --host=localhost:26257 --insecure
+client flags:        cockroach <client cmd> --host=localhost:26257 --insecure
 logs:                cockroach/cockroach-data/logs
 temp dir:            cockroach-data/cockroach-temp998550693
 external I/O path:   cockroach-data/extern

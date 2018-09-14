@@ -8,7 +8,6 @@ This page shows you how to use the `cockroach quit` [command](cockroach-commands
 
 For information about permanently removing nodes to downsize a cluster or react to hardware failures, see [Remove Nodes](remove-nodes.html).
 
-
 ## Overview
 
 ### How it works
@@ -108,7 +107,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=<address of node to stop>:26257
+    $ cockroach quit --certs-dir=certs --host=<address of node to stop>
     ~~~
 </section>
 
@@ -119,7 +118,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --host=<address of node to stop>:26257
+    $ cockroach quit --insecure --host=<address of node to stop>
     ~~~
 </section>
 

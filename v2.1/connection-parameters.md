@@ -153,7 +153,7 @@ The following command-line flags establish an insecure connection:
 
 ~~~
 --user=root \
---host=<servername>:26257
+--host=<servername>
 --insecure
 ~~~
 
@@ -167,7 +167,7 @@ The following command-line flags establish a secure connection:
 
 ~~~
 --user=root \
---host=<servername>:26257
+--host=<servername>
 --certs-dir=path/to/certs
 ~~~
 

@@ -34,11 +34,11 @@ For each additional node you want to add to the cluster, complete the following 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure \
-    --advertise-addr=<node4 address>:26257 \
+    --advertise-addr=<node4 address> \
     --locality=<key-value pairs> \
     --cache=.25 \
     --max-sql-memory=.25 \
-    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+    --join=<node1 address>,<node2 address>,<node3 address> \
     --background
     ~~~
 
@@ -108,12 +108,9 @@ For each additional node you want to add to the cluster, complete the following 
 
 8. Customize the sample configuration template for your deployment:
 
-     Specify values for the following flags in the sample configuration template:
+    Specify values for the following flags in the sample configuration template:
 
-     Flag | Description
-     -----|------------
-     `--advertise-addr` | Specifies the IP address/hostname and port to tell other nodes to use. This value must route to an IP address the node is listening on (with `--listen-addr` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-addr` and/or `--listen-addr` differently. For more details, see [Networking](recommended-production-settings.html#networking).
-     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
+    {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
 9. Repeat these steps for each additional node that you want in your cluster.
 
