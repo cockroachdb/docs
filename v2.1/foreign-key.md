@@ -4,14 +4,16 @@ summary: The Foreign Key constraint specifies a column can contain only values e
 toc: true
 ---
 
-The Foreign Key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
+The `FOREIGN KEY` [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
 
 For example, if you create a foreign key on `orders.customer` that references `customers.id`:
 
 - Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
 - Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ present in `orders.customer` can be.
 
-{{site.data.alerts.callout_success}}If you plan to use Foreign Keys in your schema, consider using <a href="interleave-in-parent.html">interleaved tables</a>, which can dramatically improve query performance.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+If you plan to use foreign keys in your schema, consider using [interleaved tables](interleave-in-parent.html), which can dramatically improve query performance.
+{{site.data.alerts.end}}
 
 
 ## Details
@@ -26,14 +28,14 @@ For example, if you create a foreign key on `orders.customer` that references `c
 - Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
     - To meet this requirement when creating a new table, there are a few options:
         - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
-        - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
+        - Rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
         - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
         - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
     - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
 
 **Referenced Columns**
 
-- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [Unique](unique.html) or [Primary Key](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
 
 ### _NULL_ values
@@ -64,17 +66,21 @@ Parameter | Description
 
 ### Performance
 
-Because the Foreign Key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
+Because the `FOREIGN KEY` constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
 
 We're currently working to improve the performance of these statements, though.
 
-{{site.data.alerts.callout_success}}You can improve the performance of some statements that use Foreign Keys by also using <code><a href="interleave-in-parent.html">INTERLEAVE IN PARENT</a></code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+You can improve the performance of some statements that use Foreign Keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html).
+{{site.data.alerts.end}}
 
 ## Syntax
 
-Foreign Key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+`FOREIGN KEY` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-{{site.data.alerts.callout_info}}You can also add the Foreign Key constraint to existing tables through <a href="add-constraint.html#add-the-foreign-key-constraint-with-cascade"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+{{site.data.alerts.end}}
 
 ### Column level
 
@@ -102,7 +108,9 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
     INDEX (customer)
   );
 ~~~
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+{{site.data.alerts.end}}
 
 ### Table level
 
@@ -137,7 +145,7 @@ CREATE TABLE packages (
 
 ## Usage examples
 
-### Use a foreign key constraint with default actions
+### Use a `FOREIGN KEY` constraint with default actions
 
 In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
 
@@ -243,7 +251,7 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 
 ### Use a Foreign Key Constraint with `CASCADE`
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
+In this example, we'll create a table with a `FOREIGN KEY` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
 First, create the referenced table:
 
@@ -353,7 +361,7 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 
 ### Use a Foreign Key Constraint with `SET NULL`
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
+In this example, we'll create a table with a `FOREIGN KEY` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
 First, create the referenced table:
 
@@ -480,7 +488,7 @@ Let's check to make sure the row in `orders_3` where `customers_id = 2` was upda
 
 ### Use a Foreign Key Constraint with `SET DEFAULT`
 
-In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
+In this example, we'll create a table with a `FOREIGN` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
 
 First, create the referenced table:
 

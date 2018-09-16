@@ -4,27 +4,27 @@ summary: The NOT NULL constraint specifies the column may not contain NULL value
 toc: true
 ---
 
-The Not Null [constraint](constraints.html) specifies a column may not contain *NULL* values.
+The `NOT NULL` [constraint](constraints.html) specifies a column may not contain *NULL* values.
 
 
 ## Details
 
-- `INSERT` or `UPDATE` statements containing *NULL* values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [Default Value constraint](default-value.html).
+- `INSERT` or `UPDATE` statements containing `NULL` values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [`DEFAULT` value constraint](default-value.html).
 
-  For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a Default Value), when you run the following command:
+  For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a `DEFAULT VALUE`), when you run the following command:
 
   ~~~ sql
   > INSERT INTO foo (a) VALUES (1);
   ~~~
 
-  CockroachDB tries to write a *NULL* value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
+  CockroachDB tries to write a `NULL` value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
 
 - You can only define the `NOT NULL` constraint when [creating a table](#syntax); you cannot add it to an existing table. However, you can [migrate data](constraints.html#table-migrations-to-add-or-change-immutable-constraints) from your current table to a new table with the constraint you want to use.
   {{site.data.alerts.callout_info}}
   In the future we plan to support adding the `NOT NULL` constraint to existing tables.
   {{site.data.alerts.end}}
 
-- For more information about *NULL*, see [Null Handling](null-handling.html).
+- For more information about `NULL`, see [Null Handling](null-handling.html).
 
 ## Syntax
 

@@ -47,7 +47,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
 - Cross-row and cross-table order guarantees are not directly given. However, the resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
 
-    Because CockroachDB supports transactions that can affect any part of the cluster, there is no way to horizontally divide the cluster's transaction log in a way where each piece is independent, so it can't be scaled in the general case.
+    Because CockroachDB supports transactions that can affect any part of the cluster, there is no way to horizontally divide the cluster's transaction log in a way where each piece is independent, so it cannot be scaled in the general case.
 
 ## Configure a changefeed
 

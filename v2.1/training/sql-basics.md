@@ -35,7 +35,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
     > CREATE DATABASE bank;
     ~~~
 
-    Databases don't directly store any data; you need to describe the
+    Databases do not directly store any data; you need to describe the
     shape of the data you intend to store by [creating tables](../create-table.html) within your database.
 
 2. Create a table:
@@ -88,7 +88,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
     > INSERT INTO bank.customers VALUES (2, 'Carl', NULL);
     ~~~
 
-    We don't know Carl's address, so we use the special `NULL` value to indicate "unknown."
+    We do not know Carl's address, so we use the special `NULL` value to indicate "unknown."
 
 4. Insert two rows in the same statement:
 
@@ -171,7 +171,7 @@ Now that you have a place to store personal information about customers, create 
     > DELETE FROM bank.customers WHERE customer_id = 1;
     ~~~
 
-    The `WHERE` clause here is a constraint. It indicates that we don't want to delete all the data in the `customers` table, but just the row where `customer_id=1`.
+    The `WHERE` clause here is a constraint. It indicates that we do not want to delete all the data in the `customers` table, but just the row where `customer_id=1`.
 
     ~~~
     pq: foreign key violation: values [1] in columns [customer_id] referenced in table "accounts"
@@ -276,7 +276,7 @@ Now that you have a place to store personal information about customers, create 
 
 Suppose Carl wants to withdraw $250 from his checking account. First, check that he has $250 in his account with one query, then perform the withdrawal in another.
 
-Here's how that would look (don't run this example yet):
+Here's how that would look (do not run this example yet):
 
 ~~~ sql
 > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
@@ -299,7 +299,7 @@ This issue can be solved by using a [transaction](../transactions.html). If two 
 
 Using transactions is as simple as issuing a [`BEGIN` statement](../begin-transaction.html) to start a transaction and a [`COMMIT` statement](../commit-transaction.html) to finish it. You can also [`ROLLBACK` a transaction](../rollback-transaction.html) midway if, for example, you discover that the transfer has insufficient funds.
 
-Here's the above example in a transaction. Again, don't run this example yet.
+Here's the above example in a transaction. Again, do not run this example yet.
 
 ~~~ sql
 > BEGIN;
@@ -411,7 +411,7 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
 
 `SELECT` statements aren't limited to combining data from different tables. They can also combine data in the same table using **aggregations**.
 
-1. Add all of the balances in the the `accounts` table:
+1. Add all of the balances in the `accounts` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql

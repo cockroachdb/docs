@@ -29,7 +29,7 @@ When the transaction layer executes write operations, it doesn't directly write 
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which starts as `PENDING`, and ends as either `COMMITTED` or `ABORTED`).
 
-- **Write intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the Transaction Record stored on the cluster.
+- **Write intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the transaction record stored on the cluster.
 
 As write intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing write intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
 
@@ -49,7 +49,7 @@ If the transaction passes these checks, it's moved to `COMMITTED` and responds w
 
 After the transaction has been resolved, all of the write intents should resolved. To do this, the coordinating node––which kept a track of all of the keys it wrote––reaches out to the values and either:
 
-- Resolves their write intents to MVCC values by removing the element that points it to the Transaction Record.
+- Resolves their write intents to MVCC values by removing the element that points it to the transaction record.
 - Deletes the write intents.
 
 This is simply an optimization, though. If operations in the future encounter write intents, they always check their transaction records––any operation can resolve or remove write intents by checking the transaction record's status.
@@ -95,7 +95,7 @@ All of the KV operations generated from the SQL layer use `client.Txn`, which is
 
 However, `client.Txn` is actually just a wrapper around `TxnCoordSender`, which plays a crucial role in our code base by:
 
-- Dealing with transactions' state. After a transaction is started, `TxnCoordSender` starts asynchronously sending heartbeat messages to that transaction's Transaction Record, which signals that it should be kept alive. If the `TxnCoordSender`'s heartbeating stops, the transaction record is moved to the `ABORTED` status.
+- Dealing with transactions' state. After a transaction is started, `TxnCoordSender` starts asynchronously sending heartbeat messages to that transaction's transaction record, which signals that it should be kept alive. If the `TxnCoordSender`'s heartbeating stops, the transaction record is moved to the `ABORTED` status.
 - Tracking each written key or key range over the course of the transaction.
 - Clearing the accumulated write intent for the transaction when it's committed or aborted. All requests being performed as part of a transaction have to go through the same `TxnCoordSender` to account for all of its write intents, which optimizes the cleanup process.
 

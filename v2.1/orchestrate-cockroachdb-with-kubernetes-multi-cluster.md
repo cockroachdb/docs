@@ -58,7 +58,7 @@ Our multi-region deployment approached relies on pod IP addresses being routable
 
     This creates GKE instances in the zone specified and joins them into a single Kubernetes cluster named `cockroachdb1`.
 
-    The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb1...done` message and details about your cluster.
+    The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb1...done` message and details about your cluster.
 
 3. Start the second Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
@@ -381,7 +381,7 @@ To see this in action:
 
 ### Scale the cluster
 
-Each of your Kubernetes clusters contains 3 nodes that pods can run on. To ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
+Each of your Kubernetes clusters contains 3 nodes that pods can run on. To ensure that you do not have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
 1. [Resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster).
 

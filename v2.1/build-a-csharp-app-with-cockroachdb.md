@@ -12,7 +12,7 @@ We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim 
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the [.NET SDK](https://www.microsoft.com/net/download/) for your OS.
+Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the <a href="https://www.microsoft.com/net/download/" data-proofer-ignore>.NET SDK</a> for your OS.
 
 ## Step 1. Create a .NET project
 

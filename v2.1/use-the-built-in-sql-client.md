@@ -9,7 +9,7 @@ CockroachDB comes with a built-in client for executing SQL statements from an in
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
 {{site.data.alerts.callout_success}}
-If you want to experiment with CockroachDB SQL but don't have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster. 
+If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -66,7 +66,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 `cockroach sql` exhibits different behaviors depending on whether or not the session is interactive and/or whether or not the session outputs on a terminal.
 
-- A session is **interactive** when when `cockroach sql` is invoked without the `--execute` flag and input is not redirected from a file. In such cases:
+- A session is **interactive** when `cockroach sql` is invoked without the `--execute` flag and input is not redirected from a file. In such cases:
     - The [`errexit` option](#sql-option-errexit) defaults to `false`.
     - The [`check_syntax` option](#sql-option-check-syntax) defaults to `true` if supported by the CockroachDB server (this is checked when the shell starts up).
     - **Ctrl+C** at the prompt will only terminate the shell if no other input was entered on the same line already.

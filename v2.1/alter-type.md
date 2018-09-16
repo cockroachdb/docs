@@ -10,7 +10,7 @@ The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alt
 
 You can use the `ALTER TYPE` subcommand if the following conditions are met:
 
-- On-disk representation of the column remains unchanged. For example, you can't change the column data type from `STRING` to an `INT`, even if the string is just a number.
+- On-disk representation of the column remains unchanged. For example, you cannot change the column data type from `STRING` to an `INT`, even if the string is just a number.
 - The existing data remains valid. For example, you can change the column data type from `STRING[10]` to `STRING[20]`, but not to `STRING [5]` since that will invalidate the existing data.
 
 ## Synopsis
