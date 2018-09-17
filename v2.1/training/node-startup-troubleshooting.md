@@ -75,7 +75,6 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -89,7 +88,6 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    ---advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -103,7 +101,6 @@ In this scenario, you try to add a node to a secure cluster without providing th
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -114,7 +111,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --certs-dir=certs
+    $ ./cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
 
 ### Step 3. Simulate the problem
@@ -129,7 +126,6 @@ The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr`
 ~~~ shell
 $ ./cockroach start \
 --store=node4 \
---advertise-addr=localhost \
 --listen-addr=localhost:26260 \
 --http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -169,7 +165,6 @@ To successfully join the node to the cluster, start the node again, but this tim
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node4 \
---advertise-addr=localhost \
 --listen-addr=localhost:26260 \
 --http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
@@ -188,7 +183,6 @@ In a new terminal, try to add another node:
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node5 \
---advertise-addr=localhost \
 --listen-addr=localhost:26261 \
 --http-addr=localhost:8084 \
 --join=localhost:20000 \
@@ -215,7 +209,6 @@ These warnings tell you that the node cannot establish a connection with the add
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node5 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -234,7 +227,6 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085
     ~~~
@@ -262,7 +254,6 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node6 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -291,7 +282,6 @@ $ rm -rf node6
 $ ./cockroach start \
 --certs-dir=certs \
 --store=node6 \
---advertise-addr=localhost \
 --listen-addr=localhost:26262 \
 --http-addr=localhost:8085 \
 --join=localhost:26257,localhost:26258,localhost:26259

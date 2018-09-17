@@ -96,7 +96,6 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -110,7 +109,6 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -124,14 +122,15 @@ Restart the nodes using the same commands you used to start them initially, but 
     $ ./cockroach start \
     --certs-dir=certs \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
     ~~~
 
-{{site.data.alerts.callout_info}}There's no need to run <code>cockroach init</code> again since the cluster was initialized earlier. However, the cluster will restart only after a majority of nodes are back online (2/3).{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+There's no need to run `cockroach init` again since the cluster was initialized earlier. However, the cluster will restart only after a majority of nodes are back online (2/3).
+{{site.data.alerts.end}}
 
 ## Step 4. Authenticate a user (via client cert)
 
@@ -141,6 +140,7 @@ Restart the nodes using the same commands you used to start them initially, but 
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --user=spock \
     --database=startrek \
     --execute="SELECT * FROM quotes WHERE quote ~* 'creature';"
@@ -167,6 +167,7 @@ For multiple users to access the Admin UI, the `root` user must create users wit
     ~~~ shell
     $ ./cockroach user set kirk \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --password
     ~~~
 
@@ -176,18 +177,22 @@ For multiple users to access the Admin UI, the `root` user must create users wit
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --user=root \
     --execute="GRANT SELECT ON startrek.* TO kirk;"
     ~~~
 
 3. As the `kirk` user, read from the `startrek.quotes` table:
 
-    {{site.data.alerts.callout_info}}It's necessary to include the <code>--certs-dir</code> flag even though you haven't created a cert for this user. When the cluster does not find a suitable client cert, it falls back on password authentication.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    It's necessary to include the `--certs-dir` flag even though you haven't created a cert for this user. When the cluster does not find a suitable client cert, it falls back on password authentication.
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --user=kirk \
     --database=startrek \
     --execute="SELECT * FROM quotes WHERE quote ~* 'danger';"
@@ -226,6 +231,7 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     ~~~ shell
     $ rm -rf node1 node2 node3 my-safe-directory certs
     ~~~
+
 ## What's next?
 
 [Production Deployment](production-deployment.html)

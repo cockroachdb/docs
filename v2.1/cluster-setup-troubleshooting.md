@@ -6,7 +6,6 @@ toc: true
 
 If you're having trouble starting or scaling your cluster, this page will help you troubleshoot the issue.
 
-
 ## Before you begin
 
 ### Terminology
@@ -49,12 +48,12 @@ Proceed through the following steps until you locate the source of the issue wit
 
     Errors at this stage potentially include:
     - CPU incompatibility
-    - Other services running on port `26257` or `8080` (CockroachDB's default `port` and `http-port` respectively). You can either stop those services or start your node with different ports, specified with the [`--port` and   `--http-port`](start-a-node.html#flags).
+    - Other services running on port `26257` or `8080` (CockroachDB's default `-listen-addr` port and `http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr`](start-a-node.html#networking) flags.
 
-        If you change the port, you will need to include the `--port=[specified port]` flag in each subsequent `cockroach` command or change the `COCKROACH_PORT` environment variable.
-    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--host` flag](start-a-node.html#flags).
+        If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent `cockroach` command or change the `COCKROACH_PORT` environment variable.
+    - Networking issues that prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](start-a-node.html#networking).
 
-        If you change the host, you will need to include `--host=[specified host]` in each subsequent `cockroach` command.
+        If you change the host, you will need to include `--host=<specified host>` in each subsequent `cockroach` command.
 
 3. If the node appears to have started successfully, open a new terminal window, and attempt to execute the following SQL statement:
 
@@ -77,7 +76,7 @@ Proceed through the following steps until you locate the source of the issue wit
     ~~~
 
     Errors at this stage potentially include:
-    - `connection refused`, which indicates you have not included some flag that you used to start the node (e.g., `--port` or `--host`). We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
+    - `connection refused`, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
     - The node crashed. You can identify if this is the case by looking for the `cockroach` process through `ps`. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html).
 
 **Next step**: If you successfully completed these steps, try starting a multi-node cluster.
@@ -103,17 +102,19 @@ Proceed through the following steps until you locate the source of the issue wit
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure --logtostderr --store=testStore \
-    --join=[first node's host]
+    --join=<host of first node>
     ~~~
 
-    {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, you will need to change the <code>--port</code>, <code>--http-port</code>, and <code>--store</code> flags. For an example of this, see <a href="start-a-local-cluster.html#step-2-add-nodes-to-the-cluster">Start a Local Cluster</a>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    If you're running all nodes on the same machine, you will need to change the <code>--port</code>, <code>--http-port</code>, and <code>--store</code> flags. For an example of this, see <a href="start-a-local-cluster.html#step-2-add-nodes-to-the-cluster">Start a Local Cluster</a>.
+    {{site.data.alerts.end}}
 
     Errors at this stage potentially include:
     - The same port and host issues from [running a single node](#1-start-a-single-node-cluster).
     - [Networking issues](#networking-troubleshooting)
     - [Nodes not joining the cluster](#node-wont-join-cluster)
 
-3. Visit the Admin UI on any node at `http://[node host]:8080` and click **Metrics** on the left-hand navigation bar. All nodes in the cluster should be listed and have data replicated onto them.
+3. Visit the Admin UI on any node at `http://<node host>:8080` and click **Metrics** on the left-hand navigation bar. All nodes in the cluster should be listed and have data replicated onto them.
 
     Errors at this stage potentially include:
     - [Networking issues](#networking-troubleshooting)
@@ -131,19 +132,19 @@ Most networking-related issues are caused by one of two issues:
 
 - Firewall rules, which require your network administrator to investigate
 
-- Inaccessible hostnames on your nodes, which can be controlled with the `--host` and `--advertise-host` flags on [`cockroach start`](start-a-node.html#flags)
+- Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](start-a-node.html#networking)
 
 However, to efficiently troubleshoot the issue, it's important to understand where and why it's occurring. We recommend checking the following network-related issues:
 
 - By default, CockroachDB advertises itself to other nodes using its hostname. If your environment doesn't support DNS or the hostname is not resolvable, your nodes cannot connect to one another. In these cases, you can:
-  - Change the hostname each node uses to advertises itself with `--advertise-host`
-  - Set `--host=[node's IP address]` if the IP is a valid interface on the machine
+  - Change the hostname each node uses to advertises itself with `--advertise-addr`
+  - Set `--listen-addr=<node's IP address>` if the IP is a valid interface on the machine
 
-- Every node in the cluster should be able to `ping` each other node on the hostnames or IP addresses you use in the `--join`, `--host`, or `--advertise-host` flags.
+- Every node in the cluster should be able to `ping` each other node on the hostnames or IP addresses you use in the `--join`, `--listen-addr`, or `--advertise-addr` flags.
 
 - Every node should be able to connect to other nodes on the port you're using for CockroachDB (**26257** by default) through `telnet` or `nc`:
-  - `telnet [other node host] 26257`
-  - `nc [other node host] 26257`
+  - `telnet <other node host> 26257`
+  - `nc <other node host> 26257`
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
@@ -166,7 +167,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
     {% include copy-clipboard.html %}
     ~~~ shell
     # Store this node's data in [new directory]
-    $ cockroach start [flags] --store=[new directory] --join=[cluster host]:26257
+    $ cockroach start --store=<new directory> --join=<cluster host> <other flags>
     ~~~
 
 - Remove the existing directory and start a node joining the cluster again:
@@ -180,7 +181,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
     {% include copy-clipboard.html %}
     ~~~ shell
     # Start a node joining the cluster
-    $ cockroach start [flags] --join=[cluster host]:26257
+    $ cockroach start --join=<cluster host>:26257 <other flags>
     ~~~
 
 **Explanation**: When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit `cockroach`, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.
@@ -195,12 +196,12 @@ If data is not being replicated to some nodes in the cluster, we recommend check
 
 - Nodes might not be able to communicate on their advertised hostnames, even though they're able to connect.
 
-    You can try to resolve this by [stopping the nodes](stop-a-node.html), and then [restarting them](start-a-node.html) with the `--advertise-host` flag set to an interface all nodes can access.
+    You can try to resolve this by [stopping the nodes](stop-a-node.html), and then [restarting them](start-a-node.html) with the `--advertise-addr` flag set to an interface all nodes can access.
 
 - Check the [logs](debug-and-error-logs.html) for each node for further detail, as well as these common errors:
 
   - `connection refused`: [Troubleshoot your network](#networking-troubleshooting).
-  - `not connected to cluster` or `node [id] belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
+  - `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
 
 ## Something else?
 

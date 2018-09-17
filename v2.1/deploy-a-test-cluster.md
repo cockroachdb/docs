@@ -67,19 +67,6 @@ Before getting started, it's important to review some limitations and requiremen
     --url="postgresql://root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257?sslmode=disable"
     ~~~
 
-    ~~~
-    # Welcome to the cockroach SQL interface.
-    # All statements must be terminated by a semicolon.
-    # To exit: CTRL + D.
-    #
-    # Server version: CockroachDB CCL v1.1.4 (linux amd64, built 2018/01/08 17:32:42, go1.8.3) (same version as client)
-    # Cluster ID: bc181e48-da0b-4336-a7a2-a041e195ab5c
-    #
-    # Enter \? for a brief introduction.
-    #
-    root@Cockroach-ApiLoadB-LVZZ3VVHMIDA-1266691548.us-west-2.elb.amazonaws.com:26257/>
-    ~~~
-
 4. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include copy-clipboard.html %}

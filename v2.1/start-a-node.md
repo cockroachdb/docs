@@ -6,8 +6,9 @@ toc: true
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
-{{site.data.alerts.callout_info}}Node-level settings are defined by flags passed to the <code>cockroach start</code> command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see <a href="cluster-settings.html">Cluster Settings</a>.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+Node-level settings are defined by flags passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -28,31 +29,22 @@ $ cockroach start --help
 
 ## Flags
 
-The `start` command supports the following [general-use](#general) and
-[logging](#logging) flags. All flags must be specified each time the
-node is started, as they will not be remembered, with the exception of
-the `--join` flag. Nevertheless, we recommend specifying
-_all_ flags every time, including the `--join` flag, as that will
-allow restarted nodes to join the cluster even if their data directory
-was destroyed.
+The `start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags. All flags must be specified each time the
+node is started, as they will not be remembered, with the exception of the `--join` flag. Nevertheless, we recommend specifying _all_ flags every time, including the `--join` flag, as that will
+allow restarted nodes to join the cluster even if their data directory was destroyed.
 
-{{site.data.alerts.callout_success}}When adding a node to an existing cluster, include the <code>--join</code> flag.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+When adding a node to an existing cluster, include the `--join` flag.
+{{site.data.alerts.end}}
 
 ### General
 
 Flag | Description
 -----|-----------
-`--advertise-host` | The IP address or hostname to tell other nodes to use. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.<br><br>This flag's effect depends on how it is used in combination with `--host`. For more details, see [Networking](recommended-production-settings.html#networking).
 `--attrs` | Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--background` | Set this to start the node in the background. This is better than appending `&` to the command because control is returned to the shell only once the node is ready to accept requests. <br /><br /> **Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal.  Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
 `--external-io-dir` | The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to `disabled`, backups and restores using local node directories and NFS drives are disabled.<br><br>**Default:** `extern` subdirectory of the first configured [`store`](#store).<br><br>To set the `--external-io-dir` flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the `extern` directory.
-`--host` | The IP address or hostname to listen on for connections from other nodes and clients. The node will also advertise itself to other nodes using this value if `--advertise-host` is not specified. <br><br>This flag's effect depends on how it is used in combination with `--advertise-host`. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses and advertise the node's canonical hostname to other nodes
-`--http-host` | The hostname or IP address to listen on for Admin UI HTTP requests. <br><br>**Default:** same as `--host`
-`--http-port` | The port to bind to for Admin UI HTTP requests. <br><br>**Default:** `8080`
-`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
-`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
 `--locality` | Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](#locality) below.
 `--max-disk-temp-storage` | The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see `--max-sql-memory`). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit (e.g., `.25`, `25%`, `500GB`, `1TB`, `1TiB`).<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead. Also, if expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br>**Default:** `32GiB`
@@ -60,9 +52,30 @@ Flag | Description
 `--max-offset` | The maximum allowed clock offset for the cluster. If observed clock offsets exceed this limit, servers will crash to minimize the likelihood of reading inconsistent data. Increasing this value will increase the time to recovery of failures as well as the frequency of uncertainty-based read restarts.<br><br>Note that this value must be the same on all nodes in the cluster and cannot be changed with a [rolling upgrade](upgrade-cockroach-version.html). In order to change it, first stop every node in the cluster. Then once the entire cluster is offline, restart each node with the new value.<br><br>**Default:** `500ms`
 `--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `128MiB`<br><br>The default SQL memory size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
 `--pid-file` | The file to which the node's process ID will be written on successful startup. When this flag is not set, the process ID is not written to file.
-`--port`<br>`-p` | The port to bind to for internal and client communication.<br><br>To have an unused port assigned automatically, pass `--port=0`.<br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
 `--temp-dir` | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
+
+### Networking
+
+Flag | Description
+-----|-----------
+`--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
+`--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
+`--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
+`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
+`--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
+`--host` | **Deprecated.** Use `--listen-addr` instead.
+`--port`<br>`-p` | **Deprecated.** Specify port in `--advertise-addr` and/or `--listen-addr` instead.
+`--http-host` | **Deprecated.** Use `--http-addr` instead.
+`--http-port` | **Deprecated.** Specify port in `--http-addr` instead.
+
+### Security
+
+Flag | Description
+-----|-----------
+`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
+`--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
+`--enterprise-encryption` | See [Encryption At Rest](encryption.html).
 
 ### Locality
 
@@ -91,7 +104,9 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
-{{site.data.alerts.callout_info}}In-memory storage is not suitable for production deployments at this time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In-memory storage is not suitable for production deployments at this time.
+{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
@@ -122,26 +137,30 @@ When you run `cockroach start`, some helpful details are printed to the standard
 ~~~ shell
 CockroachDB node starting at {{page.release_info.start_time}}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:               http://ROACHs-MBP:8080
-sql:                 postgresql://root@ROACHs-MBP:26257?sslmode=disable
-logs:                node1/logs
-temp dir:            /node1/cockroach-temp430873933
-external I/O path:   /node1/extern
+webui:               http://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslmode=disable
+client flags:        cockroach <client cmd> --listen-addr=localhost:26257 --insecure
+logs:                /cockroach-data/logs
+temp dir:            /cockroach-data/cockroach-temp430873933
+external I/O path:   /cockroach-data/extern
 attrs:               ram:64gb
 locality:            datacenter=us-east1
-store[0]:            path=node1,attrs=ssd
+store[0]:            path=cockroach-data,attrs=ssd
 status:              initialized new cluster
 clusterID:           7b9329d0-580d-4035-8319-53ba8b74b213
 nodeID:              1
 ~~~
 
-{{site.data.alerts.callout_success}}These details are also written to the <code>INFO</code> log in the <code>/logs</code> directory in case you need to refer to them at a later time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+These details are also written to the `INFO` log in the `/logs` directory in case you need to refer to them at a later time.
+{{site.data.alerts.end}}
 
 Field | Description
 ------|------------
 `build` | The version of CockroachDB you are running.
-`admin` | The URL for accessing the Admin UI.
+`webui` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
+`client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
 `logs` | The directory containing debug log data.
 `temp dir` | The temporary store directory of the node.
 `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.
@@ -168,7 +187,7 @@ To start a single-node cluster, run the `cockroach start` command without the `-
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node1 address> \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -179,7 +198,7 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node1 address> \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -199,8 +218,8 @@ To start a multi-node cluster, run the `cockroach start` command for each node, 
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node1 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -209,8 +228,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node2 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -219,8 +238,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node3 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -231,8 +250,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node1 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -241,8 +260,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node2 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -251,8 +270,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node3 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -285,15 +304,15 @@ $ cockroach init \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addressess of 3-5 of the nodes already in the cluster:
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addresses of 3-5 of the nodes already in the cluster:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=<node4 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
@@ -304,8 +323,8 @@ $ cockroach start \
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=<node4 address> \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~

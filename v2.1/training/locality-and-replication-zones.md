@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
 {{site.data.alerts.callout_info}}
-To simplify the process of running multiple nodes on your local computer, you'll start themin the [background](../start-a-node.html#general) instead of in separate terminals.
+To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
 {{site.data.alerts.end}}
 
 1. In a new terminal, start node 1:
@@ -34,7 +34,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -49,7 +48,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -64,7 +62,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -75,7 +72,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Check data distribution
@@ -98,7 +95,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node4 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -113,7 +109,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node5 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -128,7 +123,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node6 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -145,7 +139,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node7 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26263 \
     --http-addr=localhost:8086 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -160,7 +153,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node8 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26264 \
     --http-addr=localhost:8087 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -175,7 +167,6 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node9 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26265 \
     --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -194,7 +185,9 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data intro | ./cockroach sql --insecure
+    $ ./cockroach gen example-data intro | ./cockroach sql \
+    --insecure \
+    --host=localhost:26257
     ~~~
 
 2. Use the `cockroach sql` command to verify that the table was added:
@@ -203,6 +196,7 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SELECT * FROM intro.mytable WHERE (l % 2) = 0;"
     ~~~
 
@@ -239,6 +233,7 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
     ~~~
 
@@ -263,7 +258,6 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node10 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26266 \
     --http-addr=localhost:8089 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -278,7 +272,6 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node11 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26267 \
     --http-addr=localhost:8090 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -293,7 +286,6 @@ Let's say your user-base has expanded into Europe and you want to store data the
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node12 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26268 \
     --http-addr=localhost:8091 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -308,7 +300,9 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data startrek | ./cockroach sql --insecure
+    $ ./cockroach gen example-data startrek | ./cockroach sql \
+    --insecure \
+    --host=localhost:26257
     ~~~
 
 2. Use the `cockroach sql` command to verify that the tables were added:
@@ -317,6 +311,7 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SELECT * FROM startrek.episodes LIMIT 5;" \
     --execute="SELECT quote FROM startrek.quotes WHERE characters = 'Spock and Kirk';"
     ~~~
@@ -344,7 +339,10 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek --insecure -f -
+    $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek \
+    --insecure \
+    --host=localhost:26257 \
+    -f -
     ~~~
 
     ~~~
@@ -360,7 +358,10 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=us]' | ./cockroach zone set intro --insecure -f -
+    $ echo 'constraints: [+region=us]' | ./cockroach zone set intro \
+    --insecure \
+    --host=localhost:26257 \
+    -f -
     ~~~
 
     ~~~
@@ -382,6 +383,7 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;" \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.episodes;" \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.quotes;"    

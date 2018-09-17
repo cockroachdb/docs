@@ -10,7 +10,6 @@ connection to a CockroachDB cluster. The client connection parameters
 determine which CockroachDB cluster they connect to, and how to
 establish this network connection.
 
-
 ## Supported connection parameters
 
 Most client apps, including `cockroach`  client commands, determine
@@ -153,9 +152,9 @@ variable is used when the command-line flag is not specified.
 The following command-line flags establish an insecure connection:
 
 ~~~
---user root \
- --host servername:26257 \
- --insecure
+--user=root \
+--host=<servername>
+--insecure
 ~~~
 
 This specifies a connection for the `root` user to server `servername`
@@ -167,9 +166,9 @@ the connection insecure.
 The following command-line flags establish a secure connection:
 
 ~~~
---user root \
- --host servername:26257 \
- --certs-dir path/to/certs
+--user=root \
+--host=<servername>
+--certs-dir=path/to/certs
 ~~~
 
 This uses the following components:
@@ -208,8 +207,8 @@ To specify `mydb` as the current database using [`cockroach sql`](use-the-built-
 
 ~~~
 cockroach sql \
- --url "postgres://root@servername:26257/?sslmode=disable" \
- --database mydb
+--url "postgres://root@servername:26257/?sslmode=disable" \
+--database mydb
 ~~~
 
 This is equivalent to:

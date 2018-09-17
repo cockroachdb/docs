@@ -34,7 +34,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node1 \
---host=localhost \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~~
@@ -47,9 +48,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node2 \
---host=localhost \
---port=25258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -62,9 +62,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node3 \
---host=localhost \
---port=25259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -77,8 +76,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ## Step 4. Set up HAProxy load balancing
@@ -91,8 +89,7 @@ In a new terminal, run the [`cockroach gen haproxy`](generate-cockroachdb-resour
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that will not be used by the nodes you'll add later.
@@ -158,9 +155,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -173,9 +169,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node5 \
---host=localhost \
---port=25261 \
---http-port=8084 \
+--advertise-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -188,9 +183,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node6 \
---host=localhost \
---port=25262 \
---http-port=8085 \
+--advertise-addr=localhost:26262 \
+--http-addr=localhost:8085 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -211,7 +205,7 @@ In a new terminal, edit the default replication zone:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'constraints: [+cloud=2]' | cockroach zone set .default --insecure --host=localhost -f -
+$ echo 'constraints: [+cloud=2]' | cockroach zone set .default --insecure --host=localhost:26257 -f -
 ~~~
 
 ## Step 10. Verify the data migration

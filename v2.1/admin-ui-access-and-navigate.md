@@ -6,7 +6,6 @@ toc: true
 
 The built-in Admin UI gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
 
-
 ## Access the Admin UI
 
 You can access the Admin UI from any node in the cluster.
@@ -15,9 +14,9 @@ You can access the Admin UI from any node in the cluster.
 By default, CockroachDB allows all users to access and view the Admin UI. For secure clusters, you can choose to [enable user authentication](#secure-the-admin-ui) to restrict access to the Admin UI to authorized users.
 {{site.data.alerts.end}}
 
-By default, you can access it via HTTP on port `8080` of the hostname or IP address you configured using the `--host` flag while [starting the node](https://www.cockroachlabs.com/docs/stable/start-a-node.html#general). For example, `http://<any node host>:8080`. If you are running a secure cluster, use `https://<any node host>:8080`.
+The Admin UI is reachable at the the IP address/hostname and port set via the `--http-addr` flag when [starting each node](start-a-node.html), for example, `http://<address from --http-addr>:<port from --http-addr>` for an insecure cluster or `https://<address from --http-addr>:<port from --http-addr>` for a secure cluster.
 
-You can also set the CockroachDB Admin UI to a custom port using `--http-port` or a custom hostname using `--http-host` when [starting each node](start-a-node.html). For example, if you set both a custom port and hostname, `http://<http-host value>:<http-port value>`. For a secure cluster, `https://<http-host value>:<http-port value>`.
+If `--http-addr` is not specified when starting a node, the Admin UI is reachable at the IP address/hostname set via the `--listen-addr` flag and port `8080`.
 
 For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
@@ -188,7 +187,7 @@ By default, CockroachDB allows all users to access and view the Admin UI. Howeve
     {% include copy-clipboard.html %}
     ~~~ shell
     $ COCKROACH_EXPERIMENTAL_REQUIRE_WEB_LOGIN=TRUE \
-      ./cockroach start --host=<node1 hostname> --certs-dir=certs
+      ./cockroach start --advertise-addr=<node1 hostname> --certs-dir=certs
     ~~~
 
 2. For each user who should have access to the Admin UI, [create a user with a password](create-user.html).

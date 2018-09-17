@@ -58,8 +58,8 @@ This configuration is intended for performance benchmarking only. For production
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --advertise-host=<node1 internal address> \
-    --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
+    --advertise-addr=<node1 internal address> \
+    --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
     --cache=.25 \
     --max-sql-memory=.25 \
     --background
@@ -71,7 +71,7 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=localhost
+    $ cockroach init --insecure --host=<address of any node>
     ~~~
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
@@ -100,7 +100,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     ~~~ shell
     $ ./workload.LATEST fixtures load tpcc \
     --warehouses=1000 \
-    "postgres://root@<node1 address>:26257?sslmode=disable"
+    "postgres://root@<node1 address>?sslmode=disable"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take about an hour and loads 1,000 "warehouses" of data.
@@ -125,7 +125,7 @@ $ ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable"
+"postgres://root@<node1 address>?sslmode=disable postgres://root@<node2 address>?sslmode=disable postgres://root@<node3 address>?sslmode=disable"
 ~~~
 
 ### Step 5. Interpret the results
@@ -194,8 +194,8 @@ This configuration is intended for performance benchmarking only. For production
     ~~~ shell
     $ cockroach start \
     --insecure \
-    --advertise-host=<node1 internal address> \
-    --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257, [...] \
+    --advertise-addr=<node1 internal address> \
+    --join=<node1 internal address>,<node2 internal address>,<node3 internal address>, [...] \
     --cache=.25 \
     --max-sql-memory=.25 \
     --locality=rack=1 \
@@ -210,7 +210,7 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=localhost
+    $ cockroach init --insecure --host=<address of any node>
     ~~~
 
     Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
@@ -225,7 +225,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure
+    $ cockroach sql --insecure --host=localhost
     ~~~
 
 2. Add your enterprise license:
@@ -261,7 +261,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     ~~~ shell
     $  ./workload.LATEST fixtures load tpcc \
     --warehouses=10000 \
-    "postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable [...space separated list]"
+    "postgres://root@<node1 address>?sslmode=disable postgres://root@<node2 address>?sslmode=disable postgres://root@<node3 address>?sslmode=disable [...space separated list]"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take at about an hour and loads 10,000 "warehouses" of data.
@@ -282,7 +282,7 @@ To [increase the snapshot rate](cluster-settings.html), which helps speed up thi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure
+    $ cockroach sql --insecure --host=localhost
     ~~~
 
 2. Set the cluster setting to increase the snapshot rate:
@@ -308,7 +308,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     --scatter \
     --warehouses=10000 \
     --duration=1s \
-    "postgres://root@<node31 address>:26257?sslmode=disable"
+    "postgres://root@<node31 address>?sslmode=disable"
     ~~~
 
     This command runs the TPC-C workload against the cluster for 1 second, long enough to add the partitions.
@@ -332,7 +332,7 @@ $ ulimit -n 10000 && ./workload.LATEST run tpcc \
 --duration=300s \
 --split \
 --scatter \
-"postgres://root@<node1 address>:26257?sslmode=disable postgres://root@<node2 address>:26257?sslmode=disable postgres://root@<node3 address>:26257?sslmode=disable [...space separated list]"
+"postgres://root@<node1 address>?sslmode=disable postgres://root@<node2 address>?sslmode=disable postgres://root@<node3 address>?sslmode=disable [...space separated list]"
 ~~~
 
 ### Step 8. Interpret the results

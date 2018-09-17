@@ -21,7 +21,7 @@ Use the [`cockroach sql`](../start-a-node.html) command to open the built-in SQL
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach sql --insecure
+$ ./cockroach sql --insecure --host=localhost:26257
 ~~~
 
 ## Step 2. Create your first database and table
@@ -141,8 +141,7 @@ Now that you have a place to store personal information about customers, create 
 
     The first new feature is the balance column's [`DECIMAL` type](../decimal.html), which is capable of storing fractional numbers (the previously used `INTEGER` columns can only store whole numbers). The numbers in parenthesis indicate the maximum size of the decimal number. `DECIMAL(8, 2)` means that a number with up to eight digits can be stored with up to two digits past the decimal point. This means we can store account balances as large as `999999.99`, but no larger.
 
-    The second new feature is the [foreign key](../foreign-key.html) created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real
-    customer. Let's verify this works as intended.
+    The second new feature is the [foreign key](../foreign-key.html) created by the `REFERENCES` clause. Foreign keys are how SQL maintains referential integrity across different tables. Here, the foreign key guarantees that every account belongs to a real customer. Let's verify this works as intended.
 
 2. Try to open an account for a customer that doesn't exist:
 
