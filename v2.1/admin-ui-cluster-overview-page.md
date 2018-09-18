@@ -5,7 +5,6 @@ toc: true
 
 The **Cluster Overview** page of the Admin UI provides details of the cluster nodes and their liveness status, replication status, uptime, and key hardware metrics. [Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-cluster-overview-page.html#node-map-enterprise) view.
 
-
 ## Cluster Overview Panel
 
 <img src="{{ 'images/v2.1/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
