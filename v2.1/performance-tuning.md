@@ -2,6 +2,7 @@
 title: Performance Tuning
 summary: Essential techniques for getting fast reads and writes in a single- and multi-region CockroachDB deployment.
 toc: true
+drift: true
 ---
 
 This tutorial shows you essential techniques for getting fast reads and writes in CockroachDB, starting with a single-region deployment and expanding into multiple regions.
@@ -14,7 +15,7 @@ For a comprehensive list of tuning recommendations, only some of which are demon
 
 You'll start with a 3-node CockroachDB cluster in a single Google Compute Engine (GCE) zone, with an extra instance for running a client application workload:
 
-<img src="{{ 'images/v2.0/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 Within a single GCE zone, network latency between instances should be sub-millisecond.
@@ -22,7 +23,7 @@ Within a single GCE zone, network latency between instances should be sub-millis
 
 You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an extra instance in each region for a client application workload:
 
-<img src="{{ 'images/v2.0/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
 
 To reproduce the performance demonstrated in this tutorial:
 
@@ -33,7 +34,7 @@ To reproduce the performance demonstrated in this tutorial:
 
 Your schema and data will be based on the fictional peer-to-peer vehicle-sharing app, MovR, that was featured in the [CockroachDB 2.0 demo](https://www.youtube.com/watch?v=v2QK5VgLx6E):
 
-<img src="{{ 'images/v2.0/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
 
 A few notes about the schema:
 
@@ -69,7 +70,7 @@ First, imagine a simple read scenario where:
 - Ranges are replicated 3 times (the default).
 - A query is executed against node 2 to read from table 3.
 
-<img src="{{ 'images/v2.0/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 In this case:
 
@@ -80,13 +81,13 @@ In this case:
 
 If the query is received by the node that has the leaseholder for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v2.0/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 #### Write scenario
 
 Now imagine a simple write scenario where a query is executed against node 3 to write to table 1:
 
-<img src="{{ 'images/v2.0/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 In this case:
 
@@ -99,7 +100,7 @@ In this case:
 
 Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v2.0/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 #### Network and I/O bottlenecks
 
@@ -113,9 +114,8 @@ With the above examples in mind, it's always important to consider network laten
 <!-- roachprod instructions for single-region deployment
 1. Reserve 12 instances across 3 GCE zone: roachprod create <yourname>-tuning --geo --gce-zones us-east1-b,us-west1-a,us-west2-a --local-ssd -n 12
 2. Put cockroach` on all instances:
-   - roachprod run <yourname>-tuning "curl https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz"
-   - roachprod run <yourname>-tuning "sudo cp -i cockroach-v2.0.4.linux-amd64/cockroach /usr/local/bin"
-3. Start the cluster in us-east1-b: roachprod start -b "/usr/local/bin/cockroach" <yourname>-tuning:1-3
+   - roachprod stage <yourname>-tuning release v2.1.0-beta.20181008
+3. Start the cluster in us-east1-b: roachprod start <yourname>-tuning:1-3
 4. You'll need the addresses of all instances later, so list and record them somewhere: roachprod list -d <yourname>-tuning
 5. Import the Movr dataset:
    - SSH onto instance 4: roachprod run <yourname>-tuning:4
@@ -264,14 +264,12 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     ~~~
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    | 370636591722889217 | succeeded |                  1 |    0 |             0 |              0 |     0 |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+            job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes
+    +--------------------+-----------+--------------------+------+---------------+----------------+--------+
+      390345990764396545 | succeeded |                  1 | 1998 |             0 |              0 | 241052
     (1 row)
 
-    Time: 3.409449563s
+    Time: 2.882582355s
     ~~~    
 
     {% include copy-clipboard.html %}
@@ -294,14 +292,12 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     ~~~
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    | 370636877487505409 | succeeded |                  1 |    0 |             0 |              0 |     0 |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+            job_id       |  status   | fraction_completed | rows  | index_entries | system_records |  bytes
+    +--------------------+-----------+--------------------+-------+---------------+----------------+---------+
+      390346109887250433 | succeeded |                  1 | 19998 |         19998 |              0 | 3558767
     (1 row)
 
-    Time: 5.646142826s
+    Time: 5.803841493s
     ~~~
 
     {% include copy-clipboard.html %}
@@ -337,14 +333,12 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     ~~~
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    |       job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
-    | 370636986413285377 | succeeded |                  1 |    0 |             0 |              0 |     0 |
-    +--------------------+-----------+--------------------+------+---------------+----------------+-------+
+            job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |   bytes
+    +--------------------+-----------+--------------------+--------+---------------+----------------+-----------+
+      390346325693792257 | succeeded |                  1 | 999996 |       1999992 |              0 | 339741841
     (1 row)
 
-    Time: 42.781522085s
+    Time: 44.620371424s
     ~~~
 
     {{site.data.alerts.callout_success}}
@@ -415,7 +409,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning.py \
-    | chmod +x tuning.py
+    && chmod +x tuning.py
     ~~~
 
     As you'll see below, this client lets you pass command-line flags:
@@ -426,7 +420,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     `--statement` | The SQL statement to execute.
     `--repeat` | The number of times to repeat the statement. This defaults to 20.
 
-    When run, the client prints the average time in seconds across all repetitions of the statement. Optionally, you can pass two other flags, `--time` to print the execution time in seconds for each repetition of the statement, and `--cumulative` to print the cumulative time in seconds for all repetitions. `--cumulative` is particularly useful when testing writes.
+    When run, the client prints the median time in seconds across all repetitions of the statement. Optionally, you can pass two other flags, `--time` to print the execution time in seconds for each repetition of the statement, and `--cumulative` to print the cumulative time in seconds for all repetitions. `--cumulative` is particularly useful when testing writes.
 
     {{site.data.alerts.callout_success}}
     To get similar help directly in your shell, use `./tuning.py --help`.
@@ -461,15 +455,11 @@ Result:
 ['000007ef-fa0f-4a6e-a089-ce74aa8d2276', 'boston', 'boston', 'd66c386d-4b7b-48a7-93e6-f92b5e7916ab', '6628bbbc-00be-4891-bc00-c49f2f16a30b', '4081 Conner Courts\nSouth Taylor, VA 86921', '2808 Willis Wells Apt. 931\nMccoyberg, OH 10303-4879', '2018-07-20 01:46:46.003070', '2018-07-20 02:27:46.003070', '44.25']
 
 Times (milliseconds):
-[24.547100067138672, 0.7688999176025391, 0.6949901580810547, 0.8230209350585938, 0.698089599609375, 0.7278919219970703, 0.6978511810302734, 0.5998611450195312, 0.7150173187255859, 0.7338523864746094, 0.6768703460693359, 0.7460117340087891, 0.7028579711914062, 0.7121562957763672, 0.7579326629638672, 0.8080005645751953, 1.0089874267578125, 0.7259845733642578, 0.6411075592041016, 0.7269382476806641, 0.6339550018310547, 0.7460117340087891, 0.9441375732421875, 0.8139610290527344, 0.6990432739257812, 0.6339550018310547, 0.7319450378417969, 0.637054443359375, 0.6501674652099609, 0.7278919219970703, 0.7069110870361328, 0.5779266357421875, 0.6208419799804688, 0.9050369262695312, 0.7741451263427734, 0.5650520324707031, 0.6079673767089844, 0.6191730499267578, 0.7388591766357422, 0.5598068237304688, 0.6401538848876953, 0.6659030914306641, 0.6489753723144531, 0.621795654296875, 0.7548332214355469, 0.6010532379150391, 0.6990432739257812, 0.6699562072753906, 0.6210803985595703, 0.7240772247314453]
+[2.1638870239257812, 1.2159347534179688, 1.0809898376464844, 1.0669231414794922, 1.2650489807128906, 1.1401176452636719, 1.1310577392578125, 1.0380744934082031, 1.199960708618164, 1.0530948638916016, 1.1000633239746094, 1.3430118560791016, 1.104116439819336, 1.0750293731689453, 1.0609626770019531, 1.088857650756836, 1.1639595031738281, 1.2559890747070312, 1.1899471282958984, 1.0449886322021484, 1.1057853698730469, 1.127004623413086, 0.9729862213134766, 1.1131763458251953, 1.0879039764404297, 1.119852066040039, 1.065969467163086, 1.0371208190917969, 1.1181831359863281, 1.0409355163574219, 1.0859966278076172, 1.1398792266845703, 1.032114028930664, 1.1000633239746094, 1.1360645294189453, 1.146078109741211, 1.329183578491211, 1.1131763458251953, 1.1548995971679688, 0.9977817535400391, 1.1138916015625, 1.085042953491211, 1.0950565338134766, 1.0869503021240234, 1.0170936584472656, 1.0571479797363281, 1.0640621185302734, 1.1110305786132812, 1.1279582977294922, 1.1119842529296875]
 
-Average time (milliseconds):
-1.18108272552
+Median time (milliseconds):
+1.10495090485
 ~~~
-
-{{site.data.alerts.callout_info}}
-When reading from a table or index for the first time in a session, the query will be slower than usual because the node issuing the query loads the schema of the table or index into memory first. For this reason, the first query took 24ms, whereas all others were sub-millisecond.
-{{site.data.alerts.end}}
 
 Retrieving a subset of columns will usually be even faster:
 
@@ -490,10 +480,10 @@ Result:
 ['d66c386d-4b7b-48a7-93e6-f92b5e7916ab', '6628bbbc-00be-4891-bc00-c49f2f16a30b']
 
 Times (milliseconds):
-[1.2311935424804688, 0.7009506225585938, 0.5898475646972656, 0.6151199340820312, 0.5660057067871094, 0.6620883941650391, 0.5691051483154297, 0.5369186401367188, 0.5609989166259766, 0.5290508270263672, 0.5939006805419922, 0.5769729614257812, 0.5638599395751953, 0.5381107330322266, 0.61798095703125, 0.5879402160644531, 0.6008148193359375, 0.5900859832763672, 0.5190372467041016, 0.5409717559814453, 0.51116943359375, 0.5400180816650391, 0.5490779876708984, 0.4870891571044922, 0.5340576171875, 0.49591064453125, 0.5669593811035156, 0.4971027374267578, 0.5729198455810547, 0.514984130859375, 0.5309581756591797, 0.5099773406982422, 0.5550384521484375, 0.5328655242919922, 0.5559921264648438, 0.5319118499755859, 0.5059242248535156, 0.5719661712646484, 0.49614906311035156, 0.6041526794433594, 0.5080699920654297, 0.5240440368652344, 0.49591064453125, 0.5681514739990234, 0.5118846893310547, 0.5359649658203125, 0.5450248718261719, 0.5650520324707031, 0.5249977111816406, 0.5669593811035156]
+[2.218961715698242, 1.2569427490234375, 1.3570785522460938, 1.1570453643798828, 1.3251304626464844, 1.3320446014404297, 1.0790824890136719, 1.0139942169189453, 1.0251998901367188, 1.1150836944580078, 1.1949539184570312, 1.2140274047851562, 1.2080669403076172, 1.238107681274414, 1.071929931640625, 1.104116439819336, 1.0230541229248047, 1.0571479797363281, 1.0519027709960938, 1.0688304901123047, 1.0118484497070312, 1.0051727294921875, 1.1889934539794922, 1.0571479797363281, 1.177072525024414, 1.0449886322021484, 1.0669231414794922, 1.004934310913086, 0.9818077087402344, 0.9369850158691406, 1.004934310913086, 1.0461807250976562, 1.0628700256347656, 1.1332035064697266, 1.1780261993408203, 1.0361671447753906, 1.1410713195800781, 1.1188983917236328, 1.026153564453125, 0.9629726409912109, 1.0199546813964844, 1.0409355163574219, 1.0440349578857422, 1.1110305786132812, 1.1761188507080078, 1.508951187133789, 1.2068748474121094, 1.3430118560791016, 1.4159679412841797, 1.3141632080078125]
 
-Average time (milliseconds):
-0.566024780273
+Median time (milliseconds):
+1.09159946442
 ~~~
 
 #### Filtering by a non-indexed column (full table scan)
@@ -515,10 +505,10 @@ Result:
 ['02cc9e5b-1e91-4cdb-87c4-726b4ea7219a', 'boston', 'Natalie Cunningham', '97477 Lee Path\nKimberlyport, CA 65960', '4532613656695680']
 
 Times (milliseconds):
-[31.939983367919922, 4.055023193359375, 3.988981246948242, 4.395008087158203, 4.045009613037109, 3.838062286376953, 6.09898567199707, 4.03904914855957, 3.9091110229492188, 5.933046340942383, 6.157875061035156, 6.323814392089844, 4.379987716674805, 3.982067108154297, 4.28009033203125, 4.118919372558594, 4.222869873046875, 4.041910171508789, 3.9288997650146484, 4.031896591186523, 4.085063934326172, 3.996133804321289, 4.001140594482422, 6.031990051269531, 5.98597526550293, 4.163026809692383, 5.931854248046875, 5.897998809814453, 3.9229393005371094, 3.8909912109375, 3.7729740142822266, 3.9768218994140625, 3.9958953857421875, 4.265069961547852, 4.204988479614258, 4.142999649047852, 4.3659210205078125, 6.074190139770508, 4.015922546386719, 4.418849945068359, 3.9381980895996094, 4.222869873046875, 4.694938659667969, 3.9060115814208984, 3.857851028442383, 3.8509368896484375, 3.969907760620117, 4.241943359375, 4.032135009765625, 3.9670467376708984]
+[33.271074295043945, 4.4689178466796875, 4.18400764465332, 4.327058792114258, 5.700111389160156, 4.509925842285156, 4.525899887084961, 4.294157028198242, 4.516124725341797, 5.700111389160156, 5.105018615722656, 4.5070648193359375, 4.798173904418945, 5.930900573730469, 4.445075988769531, 4.1790008544921875, 4.065036773681641, 4.296064376831055, 5.722999572753906, 4.827976226806641, 4.640102386474609, 4.374980926513672, 4.269123077392578, 4.422903060913086, 4.110813140869141, 4.091024398803711, 4.189014434814453, 4.345178604125977, 5.600929260253906, 4.827976226806641, 4.416942596435547, 4.424095153808594, 4.736185073852539, 4.462003707885742, 4.307031631469727, 5.10096549987793, 4.56690788269043, 4.641056060791016, 4.701137542724609, 4.538059234619141, 4.474163055419922, 4.561901092529297, 4.431009292602539, 4.756927490234375, 4.54401969909668, 4.415035247802734, 4.396915435791016, 5.9719085693359375, 4.543066024780273, 5.830049514770508]
 
-Average time (milliseconds):
-4.99066352844
+Median time (milliseconds):
+4.51302528381
 ~~~
 
 To understand why this query performs poorly, use the SQL client built into the `cockroach` binary to [`EXPLAIN`](explain.html) the query plan:
@@ -533,13 +523,11 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  tree | field |  description
 +------+-------+---------------+
-| Tree | Field |  Description  |
-+------+-------+---------------+
-| scan |       |               |
-|      | table | users@primary |
-|      | spans | ALL           |
-+------+-------+---------------+
+  scan |       |
+       | table | users@primary
+       | spans | ALL
 (3 rows)
 ~~~
 
@@ -575,13 +563,13 @@ Result:
 ['02cc9e5b-1e91-4cdb-87c4-726b4ea7219a', 'boston', 'Natalie Cunningham', '97477 Lee Path\nKimberlyport, CA 65960', '4532613656695680']
 
 Times (milliseconds):
-[3.4589767456054688, 1.6651153564453125, 1.547098159790039, 1.9190311431884766, 1.7499923706054688, 1.6219615936279297, 1.5749931335449219, 1.7859935760498047, 1.5561580657958984, 1.6391277313232422, 1.5120506286621094, 1.5139579772949219, 1.6808509826660156, 1.708984375, 1.4798641204833984, 1.544952392578125, 1.653909683227539, 1.6129016876220703, 1.7309188842773438, 1.5811920166015625, 1.7628669738769531, 1.5459060668945312, 1.6429424285888672, 1.6558170318603516, 1.7898082733154297, 1.6138553619384766, 1.6868114471435547, 1.5490055084228516, 1.7120838165283203, 1.6911029815673828, 1.5289783477783203, 1.5990734100341797, 1.6109943389892578, 1.5058517456054688, 1.5058517456054688, 1.6798973083496094, 1.7499923706054688, 1.5850067138671875, 1.4929771423339844, 1.6651153564453125, 1.5921592712402344, 1.6739368438720703, 1.6529560089111328, 1.6019344329833984, 1.6429424285888672, 1.5649795532226562, 1.605987548828125, 1.550912857055664, 1.6069412231445312, 1.6779899597167969]
+[3.545045852661133, 1.4619827270507812, 1.399993896484375, 2.0101070404052734, 1.672983169555664, 1.4941692352294922, 1.4650821685791016, 1.4579296112060547, 1.567840576171875, 1.5709400177001953, 1.4760494232177734, 1.6181468963623047, 1.6210079193115234, 1.6970634460449219, 1.6469955444335938, 1.7261505126953125, 1.7559528350830078, 1.875162124633789, 1.7170906066894531, 1.870870590209961, 1.641988754272461, 1.7061233520507812, 1.628875732421875, 1.6558170318603516, 1.7809867858886719, 1.6698837280273438, 1.8429756164550781, 1.6090869903564453, 1.7080307006835938, 1.74713134765625, 1.6620159149169922, 1.9519329071044922, 1.6849040985107422, 1.7440319061279297, 1.8851757049560547, 1.8699169158935547, 1.7409324645996094, 1.9140243530273438, 1.7828941345214844, 1.7158985137939453, 1.6720294952392578, 1.7750263214111328, 1.7368793487548828, 1.9288063049316406, 1.8749237060546875, 1.7838478088378906, 1.8091201782226562, 1.8210411071777344, 1.7669200897216797, 1.8210411071777344]
 
-Average time (milliseconds):
-1.66565418243
+Median time (milliseconds):
+1.72162055969
 ~~~
 
-To understand why performance improved from 4.99ms (without index) to 1.66ms (with index), use [`EXPLAIN`](explain.html) to see the new query plan:
+To understand why performance improved from 4.51ms (without index) to 1.72ms (with index), use [`EXPLAIN`](explain.html) to see the new query plan:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -593,16 +581,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
+     tree    | field |                      description
 +------------+-------+-------------------------------------------------------+
-|    Tree    | Field |                      Description                      |
-+------------+-------+-------------------------------------------------------+
-| index-join |       |                                                       |
-|  ├── scan  |       |                                                       |
-|  │         | table | users@users_name_idx                                  |
-|  │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd |
-|  └── scan  |       |                                                       |
-|            | table | users@primary                                         |
-+------------+-------+-------------------------------------------------------+
+  index-join |       |
+   ├── scan  |       |
+   │         | table | users@users_name_idx
+   │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+   └── scan  |       |
+             | table | users@primary
 (6 rows)
 ~~~
 
@@ -631,10 +617,10 @@ Result:
 ['Natalie Cunningham', '4532613656695680']
 
 Times (milliseconds):
-[2.338886260986328, 1.7859935760498047, 1.9490718841552734, 1.550912857055664, 1.4331340789794922, 1.4619827270507812, 1.425027847290039, 1.8270015716552734, 1.6829967498779297, 1.6028881072998047, 1.628875732421875, 1.4889240264892578, 1.497030258178711, 1.5380382537841797, 1.486063003540039, 1.5859603881835938, 1.7290115356445312, 1.7409324645996094, 1.5869140625, 1.6489028930664062, 1.7418861389160156, 1.5971660614013672, 1.619100570678711, 1.6379356384277344, 1.6028881072998047, 1.6531944274902344, 1.667022705078125, 1.6241073608398438, 1.5468597412109375, 1.5778541564941406, 1.6779899597167969, 1.5718936920166016, 1.5950202941894531, 1.6407966613769531, 1.538991928100586, 1.8379688262939453, 1.7008781433105469, 1.837015151977539, 1.5687942504882812, 1.7828941345214844, 1.7290115356445312, 1.6810894012451172, 1.7969608306884766, 1.5821456909179688, 1.569986343383789, 1.5740394592285156, 1.8229484558105469, 1.7371177673339844, 1.7681121826171875, 1.6360282897949219]
+[2.8769969940185547, 1.7559528350830078, 1.8100738525390625, 1.8839836120605469, 1.5971660614013672, 1.5900135040283203, 1.7750263214111328, 2.2847652435302734, 1.641988754272461, 1.4967918395996094, 1.4641284942626953, 1.6689300537109375, 1.9679069519042969, 1.8970966339111328, 1.8780231475830078, 1.7609596252441406, 1.68609619140625, 1.9791126251220703, 1.661062240600586, 1.9869804382324219, 1.5938282012939453, 1.8041133880615234, 1.5909671783447266, 1.5878677368164062, 1.7380714416503906, 1.638174057006836, 1.6970634460449219, 1.9309520721435547, 1.992940902709961, 1.8689632415771484, 1.7511844635009766, 2.007007598876953, 1.9829273223876953, 1.8939971923828125, 1.7490386962890625, 1.6179084777832031, 1.6510486602783203, 1.6078948974609375, 1.6129016876220703, 1.67083740234375, 1.786947250366211, 1.7840862274169922, 1.956939697265625, 1.8689632415771484, 1.9350051879882812, 1.789093017578125, 1.9249916076660156, 1.8649101257324219, 1.9619464874267578, 1.7361640930175781]
 
-Average time (milliseconds):
-1.65812492371
+Median time (milliseconds):
+1.77955627441
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
@@ -649,18 +635,15 @@ $ cockroach sql \
 ~~~
 
 ~~~
-+-----------------+-------+-------------------------------------------------------+
-|      Tree       | Field |                      Description                      |
-+-----------------+-------+-------------------------------------------------------+
-| render          |       |                                                       |
-|  └── index-join |       |                                                       |
-|       ├── scan  |       |                                                       |
-|       │         | table | users@users_name_idx                                  |
-|       │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd |
-|       └── scan  |       |                                                       |
-|                 | table | users@primary                                         |
-+-----------------+-------+-------------------------------------------------------+
-(7 rows)
+     tree    | field |                      description
++------------+-------+-------------------------------------------------------+
+  index-join |       |
+   ├── scan  |       |
+   │         | table | users@users_name_idx
+   │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+   └── scan  |       |
+             | table | users@primary
+(6 rows)
 ~~~
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
@@ -695,18 +678,15 @@ $ cockroach sql \
 ~~~
 
 ~~~
-+-----------+-------+-------------------------------------------------------+
-|   Tree    | Field |                      Description                      |
-+-----------+-------+-------------------------------------------------------+
-| render    |       |                                                       |
-|  └── scan |       |                                                       |
-|           | table | users@users_name_idx                                  |
-|           | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd |
-+-----------+-------+-------------------------------------------------------+
-(4 rows)
+  tree | field |                      description
++------+-------+-------------------------------------------------------+
+  scan |       |
+       | table | users@users_name_idx
+       | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+(3 rows)
 ~~~
 
-This results in even faster performance, reducing latency from 1.65ms (index without storing) to 1.04ms (index with storing):
+This results in even faster performance, reducing latency from 1.77ms (index without storing) to 0.99ms (index with storing):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -723,10 +703,10 @@ Result:
 ['Natalie Cunningham', '4532613656695680']
 
 Times (milliseconds):
-[1.8949508666992188, 1.2660026550292969, 1.2140274047851562, 1.110076904296875, 1.4989376068115234, 1.1739730834960938, 1.2331008911132812, 0.9701251983642578, 0.9019374847412109, 0.9038448333740234, 1.016855239868164, 0.9331703186035156, 0.9179115295410156, 0.9288787841796875, 0.888824462890625, 0.9429454803466797, 0.9410381317138672, 1.001119613647461, 0.9438991546630859, 0.9849071502685547, 1.0221004486083984, 1.013040542602539, 1.0149478912353516, 0.9579658508300781, 1.0061264038085938, 1.0559558868408203, 1.0788440704345703, 1.0411739349365234, 0.9610652923583984, 0.9639263153076172, 1.1239051818847656, 0.9639263153076172, 1.058816909790039, 0.949859619140625, 0.9739398956298828, 1.046895980834961, 0.9260177612304688, 1.0569095611572266, 1.033782958984375, 1.1029243469238281, 0.9710788726806641, 1.0311603546142578, 0.9870529174804688, 1.1179447174072266, 1.0349750518798828, 1.088857650756836, 1.1060237884521484, 1.0170936584472656, 1.0180473327636719, 1.0519027709960938]
+[1.8029212951660156, 0.9858608245849609, 0.9548664093017578, 0.8459091186523438, 0.9710788726806641, 1.1639595031738281, 0.8571147918701172, 0.8800029754638672, 0.8509159088134766, 0.8771419525146484, 1.1739730834960938, 0.9100437164306641, 1.1181831359863281, 0.9679794311523438, 1.0800361633300781, 1.02996826171875, 1.2090206146240234, 1.0440349578857422, 1.210927963256836, 1.0418891906738281, 1.1951923370361328, 0.9548664093017578, 1.0848045349121094, 0.9748935699462891, 1.15203857421875, 1.0280609130859375, 1.0819435119628906, 0.9641647338867188, 1.0979175567626953, 0.9720325469970703, 1.0638236999511719, 0.9410381317138672, 1.0039806365966797, 1.207113265991211, 0.9911060333251953, 1.0039806365966797, 0.9810924530029297, 0.9360313415527344, 0.9589195251464844, 1.0609626770019531, 0.9949207305908203, 1.0139942169189453, 0.9899139404296875, 0.9818077087402344, 0.9679794311523438, 0.8809566497802734, 0.9558200836181641, 0.8878707885742188, 1.0380744934082031, 0.8897781372070312]
 
-Average time (milliseconds):
-1.04885578156
+Median time (milliseconds):
+0.990509986877
 ~~~
 
 #### Joining data from different tables
@@ -753,10 +733,10 @@ Result:
 ['1998']
 
 Times (milliseconds):
-[1663.2239818572998, 841.871976852417, 844.9788093566895, 1043.7190532684326, 1047.544002532959, 1049.0870475769043, 1079.737901687622, 1049.543857574463, 1069.1118240356445, 1104.2020320892334, 1071.1669921875, 1080.1141262054443, 1066.741943359375, 1071.8858242034912, 1073.8670825958252, 1054.008960723877, 1089.4761085510254, 1048.2399463653564, 1033.8318347930908, 1078.5980224609375, 1054.8391342163086, 1095.6230163574219, 1056.9767951965332, 1082.8359127044678, 1048.3272075653076, 1050.3859519958496, 1084.2180252075195, 1082.1950435638428, 1101.97114944458, 1079.9469947814941, 1065.234899520874, 1051.058053970337, 1105.48996925354, 1119.469165802002, 1089.8759365081787, 1082.5989246368408, 1074.9430656433105, 1067.4428939819336, 1066.5888786315918, 1069.6449279785156, 1067.9738521575928, 1082.4880599975586, 1037.9269123077393, 1042.2871112823486, 1130.7330131530762, 1150.7518291473389, 1165.3728485107422, 1136.9531154632568, 1120.3861236572266, 1126.8589496612549]
+[1443.5458183288574, 1546.0000038146973, 1563.858985900879, 1530.3218364715576, 1574.7389793395996, 1572.7760791778564, 1566.4539337158203, 1595.655918121338, 1588.2930755615234, 1567.6488876342773, 1564.5530223846436, 1573.4570026397705, 1581.406831741333, 1587.864875793457, 1575.7901668548584, 1565.0341510772705, 1519.8209285736084, 1599.7698307037354, 1612.4188899993896, 1582.5250148773193, 1604.076862335205, 1596.8739986419678, 1569.6821212768555, 1583.7080478668213, 1549.9720573425293, 1563.5790824890137, 1555.6750297546387, 1577.6000022888184, 1582.3569297790527, 1568.8848495483398, 1580.854892730713, 1566.9701099395752, 1578.8500308990479, 1592.677116394043, 1549.3559837341309, 1561.805009841919, 1561.812162399292, 1543.4870719909668, 1523.3290195465088, 1583.9049816131592, 1565.9120082855225, 1575.1979351043701, 1581.1400413513184, 1616.6048049926758, 1602.9179096221924, 1583.8429927825928, 1570.2300071716309, 1573.2421875, 1558.588981628418, 1548.7489700317383]
 
-Average time (milliseconds):
-1081.04698181
+Median time (milliseconds):
+1573.00913334
 ~~~
 
 To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
@@ -774,22 +754,22 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 ~~~
 
 ~~~
-+---------------------+----------+-------------------+
-|        Tree         |  Field   |    Description    |
-+---------------------+----------+-------------------+
-| group               |          |                   |
-|  └── render         |          |                   |
-|       └── join      |          |                   |
-|            │        | type     | inner             |
-|            │        | equality | (id) = (rider_id) |
-|            ├── scan |          |                   |
-|            │        | table    | users@primary     |
-|            │        | spans    | ALL               |
-|            └── scan |          |                   |
-|                     | table    | rides@primary     |
-|                     | spans    | ALL               |
-+---------------------+----------+-------------------+
-(11 rows)
+         tree         |    field    |     description
++---------------------+-------------+----------------------+
+  group               |             |
+   │                  | aggregate 0 | count(DISTINCT id)
+   │                  | scalar      |
+   └── render         |             |
+        └── join      |             |
+             │        | type        | inner
+             │        | equality    | (id) = (rider_id)
+             ├── scan |             |
+             │        | table       | users@users_name_idx
+             │        | spans       | ALL
+             └── scan |             |
+                      | table       | rides@primary
+                      | spans       | ALL
+(13 rows)
 ~~~
 
 Reading from bottom up, you can see that CockroachDB does a full table scan (`spans    | ALL`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
@@ -808,17 +788,15 @@ $ cockroach sql \
 ~~~
 
 ~~~
-+------------------------------------------------------------------------+------------------------------------------------------------------------+----------+----------+--------------+
-|                               Start Key                                |                                End Key                                 | Range ID | Replicas | Lease Holder |
-+------------------------------------------------------------------------+------------------------------------------------------------------------+----------+----------+--------------+
-| NULL                                                                   | /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd            |       23 | {1,2,3}  |            1 |
-| /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd            | /"los angeles"/"\xf1\xe8\x99eǵI\x16\xb9w\a\xd01\xcc\b\xa4"/PrefixEnd   |       25 | {1,2,3}  |            2 |
-| /"los angeles"/"\xf1\xe8\x99eǵI\x16\xb9w\a\xd01\xcc\b\xa4"/PrefixEnd   | /"new york"/"\xebV\xf5\xe6P%L$\x92\xd2\xdf&\a\x81\xeeO"/PrefixEnd      |       26 | {1,2,3}  |            1 |
-| /"new york"/"\xebV\xf5\xe6P%L$\x92\xd2\xdf&\a\x81\xeeO"/PrefixEnd      | /"san francisco"/"\xda\xc5B\xe0\x0e\fK)\x98:\xe6[@\x05\x91*"/PrefixEnd |       27 | {1,2,3}  |            2 |
-| /"san francisco"/"\xda\xc5B\xe0\x0e\fK)\x98:\xe6[@\x05\x91*"/PrefixEnd | /"seattle"/"\xd4ˆ?\x98\x98FA\xa7m\x84\xba\xac\xf5\xbfI"/PrefixEnd      |       28 | {1,2,3}  |            3 |
-| /"seattle"/"\xd4ˆ?\x98\x98FA\xa7m\x84\xba\xac\xf5\xbfI"/PrefixEnd      | /"washington dc"/"Ņ\x06\x9d\xc2LEq\xb8<KG\a(\x18\xf6"/PrefixEnd        |       29 | {1,2,3}  |            1 |
-| /"washington dc"/"Ņ\x06\x9d\xc2LEq\xb8<KG\a(\x18\xf6"/PrefixEnd        | NULL                                                                   |       30 | {1,2,3}  |            1 |
-+------------------------------------------------------------------------+------------------------------------------------------------------------+----------+----------+--------------+
+                                  start_key                                  |                                  end_key                                   | range_id | replicas | lease_holder
++----------------------------------------------------------------------------+----------------------------------------------------------------------------+----------+----------+--------------+
+  NULL                                                                       | /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd                |       34 | {1,2,3}  |            2
+  /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd                | /"los angeles"/"<\x12\xe4\xce&\xfdH\u070f?)\xc7\xf92\a\x03"                |       35 | {1,2,3}  |            2
+  /"los angeles"/"<\x12\xe4\xce&\xfdH\u070f?)\xc7\xf92\a\x03"                | /"new york"/"0\xa6p\x96\tmOԗ#\xaa\xb7\x90\x12\xe67"/PrefixEnd              |       39 | {1,2,3}  |            2
+  /"new york"/"0\xa6p\x96\tmOԗ#\xaa\xb7\x90\x12\xe67"/PrefixEnd              | /"san francisco"/"(m*OM\x15J\xbc\xb6n\xaass\x10\xc4\xff"/PrefixEnd         |       37 | {1,2,3}  |            1
+  /"san francisco"/"(m*OM\x15J\xbc\xb6n\xaass\x10\xc4\xff"/PrefixEnd         | /"seattle"/"\x17\xd24\a\xb5\xbdN\x9d\xa1\xd2Dθ^\xe1M"/PrefixEnd            |       40 | {1,2,3}  |            2
+  /"seattle"/"\x17\xd24\a\xb5\xbdN\x9d\xa1\xd2Dθ^\xe1M"/PrefixEnd            | /"washington dc"/"\x135\xe5e\x15\xefNۊ\x10)\xba\x19\x04\xff\xdc"/PrefixEnd |       44 | {1,2,3}  |            2
+  /"washington dc"/"\x135\xe5e\x15\xefNۊ\x10)\xba\x19\x04\xff\xdc"/PrefixEnd | NULL                                                                       |       46 | {1,2,3}  |            2
 (7 rows)
 ~~~
 
@@ -832,17 +810,15 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  start_key | end_key | range_id | replicas | lease_holder
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | NULL    |       51 | {1,2,3}  |            2 |
-+-----------+---------+----------+----------+--------------+
+  NULL      | NULL    |       49 | {1,2,3}  |            2
 (1 row)
 ~~~
 
 The results above tell us:
 
-- The `rides` table is split across 7 ranges, with four leaseholders on node 1, two leaseholders on node 2, and one leaseholder on node 3.
+- The `rides` table is split across 7 ranges, with six leaseholders on node 2 and one leaseholder on node 1.
 - The `users` table is just a single range with its leaseholder on node 2.
 
 Now, given the `WHERE` condition of the join, the full table scan of `rides`, across all of its 7 ranges, is particularly wasteful. To speed up the query, you can create a secondary index on the `WHERE` condition (`rides.start_time`) storing the join key (`rides.rider_id`):
@@ -860,7 +836,7 @@ $ cockroach sql \
 The `rides` table contains 1 million rows, so adding this index will take a few minutes.
 {{site.data.alerts.end}}
 
-Adding the secondary index reduced the query time from 1081.04ms to 71.89ms:
+Adding the secondary index reduced the query time from 1573ms to 61.56ms:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -880,10 +856,10 @@ Result:
 ['1998']
 
 Times (milliseconds):
-[124.19795989990234, 83.74285697937012, 84.76495742797852, 76.9808292388916, 65.74702262878418, 62.478065490722656, 60.26411056518555, 59.99302864074707, 67.10195541381836, 73.45199584960938, 67.09504127502441, 60.45889854431152, 68.6960220336914, 61.94710731506348, 61.53106689453125, 60.44197082519531, 62.22796440124512, 89.34903144836426, 77.64196395874023, 71.43712043762207, 66.09010696411133, 63.668012619018555, 65.31286239624023, 77.1780014038086, 73.52113723754883, 68.84908676147461, 65.11712074279785, 65.34600257873535, 65.8869743347168, 76.90095901489258, 76.9491195678711, 69.39697265625, 64.23306465148926, 75.0880241394043, 69.34094429016113, 57.55496025085449, 65.79995155334473, 83.74285697937012, 75.32310485839844, 74.08809661865234, 77.33798027038574, 73.95505905151367, 71.85482978820801, 77.95405387878418, 74.30601119995117, 72.24106788635254, 75.28901100158691, 78.2630443572998, 74.97286796569824, 79.50282096862793]
+[66.78199768066406, 63.83800506591797, 65.57297706604004, 63.04502487182617, 61.54489517211914, 61.51890754699707, 60.935020446777344, 61.8891716003418, 60.71019172668457, 64.44311141967773, 64.82601165771484, 61.5849494934082, 62.136173248291016, 62.78491020202637, 62.70194053649902, 61.837196350097656, 64.13102149963379, 62.66903877258301, 71.14315032958984, 61.08808517456055, 58.36200714111328, 60.003042221069336, 58.743953704833984, 59.05413627624512, 60.63103675842285, 60.12582778930664, 61.02705001831055, 62.548160552978516, 61.45000457763672, 65.27113914489746, 60.18996238708496, 59.36002731323242, 60.13298034667969, 59.8299503326416, 59.168100357055664, 65.20915031433105, 60.43219566345215, 58.91895294189453, 58.67791175842285, 59.50117111206055, 59.977054595947266, 65.39011001586914, 62.3931884765625, 69.40793991088867, 61.64288520812988, 66.52498245239258, 69.78988647460938, 60.96601486206055, 57.71303176879883, 61.81192398071289]
 
-Average time (milliseconds):
-71.8922615051
+Median time (milliseconds):
+61.5649223328
 ~~~
 
 To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -901,22 +877,22 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 ~~~
 
 ~~~
-+---------------------+----------+-------------------------------------------------------+
-|        Tree         |  Field   |                      Description                      |
-+---------------------+----------+-------------------------------------------------------+
-| group               |          |                                                       |
-|  └── render         |          |                                                       |
-|       └── join      |          |                                                       |
-|            │        | type     | inner                                                 |
-|            │        | equality | (id) = (rider_id)                                     |
-|            ├── scan |          |                                                       |
-|            │        | table    | users@primary                                         |
-|            │        | spans    | ALL                                                   |
-|            └── scan |          |                                                       |
-|                     | table    | rides@rides_start_time_idx                            |
-|                     | spans    | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z |
-+---------------------+----------+-------------------------------------------------------+
-(11 rows)
+         tree         |    field    |                      description
++---------------------+-------------+-------------------------------------------------------+
+  group               |             |
+   │                  | aggregate 0 | count(DISTINCT id)
+   │                  | scalar      |
+   └── render         |             |
+        └── join      |             |
+             │        | type        | inner
+             │        | equality    | (id) = (rider_id)
+             ├── scan |             |
+             │        | table       | users@users_name_idx
+             │        | spans       | ALL
+             └── scan |             |
+                      | table       | rides@rides_start_time_idx
+                      | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
+(13 rows)
 ~~~
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
@@ -933,16 +909,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
-+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+----------+----------+--------------+
-|                                        Start Key                                        |                                         End Key                                         | Range ID | Replicas | Lease Holder |
-+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+----------+----------+--------------+
-| NULL                                                                                    | /2018-07-15T02:32:47.564891Z/"seattle"/"r\x8f\xbc\xd4\f\x18E\x9f\x85\xc2\"H\\\xe7k\xf1" |       34 | {1,2,3}  |            1 |
-| /2018-07-15T02:32:47.564891Z/"seattle"/"r\x8f\xbc\xd4\f\x18E\x9f\x85\xc2\"H\\\xe7k\xf1" | NULL                                                                                    |       35 | {1,2,3}  |            1 |
-+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+----------+----------+--------------+
+                                         start_key                                         |                                         end_key                                          | range_id | replicas | lease_holder
++------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+----------+----------+--------------+
+  NULL                                                                                     | /2018-07-11T01:37:36.138325Z/"new york"/"\xd4\xe3\u007f\xbc2\xc0Mv\x81B\xd6\xc7٘\x9f\xe6" |       45 | {1,2,3}  |            2
+  /2018-07-11T01:37:36.138325Z/"new york"/"\xd4\xe3\u007f\xbc2\xc0Mv\x81B\xd6\xc7٘\x9f\xe6" | NULL                                                                                     |       50 | {1,2,3}  |            2
 (2 rows)
 ~~~
 
-This tells us that the index is stored in 2 ranges, with the leaseholders for both of them on node 1. Based on the output of `SHOW EXPERIMENTAL_RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 2.
+This tells us that the index is stored in 2 ranges, with the leaseholders for both of them on node 2. Based on the output of `SHOW EXPERIMENTAL_RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 2.
 
 #### Using `IN (list)` with a subquery
 
@@ -969,17 +943,17 @@ GROUP BY vehicle_id" \
 ~~~
 Result:
 ['vehicle_id', 'max']
-['c6541da5-9858-4e3f-9b49-992e206d2c50', '2018-08-02 02:14:50.543760']
-['78fdd6f8-c6a1-42df-a89f-cd65b7bb8be9', '2018-08-02 02:47:43.755989']
 ['3c950d36-c2b8-48d0-87d3-e0d6f570af62', '2018-08-02 03:06:31.293184']
-['35752c4c-b878-4436-8330-8d7246406a55', '2018-08-02 03:08:49.823209']
 ['0962cdca-9d85-457c-9616-cc2ae2d32008', '2018-08-02 03:01:25.414512']
+['78fdd6f8-c6a1-42df-a89f-cd65b7bb8be9', '2018-08-02 02:47:43.755989']
+['c6541da5-9858-4e3f-9b49-992e206d2c50', '2018-08-02 02:14:50.543760']
+['35752c4c-b878-4436-8330-8d7246406a55', '2018-08-02 03:08:49.823209']
 
 Times (milliseconds):
-[4368.9610958099365, 4373.898029327393, 4396.070957183838, 4382.591962814331, 4274.624824523926, 4369.847059249878, 4373.079061508179, 4287.877082824707, 4307.362079620361, 4368.865966796875, 4363.792896270752, 4310.600996017456, 4378.695011138916, 4340.383052825928, 4338.238000869751, 4373.046875, 4327.131986618042, 4386.303901672363, 4429.6300411224365, 4383.068084716797]
+[3012.6540660858154, 2456.5110206604004, 2482.675075531006, 2488.3930683135986, 2474.393129348755, 2494.3790435791016, 2504.063129425049, 2491.326093673706, 2507.4589252471924, 2482.077121734619, 2495.9230422973633, 2497.60103225708, 2478.4271717071533, 2496.574878692627, 2506.395101547241, 2468.4300422668457, 2476.508140563965, 2497.958183288574, 2480.7958602905273, 2484.0168952941895]
 
-Average time (milliseconds):
-4356.7034483
+Median time (milliseconds):
+2489.85958099
 ~~~
 
 However, as you can see, this query is slow because, currently, when the `WHERE` condition of a query comes from the result of a subquery, CockroachDB scans the entire table, even if there is an available index. Use `EXPLAIN` to see this in more detail:
@@ -1003,33 +977,29 @@ GROUP BY vehicle_id;"
 ~~~
 
 ~~~
-+------------------------------------+-----------+--------------------------------------------------------------------------+
-|                Tree                |   Field   |                               Description                                |
-+------------------------------------+-----------+--------------------------------------------------------------------------+
-| root                               |           |                                                                          |
-|  ├── group                         |           |                                                                          |
-|  │    │                            | group by  | @1-@1                                                                    |
-|  │    └── render                   |           |                                                                          |
-|  │         └── scan                |           |                                                                          |
-|  │                                 | table     | rides@primary                                                            |
-|  │                                 | spans     | ALL                                                                      |
-|  └── subquery                      |           |                                                                          |
-|       │                            | id        | @S1                                                                      |
-|       │                            | sql       | (SELECT vehicle_id FROM rides GROUP BY vehicle_id ORDER BY count(*) DESC |
-|                                    |           | LIMIT 5)                                                                 |
-|       │                            | exec mode | all rows normalized                                                      |
-|       └── limit                    |           |                                                                          |
-|            └── sort                |           |                                                                          |
-|                 │                  | order     | -count                                                                   |
-|                 │                  | strategy  | top 5                                                                    |
-|                 └── group          |           |                                                                          |
-|                      │             | group by  | @1-@1                                                                    |
-|                      └── render    |           |                                                                          |
-|                           └── scan |           |                                                                          |
-|                                    | table     | rides@primary                                                            |
-|                                    | spans     | ALL                                                                      |
-+------------------------------------+-----------+--------------------------------------------------------------------------+
-(21 rows)
+              tree              |    field    |                     description
++-------------------------------+-------------+-----------------------------------------------------+
+  group                         |             |
+   │                            | aggregate 0 | vehicle_id
+   │                            | aggregate 1 | max(end_time)
+   │                            | group by    | @1
+   └── join                     |             |
+        │                       | type        | semi
+        │                       | equality    | (vehicle_id) = (vehicle_id)
+        ├── scan                |             |
+        │                       | table       | rides@primary
+        │                       | spans       | ALL
+        └── limit               |             |
+             └── sort           |             |
+                  │             | order       | -agg0
+                  └── group     |             |
+                       │        | aggregate 0 | vehicle_id
+                       │        | aggregate 1 | count_rows()
+                       │        | group by    | @1
+                       └── scan |             |
+                                | table       | rides@rides_auto_index_fk_vehicle_city_ref_vehicles
+                                | spans       | ALL
+(20 rows)
 ~~~
 
 This is a complex query plan, but the important thing to note is the full table scan of `rides@primary` above the `subquery`. This shows you that, after the subquery returns the IDs of the top 5 vehicles, CockroachDB scans the entire primary index to find the rows with `max(end_time)` for each `vehicle_id`, although you might expect CockroachDB to more efficiently use the secondary index on `vehicle_id` (CockroachDB is working to remove this limitation in a future version).
@@ -1061,10 +1031,10 @@ Result:
 ['3c950d36-c2b8-48d0-87d3-e0d6f570af62']
 
 Times (milliseconds):
-[787.0969772338867, 782.2480201721191, 741.5878772735596, 790.3921604156494, 767.4920558929443, 733.0870628356934, 768.8038349151611, 754.1589736938477, 716.4630889892578, 726.3698577880859, 721.092939376831, 737.1737957000732, 747.978925704956, 736.1149787902832, 727.1649837493896, 725.5918979644775, 746.1550235748291, 752.6230812072754, 728.59787940979, 733.4978580474854]
+[1049.2329597473145, 1038.0151271820068, 1037.7991199493408, 1036.5591049194336, 1037.7249717712402, 1040.544033050537, 1022.7780342102051, 1056.9651126861572, 1054.3549060821533, 1042.3550605773926, 1042.68217086792, 1031.7370891571045, 1051.880121231079, 1035.8471870422363, 1035.2818965911865, 1035.607099533081, 1040.0230884552002, 1048.8879680633545, 1056.014060974121, 1036.1089706420898]
 
-Average time (milliseconds):
-746.184563637
+Median time (milliseconds):
+1039.01910782
 ~~~
 
 And then put the results into the `IN` list to get the most recent rides of the vehicles:
@@ -1090,20 +1060,20 @@ GROUP BY vehicle_id;" \
 ~~~
 Result:
 ['vehicle_id', 'max']
-['3c950d36-c2b8-48d0-87d3-e0d6f570af62', '2018-08-02 03:06:31.293184']
-['78fdd6f8-c6a1-42df-a89f-cd65b7bb8be9', '2018-08-02 02:47:43.755989']
 ['35752c4c-b878-4436-8330-8d7246406a55', '2018-08-02 03:08:49.823209']
 ['0962cdca-9d85-457c-9616-cc2ae2d32008', '2018-08-02 03:01:25.414512']
+['3c950d36-c2b8-48d0-87d3-e0d6f570af62', '2018-08-02 03:06:31.293184']
+['78fdd6f8-c6a1-42df-a89f-cd65b7bb8be9', '2018-08-02 02:47:43.755989']
 ['c6541da5-9858-4e3f-9b49-992e206d2c50', '2018-08-02 02:14:50.543760']
 
 Times (milliseconds):
-[828.5520076751709, 826.6720771789551, 837.0990753173828, 865.441083908081, 870.556116104126, 842.6721096038818, 859.3161106109619, 861.4299297332764, 866.6350841522217, 833.0469131469727, 838.021993637085, 841.0389423370361, 878.7519931793213, 879.6770572662354, 861.1328601837158, 855.1840782165527, 856.5502166748047, 882.9760551452637, 873.0340003967285, 858.4709167480469]
+[1165.5981540679932, 1135.9851360321045, 1201.0550498962402, 1135.0820064544678, 1195.7061290740967, 1132.0109367370605, 1134.9878311157227, 1175.88210105896, 1174.0548610687256, 1152.566909790039, 1164.9351119995117, 1175.5108833312988, 1161.651849746704, 1195.3318119049072, 1162.4629497528076, 1156.1191082000732, 1127.0110607147217, 1165.4651165008545, 1159.6789360046387, 1190.3491020202637]
 
-Average time (milliseconds):
-855.812931061
+Median time (milliseconds):
+1163.69903088
 ~~~
 
-This approach reduced the query time from 4356.70ms (query with subquery) to 1601.99ms (2 distinct queries).
+This approach reduced the query time from 2489.85ms (query with subquery) to 2202.70ms (2 distinct queries).
 
 ### Step 7. Test/tune write performance
 
@@ -1131,16 +1101,16 @@ $ ./tuning.py \
 
 ~~~
 Times (milliseconds):
-[33.28299522399902, 13.558149337768555, 14.67585563659668, 8.835077285766602, 9.104013442993164, 8.157968521118164, 10.174989700317383, 8.877992630004883, 9.196996688842773, 8.93402099609375, 9.894132614135742, 9.97304916381836, 8.221149444580078, 9.334087371826172, 9.270191192626953, 8.980035781860352, 7.210969924926758, 8.212089538574219, 8.048057556152344, 7.8639984130859375, 7.489204406738281, 9.547948837280273, 9.073972702026367, 9.660005569458008, 9.325981140136719, 9.338140487670898, 9.240865707397461, 7.958889007568359, 8.417844772338867, 8.075952529907227, 7.896184921264648, 9.118080139160156, 8.161067962646484, 9.071111679077148, 8.996963500976562, 7.790803909301758, 7.8220367431640625, 9.695053100585938, 9.470939636230469, 8.415937423706055, 9.287118911743164, 9.29117202758789, 9.618043899536133, 9.107828140258789, 8.491039276123047, 7.998943328857422, 9.282827377319336, 7.735013961791992, 9.161949157714844, 9.70005989074707, 8.910894393920898, 9.124994277954102, 9.028911590576172, 9.568929672241211, 10.931968688964844, 8.813858032226562, 14.040946960449219, 7.773876190185547, 9.801864624023438, 7.989168167114258, 8.188962936401367, 9.398937225341797, 9.705066680908203, 9.213924407958984, 9.569168090820312, 9.19198989868164, 9.664058685302734, 9.52601432800293, 8.01396369934082, 8.30698013305664, 8.03995132446289, 8.166074752807617, 9.335994720458984, 7.915019989013672, 9.584903717041016, 8.049964904785156, 7.803916931152344, 8.125066757202148, 9.367942810058594, 9.21487808227539, 9.630918502807617, 9.505033493041992, 9.830951690673828, 8.285045623779297, 8.095979690551758, 9.876012802124023, 8.067131042480469, 9.438037872314453, 8.147001266479492, 8.9111328125, 9.560108184814453, 8.78596305847168, 9.341955184936523, 10.293006896972656, 9.062051773071289, 14.008045196533203, 9.293079376220703, 9.57798957824707, 14.974832534790039, 8.59689712524414]
+[10.773181915283203, 12.186050415039062, 9.711980819702148, 9.730815887451172, 10.200977325439453, 9.32002067565918, 9.002923965454102, 9.426116943359375, 9.312152862548828, 8.329153060913086, 9.626150131225586, 8.965015411376953, 9.562969207763672, 9.305000305175781, 9.34910774230957, 7.394075393676758, 9.3231201171875, 9.066104888916016, 8.419036865234375, 9.158134460449219, 9.278059005737305, 8.022069931030273, 8.542060852050781, 9.237051010131836, 8.165121078491211, 8.094072341918945, 8.025884628295898, 8.04591178894043, 9.728193283081055, 8.485078811645508, 7.967948913574219, 9.319067001342773, 8.099079132080078, 9.041070938110352, 10.046005249023438, 10.684013366699219, 9.672880172729492, 8.129119873046875, 8.10098648071289, 7.884979248046875, 9.484052658081055, 8.594036102294922, 9.479045867919922, 9.239912033081055, 9.16600227355957, 9.155988693237305, 9.392976760864258, 11.08694076538086, 9.402990341186523, 8.034944534301758, 8.053064346313477, 8.03995132446289, 8.891820907592773, 8.054971694946289, 8.903980255126953, 9.057998657226562, 9.713888168334961, 7.99107551574707, 8.114814758300781, 8.677959442138672, 11.178970336914062, 9.272098541259766, 9.281158447265625, 8.177995681762695, 9.47880744934082, 10.025978088378906, 8.352041244506836, 8.320808410644531, 10.892868041992188, 8.227825164794922, 8.220911026000977, 9.625911712646484, 10.272026062011719, 8.116960525512695, 10.786771774291992, 9.073972702026367, 9.686946868896484, 9.903192520141602, 9.887933731079102, 9.399890899658203, 9.413003921508789, 8.594036102294922, 8.433103561401367, 9.271860122680664, 8.529901504516602, 9.474992752075195, 9.005069732666016, 9.341001510620117, 9.388923645019531, 9.775876998901367, 8.558988571166992, 9.613990783691406, 8.897066116333008, 8.642911911010742, 9.527206420898438, 8.274078369140625, 9.073972702026367, 9.637832641601562, 8.516788482666016, 9.564876556396484]
 
-Average time (milliseconds):
-9.41696166992
+Median time (milliseconds):
+9.20152664185
 
 Cumulative time (milliseconds):
-941.696166992
+910.985708237
 ~~~
 
-The 100 inserts took 941.69ms to complete, which isn't bad. However, it's significantly faster to use a single `INSERT` statement with 100 comma-separated `VALUES` clauses:
+The 100 inserts took 910.98ms to complete, which isn't bad. However, it's significantly faster to use a single `INSERT` statement with 100 comma-separated `VALUES` clauses:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -1162,14 +1132,14 @@ $ ./tuning.py \
 ~~~
 
 ~~~
-Average time (milliseconds):
-18.965959549
+Median time (milliseconds):
+15.4001712799
 
 Cumulative time (milliseconds):
-18.965959549
+15.4001712799
 ~~~
 
-As you can see, this multi-row `INSERT` technique reduced the total time for 100 inserts from 941.69ms to 18.96ms. It's useful to note that this technique is equally effective for [`UPSERT`](upsert.html) and [`DELETE`](delete.html) statements as well.
+As you can see, this multi-row `INSERT` technique reduced the total time for 100 inserts from 910.98ms to 15.40ms. It's useful to note that this technique is equally effective for [`UPSERT`](upsert.html) and [`DELETE`](delete.html) statements as well.
 
 #### Minimizing unused indexes
 
@@ -1187,16 +1157,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
-+-------+----------------+--------+-----+-------------+-----------+---------+----------+
-| Table |      Name      | Unique | Seq |   Column    | Direction | Storing | Implicit |
-+-------+----------------+--------+-----+-------------+-----------+---------+----------+
-| users | primary        |  true  |   1 | city        | ASC       |  false  |  false   |
-| users | primary        |  true  |   2 | id          | ASC       |  false  |  false   |
-| users | users_name_idx | false  |   1 | name        | ASC       |  false  |  false   |
-| users | users_name_idx | false  |   2 | credit_card | N/A       |  true   |  false   |
-| users | users_name_idx | false  |   3 | city        | ASC       |  false  |   true   |
-| users | users_name_idx | false  |   4 | id          | ASC       |  false  |   true   |
-+-------+----------------+--------+-----+-------------+-----------+---------+----------+
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+----------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false
+  users      | users_name_idx |    true    |            2 | credit_card | N/A       |  true   |  false
+  users      | users_name_idx |    true    |            3 | city        | ASC       |  false  |   true
+  users      | users_name_idx |    true    |            4 | id          | ASC       |  false  |   true
 (6 rows)
 ~~~
 
@@ -1215,12 +1183,11 @@ WHERE name LIKE 'C%'" \
 ~~~
 
 ~~~
-Result:
 ['count']
 ['179']
 
-Average time (milliseconds):
-2.52413749695
+Median time (milliseconds):
+2.52604484558
 ~~~
 
 {% include copy-clipboard.html %}
@@ -1234,8 +1201,8 @@ WHERE name LIKE 'C%'" \
 ~~~
 
 ~~~
-Average time (milliseconds):
-110.701799393
+Median time (milliseconds):
+52.2060394287
 ~~~
 
 Because `name` is in both the `primary` and `users_name_idx` indexes, for each of the 168 rows, 2 keys were updated.
@@ -1262,11 +1229,11 @@ WHERE name = 'Carl Kimball'" \
 ~~~
 
 ~~~
-Average time (milliseconds):
-21.7709541321
+Median time (milliseconds):
+22.7289199829
 ~~~
 
-Before, when both the primary and secondary indexes needed to be updated, the updates took 110.70ms. Now, after dropping the secondary index, an equivalent update took only 21.77ms.
+Before, when both the primary and secondary indexes needed to be updated, the updates took 52.20ms. Now, after dropping the secondary index, an equivalent update took only 22.72ms.
 
 #### Retrieving the ID of a newly inserted row
 
@@ -1281,8 +1248,8 @@ $ ./tuning.py \
 ~~~
 
 ~~~
-Average time (milliseconds):
-9.97304916382
+Median time (milliseconds):
+10.4398727417
 ~~~
 
 {% include copy-clipboard.html %}
@@ -1296,13 +1263,13 @@ $ ./tuning.py \
 ~~~
 Result:
 ['id']
-['cc83e0bd-2ea0-4507-a683-a707cfbe0aba']
+['ae563e17-ad59-4307-a99e-191e682b4278']
 
-Average time (milliseconds):
-7.32207298279
+Median time (milliseconds):
+5.53798675537
 ~~~
 
-Combined, these statements are relatively fast, at 17.29ms, but an even more performant approach is to append `RETURNING id` to the end of the `INSERT`:
+Combined, these statements are relatively fast, at 15.96ms, but an even more performant approach is to append `RETURNING id` to the end of the `INSERT`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -1318,7 +1285,7 @@ Result:
 ['id']
 ['3d16500e-cb2e-462e-9c83-db0965d6deaf']
 
-Average time (milliseconds):
+Median time (milliseconds):
 9.48596000671
 ~~~
 
@@ -1444,7 +1411,7 @@ Since you started each node with the `--locality` flag set to its GCE zone, over
 
 To check this, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is more or less even across all nodes:
 
-<img src="{{ 'images/v2.0/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
 
 For reference, here's how the nodes map to zones:
 
@@ -1466,15 +1433,13 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  start_key | end_key | range_id | replicas | lease_holder
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | NULL    |       22 | {1,6,9}  |            6 |
-+-----------+---------+----------+----------+--------------+
+  NULL      | NULL    |       33 | {3,4,7}  |            7
 (1 row)
 ~~~
 
-In this case, we can see that, for the single range containing `vehicles` data, one replica is in each zone, and the leaseholder is in the `us-west1-a` zone.
+In this case, we can see that, for the single range containing `vehicles` data, one replica is in each zone, and the leaseholder is in the `us-west2-a` zone.
 
 ### Step 12. Test performance
 
@@ -1512,26 +1477,26 @@ For example, imagine we are a Movr administrator in New York, and we want to get
     ...
 
     Times (milliseconds):
-    [1123.0790615081787, 190.16599655151367, 127.28595733642578, 72.94511795043945, 72.0360279083252, 70.50704956054688, 70.83487510681152, 73.11201095581055, 72.81899452209473, 71.35510444641113, 71.6249942779541, 70.8611011505127, 72.17597961425781, 71.78997993469238, 70.75691223144531, 76.08985900878906, 72.6480484008789, 71.91896438598633, 70.59216499328613, 71.07686996459961, 71.86722755432129, 71.01583480834961, 71.29812240600586, 71.74086570739746, 72.67093658447266, 71.03395462036133, 71.78306579589844, 71.5029239654541, 70.33801078796387, 72.91483879089355, 71.23708724975586, 72.81684875488281, 71.70701026916504, 71.32506370544434, 71.68197631835938, 70.78695297241211, 72.80707359313965, 73.0600357055664, 71.69818878173828, 71.40707969665527, 70.53804397583008, 71.83694839477539, 70.08099555969238, 71.96617126464844, 71.03586196899414, 72.6020336151123, 71.23398780822754, 71.03800773620605, 72.12519645690918, 71.77996635437012]
+    [933.8209629058838, 72.02410697937012, 72.45206832885742, 72.39294052124023, 72.8158950805664, 72.07584381103516, 72.21412658691406, 71.96712493896484, 71.75517082214355, 72.16811180114746, 71.78592681884766, 72.91603088378906, 71.91109657287598, 71.4719295501709, 72.40676879882812, 71.8080997467041, 71.84004783630371, 71.98500633239746, 72.40891456604004, 73.75001907348633, 71.45905494689941, 71.53081893920898, 71.46596908569336, 72.07608222961426, 71.94995880126953, 71.41804695129395, 71.29096984863281, 72.11899757385254, 71.63381576538086, 71.3050365447998, 71.83194160461426, 71.20394706726074, 70.9981918334961, 72.79205322265625, 72.63493537902832, 72.15285301208496, 71.8698501586914, 72.30591773986816, 71.53582572937012, 72.69001007080078, 72.03006744384766, 72.56317138671875, 71.61688804626465, 72.17121124267578, 70.20092010498047, 72.12018966674805, 73.34589958190918, 73.01592826843262, 71.49410247802734, 72.19099998474121]
 
-    Average time (milliseconds):
-    96.2521076202
+    Median time (milliseconds):
+    72.0270872116
     ~~~
 
-As we saw earlier, the leaseholder for the `vehicles` table is in `us-west1-a` (Oregon), so our query had to go from the gateway node in `us-east1-b` all the way to the west coast and then back again before returning data to the client.
+As we saw earlier, the leaseholder for the `vehicles` table is in `us-west2-a` (Los Angeles), so our query had to go from the gateway node in `us-east1-b` all the way to the west coast and then back again before returning data to the client.
 
-For contrast, imagine we are now a Movr administrator in Seattle, and we want to get the IDs and descriptions of all Seattle-based bikes that are currently in use:
+For contrast, imagine we are now a Movr administrator in Los Angeles, and we want to get the IDs and descriptions of all Los Angeles-based bikes that are currently in use:
 
-1. SSH to the instance in `us-west1-a` with the Python client.
+1. SSH to the instance in `us-west2-a` with the Python client.
 
 2. Query for the data:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./tuning.py \
-    --host=<address of a node in us-west1-a> \
+    --host=<address of a node in us-west2-a> \
     --statement="SELECT id, ext FROM vehicles \
-    WHERE city = 'seattle' \
+    WHERE city = 'los angeles' \
         AND type = 'bike' \
         AND status = 'in_use'" \
     --repeat=50 \
@@ -1548,61 +1513,61 @@ For contrast, imagine we are now a Movr administrator in Seattle, and we want to
     ['01476004-fb10-4201-9e56-aadeb427f98a', "{u'color': u'black', u'brand': u'Merida'}"]
 
     Times (milliseconds):
-    [83.34112167358398, 35.54201126098633, 36.23318672180176, 35.546064376831055, 39.82996940612793, 35.067081451416016, 35.12001037597656, 34.34896469116211, 35.05301475524902, 35.52699089050293, 34.442901611328125, 33.95986557006836, 35.25996208190918, 35.26592254638672, 35.75301170349121, 35.50601005554199, 35.93301773071289, 32.97090530395508, 35.09712219238281, 35.33005714416504, 34.66916084289551, 34.97791290283203, 34.68203544616699, 34.09695625305176, 35.676002502441406, 33.01596641540527, 35.39609909057617, 33.804893493652344, 33.6918830871582, 34.37995910644531, 33.71405601501465, 35.18819808959961, 34.35802459716797, 34.191131591796875, 33.44106674194336, 34.84678268432617, 35.51292419433594, 33.80894660949707, 33.6911678314209, 36.14497184753418, 34.671783447265625, 35.28904914855957, 33.84900093078613, 36.21387481689453, 36.26894950866699, 34.7599983215332, 34.73687171936035, 34.715890884399414, 35.101890563964844, 35.4609489440918]
+    [782.6759815216064, 8.564949035644531, 8.226156234741211, 7.949113845825195, 7.86590576171875, 7.842063903808594, 7.674932479858398, 7.555961608886719, 7.642984390258789, 8.024930953979492, 7.717132568359375, 8.46409797668457, 7.520914077758789, 7.6541900634765625, 7.458925247192383, 7.671833038330078, 7.740020751953125, 7.771015167236328, 7.598161697387695, 8.411169052124023, 7.408857345581055, 7.469892501831055, 7.524967193603516, 7.764101028442383, 7.750988006591797, 7.2460174560546875, 6.927967071533203, 7.822990417480469, 7.27391242980957, 7.730960845947266, 7.4710845947265625, 7.4310302734375, 7.33494758605957, 7.455110549926758, 7.021188735961914, 7.083892822265625, 7.812976837158203, 7.625102996826172, 7.447957992553711, 7.179021835327148, 7.504940032958984, 7.224082946777344, 7.257938385009766, 7.714986801147461, 7.4939727783203125, 7.6160430908203125, 7.578849792480469, 7.890939712524414, 7.546901702880859, 7.411956787109375]
 
-    Average time (milliseconds):
-    35.9096717834
+    Median time (milliseconds):
+    7.6071023941
     ~~~
 
-Because the leaseholder for `vehicles` is in the same zone as the client request, this query took just 35.90ms compared to the similar query in New York that took 96.25ms.  
+Because the leaseholder for `vehicles` is in the same zone as the client request, this query took just 7.60ms compared to the similar query in New York that took 72.02ms.  
 
 #### Writes
 
-The geographic distribution of data impacts write performance as well. For example, imagine 100 people in New York and 100 people in Los Angeles want to create new Movr accounts:
+The geographic distribution of data impacts write performance as well. For example, imagine 100 people in Seattle and 100 people in New York want to create new Movr accounts:
 
-1. SSH to the instance in `us-east1-b` with the Python client.
+1. SSH to the instance in `us-west1-a` with the Python client.
 
-2. Create 100 NY-based users:
+2. Create 100 Seattle-based users:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./tuning.py \
+    --host=<address of a node in us-west1-a> \
+    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347')" \
+    --repeat=100 \
+    --times
+    ~~~
+
+    ~~~
+    Times (milliseconds):
+    [277.4538993835449, 50.12702941894531, 47.75214195251465, 48.13408851623535, 47.872066497802734, 48.65407943725586, 47.78695106506348, 49.14689064025879, 52.770137786865234, 49.00097846984863, 48.68602752685547, 47.387123107910156, 47.36208915710449, 47.6841926574707, 46.49209976196289, 47.06096649169922, 46.753883361816406, 46.304941177368164, 48.90894889831543, 48.63715171813965, 48.37393760681152, 49.23295974731445, 50.13418197631836, 48.310041427612305, 48.57516288757324, 47.62911796569824, 47.77693748474121, 47.505855560302734, 47.89996147155762, 49.79205131530762, 50.76479911804199, 50.21500587463379, 48.73299598693848, 47.55592346191406, 47.35088348388672, 46.7071533203125, 43.00808906555176, 43.1060791015625, 46.02813720703125, 47.91092872619629, 68.71294975280762, 49.241065979003906, 48.9039421081543, 47.82295227050781, 48.26998710632324, 47.631025314331055, 64.51892852783203, 48.12812805175781, 67.33417510986328, 48.603057861328125, 50.31013488769531, 51.02396011352539, 51.45716667175293, 50.85396766662598, 49.07512664794922, 47.49894142150879, 44.67201232910156, 43.827056884765625, 44.412851333618164, 46.69189453125, 49.55601692199707, 49.16882514953613, 49.88598823547363, 49.31306838989258, 46.875, 46.69594764709473, 48.31886291503906, 48.378944396972656, 49.0570068359375, 49.417972564697266, 48.22111129760742, 50.662994384765625, 50.58097839355469, 75.44088363647461, 51.05400085449219, 50.85110664367676, 48.187971115112305, 56.7781925201416, 42.47403144836426, 46.2191104888916, 53.96890640258789, 46.697139739990234, 48.99096488952637, 49.1330623626709, 46.34690284729004, 47.09315299987793, 46.39410972595215, 46.51689529418945, 47.58000373840332, 47.924041748046875, 48.426151275634766, 50.22597312927246, 50.1859188079834, 50.37498474121094, 49.861907958984375, 51.477909088134766, 73.09293746948242, 48.779964447021484, 45.13692855834961, 42.2968864440918]
+
+    Median time (milliseconds):
+    48.4025478363
+    ~~~
+
+3. SSH to the instance in `us-east1-b` with the Python client.
+
+4. Create 100 new NY-based users:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     ./tuning.py \
     --host=<address of a node in us-east1-b> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 East Street', '1736352379937347')" \
+    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347')" \
     --repeat=100 \
     --times
     ~~~
 
     ~~~
     Times (milliseconds):
-    [710.5610370635986, 75.03294944763184, 76.18403434753418, 76.6599178314209, 75.54292678833008, 77.10099220275879, 76.49803161621094, 76.12395286560059, 75.13093948364258, 76.4460563659668, 74.74899291992188, 76.11799240112305, 74.95307922363281, 75.22797584533691, 75.01792907714844, 76.11393928527832, 75.35195350646973, 76.23100280761719, 75.17099380493164, 76.05600357055664, 76.4470100402832, 76.4310359954834, 75.02388954162598, 76.38192176818848, 78.89008522033691, 76.27677917480469, 75.12402534484863, 74.9521255493164, 75.08397102355957, 76.21502876281738, 75.15192031860352, 77.74996757507324, 73.84800910949707, 85.68978309631348, 75.08993148803711, 77.28886604309082, 76.8439769744873, 76.6448974609375, 75.1500129699707, 76.38287544250488, 75.12092590332031, 76.92408561706543, 76.86591148376465, 76.45702362060547, 76.61795616149902, 75.77109336853027, 81.47501945495605, 83.72306823730469, 76.41983032226562, 75.19102096557617, 74.01609420776367, 77.21996307373047, 76.61914825439453, 75.56986808776855, 76.94005966186523, 75.74892044067383, 76.63488388061523, 76.73311233520508, 75.73890686035156, 75.3028392791748, 76.58910751342773, 76.70807838439941, 76.36213302612305, 75.05607604980469, 76.99084281921387, 79.19192314147949, 75.69003105163574, 76.53594017028809, 75.3641128540039, 76.4620304107666, 75.81305503845215, 76.84993743896484, 75.74915885925293, 77.1799087524414, 76.67183876037598, 75.85597038269043, 77.18396186828613, 78.25303077697754, 76.66516304016113, 75.4399299621582, 76.98297500610352, 75.69122314453125, 77.4688720703125, 81.50601387023926, 76.74908638000488, 76.9951343536377, 75.34193992614746, 76.82991027832031, 76.4460563659668, 75.76298713684082, 76.63083076477051, 75.43802261352539, 76.47705078125, 78.95708084106445, 75.60205459594727, 75.70815086364746, 76.48301124572754, 76.65586471557617, 75.71196556091309, 74.09906387329102]
+    [131.05082511901855, 116.88899993896484, 115.15498161315918, 117.095947265625, 121.04082107543945, 115.8750057220459, 113.80696296691895, 113.05880546569824, 118.41201782226562, 125.30899047851562, 117.5389289855957, 115.23890495300293, 116.84799194335938, 120.0411319732666, 115.62800407409668, 115.08989334106445, 113.37089538574219, 115.15498161315918, 115.96989631652832, 133.1961154937744, 114.25995826721191, 118.09396743774414, 122.24102020263672, 116.14608764648438, 114.80998992919922, 131.9139003753662, 114.54391479492188, 115.15307426452637, 116.7759895324707, 135.10799407958984, 117.18511581420898, 120.15485763549805, 118.0570125579834, 114.52388763427734, 115.28396606445312, 130.00011444091797, 126.45292282104492, 142.69423484802246, 117.60401725769043, 134.08493995666504, 117.47002601623535, 115.75007438659668, 117.98381805419922, 115.83089828491211, 114.88890647888184, 113.23404312133789, 121.1700439453125, 117.84791946411133, 115.35286903381348, 115.0820255279541, 116.99700355529785, 116.67394638061523, 116.1041259765625, 114.67289924621582, 112.98894882202148, 117.1119213104248, 119.78602409362793, 114.57300186157227, 129.58717346191406, 118.37983131408691, 126.68204307556152, 118.30306053161621, 113.27195167541504, 114.22920227050781, 115.80777168273926, 116.81294441223145, 114.76683616638184, 115.1430606842041, 117.29192733764648, 118.24417114257812, 116.56999588012695, 113.8620376586914, 114.88819122314453, 120.80597877502441, 132.39002227783203, 131.00910186767578, 114.56179618835449, 117.03896522521973, 117.72680282592773, 115.6010627746582, 115.27681350708008, 114.52317237854004, 114.87483978271484, 117.78903007507324, 116.65701866149902, 122.6949691772461, 117.65193939208984, 120.5449104309082, 115.61179161071777, 117.54202842712402, 114.70890045166016, 113.58809471130371, 129.7171115875244, 117.57993698120117, 117.1119213104248, 117.64001846313477, 140.66505432128906, 136.41691207885742, 116.24789237976074, 115.19908905029297]
 
-    Average time (milliseconds):
-    82.7817606926
+    Median time (milliseconds):
+    116.868495941
     ~~~
 
-3. SSH to the instance in `us-west2-a` with the Python client.
-
-4. Create 100 new Los Angeles-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-west2-a> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'los angeles', 'Los Angel', '111 West Street', '9822222379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [213.47904205322266, 140.0778293609619, 138.11588287353516, 138.22197914123535, 143.43595504760742, 139.0368938446045, 138.3199691772461, 138.7031078338623, 139.38307762145996, 139.53304290771484, 138.78607749938965, 140.59996604919434, 138.1399631500244, 138.94009590148926, 138.17405700683594, 137.9709243774414, 138.02003860473633, 137.82405853271484, 140.13099670410156, 139.08815383911133, 138.0600929260254, 139.01615142822266, 138.05103302001953, 137.76111602783203, 139.38617706298828, 137.42399215698242, 137.89701461791992, 138.40818405151367, 138.6868953704834, 139.13893699645996, 139.24717903137207, 138.7009620666504, 137.4349594116211, 137.24017143249512, 138.99493217468262, 138.77201080322266, 138.624906539917, 139.19997215270996, 139.4331455230713, 143.18394660949707, 138.0319595336914, 137.6488208770752, 137.27498054504395, 136.3968849182129, 139.0249729156494, 137.9079818725586, 139.37997817993164, 139.32204246520996, 140.045166015625, 137.9718780517578, 139.36805725097656, 139.6927833557129, 139.63794708251953, 138.016939163208, 145.32899856567383, 138.261079788208, 139.56904411315918, 139.6658420562744, 138.02599906921387, 139.7988796234131, 138.24796676635742, 139.9519443511963, 136.5041732788086, 139.43004608154297, 138.16499710083008, 138.2119655609131, 139.69111442565918, 140.30194282531738, 138.14496994018555, 140.00296592712402, 139.44697380065918, 139.35494422912598, 137.9709243774414, 140.78497886657715, 136.4901065826416, 138.44680786132812, 138.69094848632812, 139.2819881439209, 140.45214653015137, 138.3049488067627, 139.4188404083252, 139.9250030517578, 140.40303230285645, 138.7009620666504, 136.9321346282959, 139.20903205871582, 138.14496994018555, 140.14315605163574, 139.30511474609375, 139.58096504211426, 141.16501808166504, 138.66591453552246, 138.3810043334961, 137.39800453186035, 139.9540901184082, 138.4589672088623, 138.72814178466797, 138.3681297302246, 139.1599178314209, 139.29295539855957]
-
-    Average time (milliseconds):
-    139.702253342
-    ~~~
-
-On average, it took 82.78ms to create a user in New York and 139.70ms to create a user in Los Angeles. To better understand this discrepancy, let's look at the distribution of data for the `users` table:
+It took 48.40ms to create a user in Seattle and 116.86ms to create a user in New York. To better understand this discrepancy, let's look at the distribution of data for the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -1614,18 +1579,16 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  start_key | end_key | range_id | replicas | lease_holder
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | NULL    |       51 | {2,6,7}  |            2 |
-+-----------+---------+----------+----------+--------------+
+  NULL      | NULL    |       49 | {2,6,8}  |            6
 (1 row)
 ~~~
 
-For the single range containing `users` data, one replica is in each zone, with the leaseholder in the `us-east1-b` zone. This means that:
+For the single range containing `users` data, one replica is in each zone, with the leaseholder in the `us-west1-a` zone. This means that:
 
-- When creating a user in New York, the request doesn't have to leave the zone to reach the leaseholder. However, since a write requires consensus from its replica group, the write has to wait for confirmation from either the replica in `us-west1-a` (Oregon) or `us-west2-a` (Los Angeles) before committing and then returning confirmation to the client.
-- When creating a user in Los Angeles, there are more network hops and, thus, increased latency. The request first needs to travel across the continent to the leaseholder in `us-east1-b`. It then has to wait for confirmation from either the replica in `us-west1-a` (Oregon) or `us-west2-a` (Los Angeles) before committing and then returning confirmation to the client back in the west.
+- When creating a user in Seattle, the request doesn't have to leave the zone to reach the leaseholder. However, since a write requires consensus from its replica group, the write has to wait for confirmation from either the replica in `us-west1-b` (Los Angeles) or `us-east1-b` (New York) before committing and then returning confirmation to the client.
+- When creating a user in New York, there are more network hops and, thus, increased latency. The request first needs to travel across the continent to the leaseholder in `us-west1-a`. It then has to wait for confirmation from either the replica in `us-west1-b` (Los Angeles) or `us-east1-b` (New York) before committing and then returning confirmation to the client back in the east.
 
 ### Step 13. Partition data by city
 
@@ -1776,7 +1739,7 @@ For this service, the most effective technique for improving read and write late
     The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
     {{site.data.alerts.end}}
 
-7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition-new-in-v2-0) to require city data to be stored on specific nodes based on node locality.
+7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) to require city data to be stored on specific nodes based on node locality.
 
     City | Locality
     -----|---------
@@ -2127,7 +2090,7 @@ Over the next minutes, CockroachDB will rebalance all partitions based on the co
 
 To check this at a high level, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is still close to even across all nodes but much higher than before partitioning:
 
-<img src="{{ 'images/v2.0/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
 
 To check at a more granular level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` table:
 
@@ -2139,21 +2102,19 @@ $ cockroach sql \
 --database=movr \
 --execute="SELECT * FROM \
 [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles] \
-WHERE \"Start Key\" IS NOT NULL \
-    AND \"Start Key\" NOT LIKE '%Prefix%';"
+WHERE \"start_key\" IS NOT NULL \
+    AND \"start_key\" NOT LIKE '%Prefix%';"
 ~~~
 
 ~~~
+     start_key     |          end_key           | range_id | replicas | lease_holder
 +------------------+----------------------------+----------+----------+--------------+
-|    Start Key     |          End Key           | Range ID | Replicas | Lease Holder |
-+------------------+----------------------------+----------+----------+--------------+
-| /"boston"        | /"boston"/PrefixEnd        |       95 | {1,2,3}  |            2 |
-| /"los angeles"   | /"los angeles"/PrefixEnd   |      111 | {7,8,9}  |            9 |
-| /"new york"      | /"new york"/PrefixEnd      |       91 | {1,2,3}  |            1 |
-| /"san francisco" | /"san francisco"/PrefixEnd |      107 | {7,8,9}  |            7 |
-| /"seattle"       | /"seattle"/PrefixEnd       |      103 | {4,5,6}  |            4 |
-| /"washington dc" | /"washington dc"/PrefixEnd |       99 | {1,2,3}  |            1 |
-+------------------+----------------------------+----------+----------+--------------+
+  /"boston"        | /"boston"/PrefixEnd        |      105 | {1,2,3}  |            3
+  /"los angeles"   | /"los angeles"/PrefixEnd   |      121 | {7,8,9}  |            8
+  /"new york"      | /"new york"/PrefixEnd      |      101 | {1,2,3}  |            3
+  /"san francisco" | /"san francisco"/PrefixEnd |      117 | {7,8,9}  |            8
+  /"seattle"       | /"seattle"/PrefixEnd       |      113 | {4,5,6}  |            5
+  /"washington dc" | /"washington dc"/PrefixEnd |      109 | {1,2,3}  |            1
 (6 rows)
 ~~~
 
@@ -2205,63 +2166,63 @@ Again imagine we are a Movr administrator in New York, and we want to get the ID
     ...
 
     Times (milliseconds):
-    [17.27890968322754, 9.554147720336914, 7.483959197998047, 7.407903671264648, 7.538795471191406, 7.39288330078125, 7.623910903930664, 7.172822952270508, 7.15184211730957, 7.201910018920898, 7.063865661621094, 7.602930068969727, 7.246971130371094, 6.966829299926758, 7.369041442871094, 7.277965545654297, 7.650852203369141, 7.177829742431641, 7.266998291015625, 7.150173187255859, 7.303953170776367, 7.1048736572265625, 7.218122482299805, 7.168054580688477, 7.258176803588867, 7.375955581665039, 7.013797760009766, 7.2078704833984375, 7.277965545654297, 7.352113723754883, 7.0400238037109375, 7.379055023193359, 7.227897644042969, 7.266044616699219, 6.883859634399414, 7.344961166381836, 7.222175598144531, 7.149934768676758, 7.241010665893555, 6.999969482421875, 7.40504264831543, 7.191896438598633, 7.192134857177734, 7.2231292724609375, 7.10296630859375, 7.291078567504883, 6.976127624511719, 7.338047027587891, 6.918191909790039, 7.070064544677734]
+    [20.065784454345703, 7.866144180297852, 8.362054824829102, 9.08803939819336, 7.925987243652344, 7.543087005615234, 7.786035537719727, 8.227825164794922, 7.907867431640625, 7.654905319213867, 7.793903350830078, 7.627964019775391, 7.833957672119141, 7.858037948608398, 7.474184036254883, 9.459972381591797, 7.726192474365234, 7.194995880126953, 7.364034652709961, 7.25102424621582, 7.650852203369141, 7.663965225219727, 9.334087371826172, 7.810115814208984, 7.543087005615234, 7.134914398193359, 7.922887802124023, 7.220029830932617, 7.606029510498047, 7.208108901977539, 7.333993911743164, 7.464170455932617, 7.679939270019531, 7.436990737915039, 7.62486457824707, 7.235050201416016, 7.420063018798828, 7.795095443725586, 7.39598274230957, 7.546901702880859, 7.582187652587891, 7.9669952392578125, 7.418155670166016, 7.539033889770508, 7.805109024047852, 7.086992263793945, 7.069826126098633, 7.833957672119141, 7.43412971496582, 7.035017013549805]
 
-    Average time (milliseconds):
-    7.48650074005
+    Median time (milliseconds):
+    7.62641429901
     ~~~
 
-Before partitioning, this query took 96.25ms on average. After partitioning, the query took only 7.48ms on average.
+Before partitioning, this query took a median time of 72.02ms. After partitioning, the query took a median time of only 7.62ms.
 
 #### Writes
 
-Now let's again imagine 100 people in New York and 100 people in Los Angeles want to create new Movr accounts:
+Now let's again imagine 100 people in New York and 100 people in Seattle and 100 people in New York want to create new Movr accounts:
 
-1. SSH to the instance in `us-east1-b` with the Python client.
+1. SSH to the instance in `us-west1-a` with the Python client.
 
-2. Create 100 NY-based users:
+2. Create 100 Seattle-based users:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./tuning.py \
+    --host=<address of a node in us-west1-a> \
+    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347')" \
+    --repeat=100 \
+    --times
+    ~~~
+
+    ~~~
+    Times (milliseconds):
+    [41.8248176574707, 9.701967239379883, 8.725166320800781, 9.058952331542969, 7.819175720214844, 6.247997283935547, 10.265827178955078, 7.627964019775391, 9.120941162109375, 7.977008819580078, 9.247064590454102, 8.929967880249023, 9.610176086425781, 14.40286636352539, 8.588075637817383, 8.67319107055664, 9.417057037353516, 7.652044296264648, 8.917093276977539, 9.135961532592773, 8.604049682617188, 9.220123291015625, 7.578134536743164, 9.096860885620117, 8.942842483520508, 8.63790512084961, 7.722139358520508, 13.59701156616211, 9.176015853881836, 11.484146118164062, 9.212017059326172, 7.563114166259766, 8.793115615844727, 8.80289077758789, 7.827043533325195, 7.6389312744140625, 17.47584342956543, 9.436845779418945, 7.63392448425293, 8.594989776611328, 9.002208709716797, 8.93402099609375, 8.71896743774414, 8.76307487487793, 8.156061172485352, 8.729934692382812, 8.738040924072266, 8.25190544128418, 8.971929550170898, 7.460832595825195, 8.889198303222656, 8.45789909362793, 8.761167526245117, 10.223865509033203, 8.892059326171875, 8.961915969848633, 8.968114852905273, 7.750988006591797, 7.761955261230469, 9.199142456054688, 9.02700424194336, 9.509086608886719, 9.428977966308594, 7.902860641479492, 8.940935134887695, 8.615970611572266, 8.75401496887207, 7.906913757324219, 8.179187774658203, 11.447906494140625, 8.71419906616211, 9.202003479003906, 9.263038635253906, 9.089946746826172, 8.92496109008789, 10.32114028930664, 7.913827896118164, 9.464025497436523, 10.612010955810547, 8.78596305847168, 8.878946304321289, 7.575035095214844, 10.657072067260742, 8.777856826782227, 8.649110794067383, 9.012937545776367, 8.931875228881836, 9.31406021118164, 9.396076202392578, 8.908987045288086, 8.002996444702148, 9.089946746826172, 7.5588226318359375, 8.918046951293945, 12.117862701416016, 7.266998291015625, 8.074045181274414, 8.955001831054688, 8.868932723999023, 8.755922317504883]
+
+    Median time (milliseconds):
+    8.90052318573
+    ~~~
+
+    Before partitioning, this query took a median time of 48.40ms. After partitioning, the query took a median time of only 8.90ms.
+
+3. SSH to the instance in `us-east1-b` with the Python client.
+
+4. Create 100 new NY-based users:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     ./tuning.py \
     --host=<address of a node in us-east1-b> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 East Street', '1736352379937347')" \
+    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347')" \
     --repeat=100 \
     --times
     ~~~
 
     ~~~
     Times (milliseconds):
-    [9.378910064697266, 7.173061370849609, 9.769916534423828, 8.235931396484375, 9.124040603637695, 9.358882904052734, 8.581161499023438, 7.482051849365234, 8.441925048828125, 8.306026458740234, 8.775949478149414, 8.685827255249023, 6.851911544799805, 9.104013442993164, 9.664058685302734, 7.126092910766602, 8.738994598388672, 8.75997543334961, 9.040117263793945, 8.374929428100586, 8.384943008422852, 10.58506965637207, 8.538961410522461, 7.405996322631836, 9.508132934570312, 8.268117904663086, 11.46697998046875, 9.343147277832031, 8.31294059753418, 7.085084915161133, 8.779048919677734, 7.356166839599609, 8.732080459594727, 9.31406021118164, 8.460044860839844, 8.933067321777344, 8.610963821411133, 7.01904296875, 9.474039077758789, 8.276939392089844, 9.40704345703125, 9.205818176269531, 8.270025253295898, 7.443904876708984, 8.999824523925781, 8.215904235839844, 8.124828338623047, 8.324861526489258, 8.156061172485352, 8.740901947021484, 8.39996337890625, 7.437944412231445, 8.78000259399414, 8.615970611572266, 8.795022964477539, 8.683919906616211, 7.111072540283203, 7.770061492919922, 8.922100067138672, 9.526968002319336, 7.8411102294921875, 8.287191390991211, 10.084152221679688, 8.744001388549805, 8.032083511352539, 7.095098495483398, 8.343935012817383, 8.038997650146484, 8.939027786254883, 8.714914321899414, 6.999969482421875, 7.087945938110352, 9.23299789428711, 8.90803337097168, 7.808923721313477, 8.558034896850586, 7.122993469238281, 8.755922317504883, 8.379936218261719, 8.464813232421875, 8.405923843383789, 7.163047790527344, 9.139060974121094, 8.706092834472656, 7.130146026611328, 12.811899185180664, 9.733915328979492, 7.981061935424805, 9.001016616821289, 8.28409194946289, 7.188081741333008, 9.055137634277344, 9.569883346557617, 7.223844528198242, 8.78596305847168, 6.941080093383789, 8.934974670410156, 8.980989456176758, 7.564067840576172, 9.202003479003906]
+    [276.3068675994873, 9.830951690673828, 8.772134780883789, 9.304046630859375, 8.24880599975586, 7.959842681884766, 7.848978042602539, 7.879018783569336, 7.754087448120117, 10.724067687988281, 13.960123062133789, 9.825944900512695, 9.60993766784668, 9.273052215576172, 9.41920280456543, 8.040904998779297, 16.484975814819336, 10.178089141845703, 8.322000503540039, 9.468793869018555, 8.002042770385742, 9.185075759887695, 9.54294204711914, 9.387016296386719, 9.676933288574219, 13.051986694335938, 9.506940841674805, 12.327909469604492, 10.377168655395508, 15.023946762084961, 9.985923767089844, 7.853031158447266, 9.43303108215332, 9.164094924926758, 10.941028594970703, 9.37199592590332, 12.359857559204102, 8.975028991699219, 7.728099822998047, 8.310079574584961, 9.792089462280273, 9.448051452636719, 8.057117462158203, 9.37795639038086, 9.753942489624023, 9.576082229614258, 8.192062377929688, 9.392023086547852, 7.97581672668457, 8.165121078491211, 9.660959243774414, 8.270978927612305, 9.901046752929688, 8.085966110229492, 10.581016540527344, 9.831905364990234, 7.883787155151367, 8.077859878540039, 8.161067962646484, 10.02812385559082, 7.9898834228515625, 9.840965270996094, 9.452104568481445, 9.747028350830078, 9.003162384033203, 9.206056594848633, 9.274005889892578, 7.8449249267578125, 8.827924728393555, 9.322881698608398, 12.08186149597168, 8.76307487487793, 8.353948593139648, 8.182048797607422, 7.736921310424805, 9.31406021118164, 9.263992309570312, 9.282112121582031, 7.823944091796875, 9.11712646484375, 8.099079132080078, 9.156942367553711, 8.363962173461914, 10.974884033203125, 8.729934692382812, 9.2620849609375, 9.27591323852539, 8.272886276245117, 8.25190544128418, 8.093118667602539, 9.259939193725586, 8.413076400756836, 8.198976516723633, 9.95182991027832, 8.024930953979492, 8.895158767700195, 8.243083953857422, 9.076833724975586, 9.994029998779297, 10.149955749511719]
 
-    Average time (milliseconds):
-    8.51003170013
+    Median time (milliseconds):
+    9.26303863525
     ~~~
 
-    Before partitioning, this query took 82.78ms on average. After partitioning, the query took only 8.51ms on average.
-
-3. SSH to the instance in `us-west2-a` with the Python client.
-
-4. Create 100 new Los Angeles-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-west2-a> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'los angeles', 'Los Angel', '111 West Street', '9822222379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [20.322084426879883, 14.09602165222168, 14.353036880493164, 25.568008422851562, 15.157938003540039, 27.19593048095703, 29.092073440551758, 14.515876770019531, 14.114141464233398, 19.414901733398438, 15.073060989379883, 13.965845108032227, 13.913869857788086, 15.218019485473633, 13.844013214111328, 14.110088348388672, 13.943910598754883, 13.73600959777832, 13.262033462524414, 14.648914337158203, 14.066219329833984, 13.91911506652832, 14.122962951660156, 14.724016189575195, 17.747879028320312, 16.537904739379883, 13.921022415161133, 14.027118682861328, 15.810012817382812, 14.811992645263672, 14.551877975463867, 14.912128448486328, 14.078140258789062, 14.576196670532227, 19.381046295166016, 14.536857604980469, 14.664888381958008, 14.539957046508789, 15.054941177368164, 17.20881462097168, 14.64700698852539, 14.211177825927734, 15.089988708496094, 14.193058013916016, 14.544010162353516, 14.680862426757812, 14.32490348815918, 15.841007232666016, 14.069080352783203, 14.59503173828125, 14.837026596069336, 14.315128326416016, 14.558792114257812, 14.645099639892578, 14.82701301574707, 14.699935913085938, 15.035152435302734, 14.724016189575195, 16.10708236694336, 14.612913131713867, 14.641046524047852, 14.706850051879883, 14.29295539855957, 14.779090881347656, 15.485048294067383, 17.444133758544922, 15.172004699707031, 20.865917205810547, 14.388084411621094, 14.241218566894531, 14.343976974487305, 14.602899551391602, 14.64390754699707, 13.908147811889648, 20.69687843322754, 15.130043029785156, 14.754056930541992, 14.123916625976562, 14.760017395019531, 14.25480842590332, 14.446020126342773, 14.229059219360352, 15.10000228881836, 14.275789260864258, 14.42098617553711, 14.935970306396484, 15.175819396972656, 27.69613265991211, 14.856815338134766, 14.902830123901367, 15.029191970825195, 15.143871307373047, 15.524148941040039, 14.510869979858398, 18.740177154541016, 14.97197151184082, 15.30003547668457, 15.158891677856445, 14.423847198486328, 35.25400161743164]
-
-    Average time (milliseconds):
-    15.7462859154
-    ~~~
-
-    Before partitioning, this query took 139.70ms on average. After partitioning, the query took only 15.74ms on average.
+    Before partitioning, this query took a median time of 116.86ms. After partitioning, the query took a median time of only 9.26ms.
 
 ## See also
 
