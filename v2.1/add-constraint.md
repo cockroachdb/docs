@@ -7,7 +7,7 @@ toc: true
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
 - [`CHECK`](check.html)
-- [`FOREIGN KEY`](foreign-key.html)
+- [Foreign key](foreign-key.html)
 - [`UNIQUE`](unique.html)
 
 {{site.data.alerts.callout_info}}
@@ -27,11 +27,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table containing the column you want to constrain. 
- `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). 
- `constraint_elem` | The [`CHECK`](check.html), [`FOREIGN KEY`](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined). 
+ `table_name` | The name of the table containing the column you want to constrain.
+ `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+ `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html#create-a-table-primary-key-defined).
 
 ## Viewing schema changes
 
@@ -57,9 +57,9 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
 ~~~
 
-### Add the `FOREIGN KEY` constraint with `CASCADE`
+### Add the foreign key constraint with `CASCADE`
 
-Before you can add the [`FOREIGN KEY`](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
+Before you can add the [foreign key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
 
 For example, let's say you have two tables, `orders` and `customers`:
 
@@ -111,7 +111,7 @@ To ensure that each value in the `orders.customer_id` column matches a unique va
 > CREATE INDEX ON orders (customer_id);
 ~~~
 
-Then you add the `FOREIGN KEY` constraint.
+Then you add the foreign key constraint.
 
 You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 

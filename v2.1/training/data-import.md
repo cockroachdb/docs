@@ -300,9 +300,9 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
 3. Take a look at the `pg_dump.sql` file, which contains 2 tables, `customers` and `accounts`, as well as some constraints on both tables.
 
     Before this file can be used to import into CockroachDB, the SQL must be edited for compatibility with CockroachDB:
-    - The two [`CREATE TABLE`](../create-table.html) statements must be rewritten to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](../primary-key.html#syntax) and the `accounts` table's [`FOREIGN KEY` constraint](../foreign-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
+    - The two [`CREATE TABLE`](../create-table.html) statements must be rewritten to contain all of the constraints identified in the file, including each table's [`PRIMARY KEY`](../primary-key.html#syntax) and the `accounts` table's [foreign key constraint](../foreign-key.html#syntax). **This must be done manually** because PostgreSQL attempts to add the primary key after creating the table, but CockroachDB requires the primary key be defined upon table creation.
     - Everything but the `CREATE TABLE` and `COPY` statements must be removed.
-    - The `CREATE TABLE` and `COPY` statements for the `customers` table must be reordered to come before the `CREATE TABLE` and `COPY` statements for the `accounts` table because of the `FOREIGN KEY` constraint.
+    - The `CREATE TABLE` and `COPY` statements for the `customers` table must be reordered to come before the `CREATE TABLE` and `COPY` statements for the `accounts` table because of the foreign key constraint.
 
 4. Instead of manually cleaning the file, you can download our pre-cleaned version:
 

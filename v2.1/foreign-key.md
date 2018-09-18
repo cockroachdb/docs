@@ -4,7 +4,7 @@ summary: The Foreign Key constraint specifies a column can contain only values e
 toc: true
 ---
 
-The `FOREIGN KEY` [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
+The foreign key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
 
 For example, if you create a foreign key on `orders.customer` that references `customers.id`:
 
@@ -66,7 +66,7 @@ Parameter | Description
 
 ### Performance
 
-Because the `FOREIGN KEY` constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
+Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
 
 We're currently working to improve the performance of these statements, though.
 
@@ -76,7 +76,7 @@ You can improve the performance of some statements that use Foreign Keys by also
 
 ## Syntax
 
-`FOREIGN KEY` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
 You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
@@ -145,7 +145,7 @@ CREATE TABLE packages (
 
 ## Usage examples
 
-### Use a `FOREIGN KEY` constraint with default actions
+### Use a foreign key constraint with default actions
 
 In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
 
@@ -251,7 +251,7 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 
 ### Use a Foreign Key Constraint with `CASCADE`
 
-In this example, we'll create a table with a `FOREIGN KEY` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
 
 First, create the referenced table:
 
@@ -361,7 +361,7 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 
 ### Use a Foreign Key Constraint with `SET NULL`
 
-In this example, we'll create a table with a `FOREIGN KEY` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
 
 First, create the referenced table:
 
