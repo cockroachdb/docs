@@ -108,7 +108,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ### Start a new changefeed where another ended
 
-Find the [high-water timestamp](change-data-capture#monitor-a-changefeed) for the ended changefeed:
+Find the [high-water timestamp](change-data-capture.html#monitor-a-changefeed) for the ended changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
