@@ -95,7 +95,7 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Required privileges
 
-Only the `root` user can run [`IMPORT`](import.html).
+Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 

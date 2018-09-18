@@ -10,7 +10,6 @@ The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas a
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
-
 ## Functional details
 
 ### Restore targets
@@ -93,7 +92,7 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 
 ## Required privileges
 
-Only the `root` user can run `RESTORE`.
+Only members of the `admin` role can run `RESTORE`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 

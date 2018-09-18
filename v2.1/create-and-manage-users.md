@@ -64,7 +64,7 @@ Flag | Description
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
-Currently, only the `root` user can create users.
+Currently, only members of the `admin` role can create users. By default, the `root` user belongs to the `admin` role.
 
 {{site.data.alerts.callout_info}}
 Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.

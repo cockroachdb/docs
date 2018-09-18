@@ -9,7 +9,7 @@ The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-clus
 
 ## Required privileges
 
-Only the `root` user can modify cluster settings.
+Only members of the `admin` role can modify cluster settings. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -17,9 +17,9 @@ Only the `root` user can modify cluster settings.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive). 
+ `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive).
 
 ## Example
 

@@ -29,16 +29,16 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Required privileges
 
-Only the `root` user can run [`EXPORT`](export.html).
+Only members of the `admin` role can run `EXPORT`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
  `file_location` | Specify the URL of the file location where you want to store the exported CSV data.
- `WITH kv_option` | Control your export's behavior with [these options](#export-options). 
- `select_stmt` | Specify the query whose result you want to export to CSV format. 
- `table_name` | Specify the name of the table you want to export to CSV format. 
+ `WITH kv_option` | Control your export's behavior with [these options](#export-options).
+ `select_stmt` | Specify the query whose result you want to export to CSV format.
+ `table_name` | Specify the name of the table you want to export to CSV format.
 
 ### Export file URL
 
