@@ -46,7 +46,7 @@ Option | Value | Description
 `UPDATED` | N/A | Include updated timestamps with each row.
 `RESOLVED` | N/A | Periodically emit resolved timestamps to the changefeed.
 `ENVELOPE` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `ENVELOPE=row `
-`CURSOR` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`CURSOR` can be used to start a new changefeed where a previous changefeed ended.<br><br>Example: `CURSOR=1536242855577149065.0000000000`
+`CURSOR` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`CURSOR` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
 `FORMAT` | `JSON` | Format of the emitted record. Currently, only `JSON`.
 <!--
 `WITH envelope=key_only` | Emits only the key and no value, which is faster if you only want to know when the key changes. `WITH envelope=row `is the default. In v2.1, there will also be a `WITH envelope=diff`, which emits the old and new value of the changed row.
@@ -105,6 +105,28 @@ For more information, see [`RESUME JOB`](resume-job.html).
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
+
+### Start a new changefeed where another ended
+
+Find the [high-water timestamp](change-data-capture#monitor-a-changefeed) for the ended changefeed:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM crdb_internal.jobs WHERE job_id=<job_id>;
+~~~
+~~~
+        job_id       |  job_type  | ... |      high_water_timestamp      | error | coordinator_id
++--------------------+------------+ ... +--------------------------------+-------+----------------+
+  383870400694353921 | CHANGEFEED | ... | 1537279405671006870.0000000000 |       |              1
+(1 row)
+~~~
+
+Use the `high_water_timestamp` to start the new changefeed:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka//host:port' WITH CURSOR=<high_water_timestamp>;
+~~~
 
 ## See also
 
