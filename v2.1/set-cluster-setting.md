@@ -11,7 +11,7 @@ The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-w
 
 ## Required privileges
 
-Only the `root` user can modify cluster settings.
+Only members of the `admin` role can modify cluster settings. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

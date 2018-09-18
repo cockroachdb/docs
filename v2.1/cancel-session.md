@@ -9,7 +9,7 @@ toc: true
 
 ## Required privileges
 
-Only the `root` user and the user that the session belongs to can cancel a session.
+Only members of the `admin` role and the user that the session belongs to can cancel a session. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

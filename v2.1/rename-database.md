@@ -17,7 +17,7 @@ The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a dat
 
 ## Required privileges
 
-Only the `root` user can rename databases.
+Only members of the `admin` role can rename databases. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 

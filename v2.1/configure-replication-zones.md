@@ -172,7 +172,7 @@ Flag | Description
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
-Currently, only the `root` user can configure replication zones and the `--database` flag is not effective.
+Currently, only members of the `admin` role can configure replication zones. By default, the `root` user belongs to the `admin` role.
 
 ### Logging
 

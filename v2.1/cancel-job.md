@@ -13,7 +13,7 @@ When an enterprise [`RESTORE`](restore.html) is canceled, partially restored dat
 
 ## Required privileges
 
-By default, only the `root` user can cancel a job.
+Only members of the `admin` role can cancel a job. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
