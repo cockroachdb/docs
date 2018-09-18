@@ -104,7 +104,7 @@ Here's an example:
 meta2/M -> node1:26257, node2:26257, node3:26257
 ~~~
 
-In this case, the replica on `node1` is the Leaseholder, and nodes 2 and 3 also contain replicas.
+In this case, the replica on `node1` is the leaseholder, and nodes 2 and 3 also contain replicas.
 
 #### Example
 

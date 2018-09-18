@@ -126,7 +126,7 @@ Column | Description
 
 ### key_column_usage
 
-`key_column_usage` identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [`FOREIGN KEY` / `REFERENCES`](foreign-key.html) constraints.
+`key_column_usage` identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [foreign key / `REFERENCES`](foreign-key.html) constraints.
 
 Column | Description
 -------|-----------
@@ -248,7 +248,7 @@ Column | Description
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
 `table_name` | Name of the constrained table.
-`constraint_type` | Type of [constraint](constraints.html): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.
+`constraint_type` | Type of [constraint](constraints.html): `CHECK`, foreign key, `PRIMARY KEY`, or `UNIQUE`.
 `is_deferrable` | `YES` if the constraint can be deferred; `NO` if not.
 `initially_deferred` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 

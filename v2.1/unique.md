@@ -136,7 +136,7 @@ As mentioned in the [details](#details) above, it is possible when using the `UN
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`CHECK` constraint](check.html)
 - [`DEFAULT` value constraint](default-value.html)
-- [`FOREIGN KEY` constraint](foreign-key.html)
+- [Foreign key constraint](foreign-key.html)
 - [`NOT NULL` constraint](not-null.html)
 - [`PRIMARY` key constraint](primary-key.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

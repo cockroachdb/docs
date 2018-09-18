@@ -8,17 +8,19 @@ The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained 
 
 Unlike other constraints which have very specific uses, the `PRIMARY KEY` constraint *should be used for every table* because it provides an intrinsic structure to the table's data. This both makes it easier to understand, as well as improving query performance.
 
-{{site.data.alerts.callout_info}}A table's primary key can only be specified in the <a href="create-table.html"><code>CREATE TABLE</code></a> statement. It cannot be changed later using <code>ALTER TABLE</code>, though it is possible to <a href="constraints.html#change-constraints">go through a process</a> to create a new table with the new primary key you want and then migrate the data.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+A table's primary key can only be specified in the [`CREATE TABLE`](create-table.html) statement. It cannot be changed later using `ALTER TABLE`, though it is possible to [go through a process](constraints.html#change-constraints) to create a new table with the new primary key you want and then migrate the data.
+{{site.data.alerts.end}}
 
 
 ## Details
 
 - Tables can only have one primary key.
-- To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [Unique](unique.html) and [Not Null](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values.
+- To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`](unique.html) and [`NOT NULL`](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values.
 
-  - The properties of the Unique constraint ensure that each value is distinct from all other values.
+  - The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values.
 
-  - However, because *NULL* values never equal other *NULL* values, the Unique constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the Not Null constraint.
+  - However, because *NULL* values never equal other *NULL* values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the Not Null constraint.
 
 - The columns in the `PRIMARY KEY` constraint are used to create its `primary` [index](indexes.html), which CockroachDB uses by default to access the table's data.
 
@@ -67,7 +69,7 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
  `table_name` | The name of the table you're creating.
  `column_def` | Definitions for any other columns in the table.
  `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
- `column_name` | The name of the column you want to use as the Primary Key.<br/><br/>The order in which you list columns here affects the structure of the `primary` index.
+ `column_name` | The name of the column you want to use as the `PRIMARY KEY`.<br/><br/>The order in which you list columns here affects the structure of the `primary` index.
  `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
 
 **Example**
