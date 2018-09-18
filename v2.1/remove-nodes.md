@@ -9,7 +9,6 @@ This page shows you how to decommission and permanently remove one or more nodes
 
 For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](stop-a-node.html).
 
-
 ## Overview
 
 ### How it works
@@ -374,14 +373,14 @@ SSH to each machine with a recommissioned node and run the same `cockroach start
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --certs-dir=certs --host=<address of node to restart> --join=<address of node 1>:26257 --background
+$ cockroach start --certs-dir=certs --advertise-addr=<address of node to restart> --join=<address of node 1> --background
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure --host=<address of node to restart> --join=<address of node 1>:26257 --background
+$ cockroach start --insecure --advertise-addr=<address of node to restart> --join=<address of node 1> --background
 ~~~
 </div>
 

@@ -56,7 +56,7 @@ Flag | Description
 -----|------------
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](use-the-built-in-sql-client.html#session-and-output-types); `tsv` otherwise.
 
 ### Client connection
 
@@ -64,7 +64,7 @@ Flag | Description
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
-Currently, only the `root` user can create users.
+Currently, only members of the `admin` role can create users. By default, the `root` user belongs to the `admin` role.
 
 {{site.data.alerts.callout_info}}
 Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.

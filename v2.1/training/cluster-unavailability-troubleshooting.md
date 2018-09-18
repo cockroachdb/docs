@@ -39,7 +39,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --port=26257 \
+    --host=localhost:26257 \
     --execute="SHOW DATABASES;" \
     --logtostderr=WARNING
     ~~~
@@ -55,7 +55,6 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -68,7 +67,6 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259

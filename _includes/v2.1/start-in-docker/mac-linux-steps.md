@@ -83,12 +83,6 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 $ docker exec -it roach1 ./cockroach sql --insecure
 ~~~
 
-~~~
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
-~~~
-
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 {% include copy-clipboard.html %}
@@ -132,12 +126,6 @@ Then start the SQL shell in the second container:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ docker exec -it roach2 ./cockroach sql --insecure
-~~~
-
-~~~
-# Welcome to the cockroach SQL interface.
-# All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
 ~~~
 
 Now run the same `SELECT` query:

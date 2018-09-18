@@ -78,10 +78,9 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     $ cockroach start \
     --insecure \
     --locality=region=us-west \
-    --host=localhost \
     --store=follow1 \
-    --port=26257 \
-    --http-port=8080 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -92,10 +91,9 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     $ cockroach start \
     --insecure \
     --locality=region=us-midwest \
-    --host=localhost \
     --store=follow2 \
-    --port=26258 \
-    --http-port=8081 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -106,10 +104,9 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     $ cockroach start \
     --insecure \
     --locality=region=us-east \
-    --host=localhost \
     --store=follow3 \
-    --port=26259 \
-    --http-port=8082 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -121,8 +118,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ### Step 5. Simulate traffic in the US East
@@ -160,7 +156,7 @@ The load generator created a `kv` table that maps to an underlying key-value ran
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach node status --insecure --port=26257
+    $ cockroach node status --insecure --host=localhost:26257
     ~~~
 
     ~~~
@@ -180,7 +176,7 @@ The load generator created a `kv` table that maps to an underlying key-value ran
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --port=26257
+    $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 4. Check where the range lease is for the `kv` table:
@@ -222,7 +218,7 @@ Verify that the range's lease moved to the node in the "US West" as follows.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach node status --insecure --port=26257
+    $ cockroach node status --insecure --host=localhost:26257
     ~~~
 
     ~~~
@@ -242,7 +238,7 @@ Verify that the range's lease moved to the node in the "US West" as follows.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --port=26257
+    $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 4. Check where the range lease is for the `kv` table:

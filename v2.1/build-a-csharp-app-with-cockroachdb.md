@@ -46,7 +46,7 @@ For the purpose of this tutorial, you need only one CockroachDB node running in 
 $ cockroach start \
 --insecure \
 --store=hello-1 \
---host=localhost
+--listen-addr=localhost
 ~~~
 
 ## Step 4. Create a user

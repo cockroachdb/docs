@@ -11,7 +11,7 @@ via [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
 ## Required privileges
 
-Only the `root` user can display cluster settings.
+Only members of the `admin` role can display cluster settings. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

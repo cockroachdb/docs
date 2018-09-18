@@ -17,7 +17,6 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-
 ## Synopsis
 
 <div>
@@ -26,13 +25,13 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 
 ## Required privileges
 
-Only the `root` user can enable audit logs on a table.
+Only members of the `admin` role can enable audit logs on a table. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
  Parameter    | Description                                              
 --------------+----------------------------------------------------------
- `table_name` | The name of the table you want to create audit logs for. 
+ `table_name` | The name of the table you want to create audit logs for.
  `READ`       | Log all table reads to the audit log file.               
  `WRITE`      | Log all table writes to the audit log file.              
  `OFF`        | Turn off audit logging.                                  

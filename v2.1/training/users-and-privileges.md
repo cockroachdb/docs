@@ -29,6 +29,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW GRANTS ON DATABASE startrek;"
     ~~~
 
@@ -54,6 +55,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW GRANTS ON startrek.episodes, startrek.quotes;"
     ~~~
 
@@ -75,7 +77,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set spock --insecure
+    $ ./cockroach user set spock --insecure --host=localhost:26257
     ~~~
 
 2. Try to read from a table in the `startrek` database as `spock`:
@@ -84,6 +86,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --user=spock \
     --database=startrek \
     --execute="SELECT count(*) FROM episodes;"
@@ -104,6 +107,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="GRANT SELECT ON TABLE startrek.* TO spock;"
     ~~~
 
@@ -113,6 +117,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \    
     --execute="GRANT INSERT ON TABLE startrek.quotes TO spock;"
     ~~~
 
@@ -122,6 +127,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
 
@@ -146,6 +152,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --user=spock \
     --execute="SELECT count(*) FROM startrek.quotes;" \
     --execute="SELECT count(*) FROM startrek.episodes;"
@@ -170,6 +177,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --user=spock \
     --execute="INSERT INTO startrek.quotes VALUES ('Blah blah', 'Spock', NULL, 52);"
     ~~~
@@ -186,6 +194,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --user=spock \
     --execute="INSERT INTO startrek.episodes VALUES (80, 3, 25, 'The Episode That Never Was', 5951.5);"
     ~~~
@@ -205,6 +214,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
 
@@ -227,6 +237,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="REVOKE SELECT ON TABLE startrek.episodes FROM spock;"
     ~~~
 
@@ -236,6 +247,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SHOW GRANTS ON TABLE startrek.quotes, startrek.episodes;"
     ~~~
 
@@ -259,6 +271,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --user=spock \
     --execute="SELECT count(*) FROM startrek.episodes;"
     ~~~

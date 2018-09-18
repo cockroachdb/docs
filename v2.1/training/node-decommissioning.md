@@ -28,40 +28,30 @@ Run the `cockroach quit` command with the `--decommission` flag against node 3:
 $ ./cockroach quit \
 --insecure \
 --decommission \
---port=26259
+--host=localhost:26259
 ~~~
 
 Because the cluster has 3 nodes, with every range on every node, it is not possible to rebalance node 3's data, so the decommission process hangs:
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  3 |  true   |                20 |        true        |    false    |
-+----+---------+-------------------+--------------------+-------------+
+  id | is_live | replicas | is_decommissioning | is_draining
++----+---------+----------+--------------------+-------------+
+   3 |  true   |       23 |        true        |    false
 (1 row)
-.
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  3 |  true   |                20 |        true        |    true     |
-+----+---------+-------------------+--------------------+-------------+
-(1 row)
-...........
+............
 ~~~
 
 ## Step 2. Add a fourth node
 
-To make it possible for node 3 to decommission, add a fourth node:
+In a new terminal, to make it possible for node 3 to decommission, add a fourth node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ ./cockroach start \
 --insecure \
 --store=node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -72,28 +62,23 @@ $ ./cockroach start \
     You'll see that, after the fourth node was added, the node's `gossiped_replicas` count decreased to 0 and the process completed with a confirmation:
 
     ~~~
-    +----+---------+-------------------+--------------------+-------------+
-    | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-    +----+---------+-------------------+--------------------+-------------+
-    |  3 |  true   |                20 |        true        |    false    |
-    +----+---------+-------------------+--------------------+-------------+
+
+      id | is_live | replicas | is_decommissioning | is_draining
+    +----+---------+----------+--------------------+-------------+
+       3 |  true   |        4 |        true        |    false
     (1 row)
-    .
-    +----+---------+-------------------+--------------------+-------------+
-    | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-    +----+---------+-------------------+--------------------+-------------+
-    |  3 |  true   |                20 |        true        |    true     |
-    +----+---------+-------------------+--------------------+-------------+
+    ......
+      id | is_live | replicas | is_decommissioning | is_draining
+    +----+---------+----------+--------------------+-------------+
+       3 |  true   |        3 |        true        |    false
     (1 row)
-    .............
-    +----+---------+-------------------+--------------------+-------------+
-    | id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-    +----+---------+-------------------+--------------------+-------------+
-    |  3 |  true   |                 0 |        true        |    true     |
-    +----+---------+-------------------+--------------------+-------------+
+    ............
+      id | is_live | replicas | is_decommissioning | is_draining
+    +----+---------+----------+--------------------+-------------+
+       3 |  true   |        0 |        true        |    false
     (1 row)
 
-    All target nodes report that they hold no more data. Please verify cluster health before removing the nodes.
+    No more data reported on target nodes. Please verify cluster health before removing the nodes.
     ok
     ~~~
 

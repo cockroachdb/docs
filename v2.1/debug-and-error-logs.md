@@ -100,8 +100,6 @@ By default, commands besides `cockroach start` discard messages with the `INFO` 
 
 {% include {{ page.version.version }}/misc/logging-flags.md %}
 
-The `--log-backtrace-at`, `--verbosity`, and `--v` flags are intended for internal debugging by CockroachDB contributors.
-
 ## See also
 
 - [Troubleshooting Overview](troubleshooting-overview.html)

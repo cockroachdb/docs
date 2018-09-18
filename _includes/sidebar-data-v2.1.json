@@ -111,53 +111,6 @@
                 ]
               }
             ]
-          },
-          {
-            "title": "Explore Benefits",
-            "items": [
-              {
-                "title": "Data Replication",
-                "urls": [
-                  "/${VERSION}/demo-data-replication.html"
-                ]
-              },
-              {
-                "title": "Fault Tolerance & Recovery",
-                "urls": [
-                  "/${VERSION}/demo-fault-tolerance-and-recovery.html"
-                ]
-              },
-              {
-                "title": "Automatic Rebalancing",
-                "urls": [
-                  "/${VERSION}/demo-automatic-rebalancing.html"
-                ]
-              },
-              {
-                "title": "Cross-Cloud Migration",
-                "urls": [
-                  "/${VERSION}/demo-automatic-cloud-migration.html"
-                ]
-              },
-              {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/demo-follow-the-workload.html"
-                ]
-              },
-              {
-                "title": "Orchestration",
-                "urls": [
-                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
-                ]
-              },
-              {
-                "title": "JSON Support",
-                "urls": [
-                  "/${VERSION}/demo-json-support.html"
-                ]
-              }
-            ]
           }
         ]
       },
@@ -286,12 +239,6 @@
                   "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
                 ]
               }
-            ]
-          },
-          {
-            "title": "Performance Benchmarking",
-            "urls": [
-              "/${VERSION}/performance-benchmarking-with-tpc-c.html"
             ]
           },
           {
@@ -477,6 +424,60 @@
           }
         ]
       }
+    ]
+  },
+  {
+    "title": "Tutorials",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Data Replication",
+        "urls": [
+          "/${VERSION}/demo-data-replication.html"
+        ]
+      },
+      {
+        "title": "Fault Tolerance & Recovery",
+        "urls": [
+          "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+        ]
+      },
+      {
+        "title": "Automatic Rebalancing",
+        "urls": [
+          "/${VERSION}/demo-automatic-rebalancing.html"
+        ]
+      },
+      {
+        "title": "Cross-Cloud Migration",
+        "urls": [
+          "/${VERSION}/demo-automatic-cloud-migration.html"
+        ]
+      },
+      {
+        "title": "Follow-the-Workload",
+        "urls": [
+          "/${VERSION}/demo-follow-the-workload.html"
+        ]
+      },
+      {
+        "title": "Orchestration",
+        "urls": [
+          "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+        ]
+      },
+      {
+        "title": "JSON Support",
+        "urls": [
+          "/${VERSION}/demo-json-support.html"
+        ]
+      },
+      {
+        "title": "Performance Benchmarking",
+        "urls": [
+          "/${VERSION}/performance-benchmarking-with-tpc-c.html"
+        ]
+      }      
     ]
   },
   {
@@ -1468,9 +1469,15 @@
         "title": "Admin UI",
         "items": [
           {
-            "title": "Overview",
+            "title": "Admin UI Overview",
             "urls": [
               "/${VERSION}/admin-ui-overview.html"
+            ]
+          },
+          {
+            "title": "Cluster Overview Page",
+            "urls": [
+              "/${VERSION}/admin-ui-cluster-overview-page.html"
             ]
           },
           {

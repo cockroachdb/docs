@@ -39,7 +39,7 @@ For the purpose of this example, you need an [enterprise license](enterprise-lic
 $ cockroach start \
 --insecure \
 --store=roles \
---host=localhost
+--listen-addr=localhost:26257
 ~~~
 
 1. As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:

@@ -29,7 +29,7 @@ In this scenario, you try to connect a user without providing a client certifica
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set kirk --certs-dir=certs
+    $ ./cockroach user set kirk --certs-dir=certs --host=localhost:26257
     ~~~
 
 2. As the `kirk` user, try to connect to the cluster:
@@ -38,6 +38,7 @@ In this scenario, you try to connect a user without providing a client certifica
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --user=kirk \
     --execute="SHOW DATABASES;"
     ~~~
@@ -77,6 +78,7 @@ To successfully connect the user, you must first either generate a client certif
     ~~~ shell
     $ ./cockroach sql \
     --certs-dir=certs \
+    --host=localhost:26257 \
     --user=kirk \
     --execute="SHOW DATABASES;"
     ~~~
@@ -101,6 +103,7 @@ Try to connect the `kirk` user:
 ~~~ shell
 $ ./cockroach sql \
 --certs-dir=certs \
+--host=localhost:26257 \
 --user=kirk \
 --port=20000 \
 --execute="SHOW DATABASES;"
@@ -126,6 +129,7 @@ To successfully connect the user, try again using a correct `--port`:
 ~~~ shell
 $ ./cockroach sql \
 --certs-dir=certs \
+--host=localhost:26257 \
 --user=kirk \
 --port=26259 \
 --execute="SHOW DATABASES;"
@@ -134,7 +138,7 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-database_name
+  database_name
 +---------------+
 (0 rows)
 ~~~

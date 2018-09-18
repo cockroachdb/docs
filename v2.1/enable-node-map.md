@@ -12,7 +12,6 @@ This page walks you through the process of setting up and enabling the **Node Ma
 
 <img src="{{ 'images/v2.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-
 ## Set up and enable the Node Map
 
 To enable the **Node Map**, you need to start the cluster with the correct `--locality` flags and assign the latitudes and longitudes for each locality.
@@ -59,10 +58,10 @@ Start Node 1:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1a  \
---host=<node1 address> \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 2:
@@ -72,10 +71,10 @@ Start Node 2:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1b \
---host=<node2 address> \
+--advertise-addr=<node2 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 3:
@@ -85,10 +84,10 @@ Start Node 3:
 $ cockroach start \
 --insecure \
 --locality=region=us-west-1,datacenter=us-west-1a \
---host=<node3 address> \
+--advertise-addr=<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 4:
@@ -98,17 +97,17 @@ Start Node 4:
 $ cockroach start \
 --insecure \
 --locality=region=eu-west-1,datacenter=eu-west-1a \
---host=<node4 address> \
+--advertise-addr=<node4 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach init --insecure
+$ cockroach init --insecure --host=<address of any node>
 ~~~
 
 [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
