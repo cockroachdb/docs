@@ -110,7 +110,7 @@ The table below the statistics box provides the following details:
 Parameter | Description
 -----|------------
 App | Name of the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. The **Statements Details** page shows the details for this application.
-Distributed execution? | Indicates whether the statement (or multiple statements having the same fingerprint) were executed using DistSQL.
+Distributed execution? | Indicates whether the statement execution was distributed.
 Used cost-based optimizer? | Indicates whether the statement (or multiple statements having the same fingerprint) were executed using the cost-based optimizer.
 Failed? | Indicate if the statement (or multiple statements having the same fingerprint) were executed successfully.
 
