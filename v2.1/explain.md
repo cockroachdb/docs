@@ -4,33 +4,7 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: true
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](#explainable-statements). You can then use this information to optimize the query.
-
-
-## Explainable statements
-
-You can `EXPLAIN` on the following statements:
-
-- [`ALTER USER`](sql-grammar.html#alter_user_stmt), [`ALTER TABLE`](alter-table.html), [`ALTER INDEX`](alter-index.html), [`ALTER VIEW`](alter-view.html), [`ALTER DATABASE`](alter-database.html), [`ALTER SEQUENCE`](alter-sequence.html)
-- [`BACKUP`](backup.html)
-- [`CANCEL JOB`](cancel-job.html), [`CANCEL QUERY`](cancel-query.html)
-- [`CREATE DATABASE`](create-database.html), [`CREATE INDEX`](create-index.html), [`CREATE TABLE`](create-table.html), [`CREATE TABLE AS`](create-table-as.html), [`CREATE USER`](create-user.html), [`CREATE VIEW`](create-view.html), [`CREATE SEQUENCE`](create-sequence.html)
-- [`DELETE`](delete.html)
-- [`DROP DATABASE`](drop-database.html), [`DROP INDEX`](drop-index.html), [`DROP SEQUENCE`](drop-sequence.html), [`DROP TABLE`](drop-table.html), [`DROP USER`](drop-user.html), [`DROP VIEW`](drop-view.html)
-- [`EXECUTE`](sql-grammar.html#execute_stmt)
-- `EXPLAIN`
-- [`IMPORT`](import.html)
-- [`INSERT`](insert.html)
-- [`PAUSE JOB`](pause-job.html)
-- [`RESET`](reset-vars.html)
-- [`RESTORE`](restore.html)
-- [`RESUME JOB`](resume-job.html)
-- [`SELECT`](select-clause.html) and any [selection query](selection-queries.html)
-- [`SET`](set-vars.html)
-- [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW BACKUP`](show-backup.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW CONSTRAINTS`](show-constraints.html), [`SHOW CREATE `](show-create.html), [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW DATABASES`](show-databases.html), [`SHOW GRANTS`](show-grants.html), [`SHOW INDEX`](show-index.html), [`SHOW JOBS`](show-jobs.html), [`SHOW QUERIES`](show-queries.html), [`SHOW SESSIONS`](show-sessions.html), [`SHOW TABLES`](show-tables.html), [`SHOW TRACE FOR SESSION`](show-trace-for-session.html), [`SHOW USERS`](show-users.html), [`SHOW HISTOGRAM`](sql-grammar.html#show_histogram_stmt)
-- [`UPDATE`](update.html)
-- [`UPSERT`](upsert.html)
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](sql-grammar.html#explainable_stmt). You can then use this information to optimize the query.
 
 ## Query optimization
 
@@ -70,7 +44,7 @@ Parameter | Description
 `TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
 `OPT` | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
 `DISTSQL` | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
-`explainable_stmt` | The [statement](#explainable-statements) you want details about.
+`explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
