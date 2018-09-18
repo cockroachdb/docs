@@ -52,19 +52,7 @@ Parameter | Description
 
 ### Pause multiple jobs
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW JOBS;
-~~~
-
-~~~
-job_id             |  job_type  |         description                              
--------------------+------------+-------------------------------------------...                        
-378762176538771457 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE demo INTO 'kaf...
-27536791415282     |  RESTORE   | RESTORE db.* FROM 'azure://backup/db/tbl' ...
-~~~
-
-To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
+<span class="version-tag">New in v2.1:</span> To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
