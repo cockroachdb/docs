@@ -27,7 +27,7 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --port=26259 \
+    --host=localhost:26259 \
     --execute="SELECT crdb_internal.force_panic('foo');"
     ~~~
 
@@ -40,7 +40,9 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 
 In the terminal where node 3 was running, check the `stdout` for details:
 
-{{site.data.alerts.callout_info}}You can also look in the node's full logs at <code>node3/logs</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+You can also look in the node's full logs at `node3/logs`.
+{{site.data.alerts.end}}
 
 ~~~
 E180209 14:47:54.819282 2149 sql/session.go:1370  [client=127.0.0.1:53558,user=root,n1] a SQL panic has occurred!

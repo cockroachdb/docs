@@ -34,7 +34,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -48,7 +47,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -62,7 +60,6 @@ To simplify the process of running multiple nodes on your local computer, you'll
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -73,7 +70,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Import tabular data from remote file storage
@@ -86,6 +83,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="CREATE DATABASE import_test;"
     ~~~
 
@@ -95,6 +93,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
     ~~~
@@ -114,6 +113,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="import_test" \
     --execute="SHOW CREATE orders;"
     ~~~
@@ -149,6 +149,7 @@ The [`IMPORT`](../import.html) feature is one of the most efficient ways to get 
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="import_test" \
     --execute="SELECT o_orderkey, o_custkey, o_comment FROM orders WHERE o_orderstatus = 'O' LIMIT 10;"
     ~~~
@@ -204,7 +205,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --insecure < startrek.sql
+    $ ./cockroach sql --insecure --host=localhost:26257 < startrek.sql
     ~~~
 
 3. Check the schema of the imported `episodes` table:
@@ -213,6 +214,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="startrek" \
     --execute="SHOW CREATE episodes;"
     ~~~
@@ -242,6 +244,7 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="startrek" \
     --execute="SELECT * FROM episodes LIMIT 10;"
     ~~~
@@ -332,6 +335,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="CREATE DATABASE pg_import;"
     ~~~
 
@@ -348,6 +352,7 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="SELECT customers.name, accounts.balance FROM pg_import.accounts JOIN pg_import.customers ON accounts.customer_id = customers.id;"
     ~~~
 

@@ -8,7 +8,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of an ente
 
 ## Required privileges
 
-Only the `root` user can run `SHOW BACKUP`.
+Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

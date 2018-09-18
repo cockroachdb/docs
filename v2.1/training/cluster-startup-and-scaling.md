@@ -85,7 +85,6 @@ Use the [`cockroach start`](../start-a-node.html) command to start a node:
 $ ./cockroach start \
 --insecure \
 --store=node1 \
---advertise-addr=localhost \
 --listen-addr=localhost:26257 \
 --http-addr=localhost:8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
@@ -102,7 +101,12 @@ You'll see the following message:
 * - Any user, connecting as root, can read or write any data in your cluster.
 * - There is no network encryption nor authentication, and thus no confidentiality.
 *
-* Check out how to secure your cluster: https://www.cockroachlabs.com/docs/stable/secure-a-cluster.html
+* Check out how to secure your cluster: https://www.cockroachlabs.com/docs/v2.1/secure-a-cluster.html
+*
+*
+* INFO: initial startup completed, will now wait for `cockroach init`
+* or a join to a running cluster to start accepting clients.
+* Check the log file(s) for progress.
 *
 ~~~
 
@@ -115,17 +119,17 @@ Before moving on, take a moment to understand the flags you used with the `cockr
 Flag | Description
 -----|------------
 `--insecure` | Indicates that the node will communicate without encryption.<br><br>You'll start all other nodes with this flag, as well as all other `cockroach` commands you'll use against the cluster.<br><br>Without this flag, `cockroach` expects to be able to find security certificates to encrypt its communication. More about these in a later module.
-`--store` | The location where the node stores its data and logs.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique storage location for each node.<br><br>In a real deployment, with one node per machine, it's fine to let `cockroach` use the its default storage location (`cockroach-data`).
-`--host` | The hostname or IP address for communication with other nodes and clients.<br><br>In this training, since you'll use a purely local cluster, `--host=localhost` tells the node to listens only on `localhost`.
-`--port` | The TCP port for communication with other nodes and clients.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique port for each node.<br><br>In a real deployment, with one node per machine, it's fine to let `cockroach` use its default port (`26257`).
-`--http-port` | The HTTP port for accessing the Admin UI.<br><br>Again, since you'll be running all nodes on your computer, you need to specify a unique HTTP port for each node.<br><br>In a real deployment, with one node per machine, it's fine to let `cockroach` use its default HTTP port (`8080`).
-`--join` | The addresses and TCP ports of all of your initial nodes.<br><br>You'll use this exact `--join` flag when starting all other nodes.
+`--store` | The location where the node stores its data and logs.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique storage location for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use the its default storage location (`cockroach-data`).
+`--listen-addr`<br>`--http-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients and for Admin UI HTTP request, respectively.<br><br>Again, since you'll be running all nodes on your computer, you need to specify unique ports for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use its default TPC port (`26257`) and HTTP port (`8080`).
+`--join` | The addresses and ports of all of your initial nodes.<br><br>You'll use this exact `--join` flag when starting all other nodes.
 
-{{site.data.alerts.callout_success}}You can run <code>./cockroach start --help</code> to get help on this command directly in your terminal and <code>./cockroach --help</code> to get help on other commands.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+You can run `./cockroach start --help` to get help on this command directly in your terminal and `./cockroach --help` to get help on other commands.
+{{site.data.alerts.end}}
 
 ## Step 5. Start two more nodes
 
-Start two more nodes, using the same `cockroach start` command as earlier but with unique `--store`, `--port`, and `--http-port` flags for each new node.
+Start two more nodes, using the same `cockroach start` command as earlier but with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node.
 
 1. In another terminal, start the second node:
 
@@ -134,7 +138,6 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ./cockroach start \
     --insecure \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -147,7 +150,6 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -155,11 +157,11 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 6. Initialize the cluster
 
-1. In another terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+1. In another terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
     You'll see the following message:
@@ -171,24 +173,34 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 2. Go back to the terminal where you started one of the nodes and look at the additional details that were printed to `stdout`:
 
     ~~~
-    CockroachDB node starting at 2018-02-02 05:08:22.841392 +0000 UTC
-    build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
-    admin:      http://localhost:8080
-    sql:        postgresql://root@localhost:26257?sslmode=disable
-    logs:       /Users/jesseseldess/cockroachdb-training/node1/logs
-    store[0]:   path=/Users/jesseseldess/cockroachdb-training/node1
-    status:     initialized new cluster
-    clusterID:  930527b8-327b-4e13-99dd-640db40a2844
-    nodeID:     1
+    CockroachDB node starting at 2018-09-13 20:06:52.743448917 +0000 UTC (took 51.0s)
+    build:               CCL {{page.release_info.version}} @ 2018/09/10 19:49:42 (go1.10.3)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    client flags:        ./cockroach <client cmd> --host=localhost:26257 --insecure
+    logs:                /Users/<username>/cockroachdb-training/node1/logs
+    temp dir:            /Users/<username>/cockroachdb-training/node1/cockroach-temp462678173
+    external I/O path:   /Users/<username>/cockroachdb-training/node1/extern
+    store[0]:            path=/Users/<username>/cockroachdb-training/node1
+    status:              initialized new cluster
+    clusterID:           fdc056a4-0cc0-4b29-b435-60e1db239f82
+    nodeID:              1
     ~~~
+
+    {{site.data.alerts.callout_success}}
+    These details are also written to the <code>INFO</code> log in the `/logs` directory in case you need to refer to them at a later time.
+    {{site.data.alerts.end}}
 
     Field | Description
     ------|------------
     `build` | The version of CockroachDB you are running.
-    `admin` | The URL for accessing the Admin UI.
-    `sql` | The connection URL for clients.
+    `webui` | The URL for accessing the Admin UI.
+    `sql` | The connection URL for your client.
+    `client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
     `logs` | The directory containing debug log data.
-    `store[n]` | The directory containing the node's data.
+    `temp dir` | The temporary store directory of the node.
+    `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](../backup.html) and [restore](../restore.html) operations using local node directories or NFS drives.
+    `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.
     `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
     `clusterID` | The ID of the cluster.
     `nodeID` | The ID of the node.
@@ -199,16 +211,15 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach node status --insecure
+    $ ./cockroach node status --insecure --host=localhost:26257
     ~~~
 
     ~~~
-
       id |     address     |        build         |            started_at            |            updated_at            | is_live
     +----+-----------------+----------------------+----------------------------------+----------------------------------+---------+
-       1 | localhost:26257 | v2.1.0-beta.20180827 | 2018-08-29 14:38:41.088076+00:00 | 2018-08-29 14:39:12.657203+00:00 | true
-       2 | localhost:26258 | v2.1.0-beta.20180827 | 2018-08-29 14:38:42.141988+00:00 | 2018-08-29 14:39:13.748036+00:00 | true
-       3 | localhost:26259 | v2.1.0-beta.20180827 | 2018-08-29 14:38:42.828228+00:00 | 2018-08-29 14:39:14.404132+00:00 | true
+       1 | localhost:26257 | v2.1.0-beta.20180910 | 2018-09-13 20:06:52.621228+00:00 | 2018-09-13 20:13:28.640675+00:00 | true
+       2 | localhost:26259 | v2.1.0-beta.20180910 | 2018-09-13 20:06:53.145611+00:00 | 2018-09-13 20:13:29.196639+00:00 | true
+       3 | localhost:26258 | v2.1.0-beta.20180910 | 2018-09-13 20:06:53.513492+00:00 | 2018-09-13 20:13:29.578478+00:00 | true
     (3 rows)
     ~~~
 
@@ -218,7 +229,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --port=26257 \
+    --host=localhost:26257 \
     --execute="SHOW DATABASES;"
     ~~~
 
@@ -239,8 +250,8 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     Concept | Description
     --------|------------
-    **Range** | CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs.<br><br>This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
-    **Range Replica** | CockroachDB replicates each range 3 times by default and stores each replica on a different node.<br><br>In a later module, you'll learn how to control replication.
+    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 64 MiB in size, it splits into two ranges. This process continues as the table and its indexes continue growing.
+    **Replica** | CockroachDB replicates each range 3 times by default and stores each replica on a different node.<br><br>In a later module, you'll learn how to control replication.
 
 2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and view the **Node List**:
 
@@ -253,7 +264,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 9. Scale the cluster
 
-Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--port`, and `--http-port` flags for each new node. But this time, you do not have to follow-up with the `cockroach init` command or any other commands.
+Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node. But this time, you do not have to follow-up with the `cockroach init` command or any other commands.
 
 1. In another terminal, start the fourth node:
 
@@ -262,7 +273,6 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
     ./cockroach start \
     --insecure \
     --store=node4 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
     --join=localhost:26257,localhost:26258,localhost:26259
@@ -275,7 +285,6 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
     ./cockroach start \
     --insecure \
     --store=node5 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
     --join=localhost:26257,localhost:26258,localhost:26259

@@ -91,7 +91,7 @@ In the sample script, configure the day of the week for which you want to create
     recent=recent_backups.txt                         # File in which recent backups are tracked.
     backup_parameters=<additional backup parameters>  # e.g., "WITH revision_history"
 
-    # Customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, `--port`, and additional flags as needed to connect to the SQL client.
+    # Customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, and additional flags as needed to connect to the SQL client.
     runsql() { cockroach sql --insecure -e "$1"; }
 
     destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"
@@ -124,7 +124,7 @@ In the sample script, configure the day of the week for which you want to create
     `extra`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
     `backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.
 
-    Also customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, `--port`, and [additional flags](use-the-built-in-sql-client.html#flags) as required.
+    Also customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, and [additional flags](use-the-built-in-sql-client.html#flags) as required.
 
 3. Change the file permissions to make the script executable:
 

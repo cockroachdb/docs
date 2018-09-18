@@ -8,7 +8,6 @@ This page shows you how to use the `cockroach quit` [command](cockroach-commands
 
 For information about permanently removing nodes to downsize a cluster or react to hardware failures, see [Remove Nodes](remove-nodes.html).
 
-
 ## Overview
 
 ### How it works

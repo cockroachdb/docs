@@ -19,9 +19,9 @@ redirect_from: /training/cluster-upgrade.html
 
 In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
-## Step 1. Install CockroachDB v1.1
+## Step 1. Install CockroachDB v2.0
 
-1. Download the CockroachDB v1.1 archive for your OS, and extract the binary:
+1. Download the CockroachDB v2.0 archive for your OS, and extract the binary:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -32,7 +32,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-v1.1.7.darwin-10.9-amd64.tgz \
+    $ curl https://binaries.cockroachdb.com/cockroach-v2.0.5.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
     </div>
@@ -40,7 +40,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v1.1.7.linux-amd64.tgz \
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0.5.linux-amd64.tgz \
     | tar  xvz
     ~~~
     </div>
@@ -50,28 +50,28 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v1.1.7.darwin-10.9-amd64/cockroach ./cockroach-v1.1 \
-    ; rm -rf cockroach-v1.1.7.darwin-10.9-amd64
+    $ mv cockroach-v2.0.5.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0.5.darwin-10.9-amd64
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v1.1.7.linux-amd64/cockroach ./cockroach-v1.1 \
-    ; rm -rf cockroach-v1.1.7.linux-amd64
+    $ mv cockroach-v2.0.5.linux-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0.5.linux-amd64
     ~~~
     </div>
 
-## Step 2. Start a cluster running v1.1
+## Step 2. Start a cluster running v2.0
 
-Start and initialize a cluster like you did in previous modulesm, but this time using the v1.1 binary.
+Start and initialize a cluster like you did in previous modules, but this time using the v2.0 binary.
 
 1. In a new terminal, start node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v1.1 start \
+    $ ./cockroach-v2.0 start \
     --insecure \
     --store=node1 \
     --host=localhost \
@@ -84,7 +84,7 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v1.1 start \
+    $ ./cockroach-v2.0 start \
     --insecure \
     --store=node2 \
     --host=localhost \
@@ -97,7 +97,7 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v1.1 start \
+    $ ./cockroach-v2.0 start \
     --insecure \
     --store=node3 \
     --host=localhost \
@@ -110,10 +110,10 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach-v1.1 init --insecure
+    $ ./cockroach-v2.0 init --insecure
     ~~~
 
-## Step 3. Upgrade the first node to v2.0
+## Step 3. Upgrade the first node to v2.1
 
 1. In node 1's terminal, press **CTRL-C** to stop the `cockroach` process.
 
@@ -127,48 +127,28 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
     You should **not** see a `cockroach` process with `--store=node1` and `--port=26257`.
 
     ~~~
-    6521 ttys001    0:00.86 ./cockroach-v1.1 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
-    6543 ttys002    0:00.00 grep cockroach-v1.1
-    6509 ttys004    0:00.98 ./cockroach-v1.1 start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    49659 ttys001    0:02.43 ./cockroach-v2.0 start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    49671 ttys002    0:02.32 ./cockroach-v2.0 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    49705 ttys015    0:00.00 grep cockroach
     ~~~~
 
-3. In node 1's terminal, restart the node using the v2.0 binary:
+3. In node 1's terminal, restart the node using the v2.1 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --host=localhost \
-    --port=26257 \
-    --http-port=8080 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
 4. Go to the Admin UI at <a href="http://localhost:8081" data-proofer-ignore>http://localhost:8081</a> to view the **Node List** and then verify that the node has rejoined the cluster using the new version of the binary:
 
-    <img src="{{ 'images/v2.0/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/training-20.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    You can also use the `cockroach node status` command to check each node's version:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach node status \
-    --insecure
-    ~~~
-
-    ~~~
-    +----+-----------------+--------+---------------------+---------------------+---------+
-    | id |     address     | build  |     updated_at      |     started_at      | is_live |
-    +----+-----------------+--------+---------------------+---------------------+---------+
-    |  1 | localhost:26257 | v2.0.0 | 2018-04-13 10:17:29 | 2018-04-13 10:15:59 | true    |
-    |  2 | localhost:26258 | v1.1.7 | 2018-04-13 10:17:30 | 2018-04-13 10:14:30 | true    |
-    |  3 | localhost:26259 | v1.1.7 | 2018-04-13 10:17:30 | 2018-04-13 10:14:30 | true    |
-    +----+-----------------+--------+---------------------+---------------------+---------+
-    (3 rows)
-    ~~~
-
-## Step 4. Upgrade the rest of the nodes
+## Step 4. Upgrade the rest of the nodes to v2.1
 
 1. In node 2's terminal, press **CTRL-C** to stop the `cockroach` process.
 
@@ -182,21 +162,20 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
     You should not see a `cockroach` process with `--store=node2` and `--port=26258`.
 
     ~~~
-    6521 ttys001    0:04.61 ./cockroach-v1.1 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
-    6564 ttys002    0:03.68 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
-    6641 ttys004    0:00.00 grep cockroach
+    49659 ttys001    0:07.05 ./cockroach-v2.0 start --insecure --store=node3 --host=localhost --port=26259 --http-port=8082 --join=localhost:26257,localhost:26258,localhost:26259
+    49824 ttys002    0:00.00 grep cockroach
+    49717 ttys015    0:05.76 ./cockroach start --insecure --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-3. Restart the node using the v2.0 binary:
+3. Restart the node using the v2.1 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --host=localhost \
-    --port=26258 \
-    --http-port=8081 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
@@ -214,21 +193,20 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
     You should not see a `cockroach` process with `--store=node3` and `--port=26259`.
 
     ~~~
-    6688 ttys001    0:00.00 grep cockroach
-    6564 ttys002    0:04.90 ./cockroach start --insecure --store=node1 --host=localhost --port=26257 --http-port=8080 --join=localhost:26257,localhost:26258,localhost:26259
-    6668 ttys004    0:01.22 ./cockroach start --insecure --store=node2 --host=localhost --port=26258 --http-port=8081 --join=localhost:26257,localhost:26258,localhost:26259
+    49869 ttys001    0:00.01 grep cockroach
+    49849 ttys002    0:02.38 ./cockroach start --insecure --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+    49717 ttys015    0:10.88 ./cockroach start --insecure --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-7. Restart the node using the v2.0 binary:
+7. Restart the node using the v2.1 binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --host=localhost \
-    --port=26259 \
-    --http-port=8082 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~~
 
@@ -236,7 +214,7 @@ Start and initialize a cluster like you did in previous modulesm, but this time 
 
 Back in the Admin UI, you'll see that all 3 nodes now have the same, upgraded version:
 
-<img src="{{ 'images/v2.0/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/training-21.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 You can also use the `cockroach node status` command to check each node's version:
 
@@ -247,30 +225,15 @@ $ ./cockroach node status \
 ~~~
 
 ~~~
-+----+-----------------+--------+---------------------+---------------------+---------+
-| id |     address     | build  |     updated_at      |     started_at      | is_live |
-+----+-----------------+--------+---------------------+---------------------+---------+
-|  1 | localhost:26257 | v2.0.0 | 2018-04-13 10:22:49 | 2018-04-13 10:15:59 | true    |
-|  2 | localhost:26258 | v2.0.0 | 2018-04-13 10:22:45 | 2018-04-13 10:20:24 | true    |
-|  3 | localhost:26259 | v2.0.0 | 2018-04-13 10:22:49 | 2018-04-13 10:21:59 | true    |
-+----+-----------------+--------+---------------------+---------------------+---------+
+  id |     address     |        build         |            started_at            |            updated_at            | is_live
++----+-----------------+----------------------+----------------------------------+----------------------------------+---------+
+   1 | localhost:26257 | v2.1.0-beta.20180910 | 2018-09-13 22:27:29.290335+00:00 | 2018-09-13 22:37:32.314011+00:00 | true
+   2 | localhost:26259 | v2.1.0-beta.20180910 | 2018-09-13 22:34:17.468613+00:00 | 2018-09-13 22:37:35.491432+00:00 | true
+   3 | localhost:26258 | v2.1.0-beta.20180910 | 2018-09-13 22:36:06.252257+00:00 | 2018-09-13 22:37:31.770426+00:00 | true
 (3 rows)
 ~~~
 
-## Step 6. Finalize the upgrade
-
-Once all nodes are on the same upgraded version, update the `version` cluster setting to enable certain backwards-incompatible performance improvements and bug fixes that were introduced in v2.0:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ ./cockroach sql \
---insecure \
---execute="SET CLUSTER SETTING version = crdb_internal.node_executable_version();"
-~~~
-
-{{site.data.alerts.callout_info}}This final step is required after upgrading from v1.1.x to v2.0. For upgrades within the 2.0.x series, you do not need to take any further action. Note that, after completing this step, it will no longer be possible to perform a rolling downgrade to v1.1. In the event of a catastrophic failure or corruption due to usage of new features requiring v2.0, the only option is to start a new cluster using the old binary and then restore from one of the backups created prior to finalizing the upgrade.{{site.data.alerts.end}}
-
-## Step 7. Clean up
+## Step 6. Clean up
 
 This is the last module of the training, so feel free to stop you cluster and clean things up.
 

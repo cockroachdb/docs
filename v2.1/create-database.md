@@ -9,7 +9,7 @@ The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB
 
 ## Required privileges
 
-Only the `root` user can create databases.
+Only members of the `admin` role can configure replication zones. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

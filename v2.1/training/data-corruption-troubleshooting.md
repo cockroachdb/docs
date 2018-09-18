@@ -28,7 +28,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node1 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -42,7 +41,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node2 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -56,7 +54,6 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -67,7 +64,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure
+    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -80,6 +77,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --execute="CREATE DATABASE import_test;"
     ~~~
 
@@ -89,6 +87,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
+    --host=localhost:26257 \
     --database="import_test" \
     --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
     ~~~
@@ -129,7 +128,6 @@ Before you can manually corrupt data, you need to import enough data so that the
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -171,7 +169,6 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
     $ ./cockroach start \
     --insecure \
     --store=node3 \
-    --advertise-addr=localhost \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
@@ -180,7 +177,9 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
 In this case, the cluster repairs the node using data from the other nodes. In more severe emergencies where multiple disks are corrupted, there are tools like `cockroach debug rocksdb` to let you inspect the files in more detail and try to repair them. If enough nodes/files are corrupted, [restoring to a enterprise backup](../restore.html) is best.
 
-{{site.data.alerts.callout_danger}}In all cases of data corruption, you should <a href="how-to-get-support.html">get support from Cockroach Labs</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+In all cases of data corruption, you should [get support from Cockroach Labs](how-to-get-support.html).
+{{site.data.alerts.end}}
 
 ## What's next?
 

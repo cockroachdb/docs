@@ -111,7 +111,7 @@ The `BACKUP` statement cannot be used within a [transaction](transactions.html).
 
 ## Required privileges
 
-Only the `root` user can run `BACKUP`.
+Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role. 
 
 ## Parameters
 

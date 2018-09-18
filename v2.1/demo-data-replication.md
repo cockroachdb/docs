@@ -17,7 +17,8 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 $ cockroach start \
 --insecure \
 --store=repdemo-node1 \
---host=localhost
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080
 ~~~
 
 ## Step 2. Write data
@@ -26,14 +27,14 @@ In a new terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data intro | cockroach sql --insecure
+$ cockroach gen example-data intro | cockroach sql --insecure --host=localhost:26257
 ~~~
 
 In the same terminal, open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
@@ -111,9 +112,8 @@ In a new terminal, add node 2:
 $ cockroach start \
 --insecure \
 --store=repdemo-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257
 ~~~
 
@@ -124,9 +124,8 @@ In a new terminal, add node 3:
 $ cockroach start \
 --insecure \
 --store=repdemo-node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257
 ~~~
 
@@ -142,7 +141,7 @@ As you just saw, CockroachDB replicates data 3 times by default. Now, in the ter
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set .default --insecure --host=localhost:26257 -f -
 ~~~
 
 ~~~
@@ -158,7 +157,7 @@ In addition to the `.default` replication zone for database and table data, Cock
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone ls --insecure
+$ cockroach zone ls --insecure --host=localhost:26257
 ~~~
 
 ~~~
@@ -172,7 +171,7 @@ For the cluster as a whole to remain available, the "system ranges" for this int
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .liveness --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set .liveness --insecure --host=localhost:26257 -f -
 ~~~
 
 ~~~
@@ -186,7 +185,7 @@ constraints: []
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .meta --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set .meta --insecure --host=localhost:26257 -f -
 ~~~
 
 ~~~
@@ -200,7 +199,7 @@ constraints: []
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set system.jobs --insecure -f -
+$ echo 'num_replicas: 5' | cockroach zone set system.jobs --insecure --host=localhost:26257 -f -
 ~~~
 
 ~~~
@@ -218,11 +217,11 @@ In a new terminal, add node 4:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure \
---host=localhost \
+$ cockroach start \
+--insecure \
 --store=repdemo-node4 \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257
 ~~~
 
@@ -232,10 +231,9 @@ In a new terminal, add node 5:
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=localhost \
 --store=repdemo-node5 \
---port=26261 \
---http-port=8084 \
+--listen-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --join=localhost:26257
 ~~~
 

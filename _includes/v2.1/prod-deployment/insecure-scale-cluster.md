@@ -34,11 +34,11 @@ For each additional node you want to add to the cluster, complete the following 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure \
-    --host=<node4 address> \
+    --advertise-addr=<node4 address> \
     --locality=<key-value pairs> \
     --cache=.25 \
     --max-sql-memory=.25 \
-    --join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257 \
+    --join=<node1 address>,<node2 address>,<node3 address> \
     --background
     ~~~
 
@@ -108,12 +108,9 @@ For each additional node you want to add to the cluster, complete the following 
 
 8. Customize the sample configuration template for your deployment:
 
-     Specify values for the following flags in the sample configuration template:
+    Specify values for the following flags in the sample configuration template:
 
-     Flag | Description
-     -----|------------
-     `--host` | Specifies the hostname or IP address to listen on for intra-cluster and client communication, as well as to identify the node in the Admin UI. If it is a hostname, it must be resolvable from all nodes, and if it is an IP address, it must be routable from all nodes.<br><br>If you want the node to listen on multiple interfaces, leave `--host` empty.<br><br>If you want the node to communicate with other nodes on an internal address (e.g., within a private network) while listening on all interfaces, leave `--host` empty and set the `--advertise-host` flag to the internal address.
-     `--join` | Identifies the address and port of 3-5 of the initial nodes of the cluster.
+    {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
 9. Repeat these steps for each additional node that you want in your cluster.
 

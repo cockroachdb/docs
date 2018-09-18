@@ -6,7 +6,6 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll lower the maximum size for a single range, the unit of data that is replicated in CockroachDB. You'll then download and run the `block_writer` example program, which continuously inserts data into your cluster, and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
-
 ## Before you begin
 
 In this tutorial, you'll use an example Go program to quickly insert data into a CockroachDB cluster. To run the example program, you must have a [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.7.1.
@@ -21,33 +20,33 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 {% include copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 1:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=scale-node1 \
---host=localhost \
---port=26257 \
---http-port=8080 \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 2:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=scale-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 3:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=scale-node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -59,8 +58,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ## Step 3. Verify that the cluster is live
@@ -69,7 +67,7 @@ In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26257
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
@@ -103,7 +101,7 @@ However, the default replication zone also defines the size at which a single ra
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure -f -
+$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure --host=localhost:26257 -f -
 ~~~
 
 ~~~
@@ -161,22 +159,22 @@ Adding capacity is as simple as starting more nodes and joining them to the runn
 {% include copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 4:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=scale-node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 5:
-$ cockroach start --insecure \
+$ cockroach start \
+--insecure \
 --store=scale-node5 \
---host=localhost \
---port=26261 \
---http-port=8084 \
+--listen-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 

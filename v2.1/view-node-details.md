@@ -64,7 +64,7 @@ All `node` subcommands support the following [general-use](#general) and [loggin
 
 Flag | Description
 -----|------------
-`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `tsv`
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `records`, `sql`, `html`.<br><br>**Default:** `tsv`
 
 The `node ls` subcommand also supports the following general flags:
 

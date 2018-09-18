@@ -35,7 +35,8 @@ For the purpose of this tutorial, you need only one CockroachDB node running in 
 $ cockroach start \
 --insecure \
 --store=json-test \
---host=localhost
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080
 ~~~
 
 ## Step 3. Create a user
@@ -44,7 +45,7 @@ In a new terminal, as the `root` user, use the [`cockroach user`](create-and-man
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach user set maxroach --insecure
+$ cockroach user set maxroach --insecure --host=localhost:26257
 ~~~
 
 ## Step 4. Create a database and grant privileges
@@ -53,7 +54,7 @@ As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.h
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 Next, create a database called `jsonb_test`:

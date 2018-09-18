@@ -26,10 +26,9 @@ This message indicates a client is trying to connect to a node that is either no
 To resolve this issue, do one of the following:
 
 - If the node hasn't yet been started, [start the node](start-a-node.html).
-- If you specified a `--host` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable..
-- If you specified a `--port` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_PORT` environment variable.
+- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](start-a-node.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the `--host` and `--port` values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also kill the `cockroach` process, and then restart the node:
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also kill the `cockroach` process, and then restart the node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
