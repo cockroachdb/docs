@@ -77,8 +77,6 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
     {"__crdb__": {"updated": "1532379923319195777.0000000000"}, "id": 4, "name": "Lucky"}
     ~~~
 
-- Order guarantees are not given for cross-row and cross-table transactions.
-
 - With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
 
     Because CockroachDB supports transactions that can affect any part of the cluster, it is not possible to horizontally divide the transaction log into independent changefeeds.
@@ -304,7 +302,7 @@ The following are limitations in the v2.1 release and will be addressed in the f
 
 - The CockroachDB core changefeed is not ready for external testing.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) will cause the changefeed to stop and you will need to start a new changefeed.
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) will cause the changefeed to stop and you will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
 - Changefeeds use a pull model, but will use a push model in the future, lowering latencies considerably.
