@@ -129,6 +129,28 @@ To cancel a changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
+## Monitor a changefeed
+
+Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
+
+- On the [Jobs page](admin-ui-jobs-page.html) of the Admin UI. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- Using `crdb_internal.jobs`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM crdb_internal.jobs WHERE job_id=<job_id>;
+    ~~~
+    ~~~
+            job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
+    +--------------------+------------+------------------------------------------------------------------------+ ... +--------------------------------+-------+----------------+
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs2 INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
+    (1 row)
+    ~~~
+
+{{site.data.alerts.callout_info}}
+You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
+{{site.data.alerts.end}}
+
 ## Usage example
 
 ### Create a changefeed connected to Kafka
