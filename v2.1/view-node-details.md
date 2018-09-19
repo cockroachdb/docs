@@ -129,6 +129,7 @@ Field | Description
 `value_bytes` | The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
+`is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
 `is_live` | If `true`, the node is currently live.<br><br>**Required flag:** None
 `replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
@@ -199,16 +200,54 @@ $ cockroach node status --insecure
 ~~~
 
 ~~~
-+----+-----------------------+---------+---------------------+---------------------+---------+
-| id |        address        |  build  |     updated_at      |     started_at      | is_live |
-+----+-----------------------+---------+---------------------+---------------------+---------+
-|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 | true    |
-|  2 | 192.241.239.201:26257 | 91a299d | 2017-09-07 18:16:05 | 2017-09-07 16:30:45 | true    |
-|  3 | 67.207.91.36:26257    | 91a299d | 2017-09-07 18:16:06 | 2017-09-07 16:31:06 | true    |
-|  4 | 138.197.12.74:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:44:23 | true    |
-|  5 | 174.138.50.192:26257  | 91a299d | 2017-09-07 18:10:07 | 2017-09-07 17:12:57 | false   |
-+----+-----------------------+---------+---------------------+---------------------+---------+
-(5 rows)
+id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+ 1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:25:20.351483+00:00 | true         | true     
+ 2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:23.984197+00:00 | true         | true     
+ 3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:25:20.535474+00:00 | true         | true
+(3 rows)
+~~~
+
+The `is_live` and `is_available` fields are marked as `true` as long as a majority of the nodes are up, and a quorum can be reached:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --insecure --host=localhost:26258
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach node status --insecure
+~~~
+
+~~~
+  id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+   1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:54:21.894586+00:00 | true         | true     
+   2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:17.839323+00:00 | 2018-09-18 17:52:06.172624+00:00 | false        | false    
+   3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:10.961166+00:00 | 2018-09-18 17:54:24.925007+00:00 | true         | true     
+(3 rows)
+~~~
+
+If a majority of nodes are down and a quorum cannot be reached, the `is_live` field is marked as `true` for the nodes that are up, but the `is_available` field is marked as `false` for all nodes:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --insecure --host=localhost:26259
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach node status --insecure
+~~~
+
+~~~
+id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+ 1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:30:48.860329+00:00 | false        | true     
+ 2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:31.137222+00:00 | false        | false    
+ 3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:30:49.943822+00:00 | false        | false    
+(3 rows)
 ~~~
 
 ### Decommission nodes
