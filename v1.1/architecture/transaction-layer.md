@@ -1,6 +1,6 @@
 ---
 title: Transaction Layer
-summary: 
+summary:
 toc: true
 ---
 
@@ -28,7 +28,7 @@ When the Transaction Layer executes write operations, it doesn't directly write 
 - A **Transaction Record** stored in the range where the first write occurs, which includes the transaction's current state (which starts as `PENDING`, and ends as either `COMMITTED` or `ABORTED`).
 
 - **Write Intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the Transaction Record stored on the cluster.
-	
+
 As Write Intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing Write Intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
@@ -63,7 +63,7 @@ In relationship to other layers in CockroachDB, the Transaction Layer:
 
 ### Time & Hybrid Logical Clocks
 
-In distributed systems, ordering and causality are difficult problems to solve. While it's possible to rely entirely on Raft consensus to maintain serializability, it would be inefficient for reading data. To optimize performance of reads, CockroachDB implements hybrid-logical clocks (HLC) which are composed of a physical component (thought of as and always close to local wall time) and a logical component (used to distinguish between events with the same physical component). This means that HLC time is always greater than or equal to the wall time. You can find more detail in the [HLC paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf).
+In distributed systems, ordering and causality are difficult problems to solve. While it's possible to rely entirely on Raft consensus to maintain serializability, it would be inefficient for reading data. To optimize performance of reads, CockroachDB implements hybrid-logical clocks (HLC) which are composed of a physical component (always close to local wall time) and a logical component (used to distinguish between events with the same physical component). This means that HLC time is always greater than or equal to the wall time. You can find more detail in the [HLC paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf).
 
 In terms of transactions, the gateway node picks a timestamp for the transaction using HLC time. Whenever a transaction's timestamp is mentioned, it's an HLC value. This timestamp is used to both track versions of values (through [multiversion concurrency control](storage-layer.html#mvcc)), as well as provide our transactional isolation guarantees.
 
@@ -87,14 +87,14 @@ Whenever a write occurs, its timestamp is checked against the Timestamp Cache. I
 
 ### client.Txn and TxnCoordSender
 
-As we mentioned in the SQL layer's architectural overview, CockroachDB converts all SQL statements into key-value (KV) operations, which is how data is ultimately stored and accessed. 
+As we mentioned in the SQL layer's architectural overview, CockroachDB converts all SQL statements into key-value (KV) operations, which is how data is ultimately stored and accessed.
 
 All of the KV operations generated from the SQL layer use `client.Txn`, which is the transactional interface for the CockroachDB KV layer––but, as we discussed above, all statements are treated as transactions, so all statements use this interface.
 
 However, `client.Txn` is actually just a wrapper around `TxnCoordSender`, which plays a crucial role in our code base by:
 
 - Dealing with transactions' state. After a transaction is started, `TxnCoordSender` starts asynchronously sending heartbeat messages to that transaction's Transaction Record, which signals that it should be kept alive. If the `TxnCoordSender`'s heartbeating stops, the Transaction Record is moved to the `ABORTED` status.
-- Tracking each written key or key range over the course of the transaction. 
+- Tracking each written key or key range over the course of the transaction.
 - Clearing the accumulated Write Intent for the transaction when it's committed or aborted. All requests being performed as part of a transaction have to go through the same `TxnCoordSender` to account for all of its Write Intents, which optimizes the cleanup process.
 
 After setting up this bookkeeping, the request is passed to the `DistSender` in the Distribution Layer.
@@ -149,14 +149,14 @@ CockroachDB proceeds through the following steps until one of the transactions i
 1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted.
 
 2. `TxnB` tries to push `TxnA`'s timestamp forward.
-    
+
     This succeeds only in the case that `TxnA` has snapshot isolation and `TxnB`'s operation is a read. In this case, the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly occurs.
 
 3. `TxnB` enters the `PushTxnQueue` to wait for `TxnA` to complete.
 
 ### PushTxnQueue
 
-The `PushTxnQueue` tracks all transactions that could not push a transaction whose writes they encountered, and must wait for the blocking transaction to complete before they can proceed. 
+The `PushTxnQueue` tracks all transactions that could not push a transaction whose writes they encountered, and must wait for the blocking transaction to complete before they can proceed.
 
 The `PushTxnQueue`'s structure is a map of blocking transaction IDs to those they're blocking. For example:
 
