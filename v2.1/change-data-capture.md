@@ -11,7 +11,7 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CDC is an enterprise feature. There will be a core version in a future release.
+CDC is an [enterprise-only](enterprise-licensing.html). There will be a core version in a future release.
 {{site.data.alerts.end}}
 
 ## What is change data capture?
@@ -155,20 +155,18 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
-{{site.data.alerts.callout_info}}
-CDC an enterprise feature. To request and enable a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
-{{site.data.alerts.end}}
+1. If you don't already have one, [request a trial enterprise license](enterprise-licensing.html).
 
-1. In a terminal window, start `cockroach`:
+2. In a terminal window, start `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure --listen-addr=localhost --background
     ~~~
 
-2. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
+3. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
 
-3. Move into the extracted `confluent-<version>` directory and start Confluent:
+4. Move into the extracted `confluent-<version>` directory and start Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -177,7 +175,7 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
 
     Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
-4. Create a Kafka topic:
+5. Create a Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -193,35 +191,40 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
     You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
     {{site.data.alerts.end}}
 
-5. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+6. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-6. Add your enterprise license:
+7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET CLUSTER SETTING cluster.organization = '<organization name>';
+    ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-7. Create a database called `cdc_demo`:
+8. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-8. Set the database as the default:
+9. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-9. Create a table and add data:
+10. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -242,7 +245,7 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-10. Start the changefeed:
+11. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -258,12 +261,13 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-11. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
+    --property print.key=true \
     --from-beginning \
     --topic=office_dogs
     ~~~
@@ -274,22 +278,29 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
-12. Back in the SQL client, insert more data:
+13. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-13. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~
     {"id": 3, "name": "Ernie"}
     ~~~
 
-14. When you are done, exit the SQL shell (`\q`).
+15. When you are done, exit the SQL shell (`\q`).
 
-15. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+16. To stop `cockroach`, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit
+    ~~~
+
+17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -298,18 +309,7 @@ CDC an enterprise feature. To request and enable a trial or full enterprise lice
 
 ## Known limitations
 
-The following are limitations in the v2.1 release and will be addressed in the future.
-
-- The CockroachDB core changefeed is not ready for external testing.
-- Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`RENAME TABLE`](rename-table.html), and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. Also, any schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) will cause the changefeed to stop and you will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
-- Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
-- Changefeed behavior under most types of failures/degraded conditions is not yet tuned.
-- Changefeeds use a pull model, but will use a push model in the future, lowering latencies considerably.
-- Changefeeds cannot be altered. To alter, cancel the changefeed and create a new one with updated settings from where it left off.
-- Additional format options will be added, including Avro.
-- Additional envelope options will be added, including one that displays the old and new values for the changed row.
-- Additional target options will be added, including partitions and ranges of primary key rows.
+{% include v2.1/cdc/known-limitations.md %}
 
 ## See also
 
