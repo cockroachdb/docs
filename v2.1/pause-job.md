@@ -4,7 +4,7 @@ summary: The PAUSE JOB statement lets you temporarily halt the process of potent
 toc: true
 ---
 
-The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html) jobs.
+The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and, as of v2.1, [`changefeeds`](change-data-capture.html).
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
@@ -70,3 +70,4 @@ All jobs created by `maxroach` will be paused.
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`IMPORT`](import.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
