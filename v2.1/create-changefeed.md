@@ -26,6 +26,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/create_changefeed.html %}
+</div>
 
 ## Parameters
 
