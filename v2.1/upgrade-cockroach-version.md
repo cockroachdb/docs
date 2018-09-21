@@ -8,7 +8,7 @@ toc_not_nested: true
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 {{site.data.alerts.callout_info}}
-This page shows you how to upgrade to v2.1 from v2.0.x, or from any patch release in the v2.1.x series. To upgrade within the v2.0.x series, see [the v2.0 version of this page](https://www.cockroachlabs.com/docs/v2.0/upgrade-cockroach-version.html).
+This page shows you how to upgrade to the lates v2.1 release ({{page.release_info.version}}) from v2.0.x, or from any patch release in the v2.1.x series. To upgrade within the v2.0.x series, see [the v2.0 version of this page](https://www.cockroachlabs.com/docs/v2.0/upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 
@@ -34,7 +34,9 @@ Before starting the upgrade, complete the following steps.
     - If any nodes that should be live are not listed, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
     - Make sure the `build` field shows the same version of CockroachDB for all nodes. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
     - Make sure `ranges_unavailable` and `ranges_underreplicated` show `0` for all nodes. If there are unavailable or underreplicated ranges in your cluster, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range unavailability and underreplication before beginning your upgrade.
-        {{site.data.alerts.callout_success}}Pass the <code>--ranges</code> or <code>--all</code> flag to include these range details in the response.{{site.data.alerts.end}}
+        {{site.data.alerts.callout_success}}
+        Pass the `--ranges` or `--all` flag to include these range details in the response.
+        {{site.data.alerts.end}}
 
 3. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
@@ -42,13 +44,15 @@ Before starting the upgrade, complete the following steps.
 
 ## Step 3. Decide how the upgrade will be finalized
 
-{{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.
+{{site.data.alerts.end}}
 
 By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.1. After finalization, however, it will no longer be possible to perform a downgrade to v2.0. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
 We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in step 5:
 
-1. [Upgrade to v2.0.3](../v2.0/upgrade-cockroach-version.html), if you haven't already. The `cluster.preserve_downgrade_option` setting mentioned below is available only as of v2.0.3.
+1. [Upgrade to v2.0](../v2.0/upgrade-cockroach-version.html), if you haven't already. The `cluster.preserve_downgrade_option` setting mentioned below is available only as of v2.0.3.
 
 2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 
@@ -65,9 +69,13 @@ We recommend disabling auto-finalization so you can monitor the stability and pe
 
 For each node in your cluster, complete the following steps.
 
-{{site.data.alerts.callout_success}}We recommend creating scripts to perform these steps instead of performing them by hand.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+We recommend creating scripts to perform these steps instead of performing them by hand.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
+{{site.data.alerts.end}}
 
 1. Connect to the node.
 
@@ -198,7 +206,9 @@ For each node in your cluster, complete the following steps.
 
 ## Step 5. Finish the upgrade
 
-{{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.
+{{site.data.alerts.end}}
 
 If you disabled auto-finalization in step 3 above, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 

@@ -4,7 +4,7 @@ summary: Known limitations in CockroachDB v2.0.
 toc: true
 ---
 
-This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
+This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New Limitations
 
