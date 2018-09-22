@@ -29,6 +29,10 @@ To install [GORM](http://gorm.io), run the following commands:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq # dependency
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ go get -u github.com/jinzhu/gorm
 ~~~
 
