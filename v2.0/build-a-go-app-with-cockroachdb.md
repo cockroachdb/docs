@@ -83,21 +83,13 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 {% include {{ page.version.version }}/app/txn-sample.go %}
 ~~~
 
-With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. Clone the library into your `$GOPATH` as follows:
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client.
+
+To install the [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go), run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ mkdir -p $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cd $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ git clone git@github.com:cockroachdb/cockroach-go.git
+$ go get -d github.com/cockroachdb/cockroach-go
 ~~~
 
 Then run the code:
