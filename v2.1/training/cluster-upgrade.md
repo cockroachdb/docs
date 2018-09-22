@@ -45,7 +45,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     ~~~
     </div>
 
-2. Move the v1.1 binary into the parent `cockroachdb-training` directory:
+2. Move the v2.0 binary into the parent `cockroachdb-training` directory:
 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
