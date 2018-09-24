@@ -40,6 +40,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
  `distsql` | <span class="version-tag">New in v2.1:</span> The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node. | `auto` | Yes
  `extra_float_digits` | <span class="version-tag">New in v2.1:</span> The number of digits displayed for floating-point values. Only values between `-15` and `3` are supported. | `0` | Yes
  `node_id` | The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No
+ `optimizer` | <span class="version-tag">New in v2.1:</span> The mode in which a query execution plan is generated. If set to `on`, the [cost-based optimizer](cost-based-optimizer.html) is enabled by default and the heuristic planner will only be used if the query is not supported by the cost-based optimizer; if set to `off`, all queries are run through the legacy heuristic planner. | `on` | Yes
  `search_path` | A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{public}` | Yes
  `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
  `server_version_num` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | Yes

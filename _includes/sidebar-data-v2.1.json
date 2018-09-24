@@ -1372,9 +1372,9 @@
                 ]
               },
               {
-                "title": "SQL Optimizer",
+                "title": "Cost-Based Optimizer",
                 "urls": [
-                  "/${VERSION}/sql-optimizer.html"
+                  "/${VERSION}/cost-based-optimizer.html"
                 ]
               }
             ]
