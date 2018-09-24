@@ -136,6 +136,12 @@
             ]
           },
           {
+            "title": "Serializable Transactions",
+            "urls": [
+              "/${VERSION}/demo-serializable.html"
+            ]
+          },
+          {
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
