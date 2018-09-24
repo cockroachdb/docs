@@ -4,7 +4,7 @@ summary: The Hardware dashboard lets you monitor CPU usage, disk throughput, net
 toc: true
 ---
 
-The **Hardware** dashboard lets you monitor CPU usage, disk throughput, network traffic, storage capacity, and memory. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Hardware**.
+The **Hardware** dashboard lets you monitor CPU usage, disk throughput, network traffic, storage capacity, and memory. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and then select **Dashboard** > **Hardware**.
 
 The **Hardware** dashboard displays the following time series graphs:
 
@@ -12,9 +12,9 @@ The **Hardware** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v2.1/admin_ui_cpu_percent.png' | relative_url }}" alt="CockroachDB Admin UI CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the amount of CPU resources used by the CockroachDB process as well as the CockroachDB system-level operations for the selected node.
+- In the node view, the graph shows the CPU utilization (across all cores) by the CockroachDB process for the selected node.
 
-- In the cluster view, the graph shows the amount of CPU resources used by the CockroachDB process as well as the CockroachDB system-level operations across all nodes.
+- In the cluster view, the graph shows the CPU utilization (across all cores) by the CockroachDB process across all nodes.
 
 ## Memory Usage
 
@@ -39,22 +39,6 @@ The **Hardware** dashboard displays the following time series graphs:
 - In the node view, the graph shows the 10-second average of the number of bytes written per second by all processes, including CockroachDB, for the node.
 
 - In the cluster view, the graph shows the 10-second average of the number of bytes written per second by all processes, including CockroachDB, across all nodes.
-
-## Disk Read Time
-
-<img src="{{ 'images/v2.1/admin_ui_disk_read_time.png' | relative_url }}" alt="CockroachDB Admin UI Disk Read Time graph" style="border:1px solid #eee;max-width:100%" />
-
-- In the node view, the graph shows the 10-second average of the disk read time per second for all processes, including CockroachDB, for the selected node.
-
-- In the cluster view, the graph shows the 10-second average of the disk read time per second for all processes, including CockroachDB, across all nodes.
-
-## Disk Write Time
-
-<img src="{{ 'images/v2.1/admin_ui_disk_write_time.png' | relative_url }}" alt="CockroachDB Admin UI Disk Write Time graph" style="border:1px solid #eee;max-width:100%" />
-
-- In the node view, the graph shows the 10-second average of the disk write time per second for all processes, including CockroachDB, for the node.
-
-- In the cluster view, the graph shows the 10-second average of the disk write time per second for all processes, including CockroachDB, across all nodes.
 
 ## Disk Read Ops
 
