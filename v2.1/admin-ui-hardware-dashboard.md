@@ -12,9 +12,13 @@ The **Hardware** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v2.1/admin_ui_cpu_percent.png' | relative_url }}" alt="CockroachDB Admin UI CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the CPU utilization (across all cores) by the CockroachDB process for the selected node.
+- In the node view, the graph shows the percentage of CPU in use by the CockroachDB process for the selected node.
 
-- In the cluster view, the graph shows the CPU utilization (across all cores) by the CockroachDB process across all nodes.
+- In the cluster view, the graph shows the percentage of CPU in use by the CockroachDB process across all nodes.
+
+{{site.data.alerts.callout_info}}
+For multi-core systems, the percentage of CPU usage is calculated by normalizing the CPU usage across all cores, whereby 100% utilization indicates that all cores are fully utilized. 
+{{site.data.alerts.end}}
 
 ## Memory Usage
 
