@@ -71,7 +71,7 @@ For the `DISTSQL` option, successful `EXPLAIN` statements return tables with the
  Column | Description
 --------|------------
 automatic | If `true`, the query is distributed.
-url | The URL generated for a physical query plan that provides high level information about how a query will be distributed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer)
+url | The URL generated for a physical query plan that provides high level information about how a query will be distributed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
 
 #### DistSQL Plan Viewer
 
@@ -419,7 +419,7 @@ The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 
-<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section](sql-layer.html#distsql) of our SQL Layer Architecture docs.
+<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section](architecture/sql-layer.html#distsql) of our SQL Layer Architecture docs.
 
 `EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be distributed:
 
