@@ -5,7 +5,19 @@ keywords: ttl, time to live, availability zone
 toc: true
 ---
 
-In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there are some special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables and secondary indexes, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
+Replication zones give you the power to control what data goes where in your CockroachDB cluster.  Specifically, they are used to control the number and location of replicas for data belonging to the following objects:
+
+- Databases
+- Tables
+- Rows ([enterprise-only](enterprise-licensing.html))
+
+For each of the above objects you can control:
+
+- How many copies of each replica to spread through the cluster
+- Which constraints are applied to which data, e.g., "table X's data can only be stored in the German datacenters"
+- The maximum size of ranges in the database (how big ranges get before they are split)
+- How long old data is kept before being garbage collected (e.g., after running [`DROP TABLE`](drop-table.html))
+- <span class="version-tag">New in v2.1:</span> Where you would like the leaseholders for certain replicas to be located, e.g., "for replicas that are already constrained to `region=us-west`, also try to put their leaseholders in `region=us-west`".
 
 This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
 
@@ -13,9 +25,20 @@ This page explains how replication zones work and how to use the `cockroach zone
 Currently, only the `root` user can configure replication zones.
 {{site.data.alerts.end}}
 
-## Replication zone levels
+## Overview
 
-### For table data
+Every replica in the cluster is part of a replication zone.  The replica is part of a zone when it is first added, and its zone configuration is tracked as replicas are rebalanced across the cluster to ensure that any constraints are honored.
+
+When a cluster starts, there are two categories of replication zone:
+
+1. Pre-configured replication zones that apply to internal system data.
+2. A single default replication zone that applies to the rest of the cluster.
+
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, and rows ([enterprise-only](enterprise-licensing.html)) as needed.
+
+For example, you might rely on the [default zone](#view-the-default-replication-zone) to replicate most of a cluster's data within a single datacenter, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain datacenters and/or geographies.
+
+### Replication zone levels
 
 There are five replication zone levels for [**table data**](architecture/distribution-layer.html#table-data) in a cluster, listed from least to most granular:
 
@@ -67,9 +90,10 @@ Field | Description
 ------|------------
 `range_min_bytes` | Not yet implemented.
 `range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
-`ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select-clause.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `90000` (25 hours)
+`ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also known as [Time Travel Queries](select-clause.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `90000` (25 hours)
 `num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3`
 `constraints` | A JSON object or array of required and/or prohibited constraints influencing the location of replicas. See [Types of Constraints](#types-of-constraints) and [Scope of Constraints](#scope-of-constraints) for more details.<br/><br/>To prevent hard-to-detect typos, constraints placed on [store attributes and node localities](#descriptive-attributes-assigned-to-nodes) must match the values passed to at least one node in the cluster. If not, an error is signalled.<br/><br/>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
+`lease_preferences` | An ordered list of regions where you would like CockroachDB to try to put the leases for the replicas described in the `constraints` field, e.g., `[[+zone=us-east-1a]]`.  For an example, see [Constrain leaseholders to specific datacenters](#constrain-leaseholders-to-specific-datacenters). <br /><br />  If the first preference cannot be satisfied, CockroachDB will attempt to satisfy the second preference, and so on.  If none of the preferences can be met, the lease will be placed using the default lease placement algorithm, which is to base lease placement decisions on how many leases each node already has, trying to make all the nodes have around the same amount. <br /><br />**Default**: No lease location preferences are applied if this field is not specified.
 
 ## Replication constraints
 
@@ -146,7 +170,7 @@ $ cockroach zone get <database.table.partition> <flags>
 $ cockroach zone set .default --file=<zone-content.yaml> <flags>
 
 # Create/edit the replication zone for a database:
-$ cockroach zone set <database> --file=<zone-conent.yaml> <flags>
+$ cockroach zone set <database> --file=<zone-content.yaml> <flags>
 
 # Create/edit the replication zone for a table:
 $ cockroach zone set <database.table> --file=<zone-content.yaml> <flags>
@@ -523,6 +547,31 @@ num_replicas: 5
 constraints: []
 > RELEASE SAVEPOINT cockroach_restart
 > COMMIT
+~~~
+
+### Constrain leaseholders to specific datacenters
+
+In addition to [constraining replicas to specific datacenters](#per-replica-constraints-to-specific-datacenters), you may also specify that the leaseholders should live in the same data centers as their replicas.  This can result in increased performance in some scenarios.
+
+In this example, we'll try to pin the leases to the same datacenters as their replicas.  First, specify the `lease_preferences` setting in our zone config YAML file:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cat lease_prefs.yaml
+~~~
+
+{% include copy-clipboard.html %}
+~~~ yaml
+num_replicas: 3
+constraints: {"+us-east-1a,+ssd": 1, "+us-east-1b": 1}
+lease_preferences: [[+us-east1b], [+us-east-1a]]
+~~~
+
+Next, pass the configuration file to the running cluster as shown below:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach zone set db.t@primary --file=lease_prefs.yaml
 ~~~
 
 ## Scenario-based examples
