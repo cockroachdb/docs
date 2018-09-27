@@ -5,7 +5,21 @@ keywords: ttl, time to live, availability zone
 toc: true
 ---
 
-In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there are some special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables and secondary indexes, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
+Replication zones give you the power to control what data goes where in your CockroachDB cluster.  Specifically, they are used to control the number and location of replicas for data belonging to the following objects:
+
+- Databases
+- Tables
+- Rows ([enterprise-only](enterprise-licensing.html))
+- Indexes ([enterprise-only](enterprise-licensing.html))
+- All data in the cluster, including internal system data ([via the default replication zone](#view-the-default-replication-zone))
+
+For each of the above objects you can control:
+
+- How many copies of each range to spread through the cluster.
+- Which constraints are applied to which data, e.g., "table X's data can only be stored in the German datacenters".
+- The maximum size of ranges (how big ranges get before they are split).
+- How long old data is kept before being garbage collected.
+- <span class="version-tag">New in v2.1:</span> Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
 
 This page explains how replication zones work and how to use the [`CONFIGURE ZONE`](configure-zone.html) statement to manage them.
 
@@ -13,9 +27,20 @@ This page explains how replication zones work and how to use the [`CONFIGURE ZON
 Currently, only members of the `admin` role can configure replication zones. By default, the `root` user belongs to the `admin` role.
 {{site.data.alerts.end}}
 
-## Replication zone levels
+## Overview
 
-### For table data
+Every range in the cluster is part of a replication zone.  Each range's zone configuration is tracked as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+
+When a cluster starts, there are two categories of replication zone:
+
+1. Pre-configured replication zones that apply to internal system data.
+2. A single default replication zone that applies to the rest of the cluster.
+
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.  Note that adding zones for rows and secondary indexes is ([enterprise-only](enterprise-licensing.html)).
+
+For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your datacenters, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain datacenters and/or geographies.
+
+## Replication zone levels
 
 There are five replication zone levels for [**table data**](architecture/distribution-layer.html#table-data) in a cluster, listed from least to most granular:
 
@@ -173,6 +198,12 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 ### Remove a replication zone
 
 {% include v2.1/zone-configs/remove-a-replication-zone.md %}
+
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+
+### Constrain leaseholders to specific datacenters
+
+{% include v2.1/zone-configs/constrain-leaseholders-to-specific-datacenters.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
