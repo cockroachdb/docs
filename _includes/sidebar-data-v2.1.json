@@ -747,6 +747,12 @@
                 ]
               },
               {
+                "title": "<code>EXPLAIN ANALYZE</code>",
+                "urls": [
+                  "/${VERSION}/explain-analyze.html"
+                ]
+              },
+              {
                 "title": "<code>EXPORT</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/export.html"

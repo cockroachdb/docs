@@ -12,7 +12,7 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Queries with fewer levels execute more quickly. Restructuring queries to require fewer levels of processing will generally improve performance.
 
-- To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`.
+- To view the distributed SQL query plan with execution statistics, use [`EXPLAIN ANALYZE (DISTSQL)`](explain-analyze.html).
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
@@ -36,7 +36,6 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 Parameter | Description
 -----------|-----------
-`ANALYZE` | <span class="version-tag">New in v2.1:</span> Execute the command and show execution statistics.
 [`EXPRS`](#exprs-option) | Include the SQL expressions that are involved in each processing stage.
 [`QUALIFY`](#qualify-option) | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option.
 [`METADATA`](#metadata-option) | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail.
@@ -79,26 +78,14 @@ For `EXPLAIN (DISTSQL)`, the DistSQL Plan Viewer displays the physical query pla
 
 Field | Description
 ------+------------
-&lt;ProcessorName&gt;/n | The processor used to read data into the SQL execution engine.
+&lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.
 &lt;index&gt;@&lt;table&gt; | The index used.
-out | The output columns.
+Out | The output columns.
 @&lt;n&gt; | The index of the column relative to the input.
-&lt;function&gt; (@n) | The aggregation function used for any column.
+&lt;function&gt; (@&lt;n&gt;) | The aggregation function used for any column.
 Render | The stage that renders the output.
-unordered | A synchronizer that takes one or more output streams and merges them to be consumable by a processor. There is also an ordered synchronizer, which is used to merge ordered streams and keeps the rows in sorted order.
-No-op/&lt;n&gt; | A pass-through processor that is used to present rows to the client.
+unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order.
 Response | The response back to the client.
-
-For `EXPLAIN ANALYZE (DISTSQL)`, the DistSQL Plan Viewer displays the same fields as `EXPLAIN (DISTSQL)` (listed above), as well as execution statistics:
-
-Field | Description
-------+------------
-rows read | The number of rows read by the processor.
-stall time | How long the processor took to read all the rows and get the data to the execution engine. (this is aggregated into the stall time numbers as you progress down the tree. I.e., stall time is added up / overlaps)
-max memory used | How much memory (if any) is used to buffer output rows. Sometimes, the router needs to buffer output rows to prevent deadlocks (i.e.,  when rows are pushed before a consumer is ready).
-rows routed | How many rows were sent, which can be used to understand network usage.
-max disk used | How much disk (if any) is used to buffer output rows. The router will spill to disk buffering if there is not enough memory to buffer the output rows.
-bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication.
 
 {{site.data.alerts.callout_info}}
 Any or all of the above fields may display for a given query plan.
@@ -438,23 +425,6 @@ Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsq
 
 <img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
-`EXPLAIN ANALYZE (DISTSQL)` **will execute the query** and generate a physical query plan with execution statistics.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN ANALYZE (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
-~~~
-
-~~~
-  automatic |                      url                      
-+-----------+----------------------------------------------+
-    true    | https://cockroachdb.github.io/distsqlplan...
-~~~
-
-Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsql-plan-viewer):
-
-<img src="{{ 'images/v2.1/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
-
 ### Find the indexes and key ranges a query uses
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use,
@@ -517,6 +487,7 @@ at (and including) 4 and stopping before 6.
 - [`CREATE DATABASE`](create-database.html)
 - [`DROP DATABASE`](drop-database.html)
 - [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [`EXPLAIN ANALYZE`](explain-analyze.html)
 - [`IMPORT`](import.html)
 - [Indexes](indexes.html)
 - [`INSERT`](insert.html)
