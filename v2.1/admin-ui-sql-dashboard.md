@@ -35,6 +35,14 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
+## SQL Query Errors
+
+<img src="{{ 'images/v2.1/admin_ui_sql_query_errors.png' | relative_url }}" alt="CockroachDB Admin UI SQL Query Errors" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements that returned a [planning](sql-layer.html#planning) or [runtime](sql-layer.html#executing) error.
+
+- In the cluster view, the graph shows the total number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements that returned a [planning](sql-layer.html#planning) or [runtime](sql-layer.html#executing) error across all nodes.
+
 ## Transactions
 
 <img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
