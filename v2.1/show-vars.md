@@ -38,6 +38,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
  `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) for more details. | Settings in connection string, or `SERIALIZABLE` if not specified | Yes
  `default_transaction_read_only` | The default transaction access mode for the current session. If set to `on`, only read operations are allowed in transactions in the current session; if set to `off`, both read and write operations are allowed. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes
  `distsql` | <span class="version-tag">New in v2.1:</span> The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node. | `auto` | Yes
+ `extra_float_digits` | The number of digits displayed for floating-point values. Only values between `-15` and `3` are supported. | `0` | Yes
  `node_id` | The ID of the node currently connected to.<br><br>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No
  `search_path` | A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | `{public}` | Yes
  `server_version` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | No |
@@ -52,13 +53,14 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
  `transaction_read_only` | The access mode of the current transaction. See [Set Transaction](set-transaction.html) for more details. | `off` | Yes
  `transaction_status` | The state of the current transaction. See [Transactions](transactions.html) for more details.<br><br>This session variable was called `transaction status` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NoTxn` | No
  `client_encoding` | (Reserved; exposed only for ORM compatibility.) | `UTF8` | No
- `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No
+ `client_min_messages` | (Reserved; exposed only for ORM compatibility.) | `notice` | No
  `datestyle` | (Reserved; exposed only for ORM compatibility.) | `ISO` | No
- `extra_float_digits` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No
+ `integer_datetimes` | (Reserved; exposed only for ORM compatibility.) | `on` | No
  `intervalstyle` | (Reserved; exposed only for ORM compatibility.) | `postgres` | No
- `max_index_keys` | (Reserved; exposed only for ORM compatibility.) | (Reserved) | No
+ `max_index_keys` | (Reserved; exposed only for ORM compatibility.) | `32` | No
  `standard_conforming_strings` | (Reserved; exposed only for ORM compatibility.)  
- (Reserved) | No
+ `on` | No
+ `server_encoding` | (Reserved; exposed only for ORM compatibility.) | `UTF8` | Yes
 
 Special syntax cases supported for compatibility:
 
