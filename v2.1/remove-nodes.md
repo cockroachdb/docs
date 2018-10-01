@@ -105,36 +105,22 @@ $ cockroach quit --decommission --insecure --host=<address of node to remove>
 You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                73 | false              | false       |
-+----+---------+-------------------+--------------------+-------------+
-(1 row)
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                73 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  true   |       73 |        true        |    false     
 (1 row)
 ~~~
+
 
 Once the node has been fully decommissioned and stopped, you'll see a confirmation:
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                13 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  true   |        0 |        true        |    false     
 (1 row)
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                 0 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
-(1 row)
-All target nodes report that they hold no more data. Please verify cluster health before removing the nodes.
+
+No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ok
 ~~~
 
@@ -195,13 +181,12 @@ $ cockroach node decommission 4 --insecure --host=<address of live node>
 </div>
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | false   |                12 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  false  |        0 |        true        |    true      
 (1 row)
-Decommissioning finished. Please verify cluster health before removing the nodes.
+
+No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
 If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
@@ -239,52 +224,40 @@ Select the **Replication** dashboard, and hover over the **Replicas per Store** 
 
 SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to officially decommission:
 
-{{site.data.alerts.callout_success}}If there's a chance that one or more of the nodes will be offline during this process, be sure to include <code>--wait=live</code>. This will ensure that the command will not wait indefinitely for dead nodes to finish decommissioning.{{site.data.alerts.end}}
-
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 5 --certs-dir=certs --host=<address of live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --insecure --host=<address of live node>
+$ cockroach node decommission 4 5 --insecure --host=<address of live node>
 ~~~
 </div>
 
 You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                 8 | true               | false       |
-|  5 | true    |                 9 | true               | false       |
-+----+---------+-------------------+--------------------+-------------+
-(2 rows)
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                 8 | true               | true        |
-|  5 | true    |                 9 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  true   |       18 |        true        |    false     
+ 5 |  true   |       16 |        true        |    false     
 (2 rows)
 ~~~
 
 Once the nodes have been fully decommissioned, you'll see a confirmation:
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | true    |                 0 | true               | true        |
-|  5 | true    |                 0 | true               | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  true   |        0 |        true        |    false     
+ 5 |  true   |        0 |        true        |    false     
 (2 rows)
-Decommissioning finished. Please verify cluster health before removing the nodes.
+
+No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
 ### Step 4. Check the nodes and cluster after decommissioning
@@ -352,16 +325,14 @@ $ cockroach node recommission 4 --certs-dir=certs --host=<address of live node>
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node recommision 4 --insecure --host=<address of live node>
+$ cockroach node recommission 4 --insecure --host=<address of live node>
 ~~~
 </div>
 
 ~~~
-+----+---------+-------------------+--------------------+-------------+
-| id | is_live | gossiped_replicas | is_decommissioning | is_draining |
-+----+---------+-------------------+--------------------+-------------+
-|  4 | false   |                12 | false              | true        |
-+----+---------+-------------------+--------------------+-------------+
+id | is_live | replicas | is_decommissioning | is_draining  
++----+---------+----------+--------------------+-------------+
+ 4 |  false  |        0 |       false        |    true      
 (1 row)
 The affected nodes must be restarted for the change to take effect.
 ~~~
