@@ -116,8 +116,6 @@ Note the following:
     extendedKeyUsage = clientAuth
     ~~~
 
-    {{site.data.alerts.callout_info}}The <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters. {{site.data.alerts.end}}
-
 3. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
