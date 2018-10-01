@@ -7,13 +7,18 @@ toc: true
 The `debug zip` [command](cockroach-commands.html) connects to your cluster and gathers the following information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
+- [Cluster events](monitoring-and-alerting.html#events-to-alert-on)
 - Schema change events
 - Node liveness
 - Gossip data
 - Stack traces
 - Range lists
 - A list of databases and tables
+- [Cluster Settings](cluster-settings.html)
+- [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
+- Alerts
 - Heap profiles (**new in v2.0**)
+- Problem ranges (**new in v2.1**)
 
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
@@ -27,8 +32,6 @@ There are two scenarios in which `debug zip` is useful:
 - To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. See more information [on this page](#collecting-log-files).
 
 - If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
-
-{{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
 ### Collecting log files
 
