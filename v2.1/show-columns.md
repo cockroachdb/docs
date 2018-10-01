@@ -34,6 +34,7 @@ Field | Description
 `column_default` | The default value for the column, or an expression that evaluates to a default value.
 `generation_expression` | The expression used for a [computed column](computed-columns.html).
 `indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
+`is_hidden` | <span class="version-tag">New in v2.1:</span> Whether or not the column is hidden. Possible values: `true` or `false`.
 
 ## Example
 
@@ -57,13 +58,13 @@ Field | Description
 ~~~
 
 ~~~
-column_name | data_type | is_nullable | column_default  | generation_expression |               indices
-+-------------+-----------+-------------+-----------------+-----------------------+--------------------------------------+
-id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"}
-date        | TIMESTAMP |    false    | NULL            |                       | {}
-priority    | INT       |    true     | 1:::INT         |                       | {}
-customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}
-status      | STRING    |    true     | 'open':::STRING |                       | {}
+column_name | data_type | is_nullable | column_default  | generation_expression |               indices                | is_hidden
++-------------+-----------+-------------+-----------------+-----------------------+--------------------------------------+-----------+
+id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"} |   false
+date        | TIMESTAMP |    false    | NULL            |                       | {}                                   |   false
+priority    | INT       |    true     | 1:::INT         |                       | {}                                   |   false
+customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}           |   false
+status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
 (5 rows)
 ~~~
 
