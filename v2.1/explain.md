@@ -34,17 +34,14 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 ## Parameters
 
-Parameter | Description
------------|-----------
-`ANALYZE` | <span class="version-tag">New in v2.1:</span> Execute the command and show execution statistics.
-`EXPRS` | Include the SQL expressions that are involved in each processing stage.
-`QUALIFY` | Include table names when referencing columns, which might be important to verify the behavior of joins across tables with the same column names.<br/><br/>To list qualified names, `QUALIFY` requires you to include the `EXPRS` option.
-`METADATA` | Include the columns each level uses in the **Columns** column, as well as **Ordering** detail.
-`VERBOSE`  | Imply the `EXPRS`, `METADATA`, and `QUALIFY` options.
-`TYPES` | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. <br/><br/>`TYPES` also implies `METADATA` and `EXPRS` options.
-`OPT` | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
-`DISTSQL` | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
-`explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
+ Parameter          | Description
+--------------------+------------
+ `ANALYZE`          | <span class="version-tag">New in v2.1:</span> Execute the command and show execution statistics.
+ `VERBOSE`          | Show as much information as possible about the query plan.
+ `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
+ `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+ `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
+ `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
@@ -57,8 +54,8 @@ Successful `EXPLAIN` statements return tables with the following columns:
 **Tree** | A tree representation showing the hierarchy of the query plan.
 **Field** | The name of a parameter relevant to the query plan node immediately above.
 **Description** | Additional information for the parameter in  **Field**.
-**Columns** | The columns provided to the processes at lower levels of the hierarchy. <br/><br>This column displays only if the `METADATA` option is specified or implied.
-**Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. <br/><br>This column displays only if the `METADATA` option is specified or implied.
+**Columns** | The columns provided to the processes at lower levels of the hierarchy.
+**Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level.
 
 ## Examples
 
@@ -73,15 +70,14 @@ useful to find out which indexes and index key ranges are used by a query:
 ~~~
 
 ~~~
-+-----------+-------+-------------+
-|   Tree    | Field | Description |
-+-----------+-------+-------------+
-| sort      |       |             |
-|  │        | order | +v          |
-|  └── scan |       |             |
-|           | table | kv@primary  |
-|           | spans | ALL         |
-+-----------+-------+-------------+
+   tree    | field | description
+-----------+-------+-------------
+ sort      |       |
+  │        | order | +v
+  └── scan |       |
+           | table | kv@primary
+           | spans | ALL
+(5 rows)
 ~~~
 
 The first column shows the tree structure of the query plan; a set of properties
@@ -91,157 +87,13 @@ index you are scanning (in this case, a full table scan). For more
 information on indexes and key ranges, see the
 [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
-### `EXPRS` option
-
-The `EXPRS` option includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (EXPRS) SELECT * FROM kv WHERE v > 3 ORDER BY v;
-~~~
-
-~~~
-+-----------+--------+-------------+
-|   Tree    | Field  | Description |
-+-----------+--------+-------------+
-| sort      |        |             |
-|  │        | order  | +v          |
-|  └── scan |        |             |
-|           | table  | kv@primary  |
-|           | spans  | ALL         |
-|           | filter | v > 3       |
-+-----------+--------+-------------+
-~~~
-
-### `METADATA` option
-
-The `METADATA` option includes detail about which columns are being used by each
-level, as well as properties of the result set on that level:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v;
-~~~
-
-~~~
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-|   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-| sort      |     0 | sort |       |             | (k, v)  | k!=NULL; v!=NULL; key(k); +v |
-|  │        |     0 |      | order | +v          |         |                              |
-|  └── scan |     1 | scan |       |             | (k, v)  | k!=NULL; v!=NULL; key(k)     |
-|           |     1 |      | table | kv@primary  |         |                              |
-|           |     1 |      | spans | ALL         |         |                              |
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-~~~
-
-The **Ordering** column most importantly includes the ordering of the rows at
-that level (`+v` in this case), but it also includes other information about the
-result set at that level. In this case, CockroachDB was able to deduce that `k`
-and `v` cannot be `NULL`, and `k` is a "key", meaning that you cannot have more
-than one row with any given value of `k`.
-
-Note that descending (`DESC`) orderings are indicated by the `-` sign:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v DESC;
-~~~
-
-~~~
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-|   Tree    | Level | Type | Field | Description | Columns |           Ordering           |
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-| sort      |     0 | sort |       |             | (k, v)  | k!=NULL; v!=NULL; key(k); -v |
-|  │        |     0 |      | order | -v          |         |                              |
-|  └── scan |     1 | scan |       |             | (k, v)  | k!=NULL; v!=NULL; key(k)     |
-|           |     1 |      | table | kv@primary  |         |                              |
-|           |     1 |      | spans | ALL         |         |                              |
-+-----------+-------+------+-------+-------------+---------+------------------------------+
-~~~
-
-Another property that is reported in the **Ordering** column is information
-about columns that are known to be equal on any row, and "constant" columns
-that are known to have the same value on all rows. For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
-~~~
-
-~~~
-+-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
-|   Tree    | Level | Type |     Field      | Description  |        Columns        |           Ordering            |
-+-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
-| join      |     0 | join |                |              | (a, b, c, d, e, f, g) | a=e; c=CONST; a!=NULL; key(a) |
-|  │        |     0 |      | type           | inner        |                       |                               |
-|  │        |     0 |      | equality       | (a) = (e)    |                       |                               |
-|  │        |     0 |      | mergeJoinOrder | +"(a=e)"     |                       |                               |
-|  ├── scan |     1 | scan |                |              | (a, b, c, d)          | c=CONST; a!=NULL; key(a); +a  |
-|  │        |     1 |      | table          | abcd@primary |                       |                               |
-|  │        |     1 |      | spans          | ALL          |                       |                               |
-|  └── scan |     1 | scan |                |              | (e, f, g)             | e!=NULL; key(e); +e           |
-|           |     1 |      | table          | efg@primary  |                       |                               |
-|           |     1 |      | spans          | ALL          |                       |                               |
-+-----------+-------+------+----------------+--------------+-----------------------+-------------------------------+
-~~~
-
-This indicates that on any row, column `a` has the same value with column `e`,
-and that all rows have the same value on column `c`.
-
-### `QUALIFY` option
-
-`QUALIFY` uses `<table name>.<column name>` notation for columns in the query plan. However, `QUALIFY` must be used with `EXPRS` to show the SQL values used:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (EXPRS, QUALIFY) SELECT a.v, b.v FROM t.kv AS a, t.kv AS b;
-~~~
-
-~~~
-+----------------+----------+-------------+
-|      Tree      |  Field   | Description |
-+----------------+----------+-------------+
-| render         |          |             |
-|  │             | render 0 | a.v         |
-|  │             | render 1 | b.v         |
-|  └── join      |          |             |
-|       │        | type     | cross       |
-|       ├── scan |          |             |
-|       │        | table    | kv@primary  |
-|       │        | spans    | ALL         |
-|       └── scan |          |             |
-|                | table    | kv@primary  |
-|                | spans    | ALL         |
-+----------------+----------+-------------+
-~~~
-
-You can contrast this with the same statement not including the `QUALIFY` option to see that the column references are not qualified, which can lead to ambiguity if multiple tables have columns with the same names:
-
-{% include copy-clipboard.html %}
-~~~ sql
->  EXPLAIN (EXPRS) SELECT a.v, b.v FROM kv AS a, kv AS b;
-~~~
-
-~~~
-+-------+--------+----------+-------------+
-| Level |  Type  |  Field   | Description |
-+-------+--------+----------+-------------+
-|     0 | render |          |             |
-|     0 |        | render 0 | v           |
-|     0 |        | render 1 | v           |
-|     1 | join   |          |             |
-|     1 |        | type     | cross       |
-|     2 | scan   |          |             |
-|     2 |        | table    | kv@primary  |
-|     2 | scan   |          |             |
-|     2 |        | table    | kv@primary  |
-+-------+--------+----------+-------------+
-~~~
-
 ### `VERBOSE` option
 
-The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options:
+The `VERBOSE` option:
+
++ Includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
++ Includes detail about which columns are being used by each level, as well as properties of the result set on that level.
++ Uses `<table name>.<column name>` notation for columns in the query plan, and shows the SQL values used.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -249,62 +101,29 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 ~~~
 
 ~~~
-+---------------------+----------------+------------------+-----------------------+------------------------------+
-|        Tree         |     Field      |   Description    |        Columns        |           Ordering           |
-+---------------------+----------------+------------------+-----------------------+------------------------------+
-| sort                |                |                  | (k, v, v)             | k!=NULL; key(k); -v          |
-|  │                  | order          | -v               |                       |                              |
-|  └── render         |                |                  | (k, v, v)             | k!=NULL; key(k)              |
-|       │             | render 0       | a.k              |                       |                              |
-|       │             | render 1       | a.v              |                       |                              |
-|       │             | render 2       | radu.public.kv.v |                       |                              |
-|       └── join      |                |                  | (k, v, k[omitted], v) | k=k; k!=NULL; key(k)         |
-|            │        | type           | inner            |                       |                              |
-|            │        | equality       | (k) = (k)        |                       |                              |
-|            │        | mergeJoinOrder | +"(k=k)"         |                       |                              |
-|            ├── scan |                |                  | (k, v)                | k!=NULL; v!=NULL; key(k); +k |
-|            │        | table          | kv@primary       |                       |                              |
-|            │        | spans          | ALL              |                       |                              |
-|            │        | filter         | v > 3            |                       |                              |
-|            └── scan |                |                  | (k, v)                | k!=NULL; key(k); +k          |
-|                     | table          | kv@primary       |                       |                              |
-|                     | spans          | ALL              |                       |                              |
-+---------------------+----------------+------------------+-----------------------+------------------------------+
-~~~
-
-By default, the `Level` and `Type` columns are hidden. To view, use `SELECT`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT "Level", "Type" FROM [EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC];
-~~~
-~~~
-+-------+--------+
-| Level |  Type  |
-+-------+--------+
-|     0 | sort   |
-|     0 |        |
-|     1 | render |
-|     1 |        |
-|     1 |        |
-|     1 |        |
-|     2 | join   |
-|     2 |        |
-|     2 |        |
-|     2 |        |
-|     3 | scan   |
-|     3 |        |
-|     3 |        |
-|     3 |        |
-|     3 | scan   |
-|     3 |        |
-|     3 |        |
-+-------+--------+
+         tree         |  field   | description |   columns    | ordering
++---------------------+----------+-------------+--------------+----------+
+  sort                |          |             | (k, v, v)    | -v
+   │                  | order    | -v          |              |
+   └── render         |          |             | (k, v, v)    |
+        │             | render 0 | k           |              |
+        │             | render 1 | v           |              |
+        │             | render 2 | v           |              |
+        └── join      |          |             | (k, v, k, v) |
+             │        | type     | inner       |              |
+             │        | equality | (k) = (k)   |              |
+             ├── scan |          |             | (k, v)       |
+             │        | table    | kv@primary  |              |
+             │        | spans    | ALL         |              |
+             └── scan |          |             | (k, v)       |
+                      | table    | kv@v        |              |
+                      | spans    | /4-         |              |
+(15 rows)
 ~~~
 
 ### `TYPES` option
 
-The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well:
+The `TYPES` mode includes the types of the values used in the query plan.  It also includes the SQL expressions that were involved in each processing stage, and includes the columns used by each level.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -312,16 +131,15 @@ The `TYPES` mode includes the types of the values used in the query plan, and im
 ~~~
 
 ~~~
-+-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
-|   Tree    | Level | Type | Field  |         Description         |    Columns     |           Ordering           |
-+-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
-| sort      |     0 | sort |        |                             | (k int, v int) | k!=NULL; v!=NULL; key(k); +v |
-|  │        |     0 |      | order  | +v                          |                |                              |
-|  └── scan |     1 | scan |        |                             | (k int, v int) | k!=NULL; v!=NULL; key(k)     |
-|           |     1 |      | table  | kv@primary                  |                |                              |
-|           |     1 |      | spans  | ALL                         |                |                              |
-|           |     1 |      | filter | ((v)[int] > (3)[int])[bool] |                |                              |
-+-----------+-------+------+--------+-----------------------------+----------------+------------------------------+
+   tree    | field  |         description         |    columns     | ordering
+-----------+--------+-----------------------------+----------------+----------
+ sort      |        |                             | (k int, v int) | +v
+  │        | order  | +v                          |                |
+  └── scan |        |                             | (k int, v int) |
+           | table  | kv@primary                  |                |
+           | spans  | ALL                         |                |
+           | filter | ((v)[int] > (3)[int])[bool] |                |
+(6 rows)
 ~~~
 
 ### `OPT` option
@@ -332,31 +150,21 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM x WHERE a = 3;
+> EXPLAIN (OPT) SELECT * FROM kv WHERE k > 3;
 ~~~
 
 ~~~
-+--------------------------------------------------------------------------+
-|                                   text                                   |
-+--------------------------------------------------------------------------+
-| select                                                                   |
-|  ├── columns: a:1(int!null) b:2(jsonb)                                   |
-|  ├── stats: [rows=1.42857143, distinct(1)=1]                             |
-|  ├── cost: 1060                                                          |
-|  ├── fd: ()-->(1)                                                        |
-|  ├── prune: (2)                                                          |
-|  ├── scan x                                                              |
-|  │    ├── columns: x.a:1(int) x.b:2(jsonb)                               |
-|  │    ├── stats: [rows=1000, distinct(1)=700]                            |
-|  │    ├── cost: 1050                                                     |
-|  │    └── prune: (1,2)                                                   |
-|  └── filters [type=bool, outer=(1), constraints=(/1: [/3 - /3]; tight),  |
-| fd=()-->(1)]                                                             |
-|       └── eq [type=bool, outer=(1), constraints=(/1: [/3 - /3]; tight)]  |
-|            ├── variable: x.a [type=int, outer=(1)]                       |
-|            └── const: 3 [type=int]                                       |
-+--------------------------------------------------------------------------+
-(15 rows)
+                 text
+--------------------------------------
+ scan kv
+  ├── columns: k:1(int!null) v:2(int)
+  ├── constraint: /1: [/4 - ]
+  ├── stats: [rows=333.333333]
+  ├── cost: 346.666667
+  ├── key: (1)
+  ├── fd: (1)-->(2)
+  └── prune: (2)
+(8 rows)
 ~~~
 
 The query above will be run with the cost-based optimizer and `EXPLAIN (OPT)` returns the query plan tree.
@@ -364,7 +172,7 @@ The query above will be run with the cost-based optimizer and `EXPLAIN (OPT)` re
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) INSERT INTO x VALUES (1);
+> EXPLAIN (OPT) INSERT INTO kv VALUES (1,1);
 ~~~
 
 ~~~
@@ -383,11 +191,9 @@ The query above will not be run with the cost-based optimizer.
 ~~~
 
 ~~~
-+-----------+----------------------------------------------+
-| Automatic |                      URL                     |
-+-----------+----------------------------------------------+
-|   true    | https://cockroachdb.github.io/distsqlplan... |
-+-----------+----------------------------------------------+
+ automatic |                      url
+-----------+----------------------------------------------
+   true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
 Point your browser to the URL provided:
@@ -402,11 +208,9 @@ To view the distributed SQL query plan with execution statistics, use `EXPLAIN A
 ~~~
 
 ~~~
-+-----------+----------------------------------------------+
-| Automatic |                      URL                     |
-+-----------+----------------------------------------------+
-|   true    | https://cockroachdb.github.io/distsqlplan... |
-+-----------+----------------------------------------------+
+ automatic |                      url
+-----------+----------------------------------------------
+   true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
 Point your browser to the URL provided:
@@ -431,13 +235,12 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 ~~~
 
 ~~~
-+-------+------+-------+-------------+
-| Level | Type | Field | Description |
-+-------+------+-------+-------------+
-|     0 | scan |       |             |
-|     0 |      | table | kv@primary  |
-|     0 |      | spans | ALL         |
-+-------+------+-------+-------------+
+ tree | field | description
+------+-------+-------------
+ scan |       |
+      | table | kv@primary
+      | spans | ALL
+(3 rows)
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the
@@ -454,13 +257,12 @@ entire table:
 ~~~
 
 ~~~
-+------+-------+-------------+
-| Tree | Field | Description |
-+------+-------+-------------+
-| scan |       |             |
-|      | table | kv@v        |
-|      | spans | /4-/6       |
-+------+-------+-------------+
+ tree | field | description
+------+-------+-------------
+ scan |       |
+      | table | kv@v
+      | spans | /4-/6
+(3 rows)
 ~~~
 
 Now, only part of the index `v` is getting scanned, specifically the key range starting
