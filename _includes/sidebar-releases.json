@@ -3,9 +3,9 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "v2.0.5",
+      "title": "v2.0.6",
       "urls": [
-        "/releases/v2.0.5.html"
+        "/releases/v2.0.6.html"
       ]
     },
     {
@@ -15,27 +15,15 @@
       ]
     },
     {
-      "title": "v1.1.8",
+      "title": "v1.1.9",
       "urls": [
-        "/releases/v1.1.8.html"
+        "/releases/v1.1.9.html"
       ]
     },
     {
       "title": "v1.1",
       "urls": [
         "/releases/v1.1.0.html"
-      ]
-    },
-    {
-      "title": "v1.0.7",
-      "urls": [
-        "/releases/v1.0.7.html"
-      ]
-    },
-    {
-      "title": "v1.0",
-      "urls": [
-        "/releases/v1.0.html"
       ]
     },
     {
