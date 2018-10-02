@@ -57,7 +57,7 @@ It's important to understand that the `[flags]` here are used to connect to Cock
 
 ## Flags
 
-The `debug zip` subcommand supports the following [general-use](#general) and [logging](#logging) flags.
+The `debug zip` subcommand supports the following [general-use](#general), [client connection](#client-connection), and [logging](#logging) flags.
 
 ### General
 
@@ -67,6 +67,12 @@ Flag | Description
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Client connection
+
+Flag | Description
+-----|-----------
+`--url` | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 
 ### Logging
 

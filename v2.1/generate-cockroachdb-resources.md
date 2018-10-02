@@ -108,6 +108,7 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--out` | The path where the `haproxy.cfg` file will be generated. If an `haproxy.cfg` file already exists in the directory, it will be overwritten.<br><br>**Default:** `haproxy.cfg` in the current directory
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+`--url` | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 
 ### Logging
 

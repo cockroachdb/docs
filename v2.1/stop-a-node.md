@@ -45,7 +45,7 @@ $ cockroach quit --help
 
 ## Flags
 
-The `quit` command supports the following [general-use](#general) and [logging](#logging) flags.
+The `quit` command supports the following [general-use](#general), [client connection](#client-connection), and [logging](#logging) flags.
 
 ### General
 
