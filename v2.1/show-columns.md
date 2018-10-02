@@ -36,7 +36,7 @@ Field | Description
 `indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
 `is_hidden` | <span class="version-tag">New in v2.1:</span> Whether or not the column is hidden. Possible values: `true` or `false`.
 
-## Example
+## Examples
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -67,6 +67,26 @@ customer_id | INT       |    true     | NULL            |                       
 status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
 (5 rows)
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE foo (x INT);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM foo;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  x           | INT       |    true     | NULL           |                       | {}          |   false
+  rowid       | INT       |    false    | unique_rowid() |                       | {"primary"} |   true
+(2 rows)
+~~~
+
+
 
 ## See also
 
