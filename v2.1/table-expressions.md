@@ -198,7 +198,27 @@ For example:
 +-----------------+
 ~~~
 
-{{site.data.alerts.callout_info}}Currently CockroachDB only supports a small set of generator function compatible with <a href="https://www.postgresql.org/docs/9.6/static/functions-srf.html">the PostgreSQL set-generating functions of the same name</a>.{{site.data.alerts.end}}
+<span class="version-tag">New in v2.1:</span> Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is either:
+
+- The name of a column returned from the function, or
+- `*` to denote all columns.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT (i.keys).* FROM (SELECT information_schema._pg_expandarray(indkey) AS keys FROM pg_index) AS i;
+~~~
+
+~~~
+ x | n
+---+---
+ 1 | 1
+ 2 | 1
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}Currently CockroachDB only supports a small set of generator functions compatible with <a href="https://www.postgresql.org/docs/9.6/static/functions-srf.html">the PostgreSQL set-generating functions with the same names</a>.{{site.data.alerts.end}}
 
 ## Operators that extend a table expression
 
