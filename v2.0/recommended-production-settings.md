@@ -2,7 +2,7 @@
 title: Production Checklist
 summary: Recommended settings for production deployments.
 toc: true
-drift: true
+
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
