@@ -106,7 +106,7 @@ You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  true   |       73 |        true        |    false     
 (1 row)
 ~~~
@@ -116,7 +116,7 @@ Once the node has been fully decommissioned and stopped, you'll see a confirmati
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  true   |        0 |        true        |    false     
 (1 row)
 
@@ -182,7 +182,7 @@ $ cockroach node decommission 4 --insecure --host=<address of live node>
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  false  |        0 |        true        |    true      
 (1 row)
 
@@ -242,7 +242,7 @@ You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  true   |       18 |        true        |    false     
  5 |  true   |       16 |        true        |    false     
 (2 rows)
@@ -252,7 +252,7 @@ Once the nodes have been fully decommissioned, you'll see a confirmation:
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  true   |        0 |        true        |    false     
  5 |  true   |        0 |        true        |    false     
 (2 rows)
@@ -331,7 +331,7 @@ $ cockroach node recommission 4 --insecure --host=<address of live node>
 
 ~~~
 id | is_live | replicas | is_decommissioning | is_draining  
-+----+---------+----------+--------------------+-------------+
+---+---------+----------+--------------------+-------------+
  4 |  false  |        0 |       false        |    true      
 (1 row)
 The affected nodes must be restarted for the change to take effect.
