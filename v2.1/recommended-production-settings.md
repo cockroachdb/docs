@@ -183,6 +183,10 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
 
+{{site.data.alerts.callout_danger}}
+Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
+{{site.data.alerts.end}}
+
 ## File descriptors limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
