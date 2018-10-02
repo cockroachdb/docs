@@ -2,9 +2,11 @@
 	{% if page.back_to_top == true %}
 		{% include back-to-top.html %}
 	{% endif %}
-	{% unless page.drift == true %}
+	{% comment %}
+	{% unless page.drift == false %}
 		{% include help-widget.html %}
   {% endunless %}
+	{% endcomment %}
 	<div class="container">
 		<div class="footer__flex-wrap">
 			<ul class="footer-nav">
