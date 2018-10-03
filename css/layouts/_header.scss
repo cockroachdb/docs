@@ -286,12 +286,12 @@ header {
 			z-index: 1;
 
 			a {
-				padding: 20px 30px;
+				padding: 20px 30px 15px;
 				margin: 0;
 				width: 100%;
 
 				&:not(:last-child) {
-					padding-right: 45px;
+					padding-right: 35px;
 					border-bottom: solid 2px #e6e6e6;
 				}
 
@@ -320,12 +320,13 @@ header {
 			}
 
 			.menu-dropdown--subsection {
-				padding: 20px 30px 10px;
+				padding: 27px 30px 6px;
 				border-bottom: 2px solid #e6e6e6;
 
 				&__title {
 					display: block;
 					@include type-body-medium;
+					line-height: 27px;
 					color: $cl_blue;
 					text-transform: none;
 					letter-spacing: normal;
