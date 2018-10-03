@@ -58,13 +58,13 @@ Field | Description
 ~~~
 
 ~~~
-column_name | data_type | is_nullable | column_default  | generation_expression |               indices                | is_hidden
+  column_name | data_type | is_nullable | column_default  | generation_expression |               indices                | is_hidden
 +-------------+-----------+-------------+-----------------+-----------------------+--------------------------------------+-----------+
-id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"} |   false
-date        | TIMESTAMP |    false    | NULL            |                       | {}                                   |   false
-priority    | INT       |    true     | 1:::INT         |                       | {}                                   |   false
-customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}           |   false
-status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
+  id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"} |   false
+  date        | TIMESTAMP |    false    | NULL            |                       | {}                                   |   false
+  priority    | INT       |    true     | 1:::INT         |                       | {}                                   |   false
+  customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}           |   false
+  status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
 (5 rows)
 ~~~
 
