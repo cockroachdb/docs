@@ -100,17 +100,22 @@ global
 
 defaults
     mode                tcp
+    # Timeout values should be configured for your specific use.
+    # See: https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-timeout%20connect
     timeout connect     10s
     timeout client      1m
     timeout server      1m
+    # TCP keep-alive on client side. Server already enables them.
+    option              clitcpka
 
 listen psql
     bind :26000
     mode tcp
     balance roundrobin
-    server cockroach1 localhost:26257
-    server cockroach2 localhost:26258
-    server cockroach3 localhost:26259
+    option httpchk GET /health?ready=1
+    server cockroach1 localhost:26257 check port 8080
+    server cockroach2 localhost:26258 check port 8081
+    server cockroach3 localhost:26259 check port 8082
 ~~~
 
 Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
