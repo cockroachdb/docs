@@ -244,5 +244,5 @@ You may also want to learn other ways to control the location and number of repl
 
 - [Even Replication Across Datacenters](configure-replication-zones.html#even-replication-across-datacenters)
 - [Multiple Applications Writing to Different Databases](configure-replication-zones.html#multiple-applications-writing-to-different-databases)
-- [Stricter Replication for a Specific Table](configure-replication-zones.html#stricter-replication-for-a-specific-table)
+- [Stricter Replication for a Table and Its Indexes](configure-replication-zones.html#stricter-replication-for-a-table-and-its-secondary-indexes)
 - [Tweaking the Replication of System Ranges](configure-replication-zones.html#tweaking-the-replication-of-system-ranges)
