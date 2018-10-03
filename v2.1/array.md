@@ -193,12 +193,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+--------------------------------+
-|       ARRAY[true, false,       |
-|          true]::INT[]          |
-+--------------------------------+
-| {1,0,1}                        |
-+--------------------------------+
+   array
++---------+
+  {1,0,1}
 (1 row)
 ~~~
 
@@ -209,6 +206,32 @@ Arrays in CockroachDB are 1-indexed.
 
 ~~~
 pq: invalid cast: bool[] -> TIMESTAMP[]
+~~~
+
+<span class="version-tag">New in v2.1:</span> You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT ARRAY[1,NULL,3]::string;
+~~~
+
+~~~
+    array
++------------+
+  {1,NULL,3}
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT ARRAY[(1,'a b'),(2,'c"d')]::string;
+~~~
+
+~~~
+               array
++----------------------------------+
+  {"(1,\"a b\")","(2,\"c\"\"d\")"}
+(1 row)
 ~~~
 
 ## See also
