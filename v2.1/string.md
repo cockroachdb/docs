@@ -68,13 +68,11 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| a           | STRING    |    false    | NULL           |                       | {"primary"} |
-| b           | STRING(4) |    true     | NULL           |                       | {}          |
-| c           | STRING    |    true     | NULL           |                       | {}          |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  a           | STRING    |    false    | NULL           |                       | {"primary"} |   false
+  b           | STRING(4) |    true     | NULL           |                       | {}          |   false
+  c           | STRING    |    true     | NULL           |                       | {}          |   false
 (3 rows)
 ~~~
 
@@ -89,11 +87,29 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 ~~~
 
 ~~~
+     a     |  b   |   c
 +----------+------+--------+
-|    a     |  b   |   c    |
-+----------+------+--------+
-| a1b2c3d4 | e5f6 | g7h8i9 |
-+----------+------+--------+
+  a1b2c3d4 | e5f6 | g7h8i9
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE aliases (a STRING PRIMARY KEY, b VARCHAR, c CHAR);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM aliases;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  a           | STRING    |    false    | NULL           |                       | {"primary"} |   false
+  b           | VARCHAR   |    true     | NULL           |                       | {}          |   false
+  c           | CHAR      |    true     | NULL           |                       | {}          |   false
+(3 rows)
 ~~~
 
 ## Supported casting and conversion
