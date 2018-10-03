@@ -4,6 +4,7 @@ summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
 toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+standard_only: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -37,30 +38,30 @@ You can create these rules using [Security Groups' Inbound Rules](http://docs.aw
 
 #### Inter-node and load balancer-node communication
 
- Field | Recommended Value 
+ Field | Recommended Value
 -------|-------------------
- Type | Custom TCP Rule 
- Protocol | TCP 
- Port Range | **26257** 
- Source | The name of your security group (e.g., *sg-07ab277a*) 
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **26257**
+ Source | The name of your security group (e.g., *sg-07ab277a*)
 
 #### Admin UI
 
- Field | Recommended Value 
+ Field | Recommended Value
 -------|-------------------
- Type | Custom TCP Rule 
- Protocol | TCP 
- Port Range | **8080** 
- Source | Your network's IP ranges 
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **8080**
+ Source | Your network's IP ranges
 
 #### Application data
 
- Field | Recommended Value 
+ Field | Recommended Value
 -------|-------------------
- Type | Custom TCP Rules 
- Protocol | TCP 
- Port Range | **26257** 
- Source | Your application's IP ranges 
+ Type | Custom TCP Rules
+ Protocol | TCP
+ Port Range | **26257**
+ Source | Your application's IP ranges
 
 ## Step 2. Create instances
 

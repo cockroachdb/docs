@@ -10,18 +10,28 @@ run() {
 
 baseurl=$BUILD_VCS_NUMBER
 
-# Step 1. Build the docs.
+# Step 1. Build the standard docs.
 cat > _config_prod.yml <<EOF
 url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
 baseurl: /$baseurl
 destination: _site/$baseurl
 EOF
+run python scripts/exclude_from_standard_docs.py
 run bundle exec jekyll build --config _config.yml,_config_prod.yml
 
-# Step 2. Upload the docs to S3.
+# Step 2. Build the managed service docs.
+cat > _config_prod_managed.yml <<EOF
+url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
+baseurl: /$baseurl/managed
+destination: _site/$baseurl/managed
+EOF
+run python scripts/exclude_from_managed_docs.py
+run bundle exec jekyll build --config _config_managed.yml,_config_prod_managed.yml
+
+# Step 3. Upload the docs to S3.
 run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review
 
-# Step 3. Post a link to the docs on the GitHub pull request. We do this before
+# Step 4. Post a link to the docs on the GitHub pull request. We do this before
 # running htmltest to provide fast feedback, as htmltest can take several
 # minutes to complete. No need to do this in the container.
 curl \
@@ -29,8 +39,8 @@ curl \
   --data "{\"body\": \"http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/\"}" \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
-# Step 4. Run vale, but don't fail the build if it reports errors.
+# Step 5. Run vale, but don't fail the build if it reports errors.
 run vale --no-wrap v2.1 || true
 
-# Step 5. Run htmltest, but skip checking external links to speed things up.
+# Step 6. Run htmltest, but skip checking external links to speed things up.
 run htmltest --skip-external

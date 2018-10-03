@@ -73,7 +73,19 @@
 				</div>
 			</div>
 			<a href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
-			<a href="{{ "/stable" | relative_url }}" class="current-menu-item" data-proofer-ignore>Docs</a>
+			<div class='menu-item-dropdown'>
+				<div class="menu-item-dropdown__parent-link">Docs</div>
+				<div class="menu-dropdown">
+					<a href="{{ "/stable" | relative_url }}" data-proofer-ignore>
+						<div class="menu-dropdown__title">Self-Service</div>
+						<div class="menu-dropdown__info">Run a cluster on-prem, in the cloud, or hybrid.</div>
+					</a>
+					<a href="{{ "/managed/stable" | relative_url }}" data-proofer-ignore>
+						<div class="menu-dropdown__title">Managed</div>
+						<div class="menu-dropdown__info">Let the experts deploy and manage a cluster for you.</div>
+					</a>
+				</div>
+			</div>
 			<div class='menu-item-dropdown'>
 				<div class="menu-item-dropdown__parent-link">Resources</div>
 				<div class="menu-dropdown">
@@ -96,7 +108,7 @@
 					</div>
 			</div>
 			<a href="https://www.cockroachlabs.com/blog/" class='blog-nav' data-proofer-ignore>Blog</a>
-			<a href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
+			<a href="https://www.cockroachlabs.com/pricing/start-trial/" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
 		</nav>
 		<nav class="mobile" role="navigation">
 			<a href="#" title="Expand Menu" class="hamburger">
@@ -105,7 +117,7 @@
 				<span></span>
 				<span></span>
 			</a>
-			<a target="_blank" href="{{ "/stable/install-cockroachdb.html" | relative_url }}" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
+			<a target="_blank" href="https://www.cockroachlabs.com/pricing/start-trial/" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
 		</nav>
 	</div>
 </header>

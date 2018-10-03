@@ -1,0 +1,45 @@
+homepage_title: CockroachDB Managed Service Docs
+site_title: CockroachDB
+
+url: "https://www.cockroachlabs.com"
+baseurl: "/docs/managed"
+destination: _site/managed
+
+gems:
+- jekyll-sitemap
+
+highlighter: rouge
+markdown: redcarpet
+
+redcarpet:
+  extensions:
+  - disable_indented_code_blocks
+  - no_intra_emphasis
+  - tables
+  - with_toc_data
+
+versions:
+  stable: v2.1
+
+release_info:
+  v2.1:
+    name: v2.1.0
+    version: v2.1.0-beta.20180827
+    docker_image: cockroachdb/cockroach-unstable
+    build_time: 2018/08/27 14:48:26 (go1.10)
+    start_time: 2018-08-27 15:10:52.34274101 +0000 UTC
+
+exclude: ['ci', 'vendor', 'v1.0', 'v1.1', 'v2.0', 'v2.1/deploy-cockroachdb-on-aws-insecure.md', 'v2.1/deploy-cockroachdb-on-premises.md', 'v2.1/deploy-cockroachdb-on-premises-insecure.md']
+include: ["_redirects"]
+
+keep_files: [_internal]
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+      build_for_managed: true
+      sidebar_data: sidebar-managed.json
