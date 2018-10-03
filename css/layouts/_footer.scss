@@ -21,7 +21,7 @@ section.footer {
 			display: flex;
 			-ms-flex-wrap: wrap;
 			    flex-wrap: wrap;
-			padding: 60px 60px 20px 60px;
+			padding: 60px 0 20px 45px;
 			margin: 0 auto;
 			width: 1500px;
 		}
@@ -124,6 +124,7 @@ section.footer {
 
 		li.header {
 			@include button-text--heavy--medium;
+			line-height: 5px;
 			text-transform: uppercase;
 
 			@include at-query($min, $screen-md) {
@@ -141,7 +142,7 @@ section.footer {
 
 	.footer-sub-nav {
 		display: none;
-		margin-top: 10px;
+		margin-top: 20px;
 		padding-left: 0;
 
 		@include at-query($min, $screen-md) {

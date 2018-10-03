@@ -436,11 +436,11 @@ header {
       transition: opacity 0.4s ease;
       z-index: 1; }
       header nav.desktop .menu-dropdown a {
-        padding: 20px 30px;
+        padding: 20px 30px 15px;
         margin: 0;
         width: 100%; }
         header nav.desktop .menu-dropdown a:not(:last-child) {
-          padding-right: 45px;
+          padding-right: 35px;
           border-bottom: solid 2px #e6e6e6; }
         header nav.desktop .menu-dropdown a .menu-dropdown__title {
           font-family: 'AvenirLTStd-Medium', serif;
@@ -469,7 +469,7 @@ header {
         header nav.desktop .menu-dropdown a:hover .menu-dropdown__title {
           color: #54B30E; }
       header nav.desktop .menu-dropdown .menu-dropdown--subsection {
-        padding: 20px 30px 10px;
+        padding: 27px 30px 6px;
         border-bottom: 2px solid #e6e6e6; }
         header nav.desktop .menu-dropdown .menu-dropdown--subsection__title {
           display: block;
@@ -479,6 +479,7 @@ header {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           line-height: 30px;
+          line-height: 27px;
           color: #152849;
           text-transform: none;
           letter-spacing: normal;
@@ -1079,7 +1080,7 @@ section.footer {
         display: flex;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-        padding: 60px 60px 20px 60px;
+        padding: 60px 0 20px 45px;
         margin: 0 auto;
         width: 1500px; } }
   section.footer .footer__flex-wrap {
@@ -1166,6 +1167,7 @@ section.footer {
       -moz-osx-font-smoothing: grayscale;
       line-height: 15px;
       letter-spacing: 1.5px;
+      line-height: 5px;
       text-transform: uppercase; }
       @media screen and (min-width: 992px) {
         section.footer .footer-nav li.header {
@@ -1177,7 +1179,7 @@ section.footer {
       top: auto; }
   section.footer .footer-sub-nav {
     display: none;
-    margin-top: 10px;
+    margin-top: 20px;
     padding-left: 0; }
     @media screen and (min-width: 992px) {
       section.footer .footer-sub-nav {
