@@ -80,7 +80,7 @@ You can use either [`cockroach cert`](create-security-certificates.html) command
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---listen-addr=localhost \
+--listen-addr=localhost
 ~~~
 
 ~~~
@@ -144,7 +144,8 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=certs
+--certs-dir=certs \
+--host=localhost:26257
 ~~~
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -170,11 +171,9 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
@@ -204,11 +203,9 @@ Now run the same `SELECT` query:
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
@@ -223,7 +220,7 @@ Exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to `http://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup. Then click **Metrics** on the left-hand navigation bar.
+Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Then click **Metrics** on the left-hand navigation bar.
 
 Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
@@ -258,11 +255,9 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
