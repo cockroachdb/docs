@@ -98,7 +98,7 @@ Constraints can be specified such that they apply to all replicas in a zone or s
 Constraint Scope | Description | Syntax
 -----------------|-------------|-------
 **All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints: [+ssd, -region=west]`
-**Per-Replica** | Multiple lists of constraints can be provided in a JSON object mapping the list of constraints to an integer number of replicas in each range that the constraints should apply to. The total number of replicas constrained cannot be greater than the configured number of replicas for the zone. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
+**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
 
 ### Node/replica recommendations
 
