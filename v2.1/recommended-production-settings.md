@@ -38,7 +38,9 @@ Term | Definition
 
 - When running a cluster of 5 nodes or more, it's safest to [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5, even if you do not do so for user data. For the cluster as a whole to remain available, the ranges for this internal data must always retain a majority of their replicas.
 
-{{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For added context about CockroachDB's fault tolerance and automated repair capabilities, see [this training](training/fault-tolerance-and-automated-repair.html).
+{{site.data.alerts.end}}
 
 ## Hardware
 
@@ -47,7 +49,9 @@ Term | Definition
 - Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
 - At a bare minimum, each node should have **2 GB of RAM and one entire core**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
-    {{site.data.alerts.callout_danger}}Avoid "burstable" or "shared-core" virtual machines that limit the load on a single core.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    Avoid "burstable" or "shared-core" virtual machines that limit the load on a single core.
+    {{site.data.alerts.end}}
 
 - For best performance:
     - Use SSDs over HDDs.
@@ -149,7 +153,9 @@ Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to en
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 
 - **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. To ensure that traffic is not directed to failed nodes or nodes that are not ready to receive requests, load balancers should use [CockroachDB's readiness health check](monitoring-and-alerting.html#health-ready-1).
-    {{site.data.alerts.callout_success}}With a single load balancer, client connections are resilient to node failure, but the load balancer itself is a point of failure. It's therefore best to make load balancing resilient as well by using multiple load balancing instances, with a mechanism like floating IPs or DNS to select load balancers for clients.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    With a single load balancer, client connections are resilient to node failure, but the load balancer itself is a point of failure. It's therefore best to make load balancing resilient as well by using multiple load balancing instances, with a mechanism like floating IPs or DNS to select load balancers for clients.
+    {{site.data.alerts.end}}
 
 For guidance on load balancing, see the tutorial for your deployment environment:
 
@@ -182,6 +188,10 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 ~~~ shell
 $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
+
+{{site.data.alerts.callout_danger}}
+Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
+{{site.data.alerts.end}}
 
 ## File descriptors limit
 
