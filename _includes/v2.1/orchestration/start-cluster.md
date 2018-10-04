@@ -19,6 +19,25 @@ poddisruptionbudget "cockroachdb-budget" created
 statefulset "cockroachdb" created
 ~~~
 
+Alternatively, if you'd rather start with a configuration file that has been customized for performance:
+
+1. Download our [performance version of `cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml \
+    -O cockroachdb-statefulset-secure.yaml
+    ~~~
+
+2. Modify the file wherever there is a `TODO` comment.
+
+3. Use the file to create the StatefulSet and start the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-statefulset-secure.yaml
+    ~~~
+
 {% else %}
 
 1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
