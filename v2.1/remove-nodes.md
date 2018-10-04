@@ -105,9 +105,9 @@ $ cockroach quit --decommission --insecure --host=<address of node to remove>
 You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  true   |       73 |        true        |    false     
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  true   |       73 |        true        |    false     
 (1 row)
 ~~~
 
@@ -115,9 +115,9 @@ id | is_live | replicas | is_decommissioning | is_draining
 Once the node has been fully decommissioned and stopped, you'll see a confirmation:
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  true   |        0 |        true        |    false     
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  true   |        0 |        true        |    false     
 (1 row)
 
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
@@ -181,9 +181,9 @@ $ cockroach node decommission 4 --insecure --host=<address of live node>
 </div>
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  false  |        0 |        true        |    true      
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  false  |        0 |        true        |    true      
 (1 row)
 
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
@@ -241,20 +241,20 @@ $ cockroach node decommission 4 5 --insecure --host=<address of live node>
 You'll then see the decommissioning status print to `stderr` as it changes:
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  true   |       18 |        true        |    false     
- 5 |  true   |       16 |        true        |    false     
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  true   |       18 |        true        |    false     
+  5 |  true   |       16 |        true        |    false     
 (2 rows)
 ~~~
 
 Once the nodes have been fully decommissioned, you'll see a confirmation:
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  true   |        0 |        true        |    false     
- 5 |  true   |        0 |        true        |    false     
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  true   |        0 |        true        |    false     
+  5 |  true   |        0 |        true        |    false     
 (2 rows)
 
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
@@ -330,9 +330,9 @@ $ cockroach node recommission 4 --insecure --host=<address of live node>
 </div>
 
 ~~~
-id | is_live | replicas | is_decommissioning | is_draining  
----+---------+----------+--------------------+-------------+
- 4 |  false  |        0 |       false        |    true      
+ id | is_live | replicas | is_decommissioning | is_draining  
++---+---------+----------+--------------------+-------------+
+  4 |  false  |        0 |       false        |    true      
 (1 row)
 The affected nodes must be restarted for the change to take effect.
 ~~~
@@ -381,13 +381,13 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 </div>
 
 ~~~
-id |        address         |  build  |            started_at            |            updated_at            | is_available | is_live | gossiped_replicas | is_decommissioning | is_draining  
----+------------------------+---------+----------------------------------+----------------------------------+--------------+---------+-------------------+--------------------+-------------+
- 1 | 165.227.60.76:26257    | 91a299d | 2018-10-01 16:53:10.946245+00:00 | 2018-10-02 14:04:39.280249+00:00 |         true |  true   |                26 |       false        |    false     
- 2 | 192.241.239.201:26257  | 91a299d | 2018-10-01 16:53:24.22346+00:00  | 2018-10-02 14:04:39.415235+00:00 |         true |  true   |                26 |       false        |    false     
- 3 | 67.207.91.36:26257     | 91a299d | 2018-10-01 17:34:21.041926+00:00 | 2018-10-02 14:04:39.233882+00:00 |         true |  true   |                25 |       false        |    false     
- 4 | 138.197.12.74:26257    | 91a299d | 2018-10-01 17:09:11.734093+00:00 | 2018-10-02 14:04:37.558204+00:00 |         true |  true   |                25 |       false        |    false     
- 5 | 174.138.50.192:26257   | 91a299d | 2018-10-01 17:14:01.480725+00:00 | 2018-10-02 14:04:39.293121+00:00 |         true |  true   |                 0 |        true        |    false          
+ id |        address         |  build  |            started_at            |            updated_at            | is_available | is_live | gossiped_replicas | is_decommissioning | is_draining  
++---+------------------------+---------+----------------------------------+----------------------------------+--------------+---------+-------------------+--------------------+-------------+
+  1 | 165.227.60.76:26257    | 91a299d | 2018-10-01 16:53:10.946245+00:00 | 2018-10-02 14:04:39.280249+00:00 |         true |  true   |                26 |       false        |    false     
+  2 | 192.241.239.201:26257  | 91a299d | 2018-10-01 16:53:24.22346+00:00  | 2018-10-02 14:04:39.415235+00:00 |         true |  true   |                26 |       false        |    false     
+  3 | 67.207.91.36:26257     | 91a299d | 2018-10-01 17:34:21.041926+00:00 | 2018-10-02 14:04:39.233882+00:00 |         true |  true   |                25 |       false        |    false     
+  4 | 138.197.12.74:26257    | 91a299d | 2018-10-01 17:09:11.734093+00:00 | 2018-10-02 14:04:37.558204+00:00 |         true |  true   |                25 |       false        |    false     
+  5 | 174.138.50.192:26257   | 91a299d | 2018-10-01 17:14:01.480725+00:00 | 2018-10-02 14:04:39.293121+00:00 |         true |  true   |                 0 |        true        |    false          
 (5 rows)
 ~~~
 
