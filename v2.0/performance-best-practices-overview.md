@@ -291,7 +291,7 @@ To avoid contention, multiple strategies can be applied:
   [normalization](https://en.wikipedia.org/wiki/Database_normalization)
   of the data to place parts of the same records that are modified by
   different transactions in different tables. Note however that this
-  is a double-edged sword, because denormalization can also increase
+  is a double-edged sword, because denormalization can also decrease
   performance by creating multiple copies of often-referenced data in
   separate ranges.
 
