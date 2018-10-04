@@ -31,7 +31,8 @@ from a string literal instead.
 
 The following values are recognized:
 
- Syntax                                 | Value                                            --------------------------------------|------------------------------------------------
+ Syntax                                 | Value
+----------------------------------------|------------------------------------------------
  `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;                                                
  `-inf`, `-infinity`                    | -&#8734;                                                
  `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
