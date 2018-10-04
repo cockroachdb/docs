@@ -62,6 +62,18 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 - Using only tables in the interleaved hierarchy.
 
+<a name="fast-path-deletes"></a>
+
+<span class="version-tag">New in v2.1:</span> Fast deletes are available for interleaved tables that use [`ON DELETE CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).  Deleting rows from such tables will use an optimized code path and run much faster, as long as the following conditions are met:
+
+- The table or any of its interleaved tables do not have any secondary indices.
+- The table or any of its interleaved tables are not referenced by any other table outside of them by foreign key.
+- All of the interleaved relationships use `ON DELETE CASCADE` clauses.
+
+The performance boost when using this fast path is several orders of magnitude, potentially reducing delete times from seconds to nanoseconds.
+
+For an example showing how to create tables that meet these criteria, see [Interleaved fast path deletes](#interleaved-fast-path-deletes) below.
+
 ### Tradeoffs
 
 - In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.
@@ -70,13 +82,17 @@ In general, reads, writes, and joins of values related through the interleave pr
 
     For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
 
+    Another exception is the [fast path delete optimization](#fast-path-deletes), which is available if you set up your tables according to certain criteria.
+
 - If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.
 
     For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
 ## Syntax
 
-{% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+</div>
 
 ## Parameters
 
@@ -143,6 +159,53 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
     PRIMARY KEY (customer, "order", id),
     CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
   ) INTERLEAVE IN PARENT orders (customer, "order");
+~~~
+
+### Interleaved fast path deletes
+
+This example shows how to create interleaved tables that enable our SQL engine to use a code path optimized to run much faster when deleting rows from these tables.  For more information about the criteria for enabling this optimization, see [fast path deletes](#fast-path-deletes) above.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE parent (id INT PRIMARY KEY);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE child (
+    pid INT,
+    id INT,
+    PRIMARY KEY (pid, id),
+    FOREIGN KEY (pid) REFERENCES parent(id) ON UPDATE CASCADE ON DELETE CASCADE
+  ) INTERLEAVE IN PARENT parent(pid);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS sibling(
+    pid INT,
+    id INT,
+    PRIMARY KEY (pid, id),
+    FOREIGN KEY(pid) REFERENCES parent(id) ON UPDATE CASCADE ON DELETE CASCADE
+  ) INTERLEAVE IN PARENT parent(pid);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS grandchild(
+    gid INT,
+    pid INT,
+    id INT,
+    FOREIGN KEY (gid, pid) REFERENCES child(pid, id) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY(gid, pid, id)
+  ) INTERLEAVE IN PARENT child(gid, pid);
+~~~
+
+The following statement will delete some rows from the `parent` table, very quickly:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM parent WHERE id <= 5;
 ~~~
 
 ### Key-value storage example
