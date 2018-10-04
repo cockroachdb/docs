@@ -13,7 +13,7 @@ To understand the extent to which we support the standard SQL features, use the 
 
 ## Features
 
-Feature ID | Description | CockroachDB Support |
+Feature ID | Description | CockroachDB Support
 ------ | ------ | ------ |
 B011 | Embedded Ada | No
 B012 | Embedded C | No
