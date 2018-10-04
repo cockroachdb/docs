@@ -2,7 +2,6 @@
 title: Performance Tuning
 summary: Essential techniques for getting fast reads and writes in a single- and multi-region CockroachDB deployment.
 toc: true
-
 ---
 
 This tutorial shows you essential techniques for getting fast reads and writes in CockroachDB, starting with a single-region deployment and expanding into multiple regions.
@@ -1777,7 +1776,7 @@ For this service, the most effective technique for improving read and write late
     The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
     {{site.data.alerts.end}}
 
-7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) to require city data to be stored on specific nodes based on node locality.
+7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition-new-in-v2-0) to require city data to be stored on specific nodes based on node locality.
 
     City | Locality
     -----|---------
