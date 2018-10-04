@@ -17,14 +17,15 @@ Currently, only the `root` user can configure replication zones.
 
 ### For table data
 
-There are four replication zone levels for [**table data**](architecture/distribution-layer.html#table-data) in a cluster, listed from least to most granular:
+There are five replication zone levels for [**table data**](architecture/distribution-layer.html#table-data) in a cluster, listed from least to most granular:
 
 Level | Description
 ------|------------
 Cluster | CockroachDB comes with a pre-configured `.default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
-Table / Index | You can add replication zones for specific tables and their secondary indexes. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table) and [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.<br><br>Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 64 MiB in size, it splits into two ranges. This process continues as the table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for the table and a secondary index. For such a range, defining a replication zone for the index will cause the index data to split into a separate range.
-Row ([Enterprise-only](enterprise-licensing.html)) | You can add replication zones for specific rows in a table by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
+Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
+Index ([Enterprise-only](enterprise-licensing.html)) | The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
+Row ([Enterprise-only](enterprise-licensing.html)) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more details.
 
 ### For system data
 
@@ -40,9 +41,10 @@ System Range | CockroachDB comes with pre-configured replication zones for the "
 When replicating data, whether table or system, CockroachDB always uses the most granular replication zone available. For example, for a piece of user data:
 
 1. If there's a replication zone for the row, CockroachDB uses it.
-2. If there's no applicable row replication zone, CockroachDB uses the table or secondary index replication zone.
-3. If there's no applicable table or secondary index replication zone, CockroachDB uses the database replication zone.
-4. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
+2. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the secondary index replication zone.
+3. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the table replication zone.
+4. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
+5. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
@@ -131,11 +133,14 @@ $ cockroach zone get .default <flags>
 # View the replication zone for a database:
 $ cockroach zone get <database> <flags>
 
-# View the replication zone for a table or index:
-$ cockroach zone get <database.table|index> <flags>
+# View the replication zone for a table:
+$ cockroach zone get <database.table> <flags>
+
+# View the replication zone for an index:
+$ cockroach zone get <database.table@index> <flags>
 
 # View the replication zone for a table or index partition:
-$ cockroach zone get <database.table|index.partition> <flags>
+$ cockroach zone get <database.table.partition> <flags>
 
 # Edit the default replication zone for the cluster:
 $ cockroach zone set .default --file=<zone-content.yaml> <flags>
@@ -143,20 +148,26 @@ $ cockroach zone set .default --file=<zone-content.yaml> <flags>
 # Create/edit the replication zone for a database:
 $ cockroach zone set <database> --file=<zone-conent.yaml> <flags>
 
-# Create/edit the replication zone for a table or index:
-$ cockroach zone set <database.table|index> --file=<zone-content.yaml> <flags>
+# Create/edit the replication zone for a table:
+$ cockroach zone set <database.table> --file=<zone-content.yaml> <flags>
+
+# Create/edit the replication zone for an index:
+$ cockroach zone set <database.table@index> --file=<zone-content.yaml> <flags>
 
 # Create/edit the replication zone for a table or index partition:
-$ cockroach zone set <database.table|index.partition> --file=<zone-content.yaml> <flags>
+$ cockroach zone set <database.table.partition> --file=<zone-content.yaml> <flags>
 
 # Remove the replication zone for a database:
 $ cockroach zone rm <database> <flags>
 
-# Remove the replication zone for a table or index:
-$ cockroach zone rm <database.table|index> <flags>
+# Remove the replication zone for a table:
+$ cockroach zone rm <database.table> <flags>
+
+# Remove the replication zone for an index:
+$ cockroach zone rm <database.table@index> <flags>
 
 # Remove the replication zone for a table or index partition:
-$ cockroach zone set <database.table|index.partition> --file=<zone-content.yaml> <flags>
+$ cockroach zone set <database.table.partition> --file=<zone-content.yaml> <flags>
 
 # View help:
 $ cockroach zone --help
@@ -358,7 +369,13 @@ $ echo 'num_replicas: 7' | cockroach zone set db1.t1 \
 
 ### Create a replication zone for a secondary index
 
-To control replication for a specific secondary index, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.index> -f <file.yaml>` command with appropriate flags:
+{{site.data.alerts.callout_info}}
+This is an [enterprise-only](enterprise-licensing.html) feature.
+{{site.data.alerts.end}}
+
+The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
+
+To control replication for a specific secondary index, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table@index> -f <file.yaml>` command with appropriate flags:
 
 {{site.data.alerts.callout_success}}
 To get the name of a secondary index, which you need for the `cockroach zone set` command, use the [`SHOW INDEX`](show-index.html) or [`SHOW CREATE TABLE`](show-create.html) statements.
@@ -375,7 +392,7 @@ num_replicas: 7
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set db1.idx1 \
+$ cockroach zone set db1.table@idx1 \
 --insecure \
 --host=<node address> \
 -f index_zone.yaml
@@ -394,15 +411,17 @@ Alternately, you can pass the YAML content via the standard input:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set db1.idx1 \
+$ echo 'num_replicas: 7' | cockroach zone set db1.table@idx1 \
 --insecure \
 --host=<node address> \
 -f -
 ~~~
 
-### Create a replication zone for a table partition
+### Create a replication zone for a table or secondary index partition
 
-{{site.data.alerts.callout_info}}This is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+This is an [enterprise-only](enterprise-licensing.html) feature.
+{{site.data.alerts.end}}
 
 To [control replication for table partitions](partitioning.html#replication-zones), create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table.partition> -f <file.yaml>` command with appropriate flags:
 
@@ -425,30 +444,9 @@ $ cockroach zone set roachlearn.students_by_list.australia \
 -f australia_zone.yml
 ~~~
 
-### Create a replication zone for a secondary index partition
-
-{{site.data.alerts.callout_info}}This is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
-
-To [control replication for secondary index partitions](partitioning.html#replication-zones), create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.index.partition> -f <file.yaml>` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > australia_idx_zone.yml
-~~~
-
-~~~ shell
-constraints: [+datacenter=au1]
-~~~
-
-Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students_by_list_idx1.australia \
---insecure \
---host=<node address> \
--f australia_idx_zone.yml
-~~~
+{{site.data.alerts.callout_success}}
+Since the syntax is the same for defining a replication zone for a table or index partition (`database.table.partition`), give partitions names that communicate what they are partitioning, e.g., `australia_table` vs `australia_idx1`.
+{{site.data.alerts.end}}
 
 ### Create a replication zone for a system range
 
@@ -792,39 +790,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     constraints: [+ssd]
     ~~~
 
-3. Configure a replication zone for each of the table's secondary indexes as well:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Create a YAML file with the replica count set to 5
-    # and the ssd attribute as a required constraint:
-    $ cat index_zone.yaml
-    ~~~
-
-    ~~~
-    num_replicas: 5
-    constraints: [+ssd]
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Apply the replication zone to the table:
-    $ cockroach zone set db.idx1 \
-    --insecure \
-    --host=<any node hostname> \
-    -f index_zone.yaml
-    ~~~
-
-    ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-     ttlseconds: 86400
-    num_replicas: 5
-    constraints: [+ssd]
-    ~~~
-
-    The table and its secondary indexes will be replicated 5 times, and the required constraint will place the data on nodes with `ssd` drives.
+    The secondary indexes on the table will use the table's replication zone, so all data for the table will be replicated 5 times, and the required constraint will place the data on nodes with `ssd` drives.
 
 ### Tweaking the replication of system ranges
 
