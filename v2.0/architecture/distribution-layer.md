@@ -39,7 +39,9 @@ Each node caches values of the `meta2` range it has accessed before, which optim
 
 After the node's meta ranges is the KV data your cluster stores.
 
-This data is broken up into 64MiB sections of contiguous key-space known as ranges. This size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
+Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 64 MiB in size, it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index.
+
+The default 64MiB range size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
 
 These ranges are replicated (in the aptly named Replication Layer), and have the addresses of each replica stored in the `meta2` range.
 
