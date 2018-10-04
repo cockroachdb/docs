@@ -82,6 +82,13 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
   > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
+- If a column is added to a table and the family is not specified, it will be added to the first column family. For example, the following would add the new column to the `f1` family, since that is the first column family:
+
+  {% include copy-clipboard.html %}
+  ~~~ sql
+  > ALTER TABLE test ADD COLUMN last_name STRING;
+  ~~~
+
 ## Compatibility with past releases
 
 Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release.
