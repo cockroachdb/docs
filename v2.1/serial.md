@@ -94,7 +94,12 @@ When we insert rows without values in column `a` and display the new rows, we se
 
 ### Auto-incrementing is not always sequential
 
-It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence.
+It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. However, there can be gaps and the order is not completely guaranteed:
+
+- Each insert increases the sequence by one, even when the insert is not committed. This means that auto-incrementing types may leave gaps in a sequence.
+- Two concurrent transactions can commit in a different order than their use of sequences, and thus "observe" the values to decrease relative to each other. This effect is amplified by automatic transaction retries.
+
+These are fundamental properties of a transactional systems with non-transactional sequences. PostgreSQL, MySQL, and CockroachDB do not increase sequences transactionally with other SQL statements, so these effects can happen in any case.
 
 To experience this for yourself, run through the following example in PostgreSQL:
 
@@ -146,6 +151,45 @@ To experience this for yourself, run through the following example in PostgreSQL
     Since each insert increased the sequence in column `a` by one, the first committed insert got the value `2`, and the second committed insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. An alternative feature, introduced in v2.0, is the [`SEQUENCE`](create-sequence.html).
+
+#### Additional examples
+
+If two transactions occur concurrently, CockroachDB cannot guarantee monotonically increasing (i.e., first commit is smaller than second commit). Here are three more scenarios that demonstrate this:
+
+Scenario 1:
+
+- At time 1, transaction `T1` `BEGIN`s.
+- At time 2, transaction `T2` `BEGIN`s on the same node (from a different client).
+- At time 3, transaction `T1` creates a `SERIAL` value, `x`.
+- At time 3 + 2 microseconds, txn T2 creates a SERIAL value, `y`.
+- At time 4, transaction `T1` `COMMIT`s.
+- At time 5, transaction `T2` `COMMIT`s.
+
+If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`, despite the fact `T1` and `T2` began and were committed in different times. In this particular example, it's even likely that `x = y` because there is less than a 10-microsecond difference and the `SERIAL` values are constructed from the number of microseconds in the current time.
+
+Scenario 2:
+
+- At time 1, transaction `T1` `BEGIN`s.
+- At time 1, transaction `T2` `BEGIN`s somewhere else, on a different node.
+- At time 2, transaction `T1` creates a SERIAL value, `x`.
+- At time 3, transaction `T2` creates a SERIAL value, `y`.
+- At time 5, transaction `T1` `COMMIT`s.
+- At time 5, transaction `T2` `COMMIT`s.
+
+If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Both can happen, even though the transactions began and committed at the same time. However it's sure that `x != y` because the values were generated on different nodes.
+
+Scenario 3:
+
+- At time 1, transaction `T1` `BEGIN`s.
+- At time 3, transaction `T1` creates a `SERIAL` value, `x`.
+- At time 4, transaction `T1` `COMMIT`s.
+- At time 5, transaction `T2` `BEGIN`s somewhere else, on a different node.
+- At time 6, transaction `T2` creates a `SERIAL` value, `y`.
+- At time 7, transaction `T2` `COMMIT`s.
+
+There is less than a 250-microsecond difference between the system clocks of the two nodes.
+
+If this happens, CockroachDB cannot again guarantee whether `x < y` or `x > y`. Even though the transactions "clearly" occurred one "after" the other, perhaps there was a clock skew between the two nodes and the system time of the second node is set earlier than the first node.
 
 ## Supported casting and conversion
 
