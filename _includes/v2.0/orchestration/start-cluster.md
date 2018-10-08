@@ -53,6 +53,24 @@ Alternatively, if you'd rather start with a configuration file that has been cus
     statefulset "cockroachdb" created
     ~~~
 
+    Alternatively, if you'd rather start with a configuration file that has been customized for performance:
+
+    1. Download our [performance version of `cockroachdb-statefulset-insecure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml):
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml
+        ~~~
+
+    2. Modify the file wherever there is a `TODO` comment.
+
+    3. Use the file to create the StatefulSet and start the cluster:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl create -f cockroachdb-statefulset-insecure.yaml
+        ~~~
+
 2. Confirm that three pods are `Running` successfully. Note that they will not
    be considered `Ready` until after the cluster has been initialized:
 
