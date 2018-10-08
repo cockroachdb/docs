@@ -39,9 +39,9 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 <img src="{{ 'images/v2.1/admin_ui_sql_query_errors.png' | relative_url }}" alt="CockroachDB Admin UI SQL Query Errors" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor) or [runtime](architecture/sql-layer.html#sql-parser-planner-executor) error.
+- In the node view, the graph shows the 10-second average of the number of SQL statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor) or [runtime](architecture/sql-layer.html#sql-parser-planner-executor) error.
 
-- In the cluster view, the graph shows the total number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor) or [runtime](architecture/sql-layer.html#sql-parser-planner-executor) error across all nodes.
+- In the cluster view, the graph shows the 10-second average of the number of SQL statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor) or [runtime](architecture/sql-layer.html#sql-parser-planner-executor) error across all nodes.
 
 ## Transactions
 
