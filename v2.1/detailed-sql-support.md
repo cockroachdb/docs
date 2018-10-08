@@ -13,7 +13,7 @@ To understand the extent to which we support the standard SQL features, use the 
 
 ## Features
 
-|  **Feature ID** | **Description** | **CockroachDB Support** |
+|  Feature ID | Description | CockroachDB Support |
 |  ------ | ------ | ------ |
 |  B011 | Embedded Ada | No |
 |  B012 | Embedded C | No |
@@ -25,7 +25,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  B021 | Direct SQL | No |
 |  B031 | Basic dynamic SQL | No |
 |  B032 | Extended dynamic SQL | No |
-|  B032-01 | <describe input statement> | No |
+|  B032-01 | &lt;describe input statement&gt; | No |
 |  B033 | Untyped SQL-invoked function arguments | No |
 |  B034 | Dynamic specification of cursor attributes | No |
 |  B035 | Non-extended descriptor names | No |
@@ -48,14 +48,14 @@ To understand the extent to which we support the standard SQL features, use the 
 |  B128 | Routine language SQL | No |
 |  B211 | Module language Ada: VARCHAR and NUMERIC support | No |
 |  B221 | Routine language Ada: VARCHAR and NUMERIC support | No |
-|  **E011** | **Numeric data types** | **Yes** |
+|  E011 | Numeric data types | Yes |
 |  E011-01 | INTEGER and SMALLINT data types | Yes |
 |  E011-02 | REAL, DOUBLE PRECISION, and FLOAT data types | Yes |
 |  E011-03 | DECIMAL and NUMERIC data types | Yes |
 |  E011-04 | Arithmetic operators | Yes |
 |  E011-05 | Numeric comparison | Yes |
 |  E011-06 | Implicit casting among the numeric data types | Yes |
-|  **E021** | **Character data types** | **Partial** |
+|  E021 | Character data types | Partial |
 |  E021-01 | CHARACTER data type | Yes |
 |  E021-02 | CHARACTER VARYING data type | Partial |
 |  E021-03 | Character literals | Yes |
@@ -68,20 +68,20 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E021-10 | Implicit casting among the character string types | Yes |
 |  E021-11 | POSITION function | Yes |
 |  E021-12 | Character comparison | Yes |
-|  **E031** | **Identifiers** | **Yes** |
+|  E031 | Identifiers | Yes |
 |  E031-01 | Delimited identifiers | Yes |
 |  E031-02 | Lower case identifiers | Yes |
 |  E031-03 | Trailing underscore | Yes |
-|  **E051** | **Basic query specification** | **Yes** |
+|  E051 | Basic query specification | Yes |
 |  E051-01 | SELECT DISTINCT | Yes |
 |  E051-02 | GROUP BY clause | Yes |
-|  E051-04 | GROUP BY can contain columns not in <select list> | Yes |
+|  E051-04 | GROUP BY can contain columns not in &lt;select list&gt; | Yes |
 |  E051-05 | Select list items can be renamed | Yes |
 |  E051-06 | HAVING clause | Yes |
 |  E051-07 | Qualified * in select list | Yes |
 |  E051-08 | Correlation names in the FROM clause | Yes |
 |  E051-09 | Rename columns in the FROM clause | Yes |
-|  **E061** | **Basic predicates and search conditions** | **Partial** |
+|  E061 | Basic predicates and search conditions | Partial |
 |  E061-01 | Comparison predicate | Yes |
 |  E061-02 | BETWEEN predicate | Yes |
 |  E061-03 | IN predicate with list of values | Yes |
@@ -95,13 +95,13 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E061-12 | Subqueries in quantified comparison predicate | Yes |
 |  E061-13 | Correlated subqueries | Partial |
 |  E061-14 | Search condition | Yes |
-|  **E071** | **Basic query expressions** | **Partial** |
+|  E071 | Basic query expressions | Partial |
 |  E071-01 | UNION DISTINCT table operator | Yes |
 |  E071-02 | UNION ALL table operator | Yes |
 |  E071-03 | EXCEPT DISTINCT table operator | Yes |
 |  E071-05 | Columns combined via table operators need not have exactly the same data type | No |
 |  E071-06 | Table operators in subqueries | Yes |
-|  **E081** | **Basic Privileges** | **Partial** |
+|  E081 | Basic Privileges | Partial |
 |  E081-01 | SELECT privilege | Yes |
 |  E081-02 | DELETE privilege | Yes |
 |  E081-03 | INSERT privilege at the table level | Yes |
@@ -112,7 +112,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E081-08 | WITH GRANT OPTION | No |
 |  E081-09 | USAGE privilege | Yes |
 |  E081-10 | EXECUTE privilege | No |
-|  **E091** | **Set functions** | **Yes** |
+|  E091 | Set functions | Yes |
 |  E091-01 | AVG | Yes |
 |  E091-02 | COUNT | Yes |
 |  E091-03 | MAX | Yes |
@@ -120,12 +120,12 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E091-05 | SUM | Yes |
 |  E091-06 | ALL quantifier | Yes |
 |  E091-07 | DISTINCT quantifier | Yes |
-|  **E101** | **Basic data manipulation** | **Yes** |
+|  E101 | Basic data manipulation | Yes |
 |  E101-01 | INSERT statement | Yes |
 |  E101-03 | Searched UPDATE statement | Yes |
 |  E101-04 | Searched DELETE statement | Yes |
-|  **E111** | **Single row SELECT statement** | **Yes** |
-|  **E121** | **Basic cursor support** | **No** |
+|  E111 | Single row SELECT statement | Yes |
+|  E121 | Basic cursor support | No |
 |  E121-01 | DECLARE CURSOR | No |
 |  E121-02 | ORDER BY columns need not be in select list | No |
 |  E121-03 | Value expressions in ORDER BY clause | No |
@@ -135,8 +135,8 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E121-08 | CLOSE statement | No |
 |  E121-10 | FETCH statement implicit NEXT | No |
 |  E121-17 | WITH HOLD cursors | No |
-|  **E131** | **Null value support (nulls in lieu of values)** | **Yes** |
-|  **E141** | **Basic integrity constraints** | **Yes** |
+|  E131 | Null value support (nulls in lieu of values) | Yes |
+|  E141 | Basic integrity constraints | Yes |
 |  E141-01 | NOT NULL constraints | Yes |
 |  E141-02 | UNIQUE constraints of NOT NULL columns | Yes |
 |  E141-03 | PRIMARY KEY constraints | Yes |
@@ -145,24 +145,24 @@ To understand the extent to which we support the standard SQL features, use the 
 |  E141-07 | Column defaults | Yes |
 |  E141-08 | NOT NULL inferred on PRIMARY KEY | Yes |
 |  E141-10 | Names in a foreign key can be specified in any order | Yes |
-|  **E151** | **Transaction support** | **Yes** |
+|  E151 | Transaction support | Yes |
 |  E151-01 | COMMIT statement | Yes |
 |  E151-02 | ROLLBACK statement | Yes |
-|  **E152** | **Basic SET TRANSACTION statement** | **Partial** |
+|  E152 | Basic SET TRANSACTION statement | Partial |
 |  E152-01 | SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause | Yes |
 |  E152-02 | SET TRANSACTION statement: READ ONLY and READ WRITE clauses | No |
 |  E153 | Updatable queries with subqueries | No |
-|  **E161** | **SQL comments using leading double minus** | **Yes** |
-|  **E171** | **SQLSTATE support** | **Partial** |
+|  E161 | SQL comments using leading double minus | Yes |
+|  E171 | SQLSTATE support | Partial |
 |  E182 | Module language | No |
-|  **F021** | **Basic information schema** | **Yes** |
+|  F021 | Basic information schema | Yes |
 |  F021-01 | COLUMNS view | Yes |
 |  F021-02 | TABLES view | Yes |
 |  F021-03 | VIEWS view | Yes |
 |  F021-04 | TABLE_CONSTRAINTS view | Yes |
 |  F021-05 | REFERENTIAL_CONSTRAINTS view | Yes |
 |  F021-06 | CHECK_CONSTRAINTS view | Yes |
-|  **F031** | **Basic schema manipulation** | **Yes** |
+|  F031 | Basic schema manipulation | Yes |
 |  F031-01 | CREATE TABLE statement to create persistent base tables | Yes |
 |  F031-02 | CREATE VIEW statement | Yes |
 |  F031-03 | GRANT statement | Yes |
@@ -170,13 +170,13 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F031-13 | DROP TABLE statement: RESTRICT clause | Yes |
 |  F031-16 | DROP VIEW statement: RESTRICT clause | Yes |
 |  F031-19 | REVOKE statement: RESTRICT clause | Yes |
-|  **F032** | **CASCADE drop behavior** | **Yes** |
-|  **F033** | **ALTER TABLE statement: DROP COLUMN clause** | **Yes** |
-|  **F034** | **Extended REVOKE statement** | **Partial** |
+|  F032 | CASCADE drop behavior | Yes |
+|  F033 | ALTER TABLE statement: DROP COLUMN clause | Yes |
+|  F034 | Extended REVOKE statement | Partial |
 |  F034-01 | REVOKE statement performed by other than the owner of a schema object | Yes |
 |  F034-02 | REVOKE statement: GRANT OPTION FOR clause | No |
 |  F034-03 | REVOKE statement to revoke a privilege that the grantee has WITH GRANT OPTION | No |
-|  **F041** | **Basic joined table** | **Yes** |
+|  F041 | Basic joined table | Yes |
 |  F041-01 | Inner join (but not necessarily the INNER keyword) | Yes |
 |  F041-02 | INNER keyword | Yes |
 |  F041-03 | LEFT OUTER JOIN | Yes |
@@ -184,7 +184,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F041-05 | Outer joins can be nested | Yes |
 |  F041-07 | The inner table in a left or right outer join can also be used in an inner join | Yes |
 |  F041-08 | All comparison operators are supported (rather than just =) | Yes |
-|  **F051** | **Basic date and time** | **Partial** |
+|  F051 | Basic date and time | Partial |
 |  F051-01 | DATE data type (including support of DATE literal) | Yes |
 |  F051-02 | TIME data type (including support of TIME literal) with fractional seconds precision of at least 0 | Yes |
 |  F051-03 | TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6 | Yes |
@@ -193,11 +193,11 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F051-06 | CURRENT_DATE | Yes |
 |  F051-07 | LOCALTIME | No |
 |  F051-08 | LOCALTIMESTAMP | No |
-|  **F052** | **Intervals and datetime arithmetic** | **Yes** |
-|  **F053** | **OVERLAPS predicate** | **No** |
+|  F052 | Intervals and datetime arithmetic | Yes |
+|  F053 | OVERLAPS predicate | No |
 |  F054 | TIMESTAMP in DATE type precedence list | No |
-|  **F081** | **UNION and EXCEPT in views** | **Yes** |
-|  **F111** | **Isolation levels other than SERIALIZABLE** | **No** |
+|  F081 | UNION and EXCEPT in views | Yes |
+|  F111 | Isolation levels other than SERIALIZABLE | No |
 |  F111-01 | READ UNCOMMITTED isolation level | No |
 |  F111-02 | READ COMMITTED isolation level | No |
 |  F111-03 | REPEATABLE READ isolation level | No |
@@ -206,40 +206,40 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F121-02 | SET TRANSACTION statement: DIAGNOSTICS SIZE clause | No |
 |  F122 | Enhanced diagnostics management | No |
 |  F123 | All diagnostics | No |
-|  **F131** | **Grouped operations** | **Yes** |
+|  F131 | Grouped operations | Yes |
 |  F131-01 | WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views | Yes |
 |  F131-02 | Multiple tables supported in queries with grouped views | Yes |
 |  F131-03 | Set functions supported in queries with grouped views | Yes |
 |  F131-04 | Subqueries with GROUP BY and HAVING clauses and grouped views | Yes |
 |  F131-05 | Single row SELECT with GROUP BY and HAVING clauses and grouped views | Yes |
-|  **F171** | **Multiple schemas per user** | **No** |
+|  F171 | Multiple schemas per user | No |
 |  F181 | Multiple module support | No |
-|  **F191** | **Referential delete actions** | **No** |
-|  **F200** | **TRUNCATE TABLE statement** | **Yes** |
-|  **F201** | **CAST function** | **Yes** |
+|  F191 | Referential delete actions | No |
+|  F200 | TRUNCATE TABLE statement | Yes |
+|  F201 | CAST function | Yes |
 |  F202 | TRUNCATE TABLE: identity column restart option | No |
-|  **F221** | **Explicit defaults** | **Yes** |
-|  **F222** | **INSERT statement: DEFAULT VALUES clause** | **Yes** |
-|  **F231** | **Privilege tables** | **Yes** |
+|  F221 | Explicit defaults | Yes |
+|  F222 | INSERT statement: DEFAULT VALUES clause | Yes |
+|  F231 | Privilege tables | Yes |
 |  F231-01 | TABLE_PRIVILEGES view | Yes |
 |  F231-02 | COLUMN_PRIVILEGES view | No |
 |  F231-03 | USAGE_PRIVILEGES view | No |
-|  **F251** | **Domain support** | **No** |
-|  **F261** | **CASE expression** | **Yes** |
+|  F251 | Domain support | No |
+|  F261 | CASE expression | Yes |
 |  F261-01 | Simple CASE | Yes |
 |  F261-02 | Searched CASE | Yes |
 |  F261-03 | NULLIF | Yes |
 |  F261-04 | COALESCE | Yes |
-|  **F262** | **Extended CASE expression** | No |
+|  F262 | Extended CASE expression | No |
 |  F263 | Comma-separated predicates in simple CASE expression | No |
-|  **F271** | **Compound character literals** | **No** |
-|  **F281** | **LIKE enhancements** | **Yes** |
+|  F271 | Compound character literals | No |
+|  F281 | LIKE enhancements | Yes |
 |  F291 | UNIQUE predicate | Yes |
 |  F301 | CORRESPONDING in query expressions | No |
-|  **F302** | **INTERSECT table operator** | **Yes** |
+|  F302 | INTERSECT table operator | Yes |
 |  F302-01 | INTERSECT DISTINCT table operator | Yes |
 |  F302-02 | INTERSECT ALL table operator | Yes |
-|  **F304** | **EXCEPT ALL table operator** | **Yes** |
+|  F304 | EXCEPT ALL table operator | Yes |
 |  F311 | Schema definition statement | No |
 |  F311-01 | CREATE SCHEMA | No |
 |  F311-02 | CREATE TABLE for persistent base tables | Yes |
@@ -249,83 +249,83 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F312 | MERGE statement | No |
 |  F313 | Enhanced MERGE statement | No |
 |  F314 | MERGE statement with DELETE branch | No |
-|  **F321** | **User authorization** | **Partial** |
+|  F321 | User authorization | Partial |
 |  F341 | Usage tables | No |
-|  **F361** | **Subprogram support** | **No** |
-|  **F381** | **Extended schema manipulation** | **Partial** |
+|  F361 | Subprogram support | No |
+|  F381 | Extended schema manipulation | Partial |
 |  F381-01 | ALTER TABLE statement: ALTER COLUMN clause | Partial |
 |  F381-02 | ALTER TABLE statement: ADD CONSTRAINT clause | Yes |
 |  F381-03 | ALTER TABLE statement: DROP CONSTRAINT clause | Yes |
-|  **F382** | **Alter column data type** | **No** |
-|  **F383** | **Set column not null clause** | **No** |
+|  F382 | Alter column data type | No |
+|  F383 | Set column not null clause | No |
 |  F384 | Drop identity property clause | No |
 |  F385 | Drop column generation expression clause | No |
 |  F386 | Set identity column generation clause | No |
-|  **F391** | **Long identifiers** | **Yes** |
-|  **F392** | **Unicode escapes in identifiers** | **Yes** |
-|  **F393** | **Unicode escapes in literals** | **Yes** |
+|  F391 | Long identifiers | Yes |
+|  F392 | Unicode escapes in identifiers | Yes |
+|  F393 | Unicode escapes in literals | Yes |
 |  F394 | Optional normal form specification | No |
-|  **F401** | **Extended joined table** | **Yes** |
+|  F401 | Extended joined table | Yes |
 |  F401-01 | NATURAL JOIN | Yes |
 |  F401-02 | FULL OUTER JOIN | Yes |
 |  F401-04 | CROSS JOIN | Yes |
-|  **F402** | **Named column joins for LOBs, arrays, and multisets** | **Partial** |
+|  F402 | Named column joins for LOBs, arrays, and multisets | Partial |
 |  F403 | Partitioned joined tables | No |
-|  **F411** | **Time zone specification** | **Yes** |
-|  **F421** | **National character** | **No** |
-|  **F431** | **Read-only scrollable cursors** | **No** |
+|  F411 | Time zone specification | Yes |
+|  F421 | National character | No |
+|  F431 | Read-only scrollable cursors | No |
 |  F431-01 | FETCH with explicit NEXT | No |
 |  F431-02 | FETCH FIRST | No |
 |  F431-03 | FETCH LAST | No |
 |  F431-04 | FETCH PRIOR | No |
 |  F431-05 | FETCH ABSOLUTE | No |
 |  F431-06 | FETCH RELATIVE | No |
-|  **F441** | **Extended set function support** | **Yes** |
-|  **F442** | **Mixed column references in set functions** | **Yes** |
+|  F441 | Extended set function support | Yes |
+|  F442 | Mixed column references in set functions | Yes |
 |  F451 | Character set definition | No |
 |  F461 | Named character sets | No |
-|  **F471** | **Scalar subquery values** | **Yes** |
-|  **F481** | **Expanded NULL predicate** | **Yes** |
-|  **F491** | **Constraint management** | **Yes** |
+|  F471 | Scalar subquery values | Yes |
+|  F481 | Expanded NULL predicate | Yes |
+|  F491 | Constraint management | Yes |
 |  F492 | Optional table constraint enforcement | Partial |
-|  **F501** | **Features and conformance views** | **No** |
+|  F501 | Features and conformance views | No |
 |  F501-01 | SQL_FEATURES view | No |
 |  F501-02 | SQL_SIZING view | No |
 |  F501-03 | SQL_LANGUAGES view | No |
-|  **F502** | **Enhanced documentation tables** | **No** |
+|  F502 | Enhanced documentation tables | No |
 |  F502-01 | SQL_SIZING_PROFILES view | No |
 |  F502-02 | SQL_IMPLEMENTATION_INFO view | No |
 |  F502-03 | SQL_PACKAGES view | No |
 |  F521 | Assertions | No |
-|  **F531** | **Temporary tables** | **No** |
-|  **F555** | **Enhanced seconds precision** | No |
-|  **F561** | **Full value expressions** | **Yes** |
-|  **F571** | **Truth value tests** | **Yes** |
-|  **F591** | **Derived tables** | **Yes** |
-|  **F611** | **Indicator data types** | **No** |
-|  **F641** | **Row and table constructors** | **Yes** |
-|  **F651** | **Catalog name qualifiers** | **Partial** |
-|  **F661** | **Simple tables** | **Yes** |
+|  F531 | Temporary tables | No |
+|  F555 | Enhanced seconds precision | No |
+|  F561 | Full value expressions | Yes |
+|  F571 | Truth value tests | Yes |
+|  F591 | Derived tables | Yes |
+|  F611 | Indicator data types | No |
+|  F641 | Row and table constructors | Yes |
+|  F651 | Catalog name qualifiers | Partial |
+|  F661 | Simple tables | Yes |
 |  F671 | Subqueries in CHECK | No |
-|  **F672** | **Retrospective check constraints** | **Yes** |
-|  **F690** | **Collation support** | **Yes** |
-|  **F692** | **Extended collation support** | **Yes** |
+|  F672 | Retrospective check constraints | Yes |
+|  F690 | Collation support | Yes |
+|  F692 | Extended collation support | Yes |
 |  F693 | SQL-session and client module collations | Yes |
 |  F695 | Translation support | No |
 |  F696 | Additional translation documentation | No |
-|  **F701** | **Referential update actions** | **No** |
-|  **F711** | **ALTER domain** | **No** |
+|  F701 | Referential update actions | No |
+|  F711 | ALTER domain | No |
 |  F721 | Deferrable constraints | No |
-|  **F731** | **INSERT column privileges** | **No** |
+|  F731 | INSERT column privileges | No |
 |  F741 | Referential MATCH types | No |
-|  **F751** | **View CHECK enhancements** | **No** |
-|  **F761** | **Session management** | **No** |
-|  **F762** | **CURRENT_CATALOG** | **No** |
-|  **F763** | **CURRENT_SCHEMA** | **Partial** |
-|  **F771** | **Connection management** | **No** |
-|  **F781** | **Self-referencing operations** | No |
-|  **F791** | **Insensitive cursors** | **No** |
-|  **F801** | **Full set function** | No |
+|  F751 | View CHECK enhancements | No |
+|  F761 | Session management | No |
+|  F762 | CURRENT_CATALOG | No |
+|  F763 | CURRENT_SCHEMA | Partial |
+|  F771 | Connection management | No |
+|  F781 | Self-referencing operations | No |
+|  F791 | Insensitive cursors | No |
+|  F801 | Full set function | No |
 |  F812 | Basic flagging | No |
 |  F813 | Extended flagging | No |
 |  F821 | Local table references | No |
@@ -339,20 +339,20 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F845 | TRANSLATE_REGEX function | Partial |
 |  F846 | Octet support in regular expression operators | No |
 |  F847 | Nonconstant regular expressions | Yes |
-|  **F850** | **Top-level <order by clause> in <query expression>** | **Yes** |
-|  **F851** | **<order by clause> in subqueries** | **Yes** |
-|  **F852** | **Top-level <order by clause> in views** | **Yes** |
-|  **F855** | **Nested <order by clause> in <query expression>** | **Yes** |
-|  **F856** | **Nested <fetch first clause> in <query expression>** | **Yes** |
-|  **F857** | **Top-level <fetch first clause> in <query expression>** | **Yes** |
-|  **F858** | **<fetch first clause> in subqueries** | **Yes** |
-|  **F859** | **Top-level <fetch first clause> in views** | **Yes** |
-|  **F860** | **<fetch first row count> in <fetch first clause>** | **Yes** |
-|  **F861** | **Top-level <result offset clause> in <query expression>** | **Yes** |
-|  **F862** | **<result offset clause> in subqueries** | **Yes** |
-|  **F863** | **Nested <result offset clause> in <query expression>** | **Yes** |
-|  **F864** | **Top-level <result offset clause> in views** | **Yes** |
-|  **F865** | **<offset row count> in <result offset clause>** | **Yes** |
+|  F850 | Top-level &lt;order by clause&gt; in &lt;query expression&gt; | Yes |
+|  F851 | &lt;order by clause&gt; in subqueries | Yes |
+|  F852 | Top-level &lt;order by clause&gt; in views | Yes |
+|  F855 | Nested &lt;order by clause&gt; in &lt;query expression&gt; | Yes |
+|  F856 | Nested &lt;fetch first clause&gt; in &lt;query expression&gt; | Yes |
+|  F857 | Top-level &lt;fetch first clause&gt; in &lt;query expression&gt; | Yes |
+|  F858 | &lt;fetch first clause&gt; in subqueries | Yes |
+|  F859 | Top-level &lt;fetch first clause&gt; in views | Yes |
+|  F860 | &lt;fetch first row count&gt; in &lt;fetch first clause&gt; | Yes |
+|  F861 | Top-level &lt;result offset clause&gt; in &lt;query expression&gt; | Yes |
+|  F862 | &lt;result offset clause&gt; in subqueries | Yes |
+|  F863 | Nested &lt;result offset clause&gt; in &lt;query expression&gt; | Yes |
+|  F864 | Top-level &lt;result offset clause&gt; in views | Yes |
+|  F865 | &lt;offset row count&gt; in &lt;result offset clause&gt; | Yes |
 |  F866 | FETCH FIRST clause: PERCENT option | No |
 |  F867 | FETCH FIRST clause: WITH TIES option | No |
 |  M001 | Datalinks | No |
@@ -391,27 +391,27 @@ To understand the extent to which we support the standard SQL features, use the 
 |  S041 | Basic reference types | No |
 |  S043 | Enhanced reference types | No |
 |  S051 | Create table of type | No |
-|  **S071** | **SQL paths in function and type name resolution** | **No** |
+|  S071 | SQL paths in function and type name resolution | No |
 |  S081 | Subtables | No |
 |  S091 | Basic array support | Yes |
 |  S091-01 | Arrays of built-in data types | Yes |
 |  S091-02 | Arrays of distinct types | No |
 |  S091-03 | Array expressions | Yes |
-|  **S092** | **Arrays of user-defined types** | **No** |
+|  S092 | Arrays of user-defined types | No |
 |  S094 | Arrays of reference types | No |
-|  **S095** | **Array constructors by query** | **Yes** |
-|  **S096** | **Optional array bounds** | **Yes** |
+|  S095 | Array constructors by query | Yes |
+|  S096 | Optional array bounds | Yes |
 |  S097 | Array element assignment | No |
-|  **S098** | **ARRAY_AGG** | **Yes** |
-|  **S111** | **ONLY in query expressions** | **Yes** |
+|  S098 | ARRAY_AGG | Yes |
+|  S111 | ONLY in query expressions | Yes |
 |  S151 | Type predicate | Yes |
 |  S161 | Subtype treatment | No |
 |  S162 | Subtype treatment for references | No |
-|  **S201** | **SQL-invoked routines on arrays** | **Yes** |
+|  S201 | SQL-invoked routines on arrays | Yes |
 |  S201-01 | Array parameters | Yes |
 |  S201-02 | Array as result type of functions | Yes |
 |  S202 | SQL-invoked routines on multisets | No |
-|  **S211** | **User-defined cast functions** | **No** |
+|  S211 | User-defined cast functions | No |
 |  S231 | Structured type locators | No |
 |  S232 | Array locators | No |
 |  S233 | Multiset locators | No |
@@ -425,7 +425,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  S275 | Advanced multiset support | No |
 |  S281 | Nested collection types | No |
 |  S291 | Unique constraint on entire row | No |
-|  **S301** | **Enhanced UNNEST** | No |
+|  S301 | Enhanced UNNEST | No |
 |  S401 | Distinct types based on array types | No |
 |  S402 | Distinct types based on distinct types | No |
 |  S403 | ARRAY_MAX_CARDINALITY | No |
@@ -435,7 +435,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T022 | Advanced support for BINARY and VARBINARY data types | No |
 |  T023 | Compound binary literal | No |
 |  T024 | Spaces in binary literals | No |
-|  **T031** | **BOOLEAN data type** | **Yes** |
+|  T031 | BOOLEAN data type | Yes |
 |  T041 | Basic LOB data type support | No |
 |  T041-01 | BLOB data type | No |
 |  T041-02 | CLOB data type | No |
@@ -449,19 +449,19 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T052 | MAX and MIN for row types | Yes |
 |  T053 | Explicit aliases for all-fields reference | No |
 |  T061 | UCS support | No |
-|  **T071** | **BIGINT data type** | **Yes** |
+|  T071 | BIGINT data type | Yes |
 |  T101 | Enhanced nullability determination | No |
 |  T111 | Updatable joins, unions, and columns | No |
-|  **T121** | **WITH (excluding RECURSIVE) in query expression** | **Partial** |
-|  **T122** | **WITH (excluding RECURSIVE) in subquery** | **Partial** |
-|  **T131** | **Recursive query** | **No** |
-|  **T132** | **Recursive query in subquery** | **No** |
-|  **T141** | **SIMILAR predicate** | **Yes** |
-|  **T151** | **DISTINCT predicate** | **Yes** |
-|  **T152** | **DISTINCT predicate with negation** | **Yes** |
-|  **T171** | **LIKE clause in table definition** | **No** |
-|  **T172** | **AS subquery clause in table definition** | **Yes** |
-|  **T173** | **Extended LIKE clause in table definition** | **No** |
+|  T121 | WITH (excluding RECURSIVE) in query expression | Partial |
+|  T122 | WITH (excluding RECURSIVE) in subquery | Partial |
+|  T131 | Recursive query | No |
+|  T132 | Recursive query in subquery | No |
+|  T141 | SIMILAR predicate | Yes |
+|  T151 | DISTINCT predicate | Yes |
+|  T152 | DISTINCT predicate with negation | Yes |
+|  T171 | LIKE clause in table definition | No |
+|  T172 | AS subquery clause in table definition | Yes |
+|  T173 | Extended LIKE clause in table definition | No |
 |  T174 | Identity columns | No |
 |  T175 | Generated columns | No |
 |  T176 | Sequence generator support | Yes |
@@ -469,8 +469,8 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T178 | Identity columns: simple restart option | No |
 |  T180 | System-versioned tables | No |
 |  T181 | Application-time period tables | No |
-|  **T191** | **Referential action RESTRICT** | **Yes** |
-|  **T201** | **Comparable data types for referential constraints** | **No** |
+|  T191 | Referential action RESTRICT | Yes |
+|  T201 | Comparable data types for referential constraints | No |
 |  T211 | Basic trigger capability | No |
 |  T211-01 | Triggers activated on UPDATE, INSERT, or DELETE of one base table | No |
 |  T211-02 | BEFORE triggers | No |
@@ -480,18 +480,18 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T211-06 | Support for run-time rules for the interaction of triggers and constraints | No |
 |  T211-07 | TRIGGER privilege | No |
 |  T211-08 | Multiple triggers for the same event are executed in the order in which they were created in the catalog | No |
-|  **T212** | **Enhanced trigger capability** | **No** |
-|  **T213** | **INSTEAD OF triggers** | **No** |
-|  **T231** | **Sensitive cursors** | **No** |
-|  **T241** | **START TRANSACTION statement** | **Yes** |
+|  T212 | Enhanced trigger capability | No |
+|  T213 | INSTEAD OF triggers | No |
+|  T231 | Sensitive cursors | No |
+|  T241 | START TRANSACTION statement | Yes |
 |  T251 | SET TRANSACTION statement: LOCAL option | No |
 |  T261 | Chained transactions | No |
-|  **T271** | **Savepoints** | **No** |
+|  T271 | Savepoints | No |
 |  T272 | Enhanced savepoint management | No |
-|  **T281** | **SELECT privilege with column granularity** | **No** |
+|  T281 | SELECT privilege with column granularity | No |
 |  T285 | Enhanced derived column names | No |
 |  T301 | Functional dependencies | No |
-|  **T312** | **OVERLAY function** | **Yes** |
+|  T312 | OVERLAY function | Yes |
 |  T321 | Basic SQL-invoked routines | No |
 |  T321-01 | User-defined functions with no overloading | No |
 |  T321-02 | User-defined stored procedures with no overloading | No |
@@ -501,54 +501,54 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T321-06 | ROUTINES view | No |
 |  T321-07 | PARAMETERS view | No |
 |  T322 | Declared data type attributes | No |
-|  **T323** | **Explicit security for external routines** | **No** |
+|  T323 | Explicit security for external routines | No |
 |  T324 | Explicit security for SQL routines | No |
-|  **T325** | **Qualified SQL parameter references** | **No** |
+|  T325 | Qualified SQL parameter references | No |
 |  T326 | Table functions | Partial |
-|  **T331** | **Basic roles** | **Partial** |
+|  T331 | Basic roles | Partial |
 |  T332 | Extended roles | No |
-|  **T341** | **Overloading of SQL-invoked functions and procedures** | **Yes** |
-|  **T351** | **Bracketed SQL comments (/*...*/ comments)** | **Yes** |
-|  **T431** | **Extended grouping capabilities** | No |
-|  **T432** | **Nested and concatenated GROUPING SETS** | No |
-|  **T433** | **Multiargument GROUPING function** | No |
+|  T341 | Overloading of SQL-invoked functions and procedures | Yes |
+|  T351 | Bracketed SQL comments (/*...*/ comments) | Yes |
+|  T431 | Extended grouping capabilities | No |
+|  T432 | Nested and concatenated GROUPING SETS | No |
+|  T433 | Multiargument GROUPING function | No |
 |  T434 | GROUP BY DISTINCT | Yes |
-|  **T441** | **ABS and MOD functions** | **Yes** |
-|  **T461** | **Symmetric BETWEEN predicate** | **Yes** |
+|  T441 | ABS and MOD functions | Yes |
+|  T461 | Symmetric BETWEEN predicate | Yes |
 |  T471 | Result sets return value | No |
 |  T472 | DESCRIBE CURSOR | No |
-|  **T491** | **LATERAL derived table** | **No** |
+|  T491 | LATERAL derived table | No |
 |  T495 | Combined data change and retrieval | Partial |
-|  **T501** | **Enhanced EXISTS predicate** | **Yes** |
+|  T501 | Enhanced EXISTS predicate | Yes |
 |  T502 | Period predicates | No |
 |  T511 | Transaction counts | No |
 |  T521 | Named arguments in CALL statement | No |
 |  T522 | Default values for IN parameters of SQL-invoked procedures | No |
-|  **T551** | **Optional key words for default syntax** | **Yes** |
+|  T551 | Optional key words for default syntax | Yes |
 |  T561 | Holdable locators | No |
 |  T571 | Array-returning external SQL-invoked functions | No |
 |  T572 | Multiset-returning external SQL-invoked functions | No |
-|  **T581** | **Regular expression substring function** | **Yes** |
-|  **T591** | **UNIQUE constraints of possibly null columns** | **Yes** |
+|  T581 | Regular expression substring function | Yes |
+|  T591 | UNIQUE constraints of possibly null columns | Yes |
 |  T601 | Local cursor references | No |
-|  **T611** | **Elementary OLAP operations** | **No** |
+|  T611 | Elementary OLAP operations | No |
 |  T612 | Advanced OLAP operations | No |
-|  **T613** | **Sampling** | **No** |
-|  **T614** | **NTILE function** | **Yes** |
-|  **T615** | **LEAD and LAG functions** | **Yes** |
+|  T613 | Sampling | No |
+|  T614 | NTILE function | Yes |
+|  T615 | LEAD and LAG functions | Yes |
 |  T616 | Null treatment option for LEAD and LAG functions | No |
-|  **T617** | **FIRST_VALUE and LAST_VALUE function** | **Yes** |
+|  T617 | FIRST_VALUE and LAST_VALUE function | Yes |
 |  T618 | NTH_VALUE function | Partial |
 |  T619 | Nested window functions | No |
 |  T620 | WINDOW clause: GROUPS option | No |
-|  **T621** | **Enhanced numeric functions** | No |
-|  **T631** | **IN predicate with one list element** | **Yes** |
+|  T621 | Enhanced numeric functions | No |
+|  T631 | IN predicate with one list element | Yes |
 |  T641 | Multiple column assignment | Partial |
-|  **T651** | **SQL-schema statements in SQL routines** | **No** |
+|  T651 | SQL-schema statements in SQL routines | No |
 |  T652 | SQL-dynamic statements in SQL routines | No |
 |  T653 | SQL-schema statements in external routines | No |
 |  T654 | SQL-dynamic statements in external routines | No |
-|  **T655** | **Cyclically dependent routines** | **No** |
+|  T655 | Cyclically dependent routines | No |
 |  X010 | XML type | No |
 |  X011 | Arrays of XML type | No |
 |  X012 | Multisets of XML type | No |
