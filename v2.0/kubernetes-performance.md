@@ -21,7 +21,7 @@ There are a number of independent factors that affect the performance you observ
 
 In a number of the sections below, we have shown how to modify excerpts from our provided Kubernetes configuration YAML files. You can find the most up-to-date versions of these files on Github, [one for running CockroachDB in secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) and one for [running CockroachDB in insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml).
 
-You can also use a [configuration file for secure mode that has been customized for performance](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml). Be sure to modify the file wherever there is a `TODO` comment.
+You can also use a [performance-optimized configuration file for secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml) or [insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml). Be sure to modify the file wherever there is a `TODO` comment.
 
 ### Version of CockroachDB
 
