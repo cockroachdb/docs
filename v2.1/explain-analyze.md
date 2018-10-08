@@ -11,10 +11,14 @@ The `DISTSQL` option generates a physical query plan for a distributed query. Qu
 ## Synopsis
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
 =======
 <section>{% include {{ page.version.version }}/sql/diagrams/explain.html %}</section>
 >>>>>>> Break out EXPLAIN ANALYZE to its own page
+=======
+<section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
+>>>>>>> Update SQL diagrams
 
 ## Required privileges
 
