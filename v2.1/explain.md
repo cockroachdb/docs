@@ -40,21 +40,21 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
  `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
- `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
+ `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a distributed SQL physical query plan tree.
  `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
 
 ## Success responses
 
-Successful `EXPLAIN` statements return tables with the following columns:
+For the `EXPRS`, `QUALIFY`, `METADATA`, `VERBOSE`, and `TYPES` options, successful `EXPLAIN` statements return tables with the following columns:
 
  Column | Description
 -----------|-------------
 **Tree** | A tree representation showing the hierarchy of the query plan.
 **Field** | The name of a parameter relevant to the query plan node immediately above.
 **Description** | Additional information for the parameter in  **Field**.
-**Columns** | The columns provided to the processes at lower levels of the hierarchy.  Included in `TYPES` and `VERBOSE` output.
+**Columns** | The columns provided to the processes at lower levels of the hierarchy. Included in `TYPES` and `VERBOSE` output.
 **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. Included in `TYPES` and `VERBOSE` output.
 
 ## Examples
@@ -182,11 +182,13 @@ The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 
-<span class="version-tag">New in v2.1:</span> The `DISTSQL` option provides a link to a distributed query plan tree:
+<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section](sql-layer.html#distsql) of our SQL Layer Architecture docs.
+
+`EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be distributed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
+> EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~
@@ -195,15 +197,15 @@ The query above will not be run with the cost-based optimizer.
    true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided:
+Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsql-plan-viewer):
 
 <img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
-To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`:
+`EXPLAIN ANALYZE (DISTSQL)` **will execute the query** and generate a physical query plan with execution statistics.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
+> EXPLAIN ANALYZE (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~
@@ -212,7 +214,7 @@ To view the distributed SQL query plan with execution statistics, use `EXPLAIN A
    true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided:
+Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsql-plan-viewer):
 
 <img src="{{ 'images/v2.1/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
