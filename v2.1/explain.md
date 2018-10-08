@@ -189,7 +189,7 @@ The query above will not be run with the cost-based optimizer.
    true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsql-plan-viewer):
+Point your browser to the URL provided to view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer):
 
 <img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
