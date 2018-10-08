@@ -99,7 +99,7 @@ It's a common misconception that the auto-incrementing types in PostgreSQL and M
 - Each insert increases the sequence by one, even when the insert is not committed. This means that auto-incrementing types may leave gaps in a sequence.
 - Two concurrent transactions can commit in a different order than their use of sequences, and thus "observe" the values to decrease relative to each other. This effect is amplified by automatic transaction retries.
 
-These are fundamental properties of a transactional systems with non-transactional sequences. PostgreSQL, MySQL, and CockroachDB do not increase sequences transactionally with other SQL statements, so these effects can happen in any case.
+These are fundamental properties of a transactional system with non-transactional sequences. PostgreSQL, MySQL, and CockroachDB do not increase sequences transactionally with other SQL statements, so these effects can happen in any case.
 
 To experience this for yourself, run through the following example in PostgreSQL:
 
@@ -154,14 +154,14 @@ In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCRE
 
 #### Additional examples
 
-If two transactions occur concurrently, CockroachDB cannot guarantee monotonically increasing (i.e., first commit is smaller than second commit). Here are three more scenarios that demonstrate this:
+If two transactions occur concurrently, CockroachDB cannot guarantee monotonically increasing IDs (i.e., first commit is smaller than second commit). Here are three more scenarios that demonstrate this:
 
 Scenario 1:
 
 - At time 1, transaction `T1` `BEGIN`s.
 - At time 2, transaction `T2` `BEGIN`s on the same node (from a different client).
 - At time 3, transaction `T1` creates a `SERIAL` value, `x`.
-- At time 3 + 2 microseconds, txn T2 creates a SERIAL value, `y`.
+- At time 3 + 2 microseconds, transaction `T2` creates a `SERIAL` value, `y`.
 - At time 4, transaction `T1` `COMMIT`s.
 - At time 5, transaction `T2` `COMMIT`s.
 
@@ -171,25 +171,25 @@ Scenario 2:
 
 - At time 1, transaction `T1` `BEGIN`s.
 - At time 1, transaction `T2` `BEGIN`s somewhere else, on a different node.
-- At time 2, transaction `T1` creates a SERIAL value, `x`.
-- At time 3, transaction `T2` creates a SERIAL value, `y`.
-- At time 5, transaction `T1` `COMMIT`s.
-- At time 5, transaction `T2` `COMMIT`s.
+- At time 2, transaction `T1` creates a `SERIAL` value, `x`.
+- At time 3, transaction `T2` creates a `SERIAL` value, `y`.
+- At time 4, transaction `T1` `COMMIT`s.
+- At time 4, transaction `T2` `COMMIT`s.
 
 If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Both can happen, even though the transactions began and committed at the same time. However it's sure that `x != y` because the values were generated on different nodes.
 
 Scenario 3:
 
 - At time 1, transaction `T1` `BEGIN`s.
-- At time 3, transaction `T1` creates a `SERIAL` value, `x`.
-- At time 4, transaction `T1` `COMMIT`s.
-- At time 5, transaction `T2` `BEGIN`s somewhere else, on a different node.
-- At time 6, transaction `T2` creates a `SERIAL` value, `y`.
-- At time 7, transaction `T2` `COMMIT`s.
+- At time 2, transaction `T1` creates a `SERIAL` value, `x`.
+- At time 3, transaction `T1` `COMMIT`s.
+- At time 4, transaction `T2` `BEGIN`s somewhere else, on a different node.
+- At time 5, transaction `T2` creates a `SERIAL` value, `y`.
+- At time 6, transaction `T2` `COMMIT`s.
 
 There is less than a 250-microsecond difference between the system clocks of the two nodes.
 
-If this happens, CockroachDB cannot again guarantee whether `x < y` or `x > y`. Even though the transactions "clearly" occurred one "after" the other, perhaps there was a clock skew between the two nodes and the system time of the second node is set earlier than the first node.
+If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even though the transactions "clearly" occurred one "after" the other, perhaps there was a clock skew between the two nodes and the system time of the second node is set earlier than the first node.
 
 ## Supported casting and conversion
 
