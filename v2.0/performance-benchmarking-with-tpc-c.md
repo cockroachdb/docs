@@ -20,7 +20,7 @@ These two points on the spectrum show how CockroachDB scales from modest-sized p
     - Use the `n1-highcpu-16` machine type.
 
         For our TPC-C benchmarking, we use `n1-highcpu-16` machines. Currently, we believe this (or higher vCPU count machines) is the best configuration for CockroachDB under high traffic scenarios.
-    - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
+    - [Create and mount a local SSD using a SCSI interface](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
 
          We attach a single local SSD to each virtual machine. Local SSDs are low latency disks attached to each VM, which maximizes performance. We chose this configuration because it best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
     - [Optimize the local SSD for write performance](https://cloud.google.com/compute/docs/disks/performance#optimize_local_ssd) (see the **Disable write cache flushing** section).
