@@ -45,8 +45,8 @@ For the `DISTSQL` option, successful `EXPLAIN ANALYZE` statements return a table
 
  Column | Description
 --------|------------
-automatic | If `true`, the query is distributed.
-url | The URL generated for a physical query plan that provides high level information about how a query will be distributed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
+**automatic** | If `true`, the query is distributed.
+**url** | The URL generated for a physical query plan that provides high level information about how a query will be distributed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
 
 #### DistSQL Plan Viewer
 
@@ -58,7 +58,6 @@ Field | Description
 &lt;index&gt;@&lt;table&gt; | The index used.
 Out | The output columns.
 @&lt;n&gt; | The index of the column relative to the input.
-&lt;function&gt; (@&lt;n&gt;) | The aggregation function used for any column.
 Render | The stage that renders the output.
 unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order.
 left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join.
