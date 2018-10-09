@@ -9,7 +9,7 @@
 | Google Cloud&nbsp;[<sup>1</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional): can be `default` or `implicit`                          |
 | HTTP&nbsp;[<sup>2</sup>](#considerations)                   | `http`      | Remote host                                      | N/A                                                                        |
 | NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | N/A (see [Example file URLs](#example-file-urls) | N/A                                                                        |
-| S3-compatible services&nbsp;[<sup>4</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ENDPOINT` |
+| S3-compatible services&nbsp;[<sup>4</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`&nbsp;[<sup>5</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
 {{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -24,6 +24,8 @@ The location parameters often contain special characters that need to be URI-enc
 - <sup>3</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
 - <sup>4</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+
+- <sup>5</sup> The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
 
 #### Example file URLs
 
