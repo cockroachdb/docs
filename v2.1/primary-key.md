@@ -12,23 +12,21 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
 A table's primary key can only be specified in the [`CREATE TABLE`](create-table.html) statement. It cannot be changed later using `ALTER TABLE`, though it is possible to [go through a process](constraints.html#change-constraints) to create a new table with the new primary key you want and then migrate the data.
 {{site.data.alerts.end}}
 
-
 ## Details
 
 - Tables can only have one primary key.
 - To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`](unique.html) and [`NOT NULL`](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values.
 
-  - The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values.
-
-  - However, because *NULL* values never equal other *NULL* values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the Not Null constraint.
+    - The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values.
+    - However, because *NULL* values never equal other *NULL* values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the Not Null constraint.
 
 - The columns in the `PRIMARY KEY` constraint are used to create its `primary` [index](indexes.html), which CockroachDB uses by default to access the table's data.
 
-  This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+    This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
 - For optimal performance, we recommend defining a primary key for *every* table.
 
-  If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+    If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 ## Syntax
 
