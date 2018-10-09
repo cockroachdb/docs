@@ -16,17 +16,16 @@ Unlike other constraints which have very specific uses, the Primary Key constrai
 - Tables can only have one primary key.
 - To ensure each row has a unique identifier, the Primary Key constraint combines the properties of both the [Unique](unique.html) and [Not Null](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values.
 
-  - The properties of the Unique constraint ensure that each value is distinct from all other values.
-
-  - However, because *NULL* values never equal other *NULL* values, the Unique constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the Primary Key constraint also enforces the properties of the Not Null constraint.
+    - The properties of the Unique constraint ensure that each value is distinct from all other values.
+    - However, because *NULL* values never equal other *NULL* values, the Unique constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the Primary Key constraint also enforces the properties of the Not Null constraint.
 
 - The columns in the Primary Key constraint are used to create its `primary` [index](indexes.html), which CockroachDB uses by default to access the table's data.
 
-  This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+    This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
-- For optimal performance, we recommend defining a primary key for *every* table. 
+- For optimal performance, we recommend defining a primary key for *every* table.
 
-  If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+    If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 ## Syntax
 
@@ -49,7 +48,7 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 **Example**
 
-~~~ sql 
+~~~ sql
 > CREATE TABLE orders (
     order_id        INT PRIMARY KEY,
     order_date      TIMESTAMP NOT NULL,
@@ -117,4 +116,3 @@ pq: null value in column "warehouse_id" violates not-null constraint
 - [Not Null constraint](not-null.html)
 - [Unique constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-
