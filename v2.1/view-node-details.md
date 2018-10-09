@@ -130,8 +130,8 @@ Field | Description
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
-`is_live` | If `true`, the node is currently live.<br><br>**Required flag:** None
-`replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
+`is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive Admin UI), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster.  <br><br> However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
+`gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 
@@ -161,7 +161,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node ls --insecure
+$ cockroach node ls --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
@@ -180,7 +180,7 @@ $ cockroach node ls --insecure
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status 1 --insecure
+$ cockroach node status 1 --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
@@ -196,36 +196,38 @@ $ cockroach node status 1 --insecure
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --insecure
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
-id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
- 1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:25:20.351483+00:00 | true         | true     
- 2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:23.984197+00:00 | true         | true     
- 3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:25:20.535474+00:00 | true         | true
+  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:25:20.351483+00:00 | true         | true     
+   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:23.984197+00:00 | true         | true     
+   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:25:20.535474+00:00 | true         | true
 (3 rows)
 ~~~
+
+### Identify live nodes in an unavailable cluster
 
 The `is_live` and `is_available` fields are marked as `true` as long as a majority of the nodes are up, and a quorum can be reached:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --host=localhost:26258
+$ cockroach quit --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --insecure
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
-  id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
-   1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:54:21.894586+00:00 | true         | true     
-   2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:17.839323+00:00 | 2018-09-18 17:52:06.172624+00:00 | false        | false    
-   3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:10.961166+00:00 | 2018-09-18 17:54:24.925007+00:00 | true         | true     
+   id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++-----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+    1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:54:21.894586+00:00 | true         | true     
+    2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:17.839323+00:00 | 2018-09-18 17:52:06.172624+00:00 | false        | false    
+    3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:10.961166+00:00 | 2018-09-18 17:54:24.925007+00:00 | true         | true     
 (3 rows)
 ~~~
 
@@ -233,22 +235,26 @@ If a majority of nodes are down and a quorum cannot be reached, the `is_live` fi
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --host=localhost:26259
+$ cockroach quit --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --insecure
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
-id |     address     |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+----+-----------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
- 1 | localhost:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:30:48.860329+00:00 | false        | true     
- 2 | localhost:26258 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:31.137222+00:00 | false        | false    
- 3 | localhost:26259 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:30:49.943822+00:00 | false        | false    
+  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:30:48.860329+00:00 | false        | true     
+   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:31.137222+00:00 | false        | false    
+   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:30:49.943822+00:00 | false        | false    
 (3 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+You need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds.
+{{site.data.alerts.end}}
 
 ### Decommission nodes
 
