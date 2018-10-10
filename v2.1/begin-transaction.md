@@ -38,7 +38,7 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 
  Parameter | Description 
 -----------|-------------
- `ISOLATION LEVEL` | By default, transactions in CockroachDB implement the strongest ANSI isolation level: `SERIALIZABLE`. At this isolation level, transactions will never result in anomalies. The `SNAPSHOT` isolation level is still supported as well for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` 
+ `ISOLATION LEVEL` | By default, transactions in CockroachDB implement the strongest ANSI isolation level: `SERIALIZABLE`. At this isolation level, transactions will never result in anomalies. For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` 
  `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL` 
 
 ## Examples
