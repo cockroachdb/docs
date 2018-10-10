@@ -22,6 +22,15 @@ conn = psycopg2.connect(database='movr', user='root', host=args.host, port=26257
 conn.set_session(autocommit=True)
 cur = conn.cursor()
 
+def median(lst):
+    n = len(lst)
+    if n < 1:
+        return None
+    if n % 2 == 1:
+        return sorted(lst)[n//2]
+    else:
+        return sum(sorted(lst)[n//2-1:n//2+1])/2.0
+
 times = list()
 for n in range(args.repeat):
     start = time.time()
@@ -47,8 +56,11 @@ if args.times:
     print("Times (milliseconds):")
     print(times)
     print("")
-print("Average time (milliseconds):")
-print(float(sum(times))/len(times))
+# print("Average time (milliseconds):")
+# print(float(sum(times))/len(times))
+# print("")
+print("Median time (milliseconds):")
+print(median(times))
 print("")
 if args.cumulative:
     print("Cumulative time (milliseconds):")
