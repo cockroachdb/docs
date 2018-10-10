@@ -260,11 +260,6 @@ $ rm -rf repdemo-node1 repdemo-node2 repdemo-node3 repdemo-node4 repdemo-node5
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
