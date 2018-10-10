@@ -75,7 +75,7 @@ Flag | Description
 -----|-----------
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
-`--enterprise-encryption` | See [Encryption At Rest](encryption.html).
+`--enterprise-encryption` | This optional flag specifies the encryption options for one of the stores on the node. If multiple stores exist, the flag must be specified for each store. <br /><br /> This flag takes a number of options.  For a complete list of options, and usage instructions, see [Encryption at Rest](encryption.html). <br /><br /> Note that this is an [enterprise feature](enterprise-licensing.html).
 
 ### Locality
 
@@ -211,7 +211,7 @@ $ cockroach start \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addressess of 3-5 of the initial nodes:
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
