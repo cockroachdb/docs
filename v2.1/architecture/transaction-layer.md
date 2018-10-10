@@ -130,11 +130,9 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 
 Isolation is an element of [ACID transactions](https://en.wikipedia.org/wiki/ACID), which determines how concurrency is controlled, and ultimately guarantees consistency.
 
-CockroachDB efficiently supports the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks. CockroachDB continues to support an additional non-ANSI isolation level, `SNAPSHOT`, although it is deprecated. Clients can explicitly set a transaction's isolation when starting the transaction:
+CockroachDB efficiently supports the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
 
-- **Serializable snapshot isolation** _(Serializable)_ transactions are CockroachDB's default (equivalent to ANSI SQL's `SERIALIZABLE` isolation level, which is the highest of the four standard levels). This isolation level does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
-
-- **Snapshot isolation** _(Snapshot)_ transactions trade correctness in order to avoid retries when serializability violations are possible. This is achieved by always reading at an initial transaction timestamp, but allowing the transaction's commit timestamp to be pushed forward in the event of [transaction conflicts](#transaction-conflicts). Snapshot isolation cannot prevent an anomaly known as [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation).
+Specifically, CockroachDB's transactions default to **serializable snapshot isolation** (equivalent to ANSI SQL's strongest isolation level, `SERIALIZABLE`). This isolation level does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
 
 ### Transaction conflicts
 
