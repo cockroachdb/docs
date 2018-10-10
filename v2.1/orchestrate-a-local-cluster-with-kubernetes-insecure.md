@@ -166,13 +166,8 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 ## See also
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
 You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).
