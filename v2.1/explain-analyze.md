@@ -6,27 +6,11 @@ toc: true
 
 <span class="version-tag">New in v2.1:</span> The `EXPLAIN ANALYZE` [statement](sql-statements.html) **will execute the SQL query** and return execution statistics.
 
-The `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section](architecture/sql-layer.html#distsql) of our SQL Layer Architecture docs.
+The `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
 ## Synopsis
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 <section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
-=======
-<section>{% include {{ page.version.version }}/sql/diagrams/explain.html %}</section>
->>>>>>> Break out EXPLAIN ANALYZE to its own page
-=======
-<section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
->>>>>>> Update SQL diagrams
-=======
-<section>{% include {{ page.version.version }}/sql/diagrams/explain.html %}</section>
->>>>>>> 4a4a8ca6... Break out EXPLAIN ANALYZE to its own page
-=======
-<section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
->>>>>>> 2f4143e6... Update SQL diagrams
 
 ## Required privileges
 
@@ -54,7 +38,7 @@ For `EXPLAIN ANALYZE (DISTSQL)`, the DistSQL Plan Viewer displays the physical q
 
 Field | Description
 ------+------------
-&lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.
+&lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, an "aggregator" aggregates input rows.
 &lt;index&gt;@&lt;table&gt; | The index used.
 Out | The output columns.
 @&lt;n&gt; | The index of the column relative to the input.
@@ -65,7 +49,7 @@ rows read | The number of rows read by the processor.
 stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time).
 stored side | The smaller table that was stored as an in-memory hash table.
 max memory used | How much memory (if any) is used to buffer rows.
-by hash | _(Orange box)_ The router, which sends row results to a specific node to be aggregated.
+by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows.
 max disk used | How much disk (if any) is used to buffer rows. The router will spill to disk buffering if there is not enough memory to buffer the rows.
 rows routed | How many rows were sent by routers, which can be used to understand network usage.
 bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication.
