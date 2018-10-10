@@ -415,7 +415,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning.py \
-    | chmod +x tuning.py
+    && chmod +x tuning.py
     ~~~
 
     As you'll see below, this client lets you pass command-line flags:
