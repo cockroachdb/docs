@@ -30,7 +30,9 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 
 You can only apply the `NOT NULL` constraint to individual columns.
 
-{% include {{ page.version.version }}/sql/diagrams/not_null_column_level.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/not_null_column_level.html %}
+</div>
 
  Parameter | Description
 -----------|-------------
