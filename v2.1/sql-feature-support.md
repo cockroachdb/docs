@@ -123,7 +123,7 @@ table tr td:nth-child(2) {
  Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-or-view-names)
  `AS` in table expressions | ✓ | Standard | [Aliased table expressions documentation](table-expressions.html#aliased-table-expressions)
  `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | [Functional](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/) | Standard | [Join expressions documentation](table-expressions.html#join-expressions)
- Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions); some correlated are not.
+ Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions); some [correlated subqueries](subqueries.html#correlated-subqueries) are not.
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 

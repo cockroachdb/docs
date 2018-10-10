@@ -94,7 +94,7 @@ Changing the cluster setting does not immediately turn the optimizer off; instea
 
 - The cost-based optimizer will not support automated use of statistics during this time period.
 - Some features present in v2.0 are not supported by the cost-based optimizer; however, the optimizer will fall back to the v2.0 code path for this functionality. If performance in the new alpha is worse than v2.0, you can [turn the optimizer off](#how-to-turn-the-optimizer-off) to manually force it to fallback to the heuristic planner.
-- Some correlated subqueries are not supported yet.
+- Some [correlated subqueries](subqueries.html#correlated-subqueries) are not supported by the cost-based optimizer yet. If you come across an unsupported correlated subquery, please [file a Github issue](file-an-issue.html).
 
 ## See also
 
