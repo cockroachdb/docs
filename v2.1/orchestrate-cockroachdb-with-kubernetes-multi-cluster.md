@@ -22,6 +22,17 @@ instance | A physical or virtual machine. In this tutorial, you'll run instances
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod`), the client must have a `Role` that allows it to do so.
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | A namespace provides a scope for resources and names within a Kubernetes cluster. Names of resources need to be unique within a namespace, but not across namespaces. Most Kubernetes client commands will use the `default` namespace by default, but can operate on resources in other namespaces as well if told to do so.
+[kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) | `kubectl` is the command-line interface for running commands against Kubernetes clusters.
+[kubectl context](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration) | A `kubectl` "context" specifies a Kubernetes cluster to connect to and authentication for doing so. You can set a context as the default using the `kubectl use-context <context-name>` command such that all future kubectl commands will talk to that cluster, or you can specify the `--context=<context-name>` flag on almost any `kubectl` command to tell it which cluster you want to run the command against. We will make heavy use of the `--context` flag in these instructions in order to run commands against the different regions' Kubernetes clusters.
+
+### UX differences from running in a single cluster
+
+These instructions create a StatefulSet that runs CockroachDB in each of the Kubernetes clusters you provide to the configuration scripts. These StatefulSets can be scaled independently of each other by running `kubectl` commands against the appropriate cluster. These steps will also point each Kubernetes cluster's DNS server at the other clusters' DNS servers so that DNS lookups for certain zone-scoped suffixes (e.g., "*.us-west1-a.svc.cluster.local") can be deferred to the appropriate cluster's DNS server. However, in order to make this work we create the StatefulSets in namespaces named after the zone in which the cluster is running, such that in order to run a command against one of the pods you have to run, e.g., `kubectl logs cockroachdb-0 --namespace=us-west1-a` instead of just `kubectl logs cockroachdb-0`. Alternatively, you can [configure your `kubectl` context to default to using that namespace for commands run against that cluster](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/#setting-the-namespace-preference).
+
+Note that the CockroachDB pods being in a non-default namespace means that if we didn't do anything about it then any client applications wanting to talk to CockroachDB from the default namespace would need to talk to a zone-scoped service name such as "cockroachdb-public.us-west1-a" rather than just the normal "cockroachdb-public" that they would use in a single-cluster setting. However, the setup script used by these instructions sets up an additional [`ExternalName` service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in the default namespace such that the clients in the default namespace can simply talk to the "cockroachdb-public" address.
+
+Finally, if you haven't worked with multiple Kubernetes clusters often before, you may find yourself forgetting to think about which cluster you want to run a given command against, and thus getting confusing results to your commands. Remember that you will either have to run `kubectl use-context <context-name>` frequently to switch contexts between commands or you will have to append `--context=<context-name>` on most commands you run to ensure they are run on the correct cluster.
 
 ### Limitations
 
@@ -242,11 +253,11 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
 ## Step 3. Use the built-in SQL client
 
-1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the namespace and context of the Kubernetes cluster to run it in:
+1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster to run it in:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f client-secure.yaml --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl create -f client-secure.yaml --context=<cluster-context>
     ~~~
 
     ~~~
@@ -259,7 +270,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -320,7 +331,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl delete pod cockroachdb-client-secure --context=<cluster-context>
     ~~~
 
 ## Step 4. Access the Web UI
@@ -430,7 +441,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
@@ -488,7 +499,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Re-enable auto-finalization:
