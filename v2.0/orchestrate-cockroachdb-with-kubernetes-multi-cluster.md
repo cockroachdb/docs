@@ -198,7 +198,7 @@ Our multi-region deployment approached relies on pod IP addresses being routable
 
     As the script creates various resources and creates and initializes the CockroachDB cluster, you'll see a lot of output, eventually ending with `job "cluster-init-secure" created`.
 
-7. Confirm that the CockroachDB pods in each cluster are considered `Ready`:
+7. Confirm that the CockroachDB pods in each cluster say `1/1` in the `READY` column, indicating that they've successfully joined the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -235,6 +235,19 @@ Our multi-region deployment approached relies on pod IP addresses being routable
     us-west1-a   cockroachdb-1   1/1       Running   0          14m
     us-west1-a   cockroachdb-2   1/1       Running   0          14m
     ~~~    
+
+    If you notice that only one of the Kubernetes clusters' pods are marked as `READY`, you likely also need to configure a network firewall rule that will allow the pods in the different clusters to talk to each other. You can run the following command to create a firewall rule allowing traffic on port 26257 (the port used by CockroachDB for inter-node traffic) within your private GCE network. It will not allow any traffic in from outside your private network:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute firewall-rules create allow-cockroach-internal --allow=tcp:26257 --source-ranges=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+    ~~~
+
+    ~~~
+    Creating firewall...done.
+    NAME                      NETWORK  DIRECTION  PRIORITY  ALLOW      DENY
+    allow-cockroach-internal  default  INGRESS    1000      tcp:26257
+    ~~~
 
 {{site.data.alerts.callout_success}}
 In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB nodes to write to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname> --namespace=<cluster-namespace> --context=<cluster-context>` rather than checking the log on the persistent volume.
