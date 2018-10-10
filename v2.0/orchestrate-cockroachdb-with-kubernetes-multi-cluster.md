@@ -357,35 +357,34 @@ To access the cluster's [Web UI](admin-ui-overview.html):
 
 3. In the UI, check the **Node List** to verify that all nodes are running, and then click the **Databases** tab on the left to verify that `bank` is listed.
 
-## Step 5. Simulate node failure
+## Step 5. Simulate datacenter failure
 
-In each Kubernetes cluster, the `replicas: 3` line in the StatefulSet configuration tells Kubernetes to ensure that three pods/nodes are running at all times. When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+One of the major benefits of running a multi-region cluster is that an entire datacenter or region can go down without affecting the availability of the CockroachDB cluster as a whole.
 
 To see this in action:
 
-1. Kill a CockroachDB node, specifying the namespace and context of the Kubernetes cluster where it's running:
+1. Scale down one of the StatefulSets to zero pods, specifying the namespace and context of the Kubernetes cluster where it's running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-2 --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl scale statefulset cockroachdb --replicas=0 --namespace=<cluster-namespace> --context=<cluster-context>
     ~~~
 
     ~~~
-    pod "cockroachdb-2" deleted
+    statefulset "cockroachdb" scaled
     ~~~
 
-2. In the Admin UI, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+2. In the Admin UI, the **Cluster Overview** will soon show the three nodes from that region as **Suspect**. If you wait for 5 minutes or more, they will be listed as **Dead**. Note that even though there are three dead nodes, the other nodes are all healthy, and any clients using the database in the other regions will continue to work just fine.
 
-3. Back in the terminal, verify that the pod was automatically restarted:
+3. When you're done verifying that the cluster still fully functions with one of the regions down, you can bring the region back up by running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pod cockroachdb-2 --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl scale statefulset cockroachdb --replicas=3 --namespace=<cluster-namespace> --context=<cluster-context>
     ~~~
 
     ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-2   1/1       Running   0          12s
+    statefulset "cockroachdb" scaled
     ~~~
 
 ## Step 6. Maintain the cluster
