@@ -37,6 +37,12 @@
             ]
           },
           {
+            "title": "Connect DBeaver to a Secure Cluster",
+            "urls": [
+                "/${VERSION}/dbeaver.html"
+            ]
+          },
+          {
             "title": "Build an App",
             "items": [
               {
@@ -1581,7 +1587,14 @@
             ]
           }
         ]
-      }
+      },
+       {
+        "title": "Third-Party Tools",
+           "is_top_level": true,
+           "urls": [
+               "/${VERSION}/third-party-tools.html"
+           ]
+       }
     ]
   },
   {
