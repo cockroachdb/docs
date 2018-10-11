@@ -15,7 +15,9 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ## Synopsis
 
-{% include {{ page.version.version }}/sql/diagrams/rename_table.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/rename_table.html %}
+</div>
 
 ## Parameters
 

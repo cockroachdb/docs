@@ -36,7 +36,9 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 
 ### Column level
 
-{% include {{ page.version.version }}/sql/diagrams/primary_key_column_level.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/primary_key_column_level.html %}
+</div>
 
  Parameter | Description
 -----------|-------------
@@ -62,7 +64,9 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 
 ### Table level
 
-{% include {{ page.version.version }}/sql/diagrams/primary_key_table_level.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/primary_key_table_level.html %}
+</div>
 
  Parameter | Description
 -----------|-------------
