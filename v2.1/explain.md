@@ -6,13 +6,15 @@ toc: true
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](sql-grammar.html#explainable_stmt). You can then use this information to optimize the query.
 
+{{site.data.alerts.callout_success}}
+To actually execute a statement and return a physical query plan with execution statistics, use [`EXPLAIN ANALYZE (DISTSQL)`](explain-analyze.html).
+{{site.data.alerts.end}}
+
 ## Query optimization
 
 Using `EXPLAIN`'s output, you can optimize your queries by taking the following points into consideration:
 
 - Queries with fewer levels execute more quickly. Restructuring queries to require fewer levels of processing will generally improve performance.
-
-- To view the distributed SQL query plan with execution statistics, use [`EXPLAIN ANALYZE (DISTSQL)`](explain-analyze.html).
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
@@ -39,7 +41,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
  `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
- `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a distributed SQL physical query plan tree.
+ `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a [distributed SQL physical query plan tree](explain-analze.html#distsql-plan-viewer).
  `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
@@ -174,9 +176,9 @@ The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 
-<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
-`EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be distributed:
+`EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be executed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -189,7 +191,7 @@ The query above will not be run with the cost-based optimizer.
    true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided to view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer):
+To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
 
 <img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 

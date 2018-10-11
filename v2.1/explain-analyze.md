@@ -1,12 +1,10 @@
 ---
 title: EXPLAIN ANALYZE
-summary: The EXPLAIN ANALYZE statement will execute the query and generate a physical query plan with execution statistics.
+summary: The EXPLAIN ANALYZE statement executes a query and generates a physical query plan with execution statistics.
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> The `EXPLAIN ANALYZE` [statement](sql-statements.html) **will execute the SQL query** and return execution statistics.
-
-The `DISTSQL` option generates a physical query plan for a distributed query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+<span class="version-tag">New in v2.1:</span> The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
 ## Synopsis
 
@@ -25,16 +23,16 @@ Parameter | Description
 
 ## Success responses
 
-For the `DISTSQL` option, successful `EXPLAIN ANALYZE` statements return a table with the following columns:
+Successful `EXPLAIN ANALYZE` statements return a table with the following columns:
 
  Column | Description
 --------|------------
-**automatic** | If `true`, the query is distributed.
-**url** | The URL generated for a physical query plan that provides high level information about how a query will be distributed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
+**automatic** | If `true`, the query is distributed. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+**url** | The URL generated for a physical query plan that provides high level information about how a query will be executed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
 
 #### DistSQL Plan Viewer
 
-For `EXPLAIN ANALYZE (DISTSQL)`, the DistSQL Plan Viewer displays the physical query plan, as well as execution statistics:
+The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics:
 
 Field | Description
 ------+------------
@@ -61,7 +59,7 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE (DISTSQL)` will execute the query and generate a physical query plan with execution statistics.
+`EXPLAIN ANALYZE (DISTSQL)` will execute the query and generate a physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -74,7 +72,7 @@ Any or all of the above fields may display for a given query plan.
     true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided to view the [DistSQL Plan Viewer](#distsql-plan-viewer):
+To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided:
 
 <img src="{{ 'images/v2.1/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
