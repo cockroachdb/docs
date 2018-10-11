@@ -27,39 +27,59 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET default_transaction_isolation = SNAPSHOT;
+> SET extra_float_digits = -10;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW default_transaction_isolation;
+> SHOW extra_float_digits;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SNAPSHOT                      |
-+-------------------------------+
+ extra_float_digits
+--------------------
+ -10
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESET default_transaction_isolation;
+> SELECT random();
+~~~
+
+~~~
+ random
+---------
+ 0.20286
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW default_transaction_isolation;
+> RESET extra_float_digits;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW extra_float_digits;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SERIALIZABLE                  |
-+-------------------------------+
+ extra_float_digits
+--------------------
+ 0
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT random();
+~~~
+
+~~~ 
+      random
+-------------------
+ 0.561354028296755
 (1 row)
 ~~~
 
