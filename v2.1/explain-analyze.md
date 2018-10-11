@@ -16,9 +16,9 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
 ## Parameters
 
-Parameter | Description
------------|-----------
-`DISTSQL` |  Generate a link to a distributed SQL physical query plan tree.
+Parameter          | Description
+-------------------|-----------
+`DISTSQL`          |  _(Default)_ Generate a link to a distributed SQL physical query plan tree.
 `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 ## Success responses
@@ -59,11 +59,11 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE (DISTSQL)` will execute the query and generate a physical query plan with execution statistics:
+`EXPLAIN ANALYZE` will execute the query and generate a physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+> EXPLAIN ANALYZE SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~

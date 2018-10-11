@@ -7,7 +7,7 @@ toc: true
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](sql-grammar.html#explainable_stmt). You can then use this information to optimize the query.
 
 {{site.data.alerts.callout_success}}
-To actually execute a statement and return a physical query plan with execution statistics, use [`EXPLAIN ANALYZE (DISTSQL)`](explain-analyze.html).
+To actually execute a statement and return a physical query plan with execution statistics, use [`EXPLAIN ANALYZE`](explain-analyze.html).
 {{site.data.alerts.end}}
 
 ## Query optimization
