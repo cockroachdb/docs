@@ -1,7 +1,7 @@
 ---
 title: AS OF SYSTEM TIME
 summary: The AS OF SYSTEM TIME clause executes a statement as of a specified time.
-toc: false
+toc: true
 ---
 
 The `AS OF SYSTEM TIME timestamp` clause causes statements to execute

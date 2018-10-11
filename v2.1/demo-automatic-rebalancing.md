@@ -199,11 +199,6 @@ $ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

@@ -283,11 +283,6 @@ $ comcast --device lo0 --stop
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB benefits
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

@@ -363,11 +363,6 @@ $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
