@@ -90,3 +90,30 @@
 @mixin avenir_m($size) {font-family: 'AvenirLTStd-Medium', serif; font-size:$size; @include font-props;}
 @mixin avenir_h($size) {font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; @include font-props;}
 @mixin avenir_bl($size) {font-family: 'AvenirLTStd-Black', serif; font-size:$size; @include font-props;}
+
+
+/* TEST FONTS */
+@font-face {
+  font-family: 'Graphik-Semibold';
+  src: url('../fonts/Graphik-Semibold.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Graphik-Regular';
+  src: url('../fonts/Graphik-Regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Graphik-RegularItalic';
+  src: url('../fonts/Graphik-RegularItalic.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin graphik_sb($size) {font-family: 'Graphik-Semibold', sans-serif; font-size:$size; @include font-props;}
+@mixin graphik_r($size) {font-family: 'Graphik-Regular', sans-serif; font-size:$size; @include font-props;}
+@mixin graphik_ri($size) {font-family: 'Graphik-RegularItalic', sans-serif; font-size:$size; @include font-props;}

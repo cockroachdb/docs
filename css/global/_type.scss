@@ -5,7 +5,7 @@
 // Global header stylings are still declared in _general.scss as a fallback.
 
 @mixin headline-1 { // global h1
-  @include adelle_b(36px);
+  @include graphik_sb(36px);
   line-height: 45px;
 
   @include at-query($min, $screen-md) {
@@ -15,7 +15,7 @@
 }
 
 @mixin headline-2 { // global h2
-  @include adelle_b(30px);
+  @include graphik_sb(30px);
   line-height: 40px;
 
   // NOTE: this increases earlier than others
@@ -26,7 +26,7 @@
 }
 
 @mixin headline-3 { // global h3
-  @include adelle_b(24px);
+  @include graphik_sb(24px);
   line-height: 35px;
 
   @include at-query($min, $screen-md) {
@@ -36,7 +36,7 @@
 }
 
 @mixin headline-4 { // global h4
-  @include adelle_b(17px);
+  @include graphik_sb(17px);
   line-height: 30px;
 
   @include at-query($min, $screen-md) {
@@ -56,7 +56,7 @@
 }
 
 @mixin headline-24-30 {
-  @include adelle_b(24px);
+  @include graphik_sb(24px);
   line-height: 35px;
 
   @include at-query($min, $screen-md) {
@@ -69,22 +69,22 @@
 // subheadings
 //
 @mixin subhead-adelle-lg {
-  @include adelle_b(24px);
+  @include graphik_sb(24px);
   line-height: 35px;
 }
 
 @mixin subhead-adelle-sm {
-  @include adelle_b(17px);
+  @include graphik_sb(17px);
   line-height: 30px;
 }
 
 @mixin subhead-avenir-lg {
-  @include avenir_h(24px);
+  @include graphik_sb(24px);
   line-height: 35px;
 }
 
 @mixin subhead-avenir-sm {
-  @include avenir_h(17px);
+  @include graphik_sb(17px);
   line-height: 30px;
 }
 
@@ -92,12 +92,12 @@
 // body
 //
 @mixin type-body {
-  @include avenir_r(17px);
+  @include graphik_r(17px);
   line-height: 30px;
 }
 
 @mixin type-body-medium {
-  @include avenir_m(17px);
+  @include graphik_r(17px);
   line-height: 30px;
 }
 
@@ -118,42 +118,42 @@
 }
 
 @mixin button-text--heavy--small {
-  @include avenir_h(11px);
+  @include graphik_sb(11px);
   line-height: 15px;
   letter-spacing: 1.5px;
 }
 
 @mixin button-text--heavy--medium {
-  @include avenir_h(13px);
+  @include graphik_sb(13px);
   line-height: 15px;
   letter-spacing: 1.5px;
 }
 
 @mixin button-text--heavy--large {
-  @include avenir_h(15px);
+  @include graphik_sb(15px);
   line-height: 25px;
   letter-spacing: 1.5px;
 }
 
 @mixin caption {
-  @include avenir_r(15px);
+  @include graphik_r(15px);
   line-height: 25px;
 }
 
 @mixin caption--small {
-  @include avenir_r(12px);
+  @include graphik_r(12px);
   line-height: 15px;
 }
 
 // this matches the name on the hugo site
 // eventually we should consolidate type styles here too
 @mixin type-caption-3 {
-  @include avenir_r(15px);
+  @include graphik_r(15px);
   line-height: 25px;
 }
 
 @mixin paragraph-type {
-  @include avenir_r(16px);
+  @include graphik_r(16px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
@@ -163,12 +163,12 @@
 }
 
 @mixin paragraph-type--medium {
-  @include avenir_m(17px);
+  @include graphik_r(17px);
   line-height: 30px;
 }
 
 @mixin paragraph-type--heavy {
-  @include avenir_h(16px);
+  @include graphik_sb(16px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
