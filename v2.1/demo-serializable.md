@@ -6,14 +6,15 @@ toc: true
 
 In contrast to most databases, CockroachDB v2.1 always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the end result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
-In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness. You'll start by reviewing the scenario and its schema. You'll then execute the scenario on Postgres, which defaults to the `READ COMMITTED` isolation level, the weakest of the four levels defined by the SQL standard, observing the write skew anomaly and its implications. You'll finish by executing the scenario on CockroachDB, observing how the system guarantees correctness.
+In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
+
+1. You'll start by reviewing the scenario and its schema.
+2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on Postgres, which defaults to `READ COMMITTED`.
+3. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}
 For a deeper discussion of transaction isolation and the write skew anomaly, see the [Real Transactions are Serializable](https://www.cockroachlabs.com/blog/acid-rain/) and [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/) blog posts.
 {{site.data.alerts.end}}
-
-<!-- Despite the SQL standard's requirement that `SERIALIZABLE` be the default isolation level, most databases default to a weaker level in the hope that returning an incorrect answer will be faster and will not cause real-world problems. In contrast, CockroachDB provides only `SERIALIZABLE` isolation to ensure that your application always sees the data it expects.
-In contrast to most other databases, CockroachDB always uses `SERIALIZABLE` isolation for transactions.  -->
 
 ## Overview
 
@@ -27,7 +28,7 @@ In contrast to most other databases, CockroachDB always uses `SERIALIZABLE` isol
 
 #### Write skew
 
-When write skew happens, a transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only `SERIALIZABLE` isolation prevents this anomaly.  
+When write skew happens, a transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only `SERIALIZABLE` and some implementations of `REPEATABLE READ` isolation prevent this anomaly.  
 
 ### Schema
 
