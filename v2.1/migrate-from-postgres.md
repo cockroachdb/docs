@@ -79,7 +79,7 @@ The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikip
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz';
+> IMPORT PGDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz');
 ~~~
 
 ~~~
@@ -99,7 +99,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT TABLE employees FROM PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz';
+> IMPORT TABLE employees FROM PGDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz');
 ~~~
 
 ~~~
@@ -119,7 +119,7 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz';
+> IMPORT PGDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz');
 ~~~
 
 ~~~

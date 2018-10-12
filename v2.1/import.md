@@ -257,7 +257,7 @@ WITH
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT PGDUMP ('s3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456');
 ~~~
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
@@ -266,7 +266,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
 ~~~
 
 If the table schema specifies foreign keys into tables that don't exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
@@ -277,7 +277,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT MYSQLDUMP ('s3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456');
 ~~~
 
 For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
@@ -286,7 +286,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP ('s3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys
 ~~~
 
 If the table schema specifies foreign keys into tables that don't exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).

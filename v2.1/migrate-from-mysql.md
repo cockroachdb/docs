@@ -75,7 +75,7 @@ The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikip
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees-full.sql.gz';
+> IMPORT MYSQLDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees-full.sql.gz');
 ~~~
 
 ~~~
@@ -95,7 +95,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
+> IMPORT MYSQLDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz');
 ~~~
 
 ~~~
@@ -115,7 +115,7 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
+> IMPORT TABLE employees FROM MYSQLDUMP ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz');
 ~~~
 
 ~~~
@@ -156,7 +156,7 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+> IMPORT MYSQLDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
 ~~~
 
 [Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) commands after importing the data.
