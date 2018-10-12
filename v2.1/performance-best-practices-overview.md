@@ -6,6 +6,9 @@ toc: true
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
+{{site.data.alerts.callout_success}}
+For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html).
+{{site.data.alerts.end}}
 
 ## Multi-row DML best practices
 

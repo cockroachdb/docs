@@ -318,6 +318,12 @@
             ]
           },
           {
+            "title": "Performance Tuning",
+            "urls": [
+              "/${VERSION}/performance-tuning.html"
+            ]
+          },
+          {
             "title": "Enterprise Features",
             "items": [
               {
