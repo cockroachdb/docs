@@ -26,7 +26,7 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 ## View query plan
 
-To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
+To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If the query is unsupported (i.e., it returns an error like `pq: unsupported statement: *tree.Insert` or `pq: aggregates with FILTER are not supported yet`), the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
 
 For example, the following query returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
