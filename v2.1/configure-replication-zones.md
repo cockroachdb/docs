@@ -7,10 +7,10 @@ toc: true
 
 In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there are some special pre-configured replication zones for internal system data along with a default replication zone that applies to the rest of the cluster. You can adjust these pre-configured zones as well as add zones for individual databases, tables and secondary indexes, and rows ([enterprise-only](enterprise-licensing.html)) as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
 
-This page explains how replication zones work and how to use the `cockroach zone` [command](cockroach-commands.html) to configure them.
+This page explains how replication zones work and how to use the [`CONFIGURE ZONE`](configure-zone.html) [statement](sql-statements.html).
 
 {{site.data.alerts.callout_info}}
-Currently, only the `root` user can configure replication zones.
+Currently, only members of the `admin` role can configure replication zones. By default, the `root` user belongs to the `admin` role.
 {{site.data.alerts.end}}
 
 ## Replication zone levels
@@ -52,24 +52,14 @@ When replicating data, whether table or system, CockroachDB always uses the most
 
 ## Replication zone format
 
-A replication zone is specified in [YAML](https://en.wikipedia.org/wiki/YAML) format and looks like this:
+Use the [`CONFIGURE ZONE`](configure-zone.html) [statement](sql-statements.html) to set a replication zone:
 
-~~~ yaml
-range_min_bytes: <size-in-bytes>
-range_max_bytes: <size-in-bytes>
-gc:
-  ttlseconds: <time-in-seconds>
-num_replicas: <number-of-replicas>
-constraints: <json-formatted-constraints>
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
 
-Field | Description
-------|------------
-`range_min_bytes` | Not yet implemented.
-`range_max_bytes` | The maximum size, in bytes, for a range of data in the zone. When a range reaches this size, CockroachDB will spit it into two ranges.<br><br>**Default:** `67108864` (64MiB)
-`ttlseconds` | The number of seconds overwritten values will be retained before garbage collection. Smaller values can save disk space if values are frequently overwritten; larger values increase the range allowed for `AS OF SYSTEM TIME` queries, also know as [Time Travel Queries](select-clause.html#select-historical-data-time-travel).<br><br>It is not recommended to set this below `600` (10 minutes); doing so will cause problems for long-running queries. Also, since all versions of a row are stored in a single range that never splits, it is not recommended to set this so high that all the changes to a row in that time period could add up to more than 64MiB; such oversized ranges could contribute to the server running out of memory or other problems.<br><br>**Default:** `90000` (25 hours)
-`num_replicas` | The number of replicas in the zone.<br><br>**Default:** `3`
-`constraints` | A JSON object or array of required and/or prohibited constraints influencing the location of replicas. See [Types of Constraints](#types-of-constraints) and [Scope of Constraints](#scope-of-constraints) for more details.<br/><br/>To prevent hard-to-detect typos, constraints placed on [store attributes and node localities](#descriptive-attributes-assigned-to-nodes) must match the values passed to at least one node in the cluster. If not, an error is signalled.<br/><br/>**Default:** No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.
+{% include v2.1/zone-configs/variables.md %}
 
 ## Replication constraints
 
@@ -105,425 +95,86 @@ Constraints can be specified such that they apply to all replicas in a zone or s
 
 Constraint Scope | Description | Syntax
 -----------------|-------------|-------
-**All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints: [+ssd, -region=west]`
-**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores. | `constraints: {"+ssd,-region=west": 2, "+region=east": 1}`
+**All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints = '[+ssd, -region=west]'`
+**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores. | `constraints: '{+ssd,-region=west: 2, +region=east: 1}'`
 
 ## Node/replica recommendations
 
 See [Cluster Topography](recommended-production-settings.html#cluster-topology) recommendations for production deployments.
 
-## Subcommands
+## View replication zones
 
-Subcommand | Usage
------------|------
-`ls` | List all replication zones.
-`get` | View the YAML contents of a replication zone.
-`set` | Create or edit a replication zone.
-`rm` | Remove a replication zone.
+Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
 
-## Synopsis
+## Manage replication zones
 
-~~~ shell
-# List all replication zones:
-$ cockroach zone ls <flags>
-
-# View the default replication zone for the cluster:
-$ cockroach zone get .default <flags>
-
-# View the replication zone for a database:
-$ cockroach zone get <database> <flags>
-
-# View the replication zone for a table:
-$ cockroach zone get <database.table> <flags>
-
-# View the replication zone for an index:
-$ cockroach zone get <database.table@index> <flags>
-
-# View the replication zone for a table or index partition:
-$ cockroach zone get <database.table.partition> <flags>
-
-# Edit the default replication zone for the cluster:
-$ cockroach zone set .default --file=<zone-content.yaml> <flags>
-
-# Create/edit the replication zone for a database:
-$ cockroach zone set <database> --file=<zone-conent.yaml> <flags>
-
-# Create/edit the replication zone for a table:
-$ cockroach zone set <database.table> --file=<zone-content.yaml> <flags>
-
-# Create/edit the replication zone for an index:
-$ cockroach zone set <database.table@index> --file=<zone-content.yaml> <flags>
-
-# Create/edit the replication zone for a table or index partition:
-$ cockroach zone set <database.table.partition> --file=<zone-content.yaml> <flags>
-
-# Remove the replication zone for a database:
-$ cockroach zone rm <database> <flags>
-
-# Remove the replication zone for a table:
-$ cockroach zone rm <database.table> <flags>
-
-# Remove the replication zone for an index:
-$ cockroach zone rm <database.table@index> <flags>
-
-# Remove the replication zone for a table or index partition:
-$ cockroach zone set <database.table.partition> --file=<zone-content.yaml> <flags>
-
-# View help:
-$ cockroach zone --help
-$ cockroach zone ls --help
-$ cockroach zone get --help
-$ cockroach zone set --help
-$ cockroach zone rm --help
-~~~
-
-## Flags
-
-The `zone` command and subcommands support the following [general-use](#general) and [logging](#logging) flags.
-
-### General
-
-Flag | Description
------|------------
-`--disable-replication` | Disable replication in the zone by setting the zone's replica count to 1. This is equivalent to setting `num_replicas: 1`.
-`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-`--file`<br>`-f` | The path to the [YAML file](#replication-zone-format) defining the zone configuration. To pass the zone configuration via the standard input, set this flag to `-`.<br><br>This flag is relevant only for the `set` subcommand.
-
-### Client connection
-
-{% include {{ page.version.version }}/sql/connection-parameters.md %}
-
-See [Client Connection Parameters](connection-parameters.html) for more details.
-
-Currently, only members of the `admin` role can configure replication zones. By default, the `root` user belongs to the `admin` role.
-
-### Logging
-
-By default, the `zone` command logs errors to `stderr`.
-
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+Use the [`CONFIGURE ZONE`](configure-zone.html) statement to [add](#create-a-replication-zone-for-a-system-range), [modify](#edit-the-default-replication-zone), [reset](#reset-a-replication-zone), and [remove](#remove-a-replication-zone) replication zones.
 
 ## Basic examples
 
-These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based Examples](#scenario-based-examples).
+These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
 
-###  List the pre-configured replication zones
+For more examples, see [`CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
-Newly created CockroachDB clusters start with some special pre-configured replication zones:
+### View all replication zones
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone ls --insecure --host=<node address>
-~~~
+{% include v2.1/zone-configs/view-all-replication-zones.md %}
 
-~~~
-.default
-.liveness
-.meta
-system.jobs
-~~~
+For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
-###  View the default replication zone
+### View the default replication zone
 
-The cluster-wide replication zone (`.default`) is initially set to replicate data to any three nodes in your cluster, with ranges in each replica splitting once they get larger than 67108864 bytes.
+{% include v2.1/zone-configs/view-the-default-replication-zone.md %}
 
-To view the default replication zone, use the `cockroach zone get .default` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone get .default --insecure --host=<node address>
-~~~
-
-~~~
-.default
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 3
-constraints: []
-~~~
+For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 ### Edit the default replication zone
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-{{site.data.alerts.end}}
+{% include v2.1/zone-configs/edit-the-default-replication-zone.md %}
 
-To edit the default replication zone, create a YAML file defining only the values you want to change (other values will be copied from the `.default` zone), and use the `cockroach zone set .default -f <file.yaml>` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat default_update.yaml
-~~~
-
-~~~
-num_replicas: 5
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set .default \
---insecure \
---host=<node address> \
--f default_update.yaml
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 5
-constraints: []
-~~~
-
-Alternately, you can pass the YAML content via the standard input:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default \
---insecure \
---host=<node address> -f -
-~~~
-
-### Create a replication zone for a database
-
-To control replication for a specific database, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database> -f <file.yaml>` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat database_zone.yaml
-~~~
-
-~~~
-num_replicas: 7
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set db1 \
---insecure \
---host=<node address> \
--f database_zone.yaml
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 5
-constraints: []
-~~~
-
-Alternately, you can pass the YAML content via the standard input:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set db1 \
---insecure \
---host=<node address> \
--f -
-~~~
-
-### Create a replication zone for a table
-
-To control replication for a specific table, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table> -f <file.yaml>` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat table_zone.yaml
-~~~
-
-~~~
-num_replicas: 7
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set db1.t1 \
---insecure \
---host=<node address> \
--f table_zone.yaml
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 7
-constraints: []
-~~~
-
-Alternately, you can pass the YAML content via the standard input:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set db1.t1 \
---insecure \
---host=<node address> \
--f -
-~~~
-
-### Create a replication zone for a secondary index
-
-{{site.data.alerts.callout_info}}
-This is an [enterprise-only](enterprise-licensing.html) feature.
-{{site.data.alerts.end}}
-
-The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
-
-To control replication for a specific secondary index, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table@index> -f <file.yaml>` command with appropriate flags:
-
-{{site.data.alerts.callout_success}}
-To get the name of a secondary index, which you need for the `cockroach zone set` command, use the [`SHOW INDEX`](show-index.html) or [`SHOW CREATE TABLE`](show-create.html) statements.
-{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat index_zone.yaml
-~~~
-
-~~~
-num_replicas: 7
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set db1.table@idx1 \
---insecure \
---host=<node address> \
--f index_zone.yaml
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 7
-constraints: []
-~~~
-
-Alternately, you can pass the YAML content via the standard input:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set db1.table@idx1 \
---insecure \
---host=<node address> \
--f -
-~~~
-
-### Create a replication zone for a table or secondary index partition
-
-{{site.data.alerts.callout_info}}
-This is an [enterprise-only](enterprise-licensing.html) feature.
-{{site.data.alerts.end}}
-
-To [control replication for table partitions](partitioning.html#replication-zones), create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <database.table.partition> -f <file.yaml>` command with appropriate flags:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > australia_zone.yml
-~~~
-
-~~~ shell
-constraints: [+datacenter=au1]
-~~~
-
-Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students_by_list.australia \
---insecure \
---host=<node address> \
--f australia_zone.yml
-~~~
-
-{{site.data.alerts.callout_success}}
-Since the syntax is the same for defining a replication zone for a table or index partition (`database.table.partition`), give partitions names that communicate what they are partitioning, e.g., `australia_table` vs `australia_idx1`.
-{{site.data.alerts.end}}
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a system range
 
-In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. CockroachDB comes with pre-configured replication zones for some of these ranges:
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-system-range.md %}
 
-Zone Name | Description
-----------|-----------------|------------
-`.meta` | The "meta" ranges contain the authoritative information about the location of all data in the cluster.<br><br>Because historical queries are never run on meta ranges and it is advantageous to keep these ranges smaller for reliable performance, CockroachDB comes with a **pre-configured** `.meta` replication zone giving these ranges a lower-than-default `ttlseconds`.<br><br>If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.
-`.liveness` | The "liveness" range contains the authoritative information about which nodes are live at any given time.<br><br>Just as for "meta" ranges, historical queries are never run on the liveness range, so CockroachDB comes with a **pre-configured** `.liveness` replication zone giving this range a lower-than-default `ttlseconds`.<br><br>If this range is unavailable, the entire cluster will be unavailable, so giving it a high replication factor is strongly recommended.
-`.timeseries` | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's Admin UI. If necessary, you can add a `.timeseries` replication zone to control the replication of this data.
-`.system` | There are system ranges for a variety of other important internal data, including information needed to allocate new table IDs and track the status of a cluster's nodes. If necessary, you can add a `.system` replication zone to control the replication of this data.
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-To control replication for one of the above sets of system ranges, create a YAML file defining only the values you want to change (other values will not be affected), and use the `cockroach zone set <zone-name> -f <file.yaml>` command with appropriate flags:
+### Create a replication zone for a database
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat meta_zone.yaml
-~~~
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-database.md %}
 
-~~~
-num_replicas: 7
-~~~
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set .meta \
---insecure \
---host=<node address> \
--f meta_zone.yaml
-~~~
+### Create a replication zone for a table
 
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 86400
-num_replicas: 7
-constraints: []
-~~~
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-table.md %}
 
-Alternately, you can pass the YAML content via the standard input:
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 7' | cockroach zone set .meta \
---insecure \
---host=<node address> \
--f -
-~~~
+### Create a replication zone for a secondary index
 
-### Reveal the SQL statements sent implicitly by the command-line utility
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
-In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default \
---insecure \
---host=<node address> \
---echo-sql \
--f -
-~~~
+### Create a replication zone for a table or secondary index partition
 
-~~~
-> BEGIN
-> SAVEPOINT cockroach_restart
-> SELECT config FROM system.zones WHERE id = $1
-> UPSERT INTO system.zones (id, config) VALUES ($1, $2)
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 90000
-num_replicas: 5
-constraints: []
-> RELEASE SAVEPOINT cockroach_restart
-> COMMIT
-~~~
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
+
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+
+### Reset a replication zone
+
+{% include v2.1/zone-configs/reset-a-replication-zone.md %}
+
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+
+### Remove a replication zone
+
+{% include v2.1/zone-configs/remove-a-replication-zone.md %}
+
+For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ## Scenario-based examples
 
@@ -591,39 +242,54 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, configure a replication zone for the database used by the West Coast application:
+2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create a YAML file with the replica count set to 5:
-    $ cat west_app_zone.yaml
+    $ cockroach sql --insecure
     ~~~
 
-    ~~~
-    constraints: {"+region=us-west1": 2, "+region=us-central1": 1}
-    ~~~
+3. Create the database for the West Coast application:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    # Apply the replication zone to the database used by the West Coast application:
-    $ cockroach zone set west_app_db \
-    --insecure \
-    --host=<node address> \
-    -f west_app_zone.yaml
+    ~~~ sql
+    > CREATE DATABASE west_app_db;
+    ~~~
+
+4. Configure a replication zone for the database:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER DATABASE west_app_db CONFIGURE ZONE USING constraints = '{+region=us-west1: 2, +region=us-central1: 1}';
     ~~~
 
     ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-      ttlseconds: 86400
-    num_replicas: 3
-    constraints: {+region=us-central1: 1, +region=us-west1: 2}
+    CONFIGURE ZONE 1
+    ~~~
+
+5. View the replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE west_app_db;
+    ~~~
+
+    ~~~
+       zone_name  |                   config_sql
+    +-------------+--------------------------------------------------------------------+
+      west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
+                  |     range_min_bytes = 1048576,
+                  |     range_max_bytes = 67108864,
+                  |     gc.ttlseconds = 90000,
+                  |     num_replicas = 3,
+                  |     constraints = '{+region=us-west1: 2, +region=us-central1: 1}',
+                  |     lease_preferences = '[]'
+    (1 row)
     ~~~
 
     Two of the database's three replicas will be put in `region=us-west1` and its remaining replica will be put in `region=us-central1`. This gives the application the resilience to survive the total failure of any one datacenter while providing low-latency reads and writes on the West Coast because a quorum of replicas are located there.
 
-3. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
+6. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
 
 ### Multiple applications writing to different databases
 
@@ -659,66 +325,85 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, configure a replication zone for the database used by application 1:
+2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create a YAML file with the replica count set to 5:
-    $ cat app1_zone.yaml
+    $ cockroach sql --insecure
     ~~~
 
-    ~~~
-    num_replicas: 5
-    ~~~
+3. Create the database for application 1:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    # Apply the replication zone to the database used by application 1:
-    $ cockroach zone set app1_db \
-    --insecure \
-    --host=<node address> \
-    -f app1_zone.yaml
+    ~~~ sql
+    > CREATE DATABASE app1_db;
+    ~~~
+
+4. Configure a replication zone for the database used by application 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER DATABASE app1_db CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-      ttlseconds: 86400
-    num_replicas: 5
-    constraints: []
+    CONFIGURE ZONE 1
+    ~~~
+
+5. View the replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE app1_db;
+    ~~~
+
+    ~~~
+        zone_name  |                config_sql
+    +--------------+---------------------------------------------+
+         app1_db   | ALTER DATABASE app1_db CONFIGURE ZONE USING
+                   |     range_min_bytes = 1048576,
+                   |     range_max_bytes = 67108864,
+                   |     gc.ttlseconds = 90000,
+                   |     num_replicas = 5,
+                   |     constraints = '[]',
+                   |     lease_preferences = '[]'
+    (1 row)
     ~~~
 
     Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
 
-3. On any node, configure a replication zone for the database used by application 2:
+6. Still in the SQL client, create a database for application 2:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    # Create a YAML file with 1 datacenter as a required constraint:
-    $ cat app2_zone.yaml
+    ~~~ sql
+    > CREATE DATABASE app2_db;
     ~~~
 
-    ~~~
-    constraints: [+datacenter=us-2]
-    ~~~
+7. Configure a replication zone for the database used by application 2:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    # Apply the replication zone to the database used by application 2:
-    $ cockroach zone set app2_db \
-    --insecure \
-    --host=<node address> \
-    -f app2_zone.yaml
+    ~~~ sql
+    > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+datacenter=us-2]';
+    ~~~
+
+8. View the replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE app2_db;
     ~~~
 
     ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-     ttlseconds: 86400
-    num_replicas: 3
-    constraints: [+datacenter=us-2]
+        zone_name  |                config_sql
+    +--------------+---------------------------------------------+
+         app2_db   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                   |     range_min_bytes = 1048576,
+                   |     range_max_bytes = 67108864,
+                   |     gc.ttlseconds = 90000,
+                   |     num_replicas = 3,
+                   |     constraints = '[+datacenter=us-2]',
+                   |     lease_preferences = '[]'
+    (1 row)
     ~~~
 
     The required constraint will force application 2's data to be replicated only within the `us-2` datacenter.
@@ -758,36 +443,50 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, configure a replication zone for the table that must be replicated more strictly:
+2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create a YAML file with the replica count set to 5
-    # and the ssd attribute as a required constraint:
-    $ cat table_zone.yaml
+    $ cockroach sql --insecure
     ~~~
 
-    ~~~
-    num_replicas: 5
-    constraints: [+ssd]
+3. Create a database and table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE db;
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
-    # Apply the replication zone to the table:
-    $ cockroach zone set db.important_table \
-    --insecure \
-    --host=<any node hostname> \
-    -f table_zone.yaml
+    ~~~ sql
+    > CREATE TABLE db.important_table;
+    ~~~
+
+4. Configure a replication zone for the table that must be replicated more strictly:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE db.important_table CONFIGURE ZONE USING num_replicas = 5, constraints = '[+ssd]'
+    ~~~
+
+5. View the replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR TABLE db.important_table;
     ~~~
 
     ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-     ttlseconds: 86400
-    num_replicas: 5
-    constraints: [+ssd]
+              zone_name       |                config_sql
+    +-------------------------+---------------------------------------------+
+         db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                              |     range_min_bytes = 1048576,
+                              |     range_max_bytes = 67108864,
+                              |     gc.ttlseconds = 90000,
+                              |     num_replicas = 5,
+                              |     constraints = '[+ssd]',
+                              |     lease_preferences = '[]'
+    (1 row)
     ~~~
 
     The secondary indexes on the table will use the table's replication zone, so all data for the table will be replicated 5 times, and the required constraint will place the data on nodes with `ssd` drives.
@@ -826,70 +525,88 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, configure the default replication zone:
+2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    echo 'num_replicas: 5' | cockroach zone set .default \
-    --insecure \
-    --host=<any node hostname> \
-    -f -
+    $ cockroach sql --insecure
     ~~~
 
+3. Configure the default replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5;
     ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-     ttlseconds: 86400
-    num_replicas: 5
-    constraints: []
+
+4. View the replication zone:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR RANGE default;
+    ~~~
+    ~~~
+      zone_name |                config_sql
+    +-----------+------------------------------------------+
+      .default  | ALTER RANGE default CONFIGURE ZONE USING
+                |     range_min_bytes = 1048576,
+                |     range_max_bytes = 67108864,
+                |     gc.ttlseconds = 90000,
+                |     num_replicas = 5,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+    (1 row)
     ~~~
 
     All data in the cluster will be replicated 5 times, including both SQL data and the internal system data.
 
-3. On any node, configure the `.meta` replication zone:
+5. Configure the `.meta` replication zone:
 
     {% include copy-clipboard.html %}
-   ~~~ shell
-   echo 'num_replicas: 7' | cockroach zone set .meta \
-   --insecure \
-   --host=<any node hostname> \
-   -f -
-   ~~~
+    ~~~ sql
+    > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
+    ~~~
 
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
-     ttlseconds: 86400
-   num_replicas: 7
-   constraints: []
-   ~~~
+    ~~~
+      zone_name |              config_sql
+    +-----------+---------------------------------------+
+      .meta     | ALTER RANGE meta CONFIGURE ZONE USING
+                |     range_min_bytes = 1048576,
+                |     range_max_bytes = 67108864,
+                |     gc.ttlseconds = 3600,
+                |     num_replicas = 7,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+    (1 row)
+    ~~~
 
-   The `.meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
+    The `.meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
 
-4. On any node, configure the `.timeseries` replication zone:
+6. Configure the `.timeseries` replication zone:
 
     {% include copy-clipboard.html %}
-   ~~~ shell
-   echo 'num_replicas: 3' | cockroach zone set .timeseries \
-   --insecure \
-   --host=<any node hostname> \
-   -f -
-   ~~~
+    ~~~ sql
+    > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
+    ~~~
 
-   ~~~
-   range_min_bytes: 1048576
-   range_max_bytes: 67108864
-   gc:
-     ttlseconds: 86400
-   num_replicas: 3
-   constraints: []
-   ~~~
+    ~~~
+       zone_name  |                 config_sql
+    +-------------+---------------------------------------------+
+      .timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
+                  |     range_min_bytes = 1048576,
+                  |     range_max_bytes = 67108864,
+                  |     gc.ttlseconds = 90000,
+                  |     num_replicas = 3,
+                  |     constraints = '[]',
+                  |     lease_preferences = '[]'
+    (1 row)
+    ~~~
 
-   The timeseries data will only be replicated 3 times without affecting the configuration of all other data.
+    The timeseries data will only be replicated 3 times without affecting the configuration of all other data.
 
 ## See also
 
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html)
+- [`CONFIGURE ZONE`](configure-zone.html)
+- [SQL Statements](sql-statements.html)
 - [Table Partitioning](partitioning.html)

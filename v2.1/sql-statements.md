@@ -39,11 +39,13 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
+[`ALTER RANGE`](alter-range.html) | <span class="version-tag">New in v2.1:</span> Change an existing system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
+[`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
@@ -71,6 +73,7 @@ Statement | Usage
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
+[`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | <span class="version-tag">New in v2.1:</span> List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 
 ## Transaction management statements
