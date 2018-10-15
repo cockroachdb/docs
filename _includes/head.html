@@ -22,9 +22,11 @@
 
 <script>
 var pageConfig = {
-    tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
+  tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
 };
 </script>
+
+{% include vwo.html %}
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
 <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}"></script>
