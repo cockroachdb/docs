@@ -20,7 +20,11 @@ For additional guidance on accessing the Admin UI in the context of cluster depl
 
 ### Accessing the Admin UI for a secure cluster
 
-For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
+For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords.
+
+{{site.data.alerts.callout_info}}
+This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+{{site.data.alerts.end}}
 
 To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar.
 
