@@ -17,7 +17,9 @@ Only members of the `admin` role can cancel a job. By default, the `root` user b
 
 ## Synopsis
 
-{% include {{ page.version.version }}/sql/diagrams/cancel_job.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/cancel_job.html %}
+</div>
 
 ## Parameters
 

@@ -6,6 +6,9 @@ toc: true
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
+{{site.data.alerts.callout_success}}
+For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html).
+{{site.data.alerts.end}}
 
 ## Multi-row DML best practices
 
@@ -33,10 +36,6 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 ### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
-
-## Execute statements in parallel
-
-CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. To execute statements in parallel, append the `RETURNING NOTHING` clause to the statements in a transaction. For more information, see [Parallel Statement Execution](parallel-statement-execution.html).
 
 ## Assign column families
 

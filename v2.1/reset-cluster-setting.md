@@ -13,7 +13,9 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 
 ## Synopsis
 
-{% include {{ page.version.version }}/sql/diagrams/reset_csetting.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/reset_csetting.html %}
+</div>
 
 ## Parameters
 

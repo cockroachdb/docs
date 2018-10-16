@@ -31,6 +31,15 @@ In this scenario, you try to connect a user without without providing a client c
     ~~~ shell
     $ ./cockroach user set kirk --certs-dir=certs
     ~~~
+    
+3. Create a new database called `security` and give user `kirk` access:
+  
+   {% include copy-clipboard.html %}
+   ~~~ shell
+   $ ./cockroach sql \
+   --certs-dir=certs \
+   --user=root \
+   --execute="CREATE DATABASE security; GRANT ALL ON DATABASE security TO kirk;"
 
 2. As the `kirk` user, try to connect to the cluster:
 
@@ -53,7 +62,7 @@ In this scenario, you try to connect a user without without providing a client c
     The connection attempt fails, and the following error is printed to `stderr`:
 
     ~~~
-    Error: problem using security settings, did you mean to use --insecure?: problem with CA certificate: not found
+    Error: pq: invalid password
     Failed running "sql"
     ~~~
 
@@ -87,11 +96,9 @@ To successfully connect the user, you must first either generate a client certif
     +--------------------+
     |      Database      |
     +--------------------+
-    | crdb_internal      |
-    | information_schema |
-    | pg_catalog         |
+    | security           |
     +--------------------+
-    (3 rows)
+    (1 row)
     ~~~
 
 ## Problem 2: Wrong host or port
@@ -139,11 +146,12 @@ $ ./cockroach sql \
 This time, the connection attempt succeeds:
 
 ~~~
-+----------+
-| Database |
-+----------+
-+----------+
-(0 rows)
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | security           |
+    +--------------------+
+    (1 row)
 ~~~
 
 ## Clean up

@@ -11,7 +11,9 @@ The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a colum
 
 ## Synopsis
 
-{% include {{ page.version.version }}/sql/diagrams/rename_column.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/rename_column.html %}
+</div>
 
 ## Required privileges
 

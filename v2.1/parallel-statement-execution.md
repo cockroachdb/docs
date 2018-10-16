@@ -6,14 +6,19 @@ toc: true
 
 CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. 
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v2.1:</span> Built-in performance optimizations such as [transaction pipelining](architecture/transaction-layer.html#transaction-pipelining) provide the same performance benefits as parallel statement execution with better SQL semantics, and without limitations such as the [error message mismatch](#error-message-mismatch). Parallel statement execution may increase performance in a few very subtle cases, but it is not recommended for most users. If you believe you need to use this feature, please contact someone at CockroachDB first.
+{{site.data.alerts.end}}
 
-## Why use parallel statement execution
+## Why use parallel statement execution?
 
 SQL engines traditionally execute the SQL statements in a transaction sequentially. The server executes each statement to completion and sends the return value of each statement to the client. Only after the client receives the return value of a statement, it sends the next SQL statement to be executed. 
 
 In the case of a traditional single-node SQL database, statements are executed on the single machine, and so the execution does not result in any communication latency. However, in the case of a distributed and replicated database like CockroachDB, execution of statements can span multiple nodes. The coordination between nodes results in communication latency. Executing SQL statements sequentially results in higher cumulative latency.
 
-With parallel statement execution, however, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency. 
+With parallel statement execution, multiple SQL statements within a transaction are executed at the same time, thereby reducing the aggregate latency.
+
+There is a tradeoff, however. Parallel statement execution breaks SQL semantics by continuing ahead with an attempt to execute a batch of SQL statements even after one of the statements in the transaction has failed.
 
 ## How parallel statement execution works
 

@@ -31,7 +31,7 @@ To reproduce the performance demonstrated in this tutorial:
 
 ### Schema
 
-You're schema and data will be based on the fictional peer-to-peer vehicle-sharing app, MovR, that was featured in the [CockroachDB 2.0 demo](https://www.youtube.com/watch?v=v2QK5VgLx6E):
+Your schema and data will be based on the fictional peer-to-peer vehicle-sharing app, MovR, that was featured in the [CockroachDB 2.0 demo](https://www.youtube.com/watch?v=v2QK5VgLx6E):
 
 <img src="{{ 'images/v2.0/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
 
@@ -415,7 +415,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning.py \
-    | chmod +x tuning.py
+    && chmod +x tuning.py
     ~~~
 
     As you'll see below, this client lets you pass command-line flags:

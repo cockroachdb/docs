@@ -136,6 +136,12 @@
             ]
           },
           {
+            "title": "Serializable Transactions",
+            "urls": [
+              "/${VERSION}/demo-serializable.html"
+            ]
+          },
+          {
             "title": "Cross-Cloud Migration",
             "urls": [
               "/${VERSION}/demo-automatic-cloud-migration.html"
@@ -309,6 +315,12 @@
             "title": "Performance Benchmarking",
             "urls": [
               "/${VERSION}/performance-benchmarking-with-tpc-c.html"
+            ]
+          },
+          {
+            "title": "Performance Tuning",
+            "urls": [
+              "/${VERSION}/performance-tuning.html"
             ]
           },
           {
@@ -773,6 +785,12 @@
                 "title": "<code>EXPLAIN</code>",
                 "urls": [
                   "/${VERSION}/explain.html"
+                ]
+              },
+              {
+                "title": "<code>EXPLAIN ANALYZE</code>",
+                "urls": [
+                  "/${VERSION}/explain-analyze.html"
                 ]
               },
               {

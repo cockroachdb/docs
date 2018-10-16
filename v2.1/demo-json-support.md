@@ -253,13 +253,8 @@ Instead of 105.877736ms, the query now takes 28.646769ms.
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
 You may also want to learn more about the [`JSONB`](jsonb.html) data type and [inverted indexes](inverted-indexes.html).
