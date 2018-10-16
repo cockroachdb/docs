@@ -6,13 +6,15 @@ toc: true
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](sql-grammar.html#explainable_stmt). You can then use this information to optimize the query.
 
+{{site.data.alerts.callout_success}}
+To actually execute a statement and return a physical query plan with execution statistics, use [`EXPLAIN ANALYZE`](explain-analyze.html).
+{{site.data.alerts.end}}
+
 ## Query optimization
 
 Using `EXPLAIN`'s output, you can optimize your queries by taking the following points into consideration:
 
 - Queries with fewer levels execute more quickly. Restructuring queries to require fewer levels of processing will generally improve performance.
-
-- To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`.
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
@@ -36,11 +38,10 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 
  Parameter          | Description
 --------------------+------------
- `ANALYZE`          | <span class="version-tag">New in v2.1:</span> Execute the command and show execution statistics.
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
  `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
- `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Provide a link that displays a distributed SQL plan tree.
+ `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
  `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
 {{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
@@ -54,15 +55,14 @@ Successful `EXPLAIN` statements return tables with the following columns:
 **Tree** | A tree representation showing the hierarchy of the query plan.
 **Field** | The name of a parameter relevant to the query plan node immediately above.
 **Description** | Additional information for the parameter in  **Field**.
-**Columns** | The columns provided to the processes at lower levels of the hierarchy.  Included in `TYPES` and `VERBOSE` output.
+**Columns** | The columns provided to the processes at lower levels of the hierarchy. Included in `TYPES` and `VERBOSE` output.
 **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. Included in `TYPES` and `VERBOSE` output.
 
 ## Examples
 
 ### Default query plans
 
-By default, `EXPLAIN` includes the least detail about the query plan but can be
-useful to find out which indexes and index key ranges are used by a query:
+By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -80,19 +80,14 @@ useful to find out which indexes and index key ranges are used by a query:
 (5 rows)
 ~~~
 
-The first column shows the tree structure of the query plan; a set of properties
-is displayed for each node in the tree. Most importantly, for scans, you can see
-the index that is scanned (`primary` in this case) and what key ranges of the
-index you are scanning (in this case, a full table scan). For more
-information on indexes and key ranges, see the
-[example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+The first column shows the tree structure of the query plan; a set of properties is displayed for each node in the tree. Most importantly, for scans, you can see the index that is scanned (`primary` in this case) and what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
 ### `VERBOSE` option
 
 The `VERBOSE` option:
 
-+ Includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
-+ Includes detail about which columns are being used by each level, as well as properties of the result set on that level.
+- Includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
+- Includes detail about which columns are being used by each level, as well as properties of the result set on that level.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -168,7 +163,6 @@ For example:
 
 The query above will be run with the cost-based optimizer and `EXPLAIN (OPT)` returns the query plan tree.
 
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) INSERT INTO kv VALUES (1,1);
@@ -182,11 +176,13 @@ The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 
-<span class="version-tag">New in v2.1:</span> The `DISTSQL` option provides a link to a distributed query plan tree:
+<span class="version-tag">New in v2.1:</span> The  `DISTSQL` option generates a physical query plan for a query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+
+`EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be executed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
+> EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~
@@ -195,31 +191,13 @@ The query above will not be run with the cost-based optimizer.
    true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 
-Point your browser to the URL provided:
+To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
 
 <img src="{{ 'images/v2.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
-To view the distributed SQL query plan with execution statistics, use `EXPLAIN ANALYZE (DISTSQL)`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN ANALYZE (DISTSQL) SELECT * FROM quotes WHERE episode = 13;
-~~~
-
-~~~
- automatic |                      url
------------+----------------------------------------------
-   true    | https://cockroachdb.github.io/distsqlplan...
-~~~
-
-Point your browser to the URL provided:
-
-<img src="{{ 'images/v2.1/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
-
 ### Find the indexes and key ranges a query uses
 
-You can use `EXPLAIN` to understand which indexes and key ranges queries use,
-which can help you ensure a query isn't performing a full table scan.
+You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -242,8 +220,7 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 (3 rows)
 ~~~
 
-If there were an index on `v`, CockroachDB would be able to avoid scanning the
-entire table:
+If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -264,8 +241,7 @@ entire table:
 (3 rows)
 ~~~
 
-Now, only part of the index `v` is getting scanned, specifically the key range starting
-at (and including) 4 and stopping before 6.
+Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6.
 
 ## See also
 
@@ -276,6 +252,7 @@ at (and including) 4 and stopping before 6.
 - [`CREATE DATABASE`](create-database.html)
 - [`DROP DATABASE`](drop-database.html)
 - [`EXECUTE`](sql-grammar.html#execute_stmt)
+- [`EXPLAIN ANALYZE`](explain-analyze.html)
 - [`IMPORT`](import.html)
 - [Indexes](indexes.html)
 - [`INSERT`](insert.html)
