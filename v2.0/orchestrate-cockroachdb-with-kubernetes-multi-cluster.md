@@ -22,6 +22,17 @@ instance | A physical or virtual machine. In this tutorial, you'll run instances
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod`), the client must have a `Role` that allows it to do so.
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | A namespace provides a scope for resources and names within a Kubernetes cluster. Names of resources need to be unique within a namespace, but not across namespaces. Most Kubernetes client commands will use the `default` namespace by default, but can operate on resources in other namespaces as well if told to do so.
+[kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) | `kubectl` is the command-line interface for running commands against Kubernetes clusters.
+[kubectl context](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration) | A `kubectl` "context" specifies a Kubernetes cluster to connect to and authentication for doing so. You can set a context as the default using the `kubectl use-context <context-name>` command such that all future `kubectl` commands will talk to that cluster, or you can specify the `--context=<context-name>` flag on almost any `kubectl` command to tell it which cluster you want to run the command against. We will make heavy use of the `--context` flag in these instructions in order to run commands against the different regions' Kubernetes clusters.
+
+### UX differences from running in a single cluster
+
+These instructions create a StatefulSet that runs CockroachDB in each of the Kubernetes clusters you provide to the configuration scripts. These StatefulSets can be scaled independently of each other by running `kubectl` commands against the appropriate cluster. These steps will also point each Kubernetes cluster's DNS server at the other clusters' DNS servers so that DNS lookups for certain zone-scoped suffixes (e.g., "*.us-west1-a.svc.cluster.local") can be deferred to the appropriate cluster's DNS server. However, in order to make this work, we create the StatefulSets in namespaces named after the zone in which the cluster is running. This means that in order to run a command against one of the pods, you have to run, e.g., `kubectl logs cockroachdb-0 --namespace=us-west1-a` instead of just `kubectl logs cockroachdb-0`. Alternatively, you can [configure your `kubectl` context to default to using that namespace for commands run against that cluster](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/#setting-the-namespace-preference).
+
+Note that the CockroachDB pods being in a non-default namespace means that if we didn't do anything about it then any client applications wanting to talk to CockroachDB from the default namespace would need to talk to a zone-scoped service name such as "cockroachdb-public.us-west1-a" rather than just the normal "cockroachdb-public" that they would use in a single-cluster setting. However, the setup script used by these instructions sets up an additional [`ExternalName` service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in the default namespace such that the clients in the default namespace can simply talk to the "cockroachdb-public" address.
+
+Finally, if you haven't worked with multiple Kubernetes clusters often before, you may find yourself forgetting to think about which cluster you want to run a given command against, and thus getting confusing results to your commands. Remember that you will either have to run `kubectl use-context <context-name>` frequently to switch contexts between commands or you will have to append `--context=<context-name>` on most commands you run to ensure they are run on the correct cluster.
 
 ### Limitations
 
@@ -58,7 +69,7 @@ Our multi-region deployment approached relies on pod IP addresses being routable
 
     This creates GKE instances in the zone specified and joins them into a single Kubernetes cluster named `cockroachdb1`.
 
-    The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb1...done` message and details about your cluster.
+    The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb1...done` message and details about your cluster.
 
 3. Start the second Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
@@ -255,11 +266,11 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
 ## Step 3. Use the built-in SQL client
 
-1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the namespace and context of the Kubernetes cluster to run it in:
+1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster to run it in:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f client-secure.yaml --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl create -f client-secure.yaml --context=<cluster-context>
     ~~~
 
     ~~~
@@ -272,7 +283,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -333,7 +344,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl delete pod cockroachdb-client-secure --context=<cluster-context>
     ~~~
 
 ## Step 4. Access the Web UI
@@ -359,42 +370,41 @@ To access the cluster's [Web UI](admin-ui-overview.html):
 
 3. In the UI, check the **Node List** to verify that all nodes are running, and then click the **Databases** tab on the left to verify that `bank` is listed.
 
-## Step 5. Simulate node failure
+## Step 5. Simulate datacenter failure
 
-In each Kubernetes cluster, the `replicas: 3` line in the StatefulSet configuration tells Kubernetes to ensure that three pods/nodes are running at all times. When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+One of the major benefits of running a multi-region cluster is that an entire datacenter or region can go down without affecting the availability of the CockroachDB cluster as a whole.
 
 To see this in action:
 
-1. Kill a CockroachDB node, specifying the namespace and context of the Kubernetes cluster where it's running:
+1. Scale down one of the StatefulSets to zero pods, specifying the namespace and context of the Kubernetes cluster where it's running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-2 --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl scale statefulset cockroachdb --replicas=0 --namespace=<cluster-namespace> --context=<cluster-context>
     ~~~
 
     ~~~
-    pod "cockroachdb-2" deleted
+    statefulset "cockroachdb" scaled
     ~~~
 
-2. In the Admin UI, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+2. In the Admin UI, the **Cluster Overview** will soon show the three nodes from that region as **Suspect**. If you wait for 5 minutes or more, they will be listed as **Dead**. Note that even though there are three dead nodes, the other nodes are all healthy, and any clients using the database in the other regions will continue to work just fine.
 
-3. Back in the terminal, verify that the pod was automatically restarted:
+3. When you're done verifying that the cluster still fully functions with one of the regions down, you can bring the region back up by running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pod cockroachdb-2 --namespace=<cluster-namespace> --context=<cluster-context>
+    $ kubectl scale statefulset cockroachdb --replicas=3 --namespace=<cluster-namespace> --context=<cluster-context>
     ~~~
 
     ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-2   1/1       Running   0          12s
+    statefulset "cockroachdb" scaled
     ~~~
 
 ## Step 6. Maintain the cluster
 
 ### Scale the cluster
 
-Each of your Kubernetes clusters contains 3 nodes that pods can run on. To ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
+Each of your Kubernetes clusters contains 3 nodes that pods can run on. To ensure that you do not have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
 1. [Resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster).
 
@@ -443,7 +453,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
@@ -501,7 +511,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --namespace=<cluster-namespace> --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Re-enable auto-finalization:
