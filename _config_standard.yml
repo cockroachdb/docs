@@ -8,4 +8,4 @@ versions:
   dev: v2.1
   v1.2: v2.0
 
-exclude: ['ci', 'vendor', 'v1.1/training/unused', 'v2.0/training/unused', 'v2.1/training/unused', 'hackathon.md', 'v2.1/dummy.md', 'v2.1/managed-sign-up-for-a-cluster.md', 'v2.1/managed-connect-to-your-cluster.md']
+exclude: ['ci', 'vendor', 'v1.1/training/unused', 'v2.0/training/unused', 'v2.1/training/unused', 'hackathon.md', 'v2.1/dummy.md', 'v2.1/managed-connect-to-your-cluster.md', 'v2.1/managed-sign-up-for-a-cluster.md']
