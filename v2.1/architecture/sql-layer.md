@@ -44,7 +44,7 @@ SQL queries reach your cluster through the PostgreSQL wire protocol. This makes 
 
 ### SQL parser, planner, executor
 
-After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, creates a query plan, and then executes the plan.
+After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, [creates a query plan](../cost-based-optimizer.html), and then executes the plan.
 
 #### Parsing
 
@@ -58,7 +58,7 @@ The AST is subsequently transformed into a query plan in three phases:
 
 2. The logical plan is *simplified* using transformation optimizations that are always valid.
 
-3. The logical plan is *optimized* using a [search algorithm](../sql-optimizer.html) that evaluates many possible ways to execute a query and selects an execution plan with the least costs.
+3. The logical plan is *optimized* using a [search algorithm](../cost-based-optimizer.html) that evaluates many possible ways to execute a query and selects an execution plan with the least costs.
 
 The result of the optimization phase is an optimized logical plan. This can be observed with [`EXPLAIN`](../explain.html).
 

@@ -40,7 +40,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 --------------------+------------
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
- `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns `pq: unsupported statement: *tree.Insert`, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+ `OPT`              | <span class="version-tag">New in v2.1:</span> Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
  `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
  `explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
 
@@ -138,41 +138,47 @@ The `TYPES` mode includes the types of the values used in the query plan.  It al
 
 ### `OPT` option
 
-<span class="version-tag">New in v2.1:</span> The `OPT` option displays a query plan tree if the query will be run with the [cost-based optimizer](sql-optimizer.html). If it returns an unsupported statement error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+<span class="version-tag">New in v2.1:</span> The `OPT` option displays a query plan tree, along with some information that was used to plan the query, if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
 
-For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (OPT) SELECT * FROM kv WHERE k > 3;
-~~~
-
-~~~
-                 text
---------------------------------------
- scan kv
-  ├── columns: k:1(int!null) v:2(int)
-  ├── constraint: /1: [/4 - ]
-  ├── stats: [rows=333.333333]
-  ├── cost: 346.666667
-  ├── key: (1)
-  ├── fd: (1)-->(2)
-  └── prune: (2)
-(8 rows)
-~~~
-
-The query above will be run with the cost-based optimizer and `EXPLAIN (OPT)` returns the query plan tree.
+For example, the following query returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) INSERT INTO kv VALUES (1,1);
+> EXPLAIN(OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
+~~~
+
+~~~
+                                     text
++-----------------------------------------------------------------------------+
+group-by
+├── columns: l_shipmode:15(string!null) avg:17(float)
+├── grouping columns: l_shipmode:15(string!null)
+├── stats: [rows=700, distinct(15)=700]
+├── cost: 1207
+├── key: (15)
+├── fd: (15)-->(17)
+├── prune: (17)
+├── scan lineitem
+│    ├── columns: l_extendedprice:6(float!null) l_shipmode:15(string!null)
+│    ├── stats: [rows=1000, distinct(15)=700]
+│    ├── cost: 1180
+│    └── prune: (6,15)
+└── aggregations [outer=(6)]
+└── avg [type=float, outer=(6)]
+└── variable: l_extendedprice [type=float, outer=(6)]
+(16 rows)
+~~~
+
+In contrast, this query returns `pq: unsupported statement: *tree.Insert`, which means that it will use the heuristic planner instead of the cost-based optimizer:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) INSERT INTO l_shipmode VALUES ("truck");
 ~~~
 
 ~~~
 pq: unsupported statement: *tree.Insert
 ~~~
-
-The query above will not be run with the cost-based optimizer.
 
 ### `DISTSQL` option
 

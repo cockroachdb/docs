@@ -55,6 +55,10 @@ For example:
 The subquery is correlated because it uses `c` defined in the
 surrounding query.
 
+{{site.data.alerts.callout_danger}}
+Some correlated subqueries are not supported by the [cost-based optimizer](cost-based-optimizer.html) yet. If you come across an unsupported correlated subquery, please [file a Github issue](file-an-issue.html).
+{{site.data.alerts.end}}
+
 ## Performance best practices
 
 {{site.data.alerts.callout_info}}
