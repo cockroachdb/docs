@@ -160,7 +160,7 @@ $(function() {
     if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocRight.css({
         position: 'fixed',
-        top: 88,
+        top: 140,
         width: '265px'
       });
 

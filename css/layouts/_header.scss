@@ -206,7 +206,6 @@ header {
 	float:left;
   padding: 15px;
 	background: #FFFFFF;
-  border-bottom: 1px solid $cl_gray_medium;
 	height: 60px;
 
 	@include at-query($min, $screen-md) {
@@ -221,6 +220,11 @@ header {
 	&.navbar-fixed-top {
 		display: flex;
 		justify-content: center;
+		border-bottom: 1px solid $cl_gray_medium;
+
+		@include at-query($min, $screen-md) {
+			border-bottom: unset;
+		}
 	}
 
 	.navbar-fixed-top--inner {

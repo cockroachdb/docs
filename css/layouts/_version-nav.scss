@@ -1,0 +1,91 @@
+.version-nav {
+  position: fixed;
+  display: flex;
+  align-items: center;
+
+  top: 60px;
+  height: 55px;
+  width: 100%;
+  max-width: $max-width;
+  padding: 0 15px;
+
+  background: $cl_gray_light;
+  border-bottom: 1px solid $cl_gray_medium;
+  z-index: 2;
+
+  @include at-query($min, $screen-md) {
+    top: 70px;
+    left: 0;
+    padding: 0 30px;
+    border-bottom: unset;
+  }
+
+  @include at-query($min, $max-width + 30px) {
+    /* position the fixed header to be horizontally-centered
+     above the main content column using left = ($max-width / 2) */
+    left: calc(50vw - (765px));
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+
+    &:hover {
+      color: $cl_blue_note;
+
+      .version-nav__link-icon--standard {
+        display: none;
+      }
+
+      .version-nav__link-icon--hover {
+        display: inline-block;
+      }
+    }
+
+    &-text {
+      margin-top: 3px;
+      @include button-text;
+      @include avenir_r(12px);
+      font-weight: bold;
+      text-transform: uppercase;
+
+      &--crdb {
+        &:after {
+          content: 'CRDB';
+
+          @include at-query($min, $screen-sm) {
+            content: 'CockroachDB';
+          }
+        }
+      }
+      &--managed {
+        &:after {
+          content: 'Managed CRDB';
+
+          @include at-query($min, $screen-sm) {
+            content: 'Managed CockroachDB';
+          }
+        }
+      }
+    }
+
+    &-icon {
+      &--crdb {
+        margin-right: 8px;
+      }
+
+      &--managed {
+        margin-right: -1px;
+      }
+
+      &--standard {
+        display: inline-block;
+      }
+
+      &--hover {
+        display: none;
+      }
+    }
+  }
+}
