@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v2.1:</span> The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 
-In version 2.1, CockroachDB's new **cost-based optimizer is enabled by default**. In versions prior to v2.1, a heuristic planner was used to generate query execution plans. The heuristic planner will only be used in the following cases:
+In versions 2.1 and later, CockroachDB's **cost-based optimizer is enabled by default**. In versions prior to v2.1, a heuristic planner was used to generate query execution plans. The heuristic planner will only be used in the following cases:
 
 - If your query uses functionality that is not supported by the cost-based optimizer
 - If you explicitly [turn off the cost-based optimizer](#how-to-turn-the-optimizer-off)
@@ -15,20 +15,20 @@ In version 2.1, CockroachDB's new **cost-based optimizer is enabled by default**
 
 ## How is cost calculated?
 
-A given SQL query can have thousands of equivalent query plans with vastly different execution times. The cost-based optimizer enumerates these plans and chooses the lowest cost plan when generating a query execution plan.
+A given SQL query can have thousands of equivalent query plans with vastly different execution times. The cost-based optimizer enumerates these plans and chooses the lowest cost plan.
 
 Cost is roughly calculated by:
 
 - Estimating how much time each node in the query plan will use to process all results
 - Modeling how data flows through the query plan
 
-The most important factor in determining the quality of a plan is cardinality (i.e., the number of rows); the fewer the rows each SQL operator needs to process, the faster the query will run.
+The most important factor in determining the quality of a plan is cardinality (i.e., the number of rows); the fewer rows each SQL operator needs to process, the faster the query will run.
 
 ## View query plan
 
 To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If the query is unsupported (i.e., it returns an error like `pq: unsupported statement: *tree.Insert` or `pq: aggregates with FILTER are not supported yet`), the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
 
-For example, the following query returns the query plan tree, which means that it will be run with the cost-based optimizer:
+For example, the following query (which uses [CockroachDB's TPC-H data set](https://github.com/cockroachdb/cockroach/tree/b1a57102d8e99b301b74c97527c1b8ffd4a4f3f1/pkg/workload/tpch)) returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
 {% include copy-clipboard.html %}
 ~~~ sql
