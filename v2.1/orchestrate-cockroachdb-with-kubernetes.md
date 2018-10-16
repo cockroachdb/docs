@@ -251,7 +251,16 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     (1 row)
     ~~~
 
-3. Exit the SQL shell and pod:
+3. Create a user with a password:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+    ~~~
+
+      You will need this username and password to access the Admin UI in Step 6.
+
+4. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql

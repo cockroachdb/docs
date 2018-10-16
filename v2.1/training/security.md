@@ -158,7 +158,7 @@ There's no need to run `cockroach init` again since the cluster was initialized 
 Although we recommend always using TLS certificates to authenticate users, it's possible to authenticate a user with just a password.
 
 {{site.data.alerts.callout_info}}
-For multiple users to access the Admin UI, the `root` user must [create users with passwords](../create-user.html).
+For multiple users to access the Admin UI, the `root` user must [create users with passwords](../create-user.html#create-a-user-with-a-password).
 {{site.data.alerts.end}}
 
 1. As the `root` user, create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:

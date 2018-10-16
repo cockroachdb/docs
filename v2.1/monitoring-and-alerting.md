@@ -17,7 +17,7 @@ The [built-in Admin UI](admin-ui-access-and-navigate.html) gives you essential m
 
 #### Accessing the Admin UI for a secure cluster
 
-For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords. To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar.
+For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords. To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar.
 
 {{site.data.alerts.callout_danger}}Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.{{site.data.alerts.end}}
 
