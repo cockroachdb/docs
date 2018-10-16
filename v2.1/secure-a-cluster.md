@@ -220,9 +220,13 @@ Exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Then click **Metrics** on the left-hand navigation bar.
+To view your cluster's Admin UI:
 
-Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+1. For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html).
+2. Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+3. On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords.
+
+Then click **Metrics** on the left-hand navigation bar.
 
 <img src="{{ 'images/v2.1/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

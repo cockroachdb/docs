@@ -193,6 +193,10 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 
 6. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-access-and-navigate.html).
 
+    {{site.data.alerts.callout_info}}
+    To access the Admin UI for a secure cluster, [create a user with a password](create-user.html). Then open a browser and go to `https://<any node's external IP address>:8080`. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.
+    {{site.data.alerts.end}}
+
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
     {% include copy-clipboard.html %}

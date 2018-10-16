@@ -440,15 +440,20 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
 
 ## Step 8. Monitor the cluster
 
-To view your cluster's Admin UI, open a browser and go to `https://<any node's external IP address>:8080`.
+To view your cluster's Admin UI:
 
+1. For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html).
+2. Open a browser and go to `https://<any node's external IP address>:8080`.
 {{site.data.alerts.callout_info}}It's possible to access the Admin UI from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition. However, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.{{site.data.alerts.end}}
+3. On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords.
 
-On this page, verify that the cluster is running as expected:
+On the Admin UI, verify that the cluster is running as expected:
 
 1. View **Node List** to ensure that all of your nodes successfully joined the cluster.
 
 2. Click the **Databases** tab on the left to verify that `securenodetest` is listed.
+
+To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar. 
 
 ## Step 9. Simulate node failure
 

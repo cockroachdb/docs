@@ -36,6 +36,8 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
     {{site.data.alerts.callout_success}}For more <code>tpcc</code> options, use <code>workload run tpcc --help</code>. For details about other load generators included in <code>workload</code>, use <code>workload run --help</code>.
 
-4. To monitor the load generator's progress, open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+4. Use the [Admin UI](admin-ui-access-and-navigate.html) to monitor the load generator's progress.
+
+    For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). Then access the Admin UI by pointing a browser to the address in the `admin` field in the standard output of any node on startup. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.
 
     Since the load generator is pointed at the load balancer, the connections will be evenly distributed across nodes. To verify this, click **Metrics** on the left, select the **SQL** dashboard, and then check the **SQL Connections** graph. You can use the **Graph** menu to filter the graph for specific nodes.
