@@ -14,6 +14,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 {% include v2.1/cdc/known-limitations.md %}
 
+### Admin UI may become inaccessible for secure clusters
+
+<span class="version-tag">New in v2.1:</span> Accessing the Admin UI for a secure cluster now requires login information (username and password). This login information is stored in a system range, which is replicated as per the replication factor. If majority of the nodes with the system range replicas go down, the range might lose quorum, causing the users to be locked out of the Admin UI.
+
 ## Unresolved limitations
 
 ### Changes to the default replication zone are not applied to existing replication zones
