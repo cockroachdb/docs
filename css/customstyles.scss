@@ -3,6 +3,32 @@
 @import "global/fonts";
 @import "global/type";
 
+@import "layouts/header";
+@import "layouts/sidebar";
+@import "layouts/landing-page";
+@import "layouts/content";
+@import "layouts/footer";
+@import "layouts/version-nav";
+
+@import "components/search";
+@import "components/callout";
+@import "components/toc";
+@import "components/filtertabs";
+@import "components/newsletter";
+@import "components/codesamples";
+@import "syntax/sql";
+@import "syntax/syntax";
+@import "components/feedback-widget";
+@import "components/back-to-top";
+@import "components/buttons";
+@import "components/help-widget";
+@import "components/releases";
+@import "components/copy-clipboard";
+@import "components/version-tag";
+@import "components/comparison-chart";
+@import "components/algolia";
+@import "components/version-switcher";
+
 html {
   height: 100%;
 }
@@ -110,12 +136,6 @@ ul {
 a code:hover {
   text-decoration: underline;
 }
-
-@import "layouts/header";
-@import "layouts/sidebar";
-@import "layouts/landing-page";
-@import "layouts/content";
-@import "layouts/footer";
 
 .breadcrumb > .active {color: #777 !important;}
 
@@ -265,12 +285,6 @@ dl.dl-horizontal dd {
 
 img.screenshotSmall {
   max-width: 300px;
-}
-
-@media (max-width: 990px) {
-  #mysidebar {
-    position: relative;
-  }
 }
 
 figcaption {
@@ -528,21 +542,3 @@ a.accordion-toggle {
   width: 100%;
   max-width: 800px;
 }
-
-@import "components/search";
-@import "components/callout";
-@import "components/toc";
-@import "components/filtertabs";
-@import "components/newsletter";
-@import "components/codesamples";
-@import "syntax/sql";
-@import "syntax/syntax";
-@import "components/feedback-widget";
-@import "components/back-to-top";
-@import "components/buttons";
-@import "components/help-widget";
-@import "components/releases";
-@import "components/copy-clipboard";
-@import "components/version-tag";
-@import "components/comparison-chart";
-@import "components/algolia";
