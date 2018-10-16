@@ -1325,6 +1325,12 @@
                 ]
               },
               {
+                "title": "Experimental Features",
+                "urls": [
+                  "/${VERSION}/experimental-features.html"
+                ]
+              },
+              {
                 "title": "Full SQL Grammar",
                 "urls": [
                   "/${VERSION}/sql-grammar.html"
