@@ -130,7 +130,7 @@ Field | Description
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
-`is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive Admin UI), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster.  <br><br> However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
+`is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive Admin UI), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
@@ -214,7 +214,7 @@ The `is_live` and `is_available` fields are marked as `true` as long as a majori
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --host=165.227.60.76 --certs-dir=certs
+$ cockroach quit --host=192.241.239.201 --certs-dir=certs
 ~~~
 
 {% include copy-clipboard.html %}
@@ -235,7 +235,7 @@ If a majority of nodes are down and a quorum cannot be reached, the `is_live` fi
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --host=165.227.60.76 --certs-dir=certs
+$ cockroach quit --host=67.207.91.36 --certs-dir=certs
 ~~~
 
 {% include copy-clipboard.html %}
