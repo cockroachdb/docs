@@ -82,12 +82,9 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
     +--------------------+
     |      Database      |
     +--------------------+
-    | crdb_internal      |
-    | information_schema |
-    | pg_catalog         |
     | system             |
     +--------------------+
-    (4 rows)
+    (1 row)
     ~~~
 
 ## Clean up
