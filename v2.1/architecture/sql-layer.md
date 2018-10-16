@@ -44,7 +44,7 @@ SQL queries reach your cluster through the PostgreSQL wire protocol. This makes 
 
 ### SQL parser, planner, executor
 
-After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, creates a query plan, and then executes the plan.
+After your node ultimately receives a SQL request from a client, CockroachDB parses the statement, [creates a query plan](cost-based-optimizer.html), and then executes the plan.
 
 #### Parsing
 
