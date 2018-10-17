@@ -36,7 +36,10 @@ module JekyllVersions
     end
 
     def sidebar_data
-      "sidebar-data-#{demand_version}.json"
+      s = "sidebar-data-"
+      s << demand_version
+      s << ".managed" if @config.managed
+      s << ".json"
     end
 
     private
