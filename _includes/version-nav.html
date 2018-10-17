@@ -1,12 +1,78 @@
-<div class="version-nav">
-    <a class="version-nav__link version-nav__link--crdb" href="">
+<div class="version-nav-wrapper">
+  <script>
+    $(document).ready(function() {
+      var $versionSwitcher = $('#version-switcher').find('ul.nav');
+
+      var navgocoOptions = {
+        caretHtml: '',
+        accordion: true,
+        openClass: 'active',
+        save: false,
+        cookie: {
+          name: 'navgoco',
+          expires: false,
+          path: '/'
+        },
+        slide: {
+          duration: 150,
+          easing: 'swing'
+        }
+      };
+
+      function closeVersionSwitcher() {
+        $('#version-switcher .tier-1 ul').slideUp();
+        $('#version-switcher').removeClass('open');
+      }
+
+      // Initialize navgoco with config options
+      $versionSwitcher.navgoco($.extend(navgocoOptions, {
+        onToggleBefore: function() {
+          $('#version-switcher').toggleClass('open');
+        }
+      }));
+
+      $versionSwitcher.show();
+    });
+  </script>
+  <div class="version-nav">
+    <a class="version-nav__link version-nav__link--crdb" href="/docs/stable/">
       <img class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--standard" src="{{ 'images/docs.svg' | relative_url }}"/>
       <img class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--hover" src="{{ 'images/docs-hover.svg' | relative_url }}"/>
       <span class="version-nav__link-text version-nav__link-text--crdb" ></span>
     </a>
-    <a class="version-nav__link version-nav__link--managed" href="">
+    <a class="version-nav__link version-nav__link--managed" href="/docs/managed/stable/">
       <img class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--standard" src="{{ 'images/docs-managed.svg' | relative_url }}"/>
       <img class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--hover" src="{{ 'images/docs-managed-hover.svg' | relative_url }}"/>
       <span class="version-nav__link-text version-nav__link-text--managed"></span>
     </a>
+    {% if page.version %}
+    <div id="version-switcher">
+      <ul class="nav" style="display: none">
+        <li class="tier-1">
+          <a href="#">
+            Version: <span class="version-name">{{ page.version.name }}</span>
+            <div class="arrow-down"></div>
+          </a>
+        <ul>
+          {% for v in page.versions %}
+            <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
+              <a
+              {% if v.url %}href="{{ v.url | relative_url }}"
+              {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
+                {{ v.version.name }}
+                {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    </ul>
   </div>
+  {% endif %}
+  </div>
+  <script>
+    $("#version-switcher").change(function () {
+      location.href = $(this).val();
+    });
+  </script>
+</div>

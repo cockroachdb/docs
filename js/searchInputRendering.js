@@ -9,8 +9,8 @@ $(document).ready(function() {
   // so when we close the menu it reverts to normal styling
   // needs to happen if any of these elements are clicked
   $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
-    if ($('#mysidebar').hasClass('nav--search')) {
-      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
+    if ($('#sidebar').hasClass('nav--search')) {
+      $('#sidebar').removeClass('nav--search').addClass('nav--home');
     }
   });
 
