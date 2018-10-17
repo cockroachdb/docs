@@ -9,19 +9,30 @@
   z-index: 2;
 
   @include at-query($min, $screen-md) {
-    width: 240px;
     display: block;
-    background: #fff;
-    left: auto;
+    position: relative;
+    width: 150px;
+    margin-right: 5px;
+    margin-left: auto;
+    border-top: none;
   }
-
-  @include at-query($min, $screen-lg) {width: 240px; }
 
   &.open {
     border-bottom: 1px solid $cl_gray_medium;
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);
 
-    @include at-query($max, $screen-md) {
-      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.1);
+    @include at-query($min, $screen-md) {
+      border-bottom: none;
+      box-shadow: none;
+    }
+  }
+
+  li {
+    .arrow-down,
+    .nav-expand {
+      @include at-query($min, $screen-md) {
+        float: right;
+      }
     }
   }
 
@@ -35,14 +46,15 @@
       line-height: 50px;
       text-transform: uppercase;
       color: $cl_blue;
-      border-bottom: 1px solid $cl_gray_medium;
 
-      @include at-query($min, $screen-md) { padding: 0 10px; }
+      @include at-query($min, $screen-md) {
+        padding: 0 0 0 15px;
+      }
 
       .version-name {
         @include avenir_h(14px);
         line-height: 20px;
-        color: $cl_green;
+        color: $cl_blue_note;
         text-transform: none;
         letter-spacing: normal;
       }
@@ -71,7 +83,11 @@
     padding: 15px 0;
 
     @include at-query($min, $screen-md) {
+      position: absolute;
+      background: $cl_gray_light;
+      width: calc(100% + 35px);
       padding-bottom: 0;
+      box-shadow: -4px 3px 5px 0px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -87,12 +103,12 @@
       border-bottom: none;
 
       &:hover {
-        color: $cl_green;
+        color: $cl_blue_note;
       }
     }
 
     &.active a {
-      color: $cl_green;
+      color: $cl_blue_note;
     }
   }
 }
