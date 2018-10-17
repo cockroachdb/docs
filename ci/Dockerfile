@@ -3,6 +3,7 @@ FROM alpine:3.7
 COPY Gemfile Gemfile.lock /tmp/bundler/
 
 RUN apk add --update \
+    bash \
     build-base \
     ca-certificates \
     groff \
@@ -11,6 +12,7 @@ RUN apk add --update \
     libffi-dev \
     go \
     git \
+    make \
     openssl \
     py-pip \
     python \
