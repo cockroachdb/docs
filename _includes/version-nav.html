@@ -57,8 +57,28 @@
           {% for v in page.versions %}
             <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
               <a
-              {% if v.url %}href="{{ v.url | relative_url }}"
-              {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
+              {% if v.url %}
+                href="{{ v.url | relative_url }}"
+                class="version--mobile"
+              {% else %}
+                class="version--mobile version--page-dne"
+              {% endif %}>
+                {{ v.version.name }}
+                {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
+                {% unless v.url %}
+                  <span class="version-text--page-dne">
+                    This page does not exist in {{ v.version.version }}
+                  </span>
+                {% endunless %}
+              </a>
+              <a
+              {% if v.url %}
+                href="{{ v.url | relative_url }}"
+                class="version--desktop"
+              {% else %}
+                class="version--desktop version--page-dne"
+                data-tooltip data-placement="left" data-container="body" title="This page does not exist in {{ v.version.version }}."
+              {% endif %}>
                 {{ v.version.name }}
                 {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
               </a>

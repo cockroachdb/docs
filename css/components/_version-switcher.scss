@@ -110,5 +110,39 @@
     &.active a {
       color: $cl_blue_note;
     }
+
+    .version {
+      &-text {
+
+        &--page-dne {
+          color: $cl_blue;
+          font-style: italic;
+          font-size: 12px;
+        }
+      }
+
+      &--page-dne {
+
+        &:hover {
+          color: $cl_gray_dark;
+        }
+      }
+    }
+
+    .version--mobile {
+      display: block;
+
+      @include at-query($min, $screen-md) {
+        display: none;
+      }
+    }
+
+    .version--desktop {
+      display: none;
+
+      @include at-query($min, $screen-md) {
+        display: block;
+      }
+    }
   }
 }
