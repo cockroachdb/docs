@@ -1,38 +1,5 @@
 <div class="col-sidebar">
-  <script>
-    $(document).ready(function() {
-      var $sidebar = $('#sidebar');
-
-      var navgocoOptions = {
-        caretHtml: '',
-        accordion: true,
-        openClass: 'active',
-        save: false,
-        cookie: {
-          name: 'navgoco',
-          expires: false,
-          path: '/'
-        },
-        slide: {
-          duration: 150,
-          easing: 'swing'
-        }
-      };
-
-      // Initialize navgoco with config options
-      $sidebar.navgoco($.extend(navgocoOptions, {
-        onToggleAfter: function() {
-          if ($(this.el).attr('id') == 'sidebar' &&
-              $('#version-switcher').hasClass('open')) {
-            closeVersionSwitcher();
-          }
-        }
-      }));
-
-      $sidebar.show();
-    });
-  </script>
-
+  <script src="{{ 'js/initSidebar.js' | relative_url }}"></script>
   <ul id="sidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
     <div class="sidenav-arrow"><div class="arrow-down"></div></div>
     <div class="collapsed-header">
