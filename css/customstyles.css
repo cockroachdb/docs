@@ -3280,6 +3280,22 @@ p .version-tag, .clickable-header .version-tag {
         color: #3A7DE1; }
     #version-switcher .tier-2.active a {
       color: #3A7DE1; }
+    #version-switcher .tier-2 .version-text--page-dne {
+      color: #152849;
+      font-style: italic;
+      font-size: 12px; }
+    #version-switcher .tier-2 .version--page-dne:hover {
+      color: #333333; }
+    #version-switcher .tier-2 .version--mobile {
+      display: block; }
+      @media screen and (min-width: 992px) {
+        #version-switcher .tier-2 .version--mobile {
+          display: none; } }
+    #version-switcher .tier-2 .version--desktop {
+      display: none; }
+      @media screen and (min-width: 992px) {
+        #version-switcher .tier-2 .version--desktop {
+          display: block; } }
 
 html {
   height: 100%; }
