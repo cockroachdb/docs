@@ -3,7 +3,7 @@ from os import listdir
 from os.path import isfile, join
 
 directories = ["v2.1/", "v2.1/architecture/", "v2.1/training/"]
-exclude_list = ["ci", "vendor", "v1.0", "v1.1", "v2.0", "releases"]
+exclude_list = ["ci", "vendor", "v1.0", "v1.1", "v1.2", "v2.0", "releases"]
 config_file = "_config_managed.yml"
 
 # Scrape all 2.1 pages and add any without `build_for: managed` or `build_for: both` to exclude_list.
