@@ -22,13 +22,7 @@ CockroachDB is well suited for applications that require reliable, available, an
 - Cloud migrations
 - Cloud-native infrastructure initiatives
 
-## When is CockroachDB not a good choice?
-
-CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
-
-Also, CockroachDB is not yet suitable for:
-
-- Heavy analytics / OLAP
+CockroachDB is not yet suitable for heavy analytics / OLAP.
 
 ## How easy is it to install CockroachDB?
 
@@ -158,7 +152,7 @@ We also fully support [importing your data via CSV](migrate-from-csv.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Not yet, but this is on our long-term roadmap.
+Coming soon!
 
 ## Can I use CockroachDB as a key-value store?
 
