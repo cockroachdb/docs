@@ -10,14 +10,16 @@ run() {
 
 baseurl=$BUILD_VCS_NUMBER
 
+# Tell the Makefile we've already installed dependencies.
+touch bootstrap
+
 # Step 1. Build the standard docs.
 cat > _config_prod.yml <<EOF
 url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
 baseurl: /$baseurl
 destination: _site/$baseurl
 EOF
-run python scripts/exclude_from_standard_docs.py
-run bundle exec jekyll build --config _config.yml,_config_prod.yml
+run make standard-build JEKYLLCONFIG=_config_prod.yml
 
 # Step 2. Build the managed service docs.
 cat > _config_prod_managed.yml <<EOF
@@ -25,8 +27,7 @@ url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
 baseurl: /$baseurl/managed
 destination: _site/$baseurl/managed
 EOF
-run python scripts/exclude_from_managed_docs.py
-run bundle exec jekyll build --config _config_managed.yml,_config_prod_managed.yml
+run make managed-build JEKYLLCONFIG=_config_prod_managed.yml
 
 # Step 3. Upload the docs to S3.
 run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review

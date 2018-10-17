@@ -1,9 +1,5 @@
-homepage_title: CockroachDB Docs
-site_title: CockroachDB
-
+site_title: CockroachDB Docs
 url: "https://www.cockroachlabs.com"
-baseurl: "/docs"
-destination: _site/docs
 
 gems:
 - jekyll-sitemap
@@ -17,11 +13,6 @@ redcarpet:
   - no_intra_emphasis
   - tables
   - with_toc_data
-
-versions:
-  stable: v2.0
-  dev: v2.1
-  v1.2: v2.0
 
 release_info:
   v1.0:
@@ -54,7 +45,6 @@ training:
   aws_access_key: AKIAIXNAWDKXMDDNHRCA
   aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
-exclude: ['ci', 'vendor', 'v1.1/training/unused', 'v2.0/training/unused', 'v2.1/training/unused', 'hackathon.md', 'v2.1/dummy.md']
 include: ["_redirects"]
 
 keep_files: [_internal]

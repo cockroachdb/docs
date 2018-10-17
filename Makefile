@@ -35,15 +35,28 @@ endif
 .PHONY: all
 all: bootstrap
 
-.PHONY: standard
-standard: bootstrap
+comma := ,
+extra-config := $(if $(JEKYLLCONFIG),$(comma)$(JEKYLLCONFIG))
+
+jekyll-action := build
+
+.PHONY: standard-build
+standard-build: bootstrap
 	python scripts/exclude_from_standard_docs.py
-	bundle exec jekyll serve --incremental --config _config.yml
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,$(extra-config)
+
+.PHONY: standard
+standard: jekyll-action := serve --port 4000
+standard: standard-build
+
+.PHONY: managed-build
+managed-build: bootstrap
+	python scripts/exclude_from_managed_docs.py
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config)
 
 .PHONY: managed
-managed: bootstrap
-	python scripts/exclude_from_managed_docs.py
-	bundle exec jekyll serve --incremental --config _config_managed.yml --port 4001
+managed: jekyll-action := serve --port 4001
+managed: managed-build
 
 .PHONY: test
 test: bootstrap
