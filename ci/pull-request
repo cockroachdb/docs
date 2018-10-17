@@ -30,7 +30,7 @@ EOF
 run make managed-build JEKYLLCONFIG=_config_prod_managed.yml
 
 # Step 3. Upload the docs to S3.
-run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review
+run aws s3 cp --recursive --region=us-east-1 ./_site s3://cockroach-docs-review
 
 # Step 4. Post a link to the docs on the GitHub pull request. We do this before
 # running htmltest to provide fast feedback, as htmltest can take several
