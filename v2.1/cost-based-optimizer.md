@@ -2,6 +2,7 @@
 title: Cost-Based Optimizer
 summary: Learn about the cost-based optimizer
 toc: true
+redirect_from: /sql-optimizer.html
 ---
 
 <span class="version-tag">New in v2.1:</span> The cost-based optimizer seeks the lowest cost for a query, usually related to time.
