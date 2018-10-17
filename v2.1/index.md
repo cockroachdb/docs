@@ -1,20 +1,42 @@
 ---
 title: CockroachDB Docs
-summary: CockroachDB documentation with details on installation, getting started, building an app, deployment, orchestration, and more.
-tags: install, build an app, deploy
+summary: CockroachDB user documentation.
 type: first_page
 homepage: true
 toc: false
-no_toc: true
 twitter: false
 contribute: false
 build_for: both
 ---
 
-<div class="landing-page">
-{% if page.managed %}
-Cockroach Cloud is a fully-managed cloud database developed by the same people that build CockroachDB. Cockroach Cloud handles all the complexity of deploying, managing, and healing your deployments on the cloud service provider of your choice (AWS, Azure, and GCP). Follow the links below to get started.
+{% if site.managed %}
+Managed CockroachDB is a **fully hosted** and **fully managed service** created and owned by Cockroach Labs<br>that **makes deploying, scaling, and managing CockroachDB effortless**.
+
+### Always-On Service for Mission Critical Apps
+
+- Monthly uptime percentage of 99.95%
+- Automatically replicate your data across at least three data centers
+- Currently available in GCP and AWS
+
+### Run by Distributed SQL Experts
+
+- Reference architectures battle tested and tuned by the makers of CockroachDB
+- In-house expertise from former Google SRE team
+
+### Operational Excellence
+
+- Automatic hardware provisioning, setup, and configuration
+- Automatic upgrades to the latest stable (or alpha) release of CockroachDB
+- Automatic daily full backups and hourly incremental backups
+
+### Enterprise-Grade Security
+
+- TLS 1.2 for all connections and/or VPC peering between networks
+- SOC2 compliance in process by Cockroach Labs
+- Encryption at Rest by default coming in a future release
+
 {% else %}
+<div class="landing-page">
 CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
   <div class="landing-page__tutorial">
     <a class="landing-page__tutorial--tile install" href="install-cockroachdb.html">
