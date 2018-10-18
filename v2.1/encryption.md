@@ -7,8 +7,12 @@ toc: true
 <span class="version-tag">New in v2.1:</span>
 Encryption at Rest provides transparent encryption of a node's data on the local disk.
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
-
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature.**  In the case of a bug or user error, all data on an encrypted node's store could be rendered unusable.  Do not use Encryption at Rest for production data until it has graduated from experimental status.  Until then, this feature should only be used in a testing environment.
+<br />
+<br />
+If you encounter a bug, please [file an issue](file-an-issue.html).
+{{site.data.alerts.end}}
 
 ## Overview
 
