@@ -568,6 +568,12 @@
                 "urls": [
                   "/${VERSION}/detailed-sql-support.html"
                 ]
+              },
+              {
+                "title": "Postgres DDL Support",
+                "urls": [
+                  "/${VERSION}/postgres-ddl-support.html"
+                ]
               }
             ]
           },
