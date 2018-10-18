@@ -16,14 +16,9 @@
         ]
       },
       {
-        "title": "Learn CockroachDB SQL",
-        "items": [
-
-        ]
-      },
-      {
         "title": "Access the Admin UI",
-        "items": [
+        "urls": [
+          "/${VERSION}/managed-access-the-admin-ui.html"
         ]
       }
     ]
@@ -32,12 +27,6 @@
     "title": "Use Your Cluster",
     "is_top_level": true,
     "items": [
-      {
-        "title": "Build an App",
-        "items": [
-
-        ]
-      },
       {
         "title": "Migrate Data",
         "items": [
@@ -76,22 +65,6 @@
   },
   {
     "title": "Reference",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "TBD",
-        "items": [
-        ]
-      },
-      {
-        "title": "TBD",
-        "items": [
-        ]
-      }
-    ]
-  },
-  {
-    "title": "FAQs",
     "is_top_level": true,
     "items": [
       {
