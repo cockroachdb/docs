@@ -1,0 +1,109 @@
+[
+  {
+    "title": "Get Started",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Sign Up for the Service",
+        "urls": [
+          "/${VERSION}/managed-sign-up-for-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Connect to Your Cluster",
+        "urls": [
+          "/${VERSION}/managed-connect-to-your-cluster.html"
+        ]
+      },
+      {
+        "title": "Learn CockroachDB SQL",
+        "items": [
+
+        ]
+      },
+      {
+        "title": "Access the Admin UI",
+        "items": [
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Use Your Cluster",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Build an App",
+        "items": [
+
+        ]
+      },
+      {
+        "title": "Migrate Data",
+        "items": [
+
+        ]
+      },
+      {
+        "title": "Run Benchmarks",
+        "items": [
+
+        ]
+      },
+      {
+        "title": "Tune Performance",
+        "items": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Manage Your Account",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "User Management",
+        "items": [
+        ]
+      },
+      {
+        "title": "TBD",
+        "items": [
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Reference",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "TBD",
+        "items": [
+        ]
+      },
+      {
+        "title": "TBD",
+        "items": [
+        ]
+      }
+    ]
+  },
+  {
+    "title": "FAQs",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "TBD",
+        "items": [
+        ]
+      },
+      {
+        "title": "TBD",
+        "items": [
+        ]
+      }
+    ]
+  }
+]

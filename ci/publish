@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# run runs a command in the builder container.
+run() {
+  echo "$@"
+  "$(dirname "$0")"/builder run "$@"
+}
+
+run make standard-build managed-build
