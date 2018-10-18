@@ -24,6 +24,10 @@ For each user who should have access to the Admin UI for a secure cluster, [crea
 
 To log out of the Admin UI, click the **Log Out** link at the bottom of the left-hand navigation bar.
 
+{{site.data.alerts.callout_info}}
+Accessing the Admin UI for a secure cluster now requires login information (username and password). This login information is stored in a system range, which is replicated as per the replication factor. If majority of the nodes with the system range replicas go down, the range might lose quorum, causing the users to be locked out of the Admin UI.
+{{site.data.alerts.end}}
+
 ## Navigate the Admin UI
 
 The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
