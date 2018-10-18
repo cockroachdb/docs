@@ -10,7 +10,7 @@ build_for: both
 ---
 
 {% if site.managed %}
-Managed CockroachDB is a **fully hosted** and **fully managed service** created and owned by Cockroach Labs<br>that **makes deploying, scaling, and managing CockroachDB effortless**.
+Managed CockroachDB is a fully hosted and fully managed service created and owned<br>by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 
 ### Always-On Service for Mission Critical Apps
 
