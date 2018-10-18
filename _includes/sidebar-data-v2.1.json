@@ -1569,15 +1569,21 @@
             ]
           },
           {
+            "title": "Statements Page",
+            "urls": [
+              "/${VERSION}/admin-ui-statements-page.html"
+            ]
+          },
+          {
             "title": "Jobs Page",
             "urls": [
               "/${VERSION}/admin-ui-jobs-page.html"
             ]
           },
           {
-            "title": "Statements Page",
+            "title": "Advanced Debugging",
             "urls": [
-              "/${VERSION}/admin-ui-statements-page.html"
+              "/${VERSION}/admin-ui-debug-pages.html"
             ]
           },
           {

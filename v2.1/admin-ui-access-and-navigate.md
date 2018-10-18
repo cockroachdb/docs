@@ -26,9 +26,9 @@ To log out of the Admin UI, click the **Log Out** link at the bottom of the left
 
 ## Navigate the Admin UI
 
-The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), [Databases page](admin-ui-databases-page.html), and [Jobs page](admin-ui-jobs-page.html).
+The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), the [Databases page](admin-ui-databases-page.html), the [Jobs page](admin-ui-jobs-page.html), and the [Advanced Debugging page](admin-ui-debug-pages.html).
 
-The main panel displays changes for each page:
+The main panel display changes for each page:
 
 Page | Main Panel Component
 -----------|------------
@@ -37,6 +37,7 @@ Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Statements | Information about the SQL [statements](admin-ui-statements-page.html) running in the cluster.
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
+Advanced Debugging | Advanced monitoring and troubleshooting [reports](admin-ui-debug-pages.html). These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
 
 ### Cluster Metrics
 
