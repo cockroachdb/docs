@@ -127,6 +127,7 @@
 		line-height: 40px;
 		padding: 0;
 		margin-top: 9px;
+		margin-right: 2px;
 		text-align: center;
 
 		&:focus {
@@ -141,6 +142,10 @@
 	.dropdown-menu {
 		border: none;
 		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+
+		@include at-query($min, 571px) {
+			left: -60px;
+		}
 	}
 
 	.dropdown-menu > li > a {

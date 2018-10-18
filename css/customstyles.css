@@ -830,8 +830,8 @@ a:not([href]) {
         #content #main-content .content-col {
           padding-top: 0;
           min-height: 625px;
-          padding-left: 325px;
-          padding-right: 45px; }
+          padding-left: 310px;
+          padding-right: 30px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; }
           #content #main-content .content-col.no-toc {
@@ -2726,6 +2726,7 @@ img.mfp-img {
   line-height: 40px;
   padding: 0;
   margin-top: 9px;
+  margin-right: 2px;
   text-align: center; }
   .contribute .btn-contribute:focus {
     color: #54B30E; }
@@ -2734,6 +2735,9 @@ img.mfp-img {
 .contribute .dropdown-menu {
   border: none;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1); }
+  @media screen and (min-width: 571px) {
+    .contribute .dropdown-menu {
+      left: -60px; } }
 .contribute .dropdown-menu > li > a {
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 15px;
