@@ -13,9 +13,9 @@ The **Cluster Overview** panel provides the following metrics:
 
 Metric | Description
 --------|----
-Capacity Usage | <ul><li>The storage capacity used as a percentage of total storage capacity allocated across all nodes.</li><li>The current capacity usage.</li></ul>
-Node Status | <ul><li>The number of [live nodes](#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](#dead-nodes) in the cluster.</li>
-Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
+Capacity Usage | <ul><li>Used capacity: The storage capacity used by CockroachDB (represented as a percentage of total storage capacity allocated across all nodes).</li><li>Usable capacity: The space available for CockroachDB data storage (i.e. the storage capacity of the machine excluding the capacity used by the Cockroach binary, operating system, and other system files). </li></ul>
+Node Status | <ul><li>The number of [live nodes](#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered suspect if its liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](#dead-nodes) in the cluster.</li>
+Replication Status | <ul><li>The total number of [ranges](architecture/overview.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
 ## Node List
 
@@ -32,11 +32,12 @@ Column | Description
 ID | The ID of the node.
 Address | The address of the node. You can click on the address to view further details about the node.
 Uptime | How long the node has been running.
-Used Capacity | The used capacity for the node.
 Replicas | The number of replicas on the node.
-Mem Usage | The memory usage for the node.
+CPUs | The number of CPU cores on the machine.
+Capacity Usage | The storage capacity used by CockroachDB as a percentage of the total usable capacity on the node. The value is represented numerically and as a bar graph.
+Mem Usage | The memory used by CockroachDB as a percentage of the total memory on the node. The value is represented numerically and as a bar graph.
 Version | The build tag of the CockroachDB version installed on the node.
-Logs | Click **Logs** to see the logs for the node.
+Logs | Click **Logs** to see detailed logs for the node.
 
 ### Dead Nodes
 
@@ -68,9 +69,17 @@ The Node Map consists of the following components:
 
 <img src="{{ 'images/v2.1/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
+{{site.data.alerts.callout_info}}
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+{{site.data.alerts.end}}
+
 ### Node component
 
 <img src="{{ 'images/v2.1/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+{{site.data.alerts.callout_info}}
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+{{site.data.alerts.end}}
 
 For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
 
