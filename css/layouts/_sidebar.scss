@@ -37,6 +37,7 @@
     }
 
     .nav-expand {
+      content: url(../images/nav-expand.svg);
       float: right;
       height: 8px;
       margin-top: 8px;
@@ -353,8 +354,4 @@ body.sidenav-open {
 
 a:not([href]) {
   color: #aaa;
-}
-
-.nav-expand {
-  content: url(../images/nav-expand.svg);
 }

@@ -473,6 +473,7 @@ header {
   #sidebar li .arrow-down {
     margin-right: 10px; }
   #sidebar li .nav-expand {
+    content: url(../images/nav-expand.svg);
     float: right;
     height: 8px;
     margin-top: 8px; }
@@ -702,9 +703,6 @@ body.sidenav-open .col-content {
 
 a:not([href]) {
   color: #aaa; }
-
-.nav-expand {
-  content: url(../images/nav-expand.svg); }
 
 .landing-page .landing-page__tutorial {
   width: 100%; }
@@ -981,25 +979,25 @@ section.footer {
         width: 100%;
         margin-top: 15px;
         margin-left: 0; } }
-
-.blue-arrow {
-  display: inline-block;
-  border: solid #152849;
-  padding: 4px;
-  margin-left: 4px;
-  transition: transform 0.2s ease, margin-bottom 0.2s ease;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  float: right; }
-  @media screen and (min-width: 992px) {
-    .blue-arrow {
-      display: none; } }
-  .blue-arrow--up {
-    border-width: 2px 0 0 2px;
-    margin-top: 3px; }
-  .blue-arrow--down {
-    border-width: 0 2px 2px 0;
-    margin-bottom: 3px; }
+  section.footer .blue-arrow {
+    display: inline-block;
+    border: solid #152849;
+    padding: 4px;
+    margin-right: -12px;
+    margin-left: 4px;
+    transition: transform 0.2s ease, margin-bottom 0.2s ease;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    float: right; }
+    @media screen and (min-width: 992px) {
+      section.footer .blue-arrow {
+        display: none; } }
+    section.footer .blue-arrow--up {
+      border-width: 2px 0 0 2px;
+      margin-top: 3px; }
+    section.footer .blue-arrow--down {
+      border-width: 0 2px 2px 0;
+      margin-bottom: 3px; }
 
 .version-nav {
   display: flex;
