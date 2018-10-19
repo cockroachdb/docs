@@ -5,13 +5,18 @@ toc: true
 build_for: managed
 ---
 
-The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis.
+The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
+
+- No provisioning or deployment efforts for you
+- Daily full backups and hourly incremental backups of your data
+- Upgrades to the latest stable release of CockroachDB
+- Monitoring to provide SLA level support
 
 ## Application process
 
 To be considered for participation:
 
-1. <a href="https://www.cockroachlabs.com/pricing/start-trial/" target="&#95;blank">Sign up for an Enterprise Trial license</a>.
+1. [Sign up for an Enterprise Trial license](https://www.cockroachlabs.com/pricing/start-trial/).
 
 2. During sign up, indicate that you're interested in the Managed offering. You'll be asked to provide details about your company, use case, and deployment requirements.
 
@@ -67,5 +72,3 @@ Once you open the URL, you'll need to log in with the username and password ment
 ### Private Slack channel
 
 Your confirmation email will identify the name of the private Slack channel to use if you have questions or run into issues. You'll receive a separate email invitation to the Slack channel.
-
-## What's included

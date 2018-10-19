@@ -16,6 +16,12 @@
         ]
       },
       {
+        "title": "Learn CockroachDB SQL",
+        "urls": [
+          "/${VERSION}/learn-cockroachdb-sql.html"
+        ]
+      },
+      {
         "title": "Access the Admin UI",
         "urls": [
           "/${VERSION}/managed-access-the-admin-ui.html"
@@ -70,13 +76,13 @@
       {
         "title": "SQL",
         "urls": [
-          "https://www.cockroachlabs.com/docs/{{ page.version.version }}/sql-statements.html"
+          "https://www.cockroachlabs.com/docs/${VERSION}/sql-statements.html"
         ]
       },
       {
         "title": "Admin UI",
         "urls": [
-          "https://www.cockroachlabs.com/docs/{{ page.version.version }}/admin-ui-overview.html"
+          "https://www.cockroachlabs.com/docs/${VERSION}/admin-ui-overview.html"
         ]
       }
     ]
