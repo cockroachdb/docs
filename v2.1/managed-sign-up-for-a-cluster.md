@@ -2,7 +2,7 @@
 title: Sign Up for a Managed Cluster
 summary:
 toc: true
-build_for: managed
+build_for: [standard, managed]
 ---
 
 The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
@@ -44,7 +44,7 @@ You use these details to [connect to your cluster](managed-connect-to-your-clust
 
 Detail | Description
 -------|------------
-Hosts | The hostnames to use in your connection URLs.<br><br>Typically, you'll receive one global hostname to use for the Admin UI and for ad-hoc querying via the CockroachDB SQL client, and one load balancer hostname per region for your client applications.   
+Hosts | The hostnames to use in your connection URLs.<br><br>Typically, you'll receive one global hostname to use for the Admin UI and for ad-hoc querying via the CockroachDB SQL client, and one load balancer hostname per region for your client applications.
 Ports | The ports to use for SQL connections and for reaching the Admin UI, by default, `26257` and `8080` respectively.
 User | The initial username to use in your connection URLs.
 Password | The initial password to use in your connection URLs.

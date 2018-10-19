@@ -2,10 +2,10 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
 toc: true
-build_for: both
+build_for: [standard, managed]
 ---
 
-This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements]{% if site.managed %}(../../{{ page.version.version }}/sql-statements.html){% else %}(sql-statements.html){% endif %}.
+This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
 {% unless site.managed %}
 {{site.data.alerts.callout_success}}
@@ -14,7 +14,7 @@ Use an interactive SQL shell to try out these statements. If you have a cluster 
 {% endunless %}
 
 {{site.data.alerts.callout_info}}
-CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support]{% if site.managed %}(../../{{ page.version.version }}/sql-feature-support.html){% else %}(sql-feature-support.html){% endif %} page for more details.
+CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
 {{site.data.alerts.end}}
 
 {% if site.managed %}
@@ -24,21 +24,21 @@ Make sure you have already [connected CockroachDB SQL client](managed-connect-to
 
 ## Create a database
 
-Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases. To create a new database, use [`CREATE DATABASE`]{% if site.managed %}(../../{{ page.version.version }}/create-database.html){% else %}(create-database.html){% endif %} followed by a database name:
+Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
-Database names must follow [these identifier rules]{% if site.managed %}(../../{{ page.version.version }}/keywords-and-identifiers.html#identifiers){% else %}(keywords-and-identifiers.html#identifiers){% endif %}. To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
-When you no longer need a database, use [`DROP DATABASE`]{% if site.managed %}(../../{{ page.version.version }}/drop-database.html){% else %}(drop-database.html){% endif %} followed by the database name to remove the database and all its objects:
+When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -47,7 +47,7 @@ When you no longer need a database, use [`DROP DATABASE`]{% if site.managed %}(.
 
 ## Show databases
 
-To see all databases, use the [`SHOW DATABASES`]{% if site.managed %}(../../{{ page.version.version }}/show-databases.html){% else %}(show-databases.html){% endif %} statement:
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -66,14 +66,14 @@ To see all databases, use the [`SHOW DATABASES`]{% if site.managed %}(../../{{ p
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](managed-sign-up-for-a-cluster.html#connection-details), but once in a CockroachDB SQL shell, you can use the [`SET`]{% if site.managed %}(../../{{ page.version.version }}/set-vars.html#examples){% else %}(set-vars.html#examples){% endif %} statement to switch the default database:
+It's best to set the default database directly in your [connection string](managed-sign-up-for-a-cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET DATABASE = bank;
 ~~~
 
-When working in the default database, you don't need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
+When working in the default database, you don't need to reference it explicitly in statements. To see whi
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -88,9 +88,11 @@ When working in the default database, you don't need to reference it explicitly 
 ~~~
 {% endif %}
 
+
+
 ## Create a table
 
-To create a table, use [`CREATE TABLE`]{% if site.managed %}(../../{{ page.version.version }}/create-table.html){% else %}(create-table.html){% endif %} followed by a table name, the column names, and the [data type]{% if site.managed %}(../../{{ page.version.version }}/data-types.html){% else %}(data-types.html){% endif %} and [constraint]{% if site.managed %}(../../{{ page.version.version }}/constraints.html){% else %}(constraints.html){% endif %}, if any, for each column:
+To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -100,7 +102,7 @@ To create a table, use [`CREATE TABLE`]{% if site.managed %}(../../{{ page.versi
 );
 ~~~
 
-Table and column names must follow [these rules]{% if site.managed %}(../../{{ page.version.version }}/keywords-and-identifiers.html#identifiers){% else %}(keywords-and-identifiers.html#identifiers){% endif %}. Also, when you do not explicitly define a [primary key]{% if site.managed %}(../../{{ page.version.version }}/primary-key.html){% else %}(primary-key.html){% endif %}, CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -112,7 +114,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use [`SHOW COLUMNS FROM`]{% if site.managed %}(../../{{ page.version.version }}/show-columns.html){% else %}(show-columns.html){% endif %} followed by the table name:
+To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.html) followed by the table name:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -129,7 +131,7 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`]{% if site.man
 (2 rows)
 ~~~
 
-When you no longer need a table, use [`DROP TABLE`]{% if site.managed %}(../../{{ page.version.version }}/drop-table.html){% else %}(drop-table.html){% endif %} followed by the table name to remove the table and all its data:
+When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by the table name to remove the table and all its data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -138,7 +140,7 @@ When you no longer need a table, use [`DROP TABLE`]{% if site.managed %}(../../{
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`]{% if site.managed %}(../../{{ page.version.version }}/show-tables.html){% else %}(show-tables.html){% endif %} statement:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -156,7 +158,7 @@ To see all tables in the active database, use the [`SHOW TABLES`]{% if site.mana
 
 ## Insert rows into a table
 
-To insert a row into a table, use [`INSERT INTO`]{% if site.managed %}(../../{{ page.version.version }}/insert.html){% else %}(insert.html){% endif %} followed by the table name and then the column values listed in the order in which the columns appear in the table:
+To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -180,7 +182,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     (4, 9400.10);
 ~~~
 
-[Defaults values]{% if site.managed %}(../../{{ page.version.version }}/default-value.html){% else %}(default-value.html){% endif %} are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -211,9 +213,9 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 ## Create an index
 
-[Indexes]{% if site.managed %}(../../{{ page.version.version }}/indexes.html){% else %}(indexes.html){% endif %} help locate data without having to look through every row of a table. They're automatically created for the [primary key]{% if site.managed %}(../../{{ page.version.version }}/primary-key.html){% else %}(primary-key.html){% endif %} of a table and any columns with a [`UNIQUE` constraint]{% if site.managed %}(../../{{ page.version.version }}/unique.html){% else %}(unique.html){% endif %}.
+[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](primary-key.html) of a table and any columns with a [`UNIQUE` constraint](unique.html).
 
-To create an index for non-unique columns, use [`CREATE INDEX`]{% if site.managed %}(../../{{ page.version.version }}/create-index.html){% else %}(create-index.html){% endif %} followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -233,7 +235,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 
 ## Show indexes on a table
 
-To show the indexes on a table, use [`SHOW INDEX FROM`]{% if site.managed %}(../../{{ page.version.version }}/show-index.html){% else %}(show-index.html){% endif %} followed by the name of the table:
+To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -253,7 +255,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`]{% if site.managed %}(../
 
 ## Query a table
 
-To query a table, use [`SELECT`]{% if site.managed %}(../../{{ page.version.version }}/select-clause.html){% else %}(select-clause.html){% endif %} followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -336,7 +338,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 
 ## Update rows in a table
 
-To update rows in a table, use [`UPDATE`]{% if site.managed %}(../../{{ page.version.version }}/update.html){% else %}(update.html){% endif %} followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use [`UPDATE`](update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -366,7 +368,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete rows in a table
 
-To delete rows from a table, use [`DELETE FROM`]{% if site.managed %}(../../{{ page.version.version }}/delete.html){% else %}(delete.html){% endif %} followed by the table name and a `WHERE` clause identifying the rows to delete:
+To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -392,17 +394,9 @@ To delete rows from a table, use [`DELETE FROM`]{% if site.managed %}(../../{{ p
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
-{% unless site.managed %}
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
-{% endunless %}
-
-<!-- Reference Links -->
-
-[postgres]: migrate-from-postgres.html
-[mysql]: migrate-from-mysql.html
-[csv]: migrate-from-csv.html

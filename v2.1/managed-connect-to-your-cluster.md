@@ -2,7 +2,7 @@
 title: Connect to Your Managed Cluster
 summary:
 toc: true
-build_for: managed
+build_for: [standard, managed]
 ---
 
 Once your Managed CockroachDB cluster is available and you've received your [connection details](managed-sign-up-for-a-cluster.html#connection-details), you can start interacting with your cluster using the CockroachDB SQL client or a Postgres-compatible driver or ORM.
@@ -21,7 +21,7 @@ The CockroachDB binary comes with a built-in SQL client for executing SQL statem
 
 On the machine where you want to run the CockroachDB SQL client:
 
-1. [Download the CockroachDB binary](../../{{ page.version.version }}/install-cockroachdb.html):
+1. [Download the CockroachDB binary](install-cockroachdb.html):
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -81,12 +81,12 @@ On the machine where you want to run the CockroachDB SQL client:
 4. Execute some [CockroachDB SQL](learn-cockroachdb-sql.html).
 
 {{site.data.alerts.callout_success}}
-For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](../../{{ page.version.version }}/use-the-built-in-sql-client.html) documentation.
+For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](use-the-built-in-sql-client.html) documentation.
 {{site.data.alerts.end}}
 
 ## Use a Postgres driver or ORM
 
-These steps show you how to connect simple Python test applications to your Managed CockroachDB cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](../../{{ page.version.version }}/build-an-app-with-cockroachdb.html).
+These steps show you how to connect simple Python test applications to your Managed CockroachDB cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
 
 Start by choosing the Python driver or ORM:
 
@@ -165,12 +165,12 @@ On the machine where you want to run your application:
         ['2', '250']
         ~~~
 
-3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](../../{{ page.version.version }}/transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
+3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
 
     1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
 
         {{site.data.alerts.callout_info}}
-        With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](../../{{ page.version.version }}/transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
+        With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
         {{site.data.alerts.end}}
 
         {% include copy-clipboard.html %}
