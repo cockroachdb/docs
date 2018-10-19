@@ -24,6 +24,9 @@
               <div id="toc-right"></div>
             </div>
           {% endif %}
+          {% if site.managed %}
+            <script src="{{ 'js/managed-external-links.js' | relative_url }}"></script>
+          {% endif %}          
       </div>
     </div>
     {% include footer.html %}
