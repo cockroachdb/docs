@@ -42,7 +42,6 @@ jekyll-action := build
 
 .PHONY: standard-build
 standard-build: bootstrap
-	python scripts/exclude_from_standard_docs.py
 	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,$(extra-config)
 
 .PHONY: standard
@@ -51,7 +50,6 @@ standard: standard-build
 
 .PHONY: managed-build
 managed-build: bootstrap
-	python scripts/exclude_from_managed_docs.py
 	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config)
 
 .PHONY: managed
