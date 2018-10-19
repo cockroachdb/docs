@@ -6,7 +6,7 @@ homepage: true
 toc: false
 twitter: false
 contribute: false
-build_for: both
+build_for: [standard, managed]
 ---
 
 {% if site.managed %}

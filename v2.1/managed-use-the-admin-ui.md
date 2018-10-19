@@ -2,7 +2,7 @@
 title: Use the Admin UI for Your Managed Cluster
 summary:
 toc: true
-build_for: managed
+build_for: [standard, managed]
 ---
 
 Cockroach Labs actively monitors and manages the health of your cluster, but the Admin UI gives you the ability to observe your cluster's health and performance as well.
@@ -17,5 +17,5 @@ To access the admin UI:
 
 ## Explore the Admin UI
 
-- For an overview of all the areas of the Admin UI, see [Admin UI Overview](../../{{ page.version.version }}/admin-ui-overview.html).
-- Be sure to check out the [**Node Map**](../../{{ page.version.version }}/admin-ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- For an overview of all the areas of the Admin UI, see [Admin UI Overview](admin-ui-overview.html).
+- Be sure to check out the [**Node Map**](admin-ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
