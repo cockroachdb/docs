@@ -68,13 +68,15 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "TBD",
-        "items": [
+        "title": "SQL",
+        "urls": [
+          "https://www.cockroachlabs.com/docs/{{ page.version.version }}/sql-statements.html"
         ]
       },
       {
-        "title": "TBD",
-        "items": [
+        "title": "Admin UI",
+        "urls": [
+          "https://www.cockroachlabs.com/docs/{{ page.version.version }}/admin-ui-overview.html"
         ]
       }
     ]
