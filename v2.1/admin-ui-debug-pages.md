@@ -26,7 +26,7 @@ Localities | Check node localities for your cluster.
 
 ## Even More Advanced Debugging
 
-The **Even More Advanced Debugging** section of the page lists additional reports meant for CockroachDB developers. Feel free to ignore this section while monitoring and troubleshooting CockroachDB.
+The **Even More Advanced Debugging** section of the page lists additional reports that are largely internal and intended for use by CockroachDB developers. Feel free to ignore this section while monitoring and troubleshooting CockroachDB.
 
 ## See also
 
