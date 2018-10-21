@@ -4,7 +4,7 @@ summary: Learn how to access and navigate the Admin UI.
 toc: true
 ---
 
-The built-in Admin UI gives you essential metrics about a cluster's health, such as the number of live, dead, and suspect nodes, the number of unavailable ranges, and the queries per second and service latency across the cluster.
+The built-in Admin UI helps you monitor and troubleshoot CockroachDB by providing information about the cluster's health, configuration, and operations.
 
 ## Access the Admin UI
 
@@ -41,14 +41,14 @@ Advanced Debugging | Advanced monitoring and troubleshooting [reports](admin-ui-
 
 ### Cluster Metrics
 
-The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left-hand navigation bar.
+The **Cluster Metrics** dashboards display the time series graphs that are useful to visualize and monitor data trends. To access the time series graphs, click **Metrics** on the left.
 
 You can hover over each graph to see actual point-in-time values.
 
 <img src="{{ 'images/v2.1/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-By default, CockroachDB stores timeseries metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternately, if you are exclusively using a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for timeseries monitoring, you can disable timeseries storage entirely. For more details, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data).
+By default, CockroachDB stores time series metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternatively, if you are exclusively using a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for time series monitoring, you can disable time series storage entirely. For more details, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data).
 {{site.data.alerts.end}}
 
 #### Change time range
@@ -65,7 +65,7 @@ By default, the time series panel displays the metrics for the entire cluster. T
 
 ### Summary panel
 
-The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left-hand navigation bar.
+The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left.
 
 <img src="{{ 'images/v2.1/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
 
