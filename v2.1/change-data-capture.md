@@ -309,7 +309,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-{% include v2.1/cdc/known-limitations.md %}
+{% include v2.1/known-limitations/cdc.md %}
 
 ## See also
 
