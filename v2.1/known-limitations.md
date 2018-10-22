@@ -12,7 +12,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 <span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
-{% include v2.1/cdc/known-limitations.md %}
+{% include v2.1/known-limitations/cdc.md %}
 
 ## Unresolved limitations
 
