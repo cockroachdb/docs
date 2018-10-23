@@ -33,7 +33,7 @@ ID | The ID of the node.
 Address | The address of the node. You can click on the address to view further details about the node.
 Uptime | How long the node has been running.
 Replicas | The number of replicas on the node.
-CPUs | The number of CPUs on the machine.
+CPUs | The number of CPU cores on the machine.
 Capacity Usage | The storage capacity used by CockroachDB (represented as a bar graph as well as a percentage of total storage capacity).
 Mem Usage | The memory usage for the node (represented as a bar graph as well as a percentage of the total memory).
 Version | The build tag of the CockroachDB version installed on the node.
@@ -69,9 +69,17 @@ The Node Map consists of the following components:
 
 <img src="{{ 'images/v2.1/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
+{{site.data.alerts.callout_info}}
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+{{site.data.alerts.end}}
+
 ### Node component
 
 <img src="{{ 'images/v2.1/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+
+{{site.data.alerts.callout_info}}
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
+{{site.data.alerts.end}}
 
 For guidance on enabling and using the node map, see [Enable Node Map](enable-node-map.html).
 
