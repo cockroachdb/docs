@@ -36,19 +36,36 @@
       {
         "title": "Migrate Data",
         "items": [
-
-        ]
-      },
-      {
-        "title": "Run Benchmarks",
-        "items": [
-
+          {
+            "title": "Migration Overview",
+            "urls": [
+              "/${VERSION}/migration-overview.html"
+            ]
+          },
+          {
+            "title": "Migrate from Postgres",
+            "urls": [
+              "/${VERSION}/migrate-from-postgres.html"
+            ]
+          },
+          {
+            "title": "Migrate from MySQL",
+            "urls": [
+              "/${VERSION}/migrate-from-mysql.html"
+            ]
+          },
+          {
+            "title": "Migrate from CSV",
+            "urls": [
+              "/${VERSION}/migrate-from-csv.html"
+            ]
+          }
         ]
       },
       {
         "title": "Tune Performance",
-        "items": [
-
+        "urls": [
+          "/${VERSION}/performance-best-practices-overview.html"
         ]
       }
     ]
@@ -63,7 +80,7 @@
         ]
       },
       {
-        "title": "TBD",
+        "title": "Cluster Management",
         "items": [
         ]
       }

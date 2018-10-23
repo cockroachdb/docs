@@ -68,7 +68,3 @@ postgres://maxroach:LeiCisGclLcmaWOls@gcp-us-east1.company-domain.cockroachcloud
 You use this URL to reach the [Admin UI for your cluster](managed-use-the-admin-ui.html). This URL is typically the combination of the global hostname and port `8080`.
 
 Once you open the URL, you'll need to log in with the username and password mentioned above.
-
-### Private Slack channel
-
-Your confirmation email will identify the name of the private Slack channel to use if you have questions or run into issues. You'll receive a separate email invitation to the Slack channel.
