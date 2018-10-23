@@ -13,7 +13,7 @@ The **Cluster Overview** panel provides the following metrics:
 
 Metric | Description
 --------|----
-Capacity Usage | <ul><li>The storage capacity used as a percentage of total storage capacity allocated across all nodes.</li><li>The current capacity usage.</li></ul>
+Capacity Usage | <ul><li>Used capacity: The storage capacity used by CockroachDB (represented as a percentage of total storage capacity allocated across all nodes).</li><li>Usable capacity: The sum of the storage capacity used by CockroachDB as well as capacity available for use by CockroachDB.</li></ul>
 Node Status | <ul><li>The number of [live nodes](#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered a suspect node if it's liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](#dead-nodes) in the cluster.</li>
 Replication Status | <ul><li>The total number of ranges in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
@@ -32,11 +32,12 @@ Column | Description
 ID | The ID of the node.
 Address | The address of the node. You can click on the address to view further details about the node.
 Uptime | How long the node has been running.
-Used Capacity | The used capacity for the node.
 Replicas | The number of replicas on the node.
-Mem Usage | The memory usage for the node.
+CPUs | The number of CPUs on the machine.
+Capacity Usage | The storage capacity used by CockroachDB (represented as a bar graph as well as a percentage of total storage capacity).
+Mem Usage | The memory usage for the node (represented as a bar graph as well as a percentage of the total memory).
 Version | The build tag of the CockroachDB version installed on the node.
-Logs | Click **Logs** to see the logs for the node.
+Logs | Click **Logs** to see detailed logs for the node.
 
 ### Dead Nodes
 
