@@ -84,7 +84,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
     Another exception is the [fast path delete optimization](#fast-path-deletes), which is available if you set up your tables according to certain criteria.
 
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.
+- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-variables) (64MB by default), the interleaved optimizations will be diminished.
 
     For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
@@ -96,11 +96,11 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
  `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
- `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into. 
- `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). 
+ `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into.
+ `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix).
 
 ## Requirements
 
