@@ -7,7 +7,7 @@ Zone Name | Description
 `.timeseries` | The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's Admin UI. If necessary, you can add a `.timeseries` replication zone to control the replication of this data.
 `.system` | There are system ranges for a variety of other important internal data, including information needed to allocate new table IDs and track the status of a cluster's nodes. If necessary, you can add a `.system` replication zone to control the replication of this data.
 
-{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_danger}}
 Use caution when editing replication zones for system ranges, as they could cause some (or all) parts of your cluster to stop working.
 {{site.data.alerts.end}}
 
