@@ -137,78 +137,83 @@ Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://
 
 ## Step 5. Increase the replication factor
 
-As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, use the [`cockroach zone`](configure-replication-zones.html) command change the cluster's `.default` replication factor to 5:
+As you just saw, CockroachDB replicates data 3 times by default. Now, in the terminal you used for the built-in SQL shell or in a new terminal, use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) statement to change the cluster's `.default` replication factor to 5:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .default --insecure --host=localhost:26257 -f -
+$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=6;" --insecure --host=localhost:26257
 ~~~
 
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 90000
-num_replicas: 5
-constraints: []
-~~~
-
-In addition to the `.default` replication zone for database and table data, CockroachDB comes with pre-configured replication zones for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). To list these pre-configured zones, use the `cockroach zone ls` subcommand:
+In addition to the `.default` replication zone for database and table data, CockroachDB comes with pre-configured replication zones for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range). To view these pre-configured zones, use the [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) subcommand:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone ls --insecure --host=localhost:26257
+$ cockroach sql --execute="SHOW ALL ZONE CONFIGURATIONS;" --insecure --host=localhost:26257
 ~~~
 
 ~~~
-.default
-.liveness
-.meta
-system.jobs
+   zone_name  |                     config_sql
++-------------+-----------------------------------------------------+
+  .default    | ALTER RANGE default CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 90000,
+              |     num_replicas = 6,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+  system      | ALTER DATABASE system CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 90000,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+  system.jobs | ALTER TABLE system.public.jobs CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 600,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+  .meta       | ALTER RANGE meta CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 3600,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+  .system     | ALTER RANGE system CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 90000,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+  .liveness   | ALTER RANGE liveness CONFIGURE ZONE USING
+              |     range_min_bytes = 1048576,
+              |     range_max_bytes = 67108864,
+              |     gc.ttlseconds = 600,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+(6 rows)
 ~~~
 
 For the cluster as a whole to remain available, the "system ranges" for this internal data must always retain a majority of their replicas. Therefore, if you increase the default replication factor, be sure to also increase the replication factor for these replication zones as well:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .liveness --insecure --host=localhost:26257 -f -
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 600
-num_replicas: 5
-constraints: []
+$ cockroach sql --execute="ALTER RANGE liveness CONFIGURE ZONE USING num_replicas=6;" --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set .meta --insecure --host=localhost:26257 -f -
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 3600
-num_replicas: 5
-constraints: []
+$ cockroach sql --execute="ALTER RANGE meta CONFIGURE ZONE USING num_replicas=6;" --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'num_replicas: 5' | cockroach zone set system.jobs --insecure --host=localhost:26257 -f -
-~~~
-
-~~~
-range_min_bytes: 1048576
-range_max_bytes: 67108864
-gc:
-  ttlseconds: 600
-num_replicas: 5
-constraints: []
+$ cockroach sql --execute="ALTER RANGE system CONFIGURE ZONE USING num_replicas=6;" --insecure
 ~~~
 
 ## Step 6. Add two more nodes

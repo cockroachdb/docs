@@ -208,36 +208,20 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 
 #### Step 5. Create and apply corresponding zone configurations
 
-Create appropriate zone configurations:
+To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cat > north_america.zone.yml
-constraints: [+datacenter=us1]
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > australia.zone.yml
-constraints: [+datacenter=au1]
-~~~
-
-Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students_by_list.north_america \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students_by_list.north_america OF TABLE roachlearn.students_by_list CONFIGURE ZONE USING constraints='[+datacenter=us1]';" \
 --insecure \
---host=<address of any node> \
--f north_america.zone.yml
+--host=<address of any node>
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_list.australia \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students_by_list.australia OF TABLE roachlearn.students_by_list CONFIGURE ZONE USING constraints='[+datacenter=au1]';" \
 --insecure \
---host=<address of any node> \
--f australia.zone.yml
+--host=<address of any node>
 ~~~
 
 #### Step 6. Verify table partitions
@@ -268,7 +252,7 @@ You should see the following output:
 Time: 7.209032ms
 ~~~
 
-### define table partitions by range
+### Define table partitions by range
 
 Suppose we want to store the data of current students on fast and expensive storage devices (e.g., SSD) and store the data of the graduated students on slower, cheaper storage devices (e.g., HDD).
 
@@ -326,36 +310,20 @@ $ cockroach init \
 
 #### Step 5. Create and apply corresponding zone configurations
 
-Create appropriate zone configurations:
+To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cat > current.zone.yml
-constraints: [+ssd]
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > graduated.zone.yml
-constraints: [+hdd]
-~~~
-
-Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students_by_range.current \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students_by_range.current OF TABLE roachlearn.students_by_range CONFIGURE ZONE USING constraints='[+ssd]';" \
 --insecure \
---host=<address of any node> \
--f current.zone.yml
+--host=<address of any node>
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students_by_range.graduated \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students_by_range.graduated OF TABLE roachlearn.students_by_range CONFIGURE ZONE USING constraints='[+hdd]';" \
 --insecure \
---host=<address of any node> \
--f graduated.zone.yml
+--host=<address of any node>
 ~~~
 
 #### Step 6. Verify table partitions
@@ -455,61 +423,34 @@ Subpartition names must be unique within a table. In our example, even though `g
 
 #### Step 5. Create and apply corresponding zone configurations
 
-Create appropriate zone configurations:
+To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cat > current_us.zone.yml
-constraints: [+ssd,+datacenter=us1]
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > graduated_us.zone.yml
-constraints: [+hdd,+datacenter=us1]
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > current_au.zone.yml
-constraints: [+ssd,+datacenter=au1]
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cat > graduated_au.zone.yml
-constraints: [+hdd,+datacenter=au1]
-~~~
-
-Apply zone configurations to corresponding partitions:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students.current_us \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students.current_us OF TABLE roachlearn.students CONFIGURE ZONE USING constraints='[+ssd,+datacenter=us1]';" \
 --insecure \
---host=<address of any node> \
--f current_us.zone.yml
+--host=<address of any node>
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students.graduated_us \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students.graduated_us OF TABLE roachlearn.students CONFIGURE ZONE USING constraints='[+hdd,+datacenter=us1]';" \
 --insecure \
---host=<address of any node> \
--f graduated_us.zone.yml
+--host=<address of any node>
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach zone set roachlearn.students.current_au --insecure -f current_au.zone.yml
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach zone set roachlearn.students.graduated_au \
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students.current_au OF TABLE roachlearn.students CONFIGURE ZONE USING constraints='[+ssd,+datacenter=au1]';" \
 --insecure \
---host=<address of any node> \
--f graduated_au.zone.yml
+--host=<address of any node>
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --execute="ALTER PARTITION roachlearn.students.graduated_au OF TABLE roachlearn.students CONFIGURE ZONE USING constraints='[+hdd,+datacenter=au1]';" \
+--insecure \
+--host=<address of any node>
 ~~~
 
 #### Step 6. Verify table partitions

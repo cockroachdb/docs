@@ -97,20 +97,29 @@ Exit the SQL shell:
 
 In CockroachDB, you use [replication zones](configure-replication-zones.html) to control the number and location of replicas. Initially, there is a single default replication zone for the entire cluster that is set to copy each range of data 3 times. This default replication factor is fine for this demo.
 
-However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
+However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, use [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) to reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure --host=localhost:26257 -f -
+$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING range_min_bytes=1, range_max_bytes=262144;" --insecure --host=localhost:26257
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --execute="SHOW ZONE CONFIGURATION FOR RANGE default;" --insecure
 ~~~
 
 ~~~
-range_min_bytes: 1
-range_max_bytes: 262144
-gc:
-  ttlseconds: 86400
-num_replicas: 3
-constraints: []
+  zone_name |                config_sql
++-----------+------------------------------------------+
+  .default  | ALTER RANGE default CONFIGURE ZONE USING
+            |     range_min_bytes = 1048576,
+            |     range_max_bytes = 67108864,
+            |     gc.ttlseconds = 90000,
+            |     num_replicas = 3,
+            |     constraints = '[]',
+            |     lease_preferences = '[]'
+(1 row)
 ~~~
 
 ## Step 5. Download and run the `block_writer` program
