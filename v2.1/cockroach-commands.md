@@ -19,7 +19,7 @@ Command | Usage
 [`cockroach quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
 [`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`cockroach user`](create-and-manage-users.html) | Get, set, list, and remove users.
-[`cockroach zone`](configure-replication-zones.html) | Configure the number and location of replicas for specific sets of data.
+[`cockroach zone`](configure-replication-zones.html) | **Deprecated** To configure the number and location of replicas for specific sets of data, use [`ALTER ... CONFIGURE ZONE`](configure-zone.html).
 [`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory, single-node CockroachDB cluster, and open an interactive SQL shell to it.

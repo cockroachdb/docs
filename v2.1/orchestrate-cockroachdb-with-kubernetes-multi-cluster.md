@@ -338,7 +338,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     > \q
     ~~~
 
-    The pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands](cockroach-commands.html), such as `cockroach node` or `cockroach zone`, repeat step 2 using the appropriate command.
+    The pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands](cockroach-commands.html) (e.g., `cockroach node`), repeat step 2 using the appropriate command.
 
     If you'd prefer to delete the pod and recreate it when needed, run:
 
