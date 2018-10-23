@@ -85,6 +85,7 @@ Reserved | The number of slots reserved per second for incoming snapshots that w
 The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 - Leaseholders per Store
+- Average Queries per Store
 - Logical Bytes per Store
 - Range Operations
 
