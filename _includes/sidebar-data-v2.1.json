@@ -164,6 +164,17 @@
             "urls": [
               "/${VERSION}/demo-json-support.html"
             ]
+          },
+          {
+           "title": "Third-Party Database Tools",
+           "items": [
+               {
+                 "title": "DBeaver",
+                 "urls": [
+                     "/${VERSION}/dbeaver.html"
+                ]
+              }
+            ]
           }
         ]
       },
