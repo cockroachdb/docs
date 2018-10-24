@@ -18,7 +18,7 @@ CDC is an [enterprise-only](enterprise-licensing.html). There will be a core ver
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON` or `avro`) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
@@ -30,7 +30,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
     ~~~ sql
     > CREATE TABLE foo (id SERIAL PRIMARY KEY, name STRING);
-    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH UPDATED;
+    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH updated;
     > INSERT INTO foo VALUES (1, 'Carl');
     > UPDATE foo SET name = 'Petee' WHERE id = 1;
     ~~~
@@ -136,7 +136,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM crdb_internal.jobs WHERE job_id=<job_id>;
+    > SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
     ~~~
     ~~~
             job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
@@ -148,6 +148,13 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
+
+## Backfill
+
+When schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched row, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema.
+
+For example:
+
 
 ## Usage example
 
@@ -289,6 +296,163 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     ~~~
     {"id": 3, "name": "Ernie"}
+    ~~~
+
+15. When you are done, exit the SQL shell (`\q`).
+
+16. To stop `cockroach`, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit
+    ~~~
+
+17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent stop
+    ~~~
+
+### Create a changefeed with Avro
+
+In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
+
+1. If you don't already have one, [request a trial enterprise license](enterprise-licensing.html).
+
+2. In a terminal window, start `cockroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure --listen-addr=localhost --background
+    ~~~
+
+3. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
+
+4. Move into the extracted `confluent-<version>` directory and start Confluent:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent start
+    ~~~
+
+    Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
+
+5. Create a Kafka topic:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/kafka-topics \
+    --create \
+    --zookeeper localhost:2181 \
+    --replication-factor 1 \
+    --partitions 1 \
+    --topic office_dogs
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
+    {{site.data.alerts.end}}
+
+6. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
+
+7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET CLUSTER SETTING cluster.organization = '<organization name>';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET CLUSTER SETTING enterprise.license = '<secret>';
+    ~~~
+
+8. Create a database called `cdc_demo`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE cdc_demo;
+    ~~~
+
+9. Set the database as the default:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET DATABASE = cdc_demo;
+    ~~~
+
+10. Create a table and add data:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE office_dogs (
+         id INT PRIMARY KEY,
+         name STRING);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO office_dogs VALUES
+       (1, 'Petee'),
+       (2, 'Carl');
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
+    ~~~
+
+11. Start the changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:9092';
+    ~~~
+
+    ~~~
+
+            job_id       
+    +--------------------+
+      360645287206223873
+    (1 row)
+    ~~~
+
+    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
+
+12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/kafka-console-consumer \
+    --bootstrap-server=localhost:9092 \
+    --property print.key=true \
+    --from-beginning \
+    --topic=office_dogs
+    ~~~
+    ~~~
+    [1]	{"id": 1, "name": "Petee H"}
+    [2]	{"id": 2, "name": "Carl"}
+    ~~~
+
+    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+
+13. Back in the SQL client, insert more data:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO office_dogs VALUES (3, 'Ernie');
+    ~~~
+
+14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+
+    ~~~
+    [3]	{"id": 3, "name": "Ernie"}
     ~~~
 
 15. When you are done, exit the SQL shell (`\q`).

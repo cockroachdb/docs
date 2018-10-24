@@ -44,11 +44,12 @@ Parameter | Description
 
 Option | Value | Description
 -------|-------|------------
-`UPDATED` | N/A | Include updated timestamps with each row.
-`RESOLVED` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `RESOLVED='10s'`
-`ENVELOPE` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `ENVELOPE=row`
-`CURSOR` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `CURSOR` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`CURSOR` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
-`FORMAT` | `JSON` / `AVRO` | Format of the emitted record. Currently, support for `AVRO` is limited and experimental. <br><br>Default: `FORMAT=JSON`.
+`updated` | N/A | Include updated timestamps with each row.
+`resolved` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
+`envelope` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=row`
+`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
+`format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for `avro` is limited and experimental. <br><br>Default: `format=json`.
+`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
 
 ## Examples
 
@@ -56,7 +57,7 @@ Option | Value | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port' WITH UPDATED, RESOLVED;
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port' WITH updated, resolved;
 ~~~
 ~~~
 +--------------------+
@@ -68,6 +69,23 @@ Option | Value | Description
 ~~~
 
 For for information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
+
+### Create a changefeed with Avro
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port' WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
+~~~
+~~~
++--------------------+
+|       job_id       |
++--------------------+
+| 360645287206223873 |
++--------------------+
+(1 row)
+~~~
+
+For for information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-with-avro).
 
 ### Manage a changefeed
 
@@ -110,7 +128,7 @@ Find the [high-water timestamp](change-data-capture.html#monitor-a-changefeed) f
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM crdb_internal.jobs WHERE job_id=<job_id>;
+> SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
 ~~~
 ~~~
         job_id       |  job_type  | ... |      high_water_timestamp      | error | coordinator_id
@@ -123,7 +141,7 @@ Use the `high_water_timestamp` to start the new changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'kafka//host:port' WITH CURSOR=<high_water_timestamp>;
+> CREATE CHANGEFEED FOR TABLE name INTO 'kafka//host:port' WITH cursor = <high_water_timestamp>;
 ~~~
 
 ## See also
