@@ -6,7 +6,6 @@ toc: true
 
 This page provides important recommendations for production deployments of CockroachDB.
 
-
 ## Cluster topology
 
 ### Terminology
@@ -144,7 +143,7 @@ When running a cluster across multiple networks, the setup depends on whether no
 Nodes reachable across networks? | Recommended setup
 ---------------------------------|------------------
 Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
-No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br><span class="version-tag">New in v2.1:</span> Also, if a node is reachable from other nodes in its network on a private or local address, set `--locality-advertise-addr` to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](start-a-node.html#locality) flag. For more details, see this [example](start-a-node.html#start-a-multi-node-cluster-across-private-networks). 
 
 ## Load balancing
 
