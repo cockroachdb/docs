@@ -2,7 +2,7 @@
 title: Connect to Your Managed Cluster
 summary:
 toc: true
-build_for: [standard, managed]
+build_for: [managed]
 ---
 
 Once your Managed CockroachDB cluster is available and you've received your [connection details](managed-sign-up-for-a-cluster.html#connection-details), you can start interacting with your cluster using the CockroachDB SQL client or a Postgres-compatible driver or ORM.
@@ -13,7 +13,11 @@ Once your Managed CockroachDB cluster is available and you've received your [con
 
     Any client connecting to the cluster will need access to the `ca.crt` file.
 
-2. If you haven't already, ask Cockroach Labs to whitelist the public IP address of the machine. Otherwise, connections from this machine will be rejected.
+2. If you haven't already, reach out to Cockroach Labs at [support.cockroachlabs.com](https://support.cockroachlabs.com) to whitelist the public IP address of the machine. Otherwise, connections from this machine will be rejected.
+
+3. If you're not using the "admin" user identified in the initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) from Cockroach Labs, make sure you have a user and password to use in your connection string.
+
+    For details on creating additional users, see [User Management](managed-user-management.html).
 
 ## Use the CockroachDB SQL client
 
@@ -50,18 +54,22 @@ On the machine where you want to run the CockroachDB SQL client:
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i {{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i {{ page.release_info.version }}..linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}..linux-amd64/cockroach /usr/local/bin
     ~~~
     </section>
 
 3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the connection string with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+
+    {{site.data.alerts.callout_info}}
+    For the hostname portion of your connection URL, use the "global hostname" you received in the initial confirmation email. This address will direct you to one of the regional load balancers for you cluster.
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -109,6 +117,10 @@ On the machine where you want to run your application:
 2. Run code to execute basic SQL statements, creating a table, inserting some rows, and reading and printing the rows.
 
     1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+
+        {{site.data.alerts.callout_info}}
+        For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
+        {{site.data.alerts.end}}
 
         {% include copy-clipboard.html %}
         ~~~ python
@@ -168,6 +180,10 @@ On the machine where you want to run your application:
 3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
 
     1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+
+        {{site.data.alerts.callout_info}}
+        For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
+        {{site.data.alerts.end}}
 
         {{site.data.alerts.callout_info}}
         With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.

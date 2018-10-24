@@ -3,37 +3,36 @@ title: CockroachDB Docs
 summary: CockroachDB user documentation.
 type: first_page
 homepage: true
-toc: false
+toc: true
 twitter: false
 contribute: false
 build_for: [standard, managed]
 ---
 
 {% if site.managed %}
-Managed CockroachDB is a fully hosted and fully managed service created and owned<br>by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
+Managed CockroachDB is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 
-### Always-On Service for Mission Critical Apps
+{{site.data.alerts.callout_info}}
+These docs are a work in progress. Please reach out to [support.cockroachlabs.com](https://support.cockroachlabs.com) if you have questions not yet answered here.
+{{site.data.alerts.end}}
 
-- Monthly uptime percentage of 99.95%
-- Automatically replicate your data across at least three data centers
-- Currently available in GCP and AWS
+### Always-On Service
 
-### Run by Distributed SQL Experts
-
-- Reference architectures battle tested and tuned by the makers of CockroachDB
-- In-house expertise from former Google SRE team
+- Cloud vendor agnostic
+- Automatic data replication across 3+ data centers
+- Zero downtime migration between cloud providers
 
 ### Operational Excellence
 
 - Automatic hardware provisioning, setup, and configuration
-- Automatic upgrades to the latest stable (or alpha) release of CockroachDB
-- Automatic daily full backups and hourly incremental backups
+- Automatic rolling upgrades
+- Automated daily backups and hourly incremental backups
 
 ### Enterprise-Grade Security
 
-- TLS 1.2 for all connections and/or VPC peering between networks
-- SOC2 compliance in process by Cockroach Labs
-- Encryption at Rest by default coming in a future release
+- TLS 1.2 for all connections
+- Single tenant clusters
+- SOC-2 Compliance (in process)
 
 {% else %}
 <div class="landing-page">
@@ -55,5 +54,5 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
   <div class="landing-page__video-wrapper">
     <iframe width="560" height="349" src="https://www.youtube.com/embed/91IqMUwAdnc?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
   </div>
-{% endif %}
 </div>
+{% endif %}

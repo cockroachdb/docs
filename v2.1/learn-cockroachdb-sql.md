@@ -122,12 +122,10 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| column_name | data_type | is_nullable | column_default | generation_expression | indices |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| id          | INT       |    true     | unique_rowid() |                       | {}      |
-| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  id          | INT       |    false    | NULL           |                       | {"primary"} |   false
+  balance     | DECIMAL   |    true     | NULL           |                       | {}          |   false
 (2 rows)
 ~~~
 
@@ -148,11 +146,9 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-+----------+
+  table_name
++------------+
+  accounts
 (1 row)
 ~~~
 
@@ -202,12 +198,10 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+   5 | NULL
+   6 | NULL
 (2 rows)
 ~~~
 
@@ -243,13 +237,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
 
 ~~~
+  table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false   |
-| accounts   | balance_idx |    true    |            1 | balance     | ASC       |  false  |  false   |
-| accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
+  accounts   | balance_idx |    true    |            1 | balance     | DESC      |  false  |  false
+  accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true
 (3 rows)
 ~~~
 
@@ -263,16 +255,14 @@ To query a table, use [`SELECT`](select-clause.html) followed by a comma-separat
 ~~~
 
 ~~~
+  balance
 +----------+
-| balance  |
-+----------+
-| 10000.50 |
-| 25000.00 |
-|  8100.73 |
-|  9400.10 |
-| NULL     |
-| NULL     |
-+----------+
+  10000.50
+  25000.00
+   8100.73
+   9400.10
+  NULL
+  NULL
 (6 rows)
 ~~~
 
@@ -284,16 +274,14 @@ To retrieve all columns, use the `*` wildcard:
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8100.73 |
-|  4 |  9400.10 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8100.73
+   4 |  9400.10
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -305,13 +293,11 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
 (3 rows)
 ~~~
 
@@ -323,16 +309,14 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-|  3 | 8100.73 |
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
+   3 |  8100.73
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -351,16 +335,14 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -381,22 +363,22 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
 (4 rows)
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
+{% unless site.managed %}
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
+{% endunless %}

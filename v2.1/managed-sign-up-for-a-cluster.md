@@ -2,7 +2,7 @@
 title: Sign Up for a Managed Cluster
 summary:
 toc: true
-build_for: [standard, managed]
+build_for: [managed]
 ---
 
 The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
@@ -10,7 +10,7 @@ The Managed CockroachDB offering is currently in Limited Availability and accept
 - No provisioning or deployment efforts for you
 - Daily full backups and hourly incremental backups of your data
 - Upgrades to the latest stable release of CockroachDB
-- Monitoring to provide SLA level support
+- Monitoring to provide SLA-level support
 
 ## Application process
 
@@ -36,7 +36,7 @@ To be considered for participation:
 
 ## Confirmation email
 
-Once your Managed CockroachDB cluster is available, you'll receive an email confirming its shape (e.g., regions, number of nodes per region, etc.) and providing you the following important details.
+Once your Managed CockroachDB cluster is available, you'll receive an email confirming its shape (e.g., regions, number of nodes per region, etc.) and providing you the following important details:
 
 ### Connection details
 
@@ -44,11 +44,11 @@ You use these details in your connection strings when [connecting to your cluste
 
 Detail | Description
 -------|------------
-Hosts | The hostnames to use in your connection strings.<br><br>Typically, you'll receive one global hostname to use for the Admin UI and for ad-hoc querying via the CockroachDB SQL client, and one load balancer hostname per region for your client applications.
+Hosts | The hostnames to use in your connection strings.<br><br>Typically, you'll receive one global hostname and a load balancer hostname per region. The global hostname will route connections to one of the regional load balancers and so is suitable for ad-hoc querying via the CockroachDB SQL client. Applications, on the other hand, should always use the load balancer hostname that is closest to the client.
 Ports | The ports to use for SQL connections and for reaching the [Admin UI](managed-use-the-admin-ui.html), usually `26257` and `8080` respectively.
 User | Your initial user. This user has "admin" privilges and can [create databases](learn-cockroachdb-sql.html#create-a-database), [import data](migration-overview.html), and [create and grant privileges to other users](managed-user-management.html).   
 Password | The password for your initial user.
-Database name | The initial database created for you. Your initial "admin" user can [create additional databases](learn-cockroachdb-sql.html#create-a-database.html).
+Database name | The initial database created for you. Your initial "admin" user can [create additional databases](learn-cockroachdb-sql.html#create-a-database).
 CA Certificate | The `ca.crt` file that must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
 **SQL connection URL with placeholders**
@@ -57,7 +57,7 @@ CA Certificate | The `ca.crt` file that must be available on every machine from 
 postgres://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=certs-dir/ca.crt'
 ~~~
 
-**SQL connection URL with fake details**
+**SQL connection URL with example details**
 
 ~~~
 postgres://maxroach:LeiCisGclLcmaWOls@gcp-us-east1.company-domain.cockroachcloud.com:26257/firstdb?sslmode=verify-full&sslrootcert=certs-dir/ca.crt'
