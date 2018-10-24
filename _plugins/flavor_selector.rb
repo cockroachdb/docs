@@ -19,7 +19,7 @@ module FlavorSelector
         page.output.gsub!(/href="([^"]+)"/) do |m|
           uri = Addressable::URI.parse($1)
           if is_relative(uri) && @rewrite_urls.include?(File.join(dirname, uri.path))
-            path = File.join(baseurl, uri.path).sub("/managed", "")
+            path = File.join(baseurl, dirname, uri.path).sub("/managed", "")
             "href=\"#{path}\" target=\"blank\""
           else
             m
