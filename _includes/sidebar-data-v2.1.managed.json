@@ -76,12 +76,14 @@
     "items": [
       {
         "title": "User Management",
-        "items": [
+        "urls": [
+          "/${VERSION}/managed-user-management.html"
         ]
       },
       {
         "title": "Cluster Management",
-        "items": [
+        "urls": [
+          "/${VERSION}/managed-cluster-management.html"
         ]
       }
     ]

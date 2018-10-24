@@ -20,11 +20,13 @@ CockroachDB aims to provide standard SQL with extensions, but some standard SQL 
 {% if site.managed %}
 ## Before you begin
 
-Make sure you have already [connected CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
 
 ## Create a database
 
-Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
+Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases.
+
+To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -87,8 +89,6 @@ When working in the default database, you don't need to reference it explicitly 
 (1 row)
 ~~~
 {% endif %}
-
-
 
 ## Create a table
 

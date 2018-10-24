@@ -40,16 +40,16 @@ Once your Managed CockroachDB cluster is available, you'll receive an email conf
 
 ### Connection details
 
-You use these details to [connect to your cluster](managed-connect-to-your-cluster.html) from the CockroachDB SQL shell or a Postgres-compatible driver or ORM.
+You use these details in your connection strings when [connecting to your cluster](managed-connect-to-your-cluster.html) from the CockroachDB SQL shell and Postgres-compatible drivers or ORMs.
 
 Detail | Description
 -------|------------
-Hosts | The hostnames to use in your connection URLs.<br><br>Typically, you'll receive one global hostname to use for the Admin UI and for ad-hoc querying via the CockroachDB SQL client, and one load balancer hostname per region for your client applications.
-Ports | The ports to use for SQL connections and for reaching the Admin UI, by default, `26257` and `8080` respectively.
-User | The initial username to use in your connection URLs.
-Password | The initial password to use in your connection URLs.
-Database name | The initial database to in your connection URLs.
-CA Certificate | The `ca.crt` file that must be available on every machine from which you want to connect the cluster and referenced in connection URLs.
+Hosts | The hostnames to use in your connection strings.<br><br>Typically, you'll receive one global hostname to use for the Admin UI and for ad-hoc querying via the CockroachDB SQL client, and one load balancer hostname per region for your client applications.
+Ports | The ports to use for SQL connections and for reaching the [Admin UI](managed-use-the-admin-ui.html), usually `26257` and `8080` respectively.
+User | Your initial user. This user has "admin" privilges and can [create databases](learn-cockroachdb-sql.html#create-a-database), [import data](migration-overview.html), and [create and grant privileges to other users](managed-user-management.html).   
+Password | The password for your initial user.
+Database name | The initial database created for you. Your initial "admin" user can [create additional databases](learn-cockroachdb-sql.html#create-a-database.html).
+CA Certificate | The `ca.crt` file that must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
 **SQL connection URL with placeholders**
 
@@ -67,4 +67,4 @@ postgres://maxroach:LeiCisGclLcmaWOls@gcp-us-east1.company-domain.cockroachcloud
 
 You use this URL to reach the [Admin UI for your cluster](managed-use-the-admin-ui.html). This URL is typically the combination of the global hostname and port `8080`.
 
-Once you open the URL, you'll need to log in with the username and password mentioned above.
+Once you open the URL, you'll need to log in with your username and password.
