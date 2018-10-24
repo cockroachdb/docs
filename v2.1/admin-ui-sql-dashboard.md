@@ -43,6 +43,16 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 - In the cluster view, the graph shows the 10-second average of the number of SQL statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling) across all nodes.
 
+## Service Latency: SQL, 99th percentile
+
+<img src="{{ 'images/v2.1/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency" style="border:1px solid #eee;max-width:100%" />
+
+Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
+
+- In the node view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the selected node.
+
+- In the cluster view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for each node in the cluster.
+
 ## Transactions
 
 <img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
@@ -52,16 +62,6 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current transactions load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL queries. In that case, re-examine queries to lower contention.
-
-## Service Latency
-
-<img src="{{ 'images/v2.1/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency" style="border:1px solid #eee;max-width:100%" />
-
-Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
-
-- In the node view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the selected node.
-
-- In the cluster view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for each node in the cluster.
 
 ## Other graphs
 

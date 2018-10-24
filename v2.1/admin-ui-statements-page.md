@@ -45,41 +45,41 @@ The following statements are different enough to not have the same fingerprint:
 
 ### Parameters
 
-The **Statements** page displays the time, execution count, number of retries, number of affected rows, and latency for each statement fingerprint. By default, the statement fingerprints are sorted by time; however, you can sort the table by execution count, retries, rows affected, and latency.
+The **Statements** page displays the time, execution count, number of [retries](transactions.html#transaction-retries), number of rows affected, and latency for each statement fingerprint. By default, the statement fingerprints are sorted by time; however, you can sort the table by execution count, retries, rows affected, and latency.
 
 The following details are provided for each statement fingerprint:
 
 Parameter | Description
 -----|------------
 Statement | The SQL statement or the fingerprint of similar SQL statements.<br><br>To view additional details of a statement fingerprint, click on the statement fingerprint in the **Statement** column to see the [**Statement Details** page](#statement-details-page).
-Time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint).
-Execution Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed. <br><br>The execution count is displayed in numerical value as well as in the form of a horizontal bar. The bar is color-coded to indicate the ratio of runtime success (indicated by blue) to runtime failure (indicated by red) of the execution count for the fingerprint. The bar also helps you compare the execution count across all SQL fingerprints in the table. <br><br>You can sort the table by count.
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint).
-Rows Affected | The average number of rows returned or affected while executing the SQL statement (or multiple statements having the same fingerprint). <br><br>The number of rows affected are represented in two ways: The numerical value shows the number of rows affected, while the horizontal bar is color-coded to indicate the mean (indicated by blue) and standard deviation (indicated by yellow) values of the number of rows affected. The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows affected.
-Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded to indicate the mean (indicated by blue) and standard deviation (indicated by yellow) values of latency. The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
+Time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint) within the the last hour or the [specified time interval](#limitation).
+Execution Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed within the last hour or the [specified time interval](#limitation). <br><br>The execution count is displayed in numerical value as well as in the form of a horizontal bar. The bar is color-coded to indicate the ratio of runtime success (indicated by blue) to runtime failure (indicated by red) of the execution count for the fingerprint. The bar also helps you compare the execution count across all SQL fingerprints in the table. <br><br>You can sort the table by count.
+Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Rows Affected | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The number of rows returned are represented in two ways: The numerical value shows the number of rows returned, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of the number of rows returned). The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows returned.
+Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency). The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
 
 ## Statement Details page
 
-The **Statement Details** page displays the details of the latency by phase, execution count, rows affected, and statistics for the selected statement fingerprint.
+The **Statement Details** page displays the details of the time, execution count, retries, rows returned, and latency by phase and by gateway node for the selected statement fingerprint.
 
 <img src="{{ 'images/v2.1/admin_ui_statements_details_page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 ### Latency by Phase
 
-The **Latency by Phase** table provides the mean and standard deviation values of the overall service latency as well as latency for each execution phase (parse, plan, run, and overhead) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as bar graphs, which are color-coded to indicate the mean (indicated by blue) and standard deviation (indicated by yellow) values of latency.
+The **Latency by Phase** table provides the mean value and one standard deviation of the mean value of the overall service latency as well as latency for each execution phase (parse, plan, run, and overhead) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as color-coded bar graphs: blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency.
 
-### By Gateway Node
+### Statistics by Gateway Node
 
-The **By Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides the following details:
+The **Statistics by Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides the following details:
 
 Parameter | Description
 -----|------------
 Node | The ID of the gateway node.
-Time | The cumulative time taken to execute the statement.
+Time | The cumulative time taken to execute the statement within the last hour or the [specified time interval](#limitation).
 Execution Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed.
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint).
-Rows Affected | The average number of rows returned or affected while executing the SQL statement (or multiple statements having the same fingerprint). <br><br>The number of rows affected are represented in two ways: The numerical value shows the number of rows affected, while the horizontal bar is color-coded to indicate the mean (indicated by blue) and standard deviation (indicated by yellow) values of the number of rows affected. The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows affected.
-Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded to indicate the mean (indicated by blue) and standard deviation (indicated by yellow) values of latency. The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
+Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Rows Affected | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The number of rows returned are represented in two ways: The numerical value shows the number of rows returned, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of the number of rows returned). The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows returned.
+Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value). The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
 
 ### Execution Count
 
@@ -87,14 +87,14 @@ The **Execution Count** table provides information about the following parameter
 
 Parameter | Description
 -----|------------
-First Attempts | The cumulative number of first attempts to execute the SQL statement (or multiple statements having the same fingerprint).
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint).
-Max Retries | The highest number of retries for a single SQL statement with this fingerprint. <br><br>For example, if three statements having the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+First Attempts | The cumulative number of first attempts to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Max Retries | The highest number of retries for a single SQL statement with this fingerprint within the last hour or the [specified time interval](#limitation). <br><br>For example, if three statements having the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 Total | The total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and cumulative retries.
 
 ### Row Count
 
-The **Row Count** table provides the mean and standard deviation values of cumulative count of rows returned or affected by the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as a bar graph.
+The **Row Count** table provides the mean value and one standard deviation of the mean value of cumulative count of rows returned by the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as a bar graph.
 
 ### Statistics
 
@@ -102,11 +102,11 @@ The statistics box on the right-hand side of the **Statements Details** page pro
 
 Parameter | Description
 -----|------------
-Total time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint).
-Execution count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed.
-Executed without retry | The percentage of successful executions of the SQL statement (or multiple statements having the same fingerprint) on the first attempt.
-Mean service latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint).
-Mean number of rows | The average number of rows returned or affected while executing the SQL statement (or multiple statements having the same fingerprint).
+Total time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Execution count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed within the last hour or the [specified time interval](#limitation).
+Executed without retry | The percentage of successful executions of the SQL statement (or multiple statements having the same fingerprint) on the first attempt within the last hour or the [specified time interval](#limitation).
+Mean service latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
+Mean number of rows | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
 
 The table below the statistics box provides the following details:
 

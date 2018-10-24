@@ -3,7 +3,7 @@ title: Advanced Debugging Page
 toc: true
 ---
 
-The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports.
+The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details.
 
 {{site.data.alerts.callout_info}}
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
@@ -21,7 +21,7 @@ Report | Description
 Problem Ranges | View ranges in your cluster that are unavailable, underreplicated, slow, or have other problems.
 Network Latency | Check latencies between all nodes in your cluster.
 Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration.
-Cluster Settings | View all cluster settings.
+Cluster Settings | View all cluster settings and their configured values.
 Localities | Check node localities for your cluster.
 
 ## Even More Advanced Debugging

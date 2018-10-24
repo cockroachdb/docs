@@ -23,7 +23,7 @@ Area | Description
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Statements Details](admin-ui-statements-page.html) | Identify the frequently executed or high latency [SQL statements](sql-statements.html)
 [Jobs Details](admin-ui-jobs-page.html) | View details of the jobs running in the cluster.
-[Advanced Debugging Page](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports.
+[Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports.
 
 The Admin UI also provides details about the way data is **Distributed**, the state of specific **Queues**, and metrics for **Slow Queries**, but these details are largely internal and intended for use by CockroachDB developers.
 
