@@ -87,25 +87,28 @@ Currently, inverted indexes only support equality comparisons using the `=` oper
 
 1. Create your table with a computed column: 
 
-~~~ sql
-> CREATE TABLE test (
-    id INT, 
-    data JSONB, 
-    foo INT AS ((data->>'foo')::INT) STORED
-    );
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE test (
+        id INT, 
+        data JSONB, 
+        foo INT AS ((data->>'foo')::INT) STORED
+        );
+    ~~~
 
 2. Create an index on your computed column: 
 
-~~~ sql
-> CREATE INDEX test_idx ON test (foo);
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE INDEX test_idx ON test (foo);
+    ~~~
 
 3. Execute your query with your comparison: 
 
-~~~ sql
-> SELECT * FROM test where foo > 3;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM test where foo > 3;
+    ~~~
 
 ## Example
 
