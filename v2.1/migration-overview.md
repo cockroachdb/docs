@@ -3,6 +3,7 @@ title: Migration Overview
 summary: Learn how to migrate data into a CockroachDB cluster.
 redirect_from: import-data.html
 toc: true
+build_for: [standard, managed]
 ---
 
 CockroachDB supports importing data from the following databases:
@@ -28,7 +29,7 @@ During migration, all of the features of [`IMPORT`][import] that interact with e
 
 ## Schema and application changes
 
-In general, you are likely to have to make changes to your schema, and how your app interacts with the database.  We **strongly** recommend testing your application against CockroachDB to ensure that:
+In general, you are likely to have to make changes to your schema, and how your app interacts with the database.  We **strongly recommend testing your application against CockroachDB** to ensure that:
 
 1. The state of your data is what you expect post-migration.
 2. Performance is as expected for your application's workloads.  You may need to apply some [best practices for optimizing SQL performance in CockroachDB](performance-best-practices-overview.html).
