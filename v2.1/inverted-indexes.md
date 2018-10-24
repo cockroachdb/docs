@@ -82,7 +82,11 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 
 Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
 
-
+### Comparisons
+Currently, inverted indexes only support equality comparisons using the `=` operator. If you require comparisons using `>`, `<=`, et al., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+1. Create your computed column: `create table test(id int, data jsonb, foo int as ((data->>'foo')::int) stored);`
+2. Create an index on your stored column: `create index test_idx on test (foo);`
+3. Execute your query: `select * from test where foo > 3;`
 
 ## Example
 
@@ -158,14 +162,7 @@ Now, run a query that filters on the `JSONB` column:
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
 (2 rows)
 ~~~
-### Comparisons
-Currently, inverted indexes only support equality. If you require comparisons like `>`, `<=`, etc., you can create an index on a computed column using your json payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
-1) Create your computed column:
-`create table test(id int, data jsonb, foo int as ((data->>'foo')::int) stored);`
-2) Create an index on your stored column:
-`create index test_idx on test (foo);`
-3) Execute your query:
-`select * from test3 where foo > 3;`
+
 
 ## See also
 
