@@ -2,7 +2,7 @@
 title: Sign Up for a Managed Cluster
 summary:
 toc: true
-build_for: [standard, managed]
+build_for: [managed]
 ---
 
 The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
@@ -48,7 +48,7 @@ Hosts | The hostnames to use in your connection strings.<br><br>Typically, you'l
 Ports | The ports to use for SQL connections and for reaching the [Admin UI](managed-use-the-admin-ui.html), usually `26257` and `8080` respectively.
 User | Your initial user. This user has "admin" privilges and can [create databases](learn-cockroachdb-sql.html#create-a-database), [import data](migration-overview.html), and [create and grant privileges to other users](managed-user-management.html).   
 Password | The password for your initial user.
-Database name | The initial database created for you. Your initial "admin" user can [create additional databases](learn-cockroachdb-sql.html#create-a-database.html).
+Database name | The initial database created for you. Your initial "admin" user can [create additional databases](learn-cockroachdb-sql.html#create-a-database).
 CA Certificate | The `ca.crt` file that must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
 **SQL connection URL with placeholders**

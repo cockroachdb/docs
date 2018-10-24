@@ -61,7 +61,7 @@ For more details, see [Privileges](privileges.html) and [`GRANT`](grant.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a user's privileges must be [revoked](#managing-priviledges) before the user can be dropped.
+    All of a user's privileges must be [revoked](#managing-privileges) before the user can be dropped.
     {{site.data.alerts.end}}
 
 ## Managing privileges
@@ -129,5 +129,5 @@ Role-based access control is an Enterprise feature available to all managed clus
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#managing-priviledges) before the user can be dropped.
+    All of a role's privileges must be [revoked](#managing-privileges) before the user can be dropped.
     {{site.data.alerts.end}}
