@@ -5,7 +5,6 @@ tags: postgres, cassandra, google cloud spanner
 toc: true
 ---
 
-
 ## What is CockroachDB?
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
@@ -14,7 +13,7 @@ CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive
 
 ## When is CockroachDB a good choice?
 
-CockroachDB is well suited for applications that require reliable, available, and correct data regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
+CockroachDB is well suited for applications that require reliable, available, and correct data, and millisecond response times, regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
 
 - Distributed or replicated OLTP
 - Multi-datacenter deployments
@@ -22,13 +21,7 @@ CockroachDB is well suited for applications that require reliable, available, an
 - Cloud migrations
 - Cloud-native infrastructure initiatives
 
-## When is CockroachDB not a good choice?
-
-CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
-
-Also, CockroachDB is not yet suitable for:
-
-- Heavy analytics / OLAP
+CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms or less, and supports a variety of [SQL and operational tuning practices](performance-tuning.html) for optimizing query performance. However, CockroachDB is not yet suitable for heavy analytics / OLAP.
 
 ## How easy is it to install CockroachDB?
 
