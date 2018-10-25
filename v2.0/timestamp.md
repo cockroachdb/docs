@@ -100,10 +100,10 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 Type | Details
 -----|--------
-`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `TIME` | <span class="version-tag">New in v2.0:</span> Converts to the time portion (HH:MM:SS) of the timestamp
 `DATE` | ––
 `STRING` | ––
