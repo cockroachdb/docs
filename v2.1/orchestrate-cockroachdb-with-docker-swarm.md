@@ -436,18 +436,27 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     > CREATE DATABASE securenodetest;
     ~~~
 
-3. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
+3. [Create a user with a password](create-user.html#create-a-user-with-a-password).
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+    ~~~
+
+  You will need this username and password to access the Admin UI in Step 8.
+
+4. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 8. Monitor the cluster
 
 To access your cluster's Admin UI:
 
-1. [Create a user with a password](create-user.html#create-a-user-with-a-password).
-2. Open a browser and go to `https://<any node's external IP address>:8080`.
+1. Open a browser and go to `https://<any node's external IP address>:8080`.
 {{site.data.alerts.callout_info}}It's possible to access the Admin UI from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition. However, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.{{site.data.alerts.end}}
-3. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.
 
-4. On the Admin UI, verify that the cluster is running as expected:
+2. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password created in Step 7.
+
+3. On the Admin UI, verify that the cluster is running as expected:
 
   1. View **Node List** to ensure that all of your nodes successfully joined the cluster.
 

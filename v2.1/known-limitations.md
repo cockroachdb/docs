@@ -16,7 +16,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Admin UI may become inaccessible for secure clusters
 
-<span class="version-tag">New in v2.1:</span> Accessing the Admin UI for a secure cluster now requires login information (username and password). This login information is stored in a data range in a system table, which is replicated as per the replication factor. If a majority of the nodes with the data range replicas go down, the range might lose quorum, causing the users to be locked out of the Admin UI.
+<span class="version-tag">New in v2.1:</span> Accessing the Admin UI for a secure cluster now requires login information (username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
 
 ## Unresolved limitations
 

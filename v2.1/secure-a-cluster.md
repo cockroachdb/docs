@@ -211,21 +211,19 @@ Now run the same `SELECT` query:
 
 As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-Exit the SQL shell on node 2:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
-
-[Create a user with a password](create-user.html#create-a-user-with-a-password):
+Finally, [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need in the next step to access the [Admin UI](admin-ui-overview.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
-You will need this username and password to access the Admin UI in Step 5.
+Exit the SQL shell on node 2:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \q
+~~~
 
 ## Step 5. Monitor the cluster
 
