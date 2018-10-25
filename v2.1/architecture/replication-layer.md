@@ -92,6 +92,8 @@ When CockroachDB detects a membership change, ultimately, replicas are moved bet
 
 This is achieved by using a snapshot of a replica from the leaseholder, and then sending the data to another node over [gRPC](distribution-layer.html#grpc). After the transfer has been completed, the node with the new replica joins that range's Raft group; it then detects that its latest timestamp is behind the most recent entries in the Raft log and it replays all of the actions in the Raft log on itself.
 
+<span class="version-tag">New in v2.1:</span> In addition to the rebalancing that occurs when nodes join or leave a cluster, leases and replicas are rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` [cluster setting](../cluster-settings.html).  Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
+
 ## Interactions with other layers
 
 ### Replication and distribution layers
