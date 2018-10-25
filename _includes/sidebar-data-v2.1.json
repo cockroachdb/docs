@@ -1553,6 +1553,12 @@
             "urls": [
               "/${VERSION}/view-version-details.html"
             ]
+          },
+          {
+            "title": "<code>cockroach workload</code>",
+            "urls": [
+              "/${VERSION}/cockroach-workload.html"
+            ]
           }
         ]
       },

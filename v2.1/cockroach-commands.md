@@ -8,7 +8,6 @@ This page introduces the `cockroach` commands for configuring, starting, and man
 
 You can run `cockroach help` in your shell to get similar guidance.
 
-
 ## Commands
 
 Command | Usage
@@ -26,6 +25,7 @@ Command | Usage
 [`cockroach gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](view-version-details.html) | Output CockroachDB version details.
 [`cockroach debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
+[`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster. 
 
 ## Environment variables
 
