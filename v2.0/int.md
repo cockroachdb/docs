@@ -96,8 +96,8 @@ Type | Details
 `DECIMAL` | ––
 `FLOAT` | Loses precision if the `INT` value is larger than 2^53 in magnitude
 `BOOL` | **0** converts to `false`; all other values convert to `true`
-`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970)
-`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970)
+`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `INTERVAL` | Converts to microseconds
 `STRING` | ––
 
