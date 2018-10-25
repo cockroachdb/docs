@@ -36,13 +36,7 @@ With the confluence of these features, we hope that CockroachDB lets teams easil
 
 It's helpful to understand a few terms before reading our architecture documentation.
 
-Term | Definition
------|-----------
-**Cluster** | Your CockroachDB deployment, which acts as a single logical application that contains one or more databases.
-**Node** | An individual machine running CockroachDB. Many nodes join together to create your cluster.
-**Range** | A set of sorted, contiguous data from your cluster.
-**Replicas** | Copies of your ranges, which are stored on at least 3 nodes to ensure survivability.
-**Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+{% include {{ page.version.version }}/misc/basic-terms.md %}
 
 ### Concepts
 
