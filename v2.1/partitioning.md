@@ -212,13 +212,13 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students_by_list.north_america OF TABLE roachlearn.students_by_list \
+> ALTER PARTITION north_america OF TABLE roachlearn.students_by_list \
     CONFIGURE ZONE USING constraints='[+datacenter=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students_by_list.australia OF TABLE roachlearn.students_by_list \
+> ALTER PARTITION australia OF TABLE roachlearn.students_by_list \
     CONFIGURE ZONE USING constraints='[+datacenter=au1]';
 ~~~
 
@@ -312,13 +312,13 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students_by_range.current OF TABLE roachlearn.students_by_range \
+> ALTER PARTITION current OF TABLE roachlearn.students_by_range \
     CONFIGURE ZONE USING constraints='[+ssd]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students_by_range.graduated OF TABLE roachlearn.students_by_range \
+> ALTER PARTITION graduated OF TABLE roachlearn.students_by_range \
     CONFIGURE ZONE USING constraints='[+hdd]';
 ~~~
 
@@ -423,25 +423,25 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students.current_us OF TABLE roachlearn.students \
+> ALTER PARTITION current_us OF TABLE roachlearn.students \
     CONFIGURE ZONE USING constraints='[+ssd,+datacenter=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students.graduated_us OF TABLE roachlearn.students CONFIGURE ZONE \
+> ALTER PARTITION graduated_us OF TABLE roachlearn.students CONFIGURE ZONE \
     USING constraints='[+hdd,+datacenter=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students.current_au OF TABLE roachlearn.students \
+> ALTER PARTITION current_au OF TABLE roachlearn.students \
     CONFIGURE ZONE USING constraints='[+ssd,+datacenter=au1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION roachlearn.students.graduated_au OF TABLE roachlearn.students CONFIGURE ZONE \
+> ALTER PARTITION graduated_au OF TABLE roachlearn.students CONFIGURE ZONE \
     USING constraints='[+hdd,+datacenter=au1]';
 ~~~
 

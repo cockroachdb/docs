@@ -1758,42 +1758,42 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.new_york OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.boston OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.washington_dc OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.seattle OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.san_francisco OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.users.los_angeles OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
@@ -1802,84 +1802,84 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.new_york OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.new_york_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.boston OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.boston_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.washington_dc OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.washington_dc_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.seattle OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.seattle_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.san_francisco OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.san_francisco_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.los_angeles OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.vehicles.los_angeles_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
@@ -1888,126 +1888,126 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.new_york OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.new_york_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.new_york_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.boston OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.boston_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.boston_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.washington_dc OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.washington_dc_idx OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.washington_dc_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.seattle OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.seattle_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.seattle_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.san_francisco OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.san_francisco_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.san_francisco_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.los_angeles OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.los_angeles_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION movr.rides.los_angeles_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     --insecure \
     --host=<address of any node>
     ~~~
