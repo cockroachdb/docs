@@ -360,11 +360,11 @@ In this example, we create a table and [define partitions by list](partitioning.
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
-    expected_graduation_date DATE,   
+    expected_graduation_date DATE,
     PRIMARY KEY (country, id))
     PARTITION BY LIST (country)
       (PARTITION north_america VALUES IN ('CA','US'),
@@ -379,7 +379,7 @@ In this example, we create a table and [define partitions by range](partitioning
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
-   id SERIAL,
+   id INT DEFAULT unique_rowid(),
    name STRING,
    email STRING,                                                                                           
    country STRING,

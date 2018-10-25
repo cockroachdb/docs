@@ -1,19 +1,49 @@
 ---
 title: SERIAL
-summary: The SERIAL data type defaults to a unique 64-bit integer that is the combination of the insert timestamp and the ID of the node.
+summary: The SERIAL pseudo-type produces integer values automatically.
 toc: true
 ---
 
-The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a 64-bit integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
+The `SERIAL` pseudo [data type](data-types.html) is a keyword that can
+be used *in lieu* of a real data type when defining table columns. It
+is approximately equivalent to using an [integer type](int.html) with
+a [`DEFAULT` expression](default-value.html) that generates different
+values every time it is evaluated. This default expression in turn
+ensures that inserts that do not specify this column will receive an
+automatically generated value instead of `NULL`.
 
-{{site.data.alerts.callout_info}}In most cases, we recommend using the <a href="uuid.html"><code>UUID</code></a> data type with the <code>gen_random_uuid()</code> function as the default value, which generates 128-bit values (much larger than <code>SERIAL</code>'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See <a href="uuid.html#create-a-table-with-auto-generated-unique-row-ids">Create a table with auto-generated unique row IDs</a> for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+`SERIAL` is provided only for compatibility with PostgreSQL. New applications should use real data types and a suitable `DEFAULT` expression.
 
+In most cases, we recommend using the [`UUID`](uuid.html) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (larger than `SERIAL`'s maximum of 64 bits) and more uniformly scatters them across all of a table's underlying key-value ranges. UUIDs ensure more effectively that multiple nodes share the insert load when a UUID column is used in an index or primary key.
 
-## Aliases
+See [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details.
+{{site.data.alerts.end}}
 
-The `SERIAL` type is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
+## Behavior
 
-In CockroachDB, the following are aliases for `SERIAL`:
+The keyword `SERIAL` is recognized in `CREATE TABLE` and is
+automatically translated to a real data type and a [`DEFAULT`
+expression](default-value.html) using `unique_rowid()` during table
+creation.
+
+The result of this translation is then used internally by CockroachDB,
+and can be observed using [`SHOW CREATE TABLE`](show-create-table.html).
+
+The chosen `DEFAULT` expression ensures that different values are
+automatically generated for the column during row insertion.  These
+are not guaranteed to increase monotonically, see [this section
+below](#auto-incrementing-is-not-always-sequential) for details.
+
+{{site.data.alerts.callout_info}}
+The particular choice of `DEFAULT` expression when clients use the
+`SERIAL` keyword is subject to change in future versions of
+CockroachDB. Applications that wish to use `unique_rowid()`
+specifically must use the full explicit syntax `INT DEFAULT
+unique_rowid()` and avoid `SERIAL` altogether.
+{{site.data.alerts.end}}
+
+For compatibility with PostgreSQL, CockroachDB recognizes the following keywords as aliases to `SERIAL`:
 
 - `SERIAL2`
 - `SERIAL4`
@@ -21,15 +51,28 @@ In CockroachDB, the following are aliases for `SERIAL`:
 - `SMALLSERIAL`
 - `BIGSERIAL`
 
-{{site.data.alerts.callout_danger}}<code>SERIAL2</code> and <code>SERIAL4</code> are the same as <code>SERIAL</code> and store 8-byte values, not 2- or 4-byte values as their names might suggest.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`SERIAL2` and `SERIAL4` are the same as `SERIAL` and store 8-byte values, not 2- or 4-byte values as their names might suggest.
+{{site.data.alerts.end}}
 
-## Syntax
+{{site.data.alerts.callout_info}}
+This behavior is updated in CockroachDB v2.1.
+{{site.data.alerts.end}}
 
-Any `INT` value is a valid `SERIAL` value; in particular constant `SERIAL` values can be expressed using [numeric literals](sql-constants.html#numeric-literals).
+### Automatically generated values
 
-## Size
+The default expression `unique_rowid()` produces a 64-bit integer from
+the current timestamp and ID of the node executing the
+[`INSERT`](insert.html) or [`UPSERT`](upsert.html) operation.
 
-[Same as `INT`](int.html#size).
+This behavior is statistically likely to be globally unique except in
+extreme cases (see [this FAQ
+entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
+for more details).
+
+Also, because value generation using `unique_rowid()` does not require
+inter-node coordination, its performance scales unimpeded when
+multiple SQL clients are writing to the table from different nodes.
 
 ## Examples
 
@@ -76,7 +119,7 @@ When we insert rows without values in column `a` and display the new rows, we se
 +--------------------+--------+-------+
 ~~~
 
-### Auto-Incrementing Is Not Always Sequential
+## Auto-Incrementing Is Not Always Sequential
 
 It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence.
 
@@ -115,10 +158,8 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster.
 
-## Supported Casting & Conversion
 
-[Values of type `SERIAL` can be converted to other types like any `INT` values](int.html#supported-casting-conversion).
+## See also
 
-## See Also
-
-[Data Types](data-types.html)
+- [FAQ: How do I auto-generate unique row IDs in CockroachDB?](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
+- [Data Types](data-types.html)

@@ -21,7 +21,7 @@ Type | Description | Example
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
 [`JSONB`](jsonb.html) | <span class="version-tag">New in v2.0:</span> JSON (JavaScript Object Notation) data. | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
-[`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
+[`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html). | `148591304110702593 `
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`TIME`](time.html) | <span class="version-tag">New in v2.0:</span> A time of day with no time zone. | `TIME '01:23:45.123456'`
 [`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`

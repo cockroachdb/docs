@@ -90,7 +90,7 @@ For instance, consider the database of a global online learning portal that has 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
@@ -194,7 +194,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
@@ -313,7 +313,7 @@ $ cockroach init \
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
-   id SERIAL,
+   id INT DEFAULT unique_rowid(),
    name STRING,
    email STRING,                                                                                           
    country STRING,
@@ -439,7 +439,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,

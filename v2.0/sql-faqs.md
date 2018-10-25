@@ -30,7 +30,7 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 There’s no function in CockroachDB for returning last inserted values, but you can use the [`RETURNING` clause](insert.html#insert-and-return-values) of the `INSERT` statement.
 
-For example, this is how you’d use `RETURNING` to return an auto-generated [`SERIAL`](serial.html) value:
+For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
 ~~~ sql
 > CREATE TABLE users (id SERIAL, name STRING);
