@@ -1437,6 +1437,12 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "Experimental Features",
+            "urls": [
+              "/${VERSION}/experimental-features.html"
+            ]
           }
         ]
       },
