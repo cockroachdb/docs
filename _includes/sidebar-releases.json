@@ -3,6 +3,12 @@
   "is_top_level": true,
   "items": [
     {
+      "title": "v2.1",
+      "urls": [
+        "/releases/v2.1.0.html"
+      ]
+    },
+    {
       "title": "v2.0.6",
       "urls": [
         "/releases/v2.0.6.html"

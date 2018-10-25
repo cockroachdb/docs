@@ -4,6 +4,5 @@ baseurl: "/docs"
 destination: _site/docs
 
 versions:
-  stable: v2.0
-  dev: v2.1
-  v1.2: v2.0
+  stable: v2.1
+  # dev: v2.1
