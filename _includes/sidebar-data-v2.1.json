@@ -164,6 +164,12 @@
             "urls": [
               "/${VERSION}/demo-json-support.html"
             ]
+          },
+          {
+           "title": "Third-Party Database Tools",
+            "urls": [
+                "/${VERSION}/third-party-database-tools.html"
+            ]
           }
         ]
       },
