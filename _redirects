@@ -1,5 +1,6 @@
 ---
 layout: null
+build_for: [standard, managed]
 ---
 
 {% for version in site.versions %}
