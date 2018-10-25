@@ -62,6 +62,7 @@ Flag | Description
 `--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
+`--locality-advertise-addr` | <span class="version-tag">New in v2.1:</span> The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
 `--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
 `--host` | **Deprecated.** Use `--listen-addr` instead.
@@ -296,6 +297,46 @@ $ cockroach init \
 --host=<address of any node>
 ~~~
 </div>
+
+### Start a multi-node cluster across private networks
+
+**Scenario:**
+
+- You have a cluster that spans GCE and AWS.
+- The nodes on each cloud can reach each other on private addresses, but the private addresses aren't reachable from the other cloud.
+
+**Approach:**
+
+1. Start each node on GCE with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes in its locality, and `--advertise-addr` set to advertise its public address to nodes on AWS:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --locality=cloud=gce \
+    --locality-advertise-addr=cloud=gce@<private address of node> \
+    --advertise-addr=<public address of node>
+    ~~~
+
+2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, and `--advertise-addr` set to advertise its public address to nodes on GCE:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --locality=cloud=aws \
+    --locality-advertise-addr=cloud=aws@<private address of node> \
+    --advertise-addr=<public address of node>
+    ~~~
+
+3. Run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init \
+    --certs-dir=certs \
+    --host=<address of any node>
+    ~~~
 
 ### Add a node to a cluster
 
