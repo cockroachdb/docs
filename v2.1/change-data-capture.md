@@ -65,7 +65,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
     For example:
 
-    ~~~ json
+    ~~~ shell
     {"__crdb__": {"updated": "1532377312562986715.0000000000"}, "id": 1, "name": "Petee H"}
     {"__crdb__": {"updated": "1532377306108205142.0000000000"}, "id": 2, "name": "Carl"}
     {"__crdb__": {"updated": "1532377358501715562.0000000000"}, "id": 3, "name": "Ernie"}
@@ -80,6 +80,39 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 - With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
 
     Because CockroachDB supports transactions that can affect any part of the cluster, it is not possible to horizontally divide the transaction log into independent changefeeds.
+
+## Schema changes with column backfill
+
+When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema.
+
+For example, start with the changefeed created in the [example below](#create-a-changefeed-connected-to-kafka):
+
+~~~ shell
+[1]	{"id": 1, "name": "Petee H"}
+[2]	{"id": 2, "name": "Carl"}
+[3]	{"id": 3, "name": "Ernie"}
+~~~
+
+Add a column to the watched table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
+~~~
+
+The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
+
+~~~ shell
+[1]	{"id": 1, "name": "Petee H"}
+[2]	{"id": 2, "name": "Carl"}
+[3]	{"id": 3, "name": "Ernie"}
+[1]	{"id": 1, "name": "Petee H"}  # Duplicate
+[2]	{"id": 2, "name": "Carl"}     # Duplicate
+[3]	{"id": 3, "name": "Ernie"}    # Duplicate
+[1]	{"id": 1, "likes_treats": true, "name": "Petee H"}
+[2]	{"id": 2, "likes_treats": true, "name": "Carl"}
+[3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
+~~~
 
 ## Configure a changefeed
 
@@ -148,13 +181,6 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
-
-## Backfill
-
-When schema changes with column backfills (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched row, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema.
-
-For example:
-
 
 ## Usage example
 
@@ -278,7 +304,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --from-beginning \
     --topic=office_dogs
     ~~~
-    ~~~
+
+    ~~~ shell
     {"id": 1, "name": "Petee H"}
     {"id": 2, "name": "Carl"}
     ~~~
@@ -294,7 +321,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
-    ~~~
+    ~~~ shell
     {"id": 3, "name": "Ernie"}
     ~~~
 
@@ -435,7 +462,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --from-beginning \
     --topic=office_dogs
     ~~~
-    ~~~
+
+    ~~~ shell
     [1]	{"id": 1, "name": "Petee H"}
     [2]	{"id": 2, "name": "Carl"}
     ~~~
@@ -451,7 +479,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
-    ~~~
+    ~~~ shell
     [3]	{"id": 3, "name": "Ernie"}
     ~~~
 
