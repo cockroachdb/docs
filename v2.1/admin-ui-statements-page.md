@@ -3,7 +3,7 @@ title: Statements Page
 toc: true
 ---
 
-The **Statements** page helps you identify the frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+<span class="version-tag">New in v2.1</span> The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
 
 To view the **Statements** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Statements** on the left.
 
@@ -11,7 +11,7 @@ To view the **Statements** page, [access the Admin UI](admin-ui-access-and-navig
 
 ## Limitation
 
-The **Statements** page displays the details of the SQL statements executed only within a specified time interval. At the end of the specified time interval, the display is wiped clean, and you'll not see any statements on the **Statements** page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+The **Statements** page displays the details of the SQL statements executed within a specified time interval. At the end of the interval, the display is wiped clean, and you'll not see any statements on the page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
 
 ## Selecting an application
 
@@ -23,7 +23,7 @@ If you have multiple applications running on the cluster, the **Statements** pag
 
 The **Statements** page displays the details of SQL statement fingerprints instead of individual SQL statements.
 
-A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the literal values with underscores (`_`). Grouping similar SQL statements as fingerprints helps you quickly identify the frequently executed SQL statements and their latencies.
+A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the literal values with underscores (`_`). Grouping similar SQL statements as fingerprints helps you quickly identify frequently executed SQL statements and their latencies.
 
 A statement fingerprint is generated when two or more statements are the same after any literal values in them (e.g.,numbers and strings) are replaced with underscores. For example, the following statements have the same once their numbers have been replaced with underscores:
 
@@ -66,7 +66,7 @@ The **Statement Details** page displays the details of the time, execution count
 
 ### Latency by Phase
 
-The **Latency by Phase** table provides the mean value and one standard deviation of the mean value of the overall service latency as well as latency for each execution phase (parse, plan, run, and overhead) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as color-coded bar graphs: blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency.
+The **Latency by Phase** table provides the mean value and one standard deviation of the mean value of the overall service latency as well as latency for each execution phase (parse, plan, run) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as color-coded bar graphs: blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency.
 
 ### Statistics by Gateway Node
 

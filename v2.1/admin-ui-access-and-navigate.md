@@ -37,7 +37,7 @@ Cluster Metrics | <ul><li>[Time Series graphs](admin-ui-access-and-navigate.html
 Databases | Information about the tables and grants in your [databases](admin-ui-databases-page.html).
 Statements | Information about the SQL [statements](admin-ui-statements-page.html) running in the cluster.
 Jobs | Information about all currently active schema changes and backup/restore [jobs](admin-ui-jobs-page.html).
-Advanced Debugging | Advanced monitoring and troubleshooting [reports](admin-ui-debug-pages.html). These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
+Advanced Debugging | Advanced monitoring and troubleshooting [reports](admin-ui-debug-pages.html). These pages are experimental. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
 
 ### Cluster Metrics
 

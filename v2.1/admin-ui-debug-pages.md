@@ -3,13 +3,11 @@ title: Advanced Debugging Page
 toc: true
 ---
 
-The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details.
+The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view the **Advanced Debugging** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click the gear icon on the left-hand navigation bar.
 
 {{site.data.alerts.callout_info}}
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
  {{site.data.alerts.end}}
-
-To view the **Advanced Debugging** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click the gear icon on the left-hand navigation bar.
 
 ## Reports and Configuration
 

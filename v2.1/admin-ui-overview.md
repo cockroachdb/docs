@@ -21,7 +21,7 @@ Area | Description
 [Nodes Details](admin-ui-access-and-navigate.html#summary-panel) | View details of live, dead, and decommissioned nodes.
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
-[Statements Details](admin-ui-statements-page.html) | Identify the frequently executed or high latency [SQL statements](sql-statements.html)
+[Statements Details](admin-ui-statements-page.html) | Identify frequently executed or high latency [SQL statements](sql-statements.html)
 [Jobs Details](admin-ui-jobs-page.html) | View details of the jobs running in the cluster.
 [Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports.
 
