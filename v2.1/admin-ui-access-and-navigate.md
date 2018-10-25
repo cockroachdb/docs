@@ -26,7 +26,7 @@ To log out of the Admin UI, click the **Log Out** link at the bottom of the left
 
 ## Navigate the Admin UI
 
-The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), the [Databases page](admin-ui-databases-page.html), the [Statements page](admin-ui-statements-page.html) page, the [Jobs page](admin-ui-jobs-page.html), and the [Advanced Debugging page](admin-ui-debug-pages.html).
+The left-hand navigation bar allows you to navigate to the [Cluster Overview page](admin-ui-access-and-navigate.html), [cluster metrics dashboards](admin-ui-overview.html), the [Databases page](admin-ui-databases-page.html), the [Statements page](admin-ui-statements-page.html), the [Jobs page](admin-ui-jobs-page.html), and the [Advanced Debugging page](admin-ui-debug-pages.html).
 
 The main panel display changes for each page:
 
