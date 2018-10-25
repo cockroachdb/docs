@@ -1,39 +1,123 @@
 ---
 title: SERIAL
-summary: The SERIAL data type defaults to a unique 64-bit integer that is the combination of the insert timestamp and the ID of the node.
+summary: The SERIAL pseudo-type produces integer values automatically.
 toc: true
 ---
 
-The `SERIAL` [data type](data-types.html) is a column data type that, on insert, generates a 64-bit integer from the timestamp and ID of the node executing the insert. This combination is likely to be globally unique except in extreme cases (see this [example](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details). Also, because value generation does not require talking to other nodes, it is much faster than sequentially auto-incrementing a value, which requires distributed coordination.
+The `SERIAL` pseudo [data type](data-types.html) is a keyword that can
+be used *in lieu* of a real data type when defining table columns. It
+is approximately equivalent to using an [integer type](int.html) with
+a [`DEFAULT` expression](default-value.html) that generates different
+values every time it is evaluated. This default expression in turn
+ensures that inserts that do not specify this column will receive an
+automatically generated value instead of NULL.
 
 {{site.data.alerts.callout_info}}
-In most cases, we recommend using the [`UUID`](uuid.html) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (much larger than `SERIAL`'s 64-bit) and scatters them across all of a table's underlying key-value ranges, ensuring that multiple nodes share in the load. See [Create a table with auto-generated unique row IDs](uuid.html#create-a-table-with-auto-generated-unique-row-ids) for more details.
+`SERIAL` is provided only for compatibility with PostgreSQL. New applications should use real data types and a suitable `DEFAULT` expression.
+
+In most cases, we recommend using the [`UUID`](uuid.html) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (much larger than `SERIAL`'s maximum of 64 bits) and more effectively scatters them across all of a table's underlying key-value ranges. UUIDs ensure more effectively that multiple nodes share in the insert load when a UUID column is used in an index or primary key.
+
+See [Create a table with auto-generated unique row IDs](create-table.html#create-a-table-with-auto-generated-unique-row-ids) for more details.
 {{site.data.alerts.end}}
 
+## Modes of operation
 
-## Aliases
+The keyword `SERIAL` is recognized in `CREATE TABLE` and is
+automatically translated to a real data type and a `DEFAULT` value
+during table creation.
 
-The `SERIAL` type is equivalent to [`INT DEFAULT unique_rowid()`](int.html).
+The result of this translation is then used internally by CockroachDB,
+and can be observed using [`SHOW CREATE`](show-create.html).
 
-In CockroachDB, the following are aliases for `SERIAL`:
+The chosen `DEFAULT` expression ensures that different values are
+automatically generated for the column during row insertion.  These
+are not guaranteed to increase monotonically, see [this section
+below](#auto-incrementing-is-not-always-sequential) for details.
 
-- `SERIAL2`
-- `SERIAL4`
-- `SERIAL8`
-- `SMALLSERIAL`
-- `BIGSERIAL`
+There are three possible translation modes for `SERIAL`:
 
-{{site.data.alerts.callout_danger}}
-`SERIAL2` and `SERIAL4` are the same as `SERIAL` and store 8-byte values, not 2- or 4-byte values as their names might suggest.
+| Mode                                                                            | Description                                                                                                                   |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `rowid` (default)                                                               | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT`.                                                    |
+| `virtual_sequence` (experimental, <span class="version-tag">New in v2.1</span>) | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT`.                |
+| `sql_sequence` (experimental, <span class="version-tag">New in v2.1</span>)     | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant. |
+
+These modes can be configured with the experimental (unsupported) session variable `experimental_serial_normalization`. 
+
+{{site.data.alerts.callout_info}}
+The particular choice of `DEFAULT` expression when clients use the
+`SERIAL` keyword is subject to change in future versions of
+CockroachDB. Applications that wish to use `unique_rowid()`
+specifically must use the full explicit syntax `INT DEFAULT
+unique_rowid()` and avoid `SERIAL` altogether.
+
+Moreover, the existence of multiple translation modes for `SERIAL` is
+an experimental feature in CockroachDB 2.1 aimed at studying
+compatibility with existing PostgreSQL applications and may be removed
+in subsequent releases.
 {{site.data.alerts.end}}
 
-## Syntax
+### Generated values for modes `rowid` and `virtual_sequence`
 
-Any `INT` value is a valid `SERIAL` value; in particular constant `SERIAL` values can be expressed using [numeric literals](sql-constants.html#numeric-literals).
+In both modes `rowid` and `virtual_sequence`, a value is automatically
+generated using the `unique_rowid()` function.
 
-## Size
+This produces a 64-bit integer from the current timestamp and ID of
+the node executing the INSERT or UPSERT operation.
 
-[Same as `INT`](int.html#size).
+This behavior is statistically likely to be globally unique except in
+extreme cases (see this
+[example](create-table.html#create-a-table-with-auto-generated-unique-row-ids)
+for more details).
+
+Also, because value generation using `unique_rowid()` does not require
+inter-node coordination, it is much faster than the other mode
+`sql_sequence` discussed below when multiple SQL clients are writing to
+the table from different nodes.
+
+{{site.data.alerts.callout_info}}
+The difference between `rowid` and `virtual_sequence` is that the
+latter setting also creates a virtual (pseudo) sequence in the
+database. However in both cases the `unique_rowid()` function is
+ultimately used to generate new values.
+
+This behavior of `virtual_sequence` is experimental and may be removed
+in a later version of CockroachDB.
+{{site.data.alerts.end}}
+
+### Generated values for mode `sql_sequence`.
+
+In this mode, a regular [SQL sequence](create-sequence.html) is
+automatically created alongside the table where `SERIAL` is specified.
+
+The actual data type is determined as follows:
+
+| `SERIAL` variant | Real data type |
+|---|---|
+| `SERIAL2`, `SMALLSERIAL` | `INT2` |
+| `SERIAL4` | `INT4` |
+| `SERIAL` | `INT` |
+| `SERIAL8`, `BIGSERIAL` | `INT8` |
+
+Every insert or upsert into the table will then use `nextval()` to
+increment the sequence and produce increasing values.
+
+Because SQL sequences persist the current sequence value in the
+database, inter-node coordination is required when multiple clients
+use the sequence concurrently via different nodes. This can cause
+[contention](sql-faqs.html#what-is-transaction-contention) and impact
+performance negatively.
+
+Therefore, applications should consider using `unique_rowid()` or
+`gen_random_uuid()` as discussed
+[here](create-table.html#create-a-table-with-auto-generated-unique-row-ids)
+instead of sequences when possible.
+
+{{site.data.alerts.callout_info}}
+This mode `sql_sequence` is an experimental feature provided for testing compatibility with existing PostgreSQL clients.
+
+It is subject to change without notice and may be removed in later versions of CockroachDB.
+{{site.data.alerts.end}}
 
 ## Examples
 
@@ -92,7 +176,7 @@ When we insert rows without values in column `a` and display the new rows, we se
 +--------------------+--------+-------+
 ~~~
 
-### Auto-incrementing is not always sequential
+## Auto-incrementing is not always sequential
 
 It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. However, there can be gaps and the order is not completely guaranteed:
 
@@ -152,7 +236,7 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. An alternative feature, introduced in v2.0, is the [`SEQUENCE`](create-sequence.html).
 
-#### Additional examples
+### Additional examples
 
 If two transactions occur concurrently, CockroachDB cannot guarantee monotonically increasing IDs (i.e., first commit is smaller than second commit). Here are three more scenarios that demonstrate this:
 
@@ -190,10 +274,6 @@ Scenario 3:
 There is less than a 250-microsecond difference between the system clocks of the two nodes.
 
 If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even though the transactions "clearly" occurred one "after" the other, perhaps there was a clock skew between the two nodes and the system time of the second node is set earlier than the first node.
-
-## Supported casting and conversion
-
-[Values of type `SERIAL` can be converted to other types like any `INT` values](int.html#supported-casting-and-conversion).
 
 ## See also
 
