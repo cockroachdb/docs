@@ -124,7 +124,7 @@ To run it:
     account 2: 350
     ~~~
 
-{% include v2.1/client-transaction-retry.md %}
+{% include v2.2/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -220,7 +220,7 @@ To run it:
     $ java -classpath .:/path/to/postgresql.jar TxnSample
     ~~~
 
-{% include v2.1/client-transaction-retry.md %}
+{% include v2.2/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ java
