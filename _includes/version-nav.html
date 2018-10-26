@@ -1,13 +1,34 @@
 <div class="version-nav-wrapper">
   <div class="version-nav">
-    <a class="version-nav__link version-nav__link--crdb" href="https://www.cockroachlabs.com/docs/stable" data-proofer-ignore>
-      <img class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--standard" src="{{ 'images/docs.svg' | relative_url }}" alt="Go to CockroachDB docs"/>
-      <img class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--hover" src="{{ 'images/docs-hover.svg' | relative_url }}" alt="Go to CockroachDB docs"/>
+    <a
+      class="version-nav__link version-nav__link--crdb {% unless site.managed %}version-nav__link--active{% endunless %}"
+      href="{% if site.managed %}{{ "/../" | relative_url }}{% else %}{{ "/" | relative_url }}{% endif %}"
+    >
+      <img
+        class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--standard"
+        src="{{ 'images/docs.svg' | relative_url }}"
+        alt="Go to CockroachDB docs"
+      >
+      <img
+        class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--hover"
+        src="{{ 'images/docs-hover.svg' | relative_url }}" alt="Go to CockroachDB docs"
+      >
       <span class="version-nav__link-text version-nav__link-text--crdb" ></span>
     </a>
-    <a class="version-nav__link version-nav__link--managed" href="https://www.cockroachlabs.com/docs/managed/stable" data-proofer-ignore>
-      <img class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--standard" src="{{ 'images/docs-managed.svg' | relative_url }}" alt="Go to Managed CockroachDB docs"/>
-      <img class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--hover" src="{{ 'images/docs-managed-hover.svg' | relative_url }}" alt="Go to Managed CockroachDB docs"/>
+
+    <a
+      class="version-nav__link version-nav__link--managed {% if site.managed %}version-nav__link--active{% endif %}"
+      href="{% if site.managed %}{{ "/" | relative_url }}{% else %}{{ "/managed" | relative_url }}{% endif %}"
+      data-proofer-ignore
+    >
+      <img
+        class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--standard"
+        src="{{ 'images/docs-managed.svg' | relative_url }}" alt="Go to Managed CockroachDB docs"
+      >
+      <img
+        class="version-nav__link-icon version-nav__link-icon--managed version-nav__link-icon--hover"
+        src="{{ 'images/docs-managed-hover.svg' | relative_url }}" alt="Go to Managed CockroachDB docs"
+      >
       <span class="version-nav__link-text version-nav__link-text--managed"></span>
     </a>
     {% if page.version %}
