@@ -53,54 +53,6 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-### `CHECK` constraints with `INSERT ... ON CONFLICT`
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180702.html">v2.1.0-alpha.20180702</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26642">#26642</a>.{{site.data.alerts.end}}
-
-[`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
-~~~
-
-A simple `INSERT` statement that fails the `CHECK` constraint fails as it should:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a,b) VALUES (1, 12312);
-~~~
-
-~~~
-pq: failed to satisfy CHECK constraint (b < 1)
-~~~
-
-However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM ab;
-~~~
-
-~~~
-+---+--------+
-| a |   b    |
-+---+--------+
-| 1 | 123132 |
-+---+--------+
-(1 row)
-~~~
-
 ### Referring to a CTE by name more than once
 
 {% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
