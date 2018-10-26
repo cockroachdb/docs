@@ -2,6 +2,7 @@
 title: Migrate from MySQL
 summary: Learn how to migrate data from MySQL into a CockroachDB cluster.
 toc: true
+build_for: [standard, managed]
 ---
 
 {% include {{page.version.version}}/misc/beta-warning.md %}

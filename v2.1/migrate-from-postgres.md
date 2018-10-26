@@ -2,6 +2,7 @@
 title: Migrate from Postgres
 summary: Learn how to migrate data from Postgres into a CockroachDB cluster.
 toc: true
+build_for: [standard, managed]
 ---
 
 {% include {{page.version.version}}/misc/beta-warning.md %}
@@ -178,7 +179,7 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees ( 
+> IMPORT TABLE employees (
     emp_no INTEGER NOT NULL,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,

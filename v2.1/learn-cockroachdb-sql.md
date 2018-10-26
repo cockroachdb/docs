@@ -2,17 +2,93 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
 toc: true
+build_for: [standard, managed]
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
+{% unless site.managed %}
 {{site.data.alerts.callout_success}}
 Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
+{% endunless %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
 {{site.data.alerts.end}}
+
+{% if site.managed %}
+## Before you begin
+
+Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+
+## Create a database
+
+Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases.
+
+To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE bank;
+~~~
+
+Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS bank;
+~~~
+
+When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP DATABASE bank;
+~~~
+
+## Show databases
+
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES;
+~~~
+
+~~~
+  database_name
++---------------+
+  bank
+  defaultdb
+  postgres
+  system
+(4 rows)
+~~~
+
+## Set the default database
+
+It's best to set the default database directly in your [connection string](managed-sign-up-for-a-cluster.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET DATABASE = bank;
+~~~
+
+When working in the default database, you don't need to reference it explicitly in statements. To see whi
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASE;
+~~~
+
+~~~
+  database
++----------+
+  bank
+(1 row)
+~~~
+{% endif %}
 
 ## Create a table
 
@@ -46,12 +122,10 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| column_name | data_type | is_nullable | column_default | generation_expression | indices |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| id          | INT       |    true     | unique_rowid() |                       | {}      |
-| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  id          | INT       |    false    | NULL           |                       | {"primary"} |   false
+  balance     | DECIMAL   |    true     | NULL           |                       | {}          |   false
 (2 rows)
 ~~~
 
@@ -72,11 +146,9 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-+----------+
+  table_name
++------------+
+  accounts
 (1 row)
 ~~~
 
@@ -126,12 +198,10 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+   5 | NULL
+   6 | NULL
 (2 rows)
 ~~~
 
@@ -167,13 +237,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
 
 ~~~
+  table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false   |
-| accounts   | balance_idx |    true    |            1 | balance     | ASC       |  false  |  false   |
-| accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
+  accounts   | balance_idx |    true    |            1 | balance     | DESC      |  false  |  false
+  accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true
 (3 rows)
 ~~~
 
@@ -187,16 +255,14 @@ To query a table, use [`SELECT`](select-clause.html) followed by a comma-separat
 ~~~
 
 ~~~
+  balance
 +----------+
-| balance  |
-+----------+
-| 10000.50 |
-| 25000.00 |
-|  8100.73 |
-|  9400.10 |
-| NULL     |
-| NULL     |
-+----------+
+  10000.50
+  25000.00
+   8100.73
+   9400.10
+  NULL
+  NULL
 (6 rows)
 ~~~
 
@@ -208,16 +274,14 @@ To retrieve all columns, use the `*` wildcard:
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8100.73 |
-|  4 |  9400.10 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8100.73
+   4 |  9400.10
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -229,13 +293,11 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
 (3 rows)
 ~~~
 
@@ -247,16 +309,14 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-|  3 | 8100.73 |
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
+   3 |  8100.73
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -275,16 +335,14 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -305,22 +363,22 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
 (4 rows)
 ~~~
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
+{% unless site.managed %}
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
+{% endunless %}

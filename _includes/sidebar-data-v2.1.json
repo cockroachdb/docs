@@ -164,6 +164,12 @@
             "urls": [
               "/${VERSION}/demo-json-support.html"
             ]
+          },
+          {
+           "title": "Third-Party Database Tools",
+            "urls": [
+                "/${VERSION}/third-party-database-tools.html"
+            ]
           }
         ]
       },
@@ -1436,6 +1442,12 @@
                   "/${VERSION}/porting-postgres.html"
                 ]
               }
+            ]
+          },
+          {
+            "title": "Experimental Features",
+            "urls": [
+              "/${VERSION}/experimental-features.html"
             ]
           }
         ]

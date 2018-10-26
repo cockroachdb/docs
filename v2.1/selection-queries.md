@@ -463,19 +463,6 @@ For example:
  Subquery in a [table expression](table-expressions.html) | `SELECT * FROM (SELECT * FROM bar)` | `SELECT * FROM (VALUES (1),(2),(3))` | `SELECT * FROM (TABLE bar)`
  Subquery in a [scalar expression](scalar-expressions.html) | `SELECT * FROM foo WHERE x IN (SELECT * FROM bar)` | `SELECT * FROM foo WHERE x IN (VALUES (1),(2),(3))` | `SELECT * FROM foo WHERE x IN (TABLE bar)`
 
-## Known limitations
-
-{{site.data.alerts.callout_info}} The following limitations may be lifted
-in a future version of CockroachDB.{{site.data.alerts.end}}
-
-### Using `VALUES` clauses with common table expressions
-
-{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
-
-### Using set operations with common table expressions
-
-{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
-
 ## See also
 
 - [Simple `SELECT` Clause](select-clause.html)

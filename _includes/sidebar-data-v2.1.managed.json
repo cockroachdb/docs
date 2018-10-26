@@ -17,13 +17,14 @@
       },
       {
         "title": "Learn CockroachDB SQL",
-        "items": [
-
+        "urls": [
+          "/${VERSION}/learn-cockroachdb-sql.html"
         ]
       },
       {
-        "title": "Access the Admin UI",
-        "items": [
+        "title": "Use the Admin UI",
+        "urls": [
+          "/${VERSION}/managed-use-the-admin-ui.html"
         ]
       }
     ]
@@ -33,27 +34,38 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Build an App",
-        "items": [
-
-        ]
-      },
-      {
         "title": "Migrate Data",
         "items": [
-
-        ]
-      },
-      {
-        "title": "Run Benchmarks",
-        "items": [
-
+          {
+            "title": "Migration Overview",
+            "urls": [
+              "/${VERSION}/migration-overview.html"
+            ]
+          },
+          {
+            "title": "Migrate from Postgres",
+            "urls": [
+              "/${VERSION}/migrate-from-postgres.html"
+            ]
+          },
+          {
+            "title": "Migrate from MySQL",
+            "urls": [
+              "/${VERSION}/migrate-from-mysql.html"
+            ]
+          },
+          {
+            "title": "Migrate from CSV",
+            "urls": [
+              "/${VERSION}/migrate-from-csv.html"
+            ]
+          }
         ]
       },
       {
         "title": "Tune Performance",
-        "items": [
-
+        "urls": [
+          "/${VERSION}/performance-best-practices-overview.html"
         ]
       }
     ]
@@ -64,44 +76,14 @@
     "items": [
       {
         "title": "User Management",
-        "items": [
+        "urls": [
+          "/${VERSION}/managed-user-management.html"
         ]
       },
       {
-        "title": "TBD",
-        "items": [
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Reference",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "TBD",
-        "items": [
-        ]
-      },
-      {
-        "title": "TBD",
-        "items": [
-        ]
-      }
-    ]
-  },
-  {
-    "title": "FAQs",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "TBD",
-        "items": [
-        ]
-      },
-      {
-        "title": "TBD",
-        "items": [
+        "title": "Cluster Management",
+        "urls": [
+          "/${VERSION}/managed-cluster-management.html"
         ]
       }
     ]

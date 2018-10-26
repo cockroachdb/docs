@@ -6,7 +6,9 @@ toc: true
 
 CockroachDB supports various signed integer [data types](data-types.html).
 
-{{site.data.alerts.callout_info}}To auto-generate globally unique values, use the <a href="uuid.html"><code>UUID</code></a> or <a href="serial.html"><code>SERIAL</code></a> data type.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+For instructions showing how to auto-generate integer values (e.g., to auto-number rows in a table), see [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb).
+{{site.data.alerts.end}}
 
 
 ## Names and Aliases
@@ -96,8 +98,8 @@ Type | Details
 `DECIMAL` | ––
 `FLOAT` | Loses precision if the `INT` value is larger than 2^53 in magnitude
 `BOOL` | **0** converts to `false`; all other values convert to `true`
-`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970)
-`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970)
+`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `INTERVAL` | Converts to microseconds
 `STRING` | ––
 

@@ -29,8 +29,8 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
     For example, if you ran the following:
 
     ~~~ sql
-    > CREATE TABLE foo (id SERIAL PRIMARY KEY, name STRING);
-    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH updated;
+    > CREATE TABLE foo (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH UPDATED;
     > INSERT INTO foo VALUES (1, 'Carl');
     > UPDATE foo SET name = 'Petee' WHERE id = 1;
     ~~~

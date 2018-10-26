@@ -1,7 +1,7 @@
 ---
 title: SQL Grammar
 summary: The full SQL grammar for CockroachDB.
-toc: false
+toc: true
 back_to_top: true
 ---
 
