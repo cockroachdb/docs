@@ -29,27 +29,21 @@ Parameter      | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
+> CREATE STATISTICS students ON id FROM students_by_list;
+~~~
+
+~~~
+CREATE STATISTICS
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW STATISTICS FOR TABLE students_by_list;
 ~~~
 
 ~~~
-  table_name | column_names |             created              | row_count | distinct_count | null_count | histogram_id
-+------------+--------------+----------------------------------+-----------+----------------+------------+--------------+
-  test       | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
-(1 row)
-~~~
-
-### List table statistics in JSON
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW STATISTICS USING JSON FOR TABLE students_by_list;
-~~~
-
-~~~
-                                                                                          statistics
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  [{"columns": ["id"], "created_at": "2018-10-26 15:06:34.320165+00:00", "distinct_count": 0, "histo_buckets": null, "histo_col_type": "", "name": "test", "null_count": 0, "row_count": 0}]
+  statistic_name | column_names |             created              | row_count | distinct_count | null_count | histogram_id
++----------------+--------------+----------------------------------+-----------+----------------+------------+--------------+   students       | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
 (1 row)
 ~~~
 

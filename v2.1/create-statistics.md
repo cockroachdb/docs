@@ -11,7 +11,7 @@ Once you [create a table](create-table.html) and load data into it (e.g., [`INSE
 
 ## Considerations
 
-Each time `CREATE STATISTICS` is used, a new statistic is created without removing any old statistics. To delete all statistics for all tables, use [`DELETE`](#delete-all-statistics).
+Each time `CREATE STATISTICS` is used, a new statistic is created without removing any old statistics. To delete statistics for all tables in all databases, use [`DELETE`](#delete-all-statistics).
 
 ## Synopsis
 
@@ -44,16 +44,13 @@ Parameter            | Description
 CREATE STATISTICS
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE STATISTICS student_names ON first_name, last_name FROM students_by_list;
-~~~
-
-~~~
-CREATE STATISTICS
-~~~
+{{site.data.alerts.callout_info}}
+Multi-column statistics are not supported yet.
+{{site.data.alerts.end}}
 
 ## Delete all statistics
+
+To delete statistics for all tables in all databases:
 
 {% include copy-clipboard.html %}
 ~~~ sql
