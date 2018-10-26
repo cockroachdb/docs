@@ -105,22 +105,6 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 {% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
-### Using CTEs with data-modifying statements
-
-{% include {{ page.version.version }}/known-limitations/cte-with-dml.md %}
-
-### Using CTEs with views
-
-{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
-
-### Using CTEs with `VALUES` clauses
-
-{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
-
-### Using CTEs with set operations
-
-{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
-
 ### Assigning latitude/longitude for the Node Map
 
 {% include {{ page.version.version }}/known-limitations/node-map.md %}
