@@ -232,7 +232,7 @@ This example assume that we have already started the SQL shell (see examples abo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE animals (id SERIAL PRIMARY KEY, name STRING);
+> CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
 ~~~
 
 {% include copy-clipboard.html %}

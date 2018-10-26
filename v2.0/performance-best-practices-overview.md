@@ -53,12 +53,14 @@ When a table is created, all columns are stored as a single column family. This 
 
 ## Unique ID Best Practices
 
-The common approach for generating unique IDs is one of the following:
+A traditional approach for generating unique IDs is one of the following:
 
- - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
- - Use `SERIAL` variables to generate random unique IDs
+- Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s.
+- Use the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs.
 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB.
+
+The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
 
 The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
@@ -114,7 +116,7 @@ Suppose the table schema is as follows:
 > CREATE TABLE X (
 	ID1 INT,
 	ID2 INT,
-	ID3 SERIAL,
+	ID3 INT DEFAULT unique_rowid(),
 	PRIMARY KEY (ID1,ID2)
 	);
 ~~~
