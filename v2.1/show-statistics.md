@@ -9,9 +9,9 @@ toc: true
 
 ## Synopsis
 
-~~~ sql
-> SHOW STATISTICS [USING JSON] FOR TABLE <table_name>
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/show_stats.html %}
+</div>
 
 ## Required Privileges
 
@@ -21,7 +21,7 @@ No [privileges](privileges.html) are required to list table statistics.
 
 Parameter      | Description
 ---------------+---------------
-`table_name`   | The name of the table you want to create the statistic for.
+`table_name`   | The name of the table you want to view statistic for.
 
 ## Examples
 

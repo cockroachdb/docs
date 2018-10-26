@@ -15,11 +15,9 @@ Each time `CREATE STATISTICS` is used, a new statistic is created without removi
 
 ## Synopsis
 
-~~~ sql
-> CREATE STATISTICS <stat_name>
-    ON <colname> [, ...]
-    FROM <tablename>
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/create_stats.html %}
+</div>
 
 ## Required Privileges
 
@@ -27,11 +25,11 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Parameters
 
-Parameter      | Description
----------------+---------------
-`stat_name`    | The name of the statistic you are creating.
-`col_name`     | The name of the column you want to create the statistic for.
-`table_name`   | The name of the table you want to create the statistic for.
+Parameter            | Description
+---------------------+--------------------------------------------------------------
+`statistics_name`    | The name of the statistic you are creating.
+`column_name`        | The name of the column you want to create the statistic for.
+`table_name`         | The name of the table you want to create the statistic for.
 
 ## Examples
 
