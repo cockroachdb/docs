@@ -26,7 +26,7 @@
 <tr><td><code>kv.bulk_sst.sync_size</code></td><td>byte size</td><td><code>2.0 MiB</code></td><td>threshold after which non-Rocks SST writes must fsync (0 disables)</td></tr>
 <tr><td><code>kv.closed_timestamp.close_fraction</code></td><td>float</td><td><code>0.2</code></td><td>fraction of closed timestamp target duration specifying how frequently the closed timestamp is advanced</td></tr>
 <tr><td><code>kv.closed_timestamp.follower_reads_enabled</code></td><td>boolean</td><td><code>false</code></td><td>allow (all) replicas to serve consistent historical reads based on closed timestamp information</td></tr>
-<tr><td><code>kv.closed_timestamp.target_duration</code></td><td>duration</td><td><code>5s</code></td><td>if nonzero, attempt to provide closed timestamp notifications for timestamps trailing cluster time by approximately this duration</td></tr>
+<tr><td><code>kv.closed_timestamp.target_duration</code></td><td>duration</td><td><code>30s</code></td><td>if nonzero, attempt to provide closed timestamp notifications for timestamps trailing cluster time by approximately this duration</td></tr>
 <tr><td><code>kv.raft.command.max_size</code></td><td>byte size</td><td><code>64 MiB</code></td><td>maximum size of a raft command</td></tr>
 <tr><td><code>kv.raft_log.synchronize</code></td><td>boolean</td><td><code>true</code></td><td>set to true to synchronize on Raft log writes to persistent storage ('false' risks data loss)</td></tr>
 <tr><td><code>kv.range.backpressure_range_size_multiplier</code></td><td>float</td><td><code>2</code></td><td>multiple of range_max_bytes that a range is allowed to grow to without splitting before writes to that range are blocked, or 0 to disable</td></tr>
@@ -78,6 +78,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set.</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>2.0-13</code></td><td>set the active cluster version in the format '<major>.<minor>'.</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1</code></td><td>set the active cluster version in the format '<major>.<minor>'.</td></tr>
 </tbody>
 </table>
