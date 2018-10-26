@@ -15,7 +15,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 {% if page.secure == true %}
 
-2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a>.
+2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and login with the username and password created in the [Use the built-in SQL client](#step-5-use-the-built-in-sql-client) step.
 
 {% else %}
 
