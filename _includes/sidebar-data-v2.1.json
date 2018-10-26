@@ -1492,6 +1492,12 @@
             ]
           },
           {
+            "title": "<code>cockroach sqlfmt</code>",
+            "urls": [
+              "/${VERSION}/use-the-query-formatter.html"
+            ]
+          },
+          {
             "title": "<code>cockroach user</code>",
             "urls": [
               "/${VERSION}/create-and-manage-users.html"
