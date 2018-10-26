@@ -57,22 +57,6 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 
 {% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
-### Using CTEs with data-modifying statements
-
-{% include {{ page.version.version }}/known-limitations/cte-with-dml.md %}
-
-### Using CTEs with views
-
-{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
-
-### Using CTEs with `VALUES` clauses
-
-{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
-
-### Using CTEs with set operations
-
-{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
-
 ### Assigning latitude/longitude for the Node Map
 
 {% include {{ page.version.version }}/known-limitations/node-map.md %}

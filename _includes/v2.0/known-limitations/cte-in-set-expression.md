@@ -1,3 +1,7 @@
+{{site.data.alerts.callout_info}}
+Resolved as of v2.1.
+{{site.data.alerts.end}}
+
 It is not yet possible to use a [common table expression](common-table-expressions.html) defined outside of a [set expression](selection-queries.html#set-operations) in the right operand of a set operator, for example:
 
 ~~~ sql
