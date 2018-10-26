@@ -9,7 +9,7 @@ The "admin" user identified in your initial [confirmation email](managed-sign-up
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster, using the "admin" user and password in your initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email).
+Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster with your "admin" user.
 
 ## Creating users
 
@@ -45,6 +45,13 @@ To assign a user more limited privileges for one table in a database:
 For more details, see [Privileges](privileges.html) and [`GRANT`](grant.html).
 
 ## Managing users
+
+- To change a users password, use the [`ALTER USER`](alter-user.html) statement:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER USER <user> WITH PASSWORD '<new password>';
+    ~~~
 
 - To list all the users in your cluster, use the [`SHOW USERS`](show-users.html) statement:
 

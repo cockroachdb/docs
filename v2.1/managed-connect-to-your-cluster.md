@@ -65,7 +65,7 @@ On the machine where you want to run the CockroachDB SQL client:
     ~~~
     </section>
 
-3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the connection string with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the connection string with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
 
     {{site.data.alerts.callout_info}}
     For the hostname portion of your connection URL, use the "global hostname" you received in the initial confirmation email. This address will direct you to one of the regional load balancers for you cluster.
@@ -116,7 +116,7 @@ On the machine where you want to run your application:
 
 2. Run code to execute basic SQL statements, creating a table, inserting some rows, and reading and printing the rows.
 
-    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
@@ -179,7 +179,7 @@ On the machine where you want to run your application:
 
 3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
