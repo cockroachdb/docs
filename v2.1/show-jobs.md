@@ -26,6 +26,10 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
 ## Response
 
+The result list of jobs shows first ongoing jobs, then completed
+jobs. The list of ongoing jobs is sorted by starting time, whereas the
+list of completed jobs is sorted by finished time.
+
 The following fields are returned for each job:
 
 Field | Description
