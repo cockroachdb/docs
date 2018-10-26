@@ -27,7 +27,7 @@ Parameter | Description
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `scan_parameters` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Results from a function](#results-from-a-function).
-`explainable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#explainable_stmt).
+`explainable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#preparable_stmt).
 `select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
 `joined_table` | A [join expression](joins.html).
 
@@ -44,7 +44,7 @@ Construct | Description | Examples
 `<table expr> WITH ORDINALITY` | [Enumerate the result rows](#ordinality-annotation). | `accounts WITH ORDINALITY`
 `<table expr> JOIN <table expr> ON ...` | [Join expression](joins.html). | `orders o JOIN customers c ON o.customer_id = c.id`
 `(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#subqueries-as-table-expressions). | `(SELECT * FROM customers c)`
-`[... statement ...]` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#explainable_stmt).<br><br>This is a CockroachDB extension. | `[SHOW COLUMNS FROM accounts]`
+`[... statement ...]` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#preparable_stmt).<br><br>This is a CockroachDB extension. | `[SHOW COLUMNS FROM accounts]`
 
 The following sections provide details on each of these options.
 
@@ -361,12 +361,12 @@ Syntax:
 [ <statement> ]
 ~~~
 
-An [explainable statement](sql-grammar.html#explainable_stmt)
+An [explainable statement](sql-grammar.html#preparable_stmt)
 between square brackets in a table expression context designates the
 output of executing said statement.
 
 {{site.data.alerts.callout_info}}
-This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable use of any [explainable statement](sql-grammar.html#explainable_stmt) as subquery, including `SHOW` and other non-query statements.
+This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable use of any [explainable statement](sql-grammar.html#preparable_stmt) as subquery, including `SHOW` and other non-query statements.
 {{site.data.alerts.end}}
 
 For example:
@@ -423,7 +423,7 @@ For more options to compose query results, see [Selection Queries](selection-que
 - [Constants](sql-constants.html)
 - [Selection Queries](selection-queries.html)
   - [Selection Clauses](selection-queries.html#selection-clauses)
-- [Explainable Statements](sql-grammar.html#explainable_stmt)
+- [Explainable Statements](sql-grammar.html#preparable_stmt)
 - [Scalar Expressions](scalar-expressions.html)
 - [Data Types](data-types.html)
 - [Subqueries](subqueries.html)

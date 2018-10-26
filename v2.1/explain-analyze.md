@@ -19,7 +19,7 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
 Parameter          | Description
 -------------------|-----------
 `DISTSQL`          |  _(Default)_ Generate a link to a distributed SQL physical query plan tree.
-`explainable_stmt` | The [explainable statement](sql-grammar.html#explainable_stmt) you want details about.
+`explainable_stmt` | The [explainable statement](sql-grammar.html#preparable_stmt) you want details about.
 
 ## Success responses
 
