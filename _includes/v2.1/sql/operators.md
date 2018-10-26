@@ -2,7 +2,6 @@
 <tr><td><code>#</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="int.html">int</a> <code>#</code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td>varbit <code>#</code> varbit</td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>#></code></td><td>Return</td></tr>
@@ -28,7 +27,6 @@
 </thead><tbody>
 <tr><td><a href="inet.html">inet</a> <code>&</code> <a href="inet.html">inet</a></td><td><a href="inet.html">inet</a></td></tr>
 <tr><td><a href="int.html">int</a> <code>&</code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td>varbit <code>&</code> varbit</td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>*</code></td><td>Return</td></tr>
@@ -163,14 +161,12 @@
 <tr><td><a href="timestamp.html">timestamptz</a> <code><</code> <a href="timestamp.html">timestamptz</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td>tuple <code><</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid</a> <code><</code> <a href="uuid.html">uuid</a></td><td><a href="bool.html">bool</a></td></tr>
-<tr><td>varbit <code><</code> varbit</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code><<</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="inet.html">inet</a> <code><<</code> <a href="inet.html">inet</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="int.html">int</a> <code><<</code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td>varbit <code><<</code> <a href="int.html">int</a></td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code><=</code></td><td>Return</td></tr>
@@ -203,7 +199,6 @@
 <tr><td><a href="timestamp.html">timestamptz</a> <code><=</code> <a href="timestamp.html">timestamptz</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td>tuple <code><=</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid</a> <code><=</code> <a href="uuid.html">uuid</a></td><td><a href="bool.html">bool</a></td></tr>
-<tr><td>varbit <code><=</code> varbit</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code><@</code></td><td>Return</td></tr>
@@ -255,14 +250,12 @@
 <tr><td>tuple <code>=</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid</a> <code>=</code> <a href="uuid.html">uuid</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid[]</a> <code>=</code> <a href="uuid.html">uuid[]</a></td><td><a href="bool.html">bool</a></td></tr>
-<tr><td>varbit <code>=</code> varbit</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>>></code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="inet.html">inet</a> <code>>></code> <a href="inet.html">inet</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="int.html">int</a> <code>>></code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td>varbit <code>>></code> <a href="int.html">int</a></td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>?</code></td><td>Return</td></tr>
@@ -309,7 +302,6 @@
 <tr><td><a href="timestamp.html">timestamptz</a> <code>IN</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td>tuple <code>IN</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid</a> <code>IN</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
-<tr><td>varbit <code>IN</code> tuple</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>IS NOT DISTINCT FROM</code></td><td>Return</td></tr>
@@ -357,7 +349,6 @@
 <tr><td>unknown <code>IS NOT DISTINCT FROM</code> unknown</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid</a> <code>IS NOT DISTINCT FROM</code> <a href="uuid.html">uuid</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="uuid.html">uuid[]</a> <code>IS NOT DISTINCT FROM</code> <a href="uuid.html">uuid[]</a></td><td><a href="bool.html">bool</a></td></tr>
-<tr><td>varbit <code>IS NOT DISTINCT FROM</code> varbit</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>LIKE</code></td><td>Return</td></tr>
@@ -383,7 +374,6 @@
 </thead><tbody>
 <tr><td><a href="inet.html">inet</a> <code>|</code> <a href="inet.html">inet</a></td><td><a href="inet.html">inet</a></td></tr>
 <tr><td><a href="int.html">int</a> <code>|</code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td>varbit <code>|</code> varbit</td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>||</code></td><td>Return</td></tr>
@@ -431,14 +421,12 @@
 <tr><td><a href="uuid.html">uuid</a> <code>||</code> <a href="uuid.html">uuid[]</a></td><td><a href="uuid.html">uuid[]</a></td></tr>
 <tr><td><a href="uuid.html">uuid[]</a> <code>||</code> <a href="uuid.html">uuid</a></td><td><a href="uuid.html">uuid[]</a></td></tr>
 <tr><td><a href="uuid.html">uuid[]</a> <code>||</code> <a href="uuid.html">uuid[]</a></td><td><a href="uuid.html">uuid[]</a></td></tr>
-<tr><td>varbit <code>||</code> varbit</td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
 <tr><td><code>~</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><code>~</code><a href="inet.html">inet</a></td><td><a href="inet.html">inet</a></td></tr>
 <tr><td><code>~</code><a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
-<tr><td><code>~</code>varbit</td><td>varbit</td></tr>
 <tr><td><a href="string.html">string</a> <code>~</code> <a href="string.html">string</a></td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
