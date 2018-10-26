@@ -173,19 +173,7 @@ In preparation, add a table and use a replication zone to force the table's data
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+datacenter=us-east-3]' | ./cockroach zone set intro.mytable \
-    --insecure \
-    --host=localhost:26257 \
-    -f -
-    ~~~
-
-    ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-      ttlseconds: 90000
-    num_replicas: 3
-    constraints: [+datacenter=us-east-3]
+    $ cockroach sql --execute="ALTER TABLE intro.mytable CONFIGURE ZONE USING constraints: '[+datacenter=us-east-3]';" --insecure --host=localhost:26257
     ~~~
 
 3. Use the `SHOW EXPERIMENTAL_RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:

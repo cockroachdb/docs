@@ -335,42 +335,18 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
 Because you used the `--locality` flag to indicate the region for each of your nodes, constraining data to specific regions is simple.
 
-1. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
+1. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=eu]' | ./cockroach zone set startrek \
-    --insecure \
-    --host=localhost:26257 \
-    -f -
+    $ cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
     ~~~
 
-    ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-      ttlseconds: 90000
-    num_replicas: 3
-    constraints: [+region=eu]
-    ~~~
-
-2. Use the [`cockroach zone`](../configure-replication-zones.html) command to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
+2. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo 'constraints: [+region=us]' | ./cockroach zone set intro \
-    --insecure \
-    --host=localhost:26257 \
-    -f -
-    ~~~
-
-    ~~~
-    range_min_bytes: 1048576
-    range_max_bytes: 67108864
-    gc:
-      ttlseconds: 90000
-    num_replicas: 3
-    constraints: [+region=us]
+    $ cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
     ~~~
 
 ## Step 8. Verify data distribution

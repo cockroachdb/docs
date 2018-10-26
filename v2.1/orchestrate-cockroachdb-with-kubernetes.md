@@ -267,7 +267,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     > \q
     ~~~
 
-{{site.data.alerts.callout_success}}This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other <a href="cockroach-commands.html"><code>cockroach</code> client commands</a>, such as <code>cockroach node</code> or <code>cockroach zone</code>, repeat step 2 using the appropriate <code>cockroach</code> command.<br></br>If you'd prefer to delete the pod and recreate it when needed, run <code>kubectl delete pod cockroachdb-client-secure</code>{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other <a href="cockroach-commands.html"><code>cockroach</code> client commands</a> (e.g., <code>cockroach node</code>), repeat step 2 using the appropriate <code>cockroach</code> command.<br></br>If you'd prefer to delete the pod and recreate it when needed, run <code>kubectl delete pod cockroachdb-client-secure</code>{{site.data.alerts.end}}
 
 ## Step 6. Access the Admin UI
 
