@@ -1,5 +1,5 @@
 ---
-title: CREATE STATISTICS
+title: CREATE STATISTICS (Experimental)
 summary: Use the CREATE STATISTICS statement to generate table statistics for the cost-based optimizer to use.
 toc: true
 ---
@@ -71,6 +71,7 @@ For more information, see [`DELETE`](delete.html).
 ## See Also
 
 - [Cost-Based Optimizer](cost-based-optimizer.html)
+- [`SHOW STATISTICS`](show-statistics.html)
 - [`CREATE TABLE`](create-table.html)
 - [`INSERT`](insert.html)
 - [`IMPORT`](import.html)
