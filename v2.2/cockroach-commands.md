@@ -18,6 +18,7 @@ Command | Usage
 [`cockroach cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`cockroach quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
 [`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
+[`cockroach sqlfmt`](use-the-query-formatter.html) | <span class="version-tag">New in v2.1:</span> Reformat SQL queries for enhanced clarity.
 [`cockroach user`](create-and-manage-users.html) | Get, set, list, and remove users.
 [`cockroach zone`](configure-replication-zones.html) | **Deprecated** To configure the number and location of replicas for specific sets of data, use [`ALTER ... CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 [`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
