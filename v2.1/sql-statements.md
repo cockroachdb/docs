@@ -15,6 +15,7 @@ In the [built-in SQL shell](use-the-built-in-sql-client.html#help), use `\h [sta
 
 Statement | Usage
 ----------|------------
+[`CREATE STATISTICS`](create-statistics.html) | <span class="version-tag">New in v2.1:</span> Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
