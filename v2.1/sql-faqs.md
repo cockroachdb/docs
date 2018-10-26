@@ -52,10 +52,11 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 
 ## Does CockroachDB support `JOIN`?
 
-[CockroachDB supports uncorrelated SQL joins](joins.html).  We are
+[CockroachDB supports SQL joins](joins.html).  We are
 working to improve their execution performance.
 
-At this time, `LATERAL` (correlated) joins are not yet supported.
+At this time, some correlated joins, including `LATERAL` joins, are
+not yet supported.
 
 ## When should I use interleaved tables?
 
