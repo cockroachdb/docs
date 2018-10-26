@@ -9,6 +9,10 @@ Once you [create a table](create-table.html) and load data into it (e.g., [`INSE
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
+## Considerations
+
+Each time `CREATE STATISTICS` is used, a new statistic is created without removing any old statistics. To delete all statistics for all tables, use [`DELETE`](#delete-all-statistics).
+
 ## Synopsis
 
 ~~~ sql
@@ -31,6 +35,8 @@ Parameter      | Description
 
 ## Examples
 
+### Create statistics
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS students ON id FROM students_by_list;
@@ -48,6 +54,19 @@ CREATE STATISTICS
 ~~~
 CREATE STATISTICS
 ~~~
+
+## Delete all statistics
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM system.table_statistics WHERE true;
+~~~
+
+~~~
+DELETE 1
+~~~
+
+For more information, see [`DELETE`](delete.html).
 
 ## See Also
 
