@@ -17,13 +17,10 @@ Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
-[`EXPLAIN ANALYZE`](explain-analyze.html) | <span class="version-tag">New in v2.1:</span> Execute the query and generate a physical query plan with execution statistics.
 [`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
-[`SHOW TRACE FOR SESSION`](show-trace-for-session.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
@@ -111,6 +108,7 @@ Statement | Usage
 [`RESET`](reset-vars.html) | Reset a session variable to its default value.
 [`SET`](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
+[`SHOW TRACE FOR SESSION`](show-trace-for-session.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster management statements
@@ -129,6 +127,14 @@ Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
+
+## Query planning statements
+
+Statement | Usage
+----------|------------
+[`CREATE STATISTICS`](create-statistics.html) | <span class="version-tag">New in v2.1:</span> Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
+[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
+[`EXPLAIN ANALYZE`](explain-analyze.html) | <span class="version-tag">New in v2.1:</span> Execute the query and generate a physical query plan with execution statistics.
 
 ## Job management statements
 
