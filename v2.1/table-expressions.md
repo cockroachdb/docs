@@ -27,7 +27,7 @@ Parameter | Description
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `scan_parameters` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Results from a function](#results-from-a-function).
-`explainable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#preparable_stmt).
+`preparable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of a [preparable statement](sql-grammar.html#preparable_stmt).
 `select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
 `joined_table` | A [join expression](joins.html).
 
