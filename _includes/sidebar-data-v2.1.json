@@ -722,6 +722,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE STATISTICS</code> (Experimental)",
+                "urls": [
+                  "/${VERSION}/create-statistics.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE TABLE</code>",
                 "urls": [
                   "/${VERSION}/create-table.html"
@@ -1055,6 +1061,12 @@
                 "title": "<code>SHOW SESSIONS</code>",
                 "urls": [
                   "/${VERSION}/show-sessions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW STATISTICS</code> (Experimental)",
+                "urls": [
+                  "/${VERSION}/show-statistics.html"
                 ]
               },
               {
