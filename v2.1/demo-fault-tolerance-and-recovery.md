@@ -261,7 +261,7 @@ Switch to the terminal for the built-in SQL shell, connect the shell to the rejo
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=loalhost:26258
+$ cockroach sql --insecure --host=localhost:26258
 ~~~
 
 {% include copy-clipboard.html %}

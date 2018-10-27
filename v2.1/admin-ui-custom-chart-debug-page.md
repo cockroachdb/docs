@@ -3,39 +3,37 @@ title: Custom Chart Debug Page
 toc: true
 ---
 
-The **Custom Chart** debug page in the Admin UI can be used to create a custom chart showing any combination of over [200 available metrics](#available-metrics).
+The **Custom Chart** debug page in the Admin UI can be used to create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
 
-## Getting there
+## Accessing the **Custom Chart** page
 
-To get to the **Custom Chart** debug page, [open the Admin UI](admin-ui-access-and-navigate.html), and either:
+To access the **Custom Chart** debug page, [access the Admin UI](admin-ui-access-and-navigate.html), and either:
 
 - Open <a href="http://localhost:8080/#/debug/chart" data-proofer-ignore>http://localhost:8080/#/debug/chart</a> in your browser (replacing `localhost` and `8080` with your node's host and port).
 
-- Open any node's Admin UI debug page at <a href="http://localhost:8080/#/debug" data-proofer-ignore>http://localhost:8080/#/debug</a> in your browser (replacing `localhost` and `8080` with your node's host and port), scroll down to the **UI Debugging** section, and click **Custom Time-Series Chart**.
+- Click the gear icon on the left to access the **Advanced Debugging Page**. In the **Reports** section, click **Custom TimeSeries Chart**.
 
-## Query options
+## Using the **Custom Chart** page
 
-The dropdown menus above the chart are used to set:
+<img src="{{ 'images/v2.1/admin-ui-custom-chart-debug-00.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-- The time span to chart
-- The units to display
+On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
-<img src="{{ 'images/v2.0/admin-ui-custom-chart-debug-00.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+- To set the time span for the page, use the dropdown menu above the charts and select the desired time span.
 
-The table below the chart shows which metrics are being queried, and how they'll be combined and displayed.
+- To add a chart, click **Add Chart** and customize the new chart.
 
-Options include:
-
+- To customize each chart, use the **Units** dropdown menu to set the units to display. Then use the table below the chart to select the metrics being queried, and how they'll be combined and displayed. Options include:
 {% include {{page.version.version}}/admin-ui-custom-chart-debug-page-00.html %}
 
 ## Examples
 
 ### Query user and system CPU usage
 
-<img src="{{ 'images/v2.0/admin-ui-custom-chart-debug-00.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin-ui-custom-chart-debug-01.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 To compare system vs. userspace CPU usage, select the following values under **Metric Name**:
 
