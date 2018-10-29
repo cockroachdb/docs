@@ -41,13 +41,13 @@ h3, h4, h5, h6 {
 }
 
 h1 {
-  @include adelle_b(36px);
+  @include headline-1;
   line-height: 45px;
   color: $cl_blue;
 }
 
 h2 {
-  @include adelle_b(30px);
+  @include headline-2;
   line-height: 40px;
   color: $cl_blue;
 
@@ -62,7 +62,7 @@ h2 {
 }
 
 h3 {
-  @include avenir_h(24px);
+  @include headline-3;
   line-height: 35px;
   color: $cl_blue;
 
