@@ -44,6 +44,22 @@
   src: url("../fonts/SourceCodePro-Regular.ttf");
   font-weight: normal;
   font-style: normal; }
+/* NEW FONTS */
+@font-face {
+  font-family: 'Graphik-Semibold';
+  src: url("../fonts/Graphik-Semibold.otf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'Graphik-Regular';
+  src: url("../fonts/Graphik-Regular.otf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'Graphik-RegularItalic';
+  src: url("../fonts/Graphik-RegularItalic.otf");
+  font-weight: normal;
+  font-style: normal; }
 body.menu_open {
   overflow: hidden; }
   body.menu_open nav.mobile_expanded {
@@ -82,7 +98,7 @@ nav.mobile_expanded {
   display: none; }
   nav.mobile_expanded a:not(.mobile-menu-dropdown__parent-link):not(.logo) {
     border-bottom: 1px solid #DADADA;
-    font-family: 'AvenirLTStd-Heavy', serif;
+    font-family: 'Graphik-Semibold', sans-serif;
     font-size: 13px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -106,7 +122,7 @@ nav.mobile_expanded {
   nav.mobile_expanded .mobile-menu-dropdown {
     width: 100%;
     float: left;
-    font-family: 'AvenirLTStd-Heavy', serif;
+    font-family: 'Graphik-Semibold', sans-serif;
     font-size: 13px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -122,7 +138,7 @@ nav.mobile_expanded {
     nav.mobile_expanded .mobile-menu-dropdown a:not(.mobile-menu-dropdown__parent-link) {
       position: relative;
       display: block;
-      font-family: 'AvenirLTStd-Roman', serif;
+      font-family: 'Graphik-Regular', sans-serif;
       font-size: 15px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -136,7 +152,7 @@ nav.mobile_expanded {
     nav.mobile_expanded .mobile-menu-dropdown .mobile-sub-nav {
       display: none; }
       nav.mobile_expanded .mobile-menu-dropdown .mobile-sub-nav span, nav.mobile_expanded .mobile-menu-dropdown .mobile-sub-nav--link-list {
-        font-family: 'AvenirLTStd-Roman', serif;
+        font-family: 'Graphik-Regular', sans-serif;
         font-size: 15px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
@@ -261,7 +277,7 @@ header {
     display: none; }
     header nav.desktop a:not(.button--header) {
       color: #152849;
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -311,7 +327,7 @@ header {
           padding-right: 35px;
           border-bottom: solid 2px #e6e6e6; }
         header nav.desktop .menu-dropdown a .menu-dropdown__title {
-          font-family: 'AvenirLTStd-Medium', serif;
+          font-family: 'Graphik-Regular', sans-serif;
           font-size: 17px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -325,7 +341,7 @@ header {
           -o-transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
           transition: color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
         header nav.desktop .menu-dropdown a .menu-dropdown__info {
-          font-family: 'AvenirLTStd-Roman', serif;
+          font-family: 'Graphik-Regular', sans-serif;
           font-size: 15px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -341,7 +357,7 @@ header {
         border-bottom: 2px solid #e6e6e6; }
         header nav.desktop .menu-dropdown .menu-dropdown--subsection__title {
           display: block;
-          font-family: 'AvenirLTStd-Medium', serif;
+          font-family: 'Graphik-Regular', sans-serif;
           font-size: 17px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -358,7 +374,7 @@ header {
         header nav.desktop .menu-dropdown .menu-dropdown--subsection__link {
           float: none;
           display: inline-block;
-          font-family: 'AvenirLTStd-Roman', serif;
+          font-family: 'Graphik-Regular', sans-serif;
           font-size: 15px;
           font-weight: normal;
           -webkit-font-smoothing: antialiased;
@@ -372,7 +388,7 @@ header {
       float: left;
       margin: 0 10px;
       padding: 0;
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -482,7 +498,7 @@ header {
   #sidebar > li {
     padding: 5px 0 7px; }
     #sidebar > li > a {
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 11px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -767,7 +783,7 @@ a:not([href]) {
       margin-right: 10px;
       margin-bottom: 2px; } }
 .landing-page .landing-page__tutorial--tile-label {
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -777,7 +793,7 @@ a:not([href]) {
   margin-top: 5px; }
   @media screen and (min-width: 544px) {
     .landing-page .landing-page__tutorial--tile-label {
-      font-family: 'AvenirLTStd-Roman', serif;
+      font-family: 'Graphik-Regular', sans-serif;
       font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -920,7 +936,7 @@ section.footer {
           margin-right: 20px; } }
       section.footer .footer-nav li a {
         color: #111D39;
-        font-family: 'AvenirLTStd-Roman', serif;
+        font-family: 'Graphik-Regular', sans-serif;
         font-size: 15px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
@@ -940,7 +956,7 @@ section.footer {
         section.footer .footer-nav li a:hover {
           color: #54B30E; }
     section.footer .footer-nav li.header {
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -966,7 +982,7 @@ section.footer {
         display: block; } }
   section.footer .copyright {
     margin: 20px 0 0 20px;
-    font-family: 'AvenirLTStd-Roman', serif;
+    font-family: 'Graphik-Regular', sans-serif;
     font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1114,7 +1130,7 @@ section.footer {
 
 .search-link {
   color: #999988;
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1123,7 +1139,7 @@ section.footer {
   margin-bottom: 5px; }
 
 .search-snippet {
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1160,7 +1176,7 @@ section.footer {
   padding: 30px 40px 30px 25px;
   margin: 15px 0;
   border-left: 5px solid #eee;
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1182,7 +1198,7 @@ section.footer {
   .bs-callout + .bs-callout {
     margin-top: -5px; }
   .bs-callout__label {
-    font-family: 'AvenirLTStd-Heavy', serif;
+    font-family: 'Graphik-Semibold', sans-serif;
     font-size: 17px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -1710,7 +1726,7 @@ section.footer {
   #newsletter-footer-popout {
     padding: 20px 0; }
     #newsletter-footer-popout .news-header {
-      font-family: 'Adelle-Bold', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 24px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -2102,7 +2118,7 @@ form[class*="hs-form"] {
   margin: 20px auto; }
 
 .white-popup .hbspt-form label {
-  font-family: 'AvenirLTStd-Heavy', serif;
+  font-family: 'Graphik-Semibold', sans-serif;
   font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -2739,7 +2755,7 @@ img.mfp-img {
     .contribute .dropdown-menu {
       left: -60px; } }
 .contribute .dropdown-menu > li > a {
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -2787,7 +2803,7 @@ img.mfp-img {
 .help-widget {
   position: relative; }
   .help-widget__tooltip {
-    font-family: 'AvenirLTStd-Roman', serif;
+    font-family: 'Graphik-Regular', sans-serif;
     font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -3123,7 +3139,7 @@ p .version-tag, .clickable-header .version-tag {
   max-height: none; }
 .select2-container .select2-results__option {
   text-align: center;
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 12px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -3222,7 +3238,7 @@ p .version-tag, .clickable-header .version-tag {
     #version-switcher .tier-1 a {
       margin: 0;
       padding: 0 25px;
-      font-family: 'AvenirLTStd-Heavy', serif;
+      font-family: 'Graphik-Semibold', sans-serif;
       font-size: 11px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -3304,7 +3320,7 @@ html {
 
 body {
   height: 100%;
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -3317,7 +3333,7 @@ body {
       line-height: 30px; } }
 
 p {
-  font-family: 'AvenirLTStd-Roman', serif;
+  font-family: 'Graphik-Regular', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -3329,7 +3345,7 @@ p {
       font-size: 17px;
       line-height: 30px; } }
   p strong, p b {
-    font-family: 'AvenirLTStd-Heavy', serif;
+    font-family: 'Graphik-Semibold', sans-serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -3355,35 +3371,50 @@ h3, h4, h5, h6 {
       margin-top: 40px; } }
 
 h1 {
-  font-family: 'Adelle-Bold', serif;
+  font-family: 'Graphik-Semibold', sans-serif;
   font-size: 36px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 45px;
+  line-height: 45px;
   color: #152849; }
+  @media screen and (min-width: 992px) {
+    h1 {
+      font-size: 60px;
+      line-height: 65px; } }
 
 h2 {
-  font-family: 'Adelle-Bold', serif;
+  font-family: 'Graphik-Semibold', sans-serif;
   font-size: 30px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 40px;
+  line-height: 40px;
   color: #152849; }
+  @media screen and (min-width: 768px) {
+    h2 {
+      font-size: 48px;
+      line-height: 60px; } }
   h2.clickable-header {
     cursor: pointer; }
   h2 code {
     font-size: 17px; }
 
 h3 {
-  font-family: 'AvenirLTStd-Heavy', serif;
+  font-family: 'Graphik-Semibold', sans-serif;
   font-size: 24px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 35px;
+  line-height: 35px;
   color: #152849; }
+  @media screen and (min-width: 992px) {
+    h3 {
+      font-size: 36px;
+      line-height: 45px; } }
   h3.clickable-header {
     cursor: pointer; }
   h3 strong, h3 b {
@@ -3396,7 +3427,7 @@ h3 {
     font-size: 16px; }
 
 h4 {
-  font-family: 'AvenirLTStd-Heavy', serif;
+  font-family: 'Graphik-Semibold', sans-serif;
   font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
