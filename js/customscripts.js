@@ -355,7 +355,7 @@ $(function() {
 
   // mobile menu
   $('.mobile-menu-dropdown').on('click', function() {
-    $(this).find('.mobile-sub-nav').slideToggle(200);
+    $(this).find('.mobile-subnav').slideToggle(200);
     flipArrow($(this));
   });
 });

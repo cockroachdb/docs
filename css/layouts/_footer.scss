@@ -103,7 +103,7 @@ section.footer {
 
 			a {
 				color: $cl_blue_dark;
-				@include type-caption-3;
+				@include type-caption;
 				// vertical spacing
 				line-height: 40px;
 				text-transform: none;
@@ -152,7 +152,7 @@ section.footer {
 
 	.copyright {
 		margin: 20px 0 0 20px;
-		@include type-caption-3;
+		@include type-caption;
 		color: $cl_blue;
 
 		@include at-query($min, $screen-md) {

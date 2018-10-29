@@ -13,32 +13,39 @@
 	</div>
 	<div class="mobile-menu-dropdown">
 		<span class="blue-arrow blue-arrow--down"></span>
-		Product
-		<div class="mobile-sub-nav">
-			<a href="https://www.cockroachlabs.com/product/cockroachdb/">CockroachDB</a>
-			<a href="https://www.cockroachlabs.com/solutions/automated-operation/">Automated Operation</a>
-			<a href="https://www.cockroachlabs.com/solutions/global-clusters/">Global Clusters</a>
-			<a href="https://www.cockroachlabs.com/pricing/">Licensing</a>
-			<a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html">FAQ</a>
+		<span class="mobile-nav__dropdown-label">Product</span>
+		<div class="mobile-subnav">
+			<div class="mobile-subnav__section">
+					<span class="mobile-subnav__label">Features</span>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/sql/">Distributed SQL</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/cloud-neutral/">Cloud Neutral</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/scale/">Massive Scalability</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/availability/">High Availability</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/geo-distributed">Geo-Distributed</a>
+				</div>
+				<div class="mobile-subnav-section">
+					<span class="mobile-subnav__label">Plans</span>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/managed/">Managed CockroachDB</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/pricing/">Licensing</a>
+				</div>
 		</div>
 	</div>
-	<a href="https://www.cockroachlabs.com/customers/">Customers</a>
-	<a href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
+	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/customers/">Customers</a>
+	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
 	<div class="mobile-menu-dropdown">
 		<span class="blue-arrow blue-arrow--down"></span>
-		Resources
-		<div class="mobile-sub-nav">
-				<span>Spotlights</span>
-				<ul class="mobile-sub-nav--link-list">
-					<li><a href="https://www.cockroachlabs.com/campaigns/kubernetes/">How to Run CockroachDB on Kubernetes</a></li>
-				</ul>
-				<a href="https://www.cockroachlabs.com/guides/">Guides</a>
-				<a href="https://www.cockroachlabs.com/docs/stable/training/">Training</a>
-				<a href="https://www.cockroachlabs.com/community/tech-talks/">Videos &amp; Webinars</a>
-				<a href="https://forum.cockroachlabs.com/">Forum</a>
+		<span class="mobile-nav__dropdown-label">Resources</span>
+		<div class="mobile-subnav">
+			<div class="mobile-subnav-section">
+					<span class="mobile-subnav__label"></span>
+				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/guides/">Guides</a>
+				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/docs/stable/training/">Training</a>
+				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/community/tech-talks/">Videos &amp; Webinars</a>
+				<a class="mobile-subnav__link" href="https://forum.cockroachlabs.com/">Forum</a>
+			</div>
 		</div>
 	</div>
-	<a href="https://www.cockroachlabs.com/blog/" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-depth-0">Blog</a>
+	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/blog/" itemprop="url">Blog</a>
 </nav>
 
 <!-- Desktop / Tablet Navigation -->
@@ -47,65 +54,50 @@
 		<a class="logo" href="https://www.cockroachlabs.com/" title="Cockroach Labs">
 			<img src="{{ 'images/CL_Logo_Horizontal.svg' | relative_url }}" width="100%" alt="Cockroach Labs" />
 		</a>
-
-		<nav class="desktop" role="navigation">
-			<div class='menu-item-dropdown'>
-				Product
-				<div class="menu-dropdown">
-					<a href="https://www.cockroachlabs.com/product/cockroachdb/" data-proofer-ignore>
-						<div class="menu-dropdown__title">CockroachDB</div>
-						<div class="menu-dropdown__info">The SQL database for global cloud services.</div>
-					</a>
-					<a href="https://www.cockroachlabs.com/solutions/automated-operation/" data-proofer-ignore>
-						<div class="menu-dropdown__title">Automated Operation</div>
-						<div class="menu-dropdown__info">Automate tasks like scaling, replication, and recovery.</div>
-					</a>
-					<a href="https://www.cockroachlabs.com/solutions/global-clusters/" data-proofer-ignore>
-						<div class="menu-dropdown__title">Global Clusters</div>
-						<div class="menu-dropdown__info">Scale your infrastructure across datacenters and regions.</div>
-					</a>
-					<a href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>
-						<div class="menu-dropdown__title">Licensing</div>
-					</a>
-					<a href="{{ "/stable/frequently-asked-questions.html" | relative_url }}" data-proofer-ignore>
-						<div class="menu-dropdown__title">FAQ</div>
-					</a>
-				</div>
-			</div>
-			<a href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
-			<a href="{{ "/stable" | relative_url }}" class="current-menu-item" data-proofer-ignore>Docs</a>
-			<div class='menu-item-dropdown'>
-				<div class="menu-item-dropdown__parent-link">Resources</div>
-				<div class="menu-dropdown">
-						<div class="menu-dropdown--subsection">
-							<span class="menu-dropdown--subsection__title">Spotlights</span>
-							<a class="menu-dropdown--subsection__link" href="https://www.cockroachlabs.com/campaigns/kubernetes/">How to Run CockroachDB on Kubernetes</a>
+		<nav class="desktop">
+				<div class='desktop-menu__item'>
+					<div class="desktop-menu__item-link">Product</div>
+					<div class="desktop-menu__dropdown-container">
+						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--product">
+							<span class="desktop-menu__subnav-label">Features</span>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/sql/" data-proofer-ignore>Distributed SQL</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/cloud-neutral/" data-proofer-ignore>Cloud Neutral</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/scale/" data-proofer-ignore>Massive Scalability</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/availability/" data-proofer-ignore>High Availability</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/geo-distributed" data-proofer-ignore>Geo-Distributed</a>
 						</div>
-						<a href="https://www.cockroachlabs.com/guides/">
-							<div class="menu-dropdown__title">Guides</div>
-						</a>
-						<a href="https://www.cockroachlabs.com/docs/stable/training/" data-proofer-ignore>
-							<div class="menu-dropdown__title">Training</div>
-						</a>
-						<a href="https://www.cockroachlabs.com/community/tech-talks/">
-							<div class="menu-dropdown__title">Videos &amp; Webinars</div>
-						</a>
-						<a href="https://forum.cockroachlabs.com/">
-							<div class="menu-dropdown__title">Forum</div>
-						</a>
+						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--product">
+							<span class="desktop-menu__subnav-label">Plans</span>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/managed/" data-proofer-ignore>Managed CockroachDB</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>Licensing</a>
+						</div>
 					</div>
-			</div>
-			<a href="https://www.cockroachlabs.com/blog/" class='blog-nav' data-proofer-ignore>Blog</a>
-			<a href="https://www.cockroachlabs.com/pricing/start-trial/" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
-		</nav>
-		<nav class="mobile" role="navigation">
-			<a href="#" title="Expand Menu" class="hamburger">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</a>
-			<a target="_blank" href="https://www.cockroachlabs.com/pricing/start-trial/" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
-		</nav>
+				</div>
+				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
+				<a class="desktop-menu__item-link" href="{{ "/stable" | relative_url }}" itemprop="url" data-proofer-ignore>Docs</a>
+				<div class="desktop-menu__item">
+					<div class="desktop-menu__item-link">Resources</div>
+					<div class="desktop-menu__dropdown-container">
+						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--resources">
+							<span class="desktop-menu__subnav-label">Resources</span>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/guides/" data-proofer-ignore>Guides</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/docs/stable/training/" data-proofer-ignore>Training</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/community/tech-talks/" data-proofer-ignore>Videos &amp; Webinars</a>
+							<a class="desktop-menu__subnav-link" href="https://forum.cockroachlabs.com/" data-proofer-ignore>Forum</a>
+						</div>
+					</div>
+				</div>
+				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/blog/" itemprop="url" data-proofer-ignore>Blog</a>
+				<a href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
+			</nav>
+			<nav class="mobile">
+				<a href="/" title="Expand Menu" class="hamburger">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</a>
+				<a href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url" class="button--header" data-proofer-ignore>Get CockroachDB</a>
+			</nav>
 	</div>
 </header>
