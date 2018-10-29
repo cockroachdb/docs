@@ -7,52 +7,26 @@
 @mixin headline-1 { // global h1
   @include graphik_sb(36px);
   line-height: 45px;
-
-  @include at-query($min, $screen-md) {
-    font-size: 60px;
-    line-height: 65px;
-  }
 }
 
 @mixin headline-2 { // global h2
   @include graphik_sb(30px);
   line-height: 40px;
-
-  // NOTE: this increases earlier than others
-  @include at-query($min, $screen-sm) {
-    font-size: 48px;
-    line-height: 60px;
-  }
 }
 
 @mixin headline-3 { // global h3
   @include graphik_sb(24px);
   line-height: 35px;
-
-  @include at-query($min, $screen-md) {
-    font-size: 36px;
-    line-height: 45px;
-  }
 }
 
 @mixin headline-4 { // global h4
   @include graphik_sb(17px);
   line-height: 30px;
-
-  @include at-query($min, $screen-md) {
-    font-size: 30px;
-    line-height: 40px;
-  }
 }
 
 @mixin headline-4--avenir {
   @include avenir_r(17px);
   line-height: 30px;
-
-  @include at-query($min, $screen-md) {
-    font-size: 30px;
-    line-height: 40px;
-  }
 }
 
 @mixin headline-24-30 {
@@ -101,10 +75,25 @@
   line-height: 30px;
 }
 
+//
+// button
+//
+
 
 //
 // miscellaneous
 //
+@mixin type-button {
+  @include graphik_sb(13px);
+  line-height: 20px;
+  letter-spacing: 1.5px;
+}
+
+@mixin type-button--uppercase {
+  @include type-button;
+  text-transform: uppercase;
+}
+
 @mixin button-text {
   @include avenir_bl(12px);
   line-height: 15px;
@@ -147,7 +136,7 @@
 
 // this matches the name on the hugo site
 // eventually we should consolidate type styles here too
-@mixin type-caption-3 {
+@mixin type-caption {
   @include graphik_r(15px);
   line-height: 25px;
 }
