@@ -33,7 +33,7 @@
     align-items: center;
     margin-right: 30px;
 
-    &:hover {
+    &:hover, &--active {
       color: $cl_blue_note;
 
       .version-nav__link-icon--standard {
