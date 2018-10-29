@@ -1026,11 +1026,11 @@ section.footer {
     display: flex;
     align-items: center;
     margin-right: 30px; }
-    .version-nav__link:hover {
+    .version-nav__link:hover, .version-nav__link--active {
       color: #3A7DE1; }
-      .version-nav__link:hover .version-nav__link-icon--standard {
+      .version-nav__link:hover .version-nav__link-icon--standard, .version-nav__link--active .version-nav__link-icon--standard {
         display: none; }
-      .version-nav__link:hover .version-nav__link-icon--hover {
+      .version-nav__link:hover .version-nav__link-icon--hover, .version-nav__link--active .version-nav__link-icon--hover {
         display: inline-block; }
     .version-nav__link-text {
       margin-top: 3px;
