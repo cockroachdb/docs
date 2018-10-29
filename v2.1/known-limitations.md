@@ -10,13 +10,128 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Change data capture
 
-<span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
 {% include v2.1/cdc/known-limitations.md %}
 
 ### Admin UI may become inaccessible for secure clusters
 
-<span class="version-tag">New in v2.1:</span> Accessing the Admin UI for a secure cluster now requires login information (username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+
+### Setting `application_name` in the client parameters
+
+CockroachDB does not fully process the parameter `application_name` when passed through the connection string via the client driver. As a result, the statements issued by the clients are not properly attributed to that application name for the purpose of displaying statement statistics. The workaround is to set `application_name` using a [`SET`](https://www.cockroachlabs.com/docs/stable/set-vars.html) statement immediately after the SQL connection is established. This will be addressed in a 2.1.x release.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31766)
+
+### `AS OF SYSTEM TIME` in `SELECT` statements
+
+`AS OF SYSTEM TIME` can only be used in a top-level `SELECT` statement. That is, we do not support statements like `INSERT INTO t SELECT * FROM t2 AS OF SYSTEM TIME <time>` or two subselects in the same statement with differing `AS OF SYSTEM TIME` arguments.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30534)
+
+### Large index keys can impair performance
+
+The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for RocksDB SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
+
+To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that columns most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
+
+### Admin UI: Statements page latency reports
+
+The Statements page does not correctly report "mean latency" or "latency by phase" for statements that result in schema changes or other background jobs.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30381)
+
+### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
+
+CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g. `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
+
+### Using SQLAlchemy with CockroachDB
+
+Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before they upgrade to CockroachDB 2.1.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28772)
+
+### Admin UI: CPU percentage calculation
+
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
+
+### `GROUP BY` referring to `SELECT` aliases
+
+Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28059)
+
+### `TRUNCATE` does not behave like `DELETE`
+
+`TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes
+: Limitations](https://www.cockroachlabs.com/docs/v2.1/online-schema-changes.html#limitations)
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
+
+### Using columns in `SELECT` not listed in `GROUP BY`
+
+Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
+
+To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list, for example `SELECT a GROUP BY b, a`, or `DISTINCT` should also be used, for example `SELECT DISTINCT a GROUP BY b`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
+
+### Cannot `DELETE` multiple rows with self-referencing FKs
+
+Because CockroachDB checks foreign keys eagerly (i.e. per row), it cannot trivially delete multiple rows from a table with a self-referencing foreign key.
+
+To successfully delete multiple rows with self-referencing foreign keys, you need to ensure they're deleted in an order that doesn't violate the foreign key constraint.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/25809)
+
+### `DISTINCT` operations cannot operate over JSON values
+
+CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT` filters from working on them.
+
+As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g. `SELECT DISTINCT col->>'field'...`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/24436)
+
+### Current sequence value not checked when updating min/max value
+
+Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/23719)
+
+### Using common table expressions in `VALUES` and `UNION` clauses
+
+When the [cost-based optimizer](https://www.cockroachlabs.com/docs/v2.1/cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
+
+This limitation will be lifted when the cost-based optimizer covers all queries. Until then applications can work around this limitation by including the entire CTE query in the place where it is used.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
+
+### Conversion of integers to date/time values
+
+CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch. This conversion is currently only well defined for a small range of integers and values that a large in magnitude will cause conversion errors.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
+
+### Cannot decommission nodes
+
+The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that can't be removed without breaking the configured replication rules.
+
+Example: decommissioning a node in a three node cluster won't work because ranges would become under-replicated.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
+
+### Importing data using the PostgreSQL COPY protocol
+
+Currently the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
 ## Unresolved limitations
 
@@ -34,20 +149,6 @@ Under the following conditions, the value received by CockroachDB will be differ
 
 Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
 
-### Enterprise backup/restore during rolling upgrades
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24493">#24493</a>.{{site.data.alerts.end}}
-
-In the upgrade process, after upgrading all binaries to v2.1, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.1 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
-
-### Memory flags with non-integer values and a unit suffix
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24381">#24381</a>.{{site.data.alerts.end}}
-
-The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
-
-As a workaround, use integer values or a percentage, for example, `--cache=1536MiB`.
-
 ### Import with a high amount of disk contention
 
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
@@ -60,6 +161,8 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 ### Referring to a CTE by name more than once
 
 {% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31095)
 
 ### Assigning latitude/longitude for the Node Map
 
@@ -169,6 +272,8 @@ Many string operations are not properly overloaded for [collated strings](collat
 ~~~
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/10679)
 
 ### Max size of a single column family
 
