@@ -44,7 +44,9 @@ The user requires the appropriate [privileges](privileges.html) for the statemen
  `DISTSQL`          | <span class="version-tag">New in v2.1:</span> Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
  `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
 
-{{site.data.alerts.callout_danger}}<code>EXPLAIN</code> also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`EXPLAIN` also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.
+{{site.data.alerts.end}}
 
 ## Success responses
 
@@ -70,14 +72,15 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 ~~~
 
 ~~~
-   tree    | field | description
------------+-------+-------------
- sort      |       |
-  │        | order | +v
-  └── scan |       |
-           | table | kv@primary
-           | spans | ALL
-(5 rows)
+    tree    | field  | description
++-----------+--------+-------------+
+  sort      |        |
+   │        | order  | +v
+   └── scan |        |
+            | table  | kv@primary
+            | spans  | ALL
+            | filter | v > 3
+(6 rows)
 ~~~
 
 The first column shows the tree structure of the query plan; a set of properties is displayed for each node in the tree. Most importantly, for scans, you can see the index that is scanned (`primary` in this case) and what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
@@ -95,24 +98,26 @@ The `VERBOSE` option:
 ~~~
 
 ~~~
-         tree         |  field   | description |   columns    | ordering
-+---------------------+----------+-------------+--------------+----------+
-  sort                |          |             | (k, v, v)    | -v
-   │                  | order    | -v          |              |
-   └── render         |          |             | (k, v, v)    |
-        │             | render 0 | k           |              |
-        │             | render 1 | v           |              |
-        │             | render 2 | v           |              |
-        └── join      |          |             | (k, v, k, v) |
-             │        | type     | inner       |              |
-             │        | equality | (k) = (k)   |              |
-             ├── scan |          |             | (k, v)       |
-             │        | table    | kv@primary  |              |
-             │        | spans    | ALL         |              |
-             └── scan |          |             | (k, v)       |
-                      | table    | kv@v        |              |
-                      | spans    | /4-         |              |
-(15 rows)
+         tree         |     field      | description |   columns    | ordering
++---------------------+----------------+-------------+--------------+----------+
+  sort                |                |             | (k, v, v)    | -v
+   │                  | order          | -v          |              |
+   └── render         |                |             | (k, v, v)    |
+        │             | render 0       | k           |              |
+        │             | render 1       | v           |              |
+        │             | render 2       | v           |              |
+        └── join      |                |             | (k, v, k, v) |
+             │        | type           | inner       |              |
+             │        | equality       | (k) = (k)   |              |
+             │        | mergeJoinOrder | +"(k=k)"    |              |
+             ├── scan |                |             | (k, v)       | +k
+             │        | table          | kv@primary  |              |
+             │        | spans          | ALL         |              |
+             │        | filter         | v > 3       |              |
+             └── scan |                |             | (k, v)       | +k
+                      | table          | kv@primary  |              |
+                      | spans          | ALL         |              |
+(17 rows)
 ~~~
 
 ### `TYPES` option
@@ -125,14 +130,14 @@ The `TYPES` mode includes the types of the values used in the query plan.  It al
 ~~~
 
 ~~~
-   tree    | field  |         description         |    columns     | ordering
------------+--------+-----------------------------+----------------+----------
- sort      |        |                             | (k int, v int) | +v
-  │        | order  | +v                          |                |
-  └── scan |        |                             | (k int, v int) |
-           | table  | kv@primary                  |                |
-           | spans  | ALL                         |                |
-           | filter | ((v)[int] > (3)[int])[bool] |                |
+    tree    | field  |         description         |    columns     | ordering
++-----------+--------+-----------------------------+----------------+----------+
+  sort      |        |                             | (k int, v int) | +v
+   │        | order  | +v                          |                |
+   └── scan |        |                             | (k int, v int) |
+            | table  | kv@primary                  |                |
+            | spans  | ALL                         |                |
+            | filter | ((v)[int] > (3)[int])[bool] |                |
 (6 rows)
 ~~~
 
@@ -218,12 +223,13 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 ~~~
 
 ~~~
- tree | field | description
-------+-------+-------------
- scan |       |
-      | table | kv@primary
-      | spans | ALL
-(3 rows)
+  tree | field  |      description
++------+--------+-----------------------+
+  scan |        |
+       | table  | kv@primary
+       | spans  | ALL
+       | filter | (v >= 4) AND (v <= 5)
+(4 rows)
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
