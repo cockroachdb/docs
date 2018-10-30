@@ -63,6 +63,7 @@ nav.mobile_expanded {
 			color: $cl_blue;
 			@include type-button--uppercase;
 			@include groovy(color);
+			cursor: pointer;
 		}
 
 		&__link {
@@ -104,6 +105,7 @@ nav.mobile_expanded {
 			display: block;
 			margin-top: 3px;
 			margin-right: 25px;
+			cursor: pointer;
 		}
 	}
 

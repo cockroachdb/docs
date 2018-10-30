@@ -1,6 +1,4 @@
 #sidebar {
-  position: absolute;
-  top: -45px;
   width: 100vw;
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid $cl_gray_medium;
@@ -41,6 +39,7 @@
       float: right;
       height: 8px;
       margin-top: 8px;
+      margin-right: 17px;
     }
 
     a {
@@ -93,7 +92,7 @@ body.sidenav-open {
   @include at-query($max, $screen-md) {
     position: fixed;
     left: 0;
-    top: 160px;
+    top: 115px;
     width: 100%;
     z-index: 2;
     @include groovy(margin-left);
@@ -102,17 +101,15 @@ body.sidenav-open {
 
   @include at-query($min, $screen-md) {
     position: fixed;
-    top: 205px;
+    top: 145px;
     bottom: 0;
     min-width: 310px;
-    padding: 0 30px;
+    padding: 60px 0 0 30px;
     background-color: transparent;
-    overflow-y: hidden;
+    overflow: hidden;
 
-    &:hover,
-    &:active,
-    &:focus {
-      overflow-y: auto;
+    &:hover {
+      overflow-y: scroll;
     }
   }
 
