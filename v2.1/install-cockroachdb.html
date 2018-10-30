@@ -237,7 +237,7 @@ $(document).ready(function(){
     <p>If you do not see the server listed, start the <strong>Docker</strong> daemon.</p>
   </li>
   <li>
-    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="mac-docker-button">copy</div>
@@ -435,7 +435,7 @@ $(document).ready(function(){
     {{site.data.alerts.callout_info}}On Linux, Docker needs sudo privileges.{{site.data.alerts.end}}
   </li>
   <li>
-    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="linux-docker-button">copy</div>
@@ -539,7 +539,7 @@ $(document).ready(function(){
     <p><a href="https://docs.docker.com/docker-for-windows/#/shared-drives">Share your local drives</a>. This makes it possible to mount local directories as data volumes to persist node data after containers are stopped or deleted.</p>
   </li>
   <li>
-    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/cockroachdb/cockroach-unstable/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
+    <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" data-eventcategory="win-docker-step3">Docker Hub</a>:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="windows-docker-button">copy</div>
