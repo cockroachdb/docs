@@ -72,7 +72,7 @@
   }
 
   .landing-page__tutorial--tile-label {
-    @include type-caption-3;
+    @include type-caption;
     color: $cl_gray_body;
     margin-top: 5px;
 
