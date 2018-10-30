@@ -45,13 +45,13 @@
     border-left: 5px solid $cl_gray_light;
 
     li {
-      margin: 0;
+      margin: 6px 0;
       list-style: none;
-      line-height: 25px;
+      line-height: 1.1;
+      white-space: nowrap; // prevent anchor JS link from ending up on next line
 
       a {
         @include avenir_r(13px);
-        line-height: 20px;
         color: $cl_blue;
 
         &:hover {
@@ -67,6 +67,7 @@
 
       a:first-child {
         position: relative;
+        white-space: normal;
 
         &:hover {
           &:before {
@@ -92,6 +93,8 @@
 
   code {
     color: inherit;
+    font-size: inherit;
+    line-height: inherit;
     padding: 0px;
   }
 }
