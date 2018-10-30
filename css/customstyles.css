@@ -1013,7 +1013,7 @@ section.footer {
   .search #search-input {
     background-color: white;
     border: none;
-    border-radius: 32px;
+    border-radius: 5px;
     box-shadow: 0 0 8px #DADADA;
     height: 40px;
     width: calc(100% - 30px);
@@ -1989,7 +1989,7 @@ polygon.regexp {
   text-align: center;
   text-decoration: none !important;
   border: 2px solid #152849;
-  border-radius: 100px;
+  border-radius: 5px;
   outline: none;
   -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2507,9 +2507,9 @@ img.mfp-img {
   line-height: 15px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  border-radius: 100px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2534,9 +2534,9 @@ img.mfp-img {
   line-height: 15px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  border-radius: 100px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2564,9 +2564,9 @@ img.mfp-img {
   line-height: 15px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  border-radius: 100px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -2646,9 +2646,9 @@ img.mfp-img {
   line-height: 15px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  border-radius: 100px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
