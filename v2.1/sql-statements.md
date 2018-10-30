@@ -39,7 +39,7 @@ Statement | Usage
 [`ALTER RANGE`](alter-range.html) | <span class="version-tag">New in v2.1:</span> Change an existing system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
+[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v2.1:</span> Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> Add, modify, reset, and remove [replication zones](configure-replication-zones.html).

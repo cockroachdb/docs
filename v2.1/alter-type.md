@@ -4,7 +4,7 @@ summary: Use the ALTER TYPE statement to change a column's data type.
 toc: true
 ---
 
-The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).
+<span class="version-tag">New in v2.1:</span> The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).
 
 ## Considerations
 
