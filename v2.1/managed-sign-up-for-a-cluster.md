@@ -27,12 +27,10 @@ To be considered for participation:
     - Your current data size and expected growth in size{% endcomment %}
 
 3. Once you've submitted your request, two things will happen:
+    - Cockroach Labs will consider your use case and follow up with you within 1 business day.
     - You'll receive an email with links to download and start exploring CockroachDB right away.
 
         The email will include a 30-day license key for CockroachDB with Enterprise features (backup & restore, geo-partitioning, priority support, cluster visualization).
-    - Cockroach Labs will consider your use case.
-
-        If we think it is a good fit for a Managed CockroachDB trial, a member of our team will follow up with you within one business day.
 
 ## Confirmation email
 
