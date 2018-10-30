@@ -22,6 +22,12 @@ For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
+{{site.data.alerts.callout_danger}}
+
+**Upgrading from CockroachDB 2.0 to 2.1?** If you used SQLAlchemy with your 2.0 cluster, you must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB 2.1.
+
+{{site.data.alerts.end}}
+
 ## Step 1. Install the SQLAlchemy ORM
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
