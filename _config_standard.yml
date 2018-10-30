@@ -5,4 +5,4 @@ destination: _site/docs
 
 versions:
   stable: v2.1
-  # dev: v2.1
+  dev: v2.1
