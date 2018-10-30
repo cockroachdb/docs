@@ -16,9 +16,9 @@ The Managed CockroachDB offering is currently in Limited Availability and accept
 
 To be considered for participation:
 
-1. [Sign up for an Enterprise Trial license](https://www.cockroachlabs.com/pricing/start-trial/).
+1. [Sign up for an Enterprise Trial license](https://www.cockroachlabs.com/get-cockroachdb/).
 
-2. During sign up, indicate that you're interested in the Managed offering. You'll be asked to provide details about your company, use case, and deployment requirements.
+2. During sign up, check **I am interested in Managed CockroachDB**. You'll be asked to provide some basic details about your company and deployment requirements.
 
     {% comment %}- The type of app you want to run against CockroachDB (e.g., point-in-time retail transactions)
     - The cloud and regions where you want CockroachDB running
@@ -32,7 +32,7 @@ To be considered for participation:
         The email will include a 30-day license key for CockroachDB with Enterprise features (backup & restore, geo-partitioning, priority support, cluster visualization).
     - Cockroach Labs will consider your use case.
 
-        If we think it is a good fit for a Managed CockroachDB trial, a member of our team will follow up with you within two business days.
+        If we think it is a good fit for a Managed CockroachDB trial, a member of our team will follow up with you within one business day.
 
 ## Confirmation email
 

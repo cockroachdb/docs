@@ -31,7 +31,9 @@ body.menu_open {
 		}
 	}
 
-	#content, .col-sidebar, #version-switcher {
+	#content,
+	.col-sidebar,
+	#version-switcher {
 		margin-left: -100vw;
 		box-shadow: none;
 	}
@@ -206,21 +208,24 @@ header {
 	float:left;
   padding: 15px;
 	background: #FFFFFF;
-  border-bottom: 1px solid $cl_gray_medium;
 	height: 60px;
 
 	@include at-query($min, $screen-md) {
 		height: 70px;
 	}
 
-	// return to regular padding when there is space
-	@include at-query($min, $screen-sm + 10px) {
+	@include at-query($min, $screen-md) {
 		padding: 15px 30px;
 	}
 
 	&.navbar-fixed-top {
 		display: flex;
 		justify-content: center;
+		border-bottom: 1px solid $cl_gray_medium;
+
+		@include at-query($min, $screen-md) {
+			border-bottom: unset;
+		}
 	}
 
 	.navbar-fixed-top--inner {
@@ -385,8 +390,7 @@ header {
   		width:21px;
   		height: 20px;
   		float:right;
-  		margin-right:5px;
-  		margin-top:5px;
+  		margin-top: 5px;
   		position: relative;
   		@include rotate(0deg);
   	 	@include groovy(all);

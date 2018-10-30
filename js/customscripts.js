@@ -27,7 +27,7 @@ $(function() {
       cachedWidth = window.innerWidth,
       $mobile_menu = $('nav.mobile_expanded'),
       $colSidebar = $('.col-sidebar'),
-      $sidebar = $('#mysidebar'),
+      $sidebar = $('#sidebar'),
       $footer = $('section.footer'),
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
       $versionSwitcher = $('#version-switcher'),
@@ -37,7 +37,7 @@ $(function() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
     $sidebar.css({height: sideNavHeight});
-    $('#mysidebar li').hide();
+    $('#sidebar li').hide();
     $('#version-switcher .tier-1 ul').slideUp();
     $versionSwitcher.removeClass('open');
   }
@@ -48,7 +48,7 @@ $(function() {
     $('body').removeClass('sidenav-open');
 
     if (winWidth >= 992) {
-      $('#mysidebar li').show();
+      $('#sidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
       $sidebar.css('height', '');
@@ -56,7 +56,7 @@ $(function() {
       $('.collapsed-header').show();
       $sidebar.addClass('nav--collapsed');
       $sidebar.css({height: sideNavHeight});
-      $('#mysidebar li').hide();
+      $('#sidebar li').hide();
     }
   }
 
@@ -117,7 +117,7 @@ $(function() {
     //
     // To solve this, we need to calculate the TOC height outside the event handler--
     // however, the TOC is rendered *after* the 'ready' event on $(document) is fired, thus we cannot
-    // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack 
+    // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack
     // to get the 'true' height of the TOC once it has been rendered on the page.
     var tempTocHeight = $tocRight.height()
     if (tempTocHeight > tocHeight) {
@@ -136,10 +136,10 @@ $(function() {
     // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
       if (scrollTop + windowHeight >= footerOffset) {
-        $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
+        // $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
         $colSidebar.css('bottom', viewportFooterDiff + 'px');
       } else {
-        $versionSwitcher.css({'bottom': '-1px'});
+        // $versionSwitcher.css({'bottom': '-1px'});
         $colSidebar.css('bottom', '0');
       }
     } else { // mobile
@@ -160,7 +160,7 @@ $(function() {
     if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocRight.css({
         position: 'fixed',
-        top: 88,
+        top: 140,
         width: '265px'
       });
 
@@ -250,13 +250,13 @@ $(function() {
         $sidebar.removeClass('nav--collapsed');
         $sidebar.css('height', '');
 
-        var $active = $('#mysidebar .active');
+        var $active = $('#sidebar .active');
         if ($active.length > 0) {
           // if active drawer, we want to preserve that on expand
-          $('#mysidebar li.search-wrap').slideDown(250);
+          $('#sidebar li.search-wrap').slideDown(250);
           $active.slideDown(250);
 
-          $lastActive = $('#mysidebar li.active:last');
+          $lastActive = $('#sidebar li.active:last');
           if ($lastActive.hasClass('tier-3')) {
             $lastActive.siblings('li').slideDown(250);
           } else if ($lastActive.hasClass('tier-2')) {
@@ -270,7 +270,7 @@ $(function() {
           }
         } else {
           // otherwise, this should show top level
-          $('#mysidebar li').slideDown(250);
+          $('#sidebar li').slideDown(250);
         }
         $versionSwitcher.slideDown();
       } else {
@@ -291,7 +291,7 @@ $(function() {
     if ($sidebar.hasClass('nav--collapsed')) toggleSideNav();
   });
 
-  $('#mysidebar a').on('click', function() {
+  $('#sidebar a').on('click', function() {
     _viewport_width = window.innerWidth;
     // mobile only
     if (_viewport_width <= 992) {
@@ -307,7 +307,7 @@ $(function() {
     // if a top level menu item is clicked, this ensures no active list items
     // avoids third level item staying active, causing no items to appear on collapse/expand
     // this fires on desktop as well, to prevent an empty menu after resize
-    if ($(this).parent('li').parent('#mysidebar').length > 0) {
+    if ($(this).parent('li').parent('#sidebar').length > 0) {
       $('li.active').removeClass('active');
     }
   });

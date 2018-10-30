@@ -1,14 +1,16 @@
 $(document).ready(function() {
-  // this will make search appear instead of header in collapsed docs menu
-  $('.collapsed-header').hide();
-  $('.search-wrap').show();
+  if (window.innerWidth >= 992) {
+    // this will make search appear instead of header in collapsed docs menu
+    $('.collapsed-header').hide();
+    $('.search-wrap').show();
+  }
 
   // this will remove the class with custom styling for search page,
   // so when we close the menu it reverts to normal styling
   // needs to happen if any of these elements are clicked
   $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
-    if ($('#mysidebar').hasClass('nav--search')) {
-      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
+    if ($('#sidebar').hasClass('nav--search')) {
+      $('#sidebar').removeClass('nav--search').addClass('nav--home');
     }
   });
 
@@ -21,7 +23,7 @@ $(document).ready(function() {
   });
 
   $('#search-input').on('input', function() {
-    if ($(this).val() != '') { 
+    if ($(this).val() != '') {
       $('.clear-search').show();
     } else {
       $('.clear-search').hide();

@@ -37,17 +37,18 @@
   }
 }
 
-#mysidebar li.search-wrap {
+#sidebar li.search-wrap {
   margin-bottom: 0;
 
   @include at-query($min, $screen-md) {
-    display: block;
     position: fixed;
-    top: 89px;
+    top: 104px;
+    height: fit-content;
     width: 240px;
+    padding-top: 50px;
+    padding-bottom: 0;
     background: #ffffff;
     z-index: 2;
-    padding-top: 11px;
   }
 }
 

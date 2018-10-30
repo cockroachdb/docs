@@ -52,7 +52,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
     </a>
   </div>
   <div class="landing-page__video-wrapper">
-    <iframe width="560" height="349" src="https://www.youtube.com/embed/91IqMUwAdnc?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="349" src="https://www.youtube.com/embed/91IqMUwAdnc?rel=0" frameborder="0" allowfullscreen></iframe>
   </div>
 </div>
 {% endif %}

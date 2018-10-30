@@ -7,36 +7,37 @@
 	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	overflow: auto;
 
+	@include at-query($min, $screen-md){
+		padding-top: 120px;
+	}
+
 	#main-content {
 		margin: 0 15px;
 
 		@include at-query($min, $screen-md) {
 			margin: 0 auto;
 			min-height: 625px;
-
-			// this is slight hack done to ensure alignment of the left edge of the header logo
-			// with left edge of sidebar under all responsive conditions
-			max-width: 1530px; 
+			max-width: $max-width;
 		}
 
 		.content-col {
 			padding-bottom: 100px;
 			max-width: 100%;
 			min-width: 0;
-			padding-top: 45px;
+			padding-top: 105px;
 
 			@include at-query($min, $screen-md) {
 				padding-top: 0;
 				min-height: 625px;
 				padding-left: 310px;
-				padding-right: 60px;
+				padding-right: 30px;
 
 				&.no-sidebar {
 					padding-left: 30px;
 				}
 
 				&.no-toc {
-					padding-right: 15px;
+					padding-right: 30px;
 				}
 			}
 
@@ -44,9 +45,5 @@
 				padding-top: 30px;
 			}
 		}
-	}
-
-	@include at-query($min, $screen-md){
-		padding-top: 71px;
 	}
 }
