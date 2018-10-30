@@ -147,39 +147,53 @@ The following demonstrates how to assign a list of values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET default_transaction_isolation = SNAPSHOT;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW default_transaction_isolation;
+> SHOW search_path;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SNAPSHOT                      |
-+-------------------------------+
++-------------+
+| search_path |
++-------------+
+| public      |
++-------------+
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET default_transaction_isolation = DEFAULT;
+> SET search_path = 'app';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW default_transaction_isolation;
+> SHOW search_path;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SERIALIZABLE                  |
-+-------------------------------+
++-------------+
+| search_path |
++-------------+
+| app         |
++-------------+
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET search_path = DEFAULT;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW search_path;
+~~~
+
+~~~
++-------------+
+| search_path |
++-------------+
+| public      |
++-------------+
 (1 row)
 ~~~
 

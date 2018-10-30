@@ -143,15 +143,11 @@ CockroachDB's transactions allow the following types of conflicts that involve r
 
 To make this simpler to understand, we'll call the first transaction `TxnA` and the transaction that encounters its write intents `TxnB`.
 
-CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `TxnWaitQueue`.
+CockroachDB proceeds through the following steps:
 
 1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp pushed (in the write/read case).
 
-2. `TxnB` tries to push `TxnA`'s timestamp forward.
-
-    This succeeds only in the case that `TxnA` has snapshot isolation and `TxnB`'s operation is a read. In this case, the [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomaly occurs.
-
-3. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
+2. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
 Additionally, the following types of conflicts that do not involve running into intents can arise:
 
