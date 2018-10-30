@@ -641,6 +641,7 @@ a:not([href]) {
   color: #aaa; }
 
 .landing-page .landing-page__tutorial {
+  margin: 16px 0 10px;
   width: 100%; }
 .landing-page .landing-page__tutorial--tile {
   display: inline-flex;
@@ -1156,9 +1157,10 @@ section.footer {
   border-left: 5px solid #F3F3F3; }
   #toc > ul li,
   #toc-right > ul li {
-    margin: 0;
+    margin: 6px 0 7px;
     list-style: none;
-    line-height: 25px; }
+    line-height: 1.1;
+    white-space: nowrap; }
     #toc > ul li a,
     #toc-right > ul li a {
       font-family: 'AvenirLTStd-Roman', serif;
@@ -1166,7 +1168,6 @@ section.footer {
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 20px;
       color: #152849; }
       #toc > ul li a:hover,
       #toc-right > ul li a:hover {
@@ -1178,7 +1179,8 @@ section.footer {
         color: #54B30E; }
     #toc > ul li a:first-child,
     #toc-right > ul li a:first-child {
-      position: relative; }
+      position: relative;
+      white-space: normal; }
       #toc > ul li a:first-child:hover:before,
       #toc-right > ul li a:first-child:hover:before {
         color: #152849; }
@@ -1200,6 +1202,8 @@ section.footer {
 #toc code,
 #toc-right code {
   color: inherit;
+  font-size: inherit;
+  line-height: inherit;
   padding: 0px; }
 
 #os-tabs button {

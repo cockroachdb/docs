@@ -1,6 +1,9 @@
 .landing-page {
 
-  .landing-page__tutorial { width: 100%; }
+  .landing-page__tutorial {
+    margin: 16px 0 10px;
+    width: 100%;
+  }
 
   .landing-page__tutorial--tile {
     display: inline-flex;
