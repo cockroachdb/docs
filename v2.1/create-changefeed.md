@@ -68,7 +68,7 @@ Option | Value | Description
 (1 row)
 ~~~
 
-For for information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
+For more information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
 
 ### Create a changefeed with Avro
 

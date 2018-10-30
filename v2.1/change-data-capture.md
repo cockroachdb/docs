@@ -306,8 +306,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~ shell
-    {"id": 1, "name": "Petee H"}
-    {"id": 2, "name": "Carl"}
+    [1]	{"id": 1, "name": "Petee H"}
+    [2]	{"id": 2, "name": "Carl"}
     ~~~
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -322,7 +322,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    {"id": 3, "name": "Ernie"}
+    [3]	{"id": 3, "name": "Ernie"}
     ~~~
 
 15. When you are done, exit the SQL shell (`\q`).
@@ -331,7 +331,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit
+    $ cockroach quit --insecure
     ~~~
 
 17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
@@ -439,7 +439,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081';
+    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     ~~~
@@ -488,7 +488,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit
+    $ cockroach quit --insecure
     ~~~
 
 17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
