@@ -145,13 +145,20 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 ## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes.  Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html) (both of which are in **beta** as of v2.1).  Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB.  Check those pages for details.
+Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html) (both of which are in **beta** as of v2.1).  Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB.  Check those pages for details.
 
 We also fully support [importing your data via CSV](migrate-from-csv.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Coming soon!
+Yes. The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
+
+- No provisioning or deployment efforts for you
+- Daily full backups and hourly incremental backups of your data
+- Upgrades to the latest stable release of CockroachDB
+- Monitoring to provide SLA-level support
+
+For more details, see the [Managed CockroachDB](../managed/v2.1/) docs.
 
 ## Can I use CockroachDB as a key-value store?
 
