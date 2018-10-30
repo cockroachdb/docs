@@ -34,7 +34,7 @@ CockroachDB does not fully process the parameter `application_name` when passed 
 
 The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for RocksDB SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
 
-To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that columns most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
+To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
 
@@ -46,13 +46,13 @@ The Statements page does not correctly report "mean latency" or "latency by phas
 
 ### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
 
-CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g. `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
+CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
 
 ### Using SQLAlchemy with CockroachDB
 
-Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before they upgrade to CockroachDB 2.1.
+Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB 2.1.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28772)
 
@@ -71,7 +71,7 @@ Applications developed for PostgreSQL that use `GROUP BY` to refer to column ali
 ### `TRUNCATE` does not behave like `DELETE`
 
 `TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes
-: Limitations](https://www.cockroachlabs.com/docs/v2.1/online-schema-changes.html#limitations)
+: Limitations](online-schema-changes.html#limitations)
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
 
@@ -79,13 +79,13 @@ Applications developed for PostgreSQL that use `GROUP BY` to refer to column ali
 
 Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
 
-To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list, for example `SELECT a GROUP BY b, a`, or `DISTINCT` should also be used, for example `SELECT DISTINCT a GROUP BY b`.
+To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list (e.g., `SELECT a GROUP BY b, a`), or `DISTINCT` should also be used (e.g., `SELECT DISTINCT a GROUP BY b`).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
 
 ### Cannot `DELETE` multiple rows with self-referencing FKs
 
-Because CockroachDB checks foreign keys eagerly (i.e. per row), it cannot trivially delete multiple rows from a table with a self-referencing foreign key.
+Because CockroachDB checks foreign keys eagerly (i.e., per row), it cannot trivially delete multiple rows from a table with a self-referencing foreign key.
 
 To successfully delete multiple rows with self-referencing foreign keys, you need to ensure they're deleted in an order that doesn't violate the foreign key constraint.
 
@@ -95,7 +95,7 @@ To successfully delete multiple rows with self-referencing foreign keys, you nee
 
 CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT` filters from working on them.
 
-As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g. `SELECT DISTINCT col->>'field'...`.
+As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g., `SELECT DISTINCT col->>'field'...`.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/24436)
 
@@ -107,7 +107,7 @@ Altering the minimum or maximum value of a series does not check the current val
 
 ### Using common table expressions in `VALUES` and `UNION` clauses
 
-When the [cost-based optimizer](https://www.cockroachlabs.com/docs/v2.1/cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
+When the [cost-based optimizer](cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
 
 This limitation will be lifted when the cost-based optimizer covers all queries. Until then applications can work around this limitation by including the entire CTE query in the place where it is used.
 
@@ -115,7 +115,9 @@ This limitation will be lifted when the cost-based optimizer covers all queries.
 
 ### Conversion of integers to date/time values
 
-CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch. This conversion is currently only well defined for a small range of integers and values that a large in magnitude will cause conversion errors.
+CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
+
+This conversion is currently only well defined for a small range of integers, i.e., large absolute values are not properly converted. For example, `(-9223372036854775808):::int64::date` converts to `1970-01-01 00:00:00+00:00`.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
 
@@ -129,7 +131,7 @@ Example: decommissioning a node in a three node cluster won't work because range
 
 ### Importing data using the PostgreSQL COPY protocol
 
-Currently the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
