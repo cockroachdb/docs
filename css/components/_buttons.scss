@@ -1,7 +1,7 @@
 @mixin button() {
 	@include button-text;
 	text-transform: uppercase;
-	@include rounded(100px);
+	@include rounded(5px);
 	@include groovy(all);
 	display: inline-block;
 	border: 2px solid $cl_green;
