@@ -1,7 +1,7 @@
 ---
 title: CockroachDB Docs
-managed_title: Managed CockroachDB Docs
 summary: CockroachDB user documentation.
+type: first_page
 homepage: true
 toc: true
 twitter: false
