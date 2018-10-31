@@ -9,7 +9,7 @@ toc: true
   <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use openssl</button></a>
 </div>
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
+A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires Certificate Authority (CA), node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -21,6 +21,10 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 2. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
 
 3. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
+
+## Accessing the Admin UI for a secure cluster
+
+{% include {{ page.version.version }}/misc/admin-ui-cert.md %}
 
 ## Subcommands
 
@@ -44,6 +48,8 @@ File name pattern | File usage
 `node.key`   | Key for server certificate
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
 `client.<user>.key` | Key for the client certificate
+
+If you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate in the directory specified by the `--certs-dir` flag.
 
 Note the following:
 
