@@ -9,12 +9,13 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="nocache">
 {% endif %}
-<title>{{ page.title }} | {{ site.site_title }}</title>
 <!-- TODO: All managed pages are excluded from search indexes for now. Eventually,
 for managed-only pages, we'll need to NOT do this replacement. -->
 {% if site.managed %}
+{% if page.homepage == true %}<title>{{ page.managed_title }} | {{ site.site_title }}</title>{% else %}<title>{{ page.title }} | {{ site.site_title }}</title>{% endif %}
 <link rel="canonical" href="{{ page.canonical | absolute_url | replace: "/managed", "" }}">
 {% else %}
+<title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 {% endif %}
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
