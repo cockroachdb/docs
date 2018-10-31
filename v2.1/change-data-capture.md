@@ -371,7 +371,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     $ ./bin/kafka-topics \
     --create \
-    --zookeeper localhost:2181 \
+    --zookeeper localhost:8081 \
     --replication-factor 1 \
     --partitions 1 \
     --topic office_dogs
@@ -463,8 +463,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~ shell
-    [1]	{"id": 1, "name": "Petee H"}
-    [2]	{"id": 2, "name": "Carl"}
+    {"id":1}    {"id":1,"name":{"string":"Petee H"}}
+    {"id":2}    {"id":2,"name":{"string":"Carl"}}
     ~~~
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -479,7 +479,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    [3]	{"id": 3, "name": "Ernie"}
+    {"id":3}    {"id":3,"name":{"string":"Ernie"}}
     ~~~
 
 15. When you are done, exit the SQL shell (`\q`).
