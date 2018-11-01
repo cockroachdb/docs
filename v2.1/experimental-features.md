@@ -85,7 +85,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ### Turn on KV event tracing
 
-Use session tracing (via [`SHOW TRACE FOR SESSION`](show-trace-for-session.html)) to report the replicas of all KV events that occur during its execution.
+Use session tracing (via [`SHOW TRACE FOR SESSION`](show-trace.html)) to report the replicas of all KV events that occur during its execution.
 
 Example:
 
@@ -147,4 +147,4 @@ The table below lists the experimental SQL functions and operators available in 
 - [Functions and Operators](functions-and-operators.html)
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html)
-- [`SHOW TRACE FOR SESSION`](show-trace-for-session.html)
+- [`SHOW TRACE FOR SESSION`](show-trace.html)

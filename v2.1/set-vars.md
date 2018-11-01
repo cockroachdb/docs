@@ -242,14 +242,14 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 
 ## `SET TRACING`
 
-`SET TRACING` changes the trace recording state of the current session. A trace recording can be inspected with the [`SHOW TRACE FOR SESSION`](show-trace-for-session.html) statement.
+`SET TRACING` changes the trace recording state of the current session. A trace recording can be inspected with the [`SHOW TRACE FOR SESSION`](show-trace.html) statement.
 
  Value | Description
 -------|------------
 `off` | Trace recording is disabled.
 `cluster` | Trace recording is enabled; distributed traces are collected.
 `on`  | Same as `cluster`.
-`kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`](show-trace-for-session.html).
+`kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`](show-trace.html).
 `local` | Trace recording is enabled; only trace messages issued by the local node are collected.
 `results` | Result rows and row counts are copied to the session trace. This must be specified to in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
@@ -260,4 +260,4 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW` (session variable)](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
-- [`SHOW TRACE FOR SESSION`](show-trace-for-session.html)
+- [`SHOW TRACE FOR SESSION`](show-trace.html)
