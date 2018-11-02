@@ -100,6 +100,10 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
+### (Optional) Generate Admin UI certificate
+
+{% include {{ page.version.version }}/misc/admin-ui-cert.md %}
+
 ## Step 6. Start nodes
 
 {% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}

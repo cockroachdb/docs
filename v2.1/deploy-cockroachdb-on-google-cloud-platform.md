@@ -39,13 +39,13 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 
 #### Admin UI
 
- Field | Recommended Value 
+ Field | Recommended Value
 -------|-------------------
- Name | **cockroachadmin** 
- Source filter | IP ranges 
- Source IP ranges | Your local network's IP ranges 
- Allowed protocols... | **tcp:8080** 
- Target tags | **cockroachdb** 
+ Name | **cockroachadmin**
+ Source filter | IP ranges
+ Source IP ranges | Your local network's IP ranges
+ Allowed protocols... | **tcp:8080**
+ Target tags | **cockroachdb**
 
 #### Application data
 
@@ -98,6 +98,10 @@ To use GCE's TCP Proxy Load Balancing service:
 ## Step 5. Generate certificates
 
 {% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
+
+### (Optional) Generate Admin UI certificate
+
+{% include {{ page.version.version }}/misc/admin-ui-cert.md %}
 
 ## Step 6. Start nodes
 

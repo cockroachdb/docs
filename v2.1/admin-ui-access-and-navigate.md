@@ -18,11 +18,18 @@ If `--http-addr` is not specified when starting a node, the Admin UI is reachabl
 
 For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
-
-
 ### Accessing the Admin UI for a secure cluster
 
 {% include {{ page.version.version }}/misc/admin-ui-cert.md %}
+
+Load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
+
+{% include copy-clipboard.html %}
+~~~ shell
+pkill -SIGHUP -x cockroach
+~~~
+
+The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
 
 For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords.
 

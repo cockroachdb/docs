@@ -32,6 +32,10 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
+### (Optional) Generate Admin UI certificate
+
+{% include {{ page.version.version }}/misc/admin-ui-cert.md %}
+
 ## Step 3. Start nodes
 
 {% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
