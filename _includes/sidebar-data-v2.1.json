@@ -1078,7 +1078,7 @@
               {
                 "title": "<code>SHOW TRACE FOR SESSION</code>",
                 "urls": [
-                  "/${VERSION}/show-trace-for-session.html"
+                  "/${VERSION}/show-trace.html"
                 ]
               },
               {
