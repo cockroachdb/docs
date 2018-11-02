@@ -28,7 +28,7 @@ For more information, see:
 
 The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
-## Bulk insert best tractices
+## Bulk insert best practices
 
 ### Use multi-row `INSERT` statements for bulk inserts into existing tables
 
