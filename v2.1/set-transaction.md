@@ -14,7 +14,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction prio
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to set the transaction isolation level or priority. However, privileges are required for each statement within a transaction.
+No [privileges](privileges.html) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 
@@ -23,7 +23,7 @@ Parameter | Description
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br><br>Transactions with higher priority are less likely to need to be retried.<br><br>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br><br>The current priority is also exposed as the [session variable](show-vars.html) `transaction_priority`.<br><br>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
 
-<span class="version-tag">New in v2.1:</span> CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been deprecated.
+<span class="version-tag">New in v2.1:</span> CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
 ## Examples
 
@@ -69,7 +69,7 @@ Parameter | Description
 ## See also
 
 - [`SET`](set-vars.html)
-- [Transaction parameters](transactions.html#transaction-parameters)
+- [Transactions: Priority levels](transactions.html#priority-levels)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 - [`SAVEPOINT`](savepoint.html)

@@ -130,9 +130,11 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 
 Isolation is an element of [ACID transactions](https://en.wikipedia.org/wiki/ACID), which determines how concurrency is controlled, and ultimately guarantees consistency.
 
-CockroachDB efficiently supports the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
+CockroachDB executes all transactions at the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
 
-Specifically, CockroachDB's transactions default to **serializable snapshot isolation** (equivalent to ANSI SQL's strongest isolation level, `SERIALIZABLE`). This isolation level does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
+<span class="version-tag">New in v2.1:</span> CockroachDB now only supports `SERIALIZABLE` isolation. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
+
+`SERIALIZABLE` isolation does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
 
 ### Transaction conflicts
 
