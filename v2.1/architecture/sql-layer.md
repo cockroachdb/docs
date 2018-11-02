@@ -36,7 +36,7 @@ Because of this structure, CockroachDB provides typical relational features like
 
 CockroachDB implements a large portion of the ANSI SQL standard to manifest its relational structure. You can view [all of the SQL features CockroachDB supports here](../sql-feature-support.html).
 
-Importantly, through the SQL API, we also let developers use ACID-semantic transactions like they would through any SQL database (`BEGIN`, `END`, `ISOLATION LEVELS`, etc.)
+Importantly, through the SQL API, we also let developers use ACID-semantic transactions like they would through any SQL database (`BEGIN`, `END`, `COMMIT`, etc.)
 
 ### PostgreSQL wire protocol
 

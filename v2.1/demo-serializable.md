@@ -4,7 +4,7 @@ summary:
 toc: true
 ---
 
-In contrast to most databases, CockroachDB v2.1 always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the end result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
+In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the end result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
@@ -24,7 +24,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
 - In Postgres, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
-- In CockroachDB, with the default `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
+- In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
 
