@@ -36,7 +36,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 {% else %}
 <div class="landing-page">
-CockroachDB는 확장 가능한 글로벌 클라우드 서비스를 구축하기 위한 SQL 데이터베이스입니다.
+CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
   <div class="landing-page__tutorial">
     <a class="landing-page__tutorial--tile install" href="install-cockroachdb.html">
       <i class="landing-page__tutorial--tile-icon"></i>
