@@ -140,28 +140,28 @@ $(document).ready(function(){
 <div id="build-from-source" class="install-option" style="display: none;">
 <ol>
   <li>
-    <p>필요에 따라 다음 필수 구성요소를 설치하십시오.</p>
+    <p>Install the following prerequisites, as necessary:</p>
 
     <table>
       <tr>
-        <td>C++ 컴파일러</td>
-        <td>C++ 11을 지원해야 합니다. GCC 6.0 이전 버전은 이 이슈<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891"></a>에 의해 동작하지 않습니다. maxOS에서는 XCode로 잘 동작합니다.</td>
+        <td>C++ compiler</td>
+        <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
       </tr>
       <tr>
         <td>Go</td>
-        <td>1.10 이상의 버전이 필요합니다.</td>
+        <td>Version 1.10 or higher is required.</td>
       </tr>
       <tr>
         <td>Bash</td>
-        <td>4 버전 이상이 좋습니다. 하지만 3.x 에서도 동작하는 것으로 알려저 있습니다.</td>
+        <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
       </tr>
       <tr>
         <td>CMake</td>
-        <td>3.81 이상 버전이 동작하는 것으로 알려저 있습니다.</td>
+        <td>Versions 3.81+ are known to work.</td>
       </tr>
       <tr>
         <td>Autoconf</td>
-        <td>2.68 이상의 버전이 필요합니다.</td>
+        <td>Version 2.68 or higher is required.</td>
       </tr>
     </table>
     <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
@@ -328,39 +328,41 @@ $(document).ready(function(){
 <div id="build-from-source-linux" class="install-option" style="display: none;">
 <ol>
   <li>
-    <p>필요에 따라 다음 필수 구성요소를 설치하십시오.</p>
+    <p>Install the following prerequisites, as necessary:</p>
 
     <table>
       <tr>
         <td>C++ compiler</td>
-        <td>C++ 11을 지원해야 합니다. GCC 6.0 이전 버전은 이 이슈<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891"></a>에 의해 동작하지 않습니다. maxOS에서는 XCode로 잘 동작합니다.</td>
+        <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
       </tr>
       <tr>
         <td>Go</td>
-        <td>1.10 이상의 버전이 필요합니다.</td>
+        <td>Version 1.10 or higher is required.</td>
       </tr>
       <tr>
         <td>Bash</td>
-        <td>4 버전 이상이 좋습니다. 하지만 3.x 에서도 동작하는 것으로 알려저 있습니다.</td>
+        <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
       </tr>
       <tr>
         <td>CMake</td>
-        <td>3.81 이상 버전이 동작하는 것으로 알려저 있습니다.</td>
+        <td>Versions 3.81+ are known to work.</td>
       </tr>
       <tr>
         <td>Autoconf</td>
-        <td>2.68 이상의 버전이 필요합니다.</td>
+        <td>Version 2.68 or higher is required.</td>
       </tr>
       <tr>
-        <td>Terminfo / NCurses 개발 라이브러리</td>
-        <td>이것은 ncurses 개발 패키지의(데비안/우분투의 <code>libncurses-dev</code> 또는 CentOS의 <code>curses-devel</code>) 일부입니다.
+        <td>Terminfo / NCurses development libraries</td>
+        <td>This may be
+            part of a ncurses development package (e.g., <code>libncurses-dev</code> on
+            Debian/Ubuntu, but <code>ncurses-devel</code> on CentOS).
         </td>
       </tr>
     </table>
-    <p>64비트 시스템 사용이 권장됩니다. 32비트 시스템에서 CockroachDB를 빌드하거나 실행하는 것은 테스트되지 않았습니다. 최소한 2GB의 램이 필요합니다. 테스트를 실행하려면 4GB에 가까운 램이 필요합니다.</p>
+    <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
   </li>
   <li>
-    <p><a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" data-eventcategory="linux-source-download">CockroachDB {{ page.release_info.version }} 아카이브</a>를 다운로드하고 압축을 푸십시오.</p>
+    <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" data-eventcategory="linux-source-download">CockroachDB {{ page.release_info.version }} source archive</a>, and extract the sources:</p>
 
     <div class="copy-clipboard">
       <div class="copy-clipboard__text" data-eventcategory="linux-source-button">copy</div>
@@ -369,27 +371,27 @@ $(document).ready(function(){
     </div>
     <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="gp" data-eventcategory="linux-source-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.src.tgz | tar  xvz</code></pre></div>
   </li>
-  <li><p>압축이 풀린 디렉토리로 이동한 후,<code>make build</code>를 실행하십시오.</p>
+  <li><p>In the extracted directory, run <code>make build</code>:</p>
 
     {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
 
     {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
-    <p>빌드는 10분 이상 걸릴수 있습니다. 기다려 주십시오.</p>
+    <p>The build process can take 10+ minutes, so please be patient.</p>
 
-    {{site.data.alerts.callout_info}} 기본 바이너리는 Apache License 2 (APL2)를 가진 core 오픈소스 기능과 CockroachDB Community License (CCL)를 가진 엔터프라이즈 기능을 포함하고 있습니다. 엔터프라이즈 기능을 제외한 순수 오픈소스 버전 (APL2)을 빌드하려면 <code>make buildoss</code>를 사용하십시오. 이 <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">블로그 글</a>에서 세부내용을 확인하실 수 있습니다.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}The default binary contains core open-source functionality covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.{{site.data.alerts.end}}
   </li>
   <li>
 
-  <p><code>cockroach</code> 바이너리를 <code>/usr/local/bin</code>에 설치하면 아무 곳에서나 <a href="cockroach-commands.html">cockroach 명령어</a>를 사용할 수 있습니다.</p>
+  <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
 
   {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
-  <p>건한이 없다면 <code>sudo</code>를 사용하십시오.</p>
+  <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
-  <p><code>cockroach</code> 바이너리를 빌드된 곳에서 사용할 수 있습니다. <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, 하지만 문서의 나머지 부분은 바이너리가 <code>PATH</code>에 있다고 가정합니다.</p>
+  <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
   </li>
   <li>
-      <p>CockroachDB 릴리즈와 모범사례를 받아보기</p>
+      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
       <div class="hubspot-install-form install-form-6 clearfix">
         <script>
           hbspt.forms.create({
@@ -404,8 +406,8 @@ $(document).ready(function(){
       </div>
     </li>
 </ol>
-<h2 id="whats-next">다음은?</h2>
-<p><a href="start-a-local-cluster.html">둘러보기</a>: 단일 또는 다중 클러스터를 로컬 환경에 설치하고 빌트인 SQL 클라이언트를 이용해 접근해 보겠습니다.</p>
+<h2 id="whats-next">What's next?</h2>
+<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
 
 {% include {{ page.version.version }}/misc/diagnostics-callout.html %}
 
