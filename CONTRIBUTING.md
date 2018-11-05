@@ -34,7 +34,7 @@ Once you're ready to contribute:
 
 3. Make your changes.
 
-    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v1.0 are in the `v1.0` directory, whereas docs for CockroachDB v1.1 are in the `v1.1` directory.
+    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v2.0 are in the `v2.0` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
 
 4. [Build and test the docs locally](#build-and-test-the-docs-locally).
 
@@ -72,7 +72,7 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 
 ### Pages
 
-We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v1.0 are in the `v1.0` directory, whereas docs for CockroachDB v1.1 are in the `v1.1` directory.
+We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v2.0 are in the `v2.0` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory.
 
 Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown. File names should be lowercase with a dash between words, and should brief but descriptive.
 
@@ -98,8 +98,9 @@ Optionally, you can specify other fields in the front-matter:
 
 Field | Description | Default
 ------|-------------|--------
-`toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens or at the top of the page (on smaller screen).
+`toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens) or at the top of the page (on smaller screens). | `true`
 `toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
+`build_for` | Whether to include a page only in CockroachDB docs (`[standard]`), only in Managed CockroachDB docs (`[managed]`), or in both outputs (`[standard, managed]`). | `[standard]`
 `allowed_hashes` | Specifies a list of allowed hashes that don't correspond to a section heading on the page. | Nothing
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
@@ -140,7 +141,7 @@ New and changed features should be called out in the documentation using version
 - To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, e.g.:
 
     ```
-    ## SQL Shell Welcome <div class="version-tag">New in v1.1</div>
+    ## SQL Shell Welcome <div class="version-tag">New in v2.1</div>
     ```
 
 When calling out a change, rather than something new, change `New in vX.X` to `Changed in vX.X`.
@@ -180,7 +181,7 @@ allowed_hashes: [os-mac, os-linux, os-windows]
   ```
 #### Images
 
-For information about how we use images in our docs, see the [Images](STYLE.html/images) in our [Style Guide](STYLE.html).
+For information about how we use images in our docs, see [Images](STYLE.html/images) in our [Style Guide](STYLE.html).
 
 #### Feedback Widget
 
@@ -258,6 +259,7 @@ This example shows some of the first section of the sidenav, `Get Started`:
         ]
       },
       ...
+    ]
   }
 ]
 ```
@@ -270,21 +272,13 @@ See [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md) for 
 
 Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
 
-1.  From the root directory of your clone, run:
+1. From the root directory of your clone, :
 
-    - For standard docs
+    - To build the CockroachDB docs, run `make standard`.
 
-    ``` shell
-    $ make standard
-    ```
+    - To build the Managed CockroachDB docs, run `make managed`.
 
-    - For managed docs
-
-    ``` shell
-    $ make managed
-    ```
-
-2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
+2.  Point your browser to `http://127.0.0.1:4000/docs/` for CockroachDB docs or `http://127.0.0.1:40001` for Managed CockroachDB docs, and manually check your changes.
 
     - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
 
@@ -292,8 +286,4 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
     Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
 
-3.  Run automated tests against the Jekyll-generate HTML files to check for problems (broken links, missing alt texts for images, etc.):
-
-    ``` shell
-    $ make test
-    ```
+3.  To run automated tests against the Jekyll-generate HTML files to check for problems (broken links, missing alt texts for images, etc.), run `make test`.
