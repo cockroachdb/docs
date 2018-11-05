@@ -272,8 +272,16 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
 1.  From the root directory of your clone, run:
 
+    - For standard docs
+
     ``` shell
-    $ make serve
+    $ make standard
+    ```
+
+    - For managed docs
+
+    ``` shell
+    $ make managed
     ```
 
 2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
