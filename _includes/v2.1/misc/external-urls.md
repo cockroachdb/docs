@@ -5,7 +5,7 @@
 | Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
 |-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------|
 | Amazon S3                                                   | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`                               |
-| Azure                                                       | `azure`     | Container name                                   | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
+| Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
 | Google Cloud&nbsp;[<sup>1</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional): can be `default` or `implicit`                          |
 | HTTP&nbsp;[<sup>2</sup>](#considerations)                   | `http`      | Remote host                                      | N/A                                                                        |
 | NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | N/A (see [Example file URLs](#example-file-urls) | N/A                                                                        |
@@ -32,7 +32,7 @@ The location parameters often contain special characters that need to be URI-enc
 | Location     | Example                                                                          |
 |--------------+----------------------------------------------------------------------------------|
 | Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     |
-| Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co` |
+| Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
 | NFS/Local    | `nodelocal:///employees.sql`                                                     |
