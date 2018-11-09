@@ -15,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
+	defer db.Close()
 
 	// Create the "accounts" table.
 	if _, err := db.Exec(
