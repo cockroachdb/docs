@@ -39,6 +39,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
+	defer db.Close()
 
 	// Run a transfer in a transaction.
 	err = crdb.ExecuteTx(context.Background(), db, nil, func(tx *sql.Tx) error {
