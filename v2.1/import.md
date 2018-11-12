@@ -6,6 +6,7 @@ toc: true
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
+- [CockroachDB dump files](sql-dump.html) <span class="version-tag">New in v2.1</span>
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
@@ -272,6 +273,17 @@ For the command above to succeed, you need to have created the dump file with sp
 If the table schema specifies foreign keys into tables that don't exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+
+### Import a CockroachDB dump file
+
+<span class="version-tag">New in v2.1</span> Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+For more information, see [SQL Dump (Export)](sql-dump.html).
 
 ### Import a MySQL database dump
 
