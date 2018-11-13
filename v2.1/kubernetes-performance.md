@@ -408,35 +408,42 @@ In all of the examples so far, we've been using the standard CockroachDB `Statef
 
 This comes with a few main benefits -- it's a more natural abstraction for cordoning off onto [dedicated nodes](#dedicated-nodes), it naturally pairs with [using the host's network](#using-the-hosts-network) since you're already coupling CockroachDB processes one-to-one with nodes, and it allows you to use [local disks](#local-disks) without relying on the beta support for using local disks with `StatefulSets`. The biggest tradeoff is that you're limiting Kubernetes' ability to help your cluster recover from failures. It cannot create new pods to replace pods on nodes that fail because it's already running a CockroachDB pod on all the matching nodes. This matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
 
-To set up a CockroachDB `DaemonSet`, a little more work is needed than for a `StatefulSet`. We will use [the provided `DaemonSet` configuration file template from the CockroachDB Github repository](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml) as our base.
+To set up a CockroachDB `DaemonSet`, a little more work is needed than for a `StatefulSet`:
 
-First of all, unless you want CockroachDB running on every machine in your Kubernetes cluster, you should pick out which nodes you want to run CockroachDB on using either [node labels](#node-labels) or [node taints](#node-taints). Once you have chosen or created the nodes,  configure them and the `DaemonSet` YAML file appropriately as described in the relevant [Dedicated Nodes](#dedicated-nodes) section.
+1. Download the CockroachDB-provided [`DaemonSet` configuration file for secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-secure.yaml) or [insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml).
 
-Then, you must set the addresses in the CockroachDB `--join` flag in the YAML file. The file defaults to [using the host's network](#using-the-hosts-network), so we need to use the host machines' IP addresses or hostnames as join addresses. Pick out two or three of them to include and replace the list (`10.128.0.4,10.128.0.5,10.128.0.3`) in the provided file. Be aware that if the machines you choose are removed from the Kubernetes cluster, you will need to update your `--join` flag values or else new CockroachDB instances will not be able to join the cluster.
+2. Unless you want CockroachDB running on every machine in your Kubernetes cluster, pick out which nodes you want to run CockroachDB on using either [node labels](#node-labels) or [node taints](#node-taints) and then configure them and the `DaemonSet` configuration file appropriately as described in the relevant [Dedicated Nodes](#dedicated-nodes) section.
 
-Then, pick out the directory from the host that you would like to store CockroachDB's data in and replace the `path: /tmp/cockroach-data` line in the config file with your desired directory. If you're using local SSD, this should be wherever the SSDs are mounted on the machines.
+3. Set the addresses in the CockroachDB `--join` flag in the configuration file. The file defaults to [using the host's network](#using-the-hosts-network), so we need to use the host machines' IP addresses or hostnames as join addresses. Pick out two or three of them to include and replace the list (`10.128.0.4,10.128.0.5,10.128.0.3`) in the provided file. Be aware that if the machines you choose are removed from the Kubernetes cluster, you will need to update your `--join` flag values or else new CockroachDB instances will not be able to join the cluster.
 
-After taking those steps and making any other desired modifications, you should be all set to create the `DaemonSet`:
+4. Pick out the directory from the host that you would like to store CockroachDB's data in and replace the `path: /tmp/cockroach-data` line in the configuration file with your desired directory. If you're using local SSD, this should be wherever the SSDs are mounted on the machines.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl create -f cockroachdb-daemonset.yaml
-~~~
+5. Create the `DaemonSet`.
 
-~~~
-daemonset "cockroachdb" created
-~~~
+    If you're using the configuration file for a secure cluster, run:
 
-To initialize the cluster pick one of the pod names and run:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-daemonset-secure.yaml
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl exec -it <pod-name> -- ./cockroach init --insecure
-~~~
+    If you're using the configuration file for an insecure cluster, run:
 
-~~~
-Cluster successfully initialized
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-daemonset-insecure.yaml
+    ~~~
+
+6. Initialize the cluster, specifying any one of the pod names:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec -it <pod-name> -- ./cockroach init --insecure
+    ~~~
+
+    ~~~
+    Cluster successfully initialized
+    ~~~
 
 ### Dedicated nodes
 
