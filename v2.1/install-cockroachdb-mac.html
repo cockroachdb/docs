@@ -51,7 +51,7 @@ key: install-cockroachdb.html
 {% endif %}
 
 <div id="download-the-binary" class="install-option">
-  <h2>Download the Binary</h2>
+  <h2>Download the binary</h2>
   <ol>
     <li>
       <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X, and extract the binary:</p>
@@ -88,7 +88,7 @@ key: install-cockroachdb.html
 </div>
 
 <div id="build-from-source" class="install-option">
-  <h2>Build from Source</h2>
+  <h2>Build from source</h2>
   <ol>
     <li>
       <p>Install the following prerequisites, as necessary:</p>
@@ -212,7 +212,8 @@ key: install-cockroachdb.html
   </ol>
 </div>
 
-<h2 id="whats-next">What's next?</h2>
-<p><a href="start-a-local-cluster.html">Quick start</a> a single- or multi-node cluster locally and talk to it via the built-in SQL client.</p>
+<h2 id="whats-next">What&#39;s next?</h2>
+
+{% include {{ page.version.version }}/misc/install-next-steps.html %}
 
 {% include {{ page.version.version }}/misc/diagnostics-callout.html %}
