@@ -4,12 +4,13 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
+A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
+
 <div class="filters filters-big clearfix">
   <button style="width:28%" class="filter-button current">Use <strong>cockroach cert</strong></button>
-  <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use openssl</button></a>
+  <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use Openssl</button></a>
+  <a href="create-security-certificates-custom-ca.html"><button style="width:28%" class="filter-button">Use custom CA</button></a>
 </div>
-
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -35,17 +36,29 @@ Subcommand | Usage
 
 When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
 
+## Required keys and certificates
+
 The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag, with the files named as follows:
+
+### Node key and certificates
 
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate
+`node.crt`   | Server certificate.
 `node.key`   | Key for server certificate
+
+### Client key and certificates
+
+File name pattern | File usage
+-------------|------------
+`ca.crt`     | CA certificate
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
 `client.<user>.key` | Key for the client certificate
 
 Note the following:
+
+- The `node.crt` file created using the `cockroach cert` commands is multi-functional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field. This is needed to make sure we are indeed talking to a CockroachDB node, and not a man-in-the-middle.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 
