@@ -14,7 +14,7 @@ asciicast: true
 Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple to start an insecure multi-node cluster locally.
 
 {{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html).
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 
