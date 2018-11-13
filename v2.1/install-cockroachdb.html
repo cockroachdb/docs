@@ -1,0 +1,18 @@
+---
+title: Install CockroachDB
+summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes.
+toc: false
+---
+
+<script>
+$(document).ready(function(){
+    // Detect OS and redirect to corresponding install page by default.
+    if (navigator.userAgent.indexOf("Linux") !== -1) {
+        location = 'https://www.cockroachlabs.com/docs/{{ page.version.version }}/install-cockroachdb-linux.html';
+    } else if (navigator.userAgent.indexOf("Win") !== -1) {
+        location = 'https://www.cockroachlabs.com/docs/{{ page.version.version }}/install-cockroachdb-windows.html';
+    } else {
+        location = 'https://www.cockroachlabs.com/docs/{{ page.version.version }}/install-cockroachdb-mac.html';
+    }
+});
+</script>
