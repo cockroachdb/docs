@@ -4,11 +4,18 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/). 
+To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+
+- Nodes
+- Clients
+- Admin UI (optional)
+
+To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
-  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert commands</button>
+  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
   <button style="width:28%" class="filter-button current">Use <strong>Openssl</strong></button></a>
+  <a href="create-security-certificates-custom-ca.html"><button style="width:28%" class="filter-button">Use custom CA</button></a>
 </div>
 
 ## Subcommands
@@ -33,15 +40,25 @@ File name pattern | File usage
 
 To create node and client certificates using the OpenSSL commands, you need access to a local copy of the CA certificate and key. We recommend creating all certificates (node, client, and CA certificates), and node and client keys in one place and then distributing them appropriately. Store the CA key somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster.
 
+## Required keys and certificates
+
 Use the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) and [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) subcommands to create all certificates, and node and client keys in a single directory, with the files named as follows:
+
+### Node key and certificates
 
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
 `node.crt`   | Server certificate
 `node.key`   | Key for server certificate
-`client.<user>.crt` | Client certificate for `<user>` (for example: `client.root.crt` for user `root`)
-`client.<user>.key` | Key for the client certificate
+
+### Client key and certificates
+
+File name pattern | File usage
+-------------|------------
+`ca.crt`     | CA certificate.
+`client.<user>.crt` | Client certificate for `<user>` (for example: `client.root.crt` for user `root`).
+`client.<user>.key` | Key for the client certificate.
 
 Note the following:
 

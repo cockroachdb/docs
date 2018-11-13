@@ -144,5 +144,5 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     In later steps, you'll also use the `root` user's certificate to run [`cockroach`](cockroach-commands.html) client commands from your local machine. If you might also want to run `cockroach` client commands directly on a node (e.g., for local debugging), you'll need to copy the `root` user's certificate and key to that node as well.
 
 {{site.data.alerts.callout_info}}
-On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates.html#use-a-ui-certificate-and-key-to-access-the-admin-ui).
+On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates-custom-ca.html#accessing-the-admin-ui-for-a-secure-cluster).
 {{site.data.alerts.end}}
