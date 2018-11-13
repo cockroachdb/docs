@@ -45,7 +45,8 @@ The `create-*` subcommands generate the CA certificate and all node and client c
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate.
+`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field
+
 `node.key`   | Key for server certificate
 
 ### Client key and certificates
@@ -53,7 +54,7 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
 `client.<user>.key` | Key for the client certificate
 
 Note the following:
