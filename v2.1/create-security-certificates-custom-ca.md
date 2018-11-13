@@ -41,9 +41,9 @@ For secure clusters, you can avoid getting the warning message by using a certif
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate
+`node.crt`   | Server certificate. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field. <br><br>Must be signed by `ca.crt`
 `node.key`   | Key for server certificate
-`ui.crt` | UI certificate
+`ui.crt` | UI certificate. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Names`
 `ui.key` | Key for the UI certificate
 
 ### Client key and certificates
@@ -51,8 +51,8 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<username>.crt` | Client certificate for `<username>` (e.g., `client.root.crt` for user `root`)
-`client.<username>.key` | Key for the client certificate
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`) and must be signed by `ca.crt`. Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.key` | Key for the client certificate
 
 ## Split node certificates
 
@@ -68,7 +68,7 @@ To get around this issue, we can split the node key and certificate into two:
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`. <br><br>Must be signed by `ca.crt`
 `node.key`   | Key corresponding to `node.crt`
 `client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`.
 `client.node.key` | Key corresponding to `client.node.crt`
@@ -79,8 +79,8 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<username>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
-`client.<username>.key` | Key for the client certificate
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br>Must be signed by `ca.crt`
+`client.<user>.key` | Key for the client certificate
 
 ## Split CA certificates
 
@@ -96,7 +96,7 @@ File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate to sign node certificates
 `ca-client.crt` | CA certificate to sign client certificates
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`. <br><br> Must be signed by `ca.crt`
 `node.key`   | Key corresponding to `node.crt`
 `client.node.crt` | Node certificate for when node acts as client. This certificate must be signed using `ca-client.crt`  <br><br>Must have `CN=node`.
 `client.node.key` | Key corresponding to `client.node.crt`
@@ -107,8 +107,8 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<username>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). This certificate must be signed using `ca-client.crt`
-`client.<username>.key` | Key for the client certificate
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). This certificate must be signed using `ca-client.crt`. <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.key` | Key for the client certificate
 
 ## See also
 
