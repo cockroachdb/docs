@@ -7,7 +7,7 @@ toc: true
 <span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
 {{site.data.alerts.callout_danger}}
-**This feature is under active development** and only works for a targeted use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the roadmap.
+**This feature is under active development** and only works for a [targeted use case](#usage-examples). Please [file a Github issue](file-an-issue.html) if you have feedback on the roadmap.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -182,7 +182,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
-## Usage example
+## Usage examples
 
 ### Create a changefeed connected to Kafka
 
@@ -341,7 +341,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent stop
     ~~~
 
-### Create a changefeed with Avro
+### Create a changefeed in Avro connected to Kafka
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
 

@@ -11,7 +11,7 @@ Changefeeds target a whitelist of tables, called the "watched rows." Every chang
 For more information, see [Change Data Capture](change-data-capture.html).
 
 {{site.data.alerts.callout_danger}}
-**This feature is under active development** and only works for a targeted a use case. Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
+**This feature is under active development** and only works for a [targeted a use case](change-data-capture.html#usage-examples). Please [file a Github issue](file-an-issue.html) if you have feedback on the interface.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -85,7 +85,7 @@ For more information on how to create a changefeed connected to Kafka, see [Chan
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-with-avro).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-in-avro-connected-to-kafka).
 
 ### Manage a changefeed
 
