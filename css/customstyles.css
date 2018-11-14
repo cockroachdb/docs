@@ -392,7 +392,7 @@ header {
   @media screen and (min-width: 992px) {
     #sidebar {
       top: 0;
-      width: 240px;
+      width: 235px;
       padding: 0;
       border-bottom: unset;
       background: transparent; } }
@@ -3720,7 +3720,6 @@ a.accordion-toggle {
 ::-webkit-scrollbar {
   width: 0px;
   /* remove scrollbar space */
-  background: transparent;
-  /* optional: just make scrollbar invisible */ }
+  background: transparent; }
 
 /*# sourceMappingURL=customstyles.css.map */
