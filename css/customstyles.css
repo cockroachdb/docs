@@ -173,7 +173,8 @@ nav.mobile_expanded {
     -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    cursor: pointer; }
     nav.mobile_expanded .hamburger span {
       display: block;
       position: absolute;
@@ -384,14 +385,14 @@ header {
         margin-right: 0; } }
 
 #sidebar {
-  width: 100vw;
+  width: 100%;
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid #DADADA;
   background: #F3F3F3; }
   @media screen and (min-width: 992px) {
     #sidebar {
       top: 0;
-      width: 240px;
+      width: 235px;
       padding: 0;
       border-bottom: unset;
       background: transparent; } }
@@ -412,7 +413,7 @@ header {
     float: right;
     height: 8px;
     margin-top: 8px;
-    margin-right: 17px; }
+    margin-right: 2px; }
   #sidebar li a {
     width: 100%; }
   #sidebar > li {
@@ -469,7 +470,7 @@ body.sidenav-open .col-content {
       position: fixed;
       top: 145px;
       bottom: 0;
-      min-width: 310px;
+      min-width: 295px;
       padding: 60px 0 0 30px;
       background-color: transparent;
       overflow: hidden; }
@@ -530,7 +531,8 @@ body.sidenav-open .col-content {
   .nav--collapsed.nav--home {
     height: 40px !important; }
     .nav--collapsed.nav--home .sidenav-arrow {
-      transform: translateY(14px); }
+      transform: translateY(14px);
+      cursor: pointer; }
   .nav--collapsed.nav--search {
     height: 60px !important; }
     .nav--collapsed.nav--search .sidenav-arrow {
@@ -768,7 +770,7 @@ a:not([href]) {
           padding-top: 0;
           min-height: 625px;
           padding-left: 310px;
-          padding-right: 30px; }
+          padding-right: 45px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; }
           #content #main-content .content-col.no-toc {
@@ -917,7 +919,8 @@ section.footer {
         margin-top: 15px;
         margin-left: 0; } }
   section.footer .blue-arrow {
-    margin-right: -12px; }
+    margin-right: -12px;
+    cursor: pointer; }
 
 .version-nav {
   display: flex;
@@ -1001,7 +1004,7 @@ section.footer {
     border-radius: 5px;
     box-shadow: 0 0 8px #DADADA;
     height: 40px;
-    width: calc(100% - 45px);
+    width: calc(100% - 30px);
     outline: 0px none;
     padding: 3px 10px 0px 45px;
     transition: all 0.15s ease 0s;
@@ -1022,7 +1025,7 @@ section.footer {
     #sidebar li.search-wrap {
       position: fixed;
       top: 104px;
-      width: 240px;
+      width: 235px;
       padding-top: 50px;
       padding-bottom: 0;
       background: #ffffff;
@@ -1130,7 +1133,8 @@ section.footer {
       padding: 34px 0;
       min-width: 260px;
       max-width: 260px;
-      display: inline-block; } }
+      display: inline-block;
+      background: #ffffff; } }
 
 #toc {
   display: block;
@@ -2598,7 +2602,8 @@ img.mfp-img {
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
-  float: right; }
+  float: right;
+  cursor: pointer; }
   @media screen and (min-width: 992px) {
     .blue-arrow {
       display: none; } }
@@ -2618,7 +2623,8 @@ img.mfp-img {
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg); }
+  -webkit-transform: rotate(45deg);
+  cursor: pointer; }
   .arrow-down--pre {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -2635,7 +2641,8 @@ img.mfp-img {
   margin-bottom: 0;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg); }
+  -webkit-transform: rotate(45deg);
+  cursor: pointer; }
   .arrow-up--pre {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -3709,5 +3716,10 @@ a.accordion-toggle {
 .cockroachdb-training {
   width: 100%;
   max-width: 800px; }
+
+::-webkit-scrollbar {
+  width: 0px;
+  /* remove scrollbar space */
+  background: transparent; }
 
 /*# sourceMappingURL=customstyles.css.map */

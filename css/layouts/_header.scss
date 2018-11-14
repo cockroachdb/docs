@@ -125,6 +125,7 @@ nav.mobile_expanded {
 		margin-top:5px;
 		@include rotate(0deg);
 		@include groovy(all);
+		cursor: pointer;
 
 		span {
 			display: block;

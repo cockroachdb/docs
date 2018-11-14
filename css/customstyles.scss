@@ -542,3 +542,8 @@ a.accordion-toggle {
   width: 100%;
   max-width: 800px;
 }
+
+::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;
+}

@@ -1,12 +1,12 @@
 #sidebar {
-  width: 100vw;
+  width: 100%;
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid $cl_gray_medium;
   background: $cl_gray_light;
 
   @include at-query($min, $screen-md) {
     top: 0;
-    width: 240px;
+    width: 235px;
     padding: 0;
     border-bottom: unset;
     background: transparent;
@@ -39,7 +39,7 @@
       float: right;
       height: 8px;
       margin-top: 8px;
-      margin-right: 17px;
+      margin-right: 2px;
     }
 
     a {
@@ -103,7 +103,7 @@ body.sidenav-open {
     position: fixed;
     top: 145px;
     bottom: 0;
-    min-width: 310px;
+    min-width: 295px;
     padding: 60px 0 0 30px;
     background-color: transparent;
     overflow: hidden;
@@ -190,6 +190,7 @@ body.sidenav-open {
 
       .sidenav-arrow {
         transform: translateY(14px);
+        cursor: pointer;
       }
     }
 
