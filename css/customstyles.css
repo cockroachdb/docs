@@ -470,7 +470,7 @@ body.sidenav-open .col-content {
       position: fixed;
       top: 145px;
       bottom: 0;
-      min-width: 310px;
+      min-width: 295px;
       padding: 60px 0 0 30px;
       background-color: transparent;
       overflow: hidden; }
@@ -770,7 +770,7 @@ a:not([href]) {
           padding-top: 0;
           min-height: 625px;
           padding-left: 310px;
-          padding-right: 30px; }
+          padding-right: 45px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; }
           #content #main-content .content-col.no-toc {
@@ -1025,7 +1025,7 @@ section.footer {
     #sidebar li.search-wrap {
       position: fixed;
       top: 104px;
-      width: 240px;
+      width: 235px;
       padding-top: 50px;
       padding-bottom: 0;
       background: #ffffff;
@@ -1133,7 +1133,8 @@ section.footer {
       padding: 34px 0;
       min-width: 260px;
       max-width: 260px;
-      display: inline-block; } }
+      display: inline-block;
+      background: #ffffff; } }
 
 #toc {
   display: block;
@@ -3715,5 +3716,11 @@ a.accordion-toggle {
 .cockroachdb-training {
   width: 100%;
   max-width: 800px; }
+
+::-webkit-scrollbar {
+  width: 0px;
+  /* remove scrollbar space */
+  background: transparent;
+  /* optional: just make scrollbar invisible */ }
 
 /*# sourceMappingURL=customstyles.css.map */
