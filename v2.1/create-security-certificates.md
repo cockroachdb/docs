@@ -45,7 +45,7 @@ The `create-*` subcommands generate the CA certificate and all node and client c
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field
+`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field
 
 `node.key`   | Key for server certificate
 
@@ -59,7 +59,7 @@ File name pattern | File usage
 
 Note the following:
 
-- The `node.crt` file created using the `cockroach cert` commands is multi-functional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field. This is needed to make sure we are indeed talking to a CockroachDB node, and not a man-in-the-middle.
+- The `node.crt` file created using the `cockroach cert` commands is multi-functional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This is needed to make sure we are indeed talking to a CockroachDB node, and not a man-in-the-middle.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 

@@ -26,7 +26,7 @@ On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-u
 
 For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA:
 
-1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Names` field.
+1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
 3. Add the `ui.crt` and `ui.key` to the [certificate directory](create-security-certificates.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
 4. For nodes that are already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
@@ -41,9 +41,9 @@ For secure clusters, you can avoid getting the warning message by using a certif
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field. <br><br>Must be signed by `ca.crt`
+`node.crt`   | Server certificate. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. <br><br>Must be signed by `ca.crt`
 `node.key`   | Key for server certificate
-`ui.crt` | UI certificate. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Names`
+`ui.crt` | UI certificate. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Name`  
 `ui.key` | Key for the UI certificate
 
 ### Client key and certificates
@@ -51,16 +51,16 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`) and must be signed by `ca.crt`. Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
 `client.<user>.key` | Key for the client certificate
 
 ## Split node certificates
 
-The node certificate discussed in the `cockroach cert` command documentation is multifunctional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a node certificate containing a CN that is not an IP address or domain name.
+The node certificate discussed in the `cockroach cert` command documentation is multifunctional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
 
 To get around this issue, we can split the node key and certificate into two:
 
-- `node.crt` and `node.key`: The node certificate to be presented when the node acts as a server and the corresponding key. `node.crt` must have the list of IP addresses and DNS names listed in `Subject Alternative Names`.
+- `node.crt` and `node.key`: The node certificate to be presented when the node acts as a server and the corresponding key. `node.crt` must have the list of IP addresses and DNS names listed in `Subject Alternative Name`.
 - `client.node.crt` and `client.node.key`: The node certificate to be presented when the node acts as a client for another node, and the corresponding key. `client.node.crt` must have `CN=node`.
 
 ### Node key and certificates
@@ -68,10 +68,12 @@ To get around this issue, we can split the node key and certificate into two:
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`. <br><br>Must be signed by `ca.crt`
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br>Must be signed by `ca.crt`
 `node.key`   | Key corresponding to `node.crt`
-`client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`.
+`client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by `ca.crt`.
 `client.node.key` | Key corresponding to `client.node.crt`
+
+Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
 
 ### Client key and certificates
@@ -94,20 +96,21 @@ If you need to use separate CAs to sign node certificates and client certificate
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate to sign node certificates
-`ca-client.crt` | CA certificate to sign client certificates
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Names`. <br><br> Must be signed by `ca.crt`
+`ca.crt`     | CA certificate to verify node certificates
+`ca-client.crt` | CA certificate to verify client certificates
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br> Must be signed by `ca.crt`
 `node.key`   | Key corresponding to `node.crt`
 `client.node.crt` | Node certificate for when node acts as client. This certificate must be signed using `ca-client.crt`  <br><br>Must have `CN=node`.
 `client.node.key` | Key corresponding to `client.node.crt`
 
+Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
 ### Client key and certificates
 
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). This certificate must be signed using `ca-client.crt`. <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by `ca-client.crt`.
 `client.<user>.key` | Key for the client certificate
 
 ## See also
