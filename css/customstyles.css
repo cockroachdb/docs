@@ -173,7 +173,8 @@ nav.mobile_expanded {
     -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
+    transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
+    cursor: pointer; }
     nav.mobile_expanded .hamburger span {
       display: block;
       position: absolute;
@@ -384,7 +385,7 @@ header {
         margin-right: 0; } }
 
 #sidebar {
-  width: 100vw;
+  width: 100%;
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid #DADADA;
   background: #F3F3F3; }
@@ -412,7 +413,7 @@ header {
     float: right;
     height: 8px;
     margin-top: 8px;
-    margin-right: 17px; }
+    margin-right: 2px; }
   #sidebar li a {
     width: 100%; }
   #sidebar > li {
@@ -530,7 +531,8 @@ body.sidenav-open .col-content {
   .nav--collapsed.nav--home {
     height: 40px !important; }
     .nav--collapsed.nav--home .sidenav-arrow {
-      transform: translateY(14px); }
+      transform: translateY(14px);
+      cursor: pointer; }
   .nav--collapsed.nav--search {
     height: 60px !important; }
     .nav--collapsed.nav--search .sidenav-arrow {
@@ -917,7 +919,8 @@ section.footer {
         margin-top: 15px;
         margin-left: 0; } }
   section.footer .blue-arrow {
-    margin-right: -12px; }
+    margin-right: -12px;
+    cursor: pointer; }
 
 .version-nav {
   display: flex;
@@ -1001,7 +1004,7 @@ section.footer {
     border-radius: 5px;
     box-shadow: 0 0 8px #DADADA;
     height: 40px;
-    width: calc(100% - 45px);
+    width: calc(100% - 30px);
     outline: 0px none;
     padding: 3px 10px 0px 45px;
     transition: all 0.15s ease 0s;
@@ -2598,7 +2601,8 @@ img.mfp-img {
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
-  float: right; }
+  float: right;
+  cursor: pointer; }
   @media screen and (min-width: 992px) {
     .blue-arrow {
       display: none; } }
@@ -2618,7 +2622,8 @@ img.mfp-img {
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg); }
+  -webkit-transform: rotate(45deg);
+  cursor: pointer; }
   .arrow-down--pre {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -2635,7 +2640,8 @@ img.mfp-img {
   margin-bottom: 0;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg); }
+  -webkit-transform: rotate(45deg);
+  cursor: pointer; }
   .arrow-up--pre {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);

@@ -1,5 +1,5 @@
 #sidebar {
-  width: 100vw;
+  width: 100%;
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid $cl_gray_medium;
   background: $cl_gray_light;
@@ -39,7 +39,7 @@
       float: right;
       height: 8px;
       margin-top: 8px;
-      margin-right: 17px;
+      margin-right: 2px;
     }
 
     a {
@@ -190,6 +190,7 @@ body.sidenav-open {
 
       .sidenav-arrow {
         transform: translateY(14px);
+        cursor: pointer;
       }
     }
 

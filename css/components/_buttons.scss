@@ -86,6 +86,7 @@
 	transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 	float: right;
+	cursor: pointer;
 
 	@include at-query($min, $screen-md) {
 		display: none;
@@ -112,7 +113,8 @@
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
 
   &--pre {
     transform: rotate(-45deg);
@@ -132,7 +134,8 @@
   margin-bottom: 0;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
 
   &--pre {
     transform: rotate(-45deg);
