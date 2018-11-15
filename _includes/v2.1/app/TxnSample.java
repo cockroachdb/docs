@@ -75,6 +75,7 @@ public class TxnSample {
                 tx.run(conn);
                 releaseAttempted = true;
                 conn.releaseSavepoint(sp);
+				break;
             }
             catch(SQLException e) {
                 String sqlState = e.getSQLState();
@@ -83,14 +84,12 @@ public class TxnSample {
                 if(sqlState.equals("40001")) {
                     // Signal the database that we will attempt a retry.
                     conn.rollback(sp);
-                    continue;
                 } else if(releaseAttempted) {
                     throw new AmbiguousCommitException(e);
                 } else {
                     throw e;
                 }
             }
-            break;
         }
         conn.commit();
     }
