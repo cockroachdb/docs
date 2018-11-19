@@ -5,8 +5,8 @@
 Before running, add {% comment %}doc{% endcomment %} to the end of each bullet
 in the release notes file that needs a docs issue.
 
-Help: python3 ./issues-from-release-notes.py --help
-Example use: python3 ./issues-from-release-notes.py --release_notes=v2.0.1.md --milestone=2.0.x
+Help: python3 issues-from-release-notes.py --help
+Example use: python3 issues-from-release-notes.py --release_notes=v2.0.1.md --milestone=2.0.x
 
 Requirements:
   - Requests: http://docs.python-requests.org/en/master/
@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-r", "--release_notes", required=True,
     help="release notes file from which to create docs issues")
 parser.add_argument("-m", "--milestone", required=True,
-    help="milestone to assign to docs issues, e.g., 2.1, 2.0.x, 2.0")
+    help="milestone to assign to docs issues, e.g., 2.2, 2.1.x, 2.1")
 
 args = parser.parse_args()
 
@@ -33,6 +33,10 @@ release_notes = args.release_notes
 milestone = args.milestone
 
 # Map milestones to their internal IDs.
+if milestone == "2.2":
+    milestone = 11
+if milestone == "2.1.x":
+    milestone = 12
 if milestone == "2.1":
     milestone = 8
 if milestone == "2.0.x":
