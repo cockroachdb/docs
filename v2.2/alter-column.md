@@ -66,7 +66,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 ### Convert a computed column into a regular column
 
-<span class="version-tag">New in v2.1:</span> {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+{% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
 ## See also
 

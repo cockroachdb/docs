@@ -10,7 +10,7 @@ The **Runtime** dashboard displays the following time series graphs:
 
 ## Live Node Count
 
-<img src="{{ 'images/v2.1/admin_ui_node_count.png' | relative_url }}" alt="CockroachDB Admin UI Node Count" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_node_count.png' | relative_url }}" alt="CockroachDB Admin UI Node Count" style="border:1px solid #eee;max-width:100%" />
 
 In the node view as well as the cluster view, the graph shows the number of live nodes in the cluster.
 
@@ -18,7 +18,7 @@ A dip in the graph indicates decommissioned nodes, dead nodes, or nodes that are
 
 ## Memory Usage
 
-<img src="{{ 'images/v2.1/admin_ui_memory_usage.png' | relative_url }}" alt="CockroachDB Admin UI Memory Usage" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_memory_usage.png' | relative_url }}" alt="CockroachDB Admin UI Memory Usage" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the memory in use for the selected node.
 
@@ -38,7 +38,7 @@ CGo Total | Total memory managed by the C layer.
 
 ## CPU Time
 
-<img src="{{ 'images/v2.1/admin_ui_cpu_time.png' | relative_url }}" alt="CockroachDB Admin UI CPU Time" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_cpu_time.png' | relative_url }}" alt="CockroachDB Admin UI CPU Time" style="border:1px solid #eee;max-width:100%" />
 
 
 - In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.

@@ -17,7 +17,7 @@ Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
@@ -36,13 +36,13 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER RANGE`](alter-range.html) | <span class="version-tag">New in v2.1:</span> Change an existing system range.
+[`ALTER RANGE`](alter-range.html) | Change an existing system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v2.1:</span> Change a column's [data type](data-types.html).
+[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
-[`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
+[`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
@@ -70,7 +70,7 @@ Statement | Usage
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
-[`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | <span class="version-tag">New in v2.1:</span> List details about existing [replication zones](configure-replication-zones.html).
+[`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column.
 
@@ -120,7 +120,7 @@ Statement | Usage
 [`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
 [`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
 [`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
-[`CANCEL SESSION`](cancel-session.html) | <span class="version-tag">New in v2.1:</span> Cancel a long-running session.
+[`CANCEL SESSION`](cancel-session.html) | Cancel a long-running session.
 
 ## Query management statements
 
@@ -133,10 +133,10 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE STATISTICS`](create-statistics.html) | <span class="version-tag">New in v2.1:</span> Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
+[`CREATE STATISTICS`](create-statistics.html) | Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
 [`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
-[`EXPLAIN ANALYZE`](explain-analyze.html) | <span class="version-tag">New in v2.1:</span> Execute the query and generate a physical query plan with execution statistics.
-[`SHOW STATISTICS`](show-statistics.html) | <span class="version-tag">New in v2.1:</span> List table statistics used by the [cost-based optimizer](cost-based-optimizer.html).
+[`EXPLAIN ANALYZE`](explain-analyze.html) | Execute the query and generate a physical query plan with execution statistics.
+[`SHOW STATISTICS`](show-statistics.html) | List table statistics used by the [cost-based optimizer](cost-based-optimizer.html).
 
 
 ## Job management statements
@@ -166,7 +166,7 @@ Statement | Usage
 
 ## Changefeed statements (Enterprise)
 
-<span class="version-tag">New in v2.1:</span> [Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into Apache Kafka for downstream processing.
+[Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into Apache Kafka for downstream processing.
 
 {{site.data.alerts.callout_info}}
 CDC is an enterprise feature. There will be a core version in a future release.

@@ -4,7 +4,7 @@ summary: The RESUME JOB statement lets you resume jobs that were previously paus
 toc: true
 ---
 
- The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and, as of v2.1, [`changefeeds`](change-data-capture.html).
+ The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and [`changefeeds`](change-data-capture.html).
 
 {{site.data.alerts.callout_info}}You cannot pause schema changes.{{site.data.alerts.end}}
 
@@ -57,7 +57,7 @@ Parameter | Description
 
 ### Resume multiple jobs
 
-<span class="version-tag">New in v2.1:</span> To resume multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
+To resume multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql

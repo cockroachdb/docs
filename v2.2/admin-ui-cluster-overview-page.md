@@ -7,7 +7,7 @@ The **Cluster Overview** page of the Admin UI provides details of the cluster no
 
 ## Cluster Overview Panel
 
-<img src="{{ 'images/v2.1/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-cluster-overview-panel.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The **Cluster Overview** panel provides the following metrics:
 
@@ -20,7 +20,7 @@ Replication Status | <ul><li>The total number of [ranges](architecture/overview.
 ## Node List
 
 The **Node List** is the default view on the **Overview** page.
-<img src="{{ 'images/v2.1/admin-ui-node-list.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-list.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Live Nodes
 Live nodes are nodes that are online and responding. They are marked with a green dot. If a node is removed or dies, the dot turns yellow to indicate that it is not responding. If the node remains unresponsive for a certain amount of time (5 minutes by default), the node turns red and is moved to the [**Dead Nodes**](#dead-nodes) section, indicating that it is no longer expected to come back.
@@ -61,13 +61,13 @@ When you decommission a node, CockroachDB lets the node finish in-flight request
 
 The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature that gives you a visual representation of the geographical configuration of your cluster.
 
-<img src="{{ 'images/v2.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 The Node Map consists of the following components:
 
 ### Region component
 
-<img src="{{ 'images/v2.1/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v2.2/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).
@@ -75,7 +75,7 @@ For multi-core systems, the user CPU percent can be greater than 100%. Full util
 
 ### Node component
 
-<img src="{{ 'images/v2.1/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v2.2/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have n cores, then the user CPU percent can range from 0% (indicating an idle system) to (n*100)% (indicating full utilization).

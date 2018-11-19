@@ -11,7 +11,7 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 
-<img src="{{ 'images/v2.1/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
@@ -19,7 +19,7 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## Service Latency: SQL, 99th percentile
 
-<img src="{{ 'images/v2.1/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 
@@ -29,7 +29,7 @@ Service latency is calculated as the time between when the cluster receives a qu
 
 ## Replicas per Node
 
-<img src="{{ 'images/v2.1/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
 
 Ranges are subsets of your data, which are replicated to ensure survivability. Ranges are replicated to a configurable number of CockroachDB nodes.
 
@@ -45,7 +45,7 @@ The timeseries data used to power the graphs in the Admin UI is stored within th
 
 ## Capacity
 
-<img src="{{ 'images/v2.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 You can monitor the **Capacity** graph to determine when additional storage is needed.
 
@@ -62,7 +62,7 @@ Metric | Description
 **Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ## See also

@@ -11,4 +11,4 @@ Run on your laptop, development cluster, and public or private cloud without com
 -   Bigger and more active community for support and troubleshooting
 -   Debug problems through your entire stack
 
-<img src="{{ 'images/v2.1/2open-source.png' | relative_url }}" alt="CockroachDB is open source" style="width: 400px" />
+<img src="{{ 'images/v2.2/2open-source.png' | relative_url }}" alt="CockroachDB is open source" style="width: 400px" />

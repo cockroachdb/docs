@@ -159,7 +159,7 @@ Once it's running, `block_writer` will output the number of rows written per sec
 
 Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
 
-<img src="{{ 'images/v2.1/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 7. Add 2 more nodes
 
@@ -191,7 +191,7 @@ $ cockroach start \
 
 Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
 
-<img src="{{ 'images/v2.1/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 9.  Stop the cluster
 

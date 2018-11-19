@@ -198,7 +198,7 @@ For example:
 +-----------------+
 ~~~
 
-<span class="version-tag">New in v2.1:</span> Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is one of the following:
+Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is one of the following:
 
 - The name of a column returned from the function
 - `*` to denote all columns.

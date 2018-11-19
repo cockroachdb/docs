@@ -4,7 +4,7 @@ summary: Use the SHOW ZONE CONFIGURATIONS statement to list details about existi
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view details about existing [replication zones](configure-replication-zones.html).
+Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view details about existing [replication zones](configure-replication-zones.html).
 
 ## Synopsis
 
@@ -30,27 +30,27 @@ Parameter | Description
 
 ### View all replication zones
 
-{% include v2.1/zone-configs/view-all-replication-zones.md %}
+{% include {{ page.version.version }}/zone-configs/view-all-replication-zones.md %}
 
 ### View the default replication zone for the cluster
 
-{% include v2.1/zone-configs/view-the-default-replication-zone.md %}
+{% include {{ page.version.version }}/zone-configs/view-the-default-replication-zone.md %}
 
 ### View the replication zone for a database
 
-{% include v2.1/zone-configs/view-the-replication-zone-for-a-database.md %}
+{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-database.md %}
 
 ### View the replication zone for a table
 
-{% include v2.1/zone-configs/view-the-replication-zone-for-a-table.md %}
+{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-table.md %}
 
 ### View the replication zone for an index
 
-{% include v2.1/zone-configs/view-the-replication-zone-for-an-index.md %}
+{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}
 
 ### View the replication zone for a table partition
 
-{% include v2.1/zone-configs/view-the-replication-zone-for-a-partition.md %}
+{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-partition.md %}
 
 ## See also
 

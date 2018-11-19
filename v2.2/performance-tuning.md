@@ -15,7 +15,7 @@ For a comprehensive list of tuning recommendations, only some of which are demon
 
 You'll start with a 3-node CockroachDB cluster in a single Google Compute Engine (GCE) zone, with an extra instance for running a client application workload:
 
-<img src="{{ 'images/v2.1/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 Within a single GCE zone, network latency between instances should be sub-millisecond.
@@ -23,7 +23,7 @@ Within a single GCE zone, network latency between instances should be sub-millis
 
 You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an extra instance in each region for a client application workload:
 
-<img src="{{ 'images/v2.1/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
 
 To reproduce the performance demonstrated in this tutorial:
 
@@ -34,7 +34,7 @@ To reproduce the performance demonstrated in this tutorial:
 
 Your schema and data will be based on the fictional peer-to-peer vehicle-sharing app, MovR, that was featured in the [CockroachDB 2.0 demo](https://www.youtube.com/watch?v=v2QK5VgLx6E):
 
-<img src="{{ 'images/v2.1/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
 
 A few notes about the schema:
 
@@ -62,7 +62,7 @@ First, imagine a simple read scenario where:
 - Ranges are replicated 3 times (the default).
 - A query is executed against node 2 to read from table 3.
 
-<img src="{{ 'images/v2.1/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 In this case:
 
@@ -73,13 +73,13 @@ In this case:
 
 If the query is received by the node that has the leaseholder for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v2.1/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 #### Write scenario
 
 Now imagine a simple write scenario where a query is executed against node 3 to write to table 1:
 
-<img src="{{ 'images/v2.1/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 In this case:
 
@@ -92,7 +92,7 @@ In this case:
 
 Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v2.1/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 #### Network and I/O bottlenecks
 
@@ -1403,7 +1403,7 @@ Since you started each node with the `--locality` flag set to its GCE zone, over
 
 To check this, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is more or less even across all nodes:
 
-<img src="{{ 'images/v2.1/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
 
 For reference, here's how the nodes map to zones:
 
@@ -2010,7 +2010,7 @@ Over the next minutes, CockroachDB will rebalance all partitions based on the co
 
 To check this at a high level, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is still close to even across all nodes but much higher than before partitioning:
 
-<img src="{{ 'images/v2.1/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
 
 To check at a more granular level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` table:
 

@@ -4,7 +4,7 @@ summary: Use the CONFIGURE ZONE statement to add, modify, reset, and remove repl
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> Use `CONFIGURE ZONE` to add, modify, reset, and remove [replication zones](configure-replication-zones.html). To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+Use `CONFIGURE ZONE` to add, modify, reset, and remove [replication zones](configure-replication-zones.html). To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 In CockroachDB, you can use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
@@ -57,7 +57,7 @@ Currently, only the `root` user can configure replication zones.
 
 ### Variables
 
-{% include v2.1/zone-configs/variables.md %}
+{% include {{ page.version.version }}/zone-configs/variables.md %}
 
 ## Examples
 
@@ -74,35 +74,35 @@ CONFIGURE ZONE 1
 
 ### Edit the default replication zone
 
-{% include v2.1/zone-configs/edit-the-default-replication-zone.md %}
+{% include {{ page.version.version }}/zone-configs/edit-the-default-replication-zone.md %}
 
 ### Create a replication zone for a database
 
-{% include v2.1/zone-configs/create-a-replication-zone-for-a-database.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
 
 ### Create a replication zone for a table
 
-{% include v2.1/zone-configs/create-a-replication-zone-for-a-table.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
 ### Create a replication zone for a secondary index
 
-{% include v2.1/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
 ### Create a replication zone for a table or secondary index partition
 
-{% include v2.1/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
 ### Create a replication zone for a system range
 
-{% include v2.1/zone-configs/create-a-replication-zone-for-a-system-range.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-system-range.md %}
 
 ### Reset a replication zone
 
-{% include v2.1/zone-configs/reset-a-replication-zone.md %}
+{% include {{ page.version.version }}/zone-configs/reset-a-replication-zone.md %}
 
 ### Remove a replication zone
 
-{% include v2.1/zone-configs/remove-a-replication-zone.md %}
+{% include {{ page.version.version }}/zone-configs/remove-a-replication-zone.md %}
 
 ## See also
 

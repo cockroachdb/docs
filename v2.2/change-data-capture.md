@@ -4,7 +4,7 @@ summary: Change data capture (CDC) provides efficient, distributed, row-level ch
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
 {{site.data.alerts.callout_danger}}
 **This feature is under active development** and only works for a [targeted use case](#usage-examples). Please [file a Github issue](file-an-issue.html) if you have feedback on the roadmap.
@@ -500,7 +500,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-{% include v2.1/known-limitations/cdc.md %}
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ## See also
 

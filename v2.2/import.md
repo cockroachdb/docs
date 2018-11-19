@@ -6,7 +6,7 @@ toc: true
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
-- [CockroachDB dump files](sql-dump.html) <span class="version-tag">New in v2.1</span>
+- [CockroachDB dump files](sql-dump.html)
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
@@ -276,7 +276,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 ### Import a CockroachDB dump file
 
-<span class="version-tag">New in v2.1</span> Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+Cockroach dump files can be imported using the `IMPORT PGDUMP`.
 
 {% include copy-clipboard.html %}
 ~~~ sql

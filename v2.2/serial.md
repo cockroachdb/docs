@@ -38,10 +38,10 @@ There are three possible translation modes for `SERIAL`:
 | Mode                                                                            | Description                                                                                                                   |
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
 | `rowid` (default)                                                               | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT`.                                                    |
-| `virtual_sequence` (experimental, <span class="version-tag">New in v2.1</span>) | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT`.                |
-| `sql_sequence` (experimental, <span class="version-tag">New in v2.1</span>)     | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant. |
+| `virtual_sequence` (experimental) | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT`.                |
+| `sql_sequence` (experimental)     | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant. |
 
-These modes can be configured with the experimental (unsupported) [session variable](set-vars.html) `experimental_serial_normalization`. 
+These modes can be configured with the experimental (unsupported) [session variable](set-vars.html) `experimental_serial_normalization`.
 
 {{site.data.alerts.callout_info}}
 The particular choice of `DEFAULT` expression when clients use the

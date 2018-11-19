@@ -185,14 +185,14 @@ You can also import data from a generic `.sql` file containing CockroachDB-compa
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.1/training/resources/startrek.sql
+    $ curl -O {{site.url}}/docs/v2.2/training/resources/startrek.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.1/training/resources/startrek.sql
+    $ wget {{site.url}}/docs/v2.2/training/resources/startrek.sql
     ~~~
     </div>
 
@@ -289,14 +289,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.1/training/resources/pg_dump.sql
+    $ curl -O {{site.url}}/docs/v2.2/training/resources/pg_dump.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.1/training/resources/pg_dump.sql
+    $ wget {{site.url}}/docs/v2.2/training/resources/pg_dump.sql
     ~~~
     </div>
 
@@ -318,14 +318,14 @@ If you're importing data from a PostgreSQL deployment, you can import the `.sql`
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.1/training/resources/pg_dump_cleaned.sql
+    $ curl -O {{site.url}}/docs/v2.2/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.1/training/resources/pg_dump_cleaned.sql
+    $ wget {{site.url}}/docs/v2.2/training/resources/pg_dump_cleaned.sql
     ~~~
     </div>
 

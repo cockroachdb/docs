@@ -1,10 +1,10 @@
 ---
 title: Experimental Features
-summary: Learn about the experimental features available in CockroachDB v2.1
+summary: Learn about the experimental features available in CockroachDB
 toc: true
 ---
 
-This page lists the experimental features that are available in CockroachDB 2.1.
+This page lists the experimental features that are available in CockroachDB v2.2.
 
 {{site.data.alerts.callout_danger}}
 **This page describes experimental features.**  Their interfaces and outputs are subject to change, and there may be bugs.
@@ -49,7 +49,7 @@ For example, to distribute leases and ranges for N primary keys across N stores 
 > ALTER TABLE t EXPERIMENTAL_RELOCATE SELECT ARRAY[<storeid1>, <storeid2>, ..., <storeidN>], <primarykeycol1>, <primarykeycol2>, ..., <primarykeycolN>;
 ~~~
 
-<span class="version-tag">New in v2.1:</span> To relocate just the lease without moving the replicas, run a statement like the one shown below, which moves the lease for the range containing primary key 'foo' to store 1.
+To relocate just the lease without moving the replicas, run a statement like the one shown below, which moves the lease for the range containing primary key 'foo' to store 1.
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -12,4 +12,4 @@ Deploying and maintaining databases has forever been a difficult and expensive p
 -   Symmetric nodes are ideally suited to container-based deployments
 -   Every node provides access to centralized admin console
 
-<img src="{{ 'images/v2.1/2simplified-deployments.png' | relative_url }}" alt="CockroachDB is simple to deploy" style="width: 400px" />
+<img src="{{ 'images/v2.2/2simplified-deployments.png' | relative_url }}" alt="CockroachDB is simple to deploy" style="width: 400px" />

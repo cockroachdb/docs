@@ -4,7 +4,7 @@ summary: The CANCEL JOB statement stops long-running jobs.
 toc: true
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and as of v2.1, schema changes and [changefeeds](change-data-capture.html).
+The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, schema changes, and [changefeeds](change-data-capture.html).
 
 
 ## Limitations
@@ -48,7 +48,7 @@ Parameter | Description
 
 ### Cancel multiple jobs
 
-<span class="version-tag">New in v2.1:</span> To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
+To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql

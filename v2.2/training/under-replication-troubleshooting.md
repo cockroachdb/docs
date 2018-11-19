@@ -86,7 +86,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 3. Hover over the **Ranges** graph:
 
-    <img src="{{ 'images/v2.1/training-11.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-11.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You'll see that there are 22 ranges total, and 22 ranges are under-replicated, which means that every range in the cluster is missing 1 of 3 replicas. This is a vulnerable state because, if another node were to go offline, all ranges would lose consensus, and the entire cluster would become unavailable.
 
@@ -108,7 +108,7 @@ To bring the cluster back to a safe state, you need to either restart the down n
 
 3. Hover over the **Ranges** graph:
 
-    <img src="{{ 'images/v2.1/training-12.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-12.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     Soon, you'll see that there no longer any under-replicated ranges.
 

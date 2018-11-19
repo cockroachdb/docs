@@ -11,7 +11,7 @@ The choice of language matters. Speed, stability, maintainability: each of these
 -   Garbage collection and type safety provide stability
 -   Readable, well-documented code encourages open source contributions
 
-<img src="{{ 'images/v2.1/2go-implementation.png' | relative_url }}" alt="CockroachDB is built in Go" style="width: 400px" />
+<img src="{{ 'images/v2.2/2go-implementation.png' | relative_url }}" alt="CockroachDB is built in Go" style="width: 400px" />
 
 ## See also
 

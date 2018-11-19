@@ -101,7 +101,7 @@ You'll see the following message:
 * - Any user, connecting as root, can read or write any data in your cluster.
 * - There is no network encryption nor authentication, and thus no confidentiality.
 *
-* Check out how to secure your cluster: https://www.cockroachlabs.com/docs/v2.1/secure-a-cluster.html
+* Check out how to secure your cluster: https://www.cockroachlabs.com/docs/v2.2/secure-a-cluster.html
 *
 *
 * INFO: initial startup completed, will now wait for `cockroach init`
@@ -255,7 +255,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and view the **Node List**:
 
-    <img src="{{ 'images/v2.1/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     Note that the **Replicas** count is the same on all three nodes. This indicates:
     - There are this many initial "ranges" of data in the cluster. These are all internal "system" ranges since you haven't added any table data yet.
@@ -296,11 +296,11 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
 Go back to the **Live Nodes** list in the Admin UI and watch how the **Replicas** are automatically rebalanced to utilize the additional capacity of the new nodes:
 
-<img src="{{ 'images/v2.1/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/training-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 Another way to observe this is to click **Metrics** in the upper left and scroll down to the **Replicas per Node** graph:
 
-<img src="{{ 'images/v2.1/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/training-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's next?
 

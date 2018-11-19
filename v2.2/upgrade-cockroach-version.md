@@ -1,5 +1,5 @@
 ---
-title: Upgrade to CockroachDB v2.1
+title: Upgrade to CockroachDB v2.2
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: true
 toc_not_nested: true
@@ -8,18 +8,18 @@ toc_not_nested: true
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 {{site.data.alerts.callout_info}}
-This page shows you how to upgrade to the latest v2.1 release ({{page.release_info.version}}) from v2.0.x, or from any patch release in the v2.1.x series. To upgrade within the v2.0.x series, see [the v2.0 version of this page](https://www.cockroachlabs.com/docs/v2.0/upgrade-cockroach-version.html).
+This page shows you how to upgrade to the latest v2.2 release ({{page.release_info.version}}) from v2.1.x, or from any patch release in the v2.2.x series. To upgrade within the v2.1.x series, see [the v2.1 version of this page](https://www.cockroachlabs.com/docs/v2.1/upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade
 
-When upgrading, you can skip patch releases, **but you cannot skip full releases**. Therefore, if you are upgrading from v1.1.x to v2.1:
+When upgrading, you can skip patch releases, **but you cannot skip full releases**. Therefore, if you are upgrading from v2.0.x to v2.2:
 
-1. First [upgrade to v2.0](../v2.0/upgrade-cockroach-version.html). Be sure to complete all the steps, include the [finalization step](../v2.0/upgrade-cockroach-version.html#finalize-the-upgrade).
+1. First [upgrade to v2.1](../v2.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
-2. Then return to this page and perform a second rolling upgrade to v2.1.
+2. Then return to this page and perform a second rolling upgrade to v2.2.
 
-If you are upgrading from v2.0.x or from any v2.1.x patch release, you do not have to go through intermediate releases; continue to step 2.
+If you are upgrading from v2.1.x or from any v2.2.x patch release, you do not have to go through intermediate releases; continue to step 2.
 
 ## Step 2. Prepare to upgrade
 
@@ -41,14 +41,14 @@ Before starting the upgrade, complete the following steps.
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.
+This step is relevant only when upgrading from v2.1.x to v2.2. For upgrades within the v2.2.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.1. After finalization, however, it will no longer be possible to perform a downgrade to v2.0. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.2. After finalization, however, it will no longer be possible to perform a downgrade to v2.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
 We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in step 5:
 
-1. [Upgrade to v2.0](../v2.0/upgrade-cockroach-version.html), if you haven't already. The `cluster.preserve_downgrade_option` setting mentioned below is available only as of v2.0.3.
+1. [Upgrade to v2.1](../v2.1/upgrade-cockroach-version.html), if you haven't already.
 
 2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 
@@ -56,7 +56,7 @@ We recommend disabling auto-finalization so you can monitor the stability and pe
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
@@ -207,7 +207,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 ## Step 5. Finish the upgrade
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.
+This step is relevant only when upgrading from v2.1.x to v2.2. For upgrades within the v2.2.x series, skip this step.
 {{site.data.alerts.end}}
 
 If you disabled auto-finalization in step 3 above, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.

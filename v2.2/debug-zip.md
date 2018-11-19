@@ -18,7 +18,7 @@ The `debug zip` [command](cockroach-commands.html) connects to your cluster and 
 - [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
 - Alerts
 - Heap profiles
-- **New in v2.1:** Problem ranges
+- Problem ranges
 
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 

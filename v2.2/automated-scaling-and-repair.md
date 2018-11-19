@@ -14,4 +14,4 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 -   Self-organizes, self-heals, and automatically rebalances
 -   Migrate data seamlessly between clouds
 
-<img src="{{ 'images/v2.1/2automated-scaling-repair.png' | relative_url }}" alt="Automated scaling and repair in CockroachDB" style="width: 400px" />
+<img src="{{ 'images/v2.2/2automated-scaling-repair.png' | relative_url }}" alt="Automated scaling and repair in CockroachDB" style="width: 400px" />

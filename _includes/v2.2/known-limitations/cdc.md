@@ -1,4 +1,4 @@
-The following are limitations in the v2.1 release and will be addressed in the future:
+The following are limitations in the v2.2 release and will be addressed in the future:
 
 - The CockroachDB core changefeed is not ready for external testing.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).

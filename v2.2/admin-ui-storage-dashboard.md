@@ -11,7 +11,7 @@ The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
 
-<img src="{{ 'images/v2.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 You can monitor the **Capacity** graph to determine when additional storage is needed.
 
@@ -28,12 +28,12 @@ Metric | Description
 **Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors
 
-<img src="{{ 'images/v2.1/admin_ui_file_descriptors.png' | relative_url }}" alt="CockroachDB Admin UI File Descriptors" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_file_descriptors.png' | relative_url }}" alt="CockroachDB Admin UI File Descriptors" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of open file descriptors for that node, compared with the file descriptor limit.
 
