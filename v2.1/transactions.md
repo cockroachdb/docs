@@ -16,8 +16,8 @@ Each of the following SQL statements control transactions in some way.
 
  Statement | Function
 -----------|----------
- [`BEGIN`](begin-transaction.html) | Initiate a transaction, as well as control its [priority](#transaction-priorities) and [isolation level](#isolation-levels).
- [`SET TRANSACTION`](set-transaction.html) | Control a transaction's [priority](#transaction-priorities) and [isolation level](#isolation-levels).
+ [`BEGIN`](begin-transaction.html) | Initiate a transaction, as well as control its [priority](#transaction-priorities).
+ [`SET TRANSACTION`](set-transaction.html) | Control a transaction's [priority](#transaction-priorities).
  [`SAVEPOINT cockroach_restart`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values.
  [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries).
  [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction.
@@ -181,12 +181,7 @@ For greater detail, here's the process a retryable transaction goes through.
 
     In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
-## Transaction parameters
-
-Each transaction is controlled by two parameters: its priority and its
-isolation level. The following two sections detail these further.
-
-### Transaction priorities
+## Transaction priorities
 
 Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
 
@@ -206,21 +201,11 @@ The client can also display the current priority of the transaction with [`SHOW 
 When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
 {{site.data.alerts.end}}
 
-### Isolation levels
+## Isolation levels
 
-CockroachDB efficiently supports the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolaton levels (e.g., `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks. CockroachDB continues to support an additional non-ANSI isolation level, `SNAPSHOT`, although it is deprecated. Clients can explicitly set a transaction's isolation when starting the transaction:
+CockroachDB executes all transactions at the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
 
-~~~ sql
-> BEGIN ISOLATION LEVEL <SERIALIZABLE | SNAPSHOT>;
-~~~
-
-Alternately, the client can set the isolation level immediately after the transaction is started:
-
-~~~ sql
-> SET TRANSACTION ISOLATION LEVEL <SERIALIZABLE | SNAPSHOT>;
-~~~
-
-The client can also display the current isolation level of the transaction with [`SHOW TRANSACTION ISOLATION LEVEL`](show-vars.html).
+<span class="version-tag">New in v2.1:</span> CockroachDB now only supports `SERIALIZABLE` isolation. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
 {{site.data.alerts.callout_info}}
 For a detailed discussion of isolation in CockroachDB transactions, see [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/).
@@ -230,11 +215,7 @@ For a detailed discussion of isolation in CockroachDB transactions, see [Seriali
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default.
 
-Unlike `SNAPSHOT`, `SERIALIZABLE` isolation permits no anomalies. In order to prevent [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts.
-
-#### Snapshot isolation
-
-With `SNAPSHOT` isolation (**deprecated**), a transaction behaves as if it were reading the state of the database consistently at a fixed point in time. Unlike the `SERIALIZABLE` level, `SNAPSHOT` isolation permits the write skew anomaly. This isolation level is still supported for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. Concurrency-based attacks can coerce inconsistencies into meaningfully adverse effects to system state. For this same reason, CockroachDB upgrades all requests for the much weaker ANSI `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` isolation levels into `SERIALIZABLE`.
+`SERIALIZABLE` isolation permits no anomalies. To prevent [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts. For a demonstration of `SERIALIZABLE` preventing write skew, see [Serializable Transactions](demo-serializable.html).
 
 ### Comparison to ANSI SQL isolation levels
 
@@ -242,12 +223,11 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 #### Aliases
 
-- `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
+`SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
 
 #### Comparison
 
-- The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
-- The CockroachDB `SNAPSHOT` level (**deprecated**) is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
+The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
