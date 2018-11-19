@@ -4,7 +4,7 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
+A secure CockroachDB cluster uses TLS 1.2 for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
   <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
@@ -18,7 +18,7 @@ Approach | Use case description
 -------------|------------
 UI certificate and key | When you want to access the Admin UI for a secure cluster and avoid clicking through a warning message to get to the UI.
 Split-node certificate | When your organizational CA requires you to have separate certificates for when the node acts as a server and as a client.
-Split-CA certificates | When you have multiple CockroachDB clusters and need to restrict access to clients from accessing the other cluster
+Split-CA certificates | When you have multiple CockroachDB clusters and need to restrict access to clients from accessing the other cluster.
 
 ## Accessing the Admin UI for a secure cluster
 
@@ -40,19 +40,19 @@ For secure clusters, you can avoid getting the warning message by using a certif
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
-`node.crt`   | Server certificate. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. <br><br>Must be signed by `ca.crt`
-`node.key`   | Key for server certificate
-`ui.crt` | UI certificate. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Name`  
-`ui.key` | Key for the UI certificate
+`ca.crt`     | CA certificate.
+`node.crt`   | Server certificate. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. <br><br>Must be signed by `ca.crt`.
+`node.key`   | Key for server certificate.
+`ui.crt` | UI certificate. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Name`.
+`ui.key` | Key for the UI certificate.
 
 ### Client key and certificates
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
+`ca.crt`     | CA certificate.
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
-`client.<user>.key` | Key for the client certificate
+`client.<user>.key` | Key for the client certificate.
 
 ## Split node certificates
 
@@ -67,11 +67,11 @@ To get around this issue, we can split the node key and certificate into two:
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br>Must be signed by `ca.crt`
-`node.key`   | Key corresponding to `node.crt`
+`ca.crt`     | CA certificate.
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br>Must be signed by `ca.crt`.
+`node.key`   | Key corresponding to `node.crt`.
 `client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by `ca.crt`.
-`client.node.key` | Key corresponding to `client.node.crt`
+`client.node.key` | Key corresponding to `client.node.crt`.
 
 Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
@@ -80,9 +80,9 @@ Optionally, if you have a certificate issued by a public CA to securely access t
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br>Must be signed by `ca.crt`
-`client.<user>.key` | Key for the client certificate
+`ca.crt`     | CA certificate.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br>Must be signed by `ca.crt`.
+`client.<user>.key` | Key for the client certificate.
 
 ## Split CA certificates
 
@@ -96,12 +96,12 @@ If you need to use separate CAs to sign node certificates and client certificate
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate to verify node certificates
-`ca-client.crt` | CA certificate to verify client certificates
-`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br> Must be signed by `ca.crt`
-`node.key`   | Key corresponding to `node.crt`
+`ca.crt`     | CA certificate to verify node certificates.
+`ca-client.crt` | CA certificate to verify client certificates.
+`node.crt`   | Node certificate for when node acts as server. <br><br>Must have the list of IP addresses and DNS names listed in `Subject Alternative Name`. <br><br> Must be signed by `ca.crt`.
+`node.key`   | Key corresponding to `node.crt`.
 `client.node.crt` | Node certificate for when node acts as client. This certificate must be signed using `ca-client.crt`  <br><br>Must have `CN=node`.
-`client.node.key` | Key corresponding to `client.node.crt`
+`client.node.key` | Key corresponding to `client.node.crt`.
 
 Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
@@ -109,9 +109,9 @@ Optionally, if you have a certificate issued by a public CA to securely access t
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
+`ca.crt`     | CA certificate.
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by `ca-client.crt`.
-`client.<user>.key` | Key for the client certificate
+`client.<user>.key` | Key for the client certificate.
 
 ## See also
 

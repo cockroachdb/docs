@@ -4,7 +4,7 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
+A secure CockroachDB cluster uses TLS 1.2 for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
   <button style="width:28%" class="filter-button current">Use <strong>cockroach cert</strong></button>
@@ -45,21 +45,20 @@ The `create-*` subcommands generate the CA certificate and all node and client c
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate
-`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field
-
+`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
 `node.key`   | Key for server certificate
 
 ### Client key and certificates
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
+`ca.crt`     | CA certificate.
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
 `client.<user>.key` | Key for the client certificate
 
 Note the following:
 
-- The `node.crt` file created using the `cockroach cert` commands is multi-functional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This is needed to make sure we are indeed talking to a CockroachDB node, and not a man-in-the-middle.
+- The `node.crt` file created using the `cockroach cert` commands is multi-functional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This is needed to make sure that, when the node is acting as a client, it is indeed connected to another CockroachDB node, not a man-in-the-middle.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 

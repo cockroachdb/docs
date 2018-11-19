@@ -4,7 +4,7 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
-A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
+A secure CockroachDB cluster uses TLS 1.2 for encrypted inter-node and client-node communication and requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
   <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
@@ -50,9 +50,9 @@ File name pattern | File usage
 
 File name pattern | File usage
 -------------|------------
-`ca.crt`     | CA certificate
-`client.<user>.crt` | Client certificate for `<user>` (for example: `client.root.crt` for user `root`)
-`client.<user>.key` | Key for the client certificate
+`ca.crt`     | CA certificate.
+`client.<user>.crt` | Client certificate for `<user>` (for example: `client.root.crt` for user `root`).
+`client.<user>.key` | Key for the client certificate.
 
 Note the following:
 
