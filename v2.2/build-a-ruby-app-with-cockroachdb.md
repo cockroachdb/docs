@@ -50,7 +50,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 The following code connects as the `maxroach` user and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
@@ -76,9 +76,9 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
-{% include {{ page.version.version }}/client-transaction-retry.md %}
+{% include v2.1/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ ruby
@@ -132,7 +132,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 The following code connects as the `maxroach` user and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
@@ -158,9 +158,9 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
-{% include {{ page.version.version }}/client-transaction-retry.md %}
+{% include v2.1/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ ruby

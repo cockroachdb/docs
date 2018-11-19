@@ -56,7 +56,7 @@ Now that you have a database and a user, you'll run the code shown below to:
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.py" download><code>basic-sample.py</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/basic-sample.py" download><code>basic-sample.py</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -82,9 +82,9 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.py" download><code>txn-sample.py</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/txn-sample.py" download><code>txn-sample.py</code></a> file, or create the file yourself and copy the code into it.
 
-{{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -149,7 +149,7 @@ Now that you have a database and a user, you'll run the code shown below to:
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.py" download><code>basic-sample.py</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/basic-sample.py" download><code>basic-sample.py</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -175,9 +175,9 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.py" download><code>txn-sample.py</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/txn-sample.py" download><code>txn-sample.py</code></a> file, or create the file yourself and copy the code into it.
 
-{{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ python

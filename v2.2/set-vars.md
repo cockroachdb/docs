@@ -38,7 +38,7 @@ The variable name is case insensitive. The value can be a list of one or more it
 ---------------|--------------|---------------|-----------------------------------------
  `application_name` | The current application name for statistics collection. | Empty string | Yes
  `database` | The [current database](sql-name-resolution.html#current-database).  Database in connection string, or empty if not specified | Yes
- `default_transaction_isolation` | The default transaction isolation level for the current session. See [Transaction parameters](transactions.html#transaction-parameters) and [`SET TRANSACTION`](set-transaction.html) for more details. | Settings in connection string, or "`SERIALIZABLE`" if not specified  | Yes
+ `default_transaction_isolation` | _Read only:_ All transactions execute with [`SERIALIZABLE` isolation](transactions.html#isolation-levels), meaning you cannot `SET default_transaction_isolation...` to any value. However, this setting remains available for ORM compatibility. | `SERIALIZABLE` | Yes
  `default_transaction_read_only` | The default transaction access mode for the current session. If set to `on`, only read operations are allowed in transactions in the current session; if set to `off`, both read and write operations are allowed. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes
  `distsql` | The query distribution mode for the current session.<br><br>If `auto`, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node. **`auto` is recommended.** <br><br>If `on`, any queries that can be distributed are distributed, and all other queries are run through the gateway node.<br><br>If `off`, all queries are run through the local SQL engine. <br><br>If `always`, all queries are distributed, even those that cannot be distributed (returns an error). This setting is used for internal testing and is not recommended. | `auto` | Yes
  `extra_float_digits` | The number of digits displayed for floating-point values. Only values between `-15` and `3` are supported. | `0` | Yes
@@ -49,8 +49,8 @@ The variable name is case insensitive. The value can be a list of one or more it
  `statement_timeout` | The amount of time a statement can run before being stopped.<br><br>This value can be an `int` (e.g., `10`) and will be interpreted as milliseconds. It can also be an interval or string argument, where the string can be parsed as a valid interval (e.g., `'4s'`). A value of `0` turns it off. | `0s` | Yes
  `timezone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.</br><br>See [Setting the Time Zone](#set-time-zone) for more details. <br><br>This session variable was named `"time zone"` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `UTC` | Yes
  `tracing` | The trace recording state.<br><br>See [`SET TRACING`](#set-tracing) for more details. | `off` | Yes
- `transaction_isolation` | The isolation level of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details.<br><br>This session variable was called `transaction isolation level` (with spaces) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `SERIALIZABLE` | Yes
- `transaction_priority` | The priority of the current transaction. See [Transaction parameters](transactions.html#transaction-parameters) for more details.<br><br>This session variable was called `transaction priority` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NORMAL` | Yes
+ `transaction_isolation` | _Read only:_ All transactions execute with [`SERIALIZABLE` isolation](transactions.html#isolation-levels), meaning you cannot `SET transaction_isolation...` to any value. However, this  available for ORM compatibility.<br><br>This session variable was called `transaction isolation level` (with spaces) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `SERIALIZABLE` | Yes
+ `transaction_priority` | The priority of the current transaction. See [Transactions: Priority levels](transactions.html#transaction-priorities) for more details.<br><br>This session variable was called `transaction priority` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NORMAL` | Yes
  `transaction_read_only` | The access mode of the current transaction. See [Set Transaction](set-transaction.html) for more details. | `off` | Yes
  `transaction_status` | The state of the current transaction. See [Transactions](transactions.html) for more details.<br><br>This session variable was called `transaction status` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NoTxn` | Yes
  `client_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A | No
@@ -147,39 +147,53 @@ The following demonstrates how to assign a list of values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET default_transaction_isolation = SNAPSHOT;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW default_transaction_isolation;
+> SHOW search_path;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SNAPSHOT                      |
-+-------------------------------+
++-------------+
+| search_path |
++-------------+
+| public      |
++-------------+
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET default_transaction_isolation = DEFAULT;
+> SET search_path = 'app';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW default_transaction_isolation;
+> SHOW search_path;
 ~~~
 
 ~~~
-+-------------------------------+
-| default_transaction_isolation |
-+-------------------------------+
-| SERIALIZABLE                  |
-+-------------------------------+
++-------------+
+| search_path |
++-------------+
+| app         |
++-------------+
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET search_path = DEFAULT;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW search_path;
+~~~
+
+~~~
++-------------+
+| search_path |
++-------------+
+| public      |
++-------------+
 (1 row)
 ~~~
 

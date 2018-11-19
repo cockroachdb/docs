@@ -49,7 +49,7 @@ Concept | Description
 
 To further clarify these concepts, let's look at a visualization of a trace for one statement. This particular trace is visualized by [Lightstep](http://lightstep.com/) (docs on integrating Lightstep with CockroachDB coming soon). The image only shows spans, but in the tool, it would be possible drill down to messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
-<div style="text-align: center;"><img src="{{ 'images/v2.2/trace.png' | relative_url }}" alt="Lightstep example" style="border:1px solid #eee;max-width:100%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v2.1/trace.png' | relative_url }}" alt="Lightstep example" style="border:1px solid #eee;max-width:100%" /></div>
 
 ## Response
 
@@ -372,7 +372,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
     > SELECT * FROM t;
     ~~~
 
-    This read is performed at a timestamp higher than the timestamp of the transaction running in terminal 1. Because we're running at the [`SERIALIZABLE` transaction isolation level](architecture/transaction-layer.html#isolation-levels) (the default), if the system allows terminal 1's transaction to commit, it will have to ensure that ordering terminal 1's transaction *before* terminal 2's transaction is valid; this will become relevant in a second.
+    This read is performed at a timestamp higher than the timestamp of the transaction running in terminal 1. Because we're running at the [`SERIALIZABLE` transaction isolation level](architecture/transaction-layer.html#isolation-levels), if the system allows terminal 1's transaction to commit, it will have to ensure that ordering terminal 1's transaction *before* terminal 2's transaction is valid; this will become relevant in a second.
 
 3. Back in terminal 1, execute and trace a conflicting write:
 

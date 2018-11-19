@@ -24,7 +24,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
 - In Postgres, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
-- In CockroachDB, with the default `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
+- In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
 
@@ -32,7 +32,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 ### Schema
 
-<img src="{{ 'images/v2.2/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
+<img src="{{ 'images/v2.1/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
 
 ## Scenario on Postgres
 

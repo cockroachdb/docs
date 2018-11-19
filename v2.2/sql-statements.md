@@ -83,7 +83,7 @@ Statement | Usage
 [`RELEASE SAVEPOINT`](release-savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), commit the transaction's changes once there are no retryable errors.
 [`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.
 [`SAVEPOINT`](savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), start a retryable transaction.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
 ## Access management statements
@@ -108,7 +108,7 @@ Statement | Usage
 ----------|------------
 [`RESET`](reset-vars.html) | Reset a session variable to its default value.
 [`SET`](set-vars.html) | Set a current session variable.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
+[`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
 [`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
 

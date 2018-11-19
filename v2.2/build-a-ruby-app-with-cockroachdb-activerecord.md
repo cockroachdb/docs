@@ -55,7 +55,7 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/activerecord-basic-sample.rb" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/activerecord-basic-sample.rb" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
@@ -115,7 +115,7 @@ Then, issue the following statement:
 The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/activerecord-basic-sample.rb" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/activerecord-basic-sample.rb" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ ruby

@@ -28,18 +28,14 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 - `BEGIN TRANSACTION`
 - `START TRANSACTION`
 
-The following aliases also exist for [isolation levels](transactions.html#isolation-levels):
-
-- `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`
-
-For more information on isolation level aliases, see [Comparison to ANSI SQL Isolation Levels](transactions.html#comparison-to-ansi-sql-isolation-levels).
-
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `ISOLATION LEVEL` | By default, transactions in CockroachDB implement the strongest ANSI isolation level: `SERIALIZABLE`. At this isolation level, transactions will never result in anomalies. The `SNAPSHOT` isolation level is still supported as well for backwards compatibility, but you should avoid using it. It provides little benefit in terms of performance and can result in inconsistent state under certain complex workloads. For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` 
- `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL` 
+`PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL`
+`READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
+
+ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
 ## Examples
 
@@ -81,13 +77,13 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-#### Change isolation level and priority
+#### Change priority
 
-You can set a transaction's isolation level to `SNAPSHOT`, as well as its priority to `LOW` or `HIGH`.
+You can set a transaction's priority to `LOW` or `HIGH`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BEGIN ISOLATION LEVEL SNAPSHOT, PRIORITY HIGH;
+> BEGIN PRIORITY HIGH;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -115,7 +111,7 @@ You can set a transaction's isolation level to `SNAPSHOT`, as well as its priori
 > COMMIT;
 ~~~
 
-You can also set a transaction's isolation level and priority with [`SET TRANSACTION`](set-transaction.html).
+You can also set a transaction's priority with [`SET TRANSACTION`](set-transaction.html).
 
 {{site.data.alerts.callout_danger}}
 This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
