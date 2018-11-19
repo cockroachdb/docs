@@ -67,7 +67,7 @@ For more information, see [`ADD COLUMN`](add-column.html).
 
 ### Convert a computed column into a regular column
 
-<span class="version-tag">New in v2.1:</span> {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+{% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
 ## See also
 

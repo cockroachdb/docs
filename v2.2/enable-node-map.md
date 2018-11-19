@@ -10,7 +10,7 @@ This page walks you through the process of setting up and enabling the **Node Ma
 
 {{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/pricing/request-a-license/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
 
-<img src="{{ 'images/v2.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Set up and enable the Node Map
 
@@ -112,13 +112,13 @@ $ cockroach init --insecure --host=<address of any node>
 
 [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
 
-<img src="{{ 'images/v2.1/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 3. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
 
 The following page should be displayed:
 
-<img src="{{ 'images/v2.1/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 4. Set the latitudes and longitudes for the localities
 
@@ -147,7 +147,7 @@ For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [L
 
 [Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu. The **Node Map** will be displayed:
 
-<img src="{{ 'images/v2.1/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 6. Navigate the Node Map
 
@@ -157,7 +157,7 @@ Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in
 2. Click on the datacenter component marked as **datacenter=us-east-1a**. The individual node components are displayed.
 3. To navigate back to the cluster view, either click on **Cluster** in the bread-crumb trail at the top of the **Node Map**, or click **Up to region=us-east-1** and then click **Up to Cluster** in the lower left-hand side of the **Node Map**.
 
-<img src="{{ 'images/v2.1/admin-ui-node-map-navigation.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-node-map-navigation.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Troubleshoot the Node Map
 
@@ -190,7 +190,7 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 ### **Capacity Used** value displayed is more than configured Capacity
 
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 
 ## Location coordinates for reference
 

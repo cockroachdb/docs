@@ -108,7 +108,7 @@ Flag | Description
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--url` | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--out` | The path where the `haproxy.cfg` file will be generated. If an `haproxy.cfg` file already exists in the directory, it will be overwritten.<br><br>**Default:** `haproxy.cfg` in the current directory
-`--locality` | <span class="version-tag">New in v2.1:</span> If nodes were started with [locality](start-a-node.html#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
+`--locality` | If nodes were started with [locality](start-a-node.html#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
 
 ### Logging
 
@@ -297,7 +297,7 @@ $ cockroach gen haproxy \
 --host=<address of any node in the cluster>
 ~~~
 
-<span class="version-tag">New in v2.1:</span> To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -318,7 +318,7 @@ $ cockroach gen haproxy \
 --host=<address of any node in the cluster>
 ~~~
 
-<span class="version-tag">New in v2.1:</span> To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
 {% include copy-clipboard.html %}
 ~~~ shell

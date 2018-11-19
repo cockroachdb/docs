@@ -37,7 +37,7 @@ No [privileges](privileges.html) are required to list the databases in the Cockr
 
 ## Default Databases
 
-New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to v2.1 will include three auto-generated databases, with the following purposes:
+New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to v2.1 or later will include three auto-generated databases, with the following purposes:
 
 - The empty `defaultdb` database is used if a client does not specify a database in the [connection parameters](connection-parameters.html).
 

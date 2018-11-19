@@ -4,7 +4,7 @@ summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, singl
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to it.
+The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to it.
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 

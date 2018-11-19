@@ -108,11 +108,11 @@ You can use the cluster's [Admin UI](admin-ui-overview.html) to monitor the work
 
 2. On the **Overview** dashboard, hover over the **SQL Queries** graph to see the proportion of reads and writes coming from the load generator.
 
-    <img src="{{ 'images/v2.1/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/cloudformation_admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 3. Scroll down and hover over the **Replicas per Node** graph to see how CockroachDB automatically replicates your data behind-the-scenes.
 
-    <img src="{{ 'images/v2.1/cloudformation_admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/cloudformation_admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 4. Explore other areas of the [Admin UI](admin-ui-overview.html).
 
@@ -157,7 +157,7 @@ To see this in action:
 
     You can also select the **Runtime** dashboard and see the restarting of the node in the **Live Node Count** graph.
 
-    <img src="{{ 'images/v2.1/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/cloudformation_admin_ui_live_node_count.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 6. Stop the cluster
 

@@ -208,7 +208,7 @@ Arrays in CockroachDB are 1-indexed.
 pq: invalid cast: bool[] -> TIMESTAMP[]
 ~~~
 
-<span class="version-tag">New in v2.1:</span> You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
+You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 
 {% include copy-clipboard.html %}
 ~~~ sql

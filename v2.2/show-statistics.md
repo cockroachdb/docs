@@ -3,7 +3,7 @@ title: SHOW STATISTICS (Experimental)
 summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
 ---
-<span class="version-tag">New in v2.1:</span> The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
+The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 

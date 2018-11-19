@@ -14,5 +14,5 @@ For information on using `ALTER DATABASE`, see the documents for its relevant su
 
 Subcommand | Description
 -----------|------------
-[`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> [Configure replication zones](configure-replication-zones.html) for a database.
+[`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a database.
 [`RENAME`](rename-database.html) | Change the name of a database.

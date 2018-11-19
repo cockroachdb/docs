@@ -115,11 +115,11 @@ As of version 2.1, you can run schema changes inside the same transaction as a [
 
 ### No schema changes within transactions
 
-{% include v2.1/misc/schema-changes-within-transactions.md %}
+{% include {{ page.version.version }}/misc/schema-changes-within-transactions.md %}
 
 ### No schema changes between executions of prepared statements
 
-{% include v2.1/misc/schema-changes-between-prepared-statements.md %}
+{% include {{ page.version.version }}/misc/schema-changes-between-prepared-statements.md %}
 
 ### Examples of statements that fail
 

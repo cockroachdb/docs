@@ -186,7 +186,7 @@ In this example, we create a table with three columns. One column is the [`PRIMA
 
 In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
-[Inverted indexes](inverted-indexes.html), which are new in v2.0, allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
+[Inverted indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
 
 This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 

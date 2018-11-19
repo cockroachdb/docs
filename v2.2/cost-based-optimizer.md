@@ -5,7 +5,7 @@ toc: true
 redirect_from: sql-optimizer.html
 ---
 
-<span class="version-tag">New in v2.1:</span> The cost-based optimizer seeks the lowest cost for a query, usually related to time.
+The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 
 In versions 2.1 and later, CockroachDB's **cost-based optimizer is enabled by default**. In versions prior to v2.1, a heuristic planner was used to generate query execution plans. The heuristic planner will only be used in the following cases:
 

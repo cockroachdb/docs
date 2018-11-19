@@ -32,14 +32,14 @@ Note that this lab involves running a cluster in Docker so that you can use it t
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O {{site.url}}/docs/v2.1/training/resources/docker-compose.yaml
+    $ curl -O {{site.url}}/docs/v2.2/training/resources/docker-compose.yaml
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget {{site.url}}/docs/v2.1/training/resources/docker-compose.yaml
+    $ wget {{site.url}}/docs/v2.2/training/resources/docker-compose.yaml
     ~~~
     </div>
 
@@ -77,7 +77,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 1. The Admin UI should now show that 2 of the nodes in the cluster have changed from "Healthy" to "Suspect":
 
-    <img src="{{ 'images/v2.1/training-22.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-22.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 2. Check whether the "Suspect" nodes are still running by hitting their `/health` endpoints:
 
@@ -139,7 +139,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 5. Check whether the majority nodes are able to talk to the minority nodes at all by looking at the network latency debug page at <a href="http://localhost:8080/#/reports/network" data-proofer-ignore>http://localhost:8080/#/reports/network</a>:
 
-    <img src="{{ 'images/v2.1/training-23.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-23.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 6. If you really want to confirm that the network isn't working, try manually pinging a node in `dc-2` from a node in `dc-0`:
 

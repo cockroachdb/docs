@@ -34,7 +34,7 @@ Field | Description
 `column_default` | The default value for the column, or an expression that evaluates to a default value.
 `generation_expression` | The expression used for a [computed column](computed-columns.html).
 `indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
-`is_hidden` | <span class="version-tag">New in v2.1:</span> Whether or not the column is hidden. Possible values: `true` or `false`.
+`is_hidden` | Whether or not the column is hidden. Possible values: `true` or `false`.
 
 ## Examples
 

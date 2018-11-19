@@ -40,7 +40,7 @@ Its operation can be described as follows (numbered steps listed here correspond
 2. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
 3. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city (Amsterdam, Boston, L.A., etc.).
 
-<img src="{{ 'images/v2.1/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
 
 ## Caveats
 

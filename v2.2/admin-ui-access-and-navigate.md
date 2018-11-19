@@ -49,7 +49,7 @@ The **Cluster Metrics** dashboards display the time series graphs that are usefu
 
 You can hover over each graph to see actual point-in-time values.
 
-<img src="{{ 'images/v2.1/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_hovering.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 By default, CockroachDB stores time series metrics for the last 30 days, but you can reduce the interval for timeseries storage. Alternatively, if you are exclusively using a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for time series monitoring, you can disable time series storage entirely. For more details, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data).
@@ -58,20 +58,20 @@ By default, CockroachDB stores time series metrics for the last 30 days, but you
 #### Change time range
 
 You can change the time range by clicking on the time window.
-<img src="{{ 'images/v2.1/admin-ui-time-range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-time-range.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}The Admin UI shows time in UTC, even if you set a different time zone for your cluster. {{site.data.alerts.end}}
 
 #### View metrics for a single node
 
 By default, the time series panel displays the metrics for the entire cluster. To view the metrics for an individual node, select the node from the **Graph** drop-down list.
-<img src="{{ 'images/v2.1/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-single-node.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Summary panel
 
 The **Cluster Metrics** dashboards display the **Summary** panel of key metrics. To view the **Summary** panel, click **Metrics** on the left.
 
-<img src="{{ 'images/v2.1/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
+<img src="{{ 'images/v2.2/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
 
 The **Summary** panel provides the following metrics:
 
@@ -86,14 +86,14 @@ P50 Latency | The 50th percentile of service latency. Service latency is calcula
 P99 Latency | The 99th percentile of service latency.
 
 {{site.data.alerts.callout_info}}
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ### Events panel
 
 The **Cluster Metrics** dashboards display the **Events** panel that lists the 10 most recent events logged for the all nodes across the cluster. To view the **Events** panel, click **Metrics** on the left-hand navigation bar. To see the list of all events, click **View all events** in the **Events** panel.
 
-<img src="{{ 'images/v2.1/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:100%" />
 
 The following types of events are listed:
 

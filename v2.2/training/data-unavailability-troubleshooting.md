@@ -238,17 +238,17 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 4. Hover over the **Ranges** graph:
 
-    <img src="{{ 'images/v2.1/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-14.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
     You should see that 1 range is now unavailable. If the unavailable count is larger than 1, that would mean that some system ranges had a majority of replicas on the down nodes as well.
 
     The **Summary** panel on the right should tell you the same thing:
 
-    <img src="{{ 'images/v2.1/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
+    <img src="{{ 'images/v2.2/training-15.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:25%" />
 
 5. For more insight into the ranges that are unavailable, go to the **Problem Ranges Report** at <a href="http://localhost:8080/#/reports/problemranges" data-proofer-ignore>http://localhost:8080/#/reports/problemranges</a>.
 
-    <img src="{{ 'images/v2.1/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.2/training-16.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Resolve the problem
 

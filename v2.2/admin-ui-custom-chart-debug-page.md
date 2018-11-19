@@ -18,7 +18,7 @@ To access the **Custom Chart** debug page, [access the Admin UI](admin-ui-access
 
 ## Using the **Custom Chart** page
 
-<img src="{{ 'images/v2.1/admin-ui-custom-chart-debug-00.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-custom-chart-debug-00.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
@@ -33,7 +33,7 @@ On the **Custom Chart** page, you can set the time span for all charts, add new 
 
 ### Query user and system CPU usage
 
-<img src="{{ 'images/v2.1/admin-ui-custom-chart-debug-01.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.2/admin-ui-custom-chart-debug-01.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 To compare system vs. userspace CPU usage, select the following values under **Metric Name**:
 

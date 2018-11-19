@@ -19,8 +19,8 @@ Subcommand | Description
 [`ADD COLUMN`](add-column.html) | Add columns to tables.
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns.
 [`ALTER COLUMN`](alter-column.html) | Change or drop a column's [`DEFAULT` constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
-[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v2.1:</span> Change a column's [data type](data-types.html).
-[`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> [Configure replication zones](configure-replication-zones.html) for a table.
+[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
+[`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a table.
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs.
