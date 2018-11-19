@@ -37,7 +37,7 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 The timeseries data used to power the graphs in the Admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
-## Can I reduce or disable the storage of timeseries data? 
+## Can I reduce or disable the storage of timeseries data?
 
 Yes. By default, CockroachDB stores timeseries data for the last 30 days for display in the Admin UI, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
 
@@ -115,7 +115,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 ## What happens when node clocks are not properly synchronized?
 
-{% include {{ page.version.version }}/faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.md %}
 
 ## How can I tell how well node clocks are synchronized?
 
