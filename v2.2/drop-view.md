@@ -6,6 +6,7 @@ toc: true
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -127,3 +128,4 @@ DROP VIEW
 - [`CREATE VIEW`](create-view.html)
 - [`SHOW CREATE`](show-create.html)
 - [`ALTER VIEW`](alter-view.html)
+- [Online Schema Changes](online-schema-changes.html)
