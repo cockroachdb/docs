@@ -23,6 +23,9 @@ $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-stat
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
 
+# Exit the interactive SQL shell:
+$ \q
+ctrl-d
 
 # View help:
 $ cockroach sql --help

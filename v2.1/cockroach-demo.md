@@ -17,6 +17,10 @@ $ cockroach demo <flags>
 # Execute SQL from the command line:
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 
+# Exit the interactive SQL shell:
+$ \q
+ctrl-d
+
 # View help:
 $ cockroach demo --help
 ~~~

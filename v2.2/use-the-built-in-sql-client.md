@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
-To exit the interactive shell, use `\q` or `ctrl-d`.
+To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
 
 {{site.data.alerts.callout_success}}
 If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
@@ -23,6 +23,11 @@ $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-stat
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
 $ cockroach sql <flags> < file-containing-statements.sql
 
+# Exit the interactive SQL shell:
+$ \q
+$ quit
+$ exit
+ctrl-d
 
 # View help:
 $ cockroach sql --help
@@ -108,7 +113,7 @@ The following commands can be used within the interactive SQL shell:
 
 Command | Usage
 --------|------------
-`\q`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
+`\q`<br>`quit`<br>`exit`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
 `\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
 `\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>As of v2.1, you can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
