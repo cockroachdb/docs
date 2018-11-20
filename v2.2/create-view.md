@@ -6,6 +6,7 @@ toc: true
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -108,3 +109,4 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 - [`SHOW CREATE`](show-create.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`DROP VIEW`](drop-view.html)
+- [Online Schema Changes](online-schema-changes.html)

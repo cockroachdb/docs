@@ -197,10 +197,25 @@ ROLLBACK
 ## See also
 
 + [How online schema changes are possible in CockroachDB][blog]: Blog post with more technical details about how our schema change engine works.
++ [`ALTER DATABASE`](alter-database.html)
++ [`ALTER INDEX`](alter-index.html)
++ [`ALTER RANGE`](alter-range.html)
++ [`ALTER SEQUENCE`](alter-sequence.html)
 + [`ALTER TABLE`][alter-table]
++ [`ALTER VIEW`](alter-view.html)
++ [`CREATE DATABASE`](create-database.html)
 + [`CREATE INDEX`][create-index]
++ [`CREATE SEQUENCE`](create-sequence.html)
++ [`CREATE TABLE`](create-table.html)
++ [`CREATE VIEW`](create-view.html)
++ [`DROP DATABASE`](drop-database.html)
 + [`DROP INDEX`][drop-index]
++ [`DROP SEQUENCE`](drop-sequence.html)
++ [`DROP TABLE`](drop-table.html)
++ [`DROP VIEW`](drop-view.html)
 + [`TRUNCATE`][truncate]
+
+
 
 <!-- Reference Links -->
 
