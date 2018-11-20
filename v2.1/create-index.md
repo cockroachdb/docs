@@ -14,6 +14,7 @@ Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html
 When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 {{site.data.alerts.end}}
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -161,3 +162,4 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

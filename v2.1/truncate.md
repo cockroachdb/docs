@@ -10,6 +10,8 @@ The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. A
 For smaller tables (with less than 1000 rows), using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
 {{site.data.alerts.end}}
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 ## Synopsis
 
 <div>
@@ -154,3 +156,4 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 - [`DELETE`](delete.html)
 - [Foreign Key constraint](foreign-key.html)
+- [Online Schema Changes](online-schema-changes.html)

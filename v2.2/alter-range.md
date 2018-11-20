@@ -6,9 +6,7 @@ toc: false
 
 The `ALTER RANGE` [statement](sql-statements.html) applies a schema change to a system range.
 
-{{site.data.alerts.callout_info}}
-To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see [Online Schema Changes in CockroachDB](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
-{{site.data.alerts.end}}
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 For information on using `ALTER RANGE`, see the documents for its relevant subcommands.
 

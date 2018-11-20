@@ -6,6 +6,7 @@ toc: true
 
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -93,3 +94,4 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)
