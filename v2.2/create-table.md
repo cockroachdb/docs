@@ -6,6 +6,7 @@ toc: true
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -465,3 +466,4 @@ To show the definition of a table, use the [`SHOW CREATE`](show-create.html) sta
 - [Column Families](column-families.html)
 - [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
 - [Define Table Partitions](partitioning.html)
+- [Online Schema Changes](online-schema-changes.html)
