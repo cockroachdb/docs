@@ -23,11 +23,12 @@ $ cockroach start \
 
 ## Step 2. Write data
 
-In a new terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `intro` database:
+In a new terminal, use [`cockroach workload`](cockroach-workload.html) command command to generate an example `intro` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data intro | cockroach sql --insecure --host=localhost:26257
+$ cockroach workload init intro \
+'postgresql://root@localhost:26257?sslmode=disable'
 ~~~
 
 In the same terminal, open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
