@@ -24,6 +24,8 @@ When diagnostics reporting is on, each node of a CockroachDB cluster shares anon
 - [`CLUSTER SETTINGS`](cluster-settings.html) that have been altered
 - Crashes reported by the node
 - Admin UI user information and page views
+- Attempts to use unsupported features
+- Names of SQL built-in function that produce errors  
 
 {{site.data.alerts.callout_info}}
 In all cases, names and other string values are scrubbed and replaced with underscores. Also, the details that get shared may change over time, but as that happens, we will announce the changes in release notes.
