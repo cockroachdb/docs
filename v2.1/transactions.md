@@ -74,11 +74,26 @@ There are two cases for handling transaction retries:
 
 ### Automatic retries
 
-CockroachDB automatically retries individual statements and transactions sent from the client as a single batch.
+CockroachDB automatically retries individual statements (implicit transactions)
+and transactions sent from the client as a single batch, as long as the size of
+the results being produced for the client (including protocol overhead) is less
+than 16KiB. Once that buffer overflows, CockroachDB starts streaming results back to
+the client, at which point automatic retries cannot be performed any more. As
+long as the results of a single statement or batch of statements are known to
+stay clear of this limit, the client does not need to worry about transaction
+retries.
+
+In future versions of CockroachDB, we plan on providing stronger guarantees for
+read-only queries that return at most one row, regardless of the size of that
+row.
 
 #### Individual statements
 
-Individual statements are treated as implicit transactions, for example:
+Individual statements are treated as implicit transactions, and so they fall
+under the rules described above. If the results are small enough, they will be
+automatically retried. In particular, `INSERT/UPDATE/DELETE` statements without
+a `RETURNING` clause are guaranteed to have minuscule result sizes.
+For example, the following statement would be automatically retried by CockroachDB:
 
 ~~~ sql
 > DELETE FROM customers WHERE id = 1;
@@ -107,7 +122,16 @@ Batching is generally controlled by your driver or client's behavior. Technicall
     ~~~
 
 {{site.data.alerts.callout_info}}
-Within a batch of statements, CockroachDB infers that the statements are not conditional on the results of previous statements, so it can retry all of them. However, if the transaction relies on conditional logic (e.g., statement 2 is executed only for some results of statement 1), and results for some statements in the transaction have already been delivered to the client (e.g., results of statement 1 have been delivered), CockroachDB cannot automatically retry statement 2 alone. Instead, you should write your transactions to use [client-side intervention](#client-side-intervention), so that the client gets to retry statement 1.
+Within a batch of statements, CockroachDB infers that the statements are not
+conditional on the results of previous statements, so it can retry all of them.
+Of course, if the transaction relies on conditional logic (e.g., statement 2 is
+executed only for some results of statement 1), then the transaction cannot be
+all sent to CockroachDB as a single batch. In these common cases, CockroachDB
+cannot retry, say, statement 2 in isolation. Since results for statement 1 have
+already been delivered to the client by the time statement 2 is forcing the
+transaction to retry, the client needs to be involved in retrying the whole
+transaction and so you should write your transactions to use
+[client-side intervention](#client-side-intervention).
 {{site.data.alerts.end}}
 
 ### Client-side intervention
