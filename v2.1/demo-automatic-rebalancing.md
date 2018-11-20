@@ -4,14 +4,11 @@ summary: Use a local cluster to explore how CockroachDB automatically rebalances
 toc: true
 ---
 
-This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll lower the maximum size for a single range, the unit of data that is replicated in CockroachDB. You'll then download and run the `block_writer` example program, which continuously inserts data into your cluster, and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
+This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll lower the maximum size for a single range, the unit of data that is replicated in CockroachDB. You'll then run a sample workload and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
 ## Before you begin
 
-In this tutorial, you'll use an example Go program to quickly insert data into a CockroachDB cluster. To run the example program, you must have a [Go environment](http://golang.org/doc/code.html) with a 64-bit version of Go 1.7.1.
-
-- You can download the [Go binary](http://golang.org/doc/code.html) directly from the official site.
-- Be sure to set the `$GOPATH` and `$PATH` environment variables as described [here](https://golang.org/doc/code.html#GOPATH).
+Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Start a 3-node cluster
 
@@ -76,13 +73,11 @@ $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
+  defaultdb
+  postgres
+  system
 (3 rows)
 ~~~
 
@@ -122,42 +117,48 @@ $ cockroach sql --execute="SHOW ZONE CONFIGURATION FOR RANGE default;" --insecur
 (1 row)
 ~~~
 
-## Step 5. Download and run the `block_writer` program
+## Step 5. Run a sample workload
 
-CockroachDB provides a number of [example programs in Go](https://github.com/cockroachdb/examples-go) for simulating client workloads. The program you'll use for this demonstration is called [`block_writer`](https://github.com/cockroachdb/examples-go/tree/master/block_writer). It will simulate multiple clients inserting data into the cluster.
+CockroachDB comes with built-in load generators for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `bank` workload to model bank accounts with currency balances.
 
-Download and install the program:
+1. Load the initial schema:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get github.com/cockroachdb/examples-go/block_writer
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init bank \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
 
-Then run the program for 1 minute, long enough to generate plenty of ranges:
+2. Run the workload for 30 seconds, tolerating errors:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ block_writer -duration 1m
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run bank \
+    --duration=30s \
+    --tolerate-errors
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
 
-Once it's running, `block_writer` will output the number of rows written per second:
+    You'll see per-operation statistics print to standard output every second:
 
-~~~
- 1s:  776.7/sec   776.7/sec
- 2s:  696.3/sec   736.7/sec
- 3s:  659.9/sec   711.1/sec
- 4s:  557.4/sec   672.6/sec
- 5s:  485.0/sec   635.1/sec
- 6s:  563.5/sec   623.2/sec
- 7s:  725.2/sec   637.7/sec
- 8s:  779.2/sec   655.4/sec
- 9s:  859.0/sec   678.0/sec
-10s:  960.4/sec   706.1/sec
-~~~
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+          1s        0          295.7          345.7     17.8     52.4    167.8    302.0 transfer
+          2s        0          408.5          377.1     17.8     37.7     46.1    125.8 transfer
+          3s        0          416.1          390.1     17.8     37.7     46.1     50.3 transfer
+          4s        0          396.9          391.8     18.9     44.0     52.4     60.8 transfer
+          5s        0          357.4          384.9     18.9     44.0     71.3    117.4 transfer
+          6s        0          364.6          381.5     19.9     44.0     67.1     75.5 transfer
+          7s        0          290.0          368.5     24.1     75.5    100.7    121.6 transfer
+          8s        0          337.5          364.6     21.0     50.3     75.5    100.7 transfer
+          9s        0          349.4          362.9     21.0     46.1     62.9    117.4 transfer
+         10s        0          323.1          358.9     23.1     48.2     67.1    100.7 transfer
+    ...
+    ~~~
 
 ## Step 6. Watch the replica count increase
 
-Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `block_writer` program inserts data.
+Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `tpcc` workload writes data.
 
 <img src="{{ 'images/v2.1/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
