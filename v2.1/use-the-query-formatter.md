@@ -9,7 +9,7 @@ toc: true
 one or more SQL queries. It recognizes all SQL extensions supported by
 CockroachDB.
 
-A [web interface to this feature]((https://sqlfum.pt/)) is also available.
+A [web interface to this feature]((https://sqlfum.pt/) is also available.
 
 {{site.data.alerts.callout_info}}
 This is an experimental feature. The interface of
