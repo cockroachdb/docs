@@ -67,7 +67,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 To run it:
 
-1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/BasicSample.java), or create the file yourself and copy the code below.
+1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/BasicSample.java), or create the file yourself and copy the code below.
 2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
 3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
@@ -89,7 +89,7 @@ To run it:
         account 2: 250
     ~~~
 
-The contents of [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/BasicSample.java):
+The contents of [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/BasicSample.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -104,7 +104,7 @@ Next, use the following code to execute a batch of statements as a [transaction]
 
 To run it:
 
-1. Download <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/TxnSample.java" download><code>TxnSample.java</code></a>, or create the file yourself and copy the code below.  Note the use of [`SQLException.getSQLState()`](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html) instead of `getErrorCode()`.
+1. Download <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/TxnSample.java" download><code>TxnSample.java</code></a>, or create the file yourself and copy the code below.  Note the use of [`SQLException.getSQLState()`](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html) instead of `getErrorCode()`.
 2. Compile and run the code (again adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
@@ -178,7 +178,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 To run it:
 
-1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/BasicSample.java), or create the file yourself and copy the code below.
+1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/BasicSample.java), or create the file yourself and copy the code below.
 2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
 3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
@@ -192,7 +192,7 @@ To run it:
     $ java -classpath .:/path/to/postgresql.jar BasicSample
     ~~~
 
-The contents of [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/BasicSample.java):
+The contents of [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/BasicSample.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -207,7 +207,7 @@ Next, use the following code to execute a batch of statements as a [transaction]
 
 To run it:
 
-1. Download <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/TxnSample.java" download><code>TxnSample.java</code></a>, or create the file yourself and copy the code below.  Note the use of [`SQLException.getSQLState()`](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html) instead of `getErrorCode()`.
+1. Download <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/TxnSample.java" download><code>TxnSample.java</code></a>, or create the file yourself and copy the code below.  Note the use of [`SQLException.getSQLState()`](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html) instead of `getErrorCode()`.
 2. Compile and run the code (again adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}

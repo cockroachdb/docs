@@ -81,13 +81,13 @@ $ openssl pkcs8 -topk8 -inform PEM -outform DER -in client.maxroach.key -out cli
 
 ## Step 5. Run the Java code
 
-Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/v2.1/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which contains a Java project that includes the following files:
+Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/v2.2/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which contains a Java project that includes the following files:
 
 File | Description
 -----|------------
-[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/hibernate-basic-sample/Sample.java) | Uses [Hibernate](http://hibernate.org/orm/) to map Java object state to SQL operations.  For more information, see [Sample.java](#sample-java).
-[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/hibernate-basic-sample/hibernate.cfg.xml) | Specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run.  For more information, see [hibernate.cfg.xml](#hibernate-cfg-xml).
-[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/hibernate-basic-sample/build.gradle) | Used to build and run your app.  For more information, see [build.gradle](#build-gradle).
+[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/hibernate-basic-sample/Sample.java) | Uses [Hibernate](http://hibernate.org/orm/) to map Java object state to SQL operations.  For more information, see [Sample.java](#sample-java).
+[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/hibernate-basic-sample/hibernate.cfg.xml) | Specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run.  For more information, see [hibernate.cfg.xml](#hibernate-cfg-xml).
+[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/hibernate-basic-sample/build.gradle) | Used to build and run your app.  For more information, see [build.gradle](#build-gradle).
 
 In the `hibernate-basic-sample` directory, build and run the application:
 
@@ -170,13 +170,13 @@ The Gradle build file specifies the dependencies (in this case the Postgres JDBC
 
 ## Step 3. Run the Java code
 
-Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/v2.1/app/insecure/hibernate-basic-sample/hibernate-basic-sample.tgz), which contains a Java project that includes the following files:
+Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/v2.2/app/insecure/hibernate-basic-sample/hibernate-basic-sample.tgz), which contains a Java project that includes the following files:
 
 File | Description
 -----|------------
-[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/hibernate-basic-sample/Sample.java) | Uses [Hibernate](http://hibernate.org/orm/) to map Java object state to SQL operations.  For more information, see [Sample.java](#sample-java).
-[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/hibernate-basic-sample/hibernate.cfg.xml) | Specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run.  For more information, see [hibernate.cfg.xml](#hibernate-cfg-xml).
-[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/app/insecure/hibernate-basic-sample/build.gradle) | Used to build and run your app.  For more information, see [build.gradle](#build-gradle).
+[`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/hibernate-basic-sample/Sample.java) | Uses [Hibernate](http://hibernate.org/orm/) to map Java object state to SQL operations.  For more information, see [Sample.java](#sample-java).
+[`hibernate.cfg.xml`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/hibernate-basic-sample/hibernate.cfg.xml) | Specifies how to connect to the database and that the database schema will be deleted and recreated each time the app is run.  For more information, see [hibernate.cfg.xml](#hibernate-cfg-xml).
+[`build.gradle`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/hibernate-basic-sample/build.gradle) | Used to build and run your app.  For more information, see [build.gradle](#build-gradle).
 
 In the `hibernate-basic-sample` directory, build and run the application:
 
