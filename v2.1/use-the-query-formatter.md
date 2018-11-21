@@ -19,8 +19,12 @@ this command may change in a later release without prior notice.
 ## Synopsis
 
 ~~~ shell
-# Start the query formatter interactively:
+# Use the query formatter interactively:
 $ cockroach sqlfmt <flags>
+
+<sql stmt>
+
+CTRL+D
 
 # Reformat a SQL query given on the command line:
 $ cockroach sqlfmt <flags> -e "<sql stmt>"
@@ -38,7 +42,7 @@ Flag | Description | Default value
 `--execute`<br>`-e` | Reformat the given SQL query, without reading from standard input. | N/A
 `--print-width` | Desired column width of the output. | 80
 `--tab-width` | Number of spaces occupied by a tab character on the final display device. | 4
-`--use-spaces` | Always use space characters for formatting; avoid tab characters. | Use tabs
+`--use-spaces` | Always use space characters for formatting; avoid tab characters. | Use tabs.
 `--align` | Use vertical alignment during formatting. | Do not align vertically.
 `--no-simplify` | Avoid removing optional grouping parentheses during formatting. | Remove unnecessary grouping parentheses.
 
@@ -46,23 +50,38 @@ Flag | Description | Default value
 
 ### Reformat a query with constrained column width
 
-Using the interactive query formatter:
+Using the interactive query formatter, output with the default column width (80 columns):
+
+1. Start the interactive query formatter:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sqlfmt
+    ~~~
+
+2. Press **Enter**.
+
+3. Run the query:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+    ~~~
+4. Press **CTRL+D**.
+
+    ~~~ sql
+    CREATE TABLE animals (
+            id INT PRIMARY KEY DEFAULT unique_rowid(),
+            name STRING
+    )
+    ~~~
+
+Using the command line, output with the column width set to `40`:
 
 {% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+~~~ shell
+$ cockroach sqlfmt --print-width 40 -e "CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);"
 ~~~
-
-Example output with the default column width (80 columns):
-
-~~~ sql
-CREATE TABLE animals (
-        id INT PRIMARY KEY DEFAULT unique_rowid(),
-        name STRING
-)
-~~~
-
-Using the command line with `--print-width 40`, the example output is:
 
 ~~~ sql
 CREATE TABLE animals (
@@ -76,27 +95,27 @@ CREATE TABLE animals (
 
 ### Reformat a query with vertical alignment
 
-Using the interactive query formatter:
+Output with the default vertical alignment:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT winner,
-round(length / (60 * 5)) AS counter FROM
-players WHERE build = $1 AND (hero = $2 OR region = $3);
+~~~ shell
+$ cockroach sqlfmt -e "SELECT winner, round(length / (60 * 5)) AS counter FROM players WHERE build = $1 AND (hero = $2 OR region = $3);"
 ~~~
-
-The example default output:
 
 ~~~ sql
 SELECT
-	winner, round(length / (60 * 5)) AS counter
+winner, round(length / (60 * 5)) AS counter
 FROM
-	players
+players
 WHERE
-	build = $1 AND (hero = $2 OR region = $3);
+build = $1 AND (hero = $2 OR region = $3)
 ~~~
 
-Using the command line with `--align`, the example output is:
+Output with vertical alignment:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sqlfmt --align -e "SELECT winner, round(length / (60 * 5)) AS counter FROM players WHERE build = $1 AND (hero = $2 OR region = $3);"
+~~~
 
 ~~~ sql
 SELECT winner, round(length / (60 * 5)) AS counter
@@ -106,20 +125,23 @@ SELECT winner, round(length / (60 * 5)) AS counter
 
 ### Reformat a query with simplification of parentheses
 
-Using the interactive query formatter:
+Output with the default simplification of parentheses:
 
 {% include copy-clipboard.html %}
-~~~ sql
-> SELECT (1 * 2) + 3, (1 + 2) * 3;
+~~~ shell
+$ cockroach sqlfmt --no-simplify -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
 ~~~
-
-Example default output:
 
 ~~~ sql
 SELECT 1 * 2 + 3, (1 + 2) * 3
 ~~~
 
-Using the command line with `--no-simplify`, the example output is:
+Output with no simplification of parentheses:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sqlfmt --no-simplify -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
+~~~
 
 ~~~ sql
 SELECT (1 * 2) + 3, (1 + 2) * 3
