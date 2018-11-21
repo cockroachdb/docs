@@ -4,10 +4,10 @@ summary: The TRUNCATE statement deletes all rows from specified tables.
 toc: true
 ---
 
-The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.
+The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table.  At a high level, it works by dropping the table and recreating a new table with the same name.
 
 {{site.data.alerts.callout_info}}
-`TRUNCATE` removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows).
+For smaller tables (with less than 1000 rows), using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -152,5 +152,5 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 ## See also
 
-- [`DELETE](delete.html)
+- [`DELETE`](delete.html)
 - [Foreign Key constraint](foreign-key.html)

@@ -10,7 +10,6 @@ The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
 {{site.data.alerts.callout_info}}To delete columns, see <a href="drop-column.html"><code>DROP COLUMN</code></a>.{{site.data.alerts.end}}
 
-
 ## Required privileges
 
 The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on the table.
@@ -58,7 +57,7 @@ If disk usage is a concern, there are two potential solutions. The
 first is to [reduce the time-to-live](configure-replication-zones.html)
 (TTL) for the zone, which will cause garbage collection to clean up
 deleted rows more frequently. Second, unlike `DELETE`,
-[truncate](truncate.html) immediately deletes the entire table, so
+[`TRUNCATE`][truncate] immediately deletes the entire table, so
 consider if you can use `TRUNCATE` instead.
 
 ## Select performance on deleted rows
@@ -84,19 +83,9 @@ You can delete all rows from a table by not including a `WHERE` clause in your `
 DELETE 7
 ~~~
 
-This is roughly equivalent to [`TRUNCATE`](truncate.html).
-
-{% include copy-clipboard.html %}
-~~~ sql
-> TRUNCATE account_details;
-~~~
-~~~
-TRUNCATE
-~~~
-
-As you can see, one difference is that `TRUNCATE` does not return the number of rows it deleted.
-
-{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> statement removes all rows from a table by dropping the table and recreating a new table with the same name. This is much more performant than deleting each of the rows. {{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+Unless your table is small (less than 1000 rows), using [`TRUNCATE`][truncate] to delete the contents of a table will be more performant than using `DELETE`.
+{{site.data.alerts.end}}
 
 ### Delete specific rows
 
@@ -144,6 +133,7 @@ The example statement deleted two rows, which might be unexpected.
 To see which rows your statement deleted, include the `RETURNING` clause to retrieve them using the columns you specify.
 
 #### Use all columns
+
 By specifying `*`, you retrieve all columns of the delete rows.
 
 {% include copy-clipboard.html %}
@@ -195,9 +185,13 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)
-- [`TRUNCATE`](truncate.html)
+- [`TRUNCATE`][truncate]
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
 - [Limiting Query Results](limit-offset.html)
+
+<!-- Reference Links -->
+
+[truncate]: truncate.html
