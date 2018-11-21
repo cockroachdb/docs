@@ -19,7 +19,7 @@ For each of the above objects you can control:
 - Which constraints are applied to which data, e.g., "table X's data can only be stored in the German datacenters".
 - The maximum size of ranges (how big ranges get before they are split).
 - How long old data is kept before being garbage collected.
-- Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
+- <span class="version-tag">New in v2.1:</span> Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
 
 This page explains how replication zones work and how to use the [`CONFIGURE ZONE`](configure-zone.html) statement to manage them.
 
@@ -59,7 +59,7 @@ In addition, CockroachDB stores internal [**system data**](architecture/distribu
 Level | Description
 ------|------------
 Cluster | The `.default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
-System Range | CockroachDB comes with pre-configured replication zones for the "meta" and "liveness" system ranges. If necessary, you can add replication zones for the "timeseries" range and other "system" ranges as well. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with a pre-configured replication zone for one internal table, `system.jobs`, which stores metadata about long-running jobs such as schema changes and backups. Historical queries are never run against this table and the rows in it are updated frequently, so the pre-configured zone gives this table a lower-than-default `ttlseconds`.
+System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
 
 ### Level priorities
 
@@ -88,7 +88,7 @@ Use the [`ALTER ... CONFIGURE ZONE`](configure-zone.html) [statement](sql-statem
 > ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
 
-{% include {{ page.version.version }}/zone-configs/variables.md %}
+{% include v2.1/zone-configs/variables.md %}
 
 ### Replication constraints
 
@@ -143,67 +143,67 @@ For more examples, see [`CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE C
 
 ### View all replication zones
 
-{% include {{ page.version.version }}/zone-configs/view-all-replication-zones.md %}
+{% include v2.1/zone-configs/view-all-replication-zones.md %}
 
 For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 ### View the default replication zone
 
-{% include {{ page.version.version }}/zone-configs/view-the-default-replication-zone.md %}
+{% include v2.1/zone-configs/view-the-default-replication-zone.md %}
 
 For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 ### Edit the default replication zone
 
-{% include {{ page.version.version }}/zone-configs/edit-the-default-replication-zone.md %}
+{% include v2.1/zone-configs/edit-the-default-replication-zone.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a system range
 
-{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-system-range.md %}
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-system-range.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a database
 
-{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-database.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a table
 
-{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-table.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a secondary index
 
-{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Create a replication zone for a table or secondary index partition
 
-{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
+{% include v2.1/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Reset a replication zone
 
-{% include {{ page.version.version }}/zone-configs/reset-a-replication-zone.md %}
+{% include v2.1/zone-configs/reset-a-replication-zone.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Remove a replication zone
 
-{% include {{ page.version.version }}/zone-configs/remove-a-replication-zone.md %}
+{% include v2.1/zone-configs/remove-a-replication-zone.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ### Constrain leaseholders to specific datacenters
 
-{% include {{ page.version.version }}/zone-configs/constrain-leaseholders-to-specific-datacenters.md %}
+{% include v2.1/zone-configs/constrain-leaseholders-to-specific-datacenters.md %}
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
