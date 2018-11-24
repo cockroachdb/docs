@@ -59,7 +59,7 @@ In addition, CockroachDB stores internal [**system data**](architecture/distribu
 Level | Description
 ------|------------
 Cluster | The `.default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
-System Range | CockroachDB comes with pre-configured replication zones for the "meta" and "liveness" system ranges. If necessary, you can add replication zones for the "timeseries" range and other "system" ranges as well. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with a pre-configured replication zone for one internal table, `system.jobs`, which stores metadata about long-running jobs such as schema changes and backups. Historical queries are never run against this table and the rows in it are updated frequently, so the pre-configured zone gives this table a lower-than-default `ttlseconds`.
+System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
 
 ### Level priorities
 
