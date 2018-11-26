@@ -2,7 +2,6 @@
 title: Decommission Nodes
 summary: Permanently remove one or more nodes from a cluster.
 toc: true
-toc_not_nested: true
 ---
 
 This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
