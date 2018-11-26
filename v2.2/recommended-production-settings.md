@@ -170,7 +170,7 @@ Environment | Featured Approach
 
 ## Clock synchronization
 
-{% include {{ page.version.version }}/faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.md %}
 
 ## Cache and SQL memory size
 
