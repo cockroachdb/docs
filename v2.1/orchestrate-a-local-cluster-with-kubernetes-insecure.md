@@ -36,17 +36,13 @@ Feature | Description
     $ minikube start
     ~~~
 
-## Step 2. Start CockroachDB nodes
+## Step 2. Start CockroachDB
 
 When starting a cluster manually, you run the <code>cockroach start</code> command multiple times, once per node. In this step, you use a Kubernetes StatefulSet configuration instead, reducing the effort of starting 3 nodes to a single command.
 
-{% include {{ page.version.version }}/orchestration/start-cluster.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
 
-## Step 3. Initialize the cluster
-
-{% include {{ page.version.version }}/orchestration/initialize-cluster-insecure.md %}
-
-## Step 4. Test the cluster
+## Step 3. Test the cluster
 
 To test the cluster, launch a temporary pod for using the built-in SQL client, and then use a deployment configuration file to run a high-traffic load generator against the cluster from another pod.
 
@@ -78,7 +74,7 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
     example-545f866f5-2gsrs   1/1       Running   0          25m
     ~~~
 
-## Step 5. Monitor the cluster
+## Step 4. Monitor the cluster
 
 To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state and the load generator's activity:
 
@@ -101,11 +97,11 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 4. Click the **Databases** tab on the left to verify that the `bank` database you created manually, as well as the `kv` database created by the load generated, are listed.
 
-## Step 6. Simulate node failure
+## Step 5. Simulate node failure
 
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
-## Step 7. Scale the cluster
+## Step 6. Scale the cluster
 
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
@@ -134,7 +130,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     example-545f866f5-2gsrs   1/1       Running   0          25m
     ~~~
 
-## Step 8. Stop the cluster
+## Step 7. Stop the cluster
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
