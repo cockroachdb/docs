@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="orchestrate-cockroachdb-with-docker-swarm.html"><button class="filter-button">Secure</button>
-  <button class="filter-button current"><strong>Insecure</strong></button></a>
+  <a href="orchestrate-cockroachdb-with-docker-swarm.html"><button class="filter-button">Secure</button></a>
+  <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
 This page shows you how to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a [swarm of Docker Engines](https://docs.docker.com/engine/swarm/).
