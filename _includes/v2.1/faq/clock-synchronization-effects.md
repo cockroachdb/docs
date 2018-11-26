@@ -12,8 +12,8 @@ There are important considerations when setting up clock synchronization:
     Amazon Time Sync Service is only available within [Amazon EC2](https://aws.amazon.com/ec2/), so hybrid environments should use Google Public NTP instead.
     {{site.data.alerts.end}}
 
-- If you do not want to use the Google or Amazon clock servers, you can use `chrony` and enable client-side leap smearing, unless the clock service you're using already does server-side smearing. In most cases, we recommend the Google Public NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, you must configure client-side smearing manually and do so in the same way on each machine.
-- Do not mix clock servers. It is important to pick one (e.g., Google Public NTP, Amazon Time Synce Service) and use the same for all nodes in the cluster.
+- If you do not want to use the Google or Amazon time sources, you can use `chrony` and enable client-side leap smearing, unless the time source you're using already does server-side smearing. In most cases, we recommend the Google Public NTP time source because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP time source that doesn't smear the leap second, you must configure client-side smearing manually and do so in the same way on each machine.
+- Do not mix time sources. It is important to pick one (e.g., Google Public NTP, Amazon Time Sync Service) and use the same for all nodes in the cluster.
 - Do not run more than one clock sync service on VMs where `cockroach` is running.
 
 ### Tutorials
