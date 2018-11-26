@@ -45,7 +45,7 @@ File name pattern | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
 `client.<user>.key` | Key for the client certificate
 
-Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the Admin UI](#optional-use-a-ui-certificate-and-key-to-access-the-admin-ui).
+Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the Admin UI](#use-a-ui-certificate-and-key-to-access-the-admin-ui).
 
 Note the following:
 
@@ -282,7 +282,7 @@ Certificate directory: certs
 (3 rows)
 ~~~
 
-### (Optional) Use a UI certificate and key to access the Admin UI
+### Use a UI certificate and key to access the Admin UI
 
 On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.
 

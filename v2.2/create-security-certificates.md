@@ -45,6 +45,8 @@ File name pattern | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`)
 `client.<user>.key` | Key for the client certificate
 
+Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the Admin UI](#use-a-ui-certificate-and-key-to-access-the-admin-ui).
+
 Note the following:
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
@@ -279,6 +281,26 @@ Certificate directory: certs
 +-----------------------+---------------------+---------------------+------------+--------------------------------------------------------+-------+
 (3 rows)
 ~~~
+
+### Use a UI certificate and key to access the Admin UI
+
+On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.
+
+For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA. For each node:
+
+1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Names` field.
+2. Rename the certificate and key as `ui.crt` and `ui.key`.
+3. Add the `ui.crt` and `ui.key` to the [certificate directory](create-security-certificates.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
+4. If the node is already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    pkill -SIGHUP -x cockroach
+    ~~~  
+
+    The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
+
+5. For each user who should have access to the Admin UI, [create a user with a password](create-user.html). On accessing the Admin UI, these users will see a Login screen, where they will need to enter their usernames and passwords.
 
 ## See also
 
