@@ -8,6 +8,7 @@ The Kubernetes cluster we created contains 3 nodes that pods can be run on. To e
 
 2. Use the `kubectl scale` command to add a pod to your StatefulSet:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -16,3 +17,15 @@ The Kubernetes cluster we created contains 3 nodes that pods can be run on. To e
     ~~~
     statefulset "cockroachdb" scaled
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl scale statefulset my-release-cockroachdb --replicas=4
+    ~~~
+
+    ~~~
+    statefulset "my-release-cockroachdb" scaled
+    ~~~
+    </section>
