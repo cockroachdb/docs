@@ -9,7 +9,6 @@ A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_
 <div class="filters filters-big clearfix">
   <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert commands</button>
   <button style="width:28%" class="filter-button current">Use <strong>Openssl</strong></button></a>
-  <a href="create-security-certificates-custom-ca.html"><button style="width:28%" class="filter-button">Use custom CA</button></a>
 </div>
 
 ## Subcommands
