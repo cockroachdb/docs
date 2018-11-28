@@ -119,46 +119,30 @@ $ cockroach sql --execute="SHOW ZONE CONFIGURATION FOR RANGE default;" --insecur
 
 ## Step 5. Run a sample workload
 
-CockroachDB comes with built-in load generators for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `bank` workload to model bank accounts with currency balances.
+CockroachDB comes with [built-in load generators](cockroach-workload.html) for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `tpcc` workload to simulates transaction processing using a rich schema of multiple tables.
 
-1. Load the initial schema:
+1. Load the initial schema and data:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init bank \
+    $ cockroach workload init tpcc \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 30 seconds, tolerating errors:
+2. The initial data is enough for the purpose of this tutorial, but you can run the workload for as long as you like to increase the data size, adjusting the `--duration` flag as appropriate:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload run bank \
+    $ cockroach workload run tpcc \
     --duration=30s \
-    --tolerate-errors
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-    You'll see per-operation statistics print to standard output every second:
-
-    ~~~
-    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
-          1s        0          295.7          345.7     17.8     52.4    167.8    302.0 transfer
-          2s        0          408.5          377.1     17.8     37.7     46.1    125.8 transfer
-          3s        0          416.1          390.1     17.8     37.7     46.1     50.3 transfer
-          4s        0          396.9          391.8     18.9     44.0     52.4     60.8 transfer
-          5s        0          357.4          384.9     18.9     44.0     71.3    117.4 transfer
-          6s        0          364.6          381.5     19.9     44.0     67.1     75.5 transfer
-          7s        0          290.0          368.5     24.1     75.5    100.7    121.6 transfer
-          8s        0          337.5          364.6     21.0     50.3     75.5    100.7 transfer
-          9s        0          349.4          362.9     21.0     46.1     62.9    117.4 transfer
-         10s        0          323.1          358.9     23.1     48.2     67.1    100.7 transfer
-    ...
-    ~~~
+    You'll see per-operation statistics print to standard output every second.
 
 ## Step 6. Watch the replica count increase
 
-Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica count, and other metrics increase as the `tpcc` workload writes data.
+Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and you’ll see the bytes, replica count, and other metrics increase as the `tpcc` workload writes data.
 
 <img src="{{ 'images/v2.1/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -190,15 +174,21 @@ $ cockroach start \
 
 ## Step 8. Watch data rebalance across all 5 nodes
 
-Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those metrics even out across all nodes, indicating that data has been automatically rebalanced to utilize the additional capacity of the new nodes.
+Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. You'll see those metrics gradually even out across all nodes, indicating that data is being automatically rebalanced to utilize the additional capacity of the new nodes.
 
 <img src="{{ 'images/v2.1/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_info}}
+After scaling to 5 nodes, the Admin UI will call out a number of under-replicated ranges. This is due to the cluster preferring 5 replicas for important [internal system data](configure-replication-zones.html#for-system-data) by default. When the cluster is less than 5 nodes, this preference is ignored in reporting, but as soon as there are more than 3 nodes, the cluster recognizes this preference and reports the under-replicated state in the UI. As those ranges are up-replicated, the under-replicated range count will decrease to 0.  
+{{site.data.alerts.end}}
 
 ## Step 9.  Stop the cluster
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press **CTRL-C** a second time.
+{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
