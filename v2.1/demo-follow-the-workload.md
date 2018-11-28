@@ -193,7 +193,6 @@ The load generator created a `tpcc` database with several tables that map to und
     ~~~ shell
     $ cockroach workload run tpcc \
     --duration=5m \
-    --tolerate-errors \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 

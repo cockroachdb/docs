@@ -135,7 +135,6 @@ CockroachDB comes with built-in load generators for simulating different types o
     ~~~ shell
     $ cockroach workload run bank \
     --duration=30s \
-    --tolerate-errors
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 

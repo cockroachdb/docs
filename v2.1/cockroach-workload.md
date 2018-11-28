@@ -56,24 +56,25 @@ Workload | Description
 The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
 {{site.data.alerts.end}}
 
+
 ### `bank` workload
 
-Subcommand(s) | Flag | Description
---------------|------|------------
-`init`<br>`run` | `--concurrency` | The number of concurrent workers.<br><br>**Default:** `8`
-`init`<br>`run` | `--db` | The SQL database to use. <br><br>**Default:** `bank`
-`init`<br>`run` | `--drop` | Drop the existing database, if it exists. For the `run` command, this flag must be used in conjunction with `--init`.
-`init`<br>`run`| `--duration` | The duration to run.<br><br>**Default:** `0`, which means run forever.
-`run` | `--histograms` | The file to write per-op incremental and cumulative histogram data to.
-`run` | `--init` | Automatically run the `init` command.
-`run` | `--max-ops` | The maximum number of operations to run.
-`run` | `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Default:** `0`, which means unlimited.
-`init`<br>`run` | `--payload-bytes` | The size of the payload field in each initial row.<br><br>**Default:** `100`
-`run` | `--ramp` | The duration over which to ramp up load.
-`init`<br>`run` | `--ranges` | The initial number of ranges in the `bank` table. **Default:** `10`
-`init`<br>`run` | `--rows` | The initial number of accounts in the `bank` table. **Default:** `1000`
-`init`<br>`run` | `--seed` | The key hash seed.<br><br>**Default:** `1`
-`run` | `--tolerate-errors` | Keep running on error.
+Flag | Description
+-----|------------
+`--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`
+`--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `bank`
+`--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
+`--duration` | The duration to run.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
+`--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
+`--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
+`--payload-bytes` | The size of the payload field in each initial row.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `100`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** run`
+`--ranges` | The initial number of ranges in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10`
+--rows` | The initial number of accounts in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1000`
+`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 
 ### `intro` and `startrek` workloads
 
@@ -87,32 +88,31 @@ Flag | Description
 
 ### `tpcc` workload
 
-Subcommand(s) | Flag | Description
---------------|------|------------
-`init`<br>`run` | `--active-warehouses` | Run the load generator against a specific number of warehouses. **Defaults:** Value of `--warehouses`
-`init`<br>`run` | `--db` | The SQL database to use.<br><br>**Default:** `tpcc`
-`init`<br>`run` | `--drop` | Drop the existing database, if it exists. For the `run` command, this flag must be used in conjunction with `--init`.
-`run` | `--duration` | The duration to run. <br><br>**Default:** `0`, which means run forever.
-`init`<br>`run` | `--expensive-checks` | Run expensive checks.
-`init`<br>`run` | `--fks` | Add foreign keys.<br><br>**Default:** `true`
-`run` | `--histograms` | The file to write per-op incremental and cumulative histogram data to.
-`run` | `--init` | Automatically run the `init` command.
-`init`<br>`run` | `--interleaved` | Use [interleaved tables](interleave-in-parent.html).
-`run` | `--max-ops` | The maximum number of operations to run.
-`run` | `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Default:** `0`, which means unlimited.
-`init`<br>`run` | `--mix` | Weights for the transaction mix. **Default:** `newOrder=10,payment=10,orderStatus=1,delivery=1,stockLevel=1`, which matches the [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/current_specifications.asp).
-`init`<br>`run` | `--partition-affinity` | Run the load generator against a specific partition. This flag must be used in conjunction with `--partitions`.<br><br>**Default:** `-1`
-`init`<br>`run` | `--partitions` | Partition tables. This flag must be used in conjunction with `--split`.
-`run` | `--ramp` | The duration over which to ramp up load.
-`init`<br>`run` | `--scatter` | Scatter ranges.
-`init`<br>`run` | `--seed` | The random number generator seed.<br><br>**Default:** `1`
-`init` | `--serializable` | Force serializable mode. CockroachDB only supports `SERIALIZABLE` isolation, so this flag is not necessary.
-`init`<br>`run` | `--split` | [Split tables](split-at.html).
-`run` | `--tolerate-errors` | Keep running on error.
-`init`<br>`run` | `--wait` | Run in wait mode, i.e., include think/keying sleeps.<br><br>**Default:** `true`
-`init`<br>`run` | `--warehouses` | The number of warehouses for loading initial data.<br><br>**Default:** `1`
-`init`<br>`run` | `--workers` | The number of concurrent workers.<br><br>**Default:** `--warehouses` * 10
-`init` | `--zones` | The number of [replication zones](configure-replication-zones.html) for partitioning. This number should match the number of `--partitions` and the zones used to start the cluster.
+Flag | Description
+-----|------------
+`--active-warehouses` | Run the load generator against a specific number of warehouses.<br><br>**Applicable commands:** `init` or `run`<br>**Defaults:** Value of `--warehouses`
+`--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `tpcc`
+`--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
+`--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
+`--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--init` | Automatically run the `init` command.<br><br>**Applicable command:** run`
+`--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`
+`--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
+`--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
+`--mix` | Weights for the transaction mix.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `newOrder=10,payment=10,orderStatus=1,delivery=1,stockLevel=1`, which matches the [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/current_specifications.asp).
+`--partition-affinity` | Run the load generator against a specific partition. This flag must be used in conjunction with `--partitions`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `-1`
+`--partitions` | Partition tables. This flag must be used in conjunction with `--split`.<br><br>**Applicable commands:** `init` or `run`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
+`--scatter` | Scatter ranges.<br><br>**Applicable commands:** `init` or `run`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--serializable` | Force serializable mode. CockroachDB only supports `SERIALIZABLE` isolation, so this flag is not necessary.<br><br>**Applicable command:** `init`
+`--split` | [Split tables](split-at.html).<br><br>**Applicable commands:** `init` or `run`
+`--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
+`--wait` | Run in wait mode, i.e., include think/keying sleeps.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
+`--warehouses` | The number of warehouses for loading initial data, at approximately 200 MB per warehouse.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--workers` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `--warehouses` * 10
+`--zones` | The number of [replication zones](configure-replication-zones.html) for partitioning. This number should match the number of `--partitions` and the zones used to start the cluster.<br><br>**Applicable command:** `init`
 
 ### Logging
 
@@ -141,13 +141,12 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 1 minute, tolerating errors:
+2. Run the workload for 1 minute:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run bank \
     --duration=1m \
-    --tolerate-errors \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
@@ -175,7 +174,7 @@ $ cockroach start \
        60.0s        0          84457         1407.6      5.7      5.5     10.0     15.2    167.8
     ~~~
 
-### Run the `intro` workload
+### Load the `intro` dataset
 
 1. Load the dataset:
 
@@ -236,7 +235,7 @@ $ cockroach start \
     (21 rows)
     ~~~
 
-### Run the `startrek` workload
+### Load the `startrek` dataset
 
 1. Load the dataset:
 
@@ -301,13 +300,12 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 10 minutes, tolerating errors:
+2. Run the workload for 10 minutes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run bank \
     --duration=10m \
-    --tolerate-errors \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
