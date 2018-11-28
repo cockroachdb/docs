@@ -108,7 +108,7 @@ In this example, `account_id` is our primary key and we want to delete the row w
 +------------+---------+--------------+
 ~~~
 
-#### Delete rows Using non-unique columns
+#### Delete rows using non-unique columns
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
