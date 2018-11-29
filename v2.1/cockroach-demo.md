@@ -4,7 +4,7 @@ summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, singl
 toc: true
 ---
 
-<span class="version-tag">New in v2.1:</span> The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to it.
+<span class="version-tag">New in v2.1:</span> The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster, optionally with a pre-loaded dataset, and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to the cluster.  
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
@@ -13,6 +13,9 @@ The in-memory cluster persists only as long as the SQL shell is open. As soon as
 ~~~ shell
 # Start an interactive SQL shell:
 $ cockroach demo <flags>
+
+# Load a sample dataset and start an interactive SQL shell:
+$ cockroach demo <dataset> <flags>
 
 # Execute SQL from the command line:
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
@@ -24,6 +27,15 @@ ctrl-d
 # View help:
 $ cockroach demo --help
 ~~~
+
+## Datasets
+
+Workload | Description
+---------|------------
+`bank` | A `bank` database, with one `bank` table containing account details.
+`intro` | An `intro` database, with one table, `mytable`, with a hidden message.
+`startrek` | A `startrek` database, with two tables, `episodes` and `quotes`.
+`tpcc` | A `tpcc` database, with a rich schema of multiple tables.
 
 ## Flags
 
@@ -112,6 +124,48 @@ Time: 9.539973ms
 > \q
 ~~~
 
+### Load a sample dataset and start an interactive SQL shell
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach demo startrek
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM startrek;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM startrek.episodes WHERE stardate > 5500;
+~~~
+
+~~~
+  id | season | num |               title               | stardate
++----+--------+-----+-----------------------------------+----------+
+  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
+  62 |      3 |   7 | Day of the Dove                   |   5630.3
+  64 |      3 |   9 | The Tholian Web                   |   5693.2
+  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
+  66 |      3 |  11 | Wink of an Eye                    |   5710.5
+  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
+  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
+  73 |      3 |  18 | The Lights of Zetar               |   5725.3
+  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
+  75 |      3 |  20 | The Way to Eden                   |   5832.3
+  76 |      3 |  21 | The Cloud Minders                 |   5818.4
+  77 |      3 |  22 | The Savage Curtain                |   5906.4
+  78 |      3 |  23 | All Our Yesterdays                |   5943.7
+  79 |      3 |  24 | Turnabout Intruder                |   5928.5
+(14 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \q
+~~~
+
 ### Execute SQL from the command-line
 
 {% include copy-clipboard.html %}
@@ -136,6 +190,7 @@ INSERT 1
 ## See also
 
 - [`cockroach sql`](use-the-built-in-sql-client.html)
+- [`cockroach workload`](cockroach-workload.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

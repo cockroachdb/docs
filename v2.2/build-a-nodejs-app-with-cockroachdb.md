@@ -86,7 +86,7 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/txn-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include v2.1/client-transaction-retry.md %}
+{% include v2.2/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ js
@@ -176,7 +176,7 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.2/app/insecure/txn-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include v2.1/client-transaction-retry.md %}
+{% include v2.2/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ js

@@ -6,7 +6,6 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
 
-
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
@@ -74,13 +73,11 @@ $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
+  defaultdb
+  postgres
+  system
 (3 rows)
 ~~~
 
@@ -122,13 +119,11 @@ $ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
+  defaultdb
+  postgres
+  system
 (3 rows)
 ~~~
 
@@ -143,22 +138,12 @@ Exit the SQL shell:
 
 ## Step 6. Write data while the node is offline
 
-In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
+In the same terminal, use the [`cockroach workload`](cockroach-workload.html) command to generate an example `startrek` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --insecure --host=localhost:26257
-~~~
-
-~~~
-CREATE DATABASE
-SET
-DROP TABLE
-DROP TABLE
-CREATE TABLE
-INSERT 79
-CREATE TABLE
-INSERT 200
+$ cockroach workload init startrek \
+'postgresql://root@localhost:26257?sslmode=disable'
 ~~~
 
 Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
@@ -174,14 +159,12 @@ $ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| startrek      |
-| system        |
-+---------------+
+  defaultdb
+  postgres
+  startrek
+  system
 (4 rows)
 ~~~
 
@@ -191,36 +174,35 @@ $ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 ~~~
+  table_name
 +------------+
-| table_name |
-+------------+
-| episodes   |
-| quotes     |
-+------------+
-(2 rows)
+  episodes
+  quotes
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.episodes LIMIT 10;
+> SELECT * FROM startrek.episodes WHERE stardate > 5500;
 ~~~
 
 ~~~
-+----+--------+-----+--------------------------------+----------+
-| id | season | num |             title              | stardate |
-+----+--------+-----+--------------------------------+----------+
-|  1 |      1 |   1 | The Man Trap                   |   1531.1 |
-|  2 |      1 |   2 | Charlie X                      |   1533.6 |
-|  3 |      1 |   3 | Where No Man Has Gone Before   |   1312.4 |
-|  4 |      1 |   4 | The Naked Time                 |   1704.2 |
-|  5 |      1 |   5 | The Enemy Within               |   1672.1 |
-|  6 |      1 |   6 | Mudd's Women                   |   1329.8 |
-|  7 |      1 |   7 | What Are Little Girls Made Of? |   2712.4 |
-|  8 |      1 |   8 | Miri                           |   2713.5 |
-|  9 |      1 |   9 | Dagger of the Mind             |   2715.1 |
-| 10 |      1 |  10 | The Corbomite Maneuver         |   1512.2 |
-+----+--------+-----+--------------------------------+----------+
-(10 rows)
+  id | season | num |               title               | stardate
++----+--------+-----+-----------------------------------+----------+
+  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
+  62 |      3 |   7 | Day of the Dove                   |   5630.3
+  64 |      3 |   9 | The Tholian Web                   |   5693.2
+  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
+  66 |      3 |  11 | Wink of an Eye                    |   5710.5
+  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
+  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
+  73 |      3 |  18 | The Lights of Zetar               |   5725.3
+  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
+  75 |      3 |  20 | The Way to Eden                   |   5832.3
+  76 |      3 |  21 | The Cloud Minders                 |   5818.4
+  77 |      3 |  22 | The Savage Curtain                |   5906.4
+  78 |      3 |  23 | All Our Yesterdays                |   5943.7
+  79 |      3 |  24 | Turnabout Intruder                |   5928.5
+(14 rows)
 ~~~
 
 Exit the SQL shell:
@@ -266,25 +248,27 @@ $ cockroach sql --insecure --host=localhost:26258
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.episodes LIMIT 10;
+> SELECT * FROM startrek.episodes WHERE stardate > 5500;
 ~~~
 
 ~~~
-+----+--------+-----+--------------------------------+----------+
-| id | season | num |             title              | stardate |
-+----+--------+-----+--------------------------------+----------+
-|  1 |      1 |   1 | The Man Trap                   |   1531.1 |
-|  2 |      1 |   2 | Charlie X                      |   1533.6 |
-|  3 |      1 |   3 | Where No Man Has Gone Before   |   1312.4 |
-|  4 |      1 |   4 | The Naked Time                 |   1704.2 |
-|  5 |      1 |   5 | The Enemy Within               |   1672.1 |
-|  6 |      1 |   6 | Mudd's Women                   |   1329.8 |
-|  7 |      1 |   7 | What Are Little Girls Made Of? |   2712.4 |
-|  8 |      1 |   8 | Miri                           |   2713.5 |
-|  9 |      1 |   9 | Dagger of the Mind             |   2715.1 |
-| 10 |      1 |  10 | The Corbomite Maneuver         |   1512.2 |
-+----+--------+-----+--------------------------------+----------+
-(10 rows)
+  id | season | num |               title               | stardate
++----+--------+-----+-----------------------------------+----------+
+  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
+  62 |      3 |   7 | Day of the Dove                   |   5630.3
+  64 |      3 |   9 | The Tholian Web                   |   5693.2
+  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
+  66 |      3 |  11 | Wink of an Eye                    |   5710.5
+  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
+  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
+  73 |      3 |  18 | The Lights of Zetar               |   5725.3
+  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
+  75 |      3 |  20 | The Way to Eden                   |   5832.3
+  76 |      3 |  21 | The Cloud Minders                 |   5818.4
+  77 |      3 |  22 | The Savage Curtain                |   5906.4
+  78 |      3 |  23 | All Our Yesterdays                |   5943.7
+  79 |      3 |  24 | Turnabout Intruder                |   5928.5
+(14 rows)
 ~~~
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
