@@ -35,10 +35,12 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), or [`IMPORT`](import.html).
+`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), and [`RESTORE`](restore.html), [`IMPORT`](import.html).
 `description` | The command that started the job.
 `user_name` | The user who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
+`running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table
+data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, or `RocksDB compaction`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
 `finished` | The `TIMESTAMP` when the job was `succeeded`, `failed`, or `canceled`.
