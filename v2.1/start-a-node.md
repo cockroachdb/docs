@@ -307,7 +307,7 @@ $ cockroach init \
 
 **Approach:**
 
-1. Start each node on GCE with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes in its locality, and `--advertise-addr` set to advertise its public address to nodes on AWS:
+1. Start each node on GCE with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes in on GCE, `--advertise-addr` set to advertise its public address to nodes on AWS, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -315,10 +315,13 @@ $ cockroach init \
     --certs-dir=certs \
     --locality=cloud=gce \
     --locality-advertise-addr=cloud=gce@<private address of node> \
-    --advertise-addr=<public address of node>
+    --advertise-addr=<public address of node> \
+    --join=<public address of node1>,<public address of node2>,<public address of node3> \
+    --cache=.25 \
+    --max-sql-memory=.25
     ~~~
 
-2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, and `--advertise-addr` set to advertise its public address to nodes on GCE:
+2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -326,7 +329,10 @@ $ cockroach init \
     --certs-dir=certs \
     --locality=cloud=aws \
     --locality-advertise-addr=cloud=aws@<private address of node> \
-    --advertise-addr=<public address of node>
+    --advertise-addr=<public address of node> \
+    --join=<public address of node1>,<public address of node2>,<public address of node3> \
+    --cache=.25 \
+    --max-sql-memory=.25
     ~~~
 
 3. Run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
