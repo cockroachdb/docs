@@ -4,7 +4,7 @@ summary: Use a local cluster to explore how CockroachDB automatically rebalances
 toc: true
 ---
 
-This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll lower the maximum size for a single range, the unit of data that is replicated in CockroachDB. You'll then run a sample workload and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
+This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll run a sample workload and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
 ## Before you begin
 
@@ -88,36 +88,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 4. Lower the max range size
-
-In CockroachDB, you use [replication zones](configure-replication-zones.html) to control the number and location of replicas. Initially, there is a single default replication zone for the entire cluster that is set to copy each range of data 3 times. This default replication factor is fine for this demo.
-
-However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, use [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) to reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING range_min_bytes=1, range_max_bytes=262144;" --insecure --host=localhost:26257
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --execute="SHOW ZONE CONFIGURATION FOR RANGE default;" --insecure
-~~~
-
-~~~
-  zone_name |                config_sql
-+-----------+------------------------------------------+
-  .default  | ALTER RANGE default CONFIGURE ZONE USING
-            |     range_min_bytes = 1,
-            |     range_max_bytes = 262144,
-            |     gc.ttlseconds = 90000,
-            |     num_replicas = 3,
-            |     constraints = '[]',
-            |     lease_preferences = '[]'
-(1 row)
-~~~
-
-## Step 5. Run a sample workload
+## Step 4. Run a sample workload
 
 CockroachDB comes with [built-in load generators](cockroach-workload.html) for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `tpcc` workload to simulates transaction processing using a rich schema of multiple tables.
 
@@ -140,13 +111,13 @@ CockroachDB comes with [built-in load generators](cockroach-workload.html) for s
 
     You'll see per-operation statistics print to standard output every second.
 
-## Step 6. Watch the replica count increase
+## Step 5. Watch the replica count increase
 
-Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and you’ll see the bytes, replica count, and other metrics increase as the `tpcc` workload writes data.
+Open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and you’ll see the replica count increase as the `tpcc` workload writes data.
 
 <img src="{{ 'images/v2.2/scalability1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Add 2 more nodes
+## Step 6. Add 2 more nodes
 
 Adding capacity is as simple as starting more nodes and joining them to the running cluster:
 
@@ -172,9 +143,9 @@ $ cockroach start \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-## Step 8. Watch data rebalance across all 5 nodes
+## Step 7. Watch data rebalance across all 5 nodes
 
-Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and replica count will be lower for nodes 4 and 5. You'll see those metrics gradually even out across all nodes, indicating that data is being automatically rebalanced to utilize the additional capacity of the new nodes.
+Back in the Admin UI, you'll now see 5 nodes listed. At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being automatically rebalanced to utilize the additional capacity of the new nodes.
 
 <img src="{{ 'images/v2.2/scalability2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -182,7 +153,7 @@ Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and rep
 After scaling to 5 nodes, the Admin UI will call out a number of under-replicated ranges. This is due to the cluster preferring 5 replicas for important [internal system data](configure-replication-zones.html#for-system-data) by default. When the cluster is less than 5 nodes, this preference is ignored in reporting, but as soon as there are more than 3 nodes, the cluster recognizes this preference and reports the under-replicated state in the UI. As those ranges are up-replicated, the under-replicated range count will decrease to 0.  
 {{site.data.alerts.end}}
 
-## Step 9.  Stop the cluster
+## Step 8.  Stop the cluster
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
