@@ -76,18 +76,6 @@ By default, the `user` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## User authentication
-
-Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
-
-- [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-
-- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To set a password for a non-`root` user, include the `--password` flag in the `cockroach user set` command.
-
-    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
-
-    Password creation is supported only in secure clusters.
-
 ## Examples
 
 ### Create a user
@@ -127,7 +115,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 </div>
 
-### Authenticate as a specific user
+### Log in as a specific user
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -236,11 +224,11 @@ DELETE 1
 
 ## See also
 
+- [Authorization](authorization.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
-- [Manage Roles](roles.html)
 - [Other Cockroach Commands](cockroach-commands.html)
