@@ -302,6 +302,8 @@ Certificate directory: certs
 
 ## See also
 
+- [Security overview](security-overview.html)
+- [How digital certificates work with CockroachDB](how-digital-certificates-work-with-CockroachDB.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)
 - [Manual Deployment](manual-deployment.html)

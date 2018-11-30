@@ -90,14 +90,14 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE ROLE`](create-role.html) | Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
+[`CREATE ROLE`](create-role.html) | Create SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members.
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
-[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](roles.html).
+[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](roles.html).
-[`GRANT <roles>`](grant-roles.html) | Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](roles.html).
-[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
+[`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](authorization.html#create-and-manage-roles).
+[`GRANT <roles>`](grant-roles.html) | Add a [role](authorization.html#create-and-manage-roles) or [user](create-and-manage-users.html) as a member to a role.
+[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](authorization.html#create-and-manage-roles).
+[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](authorization.html#create-and-manage-roles) or [user's](create-and-manage-users.html) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
