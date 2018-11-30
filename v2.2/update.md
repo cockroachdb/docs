@@ -13,7 +13,7 @@ If you update a row that contains a column referenced by a [foreign key constrai
 
 ## Required privileges
 
-The user must have the `SELECT` and `UPDATE` [privileges](privileges.html) on the table.
+The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the table.
 
 ## Synopsis
 

@@ -11,7 +11,7 @@ This statement is especially useful after applying a constraint to an existing c
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Synopsis
 

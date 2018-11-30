@@ -152,7 +152,7 @@ table tr td:nth-child(2) {
  Component | Supported | Type | Details
 -----------|-----------|------|---------
  Users | ✓ | Standard | [`GRANT` documentation](grant.html)
- Privileges | ✓ | Standard | [Privileges documentation](privileges.html)
+ Privileges | ✓ | Standard | [Privileges documentation](authorization.html#assign-privileges)
 
 ### Miscellaneous
 

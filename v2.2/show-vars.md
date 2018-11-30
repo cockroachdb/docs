@@ -13,7 +13,7 @@ the session setting variables. Some of these can also be configured via [`SET`](
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to display the session settings.
+No [privileges](authorization.html#assign-privileges) are required to display the session settings.
 
 ## Synopsis
 

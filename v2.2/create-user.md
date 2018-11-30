@@ -4,7 +4,7 @@ summary: The CREATE USER statement creates SQL users, which let you control priv
 toc: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 
 {{site.data.alerts.callout_success}}
 You can also use the [`cockroach user set`](create-and-manage-users.html) command to create and manage users.
@@ -23,7 +23,7 @@ You can also use the [`cockroach user set`](create-and-manage-users.html) comman
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
+The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -126,11 +126,11 @@ $ cockroach sql --insecure --user=jpointsman
 
 ## See also
 
+- [Authorization](authorization.html)
 - [`cockroach user` command](create-and-manage-users.html)
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
-- [Manage Roles](roles.html)
 - [Other SQL Statements](sql-statements.html)

@@ -16,7 +16,7 @@ The `SAVEPOINT` statement defines the intent to retry [transactions](transaction
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to create a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

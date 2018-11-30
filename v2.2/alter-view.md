@@ -14,7 +14,7 @@ It is not currently possible to change the `SELECT` statement executed by a view
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the view and the `CREATE` privilege on the parent database.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the view and the `CREATE` privilege on the parent database.
 
 ## Synopsis
 

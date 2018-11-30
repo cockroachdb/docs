@@ -17,7 +17,7 @@ The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](v
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to list the tables in a schema or database.
+No [privileges](authorization.html#assign-privileges) are required to list the tables in a schema or database.
 
 ## Parameters
 

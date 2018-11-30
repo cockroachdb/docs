@@ -11,7 +11,7 @@ The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table.
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
 ## Synopsis
 
