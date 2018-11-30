@@ -34,11 +34,11 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 
 ## See also
 
+- [Authorization](authorization.html)
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges`](revoke.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles` (Enterprise)](revoke-roles.html)
-- [Manage Roles](roles.html)
 - [Manage Users](create-and-manage-users.html)

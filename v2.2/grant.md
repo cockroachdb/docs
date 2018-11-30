@@ -4,7 +4,7 @@ summary: The GRANT statement grants user privileges for interacting with specifi
 toc: true
 ---
 
-The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](roles.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
+The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](authorization.html#create-and-manage-roles) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
@@ -43,7 +43,7 @@ Parameter | Description
 ----------|------------
 `table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but will not affect tables created after the grant.
 `database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but do not affect existing tables in the database.
-`user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) to whom you want to grant privileges.
+`user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles) to whom you want to grant privileges.
 
 ## Examples
 
@@ -145,6 +145,7 @@ Parameter | Description
 
 ## See also
 
+- [Authorization](authorization.html)
 - [Privileges](privileges.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
@@ -152,4 +153,3 @@ Parameter | Description
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
 - [Manage Users](create-and-manage-users.html)
-- [Manage Roles](roles.html)
