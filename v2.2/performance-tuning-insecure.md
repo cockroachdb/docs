@@ -2,13 +2,13 @@
 title: Performance Tuning
 summary: Essential techniques for getting fast reads and writes in a single- and multi-region CockroachDB deployment.
 toc: true
-certs: --certs-dir=certs
-app: ./tuning-secure.py
+certs: --insecure
+app: ./tuning.py
 ---
 
 <div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="performance-tuning-insecure.html"><button class="filter-button">Insecure</button></a>
+  <a href="performance-tuning.html"><button class="filter-button">Secure</button>
+  <button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
 This tutorial shows you essential techniques for getting fast reads and writes in CockroachDB, starting with a single-region deployment and expanding into multiple regions.
@@ -53,158 +53,11 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
+2. Note the internal IP address of each `n1-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
 
 3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n1-standard-1`.
 
 ### Step 3. Start a 3-node cluster
-
-#### Generate security certificates
-
-You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
-
-Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
-
-- A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
-- A node key pair for each node, issued to its IP addresses and any common names the machine uses.
-- A client key pair for the `root` user. You'll use this when running you client application workload as well as some `cockroach` client commands.
-
-{{site.data.alerts.callout_success}}
-As mentioned above, before beginning, it's useful to collect each instance's internal and external IP addresses, as well as any server names you want to issue certificates for.
-{{site.data.alerts.end}}
-
-1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
-
-2. Create two directories:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir my-safe-directory
-    ~~~
-    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
-    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
-
-3. Create the CA certificate and key:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-ca \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
-
-4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node1 internal IP address> \
-  	<node1 external IP address> \
-  	<node1 hostname>  \
-  	<other common names for node1> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
-
-5. Upload certificates to the first instance:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node1 address> "mkdir certs"
-  	~~~
-
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node1 address>:~/certs
-  	~~~
-
-6. Delete the local copy of the node certificate and key:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ rm certs/node.crt certs/node.key
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
-    {{site.data.alerts.end}}
-
-7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node2 internal IP address> \
-  	<node2 external IP address> \
-  	<node2 hostname>  \
-  	<other common names for node2> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
-
-8. Upload certificates to the second instance:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node2 address> "mkdir certs"
-  	~~~
-
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node2 address>:~/certs
-  	~~~
-
-9. Repeat steps 6 - 8 for the third node.
-
-10. Create a client certificate and key for the `root` user:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-client \
-  	root \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
-
-11. Upload certificates to the fourth instance, the one from which you will run a sample workload:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Create the certs directory:
-    $ ssh <username>@<instance4 address> "mkdir certs"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Upload the CA certificate and client certificate and key:
-    $ scp certs/ca.crt \
-    certs/client.root.crt \
-    certs/client.root.key \
-    <username>@<instance4 address>:~/certs
-    ~~~
-
-{{site.data.alerts.callout_info}}
-On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates.html#use-a-ui-certificate-and-key-to-access-the-admin-ui).
-{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/performance/start-cluster.md %}
 
@@ -234,8 +87,8 @@ When measuring SQL performance, it's best to run a given statement multiple time
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning-secure.py \
-    && chmod +x tuning-secure.py
+    $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning.py \
+    && chmod +x tuning.py
     ~~~
 
     As you'll see below, this client lets you pass command-line flags:
@@ -249,7 +102,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     When run, the client prints the median time in seconds across all repetitions of the statement. Optionally, you can pass two other flags, `--time` to print the execution time in seconds for each repetition of the statement, and `--cumulative` to print the cumulative time in seconds for all repetitions. `--cumulative` is particularly useful when testing writes.
 
     {{site.data.alerts.callout_success}}
-    To get similar help directly in your shell, use `{{page.app}} --help`.
+    To get similar help directly in your shell, use `./tuning.py --help`.
     {{site.data.alerts.end}}
 
 ### Step 6. Test/tune read performance
@@ -268,7 +121,7 @@ Retrieving a single row based on the primary key will usually return in 2ms or l
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT * FROM rides WHERE city = 'boston' AND id = '000007ef-fa0f-4a6e-a089-ce74aa8d2276'" \
 --repeat=50 \
@@ -291,7 +144,7 @@ Retrieving a subset of columns will usually be even faster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT rider_id, vehicle_id \
 FROM rides \
@@ -318,7 +171,7 @@ You'll get generally poor performance when retrieving a single row based on a co
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT * FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -342,7 +195,7 @@ To understand why this query performs poorly, use the SQL client built into the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT * FROM users WHERE name = 'Natalie Cunningham';"
@@ -366,7 +219,7 @@ To speed up this query, add a secondary index on `name`:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX on users (name);"
@@ -376,7 +229,7 @@ The query will now return much faster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT * FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -400,7 +253,7 @@ To understand why performance improved from 4.51ms (without index) to 1.72ms (wi
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT * FROM users WHERE name = 'Natalie Cunningham';"
@@ -430,7 +283,7 @@ For example, let's say you frequently retrieve a user's name and credit card num
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -454,7 +307,7 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham';"
@@ -477,7 +330,7 @@ Let's drop and recreate the index on `name`, this time storing the `credit_card`
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="DROP INDEX users_name_idx;"
@@ -486,7 +339,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX ON users (name) STORING (credit_card);"
@@ -497,7 +350,7 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham';"
@@ -516,7 +369,7 @@ This results in even faster performance, reducing latency from 1.77ms (index wit
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -543,7 +396,7 @@ For example, let's say you want to count the number of users who started rides o
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT count(DISTINCT users.id) \
 FROM users \
@@ -570,7 +423,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT count(DISTINCT users.id) \
@@ -607,7 +460,7 @@ To track this specifically, let's use the [`SHOW EXPERIMENTAL_RANGES`](show-expe
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE rides;"
@@ -629,7 +482,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE users;"
@@ -652,7 +505,7 @@ Now, given the `WHERE` condition of the join, the full table scan of `rides`, ac
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX ON rides (start_time) STORING (rider_id);"
@@ -666,7 +519,7 @@ Adding the secondary index reduced the query time from 1573ms to 61.56ms:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT count(DISTINCT users.id) \
 FROM users \
@@ -693,7 +546,7 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT count(DISTINCT users.id) \
@@ -728,7 +581,7 @@ Let's check the ranges for the new index:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM INDEX rides@rides_start_time_idx;"
@@ -750,7 +603,7 @@ Now let's say you want to get the latest ride of each of the 5 most used vehicle
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT vehicle_id, max(end_time) \
 FROM rides \
@@ -787,7 +640,7 @@ However, as you can see, this query is slow because, currently, when the `WHERE`
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT vehicle_id, max(end_time) \
@@ -836,7 +689,7 @@ Because CockroachDB won't use an available secondary index when using `IN (list)
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT vehicle_id \
 FROM rides \
@@ -867,7 +720,7 @@ And then put the results into the `IN` list to get the most recent rides of the 
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT vehicle_id, max(end_time) \
 FROM rides \
@@ -917,7 +770,7 @@ For the purpose of demonstration, the command below inserts the same user 100 ti
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347')" \
 --repeat=100 \
@@ -940,7 +793,7 @@ The 100 inserts took 910.98ms to complete, which isn't bad. However, it's signif
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES \
 (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), \
@@ -976,7 +829,7 @@ Let's consider the `users` table:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW INDEXES FROM users;"
@@ -1000,7 +853,7 @@ To make this more concrete, let's count how many rows have a name that starts wi
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT count(*) \
 FROM users \
@@ -1018,7 +871,7 @@ Median time (milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="UPDATE users \
 SET name = 'Carl Kimball' \
@@ -1038,7 +891,7 @@ Now, assuming that the `users_name_idx` index is no longer needed, lets drop the
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
-{{page.certs}} \
+--insecure \
 --host=<address of any node> \
 --database=movr \
 --execute="DROP INDEX users_name_idx;"
@@ -1046,7 +899,7 @@ $ cockroach sql \
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="UPDATE users \
 SET name = 'Peedie Hirata' \
@@ -1067,7 +920,7 @@ Now let's focus on the common case of inserting a row into a table and then retr
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Toni Brooks', '800 Camden Lane, Brooklyn, NY 11218', '98244843845134960')" \
 --repeat=1
@@ -1080,7 +933,7 @@ Median time (milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="SELECT id FROM users WHERE name = 'Toni Brooks'" \
 --repeat=1
@@ -1099,7 +952,7 @@ Combined, these statements are relatively fast, at 15.96ms, but an even more per
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ {{page.app}} \
+$ ./tuning.py \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Brian Brooks', '800 Camden Lane, Brooklyn, NY 11218', '98244843845134960') \
 RETURNING id" \
@@ -1159,77 +1012,11 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
+2. Note the internal IP address of each `n1-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
 
 3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n1-standard-1`.
 
 ### Step 9. Scale the cluster
-
-#### Generate security certificates
-
-1. On your local machine, where you generated certificates for your first nodes, create the certificate and key for one of the new nodes, issued to all common names you might use to refer to the node:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node internal IP address> \
-  	<node external IP address> \
-  	<node hostname>  \
-  	<other common names for node> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
-
-2. Upload certificates to the instance:
-
-    {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node address> "mkdir certs"
-  	~~~
-
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node address>:~/certs
-  	~~~
-
-3. Delete the local copy of the node certificate and key:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ rm certs/node.crt certs/node.key
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
-    {{site.data.alerts.end}}
-
-4. Repeat steps 1 - 3 for each new node.
-
-5. Upload the client certificates you created earlier to the additional instances in the `us-west1-a` and `us-west2-a` zones for your client application workload:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Create the certs directory:
-    $ ssh <username>@<instance address> "mkdir certs"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    # Upload the CA certificate and client certificate and key:
-    $ scp certs/ca.crt \
-    certs/client.root.crt \
-    certs/client.root.key \
-    <username>@<instance address>:~/certs
-    ~~~
-
-#### Start the new nodes
 
 {% include {{ page.version.version }}/performance/scale-cluster.md %}
 

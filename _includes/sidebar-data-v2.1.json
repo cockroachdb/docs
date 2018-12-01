@@ -335,7 +335,8 @@
           {
             "title": "Performance Tuning",
             "urls": [
-              "/${VERSION}/performance-tuning.html"
+              "/${VERSION}/performance-tuning.html",
+              "/${VERSION}/performance-tuning-insecure.html"
             ]
           },
           {

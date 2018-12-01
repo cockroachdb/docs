@@ -18,7 +18,12 @@ parser.add_argument("--cumulative",
     help="print cumulative time for all repetitions of the statement", action="store_true")
 args = parser.parse_args()
 
-conn = psycopg2.connect(database='movr', user='root', host=args.host, port=26257)
+conn = psycopg2.connect(
+    database='movr',
+    user='root',
+    host=args.host,
+    port=26257
+)
 conn.set_session(autocommit=True)
 cur = conn.cursor()
 

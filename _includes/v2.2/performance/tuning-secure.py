@@ -22,7 +22,11 @@ conn = psycopg2.connect(
     database='movr',
     user='root',
     host=args.host,
-    port=26257
+    port=26257,
+    sslmode='require',
+    sslrootcert='certs/ca.crt',
+    sslkey='certs/client.root.key',
+    sslcert='certs/client.root.crt'
 )
 conn.set_session(autocommit=True)
 cur = conn.cursor()

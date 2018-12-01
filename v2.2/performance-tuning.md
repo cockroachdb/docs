@@ -2,8 +2,14 @@
 title: Performance Tuning
 summary: Essential techniques for getting fast reads and writes in a single- and multi-region CockroachDB deployment.
 toc: true
-drift: true
+certs: --certs-dir=certs
+app: ./tuning-secure.py
 ---
+
+<div class="filters filters-big clearfix">
+  <button class="filter-button current"><strong>Secure</strong></button>
+  <a href="performance-tuning-insecure.html"><button class="filter-button">Insecure</button></a>
+</div>
 
 This tutorial shows you essential techniques for getting fast reads and writes in CockroachDB, starting with a single-region deployment and expanding into multiple regions.
 
@@ -11,95 +17,7 @@ For a comprehensive list of tuning recommendations, only some of which are demon
 
 ## Overview
 
-### Topology
-
-You'll start with a 3-node CockroachDB cluster in a single Google Compute Engine (GCE) zone, with an extra instance for running a client application workload:
-
-<img src="{{ 'images/v2.2/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
-
-{{site.data.alerts.callout_info}}
-Within a single GCE zone, network latency between instances should be sub-millisecond.
-{{site.data.alerts.end}}
-
-You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an extra instance in each region for a client application workload:
-
-<img src="{{ 'images/v2.2/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
-
-To reproduce the performance demonstrated in this tutorial:
-
-- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.
-- For running the client application workload, you'll use smaller instances, such as `n1-standard-1`.
-
-### Schema
-
-Your schema and data will be based on the fictional peer-to-peer vehicle-sharing app, MovR, that was featured in the [CockroachDB 2.0 demo](https://www.youtube.com/watch?v=v2QK5VgLx6E):
-
-<img src="{{ 'images/v2.2/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
-
-A few notes about the schema:
-
-- There are just three self-explanatory tables: In essence, `users` represents the people registered for the service, `vehicles` represents the pool of vehicles for the service, and `rides` represents when and where users have participated.   
-- Each table has a composite primary key, with `city` being first in the key. Although not necessary initially in the single-region deployment, once you scale the cluster to multiple regions, these compound primary keys will enable you to [geo-partition data at the row level](partitioning.html#partition-using-primary-key) by `city`. As such, this tutorial demonstrates a schema designed for future scaling.
-- The [`IMPORT`](import.html) feature you'll use to import the data does not support foreign keys, so you'll import the data without [foreign key constraints](foreign-key.html). However, the import will create the secondary indexes required to add the foreign keys later.
-- The `rides` table contains both `city` and the seemingly redundant `vehicle_city`. This redundancy is necessary because, while it is not possible to apply more than one foreign key constraint to a single column, you will need to apply two foreign key constraints to the `rides` table, and each will require city as part of the constraint. The duplicate `vehicle_city`, which is kept in synch with `city` via a [`CHECK` constraint](check.html), lets you overcome [this limitation](https://github.com/cockroachdb/cockroach/issues/23580).
-
-### Important concepts
-
-To understand the techniques in this tutorial, and to be able to apply them in your own scenarios, it's important to first review some important [CockroachDB architectural concepts](architecture/overview.html):
-
-{% include {{ page.version.version }}/misc/basic-terms.md %}
-
-As mentioned above, when a query is executed, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
-
-Let's consider how these mechanics play out in some hypothetical queries.
-
-#### Read scenario
-
-First, imagine a simple read scenario where:
-
-- There are 3 nodes in the cluster.
-- There are 3 small tables, each fitting in a single range.
-- Ranges are replicated 3 times (the default).
-- A query is executed against node 2 to read from table 3.
-
-<img src="{{ 'images/v2.2/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
-
-In this case:
-
-1. Node 2 (the gateway node) receives the request to read from table 3.
-2. The leaseholder for table 3 is on node 3, so the request is routed there.
-3. Node 3 returns the data to node 2.
-4. Node 2 responds to the client.
-
-If the query is received by the node that has the leaseholder for the relevant range, there are fewer network hops:
-
-<img src="{{ 'images/v2.2/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
-
-#### Write scenario
-
-Now imagine a simple write scenario where a query is executed against node 3 to write to table 1:
-
-<img src="{{ 'images/v2.2/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
-
-In this case:
-
-1. Node 3 (the gateway node) receives the request to write to table 1.
-2. The leaseholder for table 1 is on node 1, so the request is routed there.
-3. The leaseholder is the same replica as the Raft leader (as is typical), so it simultaneously appends the write to its own Raft log and notifies its follower replicas on nodes 2 and 3.
-4. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leader and the write is committed to the key-values on the agreeing replicas. In this diagram, the follower on node 2 acknowledged the write, but it could just as well have been the follower on node 3. Also note that the follower not involved in the consensus agreement usually commits the write very soon after the others.
-5. Node 1 returns acknowledgement of the commit to node 3.
-6. Node 3 responds to the client.
-
-Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
-
-<img src="{{ 'images/v2.2/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
-
-#### Network and I/O bottlenecks
-
-With the above examples in mind, it's always important to consider network latency and disk I/O as potential performance bottlenecks. In summary:
-
-- For reads, hops between the gateway node and the leaseholder add latency.
-- For writes, hops between the gateway node and the leaseholder/Raft leader, and hops between the leaseholder/Raft leader and Raft followers, add latency. In addition, since Raft log entries are persisted to disk before a write is committed, disk I/O is important.
+{% include {{ page.version.version }}/performance/overview.md %}
 
 ## Single-region deployment
 
@@ -122,24 +40,7 @@ With the above examples in mind, it's always important to consider network laten
 
 ### Step 1. Configure your network
 
-CockroachDB requires TCP communication on two ports:
-
-- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
-- **8080** (`tcp:8080`) for accessing the Web UI
-
-Since GCE instances communicate on their internal IP addresses by default, you don't need to take any action to enable inter-node communication. However, if you want to access the Web UI from your local network, you must [create a firewall rule for your project](https://cloud.google.com/vpc/docs/using-firewalls):
-
-Field | Recommended Value
-------|------------------
-Name | **cockroachweb**
-Source filter | IP ranges
-Source IP ranges | Your local network's IP ranges
-Allowed protocols | **tcp:8080**
-Target tags | `cockroachdb`
-
-{{site.data.alerts.callout_info}}
-The **tag** feature will let you easily apply the rule to your instances.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/performance/configure-network.md %}
 
 ### Step 2. Create instances
 
@@ -152,231 +53,164 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal IP address of each `n1-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
+2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
 3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n1-standard-1`.
 
 ### Step 3. Start a 3-node cluster
 
-1. SSH to the first `n1-standard-4` instance.
+#### Generate security certificates
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
+
+Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
+
+- A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
+- A node key pair for each node, issued to its IP addresses and any common names the machine uses.
+- A client key pair for the `root` user. You'll use this when running you client application workload as well as some `cockroach` client commands.
+
+{{site.data.alerts.callout_success}}
+As mentioned above, before beginning, it's useful to collect each instance's internal and external IP addresses, as well as any server names you want to issue certificates for.
+{{site.data.alerts.end}}
+
+1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
+
+2. Create two directories:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ mkdir certs
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ mkdir my-safe-directory
     ~~~
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Create the CA certificate and key:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach cert create-ca \
+  	{{page.certs}} \
+  	--ca-key=my-safe-directory/ca.key
+  	~~~
+
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach cert create-node \
+  	<node1 internal IP address> \
+  	<node1 external IP address> \
+  	<node1 hostname>  \
+  	<other common names for node1> \
+  	localhost \
+  	127.0.0.1 \
+  	{{page.certs}} \
+  	--ca-key=my-safe-directory/ca.key
+  	~~~
+
+5. Upload certificates to the first instance:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	# Create the certs directory:
+  	$ ssh <username>@<node1 address> "mkdir certs"
+  	~~~
+
+  	{% include copy-clipboard.html %}
+  	~~~ shell
+  	# Upload the CA certificate and node certificate and key:
+  	$ scp certs/ca.crt \
+  	certs/node.crt \
+  	certs/node.key \
+  	<username>@<node1 address>:~/certs
+  	~~~
+
+6. Delete the local copy of the node certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --advertise-host=<node1 internal address> \
-    --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
-    --locality=cloud=gce,region=us-east1,zone=us-east1-b \
-    --cache=.25 \
-    --max-sql-memory=.25 \
-    --background
+    $ rm certs/node.crt certs/node.key
     ~~~
 
-4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances.
+    {{site.data.alerts.callout_info}}
+    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
+    {{site.data.alerts.end}}
 
-5. On any of the `n1-standard-4` instances, run the [`cockroach init`](initialize-a-cluster.html) command:
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach cert create-node \
+  	<node2 internal IP address> \
+  	<node2 external IP address> \
+  	<node2 hostname>  \
+  	<other common names for node2> \
+  	localhost \
+  	127.0.0.1 \
+  	{{page.certs}} \
+  	--ca-key=my-safe-directory/ca.key
+  	~~~
+
+8. Upload certificates to the second instance:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	# Create the certs directory:
+  	$ ssh <username>@<node2 address> "mkdir certs"
+  	~~~
+
+  	{% include copy-clipboard.html %}
+  	~~~ shell
+  	# Upload the CA certificate and node certificate and key:
+  	$ scp certs/ca.crt \
+  	certs/node.crt \
+  	certs/node.key \
+  	<username>@<node2 address>:~/certs
+  	~~~
+
+9. Repeat steps 6 - 8 for the third node.
+
+10. Create a client certificate and key for the `root` user:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach cert create-client \
+  	root \
+  	{{page.certs}} \
+  	--ca-key=my-safe-directory/ca.key
+  	~~~
+
+11. Upload certificates to the fourth instance, the one from which you will run a sample workload:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=localhost
+    # Create the certs directory:
+    $ ssh <username>@<instance4 address> "mkdir certs"
     ~~~
 
-    Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Upload the CA certificate and client certificate and key:
+    $ scp certs/ca.crt \
+    certs/client.root.crt \
+    certs/client.root.key \
+    <username>@<instance4 address>:~/certs
+    ~~~
+
+{{site.data.alerts.callout_info}}
+On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates.html#use-a-ui-certificate-and-key-to-access-the-admin-ui).
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/performance/start-cluster.md %}
 
 ### Step 4. Import the Movr dataset
 
-Now you'll import Movr data representing users, vehicles, and rides in 3 eastern US cities (New York, Boston, and Washington DC) and 3 western US cities (Los Angeles, San Francisco, and Seattle).
-
-1. SSH to the fourth instance, the one not running a CockroachDB node.
-
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
-    ~~~
-
-3. Copy the binary into the `PATH`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
-    ~~~
-
-4. Start the [built-in SQL shell](use-the-built-in-sql-client.html), pointing it at one of the CockroachDB nodes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --insecure --host=<address of any node>
-    ~~~
-
-5. Create the `movr` database and set it as the default:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE movr;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET DATABASE = movr;
-    ~~~
-
-6. Use the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > IMPORT TABLE users (
-      	id UUID NOT NULL,
-        city STRING NOT NULL,
-      	name STRING NULL,
-      	address STRING NULL,
-      	credit_card STRING NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
-    )
-    CSV DATA (
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/users/n1.0.csv'
-    );
-    ~~~
-
-    ~~~
-            job_id       |  status   | fraction_completed | rows | index_entries | system_records | bytes
-    +--------------------+-----------+--------------------+------+---------------+----------------+--------+
-      390345990764396545 | succeeded |                  1 | 1998 |             0 |              0 | 241052
-    (1 row)
-
-    Time: 2.882582355s
-    ~~~    
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > IMPORT TABLE vehicles (
-        id UUID NOT NULL,
-        city STRING NOT NULL,
-        type STRING NULL,
-        owner_id UUID NULL,
-        creation_time TIMESTAMP NULL,
-        status STRING NULL,
-        ext JSON NULL,
-        mycol STRING NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC)
-    )
-    CSV DATA (
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/vehicles/n1.0.csv'
-    );
-    ~~~
-
-    ~~~
-            job_id       |  status   | fraction_completed | rows  | index_entries | system_records |  bytes
-    +--------------------+-----------+--------------------+-------+---------------+----------------+---------+
-      390346109887250433 | succeeded |                  1 | 19998 |         19998 |              0 | 3558767
-    (1 row)
-
-    Time: 5.803841493s
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > IMPORT TABLE rides (
-      	id UUID NOT NULL,
-        city STRING NOT NULL,
-        vehicle_city STRING NULL,
-      	rider_id UUID NULL,
-      	vehicle_id UUID NULL,
-      	start_address STRING NULL,
-      	end_address STRING NULL,
-      	start_time TIMESTAMP NULL,
-      	end_time TIMESTAMP NULL,
-      	revenue DECIMAL(10,2) NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
-        INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
-        CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
-    )
-    CSV DATA (
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.0.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.1.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.2.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.3.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.4.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.5.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.6.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.7.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.8.csv',
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/rides/n1.9.csv'
-    );
-    ~~~
-
-    ~~~
-            job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |   bytes
-    +--------------------+-----------+--------------------+--------+---------------+----------------+-----------+
-      390346325693792257 | succeeded |                  1 | 999996 |       1999992 |              0 | 339741841
-    (1 row)
-
-    Time: 44.620371424s
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page](admin-ui-jobs-page.html) of the Web UI.
-    {{site.data.alerts.end}}
-
-7. Logically, there should be a number of [foreign key](foreign-key.html) relationships between the tables:
-
-    Referencing columns | Referenced columns
-    --------------------|-------------------
-    `vehicles.city`, `vehicles.owner_id` | `users.city`, `users.id`
-    `rides.city`, `rides.rider_id` | `users.city`, `users.id`
-    `rides.vehicle_city`, `rides.vehicle_id` | `vehicles.city`, `vehicles.id`
-
-    As mentioned earlier, it wasn't possible to put these relationships in place during `IMPORT`, but it was possible to create the required secondary indexes. Now, let's add the foreign key constraints:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE vehicles
-    ADD CONSTRAINT fk_city_ref_users
-    FOREIGN KEY (city, owner_id)
-    REFERENCES users (city, id);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE rides
-    ADD CONSTRAINT fk_city_ref_users
-    FOREIGN KEY (city, rider_id)
-    REFERENCES users (city, id);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE rides
-    ADD CONSTRAINT fk_vehicle_city_ref_vehicles
-    FOREIGN KEY (vehicle_city, vehicle_id)
-    REFERENCES vehicles (city, id);
-    ~~~
-
-8. Exit the built-in SQL shell:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
+{% include {{ page.version.version }}/performance/import-movr.md %}
 
 ### Step 5. Install the Python client
 
@@ -400,8 +234,8 @@ When measuring SQL performance, it's best to run a given statement multiple time
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning.py \
-    && chmod +x tuning.py
+    $ wget https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/performance/tuning-secure.py \
+    && chmod +x tuning-secure.py
     ~~~
 
     As you'll see below, this client lets you pass command-line flags:
@@ -415,7 +249,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
     When run, the client prints the median time in seconds across all repetitions of the statement. Optionally, you can pass two other flags, `--time` to print the execution time in seconds for each repetition of the statement, and `--cumulative` to print the cumulative time in seconds for all repetitions. `--cumulative` is particularly useful when testing writes.
 
     {{site.data.alerts.callout_success}}
-    To get similar help directly in your shell, use `./tuning.py --help`.
+    To get similar help directly in your shell, use `{{page.app}} --help`.
     {{site.data.alerts.end}}
 
 ### Step 6. Test/tune read performance
@@ -434,7 +268,7 @@ Retrieving a single row based on the primary key will usually return in 2ms or l
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT * FROM rides WHERE city = 'boston' AND id = '000007ef-fa0f-4a6e-a089-ce74aa8d2276'" \
 --repeat=50 \
@@ -457,7 +291,7 @@ Retrieving a subset of columns will usually be even faster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT rider_id, vehicle_id \
 FROM rides \
@@ -484,7 +318,7 @@ You'll get generally poor performance when retrieving a single row based on a co
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT * FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -508,7 +342,7 @@ To understand why this query performs poorly, use the SQL client built into the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT * FROM users WHERE name = 'Natalie Cunningham';"
@@ -532,7 +366,7 @@ To speed up this query, add a secondary index on `name`:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX on users (name);"
@@ -542,7 +376,7 @@ The query will now return much faster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT * FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -566,7 +400,7 @@ To understand why performance improved from 4.51ms (without index) to 1.72ms (wi
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT * FROM users WHERE name = 'Natalie Cunningham';"
@@ -596,7 +430,7 @@ For example, let's say you frequently retrieve a user's name and credit card num
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -620,7 +454,7 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham';"
@@ -643,7 +477,7 @@ Let's drop and recreate the index on `name`, this time storing the `credit_card`
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="DROP INDEX users_name_idx;"
@@ -652,7 +486,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX ON users (name) STORING (credit_card);"
@@ -663,7 +497,7 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham';"
@@ -682,7 +516,7 @@ This results in even faster performance, reducing latency from 1.77ms (index wit
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT name, credit_card FROM users WHERE name = 'Natalie Cunningham'" \
 --repeat=50 \
@@ -709,7 +543,7 @@ For example, let's say you want to count the number of users who started rides o
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT count(DISTINCT users.id) \
 FROM users \
@@ -736,7 +570,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT count(DISTINCT users.id) \
@@ -773,7 +607,7 @@ To track this specifically, let's use the [`SHOW EXPERIMENTAL_RANGES`](show-expe
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE rides;"
@@ -795,7 +629,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE users;"
@@ -818,7 +652,7 @@ Now, given the `WHERE` condition of the join, the full table scan of `rides`, ac
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="CREATE INDEX ON rides (start_time) STORING (rider_id);"
@@ -832,7 +666,7 @@ Adding the secondary index reduced the query time from 1573ms to 61.56ms:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT count(DISTINCT users.id) \
 FROM users \
@@ -859,7 +693,7 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT count(DISTINCT users.id) \
@@ -894,7 +728,7 @@ Let's check the ranges for the new index:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW EXPERIMENTAL_RANGES FROM INDEX rides@rides_start_time_idx;"
@@ -916,7 +750,7 @@ Now let's say you want to get the latest ride of each of the 5 most used vehicle
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT vehicle_id, max(end_time) \
 FROM rides \
@@ -953,7 +787,7 @@ However, as you can see, this query is slow because, currently, when the `WHERE`
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="EXPLAIN SELECT vehicle_id, max(end_time) \
@@ -1002,7 +836,7 @@ Because CockroachDB won't use an available secondary index when using `IN (list)
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT vehicle_id \
 FROM rides \
@@ -1033,7 +867,7 @@ And then put the results into the `IN` list to get the most recent rides of the 
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT vehicle_id, max(end_time) \
 FROM rides \
@@ -1083,7 +917,7 @@ For the purpose of demonstration, the command below inserts the same user 100 ti
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347')" \
 --repeat=100 \
@@ -1106,7 +940,7 @@ The 100 inserts took 910.98ms to complete, which isn't bad. However, it's signif
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES \
 (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), (gen_random_uuid(), 'new york', 'Max Roach', '411 Drum Street', '173635282937347'), \
@@ -1142,7 +976,7 @@ Let's consider the `users` table:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="SHOW INDEXES FROM users;"
@@ -1166,7 +1000,7 @@ To make this more concrete, let's count how many rows have a name that starts wi
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT count(*) \
 FROM users \
@@ -1184,7 +1018,7 @@ Median time (milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="UPDATE users \
 SET name = 'Carl Kimball' \
@@ -1204,7 +1038,7 @@ Now, assuming that the `users_name_idx` index is no longer needed, lets drop the
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---insecure \
+{{page.certs}} \
 --host=<address of any node> \
 --database=movr \
 --execute="DROP INDEX users_name_idx;"
@@ -1212,7 +1046,7 @@ $ cockroach sql \
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="UPDATE users \
 SET name = 'Peedie Hirata' \
@@ -1233,7 +1067,7 @@ Now let's focus on the common case of inserting a row into a table and then retr
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Toni Brooks', '800 Camden Lane, Brooklyn, NY 11218', '98244843845134960')" \
 --repeat=1
@@ -1246,7 +1080,7 @@ Median time (milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="SELECT id FROM users WHERE name = 'Toni Brooks'" \
 --repeat=1
@@ -1265,7 +1099,7 @@ Combined, these statements are relatively fast, at 15.96ms, but an even more per
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./tuning.py \
+$ {{page.app}} \
 --host=<address of any node> \
 --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'Brian Brooks', '800 Camden Lane, Brooklyn, NY 11218', '98244843845134960') \
 RETURNING id" \
@@ -1325,73 +1159,79 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal IP address of each `n1-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
+2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
 3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n1-standard-1`.
 
 ### Step 9. Scale the cluster
 
-1. SSH to one of the `n1-standard-4` instances in the `us-west1-a` zone.
+#### Generate security certificates
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. On your local machine, where you generated certificates for your first nodes, create the certificate and key for one of the new nodes, issued to all common names you might use to refer to the node:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach cert create-node \
+  	<node internal IP address> \
+  	<node external IP address> \
+  	<node hostname>  \
+  	<other common names for node> \
+  	localhost \
+  	127.0.0.1 \
+  	{{page.certs}} \
+  	--ca-key=my-safe-directory/ca.key
+  	~~~
+
+2. Upload certificates to the instance:
+
+    {% include copy-clipboard.html %}
+  	~~~ shell
+  	# Create the certs directory:
+  	$ ssh <username>@<node address> "mkdir certs"
+  	~~~
+
+  	{% include copy-clipboard.html %}
+  	~~~ shell
+  	# Upload the CA certificate and node certificate and key:
+  	$ scp certs/ca.crt \
+  	certs/node.crt \
+  	certs/node.key \
+  	<username>@<node address>:~/certs
+  	~~~
+
+3. Delete the local copy of the node certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ rm certs/node.crt certs/node.key
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
+    {{site.data.alerts.end}}
+
+4. Repeat steps 1 - 3 for each new node.
+
+5. Upload the client certificates you created earlier to the additional instances in the `us-west1-a` and `us-west2-a` zones for your client application workload:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<instance address> "mkdir certs"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    # Upload the CA certificate and client certificate and key:
+    $ scp certs/ca.crt \
+    certs/client.root.crt \
+    certs/client.root.key \
+    <username>@<instance address>:~/certs
     ~~~
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+#### Start the new nodes
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --advertise-host=<node internal address> \
-    --join=<same as earlier> \
-    --locality=cloud=gce,region=us-west1,zone=us-west1-a \
-    --cache=.25 \
-    --max-sql-memory=.25 \
-    --background
-    ~~~
-
-4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances in the `us-west1-a` zone.
-
-5. SSH to one of the `n1-standard-4` instances in the `us-west2-a` zone.
-
-6. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
-    ~~~
-
-7. Run the [`cockroach start`](start-a-node.html) command:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --advertise-host=<node1 internal address> \
-    --join=<same as earlier> \
-    --locality=cloud=gce,region=us-west2,zone=us-west2-a \
-    --cache=.25 \
-    --max-sql-memory=.25 \
-    --background
-    ~~~
-
-8. Repeat steps 5 - 7 for the other two `n1-standard-4` instances in the `us-west2-a` zone.
+{% include {{ page.version.version }}/performance/scale-cluster.md %}
 
 ### Step 10. Install the Python client
 
@@ -1399,750 +1239,23 @@ In each of the new zones, SSH to the instance not running a CockroachDB node, an
 
 ### Step 11. Check rebalancing
 
-Since you started each node with the `--locality` flag set to its GCE zone, over the next minutes, CockroachDB will rebalance data evenly across the zones.
-
-To check this, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is more or less even across all nodes:
-
-<img src="{{ 'images/v2.2/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
-
-For reference, here's how the nodes map to zones:
-
-Node IDs | Zone
----------|-----
-1-3 | `us-east1-b` (South Carolina)
-4-6 | `us-west1-a` (Oregon)
-7-9 | `us-west2-a` (Los Angeles)
-
-To verify even balancing at range level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---insecure \
---host=<address of any node> \
---database=movr \
---execute="SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles;"
-~~~
-
-~~~
-  start_key | end_key | range_id | replicas | lease_holder
-+-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       33 | {3,4,7}  |            7
-(1 row)
-~~~
-
-In this case, we can see that, for the single range containing `vehicles` data, one replica is in each zone, and the leaseholder is in the `us-west2-a` zone.
+{% include {{ page.version.version }}/performance/check-rebalancing.md %}
 
 ### Step 12. Test performance
 
-In general, all of the tuning techniques featured in the single-region scenario above still apply in a multi-region deployment. However, the fact that data and leaseholders are spread across the US means greater latencies in many cases.
-
-#### Reads
-
-For example, imagine we are a Movr administrator in New York, and we want to get the IDs and descriptions of all New York-based bikes that are currently in use:
-
-1. SSH to the instance in `us-east1-b` with the Python client.
-
-2. Query for the data:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./tuning.py \
-    --host=<address of a node in us-east1-b> \
-    --statement="SELECT id, ext FROM vehicles \
-    WHERE city = 'new york' \
-        AND type = 'bike' \
-        AND status = 'in_use'" \
-    --repeat=50 \
-    --times
-    ~~~
-
-    ~~~
-    Result:
-    ['id', 'ext']
-    ['0068ee24-2dfb-437d-9a5d-22bb742d519e', "{u'color': u'green', u'brand': u'Kona'}"]
-    ['01b80764-283b-4232-8961-a8d6a4121a08', "{u'color': u'green', u'brand': u'Pinarello'}"]
-    ['02a39628-a911-4450-b8c0-237865546f7f', "{u'color': u'black', u'brand': u'Schwinn'}"]
-    ['02eb2a12-f465-4575-85f8-a4b77be14c54', "{u'color': u'black', u'brand': u'Pinarello'}"]
-    ['02f2fcc3-fea6-4849-a3a0-dc60480fa6c2', "{u'color': u'red', u'brand': u'FujiCervelo'}"]
-    ['034d42cf-741f-428c-bbbb-e31820c68588', "{u'color': u'yellow', u'brand': u'Santa Cruz'}"]
-    ...
-
-    Times (milliseconds):
-    [933.8209629058838, 72.02410697937012, 72.45206832885742, 72.39294052124023, 72.8158950805664, 72.07584381103516, 72.21412658691406, 71.96712493896484, 71.75517082214355, 72.16811180114746, 71.78592681884766, 72.91603088378906, 71.91109657287598, 71.4719295501709, 72.40676879882812, 71.8080997467041, 71.84004783630371, 71.98500633239746, 72.40891456604004, 73.75001907348633, 71.45905494689941, 71.53081893920898, 71.46596908569336, 72.07608222961426, 71.94995880126953, 71.41804695129395, 71.29096984863281, 72.11899757385254, 71.63381576538086, 71.3050365447998, 71.83194160461426, 71.20394706726074, 70.9981918334961, 72.79205322265625, 72.63493537902832, 72.15285301208496, 71.8698501586914, 72.30591773986816, 71.53582572937012, 72.69001007080078, 72.03006744384766, 72.56317138671875, 71.61688804626465, 72.17121124267578, 70.20092010498047, 72.12018966674805, 73.34589958190918, 73.01592826843262, 71.49410247802734, 72.19099998474121]
-
-    Median time (milliseconds):
-    72.0270872116
-    ~~~
-
-As we saw earlier, the leaseholder for the `vehicles` table is in `us-west2-a` (Los Angeles), so our query had to go from the gateway node in `us-east1-b` all the way to the west coast and then back again before returning data to the client.
-
-For contrast, imagine we are now a Movr administrator in Los Angeles, and we want to get the IDs and descriptions of all Los Angeles-based bikes that are currently in use:
-
-1. SSH to the instance in `us-west2-a` with the Python client.
-
-2. Query for the data:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./tuning.py \
-    --host=<address of a node in us-west2-a> \
-    --statement="SELECT id, ext FROM vehicles \
-    WHERE city = 'los angeles' \
-        AND type = 'bike' \
-        AND status = 'in_use'" \
-    --repeat=50 \
-    --times
-    ~~~
-
-    ~~~
-    Result:
-    ['id', 'ext']
-    ['00078349-94d4-43e6-92be-8b0d1ac7ee9f', "{u'color': u'blue', u'brand': u'Merida'}"]
-    ['003f84c4-fa14-47b2-92d4-35a3dddd2d75', "{u'color': u'red', u'brand': u'Kona'}"]
-    ['0107a133-7762-4392-b1d9-496eb30ee5f9', "{u'color': u'yellow', u'brand': u'Kona'}"]
-    ['0144498b-4c4f-4036-8465-93a6bea502a3', "{u'color': u'blue', u'brand': u'Pinarello'}"]
-    ['01476004-fb10-4201-9e56-aadeb427f98a', "{u'color': u'black', u'brand': u'Merida'}"]
-
-    Times (milliseconds):
-    [782.6759815216064, 8.564949035644531, 8.226156234741211, 7.949113845825195, 7.86590576171875, 7.842063903808594, 7.674932479858398, 7.555961608886719, 7.642984390258789, 8.024930953979492, 7.717132568359375, 8.46409797668457, 7.520914077758789, 7.6541900634765625, 7.458925247192383, 7.671833038330078, 7.740020751953125, 7.771015167236328, 7.598161697387695, 8.411169052124023, 7.408857345581055, 7.469892501831055, 7.524967193603516, 7.764101028442383, 7.750988006591797, 7.2460174560546875, 6.927967071533203, 7.822990417480469, 7.27391242980957, 7.730960845947266, 7.4710845947265625, 7.4310302734375, 7.33494758605957, 7.455110549926758, 7.021188735961914, 7.083892822265625, 7.812976837158203, 7.625102996826172, 7.447957992553711, 7.179021835327148, 7.504940032958984, 7.224082946777344, 7.257938385009766, 7.714986801147461, 7.4939727783203125, 7.6160430908203125, 7.578849792480469, 7.890939712524414, 7.546901702880859, 7.411956787109375]
-
-    Median time (milliseconds):
-    7.6071023941
-    ~~~
-
-Because the leaseholder for `vehicles` is in the same zone as the client request, this query took just 7.60ms compared to the similar query in New York that took 72.02ms.  
-
-#### Writes
-
-The geographic distribution of data impacts write performance as well. For example, imagine 100 people in Seattle and 100 people in New York want to create new Movr accounts:
-
-1. SSH to the instance in `us-west1-a` with the Python client.
-
-2. Create 100 Seattle-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-west1-a> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [277.4538993835449, 50.12702941894531, 47.75214195251465, 48.13408851623535, 47.872066497802734, 48.65407943725586, 47.78695106506348, 49.14689064025879, 52.770137786865234, 49.00097846984863, 48.68602752685547, 47.387123107910156, 47.36208915710449, 47.6841926574707, 46.49209976196289, 47.06096649169922, 46.753883361816406, 46.304941177368164, 48.90894889831543, 48.63715171813965, 48.37393760681152, 49.23295974731445, 50.13418197631836, 48.310041427612305, 48.57516288757324, 47.62911796569824, 47.77693748474121, 47.505855560302734, 47.89996147155762, 49.79205131530762, 50.76479911804199, 50.21500587463379, 48.73299598693848, 47.55592346191406, 47.35088348388672, 46.7071533203125, 43.00808906555176, 43.1060791015625, 46.02813720703125, 47.91092872619629, 68.71294975280762, 49.241065979003906, 48.9039421081543, 47.82295227050781, 48.26998710632324, 47.631025314331055, 64.51892852783203, 48.12812805175781, 67.33417510986328, 48.603057861328125, 50.31013488769531, 51.02396011352539, 51.45716667175293, 50.85396766662598, 49.07512664794922, 47.49894142150879, 44.67201232910156, 43.827056884765625, 44.412851333618164, 46.69189453125, 49.55601692199707, 49.16882514953613, 49.88598823547363, 49.31306838989258, 46.875, 46.69594764709473, 48.31886291503906, 48.378944396972656, 49.0570068359375, 49.417972564697266, 48.22111129760742, 50.662994384765625, 50.58097839355469, 75.44088363647461, 51.05400085449219, 50.85110664367676, 48.187971115112305, 56.7781925201416, 42.47403144836426, 46.2191104888916, 53.96890640258789, 46.697139739990234, 48.99096488952637, 49.1330623626709, 46.34690284729004, 47.09315299987793, 46.39410972595215, 46.51689529418945, 47.58000373840332, 47.924041748046875, 48.426151275634766, 50.22597312927246, 50.1859188079834, 50.37498474121094, 49.861907958984375, 51.477909088134766, 73.09293746948242, 48.779964447021484, 45.13692855834961, 42.2968864440918]
-
-    Median time (milliseconds):
-    48.4025478363
-    ~~~
-
-3. SSH to the instance in `us-east1-b` with the Python client.
-
-4. Create 100 new NY-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-east1-b> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [131.05082511901855, 116.88899993896484, 115.15498161315918, 117.095947265625, 121.04082107543945, 115.8750057220459, 113.80696296691895, 113.05880546569824, 118.41201782226562, 125.30899047851562, 117.5389289855957, 115.23890495300293, 116.84799194335938, 120.0411319732666, 115.62800407409668, 115.08989334106445, 113.37089538574219, 115.15498161315918, 115.96989631652832, 133.1961154937744, 114.25995826721191, 118.09396743774414, 122.24102020263672, 116.14608764648438, 114.80998992919922, 131.9139003753662, 114.54391479492188, 115.15307426452637, 116.7759895324707, 135.10799407958984, 117.18511581420898, 120.15485763549805, 118.0570125579834, 114.52388763427734, 115.28396606445312, 130.00011444091797, 126.45292282104492, 142.69423484802246, 117.60401725769043, 134.08493995666504, 117.47002601623535, 115.75007438659668, 117.98381805419922, 115.83089828491211, 114.88890647888184, 113.23404312133789, 121.1700439453125, 117.84791946411133, 115.35286903381348, 115.0820255279541, 116.99700355529785, 116.67394638061523, 116.1041259765625, 114.67289924621582, 112.98894882202148, 117.1119213104248, 119.78602409362793, 114.57300186157227, 129.58717346191406, 118.37983131408691, 126.68204307556152, 118.30306053161621, 113.27195167541504, 114.22920227050781, 115.80777168273926, 116.81294441223145, 114.76683616638184, 115.1430606842041, 117.29192733764648, 118.24417114257812, 116.56999588012695, 113.8620376586914, 114.88819122314453, 120.80597877502441, 132.39002227783203, 131.00910186767578, 114.56179618835449, 117.03896522521973, 117.72680282592773, 115.6010627746582, 115.27681350708008, 114.52317237854004, 114.87483978271484, 117.78903007507324, 116.65701866149902, 122.6949691772461, 117.65193939208984, 120.5449104309082, 115.61179161071777, 117.54202842712402, 114.70890045166016, 113.58809471130371, 129.7171115875244, 117.57993698120117, 117.1119213104248, 117.64001846313477, 140.66505432128906, 136.41691207885742, 116.24789237976074, 115.19908905029297]
-
-    Median time (milliseconds):
-    116.868495941
-    ~~~
-
-It took 48.40ms to create a user in Seattle and 116.86ms to create a user in New York. To better understand this discrepancy, let's look at the distribution of data for the `users` table:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---insecure \
---host=<address of any node> \
---database=movr \
---execute="SHOW EXPERIMENTAL_RANGES FROM TABLE users;"
-~~~
-
-~~~
-  start_key | end_key | range_id | replicas | lease_holder
-+-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       49 | {2,6,8}  |            6
-(1 row)
-~~~
-
-For the single range containing `users` data, one replica is in each zone, with the leaseholder in the `us-west1-a` zone. This means that:
-
-- When creating a user in Seattle, the request doesn't have to leave the zone to reach the leaseholder. However, since a write requires consensus from its replica group, the write has to wait for confirmation from either the replica in `us-west1-b` (Los Angeles) or `us-east1-b` (New York) before committing and then returning confirmation to the client.
-- When creating a user in New York, there are more network hops and, thus, increased latency. The request first needs to travel across the continent to the leaseholder in `us-west1-a`. It then has to wait for confirmation from either the replica in `us-west1-b` (Los Angeles) or `us-east1-b` (New York) before committing and then returning confirmation to the client back in the east.
+{% include {{ page.version.version }}/performance/test-performance.md %}
 
 ### Step 13. Partition data by city
 
-For this service, the most effective technique for improving read and write latency is to [geo-partition](partitioning.html) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone](configure-replication-zones.html) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city don't have to leave that region.
-
-1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/).
-
-2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](enterprise-licensing.html#set-the-trial-or-enterprise-license-key):
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --host=<address of any node> \
-    --execute="SET CLUSTER SETTING cluster.organization = '<your org name>';"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --host=<address of any node> \
-    --execute="SET CLUSTER SETTING enterprise.license = '<your license>';"
-    ~~~
-
-3. Define partitions for all tables and their secondary indexes.
-
-    Start with the `users` table:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER TABLE users \
-    PARTITION BY LIST (city) ( \
-        PARTITION new_york VALUES IN ('new york'), \
-        PARTITION boston VALUES IN ('boston'), \
-        PARTITION washington_dc VALUES IN ('washington dc'), \
-        PARTITION seattle VALUES IN ('seattle'), \
-        PARTITION san_francisco VALUES IN ('san francisco'), \
-        PARTITION los_angeles VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    Now define partitions for the `vehicles` table and its secondary indexes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER TABLE vehicles \
-    PARTITION BY LIST (city) ( \
-        PARTITION new_york VALUES IN ('new york'), \
-        PARTITION boston VALUES IN ('boston'), \
-        PARTITION washington_dc VALUES IN ('washington dc'), \
-        PARTITION seattle VALUES IN ('seattle'), \
-        PARTITION san_francisco VALUES IN ('san francisco'), \
-        PARTITION los_angeles VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER INDEX vehicles_auto_index_fk_city_ref_users \
-    PARTITION BY LIST (city) ( \
-        PARTITION new_york_idx VALUES IN ('new york'), \
-        PARTITION boston_idx VALUES IN ('boston'), \
-        PARTITION washington_dc_idx VALUES IN ('washington dc'), \
-        PARTITION seattle_idx VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    Next, define partitions for the `rides` table and its secondary indexes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER TABLE rides \
-    PARTITION BY LIST (city) ( \
-        PARTITION new_york VALUES IN ('new york'), \
-        PARTITION boston VALUES IN ('boston'), \
-        PARTITION washington_dc VALUES IN ('washington dc'), \
-        PARTITION seattle VALUES IN ('seattle'), \
-        PARTITION san_francisco VALUES IN ('san francisco'), \
-        PARTITION los_angeles VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER INDEX rides_auto_index_fk_city_ref_users \
-    PARTITION BY LIST (city) ( \
-        PARTITION new_york_idx1 VALUES IN ('new york'), \
-        PARTITION boston_idx1 VALUES IN ('boston'), \
-        PARTITION washington_dc_idx1 VALUES IN ('washington dc'), \
-        PARTITION seattle_idx1 VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx1 VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx1 VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="ALTER INDEX rides_auto_index_fk_vehicle_city_ref_vehicles \
-    PARTITION BY LIST (vehicle_city) ( \
-        PARTITION new_york_idx2 VALUES IN ('new york'), \
-        PARTITION boston_idx2 VALUES IN ('boston'), \
-        PARTITION washington_dc_idx2 VALUES IN ('washington dc'), \
-        PARTITION seattle_idx2 VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx2 VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx2 VALUES IN ('los angeles') \
-    );"
-    ~~~
-
-    Finally, drop an unused index on `rides` rather than partition it:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --insecure \
-    --database=movr \
-    --host=<address of any node> \
-    --execute="DROP INDEX rides_start_time_idx;"
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
-    {{site.data.alerts.end}}
-
-7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) to require city data to be stored on specific nodes based on node locality.
-
-    City | Locality
-    -----|---------
-    New York | `zone=us-east1-b`
-    Boston | `zone=us-east1-b`
-    Washington DC | `zone=us-east1-b`
-    Seattle | `zone=us-west1-a`
-    San Francisco | `zone=us-west2-a`
-    Los Angelese | `zone=us-west2-a`
-
-    {{site.data.alerts.callout_info}}
-    Since our nodes are located in 3 specific GCE zones, we're only going to use the `zone=` portion of node locality. If we were using multiple zones per regions, we would likely use the `region=` portion of the node locality instead.
-    {{site.data.alerts.end}}
-
-    Start with the `users` table partitions:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    Move on to the `vehicles` table and secondary index partitions:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    Finish with the `rides` table and secondary index partitions:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
-    --insecure \
-    --host=<address of any node>
-    ~~~
+{% include {{ page.version.version }}/performance/partition-by-city.md %}
 
 ### Step 14. Check rebalancing after partitioning
 
-Over the next minutes, CockroachDB will rebalance all partitions based on the constraints you defined.
-
-To check this at a high level, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is still close to even across all nodes but much higher than before partitioning:
-
-<img src="{{ 'images/v2.2/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
-
-To check at a more granular level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` table:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---insecure \
---host=<address of any node> \
---database=movr \
---execute="SELECT * FROM \
-[SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles] \
-WHERE \"start_key\" IS NOT NULL \
-    AND \"start_key\" NOT LIKE '%Prefix%';"
-~~~
-
-~~~
-     start_key     |          end_key           | range_id | replicas | lease_holder
-+------------------+----------------------------+----------+----------+--------------+
-  /"boston"        | /"boston"/PrefixEnd        |      105 | {1,2,3}  |            3
-  /"los angeles"   | /"los angeles"/PrefixEnd   |      121 | {7,8,9}  |            8
-  /"new york"      | /"new york"/PrefixEnd      |      101 | {1,2,3}  |            3
-  /"san francisco" | /"san francisco"/PrefixEnd |      117 | {7,8,9}  |            8
-  /"seattle"       | /"seattle"/PrefixEnd       |      113 | {4,5,6}  |            5
-  /"washington dc" | /"washington dc"/PrefixEnd |      109 | {1,2,3}  |            1
-(6 rows)
-~~~
-
-For reference, here's how the nodes map to zones:
-
-Node IDs | Zone
----------|-----
-1-3 | `us-east1-b` (South Carolina)
-4-6 | `us-west1-a` (Oregon)
-7-9 | `us-west2-a` (Los Angeles)
-
-We can see that, after partitioning, the replicas for New York, Boston, and Washington DC are located on nodes 1-3 in `us-east1-b`, replicas for Seattle are located on nodes 4-6 in `us-west1-a`, and replicas for San Francisco and Los Angeles are located on nodes 7-9 in `us-west2-a`.
+{% include {{ page.version.version }}/performance/check-rebalancing-after-partitioning.md %}
 
 ### Step 15. Test performance after partitioning
 
-After partitioning, reads and writers for a specific city will be much faster because all replicas for that city are now located on the nodes closest to the city.
-
-To check this, let's repeat a few of the read and write queries that we executed before partitioning in [step 12](#step-12-test-performance).
-
-#### Reads
-
-Again imagine we are a Movr administrator in New York, and we want to get the IDs and descriptions of all New York-based bikes that are currently in use:
-
-1. SSH to the instance in `us-east1-b` with the Python client.
-
-2. Query for the data:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./tuning.py \
-    --host=<address of a node in us-east1-b> \
-    --statement="SELECT id, ext FROM vehicles \
-    WHERE city = 'new york' \
-        AND type = 'bike' \
-        AND status = 'in_use'" \
-    --repeat=50 \
-    --times
-    ~~~
-
-    ~~~
-    Result:
-    ['id', 'ext']
-    ['0068ee24-2dfb-437d-9a5d-22bb742d519e', "{u'color': u'green', u'brand': u'Kona'}"]
-    ['01b80764-283b-4232-8961-a8d6a4121a08', "{u'color': u'green', u'brand': u'Pinarello'}"]
-    ['02a39628-a911-4450-b8c0-237865546f7f', "{u'color': u'black', u'brand': u'Schwinn'}"]
-    ['02eb2a12-f465-4575-85f8-a4b77be14c54', "{u'color': u'black', u'brand': u'Pinarello'}"]
-    ['02f2fcc3-fea6-4849-a3a0-dc60480fa6c2', "{u'color': u'red', u'brand': u'FujiCervelo'}"]
-    ['034d42cf-741f-428c-bbbb-e31820c68588', "{u'color': u'yellow', u'brand': u'Santa Cruz'}"]
-    ...
-
-    Times (milliseconds):
-    [20.065784454345703, 7.866144180297852, 8.362054824829102, 9.08803939819336, 7.925987243652344, 7.543087005615234, 7.786035537719727, 8.227825164794922, 7.907867431640625, 7.654905319213867, 7.793903350830078, 7.627964019775391, 7.833957672119141, 7.858037948608398, 7.474184036254883, 9.459972381591797, 7.726192474365234, 7.194995880126953, 7.364034652709961, 7.25102424621582, 7.650852203369141, 7.663965225219727, 9.334087371826172, 7.810115814208984, 7.543087005615234, 7.134914398193359, 7.922887802124023, 7.220029830932617, 7.606029510498047, 7.208108901977539, 7.333993911743164, 7.464170455932617, 7.679939270019531, 7.436990737915039, 7.62486457824707, 7.235050201416016, 7.420063018798828, 7.795095443725586, 7.39598274230957, 7.546901702880859, 7.582187652587891, 7.9669952392578125, 7.418155670166016, 7.539033889770508, 7.805109024047852, 7.086992263793945, 7.069826126098633, 7.833957672119141, 7.43412971496582, 7.035017013549805]
-
-    Median time (milliseconds):
-    7.62641429901
-    ~~~
-
-Before partitioning, this query took a median time of 72.02ms. After partitioning, the query took a median time of only 7.62ms.
-
-#### Writes
-
-Now let's again imagine 100 people in New York and 100 people in Seattle and 100 people in New York want to create new Movr accounts:
-
-1. SSH to the instance in `us-west1-a` with the Python client.
-
-2. Create 100 Seattle-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-west1-a> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [41.8248176574707, 9.701967239379883, 8.725166320800781, 9.058952331542969, 7.819175720214844, 6.247997283935547, 10.265827178955078, 7.627964019775391, 9.120941162109375, 7.977008819580078, 9.247064590454102, 8.929967880249023, 9.610176086425781, 14.40286636352539, 8.588075637817383, 8.67319107055664, 9.417057037353516, 7.652044296264648, 8.917093276977539, 9.135961532592773, 8.604049682617188, 9.220123291015625, 7.578134536743164, 9.096860885620117, 8.942842483520508, 8.63790512084961, 7.722139358520508, 13.59701156616211, 9.176015853881836, 11.484146118164062, 9.212017059326172, 7.563114166259766, 8.793115615844727, 8.80289077758789, 7.827043533325195, 7.6389312744140625, 17.47584342956543, 9.436845779418945, 7.63392448425293, 8.594989776611328, 9.002208709716797, 8.93402099609375, 8.71896743774414, 8.76307487487793, 8.156061172485352, 8.729934692382812, 8.738040924072266, 8.25190544128418, 8.971929550170898, 7.460832595825195, 8.889198303222656, 8.45789909362793, 8.761167526245117, 10.223865509033203, 8.892059326171875, 8.961915969848633, 8.968114852905273, 7.750988006591797, 7.761955261230469, 9.199142456054688, 9.02700424194336, 9.509086608886719, 9.428977966308594, 7.902860641479492, 8.940935134887695, 8.615970611572266, 8.75401496887207, 7.906913757324219, 8.179187774658203, 11.447906494140625, 8.71419906616211, 9.202003479003906, 9.263038635253906, 9.089946746826172, 8.92496109008789, 10.32114028930664, 7.913827896118164, 9.464025497436523, 10.612010955810547, 8.78596305847168, 8.878946304321289, 7.575035095214844, 10.657072067260742, 8.777856826782227, 8.649110794067383, 9.012937545776367, 8.931875228881836, 9.31406021118164, 9.396076202392578, 8.908987045288086, 8.002996444702148, 9.089946746826172, 7.5588226318359375, 8.918046951293945, 12.117862701416016, 7.266998291015625, 8.074045181274414, 8.955001831054688, 8.868932723999023, 8.755922317504883]
-
-    Median time (milliseconds):
-    8.90052318573
-    ~~~
-
-    Before partitioning, this query took a median time of 48.40ms. After partitioning, the query took a median time of only 8.90ms.
-
-3. SSH to the instance in `us-east1-b` with the Python client.
-
-4. Create 100 new NY-based users:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./tuning.py \
-    --host=<address of a node in us-east1-b> \
-    --statement="INSERT INTO users VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347')" \
-    --repeat=100 \
-    --times
-    ~~~
-
-    ~~~
-    Times (milliseconds):
-    [276.3068675994873, 9.830951690673828, 8.772134780883789, 9.304046630859375, 8.24880599975586, 7.959842681884766, 7.848978042602539, 7.879018783569336, 7.754087448120117, 10.724067687988281, 13.960123062133789, 9.825944900512695, 9.60993766784668, 9.273052215576172, 9.41920280456543, 8.040904998779297, 16.484975814819336, 10.178089141845703, 8.322000503540039, 9.468793869018555, 8.002042770385742, 9.185075759887695, 9.54294204711914, 9.387016296386719, 9.676933288574219, 13.051986694335938, 9.506940841674805, 12.327909469604492, 10.377168655395508, 15.023946762084961, 9.985923767089844, 7.853031158447266, 9.43303108215332, 9.164094924926758, 10.941028594970703, 9.37199592590332, 12.359857559204102, 8.975028991699219, 7.728099822998047, 8.310079574584961, 9.792089462280273, 9.448051452636719, 8.057117462158203, 9.37795639038086, 9.753942489624023, 9.576082229614258, 8.192062377929688, 9.392023086547852, 7.97581672668457, 8.165121078491211, 9.660959243774414, 8.270978927612305, 9.901046752929688, 8.085966110229492, 10.581016540527344, 9.831905364990234, 7.883787155151367, 8.077859878540039, 8.161067962646484, 10.02812385559082, 7.9898834228515625, 9.840965270996094, 9.452104568481445, 9.747028350830078, 9.003162384033203, 9.206056594848633, 9.274005889892578, 7.8449249267578125, 8.827924728393555, 9.322881698608398, 12.08186149597168, 8.76307487487793, 8.353948593139648, 8.182048797607422, 7.736921310424805, 9.31406021118164, 9.263992309570312, 9.282112121582031, 7.823944091796875, 9.11712646484375, 8.099079132080078, 9.156942367553711, 8.363962173461914, 10.974884033203125, 8.729934692382812, 9.2620849609375, 9.27591323852539, 8.272886276245117, 8.25190544128418, 8.093118667602539, 9.259939193725586, 8.413076400756836, 8.198976516723633, 9.95182991027832, 8.024930953979492, 8.895158767700195, 8.243083953857422, 9.076833724975586, 9.994029998779297, 10.149955749511719]
-
-    Median time (milliseconds):
-    9.26303863525
-    ~~~
-
-    Before partitioning, this query took a median time of 116.86ms. After partitioning, the query took a median time of only 9.26ms.
+{% include {{ page.version.version }}/performance/test-performance-after-partitioning.md %}
 
 ## See also
 
