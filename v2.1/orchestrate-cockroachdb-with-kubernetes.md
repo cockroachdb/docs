@@ -237,7 +237,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ### Remove nodes
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
 
 ### Upgrade the cluster
 

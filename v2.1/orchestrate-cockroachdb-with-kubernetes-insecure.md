@@ -84,7 +84,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ### Remove nodes
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
 
 ### Upgrade the cluster
 
