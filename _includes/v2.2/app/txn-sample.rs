@@ -2,7 +2,7 @@ extern crate postgres;
 
 use postgres::{Connection, TlsMode, Result};
 use postgres::transaction::Transaction;
-use self::postgres::error::T_R_SERIALIZATION_FAILURE;
+use postgres::error::T_R_SERIALIZATION_FAILURE;
 
 /// Runs op inside a transaction and retries it as needed.
 /// On non-retryable failures, the transaction is aborted and
