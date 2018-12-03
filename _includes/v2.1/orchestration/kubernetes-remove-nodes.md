@@ -1,4 +1,4 @@
-To safely remove a node from your cluster, you must first decommission the node that you want to remove and only then adjust the `--replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+To safely remove a node from your cluster, you must first decommission the node and only then adjust the `--replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
 
 {{site.data.alerts.callout_danger}}
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
@@ -32,10 +32,10 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
     </section>
 
-2. Note the ID of the most recently created node and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
+2. Note the ID of the node with the highest number in its address (`my-release-cockroachdb-3` in this case) and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
-    It's important to decommission the most recently created node because, when you reduce the `--replica` count, Kubernetes will remove the most recently created pod.
+    It's important to decommission the node with the highest number in its address because, when you reduce the `--replica` count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">

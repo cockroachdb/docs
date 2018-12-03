@@ -165,7 +165,9 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     cluster-init-secure   1         1            19m
     ~~~
 
-{{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+{{site.data.alerts.end}}
 
 ## Step 6. Test the cluster
 

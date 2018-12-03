@@ -37,7 +37,7 @@
 
 2. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
-    1. Get the name of the `Pending` CSR for pod 1:
+    1. Get the name of the `Pending` CSR for the first pod:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -54,7 +54,7 @@
 
         If you do not see a `Pending` CSR, wait a minute and try again.
 
-    2. Examine the CSR for pod 1:
+    2. Examine the CSR for the first pod:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -81,7 +81,7 @@
         Events:  <none>
         ~~~
 
-    3. If everything looks correct, approve the CSR for pod 1:
+    3. If everything looks correct, approve the CSR for the first pod:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -173,4 +173,6 @@
         cockroachdb-2   1/1       Running   0          3m
         ~~~
 
-{{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+{{site.data.alerts.end}}
