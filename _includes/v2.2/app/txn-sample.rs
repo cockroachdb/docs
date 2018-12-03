@@ -9,7 +9,7 @@ use postgres::error::T_R_SERIALIZATION_FAILURE;
 /// rolled back; on success, the transaction is committed.
 fn execute_txn<T, F>(conn: &Connection, mut op: F) -> Result<T>
 where
-    F: FnMut(&Transaction) -> Result<T>,
+    F: Fn(&Transaction) -> Result<T>,
 {
     let txn = conn.transaction()?;
     loop {
