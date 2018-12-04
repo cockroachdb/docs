@@ -314,7 +314,7 @@ header {
 			}
 
 			&__item-link {
-				margin: 0 10px;
+				margin: 0 15px;
 				text-decoration: none;
 			}
 
@@ -327,7 +327,7 @@ header {
 				padding: 15px;
 				background-color: #ffffff;
 				border-radius: 5px;
-				box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+				@include cl-box-shadow--blue;
 				opacity: 0;
 				pointer-events: none;
 				transition: opacity 0.4s ease;

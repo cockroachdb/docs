@@ -339,7 +339,7 @@ header {
           opacity: 1;
           pointer-events: all; }
     header nav.desktop .desktop-menu__item-link {
-      margin: 0 10px;
+      margin: 0 15px;
       text-decoration: none; }
     header nav.desktop .desktop-menu__dropdown-container {
       display: flex;
@@ -350,7 +350,7 @@ header {
       padding: 15px;
       background-color: #ffffff;
       border-radius: 5px;
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px 0 rgba(17, 29, 57, 0.1), 0 4px 20px 0 rgba(17, 29, 57, 0.12);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s ease;
