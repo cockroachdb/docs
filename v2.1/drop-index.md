@@ -6,6 +6,7 @@ toc: true
 
 The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
@@ -126,3 +127,8 @@ pq: index "orders_auto_index_fk_customer_ref_customers" is in use as a foreign k
 +------------+-----------------+-----------------+----------------------+-----------+
 (1 row)
 ~~~
+
+## See Also
+
+- [Indexes](indexes.html)
+- [Online Schema Changes](online-schema-changes.html)

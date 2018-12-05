@@ -6,6 +6,7 @@ toc: true
 
 The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.
 
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -134,3 +135,4 @@ DROP TABLE
 - [`DELETE`](delete.html)
 - [`DROP INDEX`](drop-index.html)
 - [`DROP VIEW`](drop-view.html)
+- [Online Schema Changes](online-schema-changes.html)
