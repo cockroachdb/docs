@@ -359,6 +359,7 @@ header {
 				&-link {
 					display: block;
 					@include type-button;
+					letter-spacing: 0;
 					line-height: 35px;
 					text-transform: none;
 					color: $cl_blue;
