@@ -764,13 +764,14 @@ a:not([href]) {
       padding-bottom: 100px;
       max-width: 100%;
       min-width: 0;
-      padding-top: 105px; }
+      padding-top: 105px;
+      overflow-x: scroll; }
       @media screen and (min-width: 992px) {
         #content #main-content .content-col {
           padding-top: 0;
           min-height: 625px;
-          padding-left: 310px;
-          padding-right: 45px; }
+          margin-left: 310px;
+          margin-right: 45px; }
           #content #main-content .content-col.no-sidebar {
             padding-left: 30px; }
           #content #main-content .content-col.no-toc {
