@@ -22,9 +22,9 @@ Approach | Use case description
 
 ## Accessing the Admin UI for a secure cluster
 
-On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) for a secure cluster, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.
+On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
 
-For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA in addition to the CockroachDB-created certificates:
+For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates:
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
