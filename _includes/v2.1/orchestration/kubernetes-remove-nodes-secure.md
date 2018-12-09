@@ -11,6 +11,17 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
+
+    ~~~
+      id |                          address                                     | build  |            started_at            |            updated_at            | is_available | is_live
+    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
+       1 | my-release-cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | my-release-cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | my-release-cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | my-release-cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+    (4 rows)
+    ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
@@ -30,7 +41,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
     </section>
 
-2. Note the ID of the node with the highest number in its address (`my-release-cockroachdb-3` in this case) and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
+2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
     It's important to decommission the node with the highest number in its address because, when you reduce the `--replica` count, Kubernetes will remove the pod for that node.
