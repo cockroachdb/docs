@@ -157,7 +157,7 @@
             ]
           },
           {
-            "title": "Orchestration",
+            "title": "Orchestration with Kubernetes",
             "urls": [
               "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
