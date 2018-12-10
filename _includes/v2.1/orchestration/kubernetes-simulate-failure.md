@@ -53,3 +53,4 @@ To see this in action:
     NAME                       READY     STATUS    RESTARTS   AGE
     my-release-cockroachdb-2   1/1       Running   0          44s
     ~~~
+    </section>

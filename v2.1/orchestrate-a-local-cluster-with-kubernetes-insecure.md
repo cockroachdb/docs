@@ -1,15 +1,16 @@
 ---
-title: Orchestration
+title: Orchestration with Kubernetes
 summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
 toc: true
 ---
 
 Other tutorials in this section feature the ways that CockroachDB automates operations for you. On top of this built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 
-This page walks you through a simple demonstration, using the open-source Kubernetes orchestration system. Starting with a few configuration files, you'll quickly create an insecure 3-node local cluster. You'll run a load generator against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
+This page walks you through a simple demonstration, using the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either a few configuration files or the CockroachDB [Helm](https://helm.sh/) chart, you'll quickly create an insecure 3-node local cluster. You'll run a load generator against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
-{{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](orchestration.html).
+{{site.data.alerts.end}}
 
 ## Before you begin
 
@@ -38,9 +39,20 @@ Feature | Description
 
 ## Step 2. Start CockroachDB
 
-When starting a cluster manually, you run the <code>cockroach start</code> command multiple times, once per node. In this step, you use a Kubernetes StatefulSet configuration instead, reducing the effort of starting 3 nodes to a single command.
+To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="helm">Use Helm</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
+</section>
 
 ## Step 3. Test the cluster
 
@@ -66,6 +78,7 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
     $ kubectl get pods
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
     NAME                      READY     STATUS    RESTARTS   AGE
     cockroachdb-0             1/1       Running   0          28m
@@ -73,38 +86,31 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
     cockroachdb-2             1/1       Running   0          10m
     example-545f866f5-2gsrs   1/1       Running   0          25m
     ~~~
+    </section>
 
-## Step 4. Monitor the cluster
-
-To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state and the load generator's activity:
-
-1. Port-forward from your local machine to one of the pods:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl port-forward cockroachdb-0 8080
+    <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
-
+    NAME                                 READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-0             1/1       Running   0          28m
+    my-release-cockroachdb-1             1/1       Running   0          27m
+    my-release-cockroachdb-2             1/1       Running   0          10m
+    example-545f866f5-2gsrs              1/1       Running   0          25m
     ~~~
-    Forwarding from 127.0.0.1:8080 -> 8080
-    ~~~
+    </section>    
 
-2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a> and click **Metrics** on the left-hand navigation bar.
+## Step 4. Access the Admin UI
 
-3. On the **Overview** dashboard, note that there are 3 healthy nodes with many SQL inserts executing per second across them.
-
-    <img src="{{ 'images/v2.1/automated-operations1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-4. Click the **Databases** tab on the left to verify that the `bank` database you created manually, as well as the `kv` database created by the load generated, are listed.
+{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
 ## Step 5. Simulate node failure
 
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
-## Step 6. Scale the cluster
+## Step 6. Add nodes
 
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -113,6 +119,18 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     ~~~
     statefulset "cockroachdb" scaled
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl scale statefulset my-release-cockroachdb --replicas=4
+    ~~~
+
+    ~~~
+    statefulset "my-release-cockroachdb" scaled
+    ~~~
+    </section>
 
 2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
 
@@ -121,6 +139,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     $ kubectl get pods
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
     NAME                      READY     STATUS    RESTARTS   AGE
     cockroachdb-0             1/1       Running   0          28m
@@ -129,8 +148,24 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
     cockroachdb-3             1/1       Running   0          5s
     example-545f866f5-2gsrs   1/1       Running   0          25m
     ~~~
+    </section>
 
-## Step 7. Stop the cluster
+    <section class="filter-content" markdown="1" data-scope="helm">
+    ~~~
+    NAME                                 READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-0             1/1       Running   0          28m
+    my-release-cockroachdb-1             1/1       Running   0          27m
+    my-release-cockroachdb-2             1/1       Running   0          10m
+    my-release-cockroachdb-3             1/1       Running   0          5s
+    example-545f866f5-2gsrs              1/1       Running   0          25m
+    ~~~
+    </section>
+
+## Step 7. Remove nodes
+
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
+
+## Step 8. Stop the cluster
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
