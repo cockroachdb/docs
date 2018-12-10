@@ -28,7 +28,7 @@ Computed columns:
 
 ## Creation
 
-Computed columns can only be added at the time of [table creation](create-table.html). Use the following syntax:
+To define a computed column, use the following syntax:
 
 ~~~
 column_name <type> AS (<expr>) STORED
