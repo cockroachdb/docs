@@ -39,54 +39,112 @@ Term | Definition
 For added context about CockroachDB's fault tolerance and automated repair capabilities, see [this training](training/fault-tolerance-and-automated-repair.html).
 {{site.data.alerts.end}}
 
+
+## Operating Systems
+
+For information about operating system requirements, see the relevant Install page:
+
+- [Install CockroachDB on Mac](install-cockroachdb-mac.html)
+- [Install CockroachDB on Linux](install-cockroachdb-linux.html)
+- [Install CockroachDB on Windows](install-cockroachdb-windows.html)
+
 ## Hardware
 
 ### Basic hardware recommendations
 
-- Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
+Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
-- At a bare minimum, each node should have **2 GB of RAM and one entire core**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
+#### CPU, memory, and storage recommendations
+
+- At a bare minimum, each node should have **2 GB of RAM and one entire core**.
+
+    More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of cores and additional memory to match with a ratio of 4-8 GB of RAM per core, never exceeding a maximum of 16 GB.
+
     {{site.data.alerts.callout_danger}}
     Avoid "burstable" or "shared-core" virtual machines that limit the load on a single core.
     {{site.data.alerts.end}}
 
-- For best performance:
-    - Use SSDs over HDDs.
-    - Use larger/more powerful nodes. Adding more CPU is usually more beneficial than adding more RAM.
+- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+- **[Need to add kernel settings]**
+- Avoid using shared storage such as NFS, CIFS and CEPH storage.
+- The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
-- For best resilience:
-    - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
-    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
-        {{site.data.alerts.callout_danger}}
-        {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-        {{site.data.alerts.end}}
+#### Performance recommendations
+
+For best performance:
+
+- For storage, SSD or NVMe devices will yield the best performance results. The usual volume size should be 300-500 GB.
+
+    Monitor IOPS for higher service times, if they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+
+- The ideal configuration is 16 CPU, 32-64 GB memory nodes.
+
+    To add more processing power, add more nodes rather than using higher CPU per node; higher CPUs or cores will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+
+- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decreases, add more nodes to your cluster to add IOPS.
+
+#### Resilience recommendations
+
+For more resilient clusters:
+
+- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 8 cores (i.e., 16 threads), one per node.
+- Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
+
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
+
+    {{site.data.alerts.callout_danger}}
+    {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+    {{site.data.alerts.end}}
 
 ### Cloud-specific recommendations
 
-Cockroach Labs recommends the following cloud-specific configurations based on our own internal testing. Before using configurations not recommended here, be sure to test them exhaustively.
+Cockroach Labs recommends the following cloud-specific configurations based on our own [internal testing](https://www.cockroachlabs.com/blog/2018_cloud_report/). Before using configurations not recommended here, be sure to test them exhaustively.
 
 #### AWS
 
-- Use `m` (general purpose), `c` (compute-optimized), or `i` (storage-optimized) [instances](https://aws.amazon.com/ec2/instance-types/). For example, Cockroach Labs has used `m3.large` instances (2 vCPUs and 7.5 GiB of RAM per instance) for internal testing.
-- **Do not** use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
+- Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
+
+    For example, Cockroach Labs has used `m5d.xlarge` instances (16 CPU and 16 GiB of RAM per instance, NVMe SSD) and `c5d.4xlarge` (16 CPU and 32 GiB of RAM per instance, NVMe SSD) for internal testing.
+
+    {{site.data.alerts.callout_danger}}
+    Do not use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
+    {{site.data.alerts.end}}
+
 - Use [Provisioned IOPS SSD-backed (io1) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) or [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html).
+
+    EBS needs to have IOPS provisioned, which can be very expensive. If you can't use EBS, we recommend using SSD with `nobarrier` when disk corruption is tolerable.
+
+- When mounting SSD, we recommend using one larger disk per node instead of multiple smaller disks per node. CockroachDB may not always rebalance optimally when nodes have multiple disks.
+- We recommend using 16 CPU, 32-64 GiB memory each.
 
 #### Azure
 
-- Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs. For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
+- Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs.
+    For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
+
+    {{site.data.alerts.callout_danger}}
+    Do not use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on a single core. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
+    {{site.data.alerts.end}}
+
 - Use [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). Note that [the size of a Premium Storage disk affects its IOPS](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage#premium-storage-disk-limits).
 - If you choose local SSD storage, on reboot, the VM can come back with the `ntfs` filesystem. Be sure your automation monitors for this and reformats the disk to the Linux filesystem you chose initially.
-- **Do not** use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on a single core. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
 
 #### Digital Ocean
 
 - Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
-#### GCE
+#### GCP
 
-- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing). For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing.
-- **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
+
+    For example, Cockroach Labs has used `n1-standard-16` for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+
+    {{site.data.alerts.callout_danger}}
+    Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+    {{site.data.alerts.end}}
+
 - Use [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). Note that [the IOPS of SSD persistent disks depends both on the disk size and number of CPUs on the machine](https://cloud.google.com/compute/docs/disks/performance#optimizessdperformance).
+- `nobarrier` can be used with SSDs, but only if it has battery-backed write cache. Without one, data can be corrupted in the event of a crash.
 
 ## Security
 
@@ -162,7 +220,7 @@ Environment | Featured Approach
 [AWS](deploy-cockroachdb-on-aws.html#step-4-set-up-load-balancing) | Use Amazon's managed load balancing service.
 [Azure](deploy-cockroachdb-on-microsoft-azure.html#step-4-set-up-load-balancing) | Use Azure's managed load balancing service.
 [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
-[GCE](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCE's managed TCP proxy load balancing service.
+[GCP](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCP's managed TCP proxy load balancing service.
 
 ## Monitoring and alerting
 
