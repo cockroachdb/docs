@@ -5,15 +5,17 @@ toc: true
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="orchestrate-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button>
-  <button class="filter-button current"><strong>Insecure</strong></button></a>
+  <a href="orchestrate-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button></a>
+  <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
 This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) Kubernetes package manager.
 
 To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
-{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
+{{site.data.alerts.end}}
 
 ## Before you begin
 
