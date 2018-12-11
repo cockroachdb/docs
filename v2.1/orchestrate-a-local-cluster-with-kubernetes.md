@@ -1,12 +1,14 @@
 ---
-title: Orchestration with Kubernetes (Insecure)
+title: Orchestrate a Local Cluster with Kubernetes
 summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
 toc: true
+secure: true
+redirect_from: orchestration-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="orchestrate-a-local-cluster-with-kubernetes.html"><button class="filter-button">Secure</button></a>
-  <button class="filter-button current"><strong>Insecure</strong></button>
+  <button class="filter-button current"><strong>Secure</strong></button>
+  <a href="orchestrate-a-local-cluster-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
 On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
@@ -29,16 +31,16 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 </div>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-secure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-secure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
 
-{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/test-cluster-secure.md %}
 
 ## Step 4. Access the Admin UI
 
@@ -105,7 +107,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## Step 7. Remove nodes
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
 
 ## Step 8. Stop the cluster
 

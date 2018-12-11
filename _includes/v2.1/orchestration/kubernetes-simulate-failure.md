@@ -4,6 +4,7 @@ To see this in action:
 
 1. Kill one of CockroachDB nodes:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-2
@@ -12,11 +13,25 @@ To see this in action:
     ~~~
     pod "cockroachdb-2" deleted
     ~~~
+    </section>
 
-2. In the Admin UI, the **Summary** panel will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete pod my-release-cockroachdb-2
+    ~~~
+
+    ~~~
+    pod "my-release-cockroachdb-2" deleted
+    ~~~
+    </section>
+
+
+2. In the Admin UI, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
 
 3. Back in the terminal, verify that the pod was automatically restarted:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
@@ -26,3 +41,16 @@ To see this in action:
     NAME            READY     STATUS    RESTARTS   AGE
     cockroachdb-2   1/1       Running   0          12s
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pod my-release-cockroachdb-2
+    ~~~
+
+    ~~~
+    NAME                       READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-2   1/1       Running   0          44s
+    ~~~
+    </section>

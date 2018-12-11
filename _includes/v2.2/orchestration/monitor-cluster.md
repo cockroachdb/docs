@@ -2,10 +2,19 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 1. Port-forward from your local machine to one of the pods:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl port-forward my-release-cockroachdb-0 8080
+    ~~~
+    </section>
 
     ~~~
     Forwarding from 127.0.0.1:8080 -> 8080
@@ -15,7 +24,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 {% if page.secure == true %}
 
-2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and login with the username and password created in the [Use the built-in SQL client](#step-5-use-the-built-in-sql-client) step.
+2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password you created earlier.
 
 {% else %}
 

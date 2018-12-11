@@ -1,12 +1,10 @@
 Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="gke-hosted">Hosted GKE</button>
-  <button class="filter-button" data-scope="gce-manual">Manual GCE</button>
-  <button class="filter-button" data-scope="aws-manual">Manual AWS</button>
-</div>
+- [Hosted GKE](#hosted-gke)
+- [Manual GCE](#manual-gce)
+- [Manual AWS](#manual-aws)
 
-<section class="filter-content" markdown="1" data-scope="gke-hosted">
+### Hosted GKE
 
 1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
 
@@ -55,9 +53,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     clusterrolebinding "cluster-admin-binding" created
     ~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gce-manual">
+### Manual GCE
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](https://kubernetes.io/docs/setup/turnkey/gce/) documentation.
 
@@ -68,10 +64,6 @@ The process includes:
 - Creating GCE instances and joining them into a single Kubernetes cluster.
 - Installing `kubectl`, the command-line tool used to manage Kubernetes from your workstation.
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="aws-manual">
+### Manual AWS
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](https://kubernetes.io/docs/setup/turnkey/aws/) documentation.
-
-</section>

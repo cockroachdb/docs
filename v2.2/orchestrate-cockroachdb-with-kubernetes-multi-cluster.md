@@ -375,7 +375,7 @@ To access the cluster's [Web UI](admin-ui-overview.html):
     The `port-forward` command must be run on the same machine as the web browser in which you want to view the Web UI. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
     {{site.data.alerts.end}}
 
-2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and login with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
+2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
 
 3. In the UI, check the **Node List** to verify that all nodes are running, and then click the **Databases** tab on the left to verify that `bank` is listed.
 
@@ -452,9 +452,9 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 1. Decide how the upgrade will be finalized.
 
-    {{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.1.x to v2.2. For upgrades within the v2.2.x series, skip this step.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.2. After finalization, however, it will no longer be possible to perform a downgrade to v2.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v2.1. After finalization, however, it will no longer be possible to perform a downgrade to v2.0. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
     We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade:
 
@@ -469,7 +469,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.1';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
         ~~~
 
 2. For each Kubernetes cluster, kick off the upgrade process by changing the desired Docker image. To do so, pick the version that you want to upgrade to, then run the following command, replacing "VERSION" with your desired new version and specifying the relevant namespace and "context" name for the Kubernetes cluster:
@@ -510,7 +510,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 4. Finish the upgrade.
 
-    {{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.1.x to v2.2. For upgrades within the v2.2.x series, skip this step.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}This step is relevant only when upgrading from v2.0.x to v2.1. For upgrades within the v2.1.x series, skip this step.{{site.data.alerts.end}}
 
     If you disabled auto-finalization in step 1 above, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 

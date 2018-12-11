@@ -26,6 +26,13 @@
                 ]
               },
               {
+                "title": "In Kubernetes",
+                "urls": [
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+                ]
+              },
+              {
                 "title": "In Docker",
                 "urls": [
                   "/${VERSION}/start-a-local-cluster-in-docker.html"
@@ -157,9 +164,9 @@
             ]
           },
           {
-            "title": "Orchestration",
+            "title": "Orchestration with Kubernetes",
             "urls": [
-              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+              "/${VERSION}/orchestration-with-kubernetes.html"
             ]
           },
           {

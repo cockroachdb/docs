@@ -6,14 +6,13 @@ Every node of a CockroachDB cluster exports granular timeseries metrics formatte
 
 This guidance is based on [CoreOS's Prometheus Operator](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md), which allows a Prometheus instance to be managed using native Kubernetes concepts.
 
-<section class="filter-content" markdown="1" data-scope="gke-hosted">
 {{site.data.alerts.callout_info}}
-Before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Step 1. Start Kubernetes](#step-1-start-kubernetes).
+If you're on Hosted GKE, before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Step 1. Start Kubernetes](#hosted-gke).
 {{site.data.alerts.end}}
-</section>
 
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -24,6 +23,20 @@ Before starting, make sure the email address associated with your Google Cloud a
     ~~~
 
     This ensures that there is a prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl label svc my-release-cockroachdb prometheus=cockroachdb
+    ~~~
+
+    ~~~
+    service "cockroachdb" labeled
+    ~~~
+
+    This ensures that there is a prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
+    </section>
 
 2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml):
 
@@ -85,7 +98,7 @@ Before starting, make sure the email address associated with your Google Cloud a
         <img src="{{ 'images/v2.1/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_success}}
-    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the Admin UI](#step-6-access-the-admin-ui){% else %}[Access the Admin UI](#step-5-access-the-admin-ui){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
+    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the Admin UI](#step-4-access-the-admin-ui){% else %}[Access the Admin UI](#step-4-access-the-admin-ui){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
 
     For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
     {{site.data.alerts.end}}
