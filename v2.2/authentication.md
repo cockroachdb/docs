@@ -66,8 +66,7 @@ The TLS client certificates are used to authenticate the client connecting to a 
 
 CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.2 server certificate. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
-- The node's primary hostname must be listed as the `CN` (Common Name) field in the `Subject` field of the certificate.
-- The certificate must have all the IP addresses and DNS names used to reach the node (or the Admin UI) listed in the `Subject Alternative Name` field. This is needed to allow other clients and nodes to verify that they are indeed communicating with a CockroachDB node and not an imposter.
+- The certificate must have all the IP addresses and DNS names used to reach the node (or the Admin UI) listed in the `CN` (Common Name) or `Subject Alternative Name` fields. This is needed to allow other clients and nodes to verify that they are indeed communicating with a CockroachDB node and not an imposter.
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
 Based on your security setup, you can use the [`cockroach cert` commands](create-security-certificates.html), [`openssl` commands](create-security-certificates-openssl.html), or a custom CA to generate all the keys and certificates.
@@ -113,7 +112,7 @@ You can use the [`cockroach cert` commands](create-security-certificates.html) o
 
 Note that the node certificate created using `cockroach cert` or`openssl` is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. Thus all nodes must have the following:
 
-- `CN=Node` for the special user `node` when the node acts as a client.
+- `CN=node` for the special user `node` when the node acts as a client.
 - All IP addresses and DNS names for the node must be listed in `Subject Alternative Name` field for when the node acts as a server.
 
 **Node key and certificates**
