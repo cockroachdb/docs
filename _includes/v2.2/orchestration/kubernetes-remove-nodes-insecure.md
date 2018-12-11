@@ -4,12 +4,13 @@ To safely remove a node from your cluster, you must first decommission the node 
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
 {{site.data.alerts.end}}
 
-1. Get a shell into the `cockroachdb-client-secure` pod you created earlier and use the `cockroach node status` command to get the internal IDs of nodes:
+1. Launch a temporary interactive pod and use the `cockroach node status` command to get the internal IDs of nodes:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
+    -- node status --insecure --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -21,12 +22,14 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
        4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
     (4 rows)
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
+    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
+    -- node status --insecure --host=my-release-cockroachdb-public
     ~~~    
 
     ~~~
@@ -40,8 +43,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
     </section>
 
-    The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
-
 2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
@@ -51,14 +52,16 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node decommission <node ID> --insecure --host=cockroachdb-public
+    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
+    -- node decommission <node ID> --insecure --host=cockroachdb-public
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node decommission <node ID> --insecure --host=my-release-cockroachdb-public
+    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
+    -- node decommission <node ID> --insecure --host=my-release-cockroachdb-public
     ~~~    
     </section>
 
