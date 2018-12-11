@@ -4,7 +4,13 @@ summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and clie
 toc: true
 ---
 
-A secure CockroachDB cluster uses TLS 1.2 for encrypted inter-node and client-node communication that requires a Certificate Authority (CA) certificate as well as keys and certificates for nodes and clients. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a custom CA (for example, a public CA or your organizational CA).
+To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+
+- Nodes
+- Clients
+- Admin UI (optional)
+
+To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
   <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
@@ -17,7 +23,7 @@ This document discusses the following advanced use cases for using security cert
 Approach | Use case description
 -------------|------------
 [UI certificate and key](#accessing-the-admin-ui-for-a-secure-cluster) | When you want to access the Admin UI for a secure cluster and avoid clicking through a warning message to get to the UI.
-[Split-node certificate](#split-node-certificates) | When your organizational CA requires you to have separate certificates for when the node acts as a server and as a client.
+[Split-node certificate](#split-node-certificates) | When your organizational CA requires you to have separate certificates for the node's incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes.
 [Split-CA certificates](#split-ca-certificates) | When you have multiple CockroachDB clusters and need to restrict access to clients from accessing the other cluster.
 
 ## Accessing the Admin UI for a secure cluster
@@ -60,12 +66,12 @@ File name | File usage
 
 ## Split node certificates
 
-The node certificate discussed in the `cockroach cert` command documentation is multifunctional, which means the same certificate is presented when the node acts as a server as well as a client. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
+The node certificate discussed in the `cockroach cert` command documentation is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
 
 To get around this issue, you can split the node key and certificate into two:
 
 - `node.crt` and `node.key`: The node certificate to be presented when the node acts as a server and the corresponding key. All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name` field.
-- `client.node.crt` and `client.node.key`: The node certificate to be presented when the node acts as a client for another node, and the corresponding key. `client.node.crt` must have `CN=node`.
+- `client.node.crt` and `client.node.key`: The node certificate to be presented when the node connects to another node, and the corresponding key. `client.node.crt` must have `CN=node`.
 
 ### Node key and certificates
 
@@ -97,7 +103,7 @@ File name | File usage
 We do not recommend you use split CA certificates unless your organizational security practices mandate you to do so.
 {{site.data.alerts.end}}
 
-If you need to use separate CAs to sign node certificates and client certificates, then we need two CAs and their respective certificates and keys: `ca.crt` and `ca-client.crt`.
+If you need to use separate CAs to sign node certificates and client certificates, then you need two CAs and their respective certificates and keys: `ca.crt` and `ca-client.crt`.
 
 ### Node key and certificates
 
