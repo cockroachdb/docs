@@ -1,17 +1,16 @@
 ---
-title: RELEASE SAVEPOINT cockroach_restart
-summary: Commit a transaction's changes once there are no retryable errors with the RELEASE SAVEPOINT cockroach_restart statement in CockroachDB.
+title: RELEASE SAVEPOINT
+summary: Commit a transaction's changes once there are no retryable errors with the RELEASE SAVEPOINT statement in CockroachDB.
 toc: true
 ---
 
-When using [client-side transaction retries](transactions.html#client-side-transaction-retries), the `RELEASE SAVEPOINT cockroach_restart` statement commits the transaction.
+When using [client-side transaction retries](transactions.html#client-side-transaction-retries), the `RELEASE SAVEPOINT` statement commits the transaction.
 
-If statements in the transaction [generated any non-retryable errors](transactions.html#error-handling), `RELEASE SAVEPOINT cockroach_restart` is equivalent to [`ROLLBACK`](rollback-transaction.html), which aborts the transaction and discards *all* updates made by its statements.
+If statements in the transaction [generated any non-retryable errors](transactions.html#error-handling), `RELEASE SAVEPOINT` is equivalent to [`ROLLBACK`](rollback-transaction.html), which aborts the transaction and discards all updates made by its statements.
 
-Despite committing the transaction, you must still issue a [`COMMIT`](commit-transaction.html) statement to prepare the connection for the next transaction.
+Note that although issuing this statement commits the transaction, you must also issue a subsequent [`COMMIT`](commit-transaction.html) statement to prepare the connection for the next transaction.
 
-{{site.data.alerts.callout_danger}}CockroachDB’s <code>SAVEPOINT</code> implementation only supports the <code>cockroach_restart</code> savepoint and does not support all savepoint functionality, such as nested transactions.{{site.data.alerts.end}}
-
+{% include {{ page.version.version }}/misc/savepoint-limitations.md %}
 
 ## Synopsis
 
@@ -23,11 +22,21 @@ Despite committing the transaction, you must still issue a [`COMMIT`](commit-tra
 
 No [privileges](privileges.html) are required to release a savepoint. However, privileges are required for each statement within a transaction.
 
+## Parameters
+
+Parameter | Description
+--------- | -----------
+name      | The name of the savepoint.  Defaults to `cockroach_restart`, but may be customized.  For more information, see [Customizing the savepoint name](#customizing-the-savepoint-name).
+
+## Customizing the savepoint name
+
+{% include {{ page.version.version }}/misc/customizing-the-savepoint-name.md %}
+
 ## Examples
 
 ### Commit a Transaction
 
-After declaring `SAVEPOINT cockroach_restart`, commit the transaction with `RELEASE SAVEPOINT cockroach_restart` and then prepare the connection for the next transaction with `COMMIT`.
+After declaring a [`SAVEPOINT`](savepoint.html), commit the transaction with `RELEASE SAVEPOINT` and then prepare the connection for the next transaction with [`COMMIT`](commit-transaction.html).
 
 {% include copy-clipboard.html %}
 ~~~ sql
