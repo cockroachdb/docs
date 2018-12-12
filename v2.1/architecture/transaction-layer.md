@@ -84,7 +84,7 @@ For more detail about the risks that large clock offsets can cause, see [What ha
 
 To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
-Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to move the timestamp for its transaction forward to a later time. In the case of serializable transactions, this causes them to restart in the second phase of the transaction.
+Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
 
 ### client.Txn and TxnCoordSender
 
@@ -175,15 +175,9 @@ Blocked transactions also check the status of their own transaction to ensure th
 
 If there is a deadlock between transactions (i.e., they're each blocked by each other's Write Intents), one of the transactions is randomly aborted. In the above example, this would happen if `TxnA` blocked `TxnB` on `key1` and `TxnB` blocked `TxnA` on `key2`.
 
-### Timestamp cache
-
-To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
-
-Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. In the case of serializable transactions, this might cause them to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
-
 ### Read refreshing
 
-Whenever a transaction's timestamp has been pushed, additional checks are required before allowing serializable transactions to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
+Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
 If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.
 
 ### Transaction pipelining
