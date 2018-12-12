@@ -71,7 +71,7 @@ For best performance:
 
 - Use NVMe SSDs over HDDs.
 - To simulate a bare metal deployment where machines are directly connected to one physical disk each, create and mount a local SSD using a SCSI interface.
-- Use more powerful nodes. Adding more CPU is usually more beneficial than adding more RAM.
+- Use 16 CPU nodes. To add more processing power, add more nodes rather than using higher CPU per node.
 - To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decreases, add more nodes to your cluster to add IOPS.
 
 #### Resilience recommendations
@@ -88,17 +88,15 @@ For more resilient clusters:
 
 Cockroach Labs recommends the following cloud-specific configurations based on our own internal testing. Before using configurations not recommended here, be sure to test them exhaustively.
 
-In general, we have found CockroachDB to perform better on AWS over GCE.
-
 #### AWS
 
-- Use `m` (general purpose), `c` (compute-optimized), or `i` (storage-optimized) [instances](https://aws.amazon.com/ec2/instance-types/). For example, Cockroach Labs has used `m5d.xlarge` instances (4 vCPUs and 16 GiB of RAM per instance) for internal testing.
+- Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/). For example, Cockroach Labs has used `m5d.xlarge` instances (16 CPU and 16 GiB of RAM per instance, NVMe SSD) and `c5d.4xlarge` (16 CPU and 32 GiB of RAM per instance, NVMe SSD) for internal testing.
         {{site.data.alerts.callout_danger}}
         Do not use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
         {{site.data.alerts.end}}
-- Use [Provisioned IOPS SSD-backed (io1) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) or [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). We recommend using SSD.
+- Use [Provisioned IOPS SSD-backed (io1) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) or [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). EBS needs to have IOPS provisioned which can be very expensive. If you can't use EBS, we recommend using SSD with `nobarrier` when disk corruption is tolerable. 
 - When mounting SSD, we recommend using one larger disk per node instead of multiple smaller disks per node. CockroachDB may not always rebalance optimally when nodes have multiple disks.
-- We recommend using 16 cores, 32-64 GB memory each.
+- We recommend using 16 CPU, 32-64 GiB memory each.
 - Enable `numa` on the hypervisor.
 
 #### Azure
@@ -114,9 +112,9 @@ In general, we have found CockroachDB to perform better on AWS over GCE.
 
 - Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
-#### GCE
+#### GCP
 
-- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing). For example, Cockroach Labs has used custom VMs (8 vCPUs and 16 GiB of RAM per VM) for internal testing. 
+- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing). For example, Cockroach Labs has used `n1-standard-16` for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
     {{site.data.alerts.end}}
@@ -197,7 +195,7 @@ Environment | Featured Approach
 [AWS](deploy-cockroachdb-on-aws.html#step-4-set-up-load-balancing) | Use Amazon's managed load balancing service.
 [Azure](deploy-cockroachdb-on-microsoft-azure.html#step-4-set-up-load-balancing) | Use Azure's managed load balancing service.
 [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
-[GCE](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCE's managed TCP proxy load balancing service.
+[GCP](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCP's managed TCP proxy load balancing service.
 
 ## Monitoring and alerting
 
