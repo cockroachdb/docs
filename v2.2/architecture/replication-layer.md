@@ -78,6 +78,38 @@ This mechanism lets us avoid tracking leases for every range, which eliminates a
 
 Your table's meta and system ranges (detailed in the distribution layer) are treated as normal key-value data, and therefore have leases, as well. However, instead of using epochs, they have an expiration-based lease. These leases simply expire at a particular timestamp (typically a few seconds)––however, as long as the node continues proposing Raft commands, it continues to extend the expiration of the lease. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
+#### Leaseholder Rebalancing
+
+Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance to rebalance (i.e. move) the lease to the replica that is closest to the client making the most requests for the range.
+
+To do this, the current leaseholder keeps track of how many requests it receives from each locality as an exponentially weighted moving average, i.e., the more requests that come from a specific locality, the greater the value is, and will transfer the lease if doing so will reduce latency.
+
+Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should rebalance where the ranges replicas are or transfer the lease to another existing replica by considering 3 primary inputs:
+
+	- The number of leases on each node
+	- The number of requests from each locality
+	- The latency between localities !?! How is this determined?
+
+**Intra-locality**
+
+If all the replicas are in the same locality, the decision is made entirely on the basis of the number of leases on each node that contains a replica, trying to achieve an equitable distribution of leases across all of them.
+
+**Inter-locality**
+
+If the replicas are in different localities, we assign a "weight" to each replica's locality based on the fraction of requests that came from that locality or from similar localities.
+
+For example, if the leaseholder received requests from gateway nodes in locality `country=us,region=central`, we would assign the following weights to replicas in the following localities:
+
+Replica locality | Rebalancing weight
+-----------------|-------------------
+`country=us,region=central` | 100% because it is an exact match
+`country=us,region=central` | 50% because the first locality is shared
+`country=aus,region=central` | 0% because the first locality is not shared
+
+The leaseholder then evaluates its own weight and latency versus the other replicas to determine an adjustment factor. The greater the disparity between "weights" and the higher the latency between localities, the more we'll favor the node from the locality with the larger weight.
+
+CockroachDB then evaluates the number of leases on the other replicas, much like it does for intra-locality decisions, but uses the adjustment factor to increase the likelihood the node with the "best score" will have its replica become the leaseholder.
+
 ### Membership changes: rebalance/repair
 
 Whenever there are changes to a cluster's number of nodes, the members of Raft groups change and, to ensure optimal survivability and performance, replicas need to be rebalanced. What that looks like varies depending on whether the membership change is nodes being added or going offline.
