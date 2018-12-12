@@ -1,9 +1,6 @@
 extern crate postgres;
 
 use postgres::{Connection, TlsMode, Result};
-use postgres::tls::openssl::OpenSsl;
-use postgres::tls::openssl::openssl::ssl::{SslConnectorBuilder, SslMethod};
-use postgres::tls::openssl::openssl::x509::X509_FILETYPE_PEM;
 use postgres::transaction::Transaction;
 use postgres::error::T_R_SERIALIZATION_FAILURE;
 
@@ -46,21 +43,8 @@ fn transfer_funds(txn: &Transaction, from: i64, to: i64, amount: i64) -> Result<
     Ok(())
 }
 
-fn ssl_config() -> OpenSsl {
-    // Warning! This API will be changing in the next version of these crates.
-    let mut connector_builder = SslConnectorBuilder::new(SslMethod::tls()).unwrap();
-    connector_builder.set_ca_file("certs/ca.crt").unwrap();
-    connector_builder.set_certificate_chain_file("certs/client.maxroach.crt").unwrap();
-    connector_builder.set_private_key_file("certs/client.maxroach.key", X509_FILETYPE_PEM).unwrap();
-
-    let mut ssl = OpenSsl::new().unwrap();
-    *ssl.connector_mut() = connector_builder.build();
-    ssl
-}
-
 fn main() {
-    let tls_mode = TlsMode::Require(&ssl_config());
-    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", tls_mode)
+    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", TlsMode::None)
         .unwrap();
 
     // Run a transfer in a transaction.
