@@ -46,15 +46,21 @@ fn transfer_funds(txn: &Transaction, from: i64, to: i64, amount: i64) -> Result<
     Ok(())
 }
 
-fn main() {
+fn ssl_config() -> OpenSsl {
+    // Warning! This API will be changing in the next version of these crates.
     let mut connector_builder = SslConnectorBuilder::new(SslMethod::tls()).unwrap();
-    connector_builder.set_ca_file("certs/ca.crt");
-    connector_builder.set_certificate_chain_file("certs/client.maxroach.crt");
-    connector_builder.set_private_key_file("certs/client.maxroach.key", X509_FILETYPE_PEM);
+    connector_builder.set_ca_file("certs/ca.crt").unwrap();
+    connector_builder.set_certificate_chain_file("certs/client.maxroach.crt").unwrap();
+    connector_builder.set_private_key_file("certs/client.maxroach.key", X509_FILETYPE_PEM).unwrap();
+
     let mut ssl = OpenSsl::new().unwrap();
     *ssl.connector_mut() = connector_builder.build();
+    ssl
+}
 
-    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", TlsMode::Require(&ssl))
+fn main() {
+    let tls_mode = TlsMode::Require(&ssl_config());
+    let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", tls_mode)
         .unwrap();
 
     // Run a transfer in a transaction.
