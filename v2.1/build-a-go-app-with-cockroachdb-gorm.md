@@ -103,14 +103,6 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 
 {% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
 ## Step 3. Run the Go code
 
 The following code uses the [GORM](http://gorm.io) ORM to map Go-specific objects to SQL operations. Specifically, `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model, `db.Create(&Account{})` inserts rows into the table, and `db.Find(&accounts)` selects from the table so that balances can be printed.
