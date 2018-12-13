@@ -29,7 +29,7 @@
     --background
     ~~~
 
-4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances.
+4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances. Be sure to adjust the `--advertise-addr` flag each time.
 
 #### Initialize the cluster
 

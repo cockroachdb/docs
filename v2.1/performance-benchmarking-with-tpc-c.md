@@ -65,7 +65,7 @@ This configuration is intended for performance benchmarking only. For production
     --background
     ~~~
 
-4. Repeat steps 1 - 3 for the other two `n1-highcpu-16` instances.
+4. Repeat steps 1 - 3 for the other two `n1-highcpu-16` instances. Be sure to adjust the `--advertise-addr` flag each time.
 
 5. From the fourth `n1-highcpu-16` instance, run the [`cockroach init`](initialize-a-cluster.html) command:
 
