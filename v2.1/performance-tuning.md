@@ -203,7 +203,7 @@ As mentioned above, before beginning, it's useful to collect each instance's int
     ~~~
 
 {{site.data.alerts.callout_info}}
-On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates.html#use-a-ui-certificate-and-key-to-access-the-admin-ui).
+On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates-custom-ca.html#accessing-the-admin-ui-for-a-secure-cluster).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/performance/start-cluster.md %}
