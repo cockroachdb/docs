@@ -71,7 +71,7 @@ namespace Cockroach
         using(var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
         using(var reader = cmd.ExecuteReader())
         while (reader.Read())
-          Console.Write("\taccount {0}: {1}\n", reader.GetString(0), reader.GetString(1));
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
 
         try
         {
@@ -112,7 +112,7 @@ namespace Cockroach
         using(var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
         using(var reader = cmd.ExecuteReader())
         while (reader.Read())
-          Console.Write("\taccount {0}: {1}\n", reader.GetString(0), reader.GetString(1));
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
       }
     }
   }
