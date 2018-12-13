@@ -80,9 +80,9 @@ Your table's meta and system ranges (detailed in the distribution layer) are tre
 
 #### Leaseholder Rebalancing
 
-Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance to rebalance (i.e. move) the lease to the replica that is closest to the client making the most requests for the range.
+Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance if the replica closest to the primary geographic source of traffic holds the lease. However, as traffic to your cluster shifts throughout the course of the day, you might want to dynamically shift which nodes hold leases.
 
-To do this, the current leaseholder keeps track of how many requests it receives from each locality as an exponentially weighted moving average, i.e., the more requests that come from a specific locality, the greater the value is, and will transfer the lease if doing so will reduce latency.
+To attempt to choose an optimal node as the range's leaseholder, the current leaseholder keeps track of how many requests it receives from each locality as an exponentially weighted moving average, i.e., the more requests that come from a specific locality, the greater the value is, and will transfer the lease if doing so will reduce latency.
 
 Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should rebalance where the ranges replicas are or transfer the lease to another existing replica by considering 3 primary inputs:
 
@@ -92,7 +92,7 @@ Periodically (every 10 minutes by default in large clusters, but more frequently
 
 **Intra-locality**
 
-If all the replicas are in the same locality, the decision is made entirely on the basis of the number of leases on each node that contains a replica, trying to achieve an equitable distribution of leases across all of them.
+If all the replicas are in the same locality, the decision is made entirely on the basis of the number of leases on each node that contains a replica, trying to achieve a roughly equitable distribution of leases across all of them. This means the distribution isn't perfectly equal; it intentionally tolerates small deviations between nodes to prevent thrashing.
 
 **Inter-locality**
 
@@ -120,7 +120,7 @@ Whenever there are changes to a cluster's number of nodes, the members of Raft g
 
 Rebalancing is achieved by using a snapshot of a replica from the leaseholder, and then sending the data to another node over [gRPC](distribution-layer.html#grpc). After the transfer has been completed, the node with the new replica joins that range's Raft group; it then detects that its latest timestamp is behind the most recent entries in the Raft log and it replays all of the actions in the Raft log on itself.
 
-In addition to the rebalancing that occurs when nodes join or leave a cluster, leases and replicas are rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings](../cluster-settings.html).  Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
+<span class="version-tag">New in v2.1:</span> In addition to the rebalancing that occurs when nodes join or leave a cluster, leases and replicas are rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings](../cluster-settings.html).  Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
 
 ## Interactions with other layers
 
