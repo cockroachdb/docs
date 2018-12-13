@@ -65,7 +65,7 @@ Optionally, if you have a certificate issued by a public CA to securely access t
 
 Note the following:
 
-- By default, the same `node.crt` is used for both incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
+- By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 
