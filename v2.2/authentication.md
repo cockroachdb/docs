@@ -16,7 +16,7 @@ Consider two people: Amy and Rosa, who want to communicate securely over an inse
 
 To solve this problem, cryptographers came up **asymmetric encryption** to set up a secure communication channel over which an  encryption key can be shared.
 
-### Asymmetric encryption
+## Asymmetric encryption
 
 Asymmetric encryption involves a pair of keys instead of a single key. The two keys are called the **public key** and the **private key**. The keys consist of very long numbers linked mathematically in a way such that a message encrypted using a public key can only be decrypted using the private key and vice versa. The message cannot be decrypted using the same key that was used to encrypt the message.
 
@@ -26,7 +26,7 @@ But what if a malicious imposter intercepts the communication? The imposter migh
 
 To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the Certificate Authority (CA) comes into the picture.
 
-### Certificate authority
+## Certificate authority
 
 Certificate authorities are established entities with their own public and private key pairs. They act as a root of trust and verify the identities of the communicating parties and validate their public keys. CAs can be public and paid entities (e.g., GeoTrust and Comodo), or public and free CAs (e.g., Let’s Encrypt), or your own organizational CA (e.g., CockroachDB CA). The CAs' public keys are typically widely distributed (e.g., your browser comes preloaded with certs from popular CAs like DigiCert, GeoTrust, and so on).
 
@@ -34,7 +34,7 @@ Think of the CA as the passport authority of a country. When you want to get you
 
 Going back to our example and assuming that we trust the CA, Rosa needs to get her public key verified by the CA. She sends a CSR (Certificate Signing Request) to the CA that contains her public key and relevant identifying information. The CA will verify that it is indeed Rosa’s public key and information, _sign_ the CSR using the CA's own private key, and generate a digital document called the **digital certificate**. In our passport analogy, this is Rosa's passport containing verified identifying information about her and trusted by everyone who trusts the CA. The next time Rosa wants to establish her identity, she will present her digital certificate.
 
-### Digital certificate
+## Digital certificate
 
 A public key is shared using a digital certificate signed by a CA using the CA's private key. The digital certificate contains:
 
@@ -42,31 +42,38 @@ A public key is shared using a digital certificate signed by a CA using the CA's
 -   Information about the certificate owner
 -   The CA's digital signature
 
-### Digital Signature
+## Digital Signature
 
 The CA's digital signature works as follows: The certificate contents are put through a mathematical function to create a **hash value**. This hash value if encrypted using the CA's private key to generate the **digital signature**. The digital signature is added to the digital certificate. In our example, the CA adds their digital signature to Rosa's certificate validating her identity and her public key.
 
 As discussed [earlier](#certificate-authority), the CA's public key is widely distributed. In our example, Amy already has the CA's public key. Now when Rosa presents her digital certificate containing her public key, Amy uses the CA's public key to decrypt the digital signature on Rosa's certificate and gets the hash value encoded in the digital signature. Amy also generates the hash value for the certificate on her own. If the hash values match, then Amy can be sure that the certificate and hence the public key it contains indeed belongs to Rosa; else she can determine that the communication channel has been compromised and refuse further contact.
 
-### How it all works together
+## How it all works together
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
 
-### TLS certificates
+## TLS certificates
 
 CockroachDB uses TLS 1.2 server and client certificates. The TLS server certificates have the following requirements:
 
-1. The primary hostname ([domain name](https://en.wikipedia.org/wiki/Domain_name) of the website) must be listed as the **Common Name** in the **Subject** field of the certificate.
-2. The address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in **Subject Alternative Names** field of the certificate.
-3. The certificate must be signed by a trusted certificate authority.
+1. The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate.
+2. The certificate must be signed by a trusted certificate authority.
 
 The TLS client certificates are used to authenticate the client connecting to a server. Because most client certificates authenticate a user instead of a device, the certificates contain usernames instead of hostnames. This makes it difficult for public CAs to verify the client's identity and hence most public CAs will not sign a client certificate. In that case, you might need to set up your own internal CA to issue client certificates.
 
 ## Using digital certificates with CockroachDB
 
-CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.2 server certificate. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
+CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.2 server certificate. Note that the node certificate is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes.  Node certificates have the following requirements:
 
-- The certificate must have all the IP addresses and DNS names used to reach the node (or the Admin UI) listed in the `CN` (Common Name) or `Subject Alternative Name` fields. This is needed to allow other clients and nodes to verify that they are indeed communicating with a CockroachDB node and not an imposter.
+- The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
+
+  - The values specified in [`--listen-addr`](start-a-node.html#networking) and [`--advertise-addr`](start-a-node.html#networking) flags, or the node hostname and fully qualified hostname if not specified
+  - Any host addresses/names used to reach a specific node
+  - Any load balancer addresses/names or DNS aliases through which the node could be reached
+  - `localhost` and local address if connections are made through the loopback device on the same host
+
+ This is needed to allow other clients and nodes to verify that they are indeed communicating with a CockroachDB node and not an imposter.
+
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
 Based on your security setup, you can use the [`cockroach cert` commands](create-security-certificates.html), [`openssl` commands](create-security-certificates-openssl.html), or a custom CA to generate all the keys and certificates.
