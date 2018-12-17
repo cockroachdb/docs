@@ -47,6 +47,7 @@ Workload | Description
 ---------|------------
 `bank` | Models a set of accounts with currency balances.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 `intro` | Loads an `intro` database, with one table, `mytable`, with a hidden message.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
+`kv` | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 `startrek` | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 `tpcc` | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
@@ -55,7 +56,6 @@ Workload | Description
 {{site.data.alerts.callout_info}}
 The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
 {{site.data.alerts.end}}
-
 
 ### `bank` workload
 
@@ -70,7 +70,7 @@ Flag | Description
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
 `--payload-bytes` | The size of the payload field in each initial row.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `100`
-`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** run`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--ranges` | The initial number of ranges in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10`
 `--rows` | The initial number of accounts in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1000`
 `--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
@@ -86,6 +86,30 @@ Flag | Description
 -----|------------
 `--drop` | Drop the existing database, if it exists, before loading the dataset.
 
+### `kv` workload
+
+Flag | Description
+-----|------------
+`--batch` | The number of blocks to insert in a single SQL statement.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`  `--cycle-length`| The number of keys repeatedly accessed by each writer.**Applicable commands:** `init` or `run`<br>**Default:** `9223372036854775807`
+`--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `kv`
+`--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`
+`--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--max-block-bytes` | The maximum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `2`
+`--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
+`--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
+`--min-block-bytes` | The minimum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
+`--read-percent` | The percent (0-100) of operations that are reads of existing keys.<br><br>**Applicable commands:** `init` or `run`
+`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--sequential` | Pick keys sequentially instead of randomly.<br><br>**Applicable commands:** `init` or `run`
+`--splits` | The number of splits to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
+`--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
+`--use-opt` | Use [cost-based optimizer](cost-based-optimizer.html).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
+`--write-seq` | Initial write sequence value.<br><br>**Applicable commands:** `init` or `run`
+
 ### `tpcc` workload
 
 Flag | Description
@@ -96,7 +120,7 @@ Flag | Description
 `--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
-`--init` | Automatically run the `init` command.<br><br>**Applicable command:** run`
+`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
 `--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
@@ -172,6 +196,49 @@ $ cockroach start \
     ~~~
     _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
        60.0s        0          84457         1407.6      5.7      5.5     10.0     15.2    167.8
+    ~~~
+
+### Run the `kv` workload
+
+1. Load the initial schema:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init kv \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+2. Run the workload for 1 minute:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run kv \
+    --duration=1m \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    You'll see per-operation statistics print to standard output every second:
+
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+          1s        0         5095.8         5123.7      1.5      2.5      3.3      7.3 write
+          2s        0         4795.4         4959.6      1.6      2.8      3.5      8.9 write
+          3s        0         3456.5         4458.5      2.0      4.5      7.3     24.1 write
+          4s        0         2787.9         4040.8      2.4      6.3     12.6     30.4 write
+          5s        0         3558.7         3944.4      2.0      4.2      6.8     11.5 write
+          6s        0         3733.8         3909.3      1.9      4.2      6.0     12.6 write
+          7s        0         3565.6         3860.1      2.0      4.7      7.9     25.2 write
+          8s        0         3469.3         3811.4      2.0      5.0      6.8     22.0 write
+          9s        0         3937.6         3825.4      1.8      3.7      7.3     29.4 write
+         10s        0         3822.9         3825.1      1.8      4.7      8.9     37.7 write
+    ...
+    ~~~
+
+    After the specified duration (1 minute in this case), the workload will stop and you'll see totals printed to standard output:
+
+    ~~~
+    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+       60.0s        0         276067         4601.0      1.7      1.6      3.1      5.2     96.5
     ~~~
 
 ### Load the `intro` dataset
