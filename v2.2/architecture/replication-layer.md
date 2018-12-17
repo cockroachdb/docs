@@ -84,11 +84,11 @@ Because CockroachDB serves reads from a range's leaseholder, it benefits your cl
 
 To attempt to choose an optimal node as the range's leaseholder, the current leaseholder keeps track of how many requests it receives from each locality as an exponentially weighted moving average, i.e., the more requests that come from a specific locality, the greater the value is, and will transfer the lease if doing so will reduce latency.
 
-Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should rebalance where the ranges replicas are or transfer the lease to another existing replica by considering 3 primary inputs:
+Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should rebalance where the range's replicas are or transfer the lease to another existing replica by considering 3 primary inputs:
 
 	- The number of leases on each node
 	- The number of requests from each locality
-	- The latency between localities !?! How is this determined?
+	- The latency between localities
 
 **Intra-locality**
 
@@ -103,7 +103,7 @@ For example, if the leaseholder received requests from gateway nodes in locality
 Replica locality | Rebalancing weight
 -----------------|-------------------
 `country=us,region=central` | 100% because it is an exact match
-`country=us,region=central` | 50% because the first locality is shared
+`country=us,region=east` | 50% because the first locality is shared
 `country=aus,region=central` | 0% because the first locality is not shared
 
 The leaseholder then evaluates its own weight and latency versus the other replicas to determine an adjustment factor. The greater the disparity between "weights" and the higher the latency between localities, the more we'll favor the node from the locality with the larger weight.
