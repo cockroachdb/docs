@@ -34,30 +34,7 @@ The variable name is case insensitive. The value can be a list of one or more it
 
 ### Supported variables
 
- Variable name | Description  | Initial value | Can be viewed with [`SHOW`](show-vars.html)? |
----------------|--------------|---------------|-----------------------------------------
- `application_name` | The current application name for statistics collection. | Empty string | Yes
- `database` | The [current database](sql-name-resolution.html#current-database).  Database in connection string, or empty if not specified | Yes
- `default_transaction_isolation` | _Read only:_ All transactions execute with [`SERIALIZABLE` isolation](transactions.html#isolation-levels), meaning you cannot `SET default_transaction_isolation...` to any value. However, this setting remains available for ORM compatibility. | `SERIALIZABLE` | Yes
- `default_transaction_read_only` | The default transaction access mode for the current session. If set to `on`, only read operations are allowed in transactions in the current session; if set to `off`, both read and write operations are allowed. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes
- `distsql` | The query distribution mode for the current session.<br><br>If `auto`, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node. **`auto` is recommended.** <br><br>If `on`, any queries that can be distributed are distributed, and all other queries are run through the gateway node.<br><br>If `off`, all queries are run through the local SQL engine. <br><br>If `always`, all queries are distributed, even those that cannot be distributed (returns an error). This setting is used for internal testing and is not recommended. | `auto` | Yes
- `extra_float_digits` | The number of digits displayed for floating-point values. Only values between `-15` and `3` are supported. | `0` | Yes
- `optimizer` | The mode in which a query execution plan is generated. If set to `on`, the [cost-based optimizer](cost-based-optimizer.html) is enabled by default and the heuristic planner will only be used if the query is not supported by the cost-based optimizer; if set to `off`, all queries are run through the legacy heuristic planner. | `on` | Yes
- `sql_safe_updates` | If `true`, disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`. See [Allow Potentially Unsafe SQL Statements](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) for more details. | `true` for interactive sessions from the [built-in SQL client](use-the-built-in-sql-client.html) unless `--safe-updates=false` is specified,<br>`false` for sessions from other clients | Yes
- `search_path` | A list of schemas that will be searched to resolve unqualified table or function names. For more details, see [Name Resolution](sql-name-resolution.html). | "`{public}`" | Yes
- `server_version_num` | The version of PostgreSQL that CockroachDB emulates. | Version-dependent | Yes
- `statement_timeout` | The amount of time a statement can run before being stopped.<br><br>This value can be an `int` (e.g., `10`) and will be interpreted as milliseconds. It can also be an interval or string argument, where the string can be parsed as a valid interval (e.g., `'4s'`). A value of `0` turns it off. | `0s` | Yes
- `timezone` | The default time zone for the current session.<br><br>This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.</br><br>See [Setting the Time Zone](#set-time-zone) for more details. <br><br>This session variable was named `"time zone"` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `UTC` | Yes
- `tracing` | The trace recording state.<br><br>See [`SET TRACING`](#set-tracing) for more details. | `off` | Yes
- `transaction_isolation` | _Read only:_ All transactions execute with [`SERIALIZABLE` isolation](transactions.html#isolation-levels), meaning you cannot `SET transaction_isolation...` to any value. However, this  available for ORM compatibility.<br><br>This session variable was called `transaction isolation level` (with spaces) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `SERIALIZABLE` | Yes
- `transaction_priority` | The priority of the current transaction. See [Transactions: Priority levels](transactions.html#transaction-priorities) for more details.<br><br>This session variable was called `transaction priority` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NORMAL` | Yes
- `transaction_read_only` | The access mode of the current transaction. See [Set Transaction](set-transaction.html) for more details. | `off` | Yes
- `transaction_status` | The state of the current transaction. See [Transactions](transactions.html) for more details.<br><br>This session variable was called `transaction status` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NoTxn` | Yes
- `client_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is "`UTF8`". | N/A | No
- `client_min_messages` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is `notice`. | N/A | Yes
- `standard_conforming_strings` | Ignored; recognized for compatibility with PostgreSQL clients. | N/A | Yes
-`integer_datetimes` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is `on`. | N/A | Yes
-`server_encoding` | Ignored; recognized for compatibility with PostgreSQL clients. Only possible value is `UTF8`. | N/A | Yes
+{% include {{ page.version.version }}/misc/session-vars.html %}
 
 Special syntax cases:
 
