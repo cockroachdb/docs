@@ -12,7 +12,7 @@ The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** 
 
 ## Required privileges
 
-The user requires the appropriate [privileges](privileges.html) for the statement being explained.
+The user requires the appropriate [privileges](authorization.html#assign-privileges) for the statement being explained.
 
 ## Parameters
 

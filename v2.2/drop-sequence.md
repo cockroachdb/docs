@@ -10,7 +10,7 @@ The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a d
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified sequence(s).
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified sequence(s).
 
 ## Synopsis
 

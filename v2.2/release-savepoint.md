@@ -20,7 +20,7 @@ Note that although issuing this statement commits the transaction, you must also
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to release a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to release a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

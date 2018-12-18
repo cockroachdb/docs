@@ -288,6 +288,41 @@
             ]
           },
           {
+            "title": "Security",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/security-overview.html"
+                ]
+              },
+              {
+                "title": "Authentication",
+                "urls": [
+                  "/${VERSION}/authentication.html"
+                ]
+              },
+              {
+                "title": "Encryption",
+                "urls": [
+                  "/${VERSION}/encryption.html"
+                ]
+              },
+              {
+                "title": "Authorization",
+                "urls": [
+                  "/${VERSION}/authorization.html"
+                ]
+              },
+              {
+                "title": "SQL Audit Logging",
+                "urls": [
+                  "/${VERSION}/sql-audit-logging.html"
+                ]
+              }
+            ]
+          },
+          {
             "title": "Monitoring and Alerting",
             "items": [
               {
@@ -306,23 +341,6 @@
                 "title": "Use Prometheus and Alertmanager",
                 "urls": [
                   "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
-                ]
-              }
-            ]
-          },
-          {
-            "title": "Access Management",
-            "items": [
-              {
-                "title": "Manage Users",
-                "urls": [
-                  "/${VERSION}/create-and-manage-users.html"
-                ]
-              },
-              {
-                "title": "Privileges",
-                "urls": [
-                  "/${VERSION}/privileges.html"
                 ]
               }
             ]
@@ -365,18 +383,6 @@
                 "title": "Node Map",
                 "urls": [
                   "/${VERSION}/enable-node-map.html"
-                ]
-              },
-              {
-                "title": "Role-Based Access Control",
-                "urls": [
-                  "/${VERSION}/roles.html"
-                ]
-              },
-              {
-                "title": "Encryption at Rest",
-                "urls": [
-                  "/${VERSION}/encryption.html"
                 ]
               },
               {
@@ -467,12 +473,6 @@
             "title": "Diagnostics Reporting",
             "urls": [
               "/${VERSION}/diagnostics-reporting.html"
-            ]
-          },
-          {
-            "title": "SQL Audit Logging (Experimental)",
-            "urls": [
-              "/${VERSION}/sql-audit-logging.html"
             ]
           }
         ]

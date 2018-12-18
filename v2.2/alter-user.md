@@ -17,7 +17,7 @@ You can also use the [`cockroach user`](create-and-manage-users.html#update-a-us
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
+The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -34,7 +34,7 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password you want to create or add.
-`password` | Let the user [authenticate their access to a secure cluster](create-user.html#user-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged.
+`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged.
 
 ## Examples
 

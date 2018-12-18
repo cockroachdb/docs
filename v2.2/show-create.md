@@ -12,7 +12,7 @@ The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement 
 
 ## Required privileges
 
-The user must have any [privilege](privileges.html) on the target table, view, or sequence.
+The user must have any [privilege](authorization.html#assign-privileges) on the target table, view, or sequence.
 
 ## Synopsis
 

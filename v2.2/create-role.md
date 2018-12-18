@@ -4,7 +4,7 @@ summary: The CREATE ROLE statement creates SQL roles, which are groups containin
 toc: true
 ---
 
-The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](roles.html), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
+The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
 {{site.data.alerts.callout_info}}<code>CREATE ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -52,7 +52,7 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 
 ## See also
 
-- [Manage Roles](roles.html)
+- [Authorization](authorization.html)
 - [`DROP ROLE` (Enterprise)](drop-user.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)

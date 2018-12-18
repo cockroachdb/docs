@@ -32,7 +32,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Required privileges
 
-The user requires the appropriate [privileges](privileges.html) for the statement being explained.
+The user requires the appropriate [privileges](authorization.html#assign-privileges) for the statement being explained.
 
 ## Parameters
 

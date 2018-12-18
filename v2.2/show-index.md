@@ -9,7 +9,7 @@ The `SHOW INDEX` [statement](sql-statements.html) returns index information for 
 
 ## Required privileges
 
-The user must have any [privilege](privileges.html) on the target table.
+The user must have any [privilege](authorization.html#assign-privileges) on the target table.
 
 ## Aliases
 
