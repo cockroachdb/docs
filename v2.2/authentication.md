@@ -128,11 +128,11 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br>Must be signed by `ca.crt`.
 `client.<user>.key` | Client key corresponding to `client.<user>.crt`.
 
-Alternatively, you can use [password authentication](#secure-clusters-with-passwords). Remember, the client still needs `ca.crt` for node authentication.
+Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
 
 ### Using a public CA certificate to access the Admin UI for a secure cluster
 
-One of the limitations of using `cockroach cert` or `openssl` is that the browsers used to access the CockroachDB Admin UI do not trust the node certificates presented to them. As discussed in the [How digital certificates work](#how-digital-certificates-work) section, web browsers come preloaded with CA certificates from well-established entities (e.g., GlobalSign and DigiTrust). The CA certificate generated using the `cockroach cert` or `openssl` is not preloaded in the browser. Hence on accessing the Admin UI for a secure cluster, you get the “Unsafe page” warning. Now you could add the CA certificate to the browser to avoid the warning, but that is not a recommended practice. Instead, you can use the established CAs (for example, Let’s Encrypt), to create a certificate and key to access the Admin UI.
+One of the limitations of using `cockroach cert` or `openssl` is that the browsers used to access the CockroachDB Admin UI do not trust the node certificates presented to them. Web browsers come preloaded with CA certificates from well-established entities (e.g., GlobalSign and DigiTrust). The CA certificate generated using the `cockroach cert` or `openssl` is not preloaded in the browser. Hence on accessing the Admin UI for a secure cluster, you get the “Unsafe page” warning. Now you could add the CA certificate to the browser to avoid the warning, but that is not a recommended practice. Instead, you can use the established CAs (for example, Let’s Encrypt), to create a certificate and key to access the Admin UI.
 
 Once you have the UI cert and key, add it to the Certificates directory specified by the `--certs-dir` flag in the `cockroach cert` command. The next time the browser tries to access the UI, the node will present the UI cert instead of the node cert, and you’ll not see the “unsafe site” warning anymore.
 
@@ -158,7 +158,7 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
-Alternatively, you can use [password authentication](#secure-clusters-with-passwords). Remember, the client still needs `ca.crt` for node authentication.
+Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
 
 ### Using split CA certificates
 
