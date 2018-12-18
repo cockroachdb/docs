@@ -82,11 +82,11 @@ Your table's meta and system ranges (detailed in the distribution layer) are tre
 
 <span class="version-tag">New in v2.1:</span> Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance if the replica closest to the primary geographic source of traffic holds the lease. However, as traffic to your cluster shifts throughout the course of the day, you might want to dynamically shift which nodes hold leases.
 
-Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should transfer the lease to another existing replica by considering the following inputs:
+Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should transfer the lease to another replica by considering the following inputs:
 
-- The number of leases on each node
-- The number of requests from each locality
-- The latency between localities
+- Number of requests from each locality
+- Number of leases on each node
+- Latency between localities
 
 ##### Intra-locality
 
@@ -106,9 +106,9 @@ Replica locality | Replica rebalancing weight
 `country=us,region=east` | 50% because only the first locality matches
 `country=aus,region=central` | 0% because the first locality does not match
 
-The leaseholder then evaluates its own weight and latency versus the other replicas to determine an adjustment factor. The greater the disparity between weights and the higher the latency between localities, the more CockroachDB favors the node from the locality with the larger weight.
+The leaseholder then evaluates its own weight and latency versus the other replicas to determine an adjustment factor. The greater the disparity between weights and the larger the latency between localities, the more CockroachDB favors the node from the locality with the larger weight.
 
-CockroachDB then evaluates the number of leases on the other replicas, much like it does for intra-locality decisions, but uses the adjustment factor to increase the likelihood the node with the best score will have its replica become the leaseholder.
+When checking for leaseholder rebalancing opportunities, the current leaseholder evaluates each replica's rebalancing weight and adjustment factor for the localities with the greatest weights. If moving the leaseholder is both beneficial and viable, the current leaseholder will transfer the lease to the best replica.
 
 ##### Controlling leaseholder rebalancing
 
