@@ -3355,6 +3355,15 @@ h4 {
   h4 code {
     font-size: 17px; }
 
+h5 {
+  font-family: 'Graphik-RegularItalic', sans-serif;
+  font-size: 17px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+  h5 code {
+    font-size: 17px; }
+
 pre {
   overflow: auto; }
 
