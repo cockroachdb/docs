@@ -19,7 +19,7 @@ When using transactions, your application should include logic to [retry transac
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 

@@ -5,7 +5,7 @@ keywords: reflection
 toc: true
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privileges.html) granted to users.
+The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users.
 
 ## Synopsis
 
@@ -15,7 +15,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](privil
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
+No [privileges](authorization.html#assign-privileges) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
 
 ## Parameters
 
@@ -255,6 +255,5 @@ SHOW GRANTS ON ROLE FOR carl;
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](create-and-manage-users.html)
-- [Privileges](privileges.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

@@ -80,7 +80,6 @@ Parameter | Description
 ## See also
 
 - [Authorization](authorization.html)
-- [Privileges](privileges.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)

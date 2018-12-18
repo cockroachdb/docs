@@ -15,7 +15,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](privileges.html) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
+The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
 
 ## Synopsis
 

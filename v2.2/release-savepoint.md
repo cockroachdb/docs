@@ -21,7 +21,7 @@ Despite committing the transaction, you must still issue a [`COMMIT`](commit-tra
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to release a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to release a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Examples
 

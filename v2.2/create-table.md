@@ -10,7 +10,7 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Synopsis
 

@@ -9,7 +9,7 @@ The `RESET` [statement](sql-statements.html) resets a [session variable](set-var
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to reset a session setting.
+No [privileges](authorization.html#assign-privileges) are required to reset a session setting.
 
 ## Synopsis
 
@@ -17,9 +17,9 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `session_var` | The name of the [session variable](set-vars.html#supported-variables). 
+ `session_var` | The name of the [session variable](set-vars.html#supported-variables).
 
 ## Example
 
@@ -76,7 +76,7 @@ No [privileges](privileges.html) are required to reset a session setting.
 > SELECT random();
 ~~~
 
-~~~ 
+~~~
       random
 -------------------
  0.561354028296755

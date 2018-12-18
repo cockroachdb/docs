@@ -4,7 +4,7 @@ summary: To create and manage your cluster's users (which lets you control SQL-l
 toc: true
 ---
 
-To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](privileges.html)), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
+To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](authorization.html#assign-privileges), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-user.html"><code>CREATE USER</code></a> and <a href="drop-user.html"><code>DROP USER</code></a> statements to create and remove users.{{site.data.alerts.end}}
 

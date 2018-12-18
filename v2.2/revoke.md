@@ -4,7 +4,7 @@ summary: The REVOKE statement revokes privileges from users and/or roles.
 toc: true
 ---
 
-The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](privileges.html) from [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles).
+The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles).
 
 For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
@@ -157,7 +157,6 @@ Parameter | Description
 ## See also
 
 - [Authorization](authorization.html)
-- [Privileges](privileges.html)
 - [`GRANT <privileges>`](grant.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)

@@ -250,5 +250,5 @@ $ cockroach start \
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](create-and-manage-users.html)
-- [Privileges](privileges.html)
+- [Privileges](authorization.html#assign-privileges)
 - [Other Cockroach Commands](cockroach-commands.html)

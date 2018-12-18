@@ -15,7 +15,7 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to list the databases in the CockroachDB cluster.
+No [privileges](authorization.html#assign-privileges) are required to list the databases in the CockroachDB cluster.
 
 ## Example
 

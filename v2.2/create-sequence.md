@@ -15,7 +15,7 @@ The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Synopsis
 

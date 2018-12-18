@@ -18,7 +18,7 @@ These details let you monitor the progress of active queries and, if necessary, 
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to execute this statement. However, note that non-`root` users see only their own currently active queries, whereas the `root` user sees all users' currently active queries.
+No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`root` users see only their own currently active queries, whereas the `root` user sees all users' currently active queries.
 
 ## Synopsis
 
