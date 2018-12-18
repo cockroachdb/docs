@@ -66,7 +66,10 @@ significant:
 3. The ordering of the data source for an [`INSERT`](insert.html)
    statement or an [`UPSERT`](upsert.html) statement that also uses
    `LIMIT` is preserved, to determine which rows are processed.
-4. The ordering of a sub-query used in a scalar expression
+4. The ordering indicated for an [`UPDATE`](update.html) or [`DELETE`](delete.html)
+   statement that also uses `LIMIT` is used to determine which rows are processed.
+   (This is a CockroachDB extension.)
+5. The ordering of a sub-query used in a scalar expression
    is preserved.
 
 For example, using `WITH ORDINALITY`:
