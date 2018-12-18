@@ -4,7 +4,11 @@ summary: Learn about the authentication features for secure CockroachDB clusters
 toc: true
 ---
 
-This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview]() of public key cryptography and digital certificates work. If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](create-security-certificates.html).
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
+
+- If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
+- If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
+- If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](create-security-certificates.html).
 
 ## Using digital certificates with CockroachDB
 
@@ -17,11 +21,9 @@ CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB n
   - Any load balancer addresses/names or DNS aliases through which the node could be reached
   - `localhost` and local address if connections are made through the loopback device on the same host
 
- This is needed to allow other clients and nodes to verify that they are indeed communicating with a CockroachDB node and not an imposter.
-
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands](create-security-certificates.html), [`openssl` commands](create-security-certificates-openssl.html), or a custom CA to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands](create-security-certificates.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the Admin UI. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
@@ -56,7 +58,7 @@ CockroachDB offers two methods for client authentication:
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
 
-   Note that the client still needs the CA certificate in order to validate the nodes' certificates.
+   Note that the client still needs the CA certificate to validate the nodes' certificates.
 
 ### Using `cockroach cert` or `openssl` commands
 
@@ -87,15 +89,15 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
-Alternatively, you can use [password authentication](#secure-clusters-with-passwords). Remember, the client still needs `ca.crt` for node authentication.
+Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
 
 ### Using a custom CA
 
-So far we have discussed the scenario where the node and client certificates are signed by the CA created using the `cockroach cert` command. But what if you want to use an external CA, like your organizational CA or a public CA? In that case, our certificates might need some modification. Here’s why:
+In the previous section, we discussed the scenario where the node and client certificates are signed by the CA created using the `cockroach cert` command. But what if you want to use an external CA, like your organizational CA or a public CA? In that case, our certificates might need some modification. Here’s why:
 
-As discussed earlier, the node certificate is multi-functional, as in the same certificate is presented irrespective of whether the node is acting as a server or client. To make the certificate multi-functional, the `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field.
+As mentioned earlier, the node certificate is multi-functional, as in the same certificate is presented irrespective of whether the node is acting as a server or client. To make the certificate multi-functional, the `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field.
 
-But as we discussed in the [TLS certificates](#tls-certificates) section, some CAs will not sign a node certificate containing a `CN` that is not an IP address or domain name.
+But some CAs will not sign a certificate containing a `CN` that is not an IP address or domain name. Here's why: The TLS client certificates are used to authenticate the client connecting to a server. Because most client certificates authenticate a user instead of a device, the certificates contain usernames instead of hostnames. This makes it difficult for public CAs to verify the client's identity and hence most public CAs will not sign a client certificate.
 
 To get around this issue, we can split the node key and certificate into two:
 
@@ -166,7 +168,7 @@ We do not recommend you use split CA certificates unless your organizational sec
 
 You might encounter situations where you need separate CAs to sign and verify node and client certificates. In that case, you would need two CAs and their respective certificates and keys: `ca.crt` and `ca-client.crt`.
 
-### Node key and certificates
+**Node key and certificates**
 
 A node must have the following files with file names as specified in the table:
 
@@ -181,7 +183,7 @@ File name | File usage
 
 Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
-### Client key and certificates
+**Client key and certificates**
 
 A client must have the following files with file names as specified in the table:
 
@@ -191,7 +193,7 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by `ca-client.crt`.
 `client.<user>.key` | Client key corresponding to `client.<user>.crt`.
 
-### Authentication for cloud storage
+## Authentication for cloud storage
 
 See [Backup file URLs](backup.html#backup-file-urls)
 
@@ -216,7 +218,7 @@ To understand how CockroachDB uses digital certificates, let's first understand 
 
 Consider two people: Amy and Rosa, who want to communicate securely over an insecure computer network. The traditional solution is to use symmetric encryption that involves encrypting and decrypting a plaintext message using a shared key. Amy encrypts her message using the key and sends the encrypted message across the insecure channel. Rosa decrypts the message using the same key and reads the message. This seems like a logical solution until you realize that you need a secure communication channel to send the encryption key.
 
-To solve this problem, cryptographers came up **asymmetric encryption** to set up a secure communication channel over which an  encryption key can be shared.
+To solve this problem, cryptographers came up **asymmetric encryption** to set up a secure communication channel over which an encryption key can be shared.
 
 ### Asymmetric encryption
 
@@ -244,24 +246,15 @@ A public key is shared using a digital certificate signed by a CA using the CA's
 -   Information about the certificate owner
 -   The CA's digital signature
 
-### Digital Signature
+### Digital signature
 
-The CA's digital signature works as follows: The certificate contents are put through a mathematical function to create a **hash value**. This hash value if encrypted using the CA's private key to generate the **digital signature**. The digital signature is added to the digital certificate. In our example, the CA adds their digital signature to Rosa's certificate validating her identity and her public key.
+The CA's digital signature works as follows: The certificate contents are put through a mathematical function to create a **hash value**. This hash value is encrypted using the CA's private key to generate the **digital signature**. The digital signature is added to the digital certificate. In our example, the CA adds their digital signature to Rosa's certificate validating her identity and her public key.
 
-As discussed [earlier](#certificate-authority), the CA's public key is widely distributed. In our example, Amy already has the CA's public key. Now when Rosa presents her digital certificate containing her public key, Amy uses the CA's public key to decrypt the digital signature on Rosa's certificate and gets the hash value encoded in the digital signature. Amy also generates the hash value for the certificate on her own. If the hash values match, then Amy can be sure that the certificate and hence the public key it contains indeed belongs to Rosa; else she can determine that the communication channel has been compromised and refuse further contact.
+As discussed [earlier](#certificate-authority), the CA's public key is widely distributed. In our example, Amy already has the CA's public key. Now when Rosa presents her digital certificate containing her public key, Amy uses the CA's public key to decrypt the digital signature on Rosa's certificate and gets the hash value encoded in the digital signature. Amy also generates the hash value for the certificate on her own. If the hash values match, then Amy can be sure that the certificate and hence the public key it contains indeed belongs to Rosa; otherwise, she can determine that the communication channel has been compromised and refuse further contact.
 
 ### How it all works together
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
-
-### TLS certificates
-
-CockroachDB uses TLS 1.2 server and client certificates. The TLS server certificates have the following requirements:
-
-1. The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate.
-2. The certificate must be signed by a trusted certificate authority.
-
-The TLS client certificates are used to authenticate the client connecting to a server. Because most client certificates authenticate a user instead of a device, the certificates contain usernames instead of hostnames. This makes it difficult for public CAs to verify the client's identity and hence most public CAs will not sign a client certificate. In that case, you might need to set up your own internal CA to issue client certificates.
 
 ## See also
 

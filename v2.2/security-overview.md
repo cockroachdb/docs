@@ -11,13 +11,13 @@ An insecure CockroachDB cluster comes with serious risks:
 - Any user, connecting as `root`, can read or write any data in your cluster.
 - There is no network encryption or authentication, and thus no confidentiality.
 
-To avoid these security risks, CockroachDB provides authentication, encryption, authorization, and audit logging features to deploy secure clusters. Before we deep-dive into how these features work, let's discuss why we need each of these features:
+To avoid these security risks, CockroachDB provides authentication, encryption, authorization, and audit logging features to deploy secure clusters. Before we deep-dive into how these features work, let's discuss why we need each of these features.
 
 ## Security overview
 
 It all starts with the desire for two parties to communicate securely over an insecure computer network. A conventional solution to ensure secure communication is **symmetric encryption** that involves encrypting and decrypting a plaintext message using a shared key. This seems like the logical solution until you realize that you need a secure communication channel to share the encryption key. This is a Catch-22 situation: How do you establish a secure channel to share the encryption key?
 
-An elegant solution to this problem is to use **Public Key Cryptography (PKI)** (also called **asymmetric encryption**) to establish a secure communication channel, and then sharing the symmetric encryption key over the secure channel.
+An elegant solution is to use **Public Key Cryptography (PKI)** (also called **asymmetric encryption**) to establish a secure communication channel, and then sharing the symmetric encryption key over the secure channel.
 
 Asymmetric encryption involves a pair of keys instead of a single key. The two keys are called the **public key** and the **private key**. The keys consist of very long numbers linked mathematically in a way such that a message encrypted using a public key can only be decrypted using the private key and vice versa. The message cannot be decrypted using the same key that was used to encrypt the message.
 
