@@ -113,6 +113,14 @@ h4 {
   }
 }
 
+h5 {
+  @include graphik_ri(17px);
+
+  code {
+    font-size: 17px;
+  }
+}
+
 pre { overflow: auto; }
 
 code {
