@@ -78,7 +78,7 @@ For best performance:
 
     Monitor IOPS for higher service times, if they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
-- The ideal configuration is 4-16 CPUs, 32-64 GB memory nodes.
+- The ideal configuration is 4-16 CPUs, 16-64 GB memory nodes (2-4 GB of memory per CPU).
 
     To add more processing power (up to 16 CPUs), add more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
@@ -88,7 +88,7 @@ For best performance:
 
 For more resilient clusters:
 
-- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 16 CPUs, two per node.
+- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 CPUs per node.
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
@@ -115,13 +115,13 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
     [Provisioned IOPS SSD-backed (`io1`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) need to have IOPS provisioned, which can be very expensive. Cheaper `gp2` volumes can be used instead, if your performance needs are less demanding. Allocating more disk space than you will use can improve performance of gp2 volumes.
 
-- When mounting SSD, we recommend using one larger disk per node instead of multiple smaller disks per node. Configuring CockroachDB with separate store arguments can impair rebalancing, but mounting multiple disks as one logical volume is fine.
+- When mounting SSD, we recommend using one larger disk per node instead of multiple smaller disks per node.
 - We recommend using 16 CPUs, 32-64 GiB memory each.
 
 #### Azure
 
 - Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs.
-    For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
+    For example, Cockroach Labs has used `Standard_L4s` VMs (4 CPUs and 32 GiB of RAM per VM) for internal testing.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on CPU resources. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
