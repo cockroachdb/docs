@@ -26,6 +26,12 @@
         "urls": [
           "/${VERSION}/managed-use-the-admin-ui.html"
         ]
+      },
+      {
+        "title": "FAQs",
+        "urls": [
+          "/${VERSION}/managed-frequently-asked-questions.html"
+        ]
       }
     ]
   },
