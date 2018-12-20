@@ -9,7 +9,7 @@ build_for: [managed]
 
 ### Is my cluster secure?
 
-Yes. We create individual sub-accounts and VPCs for all clusters within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless whitelisted for SQL and Web UI ports. We use `ca.certs` for each cluster and all connections to the cluster over the open internet are TLS 1.2 certified with password authentication.
+Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless whitelisted for SQL and Web UI ports. We use separate certificate authorities for each cluster and all connections to the cluster over the internet use TLS 1.2.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -17,47 +17,25 @@ Managed CockroachDB is a single-tenant offering and resources are not shared bet
 
 ### Why do you need a whitelist of IPs?
 
-The whitelist of IPs prevents anyone with the right password connecting to the SQL or Web UI ports of the managed cluster. The whitelist ensures only recognized connections are able to connect to the cluster.
+The whitelist is an additional layer of protection for your cluster. Connections will only be accepted if they come from a whitelisted IP address. This protects against both compromised passwords and any potential bugs in the server.
 
 ### How do I connect to my cluster?
 
-We will provide you with a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a `ca.cert`, and your first database username and password. You can use this information to connect to your cluster.
-
-### What permissions do I have on my cluster?
-
-**[answer]**
+We will provide you with a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your first database username and password. You can use this information to connect to your cluster.
 
 ### What machines do you run your cluster on?
 
-All our machines run with standard 4 CPUs. See our [Production Checklist](recommended-production-settings.html) for our recommendations for production deployments of CockroachDB.
-
-### How does CockroachDB survive failures?
-
-CockroachDB is designed to survive software and hardware failures, from server restarts to datacenter outages. This is accomplished without confusing artifacts typical of other distributed systems (e.g., stale reads) using strongly-consistent replication as well as automated repair after failures.
-
-**Replication**
-
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
-
-- Different servers within a rack to tolerate server failures
-- Different servers on different racks within a datacenter to tolerate rack power/network failures
-- Different servers in different datacenters to tolerate large scale network or power outages
-
-When replicating across datacenters, be aware that the round-trip latency between datacenters will have a direct effect on your database's performance. Latency in cross-continent clusters will be noticeably worse than in clusters where all nodes are geographically close together.
-
-**Automated Repair**
-
-For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new “leader” for each group of replicas is elected if the former leader fails, so that transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.
+Our machines run with 4 CPUs, 8 CPUs, or 16 CPUs per node.
 
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?
 
-Today, you can reach out to us through [Support]([Support](https://support.cockroachlabs.com/hc/en-us) or your private Slack channel for most cluster changes. In early 2019, you will be able to make changes using a self-service management console.
+Today, you can reach out to [Support]([Support](https://support.cockroachlabs.com/hc/en-us) for most cluster changes. In early 2019, you will be able to make changes using a self-service management console.
 
 ### How do I add nodes?
 
-To add nodes, you can reach out to us through [Support]([Support](https://support.cockroachlabs.com/hc/en-us) or your private Slack channel to request to add nodes.
+To add nodes, you can reach out to [Support]([Support](https://support.cockroachlabs.com/hc/en-us) to request to add nodes. Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
 
 ### Do you auto-scale?
 
@@ -77,7 +55,7 @@ Yes, the managed clusters run the enterprise version of CockroachDB and all ente
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also reach out to us through [Support](https://support.cockroachlabs.com/hc/en-us) or your private Slack channel.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also reach out to [Support](https://support.cockroachlabs.com/hc/en-us).
 
 ### Can I use my startup cloud credits?
 
@@ -97,10 +75,10 @@ Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happ
 
 ### Do you have a UI? How can I see details?
 
-In early 2019, there will be a self-service management console where you can connect to your cluster, view details of your cluster, and make changes to your existing cluster.
+All customers of our managed service have access to the [CockroachDB Admin UI](managed-use-the-admin-ui.html). In early 2019, there will be a self-service management console where you can connect to your cluster, view details of your cluster, and make changes to your existing cluster.
 
 ## Pricing
 
 ### How does pricing work when I need to add nodes?
 
-Today, to add nodes or regions, request the modification through [Support](https://support.cockroachlabs.com/hc/en-us) or your private Slack channel. Our Sales team will work with you to update your cluster configurations. We expect this to be self-service next year.
+The cost of the new nodes will be pro-rated for the remainder of your contract term. 
