@@ -9,10 +9,9 @@ This tutorial shows you how build a simple C# (.NET) application with CockroachD
 
 We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the <a href="https://www.microsoft.com/net/download/" data-proofer-ignore>.NET SDK</a> for your OS.
+{% include {{page.version.version}}/app/before-you-begin.md %}
 
 ## Step 1. Create a .NET project
 
@@ -37,48 +36,42 @@ Install the latest version of the [Npgsql driver](https://www.nuget.org/packages
 $ dotnet add package Npgsql
 ~~~
 
-## Step 3. Start a single-node cluster
+<section class="filter-content" markdown="1" data-scope="secure">
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode:
+## Step 3. Create the `maxroach` user and `bank` database
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start \
---insecure \
---store=hello-1 \
---listen-addr=localhost
-~~~
+{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
 
-## Step 4. Create a user
+## Step 4. Generate a certificate for the `maxroach` user
 
-In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
+Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach user set maxroach --insecure
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
 
-## Step 5. Create a database and grant privileges
+## Step 5. Convert the key file for use by C# programs
 
-As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database.
+The private key generated for user `maxroach` by CockroachDB is [PEM encoded](https://tools.ietf.org/html/rfc1421).  To read the key in a C# application, you will need to convert it into PKCS#12 format.
+
+To convert the key to PKCS#12 format, run the following OpenSSL command on the `maxroach` user's key file in the directory where you stored your certificates:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure -e 'CREATE DATABASE bank'
+$ openssl pkcs12 -inkey client.maxroach.key -password pass: -in client.maxroach.crt -export -out client.maxroach.pfx
 ~~~
 
-Then [grant privileges](grant.html) to the `maxroach` user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
-~~~
+As of 2018-12-10, you need to provide a password for this to work on macOS. See <https://github.com/dotnet/corefx/issues/24225>.
 
 ## Step 6. Run the C# code
 
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+Now that you have created a database and set up encryption keys, in this section you will:
 
-### Basic statements
+- [Create a table and insert some rows](#basic-example)
+- [Execute a batch of statements as a transaction](#transaction-example-with-retry-logic)
+
+### Basic example
 
 Replace the contents of `cockraochdb-test-app/Program.cs` with the following code:
 
@@ -102,9 +95,11 @@ Initial balances:
 	account 2: 250
 ~~~
 
-### Transaction (with retry logic)
+### Transaction example (with retry logic)
 
-Open `cockraochdb-test-app/Program.cs` again and replace the contents with the following code:
+Open `cockraochdb-test-app/Program.cs` again and replace the contents with the code shown below.
+
+{% include {{page.version.version}}/client-transaction-retry.md %}
 
 {% include copy-clipboard.html %}
 ~~~ csharp
@@ -117,10 +112,6 @@ Then run the code to again connect as the `maxroach` user but this time execute 
 ~~~ shell
 $ dotnet run
 ~~~
-
-{{site.data.alerts.callout_info}}
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
-{{site.data.alerts.end}}
 
 The output should be:
 
@@ -137,7 +128,7 @@ However, if you want to verify that funds were transferred from one account to a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --certs-dir=certs --database=bank -e 'SELECT id, balance FROM accounts'
 ~~~
 
 ~~~
@@ -149,6 +140,97 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 +----+---------+
 (2 rows)
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+## Step 3. Create the `maxroach` user and `bank` database
+
+{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
+
+## Step 4. Run the C# code
+
+Now that you have created a database and set up encryption keys, in this section you will:
+
+- [Create a table and insert some rows](#basic2)
+- [Execute a batch of statements as a transaction](#transaction2)
+
+<a name="basic2"></a>
+
+### Basic example
+
+Replace the contents of `cockraochdb-test-app/Program.cs` with the following code:
+
+{% include copy-clipboard.html %}
+~~~ csharp
+{% include {{ page.version.version }}/app/insecure/basic-sample.cs %}
+~~~
+
+Then run the code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ dotnet run
+~~~
+
+The output should be:
+
+~~~
+Initial balances:
+	account 1: 1000
+	account 2: 250
+~~~
+
+<a name="transaction2"></a>
+
+### Transaction example (with retry logic)
+
+Open `cockraochdb-test-app/Program.cs` again and replace the contents with the code shown below.
+
+{% include {{page.version.version}}/client-transaction-retry.md %}
+
+{% include copy-clipboard.html %}
+~~~ csharp
+{% include {{ page.version.version }}/app/insecure/txn-sample.cs %}
+~~~
+
+Then run the code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ dotnet run
+~~~
+
+The output should be:
+
+~~~
+Initial balances:
+	account 1: 1000
+	account 2: 250
+Final balances:
+	account 1: 900
+	account 2: 350
+~~~
+
+However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts'
+~~~
+
+~~~
++----+---------+
+| id | balance |
++----+---------+
+|  1 |     900 |
+|  2 |     350 |
++----+---------+
+(2 rows)
+~~~
+
+</section>
 
 ## What's next?
 
