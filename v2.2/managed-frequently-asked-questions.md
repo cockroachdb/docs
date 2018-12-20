@@ -21,7 +21,7 @@ Managed CockroachDB is a single-tenant offering and resources are not shared bet
 
 ### How do I connect to my cluster?
 
-We will provide you with a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your first database username and password. You can use this information to connect to your cluster.
+We will provide you with a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your first database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html).
 
 ### What machines do you run your cluster on?
 
@@ -41,7 +41,7 @@ To request to add nodes, you can contact [Support](https://support.cockroachlabs
 
 ### Do you auto-scale?
 
-Today, we do not automatically scale nodes based on your capacity usage. To add nodes, please contact [Support](https://support.cockroachlabs.com/hc/en-us) There are plans to allow auto-scaling in the future.
+Today, we do not automatically scale nodes based on your capacity usage. To add nodes, please contact [Support](https://support.cockroachlabs.com/hc/en-us). There are plans to allow auto-scaling in the future.
 
 ### Who is responsible for backup?
 
@@ -51,13 +51,15 @@ Cockroach Labs will run daily full backups and hourly incremental backups for al
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, the managed clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html) and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, managed clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ## Cluster troubleshooting
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also contact [Support](https://support.cockroachlabs.com/hc/en-us).
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](performance-best-practices-overview.html) and [Performance Tuning](performance-tuning.html) docs for more information.
+
+If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 
 ### Can I use my startup cloud credits?
 
