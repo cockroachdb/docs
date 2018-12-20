@@ -44,6 +44,12 @@
         ]
       },
       {
+        "title": "Geo-Partitioning",
+        "urls": [
+          "/${VERSION}/training/geo-partitioning.html"
+        ]
+      },
+      {
         "title": "Data Import",
         "urls": [
           "/${VERSION}/training/data-import.html"
