@@ -32,7 +32,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-east \
+    --locality=region=us-east,datacenter=us-east1 \
     --store=node1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
@@ -46,7 +46,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-east \
+    --locality=region=us-east,datacenter=us-east1 \
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
@@ -60,7 +60,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-east \
+    --locality=region=us-east,datacenter=us-east1 \
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
@@ -85,7 +85,7 @@ To check this, open the Web UI at <a href="http://localhost:8080" data-proofer-i
 
 ## Step 3. Expand into 2 more US regions
 
-Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
+Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that all 6 nodes are in the `us-west` region, with 3 nodes in the `us-west1` datacenter and 3 nodes in the `us-west2` datacenter.
 
 1. In a new terminal, start node 4:
 
@@ -93,7 +93,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-central \
+    --locality=region=us-west,datacenter=us-west1 \
     --store=node4 \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
@@ -107,7 +107,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-central \
+    --locality=region=us-west,datacenter=us-west1 \
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
@@ -121,7 +121,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-central \
+    --locality=region=us-west,datacenter=us-west1 \
     --store=node6 \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
@@ -129,7 +129,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --background
     ~~~
 
-    You started nodes 4, 5, and 6 in the Central region.
+    You started nodes 4, 5, and 6 in the `us-west1` datacenter in the `us-west` region.
 
 4. Start node 7:
 
@@ -137,7 +137,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-west \
+    --locality=region=us-west,datacenter=us-west2 \
     --store=node7 \
     --listen-addr=localhost:26263 \
     --http-addr=localhost:8086 \
@@ -151,7 +151,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-west \
+    --locality=region=us-west,datacenter=us-west2 \
     --store=node8 \
     --listen-addr=localhost:26264 \
     --http-addr=localhost:8087 \
@@ -165,7 +165,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     ~~~ shell
     $ ./cockroach start \
     --insecure \
-    --locality=region=us,datacenter=us-west \
+    --locality=region=us-west,datacenter=us-west2 \
     --store=node9 \
     --listen-addr=localhost:26265 \
     --http-addr=localhost:8088 \
@@ -173,11 +173,11 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --background
     ~~~
 
-    You started nodes 7, 8, and 9 in the East region.
+    You started nodes 7, 8, and 9 in the `us-west2` datacenter in the `us-west` region.
 
 ## Step 4. Write data and verify data distribution
 
-Now that there are 3 distinct localities in the cluster, the cluster will automatically ensure that, for every range, one replica is on a node in `us-east`, one is on a node in `us-central`, and one is on a node in `us-west`.
+Now that there are 3 distinct localities in the cluster, the cluster will automatically ensure that, for every range, one replica is on a node in the `us-east1` datacenter, one is on a node in `us-west1` datacenter, and one is on a node in the `us-west2` datacenter.
 
 To check this, let's create a table, which initially maps to a single underlying range, and check where the replicas of the range end up.
 
@@ -240,61 +240,19 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~
       start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       24 | {1,6,9}  |            9
+      NULL      | NULL    |       32 | {1,4,8}  |            8
     (1 row)
     ~~~
 
-    In this case, one replica is on node 1 in `us-east`, one is on node 6 in `us-central`, and one is on node 7 in `us-west`.
+    In this case, one replica is on node 1 in `us-east1`, one is on node 4 in `us-west1`, and one is on node 8 in `us-west2`.
 
-## Step 5. Expand into Europe
+    You can also use the Web UI's <a href="http://localhost:8080/#/data-distribution" data-proofer-ignore>Data Distribution matrix</a> to view the distribution of data across nodes:
 
-Let's say your user-base has expanded into Europe and you want to store data there. To do so, add 3 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that nodes are in the Western region of Europe.
+    <img src="{{ 'images/v2.1/training-1.1.png' | relative_url }}" alt="CockroachDB Web UI" style="border:1px solid #eee;max-width:100%" />
 
-1. Start node 10:
+## Step 5. Add US East-only data
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach start \
-    --insecure \
-    --locality=region=eu,datacenter=eu-west \
-    --store=node10 \
-    --listen-addr=localhost:26266 \
-    --http-addr=localhost:8089 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
-    ~~~~
-
-2. Start node 11:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach start \
-    --insecure \
-    --locality=region=eu,datacenter=eu-west \
-    --store=node11 \
-    --listen-addr=localhost:26267 \
-    --http-addr=localhost:8090 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
-    ~~~~
-
-3. Start node 12:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach start \
-    --insecure \
-    --locality=region=eu,datacenter=eu-west \
-    --store=node12 \
-    --listen-addr=localhost:26268 \
-    --http-addr=localhost:8091 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
-    ~~~~
-
-## Step 6. Add EU-specific data
-
-Now imagine that `intro` database you created earlier is storing data for a US-based application, and you want a completely separate database to store data for an EU-based application.
+Now imagine that the `intro` database you created earlier is storing data for users across the US, but you want a completely separate database to store data for an application running only in the US East.
 
 1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
@@ -331,27 +289,20 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
     (1 row)
     ~~~
 
-## Step 7. Constrain data to specific regions
+## Step 6. Constrain data to the US East
 
-Because you used the `--locality` flag to indicate the region for each of your nodes, constraining data to specific regions is simple.
+Because you used the `--locality` flag to indicate the region and datacenter for each of your nodes, constraining data to specific localities is simple.
 
-1. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
-    ~~~
-
-2. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
+1. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a replication zone for the `startrek` database, forcing all the data in the database to be located on nodes in the `us-east` region:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=us-east]';" --insecure --host=localhost:26257
     ~~~
 
-## Step 8. Verify data distribution
+## Step 7. Verify data distribution
 
-Now verify that the data for the table in the `intro` database is located on US-based nodes, and the data for the tables in the `startrek` database is located on EU-based nodes.
+Now verify that the data for the table in the `intro` database is still located across all US-based nodes, and the data for the tables in the `startrek` database is located only on nodes in the `us-east` region.
 
 1. Find the IDs of the nodes where replicas are stored for the `intro.mytable`, `startrek.episodes`, and `startrek.quotes` tables:
 
@@ -368,49 +319,29 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~
       start_key | end_key | range_id | replicas | lease_holder
     +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       24 | {1,5,9}  |            9
+      NULL      | NULL    |       32 | {1,4,8}  |            8
     (1 row)
-      start_key | end_key | range_id |  replicas  | lease_holder
-    +-----------+---------+----------+------------+--------------+
-      NULL      | NULL    |       42 | {10,11,12} |           10
+      start_key | end_key | range_id | replicas | lease_holder
+    +-----------+---------+----------+----------+--------------+
+      NULL      | NULL    |       34 | {1,2,3}  |            3
     (1 row)
-      start_key | end_key | range_id |  replicas  | lease_holder
-    +-----------+---------+----------+------------+--------------+
-      NULL      | NULL    |       43 | {10,11,12} |           11
+      start_key | end_key | range_id | replicas | lease_holder
+    +-----------+---------+----------+----------+--------------+
+      NULL      | NULL    |       35 | {1,2,3}  |            1
     (1 row)
     ~~~
 
-2. For each table, check the node IDs (in the `Replicas` column) against the following key to verify that replicas are in the correct region:
+2. For each table, check the node IDs (in the `replicas` column) against the following key to verify that replicas are in the correct locations:
 
     Node IDs | Region
     --------|-------
-    1 - 9 | US
-    10 - 12 | EU
+    1 - 3 | `us-east`
+    4 - 9 | `us-west`
 
-{{site.data.alerts.callout_info}}
-You can also use the Web UI's <a href="http://localhost:8080/#/data-distribution" data-proofer-ignore>Data Distribution matrix</a> to view the distribution of data across nodes.
-{{site.data.alerts.end}}
+    You can also use the Web UI's <a href="http://localhost:8080/#/data-distribution" data-proofer-ignore>Data Distribution matrix</a> to view the distribution of data across nodes:
 
-## Step 9. Clean up
-
-Take a moment to clean things up.
-
-1. Stop all CockroachDB nodes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ pkill -9 cockroach
-    ~~~
-
-    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
-
-2. Remove the nodes' data directories:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12
-    ~~~
+    <img src="{{ 'images/v2.1/training-1.2.png' | relative_url }}" alt="CockroachDB Web UI" style="border:1px solid #eee;max-width:100%" />
 
 ## What's next?
 
-[Data Import](data-import.html)
+[Geo-Partitioning](geo-partitioning.html): In the next module, you'll take what you learned about locality and replication zones and use it in combination with row-level partitioning for performant geographically distributed deployments.  
