@@ -47,7 +47,7 @@ For added context about CockroachDB's fault tolerance and automated repair capab
 
 Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
-#### CPU, memory, and storage recommendations
+#### CPU and memory recommendations
 
 - At a bare minimum, each node should have **2 GB of RAM and 2 CPUs**.
 
@@ -57,29 +57,24 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
     Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
     {{site.data.alerts.end}}
 
-- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
-- Avoid using shared storage such as NFS, CIFS, and CEPH storage.
-- The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
-
-#### Performance recommendations
-
-For best performance:
-
-- For storage, SSD or NVMe devices will yield the best performance results. The recommended volume size is 300-500 GB.
-
-    Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
-
 - The ideal configuration is 4-16 CPUs, 8-64 GB memory nodes (2-4 GB of memory per CPU).
 
     To add more processing power (up to 16 CPUs), adding more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
+- For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 CPUs per node.
+
+#### Storage recommendations
+
+- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+
+- Avoid using shared storage such as NFS, CIFS, and CEPH storage.
+
+- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB.
+
+    Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+
 - To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
-#### Resilience recommendations
-
-For more resilient clusters:
-
-- Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 CPUs per node.
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
@@ -87,6 +82,8 @@ For more resilient clusters:
     {{site.data.alerts.callout_danger}}
     {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
     {{site.data.alerts.end}}
+
+- The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 ### Cloud-specific recommendations
 
