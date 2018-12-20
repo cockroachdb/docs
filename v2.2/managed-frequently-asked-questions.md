@@ -9,7 +9,9 @@ build_for: [managed]
 
 ### Is my cluster secure?
 
-Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless whitelisted for SQL and Web UI ports. The whitelist is an additional layer of protection for your cluster. Connections will only be accepted if they come from a whitelisted IP address, which protects against both compromised passwords and any potential bugs in the server.
+Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless whitelisted for SQL and Web UI ports.
+
+The whitelist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from a whitelisted IP address, which protects against both compromised passwords and any potential bugs in the server.
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
@@ -25,19 +27,21 @@ We will provide you with a connection string for each region (or one region if i
 
 Our machines run with 4 CPUs, 8 CPUs, or 16 CPUs per node.
 
+Based on your cluster requirements (e.g., number of CPUs, GBs of storage, and regions) and budget, we will determine the optimal setup for your cluster.
+
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?
 
-Today, you can reach out to [Support]([Support](https://support.cockroachlabs.com/hc/en-us) for most cluster changes. In early 2019, you will be able to make changes using a self-service management console.
+Today, you can contact [Support](https://support.cockroachlabs.com/hc/en-us) for most cluster changes. In early 2019, you will be able to make changes using a self-service management console.
 
 ### How do I add nodes?
 
-To add nodes, you can reach out to [Support]([Support](https://support.cockroachlabs.com/hc/en-us) to request to add nodes. Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
+To request to add nodes, you can contact [Support](https://support.cockroachlabs.com/hc/en-us). Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
 
 ### Do you auto-scale?
 
-Today, we do not automatically scale nodes based on your capacity usage. There are plans to allow auto-scaling in the future.
+Today, we do not automatically scale nodes based on your capacity usage. To add nodes, please contact [Support](https://support.cockroachlabs.com/hc/en-us) There are plans to allow auto-scaling in the future.
 
 ### Who is responsible for backup?
 
@@ -53,7 +57,7 @@ Yes, the managed clusters run the enterprise version of CockroachDB and all ente
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also reach out to [Support](https://support.cockroachlabs.com/hc/en-us).
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also contact [Support](https://support.cockroachlabs.com/hc/en-us).
 
 ### Can I use my startup cloud credits?
 
@@ -73,10 +77,4 @@ Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happ
 
 ### Do you have a UI? How can I see details?
 
-All customers of our managed service have access to the [CockroachDB Admin UI](managed-use-the-admin-ui.html). In early 2019, there will be a self-service management console where you can connect to your cluster, view details of your cluster, and make changes to your existing cluster.
-
-## Pricing
-
-### How does pricing work when I need to add nodes?
-
-The cost of the new nodes will be pro-rated for the remainder of your contract term.
+All customers of our managed service can monitor and troubleshoot their clusters by accessing the [CockroachDB Admin UI](managed-use-the-admin-ui.html). In early 2019, you will be able to manage your cluster using a self-service management console.
