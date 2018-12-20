@@ -74,15 +74,15 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 For best performance:
 
-- For storage, SSD or NVMe devices will yield the best performance results. The usual volume size should be 300-500 GB.
+- For storage, SSD or NVMe devices will yield the best performance results. The recommended volume size is 300-500 GB.
 
-    Monitor IOPS for higher service times, if they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+    Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
 - The ideal configuration is 4-16 CPUs, 16-64 GB memory nodes (2-4 GB of memory per CPU).
 
-    To add more processing power (up to 16 CPUs), add more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To add more processing power (up to 16 CPUs), adding more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
-- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decreases, add more nodes to your cluster to add IOPS.
+- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
 #### Resilience recommendations
 
@@ -91,7 +91,7 @@ For more resilient clusters:
 - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 CPUs per node.
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud providers' network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
 
     {{site.data.alerts.callout_danger}}
     {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
@@ -156,13 +156,15 @@ An insecure cluster comes with serious risks:
 - Any user, connecting as `root`, can read or write any data in your cluster.
 - There is no network encryption or authentication, and thus no confidentiality.
 
-Therefore, to deploy CockroachDB in production, it is strongly recommended to use TLS certificates to authenticate the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](create-security-certificates.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
+Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](create-security-certificates.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
 
 - A certificate authority (CA) certificate and key, used to sign all of the other certificates.
 - A separate certificate and key for each node in your deployment, with the common name `node`.
 - A separate certificate and key for each client and user you want to connect to your nodes, with the common name set to the username. The default user is `root`.
 
     Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
+
+For more information, see the [Security Overview](security-overview.html).
 
 ## Networking
 
