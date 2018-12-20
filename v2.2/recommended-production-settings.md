@@ -41,15 +41,6 @@ Term | Definition
 For added context about CockroachDB's fault tolerance and automated repair capabilities, see [this training](training/fault-tolerance-and-automated-repair.html).
 {{site.data.alerts.end}}
 
-
-## Operating Systems
-
-For information about operating system requirements, see the relevant Install page:
-
-- [Install CockroachDB on Mac](install-cockroachdb-mac.html)
-- [Install CockroachDB on Linux](install-cockroachdb-linux.html)
-- [Install CockroachDB on Windows](install-cockroachdb-windows.html)
-
 ## Hardware
 
 ### Basic hardware recommendations
@@ -78,7 +69,7 @@ For best performance:
 
     Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
-- The ideal configuration is 4-16 CPUs, 16-64 GB memory nodes (2-4 GB of memory per CPU).
+- The ideal configuration is 4-16 CPUs, 8-64 GB memory nodes (2-4 GB of memory per CPU).
 
     To add more processing power (up to 16 CPUs), adding more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
@@ -115,7 +106,6 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
     [Provisioned IOPS SSD-backed (`io1`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) need to have IOPS provisioned, which can be very expensive. Cheaper `gp2` volumes can be used instead, if your performance needs are less demanding. Allocating more disk space than you will use can improve performance of gp2 volumes.
 
-- When mounting SSD, we recommend using one larger disk per node instead of multiple smaller disks per node.
 - We recommend using 16 CPUs, 32-64 GiB memory each.
 
 #### Azure
