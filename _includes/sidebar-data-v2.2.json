@@ -1591,6 +1591,13 @@
               "/${VERSION}/cost-based-optimizer.html"
             ]
           }
+        ],
+          {
+            "title": "Load-Based Splitting",
+            "urls": [
+              "/${VERSION}/load-based-splitting.html"
+            ]
+          }
         ]
       },
       {
