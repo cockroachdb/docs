@@ -23,7 +23,7 @@
     ]
   },
   {
-    "title": "Ops Basics",
+    "title": "Key Capabilities",
     "items": [
       {
         "title": "Cluster Startup and Scaling",
@@ -49,6 +49,17 @@
           "/${VERSION}/training/geo-partitioning.html"
         ]
       },
+      {
+        "title": "Orchestration",
+        "urls": [
+          "/${VERSION}/training/data-import.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ops Basics",
+    "items": [
       {
         "title": "Data Import",
         "urls": [
