@@ -17,9 +17,9 @@ sidebar_data: sidebar-data-training.json
 
 Make sure you have already completed [Locality and Replication Zones](locality-and-replication-zones.html) and have 9 nodes running locally across 3 distinct localities:
 
-- `--locality=region=us-east=datacenter=us-east1`
-- `--locality=region=us-west=datacenter=us-west1`
-- `--locality=region=us-west=datacenter=us-west2`
+- `--locality=region=us-east,datacenter=us-east1`
+- `--locality=region=us-west,datacenter=us-west1`
+- `--locality=region=us-west,datacenter=us-west2`
 
 ## Step 1. Request a trial Enterprise license
 
