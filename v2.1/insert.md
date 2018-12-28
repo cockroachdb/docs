@@ -15,7 +15,9 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](privileges.html) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
+The user must have the `INSERT` [privilege](privileges.html) on the table.
+To use `ON CONFLICT`, the user must also have the `SELECT` privilege on the table.
+To use `ON CONFLICT DO UPDATE`, the user must additionally have the `UPDATE` privilege on the table.
 
 ## Synopsis
 
@@ -59,8 +61,8 @@ CockroachDB will return an error.
 
 As a short-hand alternative to the `ON
 CONFLICT` clause, you can use the [`UPSERT`](upsert.html)
-statement. However, `UPSERT` does not let you specify the column with
-the unique constraint; it assumes that the column is the primary
+statement. However, `UPSERT` does not let you specify the column(s) with
+the unique constraint; it always uses the column(s) from the primary
 key. Using `ON CONFLICT` is therefore more flexible.
 
 ## Examples
@@ -655,6 +657,50 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 | 10 |     450 |
 +----+---------+
 ~~~
+
+### Import data containing duplicates rows using `ON CONFLICT` and `DISTINCT ON`
+
+If the input data for `INSERT ON CONFLICT` contains duplicate rows,
+you must use [`DISTINCT
+ON`](select-clause.html#eliminate-duplicate-rows) to remove these
+duplicates.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  INSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance FROM inputrows) -- de-duplicate the input rows
+    ON CONFLICT (id)
+    DO NOTHING;
+~~~
+
+The `DISTINCT ON` clause does not guarantee which of the duplicates is
+considered. To force the selection of a particular duplicate, use an
+`ORDER BY` clause:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  INSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance
+	 FROM inputrows
+     ORDER BY balance) -- pick the lowest balance as value to update in each account
+    ON CONFLICT (id)
+    DO NOTHING;
+~~~
+
+{{site.data.alerts.callout_info}}
+Using `DISTINCT ON` incurs a performance cost to search and eliminate duplicates.
+For best performance, avoid using it when the input is known to not contain duplicates.
+{{site.data.alerts.end}}
 
 ## See also
 

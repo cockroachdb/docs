@@ -9,15 +9,17 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 ## Considerations
 
-- `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` Transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
+- `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
 
 - When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
 
 - A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 
+- If the input data contains duplicates, see [Import data containing duplicate rows using `DISTINCT ON`](#import-data-containing-duplicate-rows-using-distinct-on) below.
+
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the table.
+The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](privileges.html) on the table.
 
 ## Synopsis
 
@@ -232,6 +234,45 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 | 4 | 1 |
 +---+---+
 ~~~
+
+### Import data containing duplicate rows using `DISTINCT ON`
+
+If the input data to insert/update contains duplicate rows, you must
+use [`DISTINCT ON`](select-clause.html#eliminate-duplicate-rows) to
+ensure there is only one row for each value of the primary key.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  UPSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance FROM inputrows); -- de-duplicate the input rows
+~~~
+
+The `DISTINCT ON` clause does not guarantee which of the duplicates is
+considered. To force the selection of a particular duplicate, use an
+`ORDER BY` clause:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  UPSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance
+	 FROM inputrows
+     ORDER BY balance); -- pick the lowest balance as value to update in each account
+~~~
+
+{{site.data.alerts.callout_info}}
+Using `DISTINCT ON` incurs a performance cost to search and eliminate duplicates.
+For best performance, avoid using it when the input is known to not contain duplicates.
+{{site.data.alerts.end}}
 
 ## See also
 
