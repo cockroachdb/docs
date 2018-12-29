@@ -15,7 +15,7 @@ toc: true
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to list table statistics.
+No [privileges](authorization.html#assign-privileges) are required to list table statistics.
 
 ## Parameters
 

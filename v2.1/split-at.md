@@ -19,7 +19,7 @@ The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range s
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](privileges.html) on the table or index.
+The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table or index.
 
 ## Parameters
 

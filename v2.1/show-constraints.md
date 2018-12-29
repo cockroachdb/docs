@@ -8,7 +8,7 @@ The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constra
 
 ## Required privileges
 
-The user must have any [privilege](privileges.html) on the target table.
+The user must have any [privilege](authorization.html#assign-privileges) on the target table.
 
 ## Aliases
 

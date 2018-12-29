@@ -21,7 +21,7 @@ Each time `CREATE STATISTICS` is used, a new statistic is created without removi
 
 ## Required Privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Parameters
 

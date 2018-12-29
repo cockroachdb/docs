@@ -35,7 +35,7 @@ Parameter | Description |
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Examples
 

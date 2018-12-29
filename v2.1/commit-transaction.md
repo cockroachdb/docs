@@ -17,7 +17,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to commit a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to commit a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 

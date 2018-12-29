@@ -1,24 +1,23 @@
 ---
-title: Manage Roles
-summary: Roles are SQL groups that contain any number of users and roles as members.
+title: Authorization
+summary: Learn about the authorization features for secure CockroachDB clusters.
 toc: true
 ---
 
-Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#create-and-manage-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, if you have an [Enterprise license](get-started-with-enterprise-trial.html), you can use [role-based access management (RBAC)](#create-and-manage-roles) for simplified user management.
 
-- [`CREATE ROLE` (Enterprise)](create-role.html)
-- [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
-- [`GRANT <privileges>`](grant.html)
-- [`REVOKE <privileges>`](revoke.html)
-- [`SHOW ROLES`](show-roles.html)
-- [`SHOW GRANTS`](show-grants.html)
+## Create and manage users
 
+You can use either of the following methods to create and manage users:
 
-## Terminology
+- Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users.
+- Use the [`cockroach user` command](create-and-manage-users.html) with appropriate flags.
 
-To get started, basic role terminology is outlined below:
+## Create and manage roles
+
+Roles are SQL groups that contain any number of users and roles as members.
+
+### Terminology
 
 Term | Description
 -----|------------
@@ -29,6 +28,56 @@ Superuser / Admin | A member of the `admin` role. Only superusers can [`CREATE R
 Inherit | The behavior that grants a role's privileges to its members.
 Direct member | A user or role that is an immediate member of the role.<br><br>Example: `A` is a member of `B`.
 Indirect member | A user or role that is a member of the role by association. <br><br>Example: `A` is a member of `C` ... is a member of `B` where "..." is an arbitrary number of memberships.
+
+To create and manage your cluster's roles, use the following statements:
+
+- [`CREATE ROLE` (Enterprise)](create-role.html)
+- [`DROP ROLE` (Enterprise)](drop-role.html)
+- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <privileges>`](grant.html)
+- [`REVOKE <privileges>`](revoke.html)
+- [`SHOW ROLES`](show-roles.html)
+- [`SHOW GRANTS`](show-grants.html)
+
+## Assign privileges
+
+In CockroachDB, privileges are granted to [users](create-and-manage-users.html) and [roles](#create-and-manage-roles) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
+
+When a user connects to a database, either via the [built-in SQL client](use-the-built-in-sql-client.html) or a [client driver](install-client-drivers.html), CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
+
+For the privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+
+### Supported privileges
+
+For a full list of supported privileges, see the [`GRANT`](grant.html) documentation.
+
+### Granting privileges
+
+To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, for example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT SELECT, INSERT ON bank.accounts TO maxroach;
+~~~
+
+### Showing privileges
+
+To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON DATABASE bank FOR maxroach;
+~~~
+
+### Revoking privileges
+
+To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statement, for example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REVOKE INSERT ON bank.accounts FROM maxroach;
+~~~
 
 ## Example
 
@@ -241,6 +290,8 @@ $ cockroach start \
 
 ## See also
 
+- [Client Connection Parameters](connection-parameters.html)
+- [SQL Statements](sql-statements.html)
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
@@ -249,6 +300,3 @@ $ cockroach start \
 - [`REVOKE <privileges>`](revoke.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](create-and-manage-users.html)
-- [Privileges](privileges.html)
-- [Other Cockroach Commands](cockroach-commands.html)

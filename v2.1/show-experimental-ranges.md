@@ -27,7 +27,7 @@ This information is useful for verifying that:
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](privileges.html) on the target table.
+The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the target table.
 
 ## Parameters
 

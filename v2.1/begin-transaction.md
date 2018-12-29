@@ -19,7 +19,7 @@ When using transactions, your application should include logic to [retry transac
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 
@@ -30,8 +30,8 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 
 ## Parameters
 
- Parameter | Description 
------------|------------- 
+ Parameter | Description
+-----------|-------------
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
 

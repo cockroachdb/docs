@@ -14,7 +14,7 @@ The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databa
 
 ## Required privileges
 
-The user must have the [`SELECT`](select-clause.html) [privilege](privileges.html) on the system table.
+The user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
 
 ## Example
 
@@ -40,5 +40,5 @@ The user must have the [`SELECT`](select-clause.html) [privilege](privileges.htm
 - [`REVOKE <privileges`](revoke.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles` (Enterprise)](revoke-roles.html)
-- [Manage Roles](roles.html)
+- [Manage Roles](authorization.html#create-and-manage-roles)
 - [Manage Users](create-and-manage-users.html)

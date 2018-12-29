@@ -11,7 +11,7 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
 ## Required privileges
 
-The user must have the `DELETE` [privilege](privileges.html) on the `system.users` table.
+The user must have the `DELETE` [privilege](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -19,7 +19,7 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
 `user_name` | The username of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.
 

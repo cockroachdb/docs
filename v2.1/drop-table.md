@@ -10,7 +10,7 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
 
 ## Synopsis
 
