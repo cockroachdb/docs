@@ -189,9 +189,9 @@ For added clarity, here's a key showing how nodes map to localities:
 
 Node IDs | Locality
 ---------|---------
-1 - 3 | `--locality=region=us-east=datacenter=us-east1`
-4 - 6 | `--locality=region=us-west=datacenter=us-west1`
-7 - 9 | `--locality=region=us-west=datacenter=us-west2`
+1 - 3 | `--locality=region=us-east,datacenter=us-east1`
+4 - 6 | `--locality=region=us-west,datacenter=us-west1`
+7 - 9 | `--locality=region=us-west,datacenter=us-west2`
 
 In this case, for the single range containing `vehicles` data, one replica is in each datacenter, and the leaseholder is in the `us-west1` datacenter. The same is true for the single range containing `users` data, but the leaseholder is in the `us-west2` datacenter.
 
@@ -244,6 +244,10 @@ For the single range containing `users` data, one replica is in each datacenter,
 ## Step 5. Partition data by city
 
 For this service, the most effective technique for improving read and write latency is to geo-partition the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges.
+
+{{site.data.alerts.callout_info}}
+The following steps partition each table by city to demonstrate the feature. In production, it is recommended that you use a `region` constraint on the database instead.
+{{site.data.alerts.end}}
 
 1. Partition the `users` table by city:
 
@@ -317,34 +321,19 @@ Since our nodes are located in 3 specific datacenters, we're only going to use t
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION boston OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION washington_dc OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION seattle OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION san_francisco OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION los_angeles OF TABLE movr.users \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
     ~~~
@@ -355,34 +344,19 @@ Since our nodes are located in 3 specific datacenters, we're only going to use t
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION boston OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION washington_dc OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION seattle OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION san_francisco OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION los_angeles OF TABLE movr.vehicles \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
     ~~~
@@ -393,34 +367,19 @@ Since our nodes are located in 3 specific datacenters, we're only going to use t
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION boston OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION washington_dc OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION seattle OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION san_francisco OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
-    ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
     > ALTER PARTITION los_angeles OF TABLE movr.rides \
     CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
     ~~~
@@ -539,7 +498,7 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
     $ pkill -9 cockroach
     ~~~
 
-    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
+    This simplified shutdown process is only appropriate for a lab/evaluation scenario.
 
 3. Remove the nodes' data directories:
 
