@@ -21,28 +21,26 @@ Make sure you have already completed [Locality and Replication Zones](locality-a
 - `--locality=region=us-west,datacenter=us-west1`
 - `--locality=region=us-west,datacenter=us-west2`
 
-## Step 1. Request a trial Enterprise license
+## Step 1. Add an Enterprise license
 
-The table partitioning feature requires an Enterprise license. For the purpose of this training, you can get a trial license that will be good for 30 days.
+The table partitioning feature requires an Enterprise license. For the purpose of this training, we've created a temporary license.
 
-1. [Request a trial license](https://www.cockroachlabs.com/get-cockroachdb/) on our website.
-
-2. In the confirmation email, you'll see your organization name and license key. Use these details to [apply the license](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) to your cluster:
+1. Enable the temporary enterprise license:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost \
-    --execute="SET CLUSTER SETTING cluster.organization = '<your org name>';"
+    --host=localhost:26257 \
+    --execute="SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training';"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost \
-    --execute="SET CLUSTER SETTING enterprise.license = '<your license>';"
+    --host=localhost:26257 \
+    --execute="SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';"
     ~~~
 
 ## Step 2. Import the Movr dataset

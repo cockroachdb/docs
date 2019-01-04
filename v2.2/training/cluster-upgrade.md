@@ -113,6 +113,10 @@ Start and initialize a cluster like you did in previous modules, but this time u
     $ ./cockroach-v2.1 init --insecure
     ~~~
 
+{{site.data.alerts.callout_info}}
+You can disable a (manual or automatic) cluster version upgrade from the specified version until you reset your cluster by using the `cluster.preserve_downgrade_option` [cluster setting](..cluster-settings.html).
+{{site.data.alerts.end}}
+
 ## Step 3. Upgrade the first node to v2.2
 
 1. In node 1's terminal, press **CTRL-C** to stop the `cockroach` process.

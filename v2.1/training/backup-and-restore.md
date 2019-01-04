@@ -236,14 +236,14 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
     --execute="SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';"
     ~~~
 
-2. Use the `BACKUP` SQL statement to generate a backup of the `startrek` database and store it on S3. To ensure your backup doesn't conflict with anyone else's, prefix the filename with your initials:
+2. Use the `BACKUP` SQL statement to generate a backup of the `startrek` database and store it on S3. To ensure your backup doesn't conflict with anyone else's, prefix the filename with your name:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="BACKUP DATABASE startrek TO 's3://cockroach-training/[initials]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
+    --execute="BACKUP DATABASE startrek TO 's3://cockroach-training/[name]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
     ~~~
 
     ~~~
@@ -287,14 +287,14 @@ Again, imagine the tables in the `startrek` database have changed and you want t
     (0 rows)
     ~~~
 
-3. Restore the `startrek` database from the enterprise backup, again making sure to prefix the filename with your initials:
+3. Restore the `startrek` database from the enterprise backup, again making sure to prefix the filename with your name:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="RESTORE startrek.* FROM 's3://cockroach-training/[initials]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
+    --execute="RESTORE startrek.* FROM 's3://cockroach-training/[name]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
     ~~~
 
     ~~~

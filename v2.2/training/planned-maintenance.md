@@ -80,6 +80,10 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '15m0s';"
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    Use caution when changing the `server.time_until_store_dead` setting. Setting it too high creates some risk of unavailability since CockroachDB does mot respond to down nodes as quickly. However, setting it too low causes increased network and disk I/O costs, as CockroachDB rebalances data around temporary outages.
+    {{site.data.alerts.end}}
+
 2. Then verify the new setting:
 
     {% include copy-clipboard.html %}
@@ -166,7 +170,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING server.time_until_store_dead = '5m0s';"
+    --execute="RESET CLUSTER SETTING server.time_until_store_dead;"
     ~~~
 
 2. Then verify the new setting:

@@ -37,7 +37,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-2. In the same terminal, start node 2 in locality `us-east-1`:
+2. In the same terminal, perform a one-time initialization of the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach init --insecure --host=localhost:26257
+    ~~~
+
+3. In a new terminal, start node 2 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -51,7 +58,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-3. In the same terminal, start node 3 in locality `us-east-1`:
+4. In the same terminal, start node 3 in locality `us-east-1`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -65,7 +72,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~~
 
-4. In the same terminal, start node 4 in locality `us-east-2`:
+5. In the same terminal, start node 4 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -79,7 +86,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-5. In the same terminal, start node 5 in locality `us-east-2`:
+6. In the same terminal, start node 5 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -93,7 +100,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-6. In the same terminal, start node 6 in locality `us-east-2`:
+7. In the same terminal, start node 6 in locality `us-east-2`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -107,7 +114,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-7. In the same terminal, start node 7 in locality `us-east-3`:
+8. In the same terminal, start node 7 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -121,7 +128,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-8. In the same terminal, start node 8 in locality `us-east-3`:
+9. In the same terminal, start node 8 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -135,7 +142,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --background
     ~~~
 
-9. In the same terminal, start node 9 in locality `us-east-3`:
+10. In the same terminal, start node 9 in locality `us-east-3`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -147,13 +154,6 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
     --http-addr=localhost:8088 \
     --join=localhost:26257,localhost:26258,localhost:26259 \
     --background
-    ~~~
-
-10. In the same terminal, perform a one-time initialization of the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -173,7 +173,7 @@ In preparation, add a table and use a replication zone to force the table's data
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER TABLE intro.mytable CONFIGURE ZONE USING constraints: '[+datacenter=us-east-3]';" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER TABLE intro.mytable CONFIGURE ZONE USING constraints='[+datacenter=us-east-3]';" --insecure --host=localhost:26257
     ~~~
 
 3. Use the `SHOW EXPERIMENTAL_RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:
@@ -182,7 +182,7 @@ In preparation, add a table and use a replication zone to force the table's data
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost:26257 \    
+    --host=localhost:26257 \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
     ~~~
 
