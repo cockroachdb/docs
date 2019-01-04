@@ -38,24 +38,13 @@ Feature | Description
 
 ## Step 2. Start CockroachDB
 
-To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
+To start your CockroachDB cluster, you can use our StatefulSet configuration and related files directly.
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="helm">Use Helm</button>
-    <button class="filter-button" data-scope="manual">Use Configs</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
-</section>
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-secure-training.md %}
 
 ## Step 3. Use the built-in SQL client
 
-{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/test-cluster-secure.md %}
 
 ## Step 4. Access the Admin UI
 
@@ -69,7 +58,6 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
-    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -78,18 +66,6 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
     statefulset "cockroachdb" scaled
     ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl scale statefulset my-release-cockroachdb --replicas=4
-    ~~~
-
-    ~~~
-    statefulset "my-release-cockroachdb" scaled
-    ~~~
-    </section>
 
 2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
 
@@ -98,7 +74,6 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     $ kubectl get pods
     ~~~
 
-    <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
     NAME                      READY     STATUS    RESTARTS   AGE
     cockroachdb-0             1/1       Running   0          28m
@@ -107,26 +82,24 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     cockroachdb-3             1/1       Running   0          5s
     example-545f866f5-2gsrs   1/1       Running   0          25m
     ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    ~~~
-    NAME                                 READY     STATUS    RESTARTS   AGE
-    my-release-cockroachdb-0             1/1       Running   0          28m
-    my-release-cockroachdb-1             1/1       Running   0          27m
-    my-release-cockroachdb-2             1/1       Running   0          10m
-    my-release-cockroachdb-3             1/1       Running   0          5s
-    example-545f866f5-2gsrs              1/1       Running   0          25m
-    ~~~
-    </section>
 
 ## Step 7. Remove nodes
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
 
 ## Step 8. Clean up
 
-In the next module, you'll start with a fresh, non-orchestrated cluster, so use the `minikube delete` command to shut down and delete the minikube virtual machine and all the resources you created, including persistent volumes:
+In the next module, you'll start with a fresh, non-orchestrated cluster. Delete the StatefulSet configuration file and use the `minikube delete` command to shut down and delete the minikube virtual machine and all the resources you created, including persistent volumes:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl delete job.batch/cluster-init
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -140,6 +113,10 @@ Machine deleted.
 
 {{site.data.alerts.callout_success}}
 To retain logs, copy them from each pod's `stderr` before deleting the cluster and all its resources. To access a pod's standard error stream, run `kubectl logs &lt;podname&gt;`.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+For information on how to optimize your deployment of CockroachDB on Kubernetes, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 {{site.data.alerts.end}}
 
 ## What's next?
