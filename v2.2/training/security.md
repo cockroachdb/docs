@@ -18,20 +18,9 @@ redirect_from: /training/security.html
 
 ## Before you begin
 
-Make sure you have already completed [Users and Privileges](users-and-privileges.html) and have 3 insecure nodes running locally.
+In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous lab.
 
-## Step 1. Stop the cluster
-
-To convert an insecure cluster to a secure cluster, you must shut down all nodes:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ pkill -9 cockroach
-~~~
-
-This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
-
-## Step 2. Generate security certificates
+## Step 1. Generate security certificates
 
 1. Create two directories:
 
@@ -85,7 +74,7 @@ This simplified shutdown process is only appropriate for a lab/evaluation scenar
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-## Step 3. Restart the cluster as secure
+## Step 2. Start a secure cluster
 
 Restart the nodes using the same commands you used to start them initially, but this time use the `--certs-dir` flag to point to the node certificate, and leave out the `--insecure` flag.
 
@@ -128,9 +117,40 @@ Restart the nodes using the same commands you used to start them initially, but 
     --background
     ~~~
 
-{{site.data.alerts.callout_info}}
-There's no need to run `cockroach init` again since the cluster was initialized earlier. However, the cluster will restart only after a majority of nodes are back online (2/3).
-{{site.data.alerts.end}}
+4. Perform a one-time initialization of the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach init --certs-dir=certs --host=localhost:26257
+    ~~~
+
+## Step 3. Add data to your cluster
+
+1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach gen example-data startrek | ./cockroach sql \
+    --certs-dir=certs \
+    --host=localhost:26257
+    ~~~
+
+2. Create a new user, `spock`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach user set spock --certs-dir=certs --host=localhost:26257
+    ~~~
+
+3. As the root user, grant `spock` the `SELECT` privilege on the `startrek.quotes` table:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach sql \
+    --insecure \
+    --host=localhost:26257 \
+    --execute="GRANT SELECT ON TABLE startrek.quotes TO spock;"
+    ~~~
 
 ## Step 4. Authenticate a user (via client cert)
 
