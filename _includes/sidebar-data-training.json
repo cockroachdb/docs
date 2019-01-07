@@ -54,6 +54,12 @@
         "urls": [
           "/${VERSION}/training/orchestration-with-kubernetes.html"
         ]
+      },
+      {
+        "title": "Performance Benchmarking",
+        "urls": [
+          "/${VERSION}/training/performance-benchmarking.html"
+        ]
       }
     ]
   },

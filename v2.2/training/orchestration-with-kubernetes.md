@@ -121,4 +121,4 @@ For information on how to optimize your deployment of CockroachDB on Kubernetes,
 
 ## What's next?
 
-[Data Import](data-import.html)
+[Performance Benchmarking](performance-benchmarking.html)
