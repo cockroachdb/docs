@@ -396,7 +396,7 @@ To check this, run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` an
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles] \
-WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
+WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 ~~~
@@ -410,6 +410,10 @@ WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
   /"washington dc" | /"washington dc"/PrefixEnd |       74 | {1,2,3}  |            3
 (6 rows)
 ~~~    
+
+{{site.data.alerts.callout_info}}
+The `WHERE` clause in this query excludes the empty ranges between the city ranges. These empty ranges use the default replication zone configuration, not the zone configuration you set for the cities.
+{{site.data.alerts.end}}
 
 For added clarity, here's a key showing how nodes map to datacenters and cities:
 
