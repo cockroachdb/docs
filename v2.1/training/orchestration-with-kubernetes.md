@@ -218,7 +218,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
-2. Get a shell into the pod and start the CockroachDB [../built-in SQL client](use-the-built-in-sql-client.html):
+2. Get a shell into the pod and start the CockroachDB [built-in SQL client](../use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -114,7 +114,7 @@ Start and initialize a cluster like you did in previous modules, but this time u
     ~~~
 
 {{site.data.alerts.callout_info}}
-You can disable a (manual or automatic) cluster version upgrade from the specified version until you reset your cluster by using the `cluster.preserve_downgrade_option` [cluster setting](..cluster-settings.html).
+You can disable a (manual or automatic) cluster version upgrade from the specified version until you reset your cluster by using the `cluster.preserve_downgrade_option` cluster setting. See the full [Cluster Upgrade](../upgrade-cockroach-version.html) documentation for details.
 {{site.data.alerts.end}}
 
 ## Step 3. Upgrade the first node to v2.1

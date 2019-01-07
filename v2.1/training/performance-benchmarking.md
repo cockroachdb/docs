@@ -84,7 +84,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     ~~~
 
 {{site.data.alerts.callout_danger}}
-This configuration is intended for training and performance benchmarking only. For production deployments, there are other important considerations, such as ensuring that data is balanced across at least three availability zones for resiliency. See the [Production Checklist](recommended-production-settings.html) for more details.
+This configuration is intended for training and performance benchmarking only. For production deployments, there are other important considerations, such as ensuring that data is balanced across at least three availability zones for resiliency. See the [Production Checklist](../recommended-production-settings.html) for more details.
 {{site.data.alerts.end}}
 
 ## Step 3. Load data for the benchmark

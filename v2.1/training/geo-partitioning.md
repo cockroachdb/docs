@@ -47,7 +47,7 @@ The table partitioning feature requires an Enterprise license. For the purpose o
 
 Now you'll import Movr data representing users, vehicles, and rides in 3 eastern US cities (New York, Boston, and Washington DC) and 3 western US cities (Los Angeles, San Francisco, and Seattle).
 
-1. Start the [built-in SQL shell](use-the-built-in-sql-client.html):
+1. Start the [built-in SQL shell](../use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -66,7 +66,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     > SET DATABASE = movr;
     ~~~
 
-3. Run the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables, using CSV files we've made publicly available Amazon S3 storage:
+3. Run the [`IMPORT`](../import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables, using CSV files we've made publicly available Amazon S3 storage:
 
     {% include copy-clipboard.html %}
     ~~~ sql

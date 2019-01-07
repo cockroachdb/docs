@@ -2,11 +2,9 @@
 title: Production Checklist
 summary: Recommended settings for production deployments.
 toc: true
-
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
-
 
 ## Cluster Topology
 
@@ -38,8 +36,6 @@ Term | Definition
         - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.
 
 - When running a cluster of 5 nodes or more, it's safest to [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5, even if you don't do so for user data. For the cluster as a whole to remain available, the ranges for this internal data must always retain a majority of their replicas.
-
-{{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
 
 ## Hardware
 
