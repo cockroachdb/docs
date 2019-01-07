@@ -17,8 +17,8 @@ This guide is organized by the physical actors in the system, and then broken do
 Here's a brief overview of the physical actors, in the sequence with which they're involved in executing a query:
 
 1. **SQL Client** sends a query to your cluster.
-1. **Load Balancing** routes the request to your cluster.
-1. **Gateway** is a CockroachDB node that processes the request and responds to the client.
+1. **Load Balancing** routes the request to CockroachDB nodes your cluster, which will act as a gateway.
+1. **Gateway** is a CockroachDB node that processes the SQL request and responds to the client.
 1. **Leaseholder** is a CockroachDB node responsible for serving reads and coordinating writes of a specific range of keys in your query.
 1. **Raft leader** is a CockroachDB node responsible for maintaining consensus among your CockroachDB replicas.
 
@@ -44,13 +44,15 @@ The gateway node handles the connection with the client, both receiving and resp
 
 ### Parsing
 
-The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL.
+The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL, and uses that information to generate a logical SQL plan. Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan––this means sometimes pushing operations onto the physical machines that contain the node.
 
 While CockroachDB presents a SQL interface to clients, the actual database is built on top of a key-value store. Parsed SQL statements are converted into key-value operations, and a the node [generates a plan](sql-layer.html#logical-planning) to execute the query.
 
 ### TxnCoordSender
 
-The newly generated plan is sent to the `TxnCoordSender`, which performs a large amount of the accounting and tracking for a transaction, including:
+The `TxnCoordSender` provides an API to actually perform the key-value operations generated during the parsing stage listed above, such as converting `INSERT` statements into `Put()` operations.
+
+On the back end, the `TxnCoordSender` performs a large amount of the accounting and tracking for a transaction, including:
 
 - Accounts for all keys involved in a transaction. This is used, among other ways, to manage the transaction's state.
 - Packages all key-value operations into a `BatchRequest`, which are forwarded on to the node's `DistSender`.
@@ -65,7 +67,7 @@ All writes operations also propagate the leaseholder's address back to the `TxnC
 
 The `DistSender` sends out the first `BatchRequest` for each range in parallel. As soon as it receives a provisional acknowledgment from the leasholder node’s evaluator (details below), it sends out the next `BatchRequest` for that range.
 
-The DistSender then waits to receive commit acknowledgments for all of its write operations, as well as values for all of its read operations.
+The `DistSender` then waits to receive acknowledgments for all of its write operations, as well as values for all of its read operations. However, this wait isn't necessarily blocking, and the `DistSender` can might still perform operations with ongoing transactions.
 
 <!-- #### Finding leaseholders (meta ranges)
 
@@ -91,12 +93,7 @@ Because the leaseholder replica can shift between nodes, all nodes must be able 
 
 ##### No Longer Leaseholder
 
-If a node:
-
-- *Was* the leaseholder, but no longer holds the lease
-- Holds a replica for the range
-
-Then the node denies the request, but includes the last known address for the leaseholder of that range.
+If a node is no longer the leaseholder, but still contains a replica of the range, it denies the request but includes the last known address for the leaseholder of that range.
 
 Upon receipt of this response, the `DistSender` will update the header of the `BatchRequest` with the new address, and then resend the `BatchRequest` to the newly identified leaseholder.
 
@@ -114,7 +111,7 @@ Once the node that contains the leaseholder of the range receives the `BatchRequ
 
 The timestamp cache tracks the highest timestamp (i.e., most recent) for any read operation that a given range has served.
 
-Each write operation in a `BatchRequest` checks its own timestamp versus the timestamp cache to ensure that the write operation has a higher timestamp; this guarantees that history is never rewritten and you can trust that reads always served the most recent data. If a write operation fails this check, it must be restarted at a timestamp higher than the timestamp cache's value.
+Each write operation in a `BatchRequest` checks its own timestamp versus the timestamp cache to ensure that the write operation has a higher timestamp; this guarantees that history is never rewritten and you can trust that reads always served the most recent data. Or said another way, it's one of the crucial mechanisms CockroachDB uses to ensure serializability. If a write operation fails this check, it must be restarted at a timestamp higher than the timestamp cache's value.
 
 ### Latch manager
 
@@ -122,9 +119,9 @@ Operations in the `BatchRequest` are serialized through the leaseholder's latch 
 
 This works by giving each write operation a latch on a row. Any reads or writes that come in after the latch has been granted on the row must wait for the write to complete, at which point the latch is released and the subsequent operations can continue.
 
-### Evaluator
+### Batch Evaluation
 
-The evaluator ensures that write operations are valid, e.g., they pass any `CHECK` constraints on the data. This is trivial in many cases because the evaluator can simply check the leaseholder's data, which is guaranteed to be valid and up-to-date.
+The batch evaluator ensures that write operations are valid. This is trivial because the evaluator can simply check the leaseholder's data, which is guaranteed to be valid and up-to-date, and because of the latch manager, free of contention with other write operations.
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 
