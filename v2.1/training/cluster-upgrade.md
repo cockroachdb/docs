@@ -32,7 +32,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-v2.0.5.darwin-10.9-amd64.tgz \
+    $ curl https://binaries.cockroachdb.com/cockroach-v2.0.7.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
     </div>
@@ -40,7 +40,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0.5.linux-amd64.tgz \
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v2.0.7.linux-amd64.tgz \
     | tar  xvz
     ~~~
     </div>
@@ -50,16 +50,16 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v2.0.5.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0.5.darwin-10.9-amd64
+    $ mv cockroach-v2.0.7.darwin-10.9-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0.7.darwin-10.9-amd64
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-v2.0.5.linux-amd64/cockroach ./cockroach-v2.0 \
-    ; rm -rf cockroach-v2.0.5.linux-amd64
+    $ mv cockroach-v2.0.7.linux-amd64/cockroach ./cockroach-v2.0 \
+    ; rm -rf cockroach-v2.0.7.linux-amd64
     ~~~
     </div>
 
@@ -112,6 +112,10 @@ Start and initialize a cluster like you did in previous modules, but this time u
     ~~~ shell
     $ ./cockroach-v2.0 init --insecure
     ~~~
+
+{{site.data.alerts.callout_info}}
+You can disable a (manual or automatic) cluster version upgrade from the specified version until you reset your cluster by using the `cluster.preserve_downgrade_option` cluster setting. See the full [Cluster Upgrade](../upgrade-cockroach-version.html) documentation for details.
+{{site.data.alerts.end}}
 
 ## Step 3. Upgrade the first node to v2.1
 

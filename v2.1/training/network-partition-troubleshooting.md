@@ -47,7 +47,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ docker-compose up
+    $ COCKROACH_VERSION={{ page.release_info.version }} docker-compose up
     ~~~~
 
 3. In a new terminal, initialize the cluster:

@@ -17,7 +17,16 @@ redirect_from: /training/users-and-privileges.html
 
 ## Before you begin
 
-Make sure you have already completed [SQL Basics](sql-basics.html).
+1. Make sure you have already completed [SQL Basics](sql-basics.html).
+
+2. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach gen example-data startrek | ./cockroach sql \
+    --insecure \
+    --host=localhost:26257
+    ~~~
 
 ## Step 1. Check initial privileges
 
@@ -117,7 +126,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost:26257 \    
+    --host=localhost:26257 \
     --execute="GRANT INSERT ON TABLE startrek.quotes TO spock;"
     ~~~
 
@@ -281,6 +290,26 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     ~~~
     Error: pq: user spock does not have SELECT privilege on relation episodes
     Failed running "sql"
+    ~~~
+
+## Step 6. Clean up
+
+In the next module, you'll start with a fresh cluster, so take a moment to clean things up.
+
+1. Stop all CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill -9 cockroach
+    ~~~
+
+    This simplified shutdown process is only appropriate for a lab/evaluation scenario.
+
+2. Remove the nodes' data directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf node1 node2 node3
     ~~~
 
 ## What's next?
