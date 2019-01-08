@@ -167,7 +167,7 @@ As we mentioned before, each read operation also updates the timestamp cache.
 
 After guaranteeing that there are no existing write intents for the keys, `BatchRequest`'s key-value operations are converted to [Raft operations](replication-layer.html#raft) and have their values converted into write intents.
 
-The leaseholder then proposes these Raft operations to the Raft group leader. Most often, the leaseholder and the Raft leader are the same node, but there are situations where the roles might drift to different nodes. However, when the two roles are not collocated on the same physical machine, CockroachDB will attempt to relocate them on the same node at the next opportunity.
+The leaseholder then proposes these Raft operations to the Raft group leader. The leaseholder and the Raft leader are almost always the same node, but there are situations where the roles might drift to different nodes. However, when the two roles are not collocated on the same physical machine, CockroachDB will attempt to relocate them on the same node at the next opportunity.
 
 ## Raft Leader
 
