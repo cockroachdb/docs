@@ -24,7 +24,7 @@ Use the [`cockroach sql`](../start-a-node.html) command to open the built-in SQL
 $ ./cockroach sql --insecure --host=localhost:26257
 ~~~
 
-## Step 2. Create your first database and table
+## Step 2. Create a database and table
 
 In this training, you'll create a bank with customers and accounts. First, you'll need to [create a database](../create-database.html) on your Cockroach cluster to store this information.
 
@@ -53,7 +53,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
 
     The `customer_id` column is also the table's [primary key](../primary-key.html). In CockroachDB, and most SQL databases, it is always more efficient to search a table by primary key than by any other field because there can only be one primary key column, and the primary key column must be unique for every row. Therefore, the `name` column would be an unsuitable primary key because it's likely that your bank will eventually have two customers with the same name.
 
-## Step 3. Insert data into your first table
+## Step 3. Insert data into your table
 
 Now that you have a table, [insert](../insert.html) some data into it.
 
