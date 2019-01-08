@@ -117,7 +117,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     CURRENT				MANIFEST-000007			cockroach.advertise-addr	temp-dirs-record.txt
     ~~~
 
-2. Open one of the `.sst` files and delete several lines.
+2. Delete one of the `.sst` files.
 
 3. In the terminal where node 3 is running, press **CTRL-C** to stop it.
 

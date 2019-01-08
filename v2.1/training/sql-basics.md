@@ -330,7 +330,14 @@ Now try running two copies of the above transaction in parallel:
     > BEGIN;
     ~~~
 
-2. Open a new terminal, start a second SQL shell, and run the same:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+    ~~~
+
+2. Press enter.
+
+3. Open a new terminal, start a second SQL shell, and run the same:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -342,59 +349,45 @@ Now try running two copies of the above transaction in parallel:
     > BEGIN;
     ~~~
 
-3. Back in the first SQL shell, run:
-
     {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
 
-4. Press enter.
+4. Press enter a second time to send the SQL statement to the server.
 
-5. Back in the second SQL shell, run the same:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
-    ~~~
-
-6. Press enter.
-
-7. Back in the first SQL shell, run:
+5. Run:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
+6. Press enter a second time to send the SQL statement to the server.
 
-8. Press enter.
-
-9. Back in the second SQL shell, run the same:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
-    ~~~
-
-10. Press enter.
-
-11. Back in the first SQL shell, run:
+7. Commit the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
-12. Press enter.
+8. Back in the first SQL shell, run:
 
-13. Back in the second SQL shell, run the same and press enter:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
+    ~~~
+
+9. Press enter a second time to send the SQL statement to the server.
+
+10. Commit the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
-When you reach the `COMMIT` statement, you'll see one transaction fail with an error like this:
+When you reach the `COMMIT` statement, you'll see the transaction fail with an error like this:
 
 ~~~
 pq: restart transaction: HandledRetryableTxnError: TransactionRetryError: retry txn (RETRY_WRITE_TOO_OLD)

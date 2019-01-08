@@ -23,7 +23,7 @@
     ]
   },
   {
-    "title": "Ops Basics",
+    "title": "Key Capabilities",
     "items": [
       {
         "title": "Cluster Startup and Scaling",
@@ -43,6 +43,29 @@
           "/${VERSION}/training/locality-and-replication-zones.html"
         ]
       },
+      {
+        "title": "Geo-Partitioning",
+        "urls": [
+          "/${VERSION}/training/geo-partitioning.html"
+        ]
+      },
+      {
+        "title": "Orchestration with Kubernetes",
+        "urls": [
+          "/${VERSION}/training/orchestration-with-kubernetes.html"
+        ]
+      },
+      {
+        "title": "Performance Benchmarking",
+        "urls": [
+          "/${VERSION}/training/performance-benchmarking.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ops Basics",
+    "items": [
       {
         "title": "Data Import",
         "urls": [

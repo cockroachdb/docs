@@ -402,7 +402,7 @@ Take a moment to clean things up.
     $ pkill -9 cockroach
     ~~~
 
-    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
+    This simplified shutdown process is only appropriate for a lab/evaluation scenario.
 
 2. Remove the nodes' data directories:
 

@@ -231,7 +231,7 @@ Because you reduced the time it takes for the cluster to consider the down node 
 
 ## Step 7. Prepare for two simultaneous node failures
 
-At this point, the cluster is in a vulnerable state. With a replication factor of 3, if any of the 4 remaining nodes die, the cluster will lose access to at least some of its ranges.
+At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` setting plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
@@ -251,7 +251,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26257
     ~~~
 
 3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
@@ -325,7 +325,7 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
     $ pkill -9 cockroach haproxy ycsb
     ~~~
 
-    This simplified shutdown process is only appropriate for a lab/evaluation scenario. In a production environment, you would use `cockroach quit` to gracefully shut down each node.
+    This simplified shutdown process is only appropriate for a lab/evaluation scenario.
 
 2. Remove the nodes' data directories and the HAProxy config:
 
