@@ -18,7 +18,7 @@ When querying a table, CockroachDB uses the fastest index. For more information 
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Synopsis
 

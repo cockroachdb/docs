@@ -19,7 +19,7 @@ The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONF
 
 ## Required privileges
 
-The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](privileges.html) on the table.
+The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the table.
 
 ## Synopsis
 

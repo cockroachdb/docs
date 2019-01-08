@@ -24,7 +24,7 @@ Ranges | The number of ranges in the table.
 
 ## Grants view
 
-The **Grants** view shows the [privileges](privileges.html) granted to users for each database. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Databases** from the left-hand navigation bar, select **Databases** from the left-hand navigation bar, and then select **Grants** from the **View** menu.
+The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Databases** from the left-hand navigation bar, select **Databases** from the left-hand navigation bar, and then select **Grants** from the **View** menu.
 
 For more details about grants and privileges, see [Grants](grant.html).
 

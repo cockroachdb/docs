@@ -20,7 +20,7 @@ For smaller tables (with less than 1000 rows), using a [`DELETE` statement witho
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the table.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 

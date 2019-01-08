@@ -14,7 +14,7 @@ toc: true
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to list replication zones.
+No [privileges](authorization.html#assign-privileges) are required to list replication zones.
 
 ## Parameters
 

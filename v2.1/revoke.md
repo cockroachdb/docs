@@ -4,7 +4,7 @@ summary: The REVOKE statement revokes privileges from users and/or roles.
 toc: true
 ---
 
-The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](privileges.html) from [users](create-and-manage-users.html) and/or [roles](roles.html).
+The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles).
 
 For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
@@ -25,7 +25,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table for which you want to revoke privileges. To revoke privileges for multiple tables, use a comma-separated list of table names. To revoke privileges for all tables, use `*`.
 `database_name` | The name of the database for which you want to revoke privileges. To revoke privileges for multiple databases, use a comma-separated list of database names.<br><br>Privileges revoked for databases will be revoked for any new tables created in the databases.
-`user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) from whom you want to revoke privileges.
+`user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles) from whom you want to revoke privileges.
 
 
 ## Examples
@@ -156,7 +156,7 @@ Parameter | Description
 
 ## See also
 
-- [Privileges](privileges.html)
+- [Authorization](authorization.html)
 - [`GRANT <privileges>`](grant.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
@@ -164,5 +164,5 @@ Parameter | Description
 - [`SHOW ROLES`](show-roles.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
-- [Roles](roles.html)
+- [Roles](authorization.html#create-and-manage-roles)
 - [Other SQL Statements](sql-statements.html)

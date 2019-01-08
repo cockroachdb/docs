@@ -12,7 +12,7 @@ The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
 ## Required privileges
 
-The user must have the `DELETE` and `SELECT` [privileges](privileges.html) on the table.
+The user must have the `DELETE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
 ## Synopsis
 

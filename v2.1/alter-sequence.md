@@ -10,7 +10,7 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Synopsis
 

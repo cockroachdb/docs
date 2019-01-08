@@ -17,7 +17,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

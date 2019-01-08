@@ -4,7 +4,7 @@ summary: The REVOKE <roles> statement revokes privileges from users and/or roles
 toc: true
 ---
 
-The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
+The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](authorization.html#create-and-manage-roles) or [user's](create-and-manage-users.html) membership to a role.
 
 {{site.data.alerts.callout_info}}<code>REVOKE &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
@@ -29,7 +29,7 @@ Parameter | Description
 ----------|------------
 `ADMIN OPTION` | Revoke the user's role admin status.
 `role_name` | The name of the role from which you want to remove members. To revoke members from multiple roles, use a comma-separated list of role names.
-`user_name` | The name of the [user](create-and-manage-users.html) or [role](roles.html) from whom you want to revoke membership. To revoke multiple members, use a comma-separated list of user and/or role names.
+`user_name` | The name of the [user](create-and-manage-users.html) or [role](authorization.html#create-and-manage-roles) from whom you want to revoke membership. To revoke multiple members, use a comma-separated list of user and/or role names.
 
 ## Examples
 
@@ -92,7 +92,7 @@ To revoke a user or role's admin option from a role (without revoking the member
 
 ## See also
 
-- [Privileges](privileges.html)
+- [Authorization](authorization.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
@@ -100,5 +100,5 @@ To revoke a user or role's admin option from a role (without revoking the member
 - [`SHOW ROLES`](show-roles.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
-- [Roles](roles.html)
+- [Roles](authorization.html#create-and-manage-roles)
 - [Other SQL Statements](sql-statements.html)

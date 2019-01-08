@@ -5,7 +5,7 @@ toc: true
 build_for: [managed]
 ---
 
-The "admin" user identified in your initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) has full [privileges](privileges.html) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+The "admin" user identified in your initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ## Before you begin
 
@@ -26,7 +26,7 @@ Be sure to create a password for each new user. Without a password, a user canno
 
 ## Granting privileges
 
-Access to the data in your cluster is controlled by [privileges](privileges.html). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges](authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
 To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
@@ -42,7 +42,7 @@ To assign a user more limited privileges for one table in a database:
 > GRANT SELECT, INSERT ON <database>.<table> TO <user>;
 ~~~
 
-For more details, see [Privileges](privileges.html) and [`GRANT`](grant.html).
+For more details, see [Privileges](authorization.html#assign-privileges) and [`GRANT`](grant.html).
 
 ## Managing users
 

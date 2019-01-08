@@ -15,14 +15,14 @@ The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` 
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
- Parameter | Description 
+ Parameter | Description
 -----------|-------------
- `table_name` | The name of the table with the constraint you want to drop. 
- `name` | The name of the constraint you want to drop. 
+ `table_name` | The name of the table with the constraint you want to drop.
+ `name` | The name of the constraint you want to drop.
 
 ## Viewing schema changes
 
