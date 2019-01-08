@@ -227,7 +227,7 @@ Scroll down to the **Replicas per Node** graph:
 
 <img src="{{ 'images/v2.1/training-8.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, you'll see the replica count on node 5 drop to 0 and the replica count on the other nodes increase. This shows the cluster repairing itself by re-replicating missing replicas.
+Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, you'll see the replica count on nodes 1 through 4 increase. This shows the cluster repairing itself by re-replicating missing replicas.
 
 ## Step 7. Prepare for two simultaneous node failures
 

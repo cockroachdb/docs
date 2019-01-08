@@ -147,7 +147,7 @@ Restart the nodes using the same commands you used to start them initially, but 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
-    --insecure \
+    --certs-dir=certs \
     --host=localhost:26257 \
     --execute="GRANT SELECT ON TABLE startrek.quotes TO spock;"
     ~~~
