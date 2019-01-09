@@ -52,13 +52,13 @@ CA Certificate | The `ca.crt` file that must be available on every machine from 
 **SQL connection URL with placeholders**
 
 ~~~
-postgres://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=certs/ca.crt'
+postgres://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=certs/ca.crt
 ~~~
 
 **SQL connection URL with example details**
 
 ~~~
-postgres://maxroach:LeiCisGclLcmaWOls@gcp-us-east1.company-domain.cockroachcloud.com:26257/firstdb?sslmode=verify-full&sslrootcert=certs/ca.crt'
+postgres://maxroach:LeiCisGclLcmaWOls@gcp-us-east1.company-domain.cockroachcloud.com:26257/firstdb?sslmode=verify-full&sslrootcert=certs/ca.crt
 ~~~
 
 ### Admin UI URL
