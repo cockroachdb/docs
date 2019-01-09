@@ -60,9 +60,13 @@ Latency | The average service latency of the SQL statement (or multiple statemen
 
 ## Statement Details page
 
-The **Statement Details** page displays the details of the time, execution count, retries, rows returned, and latency by phase and by gateway node for the selected statement fingerprint.
+The **Statement Details** page displays the logical plan as well as the details of the time, execution count, retries, rows returned, and latency by phase and by gateway node for the selected statement fingerprint.
 
 <img src="{{ 'images/v2.2/admin_ui_statements_details_page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+
+### Logical plan
+
+<span class="version-tag">New in v2.2</span> The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](https://www.cockroachlabs.com/docs/stable/sql-grammar.html#preparable_stmt). You can then use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](https://www.cockroachlabs.com/docs/stable/explain.html).
 
 ### Latency by Phase
 
