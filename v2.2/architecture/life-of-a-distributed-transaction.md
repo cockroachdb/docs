@@ -42,17 +42,21 @@ Once your router and load balancer determine the best node, your client's connec
 
 The gateway node handles the connection with the client, both receiving and responding to the request.
 
-### Parsing
+### SQL parsing & planning
 
-The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL, and uses that information to generate a logical SQL plan. Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan––this means sometimes pushing operations onto the physical machines that contain the node.
+The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL, and uses that information to [generate a logical SQL pla](sql-layer.html#logical-planning).
 
-While CockroachDB presents a SQL interface to clients, the actual database is built on top of a key-value store. Parsed SQL statements are converted into key-value operations, and a the node [generates a plan](sql-layer.html#logical-planning) to execute the query.
+Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan––this means sometimes pushing operations onto the physical machines that contain the node.
+
+### SQL executor
+
+While CockroachDB presents a SQL interface to clients, the actual database is built on top of a key-value store. To mediate this, the physical plan generated at the end of SQL parsing is passed to the SQL executor, which converts SQL operations into key-value operations by leveraging the `TxnCoordSender`. For example, the SQL executor converts `INSERT` statements into `Put()` operations.
 
 ### TxnCoordSender
 
-The `TxnCoordSender` provides an API to actually perform the key-value operations generated during the parsing stage listed above, such as converting `INSERT` statements into `Put()` operations.
+The `TxnCoordSender` provides an API to perform key-value operations on your database.
 
-On the back end, the `TxnCoordSender` performs a large amount of the accounting and tracking for a transaction, including:
+On its back end, the `TxnCoordSender` performs a large amount of the accounting and tracking for a transaction, including:
 
 - Accounts for all keys involved in a transaction. This is used, among other ways, to manage the transaction's state.
 - Packages all key-value operations into a `BatchRequest`, which are forwarded on to the node's `DistSender`.
@@ -68,20 +72,6 @@ All writes operations also propagate the leaseholder's address back to the `TxnC
 The `DistSender` sends out the first `BatchRequest` for each range in parallel. As soon as it receives a provisional acknowledgment from the leasholder node’s evaluator (details below), it sends out the next `BatchRequest` for that range.
 
 The `DistSender` then waits to receive acknowledgments for all of its write operations, as well as values for all of its read operations. However, this wait isn't necessarily blocking, and the `DistSender` can might still perform operations with ongoing transactions.
-
-<!-- #### Finding leaseholders (meta ranges)
-
-Each range is replicated at least three times, and one of these range is chosen as the leaseholder, which serves and reads and coordinates all writes for the range. Because of this architecture, all of the KV operations the `DistSender` receives must be routed directly to the range's leaseholder.
-
-To determine which physical node to send the operation to, the `DistSender` relies on data from the cluster's meta ranges, which detail which physical nodes contain the range's replicas as well as which node is the leaseholder. For any given request, the `DistSender` can determine the leaseholders by performing a read from the meta ranges for the keys in question.
-
-For example, if the `DistSender` needs to route a request for keys `[1000, 2000)`, it performs a read across the meta ranges for those values. The response contains the leaseholder as the first node in the response.
-
-To optimize performance, nodes heavily cache the values they've previously seen in meta ranges, which means that in most cases this read is served by a local cache, rather than going all the way out to the network. -->
-
-<!-- #### Transaction Record
-
-The first range that a transaction touches receives an additional KV operation to create a translation record (`TxnRecord`). This key-value pair is used to store the transaction's current state for the life of the transaction. It starts off in a `PENDING` state, and then progresses to either `COMMITTED` if the transaction succeeds or `ABORTED` if the transaction must be canceled.  -->
 
 ## Leaseholder node
 
@@ -147,11 +137,11 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 
 - `COMMITTED`, this operation converts the write intent to a regular key-value pair, and then proceeds as if it had read that value instead of a write intent.
 - `ABORTED`, this operation discards the write intent and reads the next-most-recent value from RocksDB.
-- `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e. ahead of this transaction's timestmap). The push succeeds only if this transaction's priority is explicitly higher; i.e. it has a `HIGH` priority or the transaction whose write intent it encountered has a `LOW` priority.
+- `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e. ahead of this transaction's timestmap); however, this only succeeds if the write intent's transaction has become inactive.
   
   If the push succeeds, the operation continues.
 
-  If this push fails, this transaction goes into the [`TxnWaitQueue`](https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. Only once the blocking transaction completes (i.e., commits or aborts), the incoming transaction can continue.
+  If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. Only once the blocking transaction completes (i.e., commits or aborts), the incoming transaction can continue.
 
 Check out our architecture documentation for more information about [CockroachDB's transactional model]((https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html). 
 
@@ -179,11 +169,11 @@ In terms of executing transactions, the Raft leader receives proposed Raft comma
 
 For each command the Raft leader receives, it proposes a vote to the other members of the Raft group.
 
-Once it achieves consensus (i.e. a majority of nodes including itself acknowledge the Raft command), it is committed to the Raft leader’s Raft log, and written to RocksDB. The other nodes move their Raft log ahead as soon the Raft leader indicates the group reached consensus on the write.
+Once the command achieves consensus (i.e. a majority of nodes including itself acknowledge the Raft command), it is committed to the Raft leader’s Raft log and written to RocksDB. At the same time, the Raft leader also sends a command to all other nodes to include the command in their Raft logs.
 
 Once the leader commits the Raft log entry, it’s considered committed. At this point the value is considered written, and if another operation comes in and performs a read on RocksDB for this key, they’ll encounter this value.
 
-Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node's `TxnCoordSender` sets the transaction record's status to `COMMITTED`.
+Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node's sets the transaction record's status to `COMMITTED`.
 
 ## On the way back up
 
@@ -191,11 +181,10 @@ Now that we have followed an operation all the way down from the SQL client to R
 
 1. Once the leaseholder applies a write to its Raft log, it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
-1. Once all operations have successfully completed, the `DistSender` sends a response to the `TxnCoordSender`, indicating that the transaction completed.
-1. The `TxnCoordSender` checks the transaction record. There are a few situations that might arise here:
-	- If the transaction's timestamp was moved, it performs a [read refresh](https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
-	- If the transaction is in an `ABORTED` state, the `TxnCoordSender` notifies the SQL interface.
+1. Once all operations have successfully completed, the `DistSender` checks the transaction record. There are a few situations that might arise here:
+	- If the transaction's timestamp was moved, the transaction performs a [read refresh](transaction-layer.html#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
+	- If the transaction is in an `ABORTED` state, the `DistSender` sends a response indicating as much, which ends up back at the SQL interface.
 	- If the transaction is still `PEDNING`, it's moved to `COMMITTED`. Note that this modification of the transaction record is handled as an update to the key-value pair, meaning it must go through Raft like all other write operations. Once the transaction record is moved to `COMMITTED`, the transaction is considered committed.
-1. The `TxnCoordSender` responds to the SQL interface with the value that should be returned to the client (e.g. the number of affected rows)
+1. The `DistSender` propagates any values that should be returned to the client (e.g. reads or the number of affected rows) to the `TxnCoordSender`, which in turn responds to the SQL interface with the value.
   The `TxnCoordSender` also begins asynchronous intent cleanup by sending a request to the `DistSender` to convert all write intents it created for the transaction to fully committed values. However, this process is largely an optimization; if any operation encounters a write intent, it checks the write intent's transaction record. If the transaction record is `COMMITTED`, the operation can perform the same cleanup and convert the write intent to a fully committed value.
 1. The SQL interface then responds to the client, and is now prepared to continue accepting new connections.
