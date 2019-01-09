@@ -193,6 +193,12 @@
             ]
           },
           {
+            "title": "Cluster Topology Patterns",
+            "urls": [
+              "/${VERSION}/cluster-topology-patterns.html"
+            ]
+          },
+          {
             "title": "Manual Deployment",
             "items": [
               {
