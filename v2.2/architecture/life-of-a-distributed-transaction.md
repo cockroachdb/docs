@@ -44,13 +44,13 @@ The gateway node handles the connection with the client, both receiving and resp
 
 ### SQL parsing & planning
 
-The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL, and uses that information to [generate a logical SQL pla](sql-layer.html#logical-planning).
+The gateway node first [parses](sql-layer.html#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of PostgreSQL, and uses that information to [generate a logical SQL plan](sql-layer.html#logical-planning).
 
-Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan––this means sometimes pushing operations onto the physical machines that contain the node.
+Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan––this means sometimes pushing operations onto the physical machines that contain the data.
 
 ### SQL executor
 
-While CockroachDB presents a SQL interface to clients, the actual database is built on top of a key-value store. To mediate this, the physical plan generated at the end of SQL parsing is passed to the SQL executor, which converts SQL operations into key-value operations by leveraging the `TxnCoordSender`. For example, the SQL executor converts `INSERT` statements into `Put()` operations.
+While CockroachDB presents a SQL interface to clients, the actual database is built on top of a key-value store. To mediate this, the physical plan generated at the end of SQL parsing is passed to the SQL executor, which executes the plan by performing key-value operations through the `TxnCoordSender`. For example, the SQL executor converts `INSERT `statements into `Put()` operations.
 
 ### TxnCoordSender
 
