@@ -112,7 +112,7 @@ Proceed through the following steps until you locate the source of the issue wit
     Errors at this stage potentially include:
     - The same port and host issues from [running a single node](#1-start-a-single-node-cluster).
     - [Networking issues](#networking-troubleshooting)
-    - [Nodes not joining the cluster](#node-wont-join-cluster)
+    - [Nodes not joining the cluster](#node-will-not-join-cluster)
 
 3. Visit the Admin UI on any node at `http://<node host>:8080` and click **Metrics** on the left-hand navigation bar. All nodes in the cluster should be listed and have data replicated onto them.
 
@@ -201,7 +201,7 @@ If data is not being replicated to some nodes in the cluster, we recommend check
 - Check the [logs](debug-and-error-logs.html) for each node for further detail, as well as these common errors:
 
   - `connection refused`: [Troubleshoot your network](#networking-troubleshooting).
-  - `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
+  - `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Will Not Join Cluster](#node-will-not-join-cluster) on this page.
 
 ## Something else?
 
