@@ -1578,8 +1578,25 @@
       },
       {
         "title": "Cluster Settings",
-        "urls": [
-          "/${VERSION}/cluster-settings.html"
+        "items": [
+          {
+            "title": "Cluster Settings Overview",
+            "urls": [
+              "/${VERSION}/cluster-settings.html"
+            ]
+          },
+          {
+            "title": "Cost-Based Optimizer",
+            "urls": [
+              "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Load-Based Splitting",
+            "urls": [
+              "/${VERSION}/load-based-splitting.html"
+            ]
+          }
         ]
       },
       {
