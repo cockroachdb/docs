@@ -17,7 +17,7 @@ These details let you monitor the overall state of client connections and identi
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`root` users see only their own currently active sessions, wherease the `root` user sees all users' currently active sessions.
+No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`root` users see only their own currently active sessions, whereas the `root` user sees all users' currently active sessions.
 
 ## Synopsis
 

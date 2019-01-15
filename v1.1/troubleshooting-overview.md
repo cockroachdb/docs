@@ -16,6 +16,6 @@ If you run into issues with CockroachDB, there are a few initial steps you can a
     - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html) helps start your cluster and scale it by adding nodes.
     - [Troubleshoot Query Behavior](query-behavior-troubleshooting.html) helps with unexpected query results.
 
-4. If you can't resolve the issue easily yourself, the following tools can help you get unstuck:
+4. If you cannot resolve the issue easily yourself, the following tools can help you get unstuck:
     - [Support Resources](support-resources.html) identifies ways you can get help with troubleshooting.
     - [File an Issue](file-an-issue.html) provides details about filing issues that you're unable to resolve.

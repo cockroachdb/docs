@@ -1,7 +1,7 @@
 module JekyllVersions
  class JekyllGenerator < Jekyll::Generator
     # Ensure we run after JekyllRedirectFrom so we can apply version aliases
-    # (e.g. stable) to redirects.
+    # (e.g., stable) to redirects.
     priority :lowest
 
     def initialize(config)

@@ -161,7 +161,7 @@ This specifies a connection for the `root` user to server `servername`
 on port 26257 (the default CockroachDB SQL port). `--insecure` makes
 the connection insecure.
 
-### Example command-line flags for a secure sonnection
+### Example command-line flags for a secure connection
 
 The following command-line flags establish a secure connection:
 

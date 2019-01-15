@@ -53,7 +53,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -92,7 +92,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -255,7 +255,7 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 <span class="c1"># Remove the containers:</span>
 <span class="nb">PS </span>C:\Users\username&gt; docker rm roach1 roach2 roach3</code></pre></div>
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 <div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; rm -rf cockroach-data</span></code></pre></div>
 

@@ -26,7 +26,7 @@ Parameter | Description
 `DEFAULT` | To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position. 
 `column_name_list` | A comma-separated list of column names, in parentheses.
 `select_with_parens` | A comma-separated list of values or [value expressions](sql-expressions.html), in parentheses. To update values of multiple rows, use a comma-separated list of parentheses. <br><br>Each value must match the [data type](data-types.html) of its column. Also, if column names are listed (`qualified_name_list`), values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Update rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.__|
+`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.__|
 `RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or a computation on specific columns. <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
 ## Examples
@@ -144,7 +144,7 @@ Parameter | Description
 
 ### Update All Rows
 
-{{site.data.alerts.callout_danger}}If you don't use the <code>WHERE</code> clause to specify the rows to be updated, the values for all rows will be updated.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}If you do not use the <code>WHERE</code> clause to specify the rows to be updated, the values for all rows will be updated.{{site.data.alerts.end}}
 
 ~~~ sql
 > UPDATE accounts SET balance = 5000.0;
@@ -169,7 +169,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that don't (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>UPDATE</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that do not (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>UPDATE</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
 <section class="filters clearfix">
     <button class="filter-button" data-scope="shell">Shell</button>

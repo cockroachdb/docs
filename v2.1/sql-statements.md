@@ -17,7 +17,7 @@ Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.

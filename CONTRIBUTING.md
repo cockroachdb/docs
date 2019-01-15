@@ -44,7 +44,7 @@ Once you're ready to contribute:
 
 6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
-We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; don't worry about the Teamcity fail status.
+We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; do not worry about the Teamcity fail status.
 
 ## Keep Contributing
 
@@ -101,7 +101,7 @@ Field | Description | Default
 `toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens) or at the top of the page (on smaller screens). | `true`
 `toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
 `build_for` | Whether to include a page only in CockroachDB docs (`[standard]`), only in Managed CockroachDB docs (`[managed]`), or in both outputs (`[standard, managed]`). | `[standard]`
-`allowed_hashes` | Specifies a list of allowed hashes that don't correspond to a section heading on the page. | Nothing
+`allowed_hashes` | Specifies a list of allowed hashes that do not correspond to a section heading on the page. | Nothing
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
 `contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
@@ -138,7 +138,7 @@ New and changed features should be called out in the documentation using version
     <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global privileges.
     ```
 
-- To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, e.g.:
+- To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, for example:
 
     ```
     ## SQL Shell Welcome <div class="version-tag">New in v2.1</div>
@@ -149,7 +149,7 @@ When calling out a change, rather than something new, change `New in vX.X` to `C
 #### Allowed Hashes
 
 In a page's front-matter, you can specify a list of allowed hashes
-that don't correspond to a section heading on the page. This is
+that do not correspond to a section heading on the page. This is
 currently used for pages with JavaScript toggle buttons, where the
 toggle to activate by default can be specified in the URL hash. If you
 attempt to link to, for example, `page-with-toggles.html#toggle-id` without

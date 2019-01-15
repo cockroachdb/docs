@@ -17,7 +17,7 @@ We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ign
 
 ## Step 1. Install the Rust postgres driver
 
-Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+Install the Rust postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 
@@ -86,7 +86,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## Step 1. Install the Rust postgres driver
 
-Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+Install the Rust postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 

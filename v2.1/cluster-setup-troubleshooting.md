@@ -148,7 +148,7 @@ However, to efficiently troubleshoot the issue, it's important to understand whe
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
-### Node won't join cluster
+### Node will not join cluster
 
 When joining a node to a cluster, you might receive one of the following errors:
 

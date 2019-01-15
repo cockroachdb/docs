@@ -12,7 +12,7 @@ If you run into issues with CockroachDB, we have the following pages to help you
 
 ## Resources
 
-If you can't resolve the issue easily yourself, we have the following tools to help you get unstuck:
+If you cannot resolve the issue easily yourself, we have the following tools to help you get unstuck:
 
 - [Support Resources](support-resources.html) identifies ways you can get help with troubleshooting.
 - [File an Issue](file-an-issue.html) provides details about filing issues that you're unable to resolve.

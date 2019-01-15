@@ -141,7 +141,7 @@ MagnificPopup.prototype = {
     mfp.isIOS = (/iphone|ipad|ipod/gi).test(appVersion);
     mfp.supportsTransition = supportsTransitions();
 
-    // We disable fixed positioned lightbox on devices that don't handle it nicely.
+    // We disable fixed positioned lightbox on devices that do not handle it nicely.
     // If you know a better way of detecting this - let me know.
     mfp.probablyMobile = (mfp.isAndroid || mfp.isIOS || /(Opera Mini)|Kindle|webOS|BlackBerry|(Opera Mobi)|(Windows Phone)|IEMobile/i.test(navigator.userAgent) );
     _document = $(document);

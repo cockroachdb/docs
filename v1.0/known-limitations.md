@@ -274,7 +274,7 @@ As a workaround, list the columns explicitly, for example:
 
 By default, CockroachDB periodically rotates the file it writes logs to, as well as a symlink pointing to the file it's currently using. However, on Windows, non-admin users cannot create symlinks, which prevents CockroachDB from starting because it cannot create logs.
 
-To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, e.g.:
+To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, for example:
 
 ~~~ shell
 $ cockroach.exe start --log-dir= --insecure
@@ -282,7 +282,7 @@ $ cockroach.exe start --log-dir= --insecure
 
 ## Query planning for `OR` expressions
 
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it can't use both conditions at once.
+Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ## Privileges for `DELETE` and `UPDATE`
 

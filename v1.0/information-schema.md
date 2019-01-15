@@ -41,12 +41,12 @@ Column | Description
 `COLUMN_NAME` | Name of the column.
 `ORDINAL_POSITION` | Ordinal position of the column in the table (begins at 1).
 `COLUMN_DEFAULT` | Default Value for the column.
-`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g. it has the [Not Null constraint](not-null.html)).
+`IS_NULLABLE` | `YES` if the column accepts *NULL* values; `NO` if it doesn't (e.g., it has the [Not Null constraint](not-null.html)).
 `DATA_TYPE` | [Data type](data-types.html) of the column.
 `CHARACTER_MAXIMUM_LENGTH` |  If `DATA_TYPE` is `STRING`, the maximum length in characters of a value; otherwise *NULL*.
 `CHARACTER_OCTET_LENGTH` | If `DATA_TYPE` is `STRING`, the maximum length in octets (bytes) of a value; otherwise *NULL*.
-`NUMERIC_PRECISION` | If `DATA_TYPE` is numeric, the declared or implicit precision (i.e. number of significant digits); otherwise *NULL*.
-`NUMERIC_SCALE` | If `DATA_TYPE` is an exact numeric type, the scale (i.e. number of digits to the right of the decimal point); otherwise *NULL*.
+`NUMERIC_PRECISION` | If `DATA_TYPE` is numeric, the declared or implicit precision (i.e., number of significant digits); otherwise *NULL*.
+`NUMERIC_SCALE` | If `DATA_TYPE` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise *NULL*.
 `DATETIME_PRECISION` | Always *NULL* (unsupported by CockroachDB).
 
 ### key_column_usage

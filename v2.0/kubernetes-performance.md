@@ -37,7 +37,7 @@ The size of the machines you're using isn't a Kubernetes-specific concern, but i
 
 ### Disk type
 
-CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. Our provided configuration does not specify what type of disks it wants, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g. HDDs on GCE, SSDs without provisioned IOPS on AWS). However, we [strongly recommend using SSDs](recommended-production-settings.html#hardware) for the best performance, and Kubernetes makes it relatively easy to use them.
+CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. Our provided configuration does not specify what type of disks it wants, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g., HDDs on GCE, SSDs without provisioned IOPS on AWS). However, we [strongly recommend using SSDs](recommended-production-settings.html#hardware) for the best performance, and Kubernetes makes it relatively easy to use them.
 
 #### Creating a different disk type
 
@@ -157,9 +157,9 @@ Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/com
 
 ### Local disks
 
-Up to this point, we have been assuming that you will be running CockroachDB in a `StatefulSet`, using auto-provisioned remotely attached disks. However, using local disks typically provides better performance than remotely attached disks, such as SSD Instance Store Volumes instead of EBS Volumes on AWS or Local SSDs instead of Persistent Disks on GCE. `StatefulSet`s have historically not supported using local disks, but [beta support for using "local" `PersistentVolume`s was added in Kubernetes v1.10](https://kubernetes.io/docs/concepts/storage/volumes/#local). We don't recommend using this for production data until the feature is more mature, but it's a promising development.
+Up to this point, we have been assuming that you will be running CockroachDB in a `StatefulSet`, using auto-provisioned remotely attached disks. However, using local disks typically provides better performance than remotely attached disks, such as SSD Instance Store Volumes instead of EBS Volumes on AWS or Local SSDs instead of Persistent Disks on GCE. `StatefulSet`s have historically not supported using local disks, but [beta support for using "local" `PersistentVolume`s was added in Kubernetes v1.10](https://kubernetes.io/docs/concepts/storage/volumes/#local). We do not recommend using this for production data until the feature is more mature, but it's a promising development.
 
-There is also the option of using local disks if you don't run CockroachDB in a `StatefulSet`, but instead use a `DaemonSet`. For more details on what this entails, see the section on [Running in a DaemonSet](#running-in-a-daemonset).
+There is also the option of using local disks if you do not run CockroachDB in a `StatefulSet`, but instead use a `DaemonSet`. For more details on what this entails, see the section on [Running in a DaemonSet](#running-in-a-daemonset).
 
 Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [configure replication zones](configure-replication-zones.html) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
 
@@ -169,7 +169,7 @@ When you ask Kubernetes to run a pod, either directly or indirectly through anot
 
 #### Resource requests
 
-Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you don't set them then CockroachDB could be starved of CPU cycles or OOM killed before less important processes.
+Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you do not set them then CockroachDB could be starved of CPU cycles or OOM killed before less important processes.
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
@@ -244,7 +244,7 @@ When you create the `StatefulSet`, you'll want to check to make sure that all th
 
 #### Resource limits
 
-Resource limits are conceptually similar to resource requests, but serve a different purpose. They let you cap the resources used by a pod to no more than the provided limit, which can have a couple of different uses. For one, it makes for more predictable performance because your pods will not be allowed to use any excess capacity on their machines, meaning that they won't have more resources available to them at some times (during lulls in traffic) than others (busy periods where the other pods on a machine are also fully utilizing their reserved resources). Secondly, it also increases the ["Quality of Service" guaranteed by the Kubernetes runtime](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md) on Kubernetes versions 1.8 and below, making the pods less likely to be preempted when a machine is oversubscribed. Finally, memory limits in particular limit the amount of memory that the container knows is available to it, which help when you specify percentages for the CockroachDB `--cache` and `--max-sql-memory` flags, as our default configuration file does.
+Resource limits are conceptually similar to resource requests, but serve a different purpose. They let you cap the resources used by a pod to no more than the provided limit, which can have a couple of different uses. For one, it makes for more predictable performance because your pods will not be allowed to use any excess capacity on their machines, meaning that they will not have more resources available to them at some times (during lulls in traffic) than others (busy periods where the other pods on a machine are also fully utilizing their reserved resources). Secondly, it also increases the ["Quality of Service" guaranteed by the Kubernetes runtime](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md) on Kubernetes versions 1.8 and below, making the pods less likely to be preempted when a machine is oversubscribed. Finally, memory limits in particular limit the amount of memory that the container knows is available to it, which help when you specify percentages for the CockroachDB `--cache` and `--max-sql-memory` flags, as our default configuration file does.
 
 Setting resource limits works about the same as setting resource requests. If you wanted to set resource limits in addition to requests on the config from the [Resource Requests](#resource-requests) section above, you'd change the config to:
 
@@ -267,13 +267,13 @@ Setting resource limits works about the same as setting resource requests. If yo
           name: http
 ~~~
 
-The pods would then be restricted to only use the resource they have reserved and guaranteed to not be preempted except in very exceptional circumstances. This typically won't give you better performance on an under-utilized Kubernetes cluster, but will give you more predictable performance as other workloads are run.
+The pods would then be restricted to only use the resource they have reserved and guaranteed to not be preempted except in very exceptional circumstances. This typically will not give you better performance on an under-utilized Kubernetes cluster, but will give you more predictable performance as other workloads are run.
 
 {{site.data.alerts.callout_danger}}While setting memory limits is strongly recommended, <a href="https://github.com/kubernetes/kubernetes/issues/51135">setting CPU limits can hurt tail latencies as currently implemented by Kubernetes</a>. We recommend not setting CPU limits at all unless you have explicitly enabled the non-default <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy">Static CPU Management Policy</a> when setting up your Kubernetes cluster, and even then only setting integer (non-fractional) CPU limits and memory limits exactly equal to the corresponding requests.{{site.data.alerts.end}}
 
 #### Default resource requests and limits
 
-Note that even if you don't manually set resource requests yourself, you're likely unknowingly using them anyways. In many installations of Kubernetes, a [`LimitRange`](https://kubernetes.io/docs/tasks/administer-cluster/cpu-default-namespace/) is preconfigured for the `default` namespace that applies a default CPU request of `100m`, or one-tenth of a CPU. You can see this configuration by running
+Note that even if you do not manually set resource requests yourself, you're likely unknowingly using them anyways. In many installations of Kubernetes, a [`LimitRange`](https://kubernetes.io/docs/tasks/administer-cluster/cpu-default-namespace/) is preconfigured for the `default` namespace that applies a default CPU request of `100m`, or one-tenth of a CPU. You can see this configuration by running
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -288,11 +288,11 @@ Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Reques
 Container   cpu       -    -    100m             -              -
 ~~~
 
-Experimentally, this does not appear to have a noticeable effect on CockroachDB's performance when a Kubernetes cluster isn't heavily utilized, but don't be surprised if you see CPU requests on your pods that you didn't set.
+Experimentally, this does not appear to have a noticeable effect on CockroachDB's performance when a Kubernetes cluster isn't heavily utilized, but do not be surprised if you see CPU requests on your pods that you didn't set.
 
 ### Other pods on the same machines as CockroachDB
 
-As discovered in the above section on [Resource Requests and Limits](#resource-requests-and-limits), there will always be pods other than just CockroachDB running in your Kubernetes cluster, even if you don't create any other pods of your own. You can see them at any time by running:
+As discovered in the above section on [Resource Requests and Limits](#resource-requests-and-limits), there will always be pods other than just CockroachDB running in your Kubernetes cluster, even if you do not create any other pods of your own. You can see them at any time by running:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -318,7 +318,7 @@ kube-system   kubernetes-dashboard-768854d6dc-v7ng8            1/1       Running
 kube-system   l7-default-backend-6497bcdb4d-2kbh4              1/1       Running   0          2m
 ~~~
 
-These ["cluster add-ons"](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) provide a variety of basic services like managing DNS entries for services within the cluster, powering the Kubernetes dashboard UI, or collecting logs or metrics from all the pods running in the cluster. If you don't like having them take up space in your cluster, you can prevent some of them from running by configuring your Kubernetes cluster appropriately. For example, on GKE, you can create a cluster with the minimal set of addons by running:
+These ["cluster add-ons"](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) provide a variety of basic services like managing DNS entries for services within the cluster, powering the Kubernetes dashboard UI, or collecting logs or metrics from all the pods running in the cluster. If you do not like having them take up space in your cluster, you can prevent some of them from running by configuring your Kubernetes cluster appropriately. For example, on GKE, you can create a cluster with the minimal set of addons by running:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -327,7 +327,7 @@ $ gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging
 
 However, essentials like `kube-proxy` and `kube-dns` are effectively required to have a compliant Kubernetes cluster. This means that you'll always have some pods that aren't yours running in your cluster, so it's important to understand and account for the possible effects of CockroachDB having to share a machine with other processes. The more processes there are on the same machine as a CockroachDB pod, the worse and less predictable its performance will likely be. To protect against this, it's strongly recommended to run with [Resource Requests](#resource-requests) on your CockroachDB pods to provide some level of CPU and memory isolation.
 
-Setting resource requests isn't a panacea, though. There can still be contention for shared resources like network I/O or, in [exceptional](https://sysdig.com/blog/container-isolation-gone-wrong/) [cases](https://hackernoon.com/another-reason-why-your-docker-containers-may-be-slow-d37207dec27f), internal kernel data structures. For these reasons and because of the Kubernetes infrastructure processes running on each machine, CockroachDB running on Kubernetes simply can't reach quite the same levels of performance as running directly on dedicated machines. Thankfully, it can at least get quite close if you use Kubernetes wisely.
+Setting resource requests isn't a panacea, though. There can still be contention for shared resources like network I/O or, in [exceptional](https://sysdig.com/blog/container-isolation-gone-wrong/) [cases](https://hackernoon.com/another-reason-why-your-docker-containers-may-be-slow-d37207dec27f), internal kernel data structures. For these reasons and because of the Kubernetes infrastructure processes running on each machine, CockroachDB running on Kubernetes simply cannot reach quite the same levels of performance as running directly on dedicated machines. Thankfully, it can at least get quite close if you use Kubernetes wisely.
 
 If for some reason setting appropriate resource requests still isn't getting you the performance you expect, you might want to consider going all the way to [dedicated nodes](#dedicated-nodes).
 
@@ -368,7 +368,7 @@ To be:
       containers:
 ~~~
 
-This configuration will first prefer to put the `loadgen` pods on different nodes from each other, which is important for the fault tolerance of the `loadgen` pods themselves. As a secondary priority, it will attempt to put the pods on nodes that don't already have a running `CockroachDB` pod. This will ensure the best possible balance of fault tolerance and performance for the load generator and CockroachDB cluster.
+This configuration will first prefer to put the `loadgen` pods on different nodes from each other, which is important for the fault tolerance of the `loadgen` pods themselves. As a secondary priority, it will attempt to put the pods on nodes that do not already have a running `CockroachDB` pod. This will ensure the best possible balance of fault tolerance and performance for the load generator and CockroachDB cluster.
 
 ### Networking
 
@@ -378,11 +378,11 @@ If you really want to eke more performance out of your cluster, networking is a 
 
 #### Networking solutions
 
-If you aren't using a hosted Kubernetes service, you'll typically have to choose how to set up the network when you're creating a Kubernetes cluster. There are [a lot of solutions out there](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this), and they can have significantly different performance characteristics and functionality. We don't endorse any networking software or configurations in particular, but want to call out that your choice can have a meaningful affect on performance compared to running CockroachDB outside of Kubernetes.
+If you aren't using a hosted Kubernetes service, you'll typically have to choose how to set up the network when you're creating a Kubernetes cluster. There are [a lot of solutions out there](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this), and they can have significantly different performance characteristics and functionality. We do not endorse any networking software or configurations in particular, but want to call out that your choice can have a meaningful affect on performance compared to running CockroachDB outside of Kubernetes.
 
 #### Using the host's network
 
-If you are already content with your cluster's networking setup or don't want to have to mess with it, Kubernetes does offer an escape hatch for exceptional cases that lets you avoid network performance overhead -- the `hostNetwork` setting, which allows you to run pods using their host machine's network directly and bypass the layers of abstraction. This comes with a number of downsides, of course. For example, two pods using `hostNetwork` on the same machine can't use the same ports, and it also can have serious security implications if your machines are reachable on the public Internet. If you want to give it a try, though, to see what effects it has for your workload, you just have to add two lines to the CockroachDB YAML configuration file and to any client applications that desparately need better performance, changing:
+If you are already content with your cluster's networking setup or do not want to have to mess with it, Kubernetes does offer an escape hatch for exceptional cases that lets you avoid network performance overhead -- the `hostNetwork` setting, which allows you to run pods using their host machine's network directly and bypass the layers of abstraction. This comes with a number of downsides, of course. For example, two pods using `hostNetwork` on the same machine cannot use the same ports, and it also can have serious security implications if your machines are reachable on the public Internet. If you want to give it a try, though, to see what effects it has for your workload, you just have to add two lines to the CockroachDB YAML configuration file and to any client applications that desperately need better performance, changing:
 
 ~~~ yaml
     spec:
@@ -400,13 +400,13 @@ To be:
 
 `hostNetwork: true` tells Kubernetes to put the pods in the host machine's network namespace, using its IP address, hostname, and entire networking stack. The `dnsPolicy: ClusterFirstWithHostNet` line tells Kubernetes to configure the pods to still be able to use the cluster's DNS infrastructure for service discovery.
 
-This won't work miracles, so use it with caution. In our testing, it pretty reliably gives about a 6% improvement in database throughput when running [our `kv` load generator](https://hub.docker.com/r/cockroachdb/loadgen-kv/) against a 3-node cluster on GKE.
+This will not work miracles, so use it with caution. In our testing, it pretty reliably gives about a 6% improvement in database throughput when running [our `kv` load generator](https://hub.docker.com/r/cockroachdb/loadgen-kv/) against a 3-node cluster on GKE.
 
 ### Running in a DaemonSet
 
 In all of the examples so far, we've been using the standard CockroachDB `StatefulSet` configuration file and tweaking it slightly. An alternative that comes with a different set of tradeoffs is to completely switch from using a `StatefulSet` for orchestration to using a `DaemonSet`. A [`DaemonSet`](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) is a Kubernetes type that runs a pod on all nodes matching some selection criteria.
 
-This comes with a few main benefits -- it's a more natural abstraction for cordoning off onto [dedicated nodes](#dedicated-nodes), it naturally pairs with [using the host's network](#using-the-hosts-network) since you're already coupling CockroachDB processes one-to-one with nodes, and it allows you to use [local disks](#local-disks) without relying on the beta support for using local disks with `StatefulSets`. The biggest tradeoff is that you're limiting Kubernetes' ability to help your cluster recover from failures. It can't create new pods to replace pods on nodes that fail because it's already running a CockroachDB pod on all the matching nodes. This matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
+This comes with a few main benefits -- it's a more natural abstraction for cordoning off onto [dedicated nodes](#dedicated-nodes), it naturally pairs with [using the host's network](#using-the-hosts-network) since you're already coupling CockroachDB processes one-to-one with nodes, and it allows you to use [local disks](#local-disks) without relying on the beta support for using local disks with `StatefulSets`. The biggest tradeoff is that you're limiting Kubernetes' ability to help your cluster recover from failures. It cannot create new pods to replace pods on nodes that fail because it's already running a CockroachDB pod on all the matching nodes. This matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
 
 To set up a CockroachDB `DaemonSet`, a little more work is needed than for a `StatefulSet`. We will use [the provided `DaemonSet` configuration file template from the CockroachDB Github repository](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml) as our base.
 

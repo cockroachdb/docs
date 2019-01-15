@@ -76,7 +76,7 @@ This message can also occur in the following scenario:
 1. The first node of a cluster is started without the `--join` flag.
 2. Subsequent nodes are started with the `--join` flag pointing to the first node.
 3. The first node is stopped and restarted after the node's data directory is deleted or using a new directory. This causes the first node to initialize a new cluster.
-4. The other nodes, still communicating with the first node, notice that their cluster ID and the first node's cluster ID don't match.
+4. The other nodes, still communicating with the first node, notice that their cluster ID and the first node's cluster ID do not match.
 
 To avoid this scenario, update your scripts to use the new, recommended approach to initializing a cluster:
 
@@ -158,7 +158,7 @@ This message occurs when a component of CockroachDB gives up because it was rely
 
 In a distributed system, some errors can have ambiguous results. For
 example, if you receive a `connection closed` error while processing a
-`COMMIT` statement, you can't tell whether the transaction
+`COMMIT` statement, you cannot tell whether the transaction
 successfully committed or not. These errors are possible in any
 database, but CockroachDB is somewhat more likely to produce them than
 other databases because ambiguous results can be caused by failures
@@ -187,7 +187,7 @@ the user.
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
 - [Other troubleshooting pages](troubleshooting-overview.html)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)

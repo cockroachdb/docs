@@ -14,7 +14,7 @@ After completing the maintenance work and [restarting the nodes](start-a-node.ht
 > SET CLUSTER SETTING server.time_until_store_dead = '5m0s';
 ~~~
 
-It's also important to ensure that load balancers don't send client traffic to a node about to be shut down, even if it will only be down for a few seconds. If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` setting, which tells the node to wait in an unready state for the specified duration. For example:
+It's also important to ensure that load balancers do not send client traffic to a node about to be shut down, even if it will only be down for a few seconds. If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` setting, which tells the node to wait in an unready state for the specified duration. For example:
 
 {% include copy-clipboard.html %}
  ~~~ sql
