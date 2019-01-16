@@ -20,7 +20,7 @@ $ cockroach start <flags> --logtostderr 2>&1 | tee error.log
 
 ## Starting Clusters & Nodes
 
-### Node Won't Join Cluster
+### Node Will Not Join Cluster
 
 **Description**: You specified the `--join` flag, but receive one of the following messages:
 
@@ -92,11 +92,11 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 2. If all `--join` flags were set correctly, look at the error logs for each node to determine what to do:
 	- `connection refused`: Check your network or firewall configuration.
-	- `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
+	- `not connected to cluster` or `node <id> belongs to cluster...`: See [Node Will Not Join Cluster](#node-will-not-join-cluster) on this page.
 
 ## Something Else?
 
-If we don't have an solution here, you can try:
+If we do not have an solution here, you can try:
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
 - [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.

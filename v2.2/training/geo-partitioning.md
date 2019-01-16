@@ -208,7 +208,7 @@ For example, imagine you are a Movr administrator in New York, and you want to g
 WHERE city = 'new york' AND type = 'bike' AND status = 'in_use';
 ~~~
 
-All requests initially go to to the leaseholder for the relevant range. As you saw earlier, the leaseholder for the single range of the `vehicles` table is in the `us-west1` datacenter, so in this case, the following would happen:
+All requests initially go to the leaseholder for the relevant range. As you saw earlier, the leaseholder for the single range of the `vehicles` table is in the `us-west1` datacenter, so in this case, the following would happen:
 
 1. The node receiving the request (the gateway node) in the `us-east1` datacenter would route the request to the node in the `us-west1` datacenter with the leaseholder.
 

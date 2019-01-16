@@ -22,7 +22,7 @@ Type | Description | Example
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
-[`ARRAY`](array.html) | <span class="version-tag">New in v1.1:</span> A 1-dimensional, 1-indexed, homogenous array of any non-array data type. | `{"sky","road","car"}`
+[`ARRAY`](array.html) | <span class="version-tag">New in v1.1:</span> A 1-dimensional, 1-indexed, homogeneous array of any non-array data type. | `{"sky","road","car"}`
 
 ## Data Type Conversions & Casts
 

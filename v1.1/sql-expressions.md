@@ -133,7 +133,7 @@ For example:
 
 #### Typing rule
 
-`IN` requires its right operand to be a homogenous tuple type and its left operand
+`IN` requires its right operand to be a homogeneous tuple type and its left operand
 to match the tuple element type. The result has type `BOOL`.
 
 ### String Pattern Matching
@@ -153,7 +153,7 @@ or `FALSE` otherwise, or the inverted value for the `NOT` variants.
 
 Patterns can contain `_` to match any single
 character, or `%` to match any sequence of zero or more characters.
-`ILIKE` causes the match to be tested case-insentively.
+`ILIKE` causes the match to be tested case-insensitively.
 
 For example:
 

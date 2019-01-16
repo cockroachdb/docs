@@ -127,9 +127,9 @@ This conversion is currently only well defined for a small range of integers, i.
 
 ### Cannot decommission nodes
 
-The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that can't be removed without breaking the configured replication rules.
+The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.
 
-Example: decommissioning a node in a three node cluster won't work because ranges would become under-replicated.
+Example: decommissioning a node in a three node cluster will not work because ranges would become under-replicated.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
 

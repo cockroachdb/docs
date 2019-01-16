@@ -56,7 +56,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	--host=<node1 internal address>
 	~~~
 
-	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
+	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely do not want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 2. Add nodes to the cluster
 
@@ -86,7 +86,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 internal address>:26257
 	~~~
 
-	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
+	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports will not cause conflicts.
 
 4. Repeat these steps for each node you want to add.
 

@@ -1,10 +1,10 @@
 ---
 title: ARRAY
-summary: The ARRAY data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array data types.
+summary: The ARRAY data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array data types.
 toc: true
 ---
 
-The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
+The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type](data-types.html).
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 

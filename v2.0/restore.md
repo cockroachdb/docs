@@ -118,14 +118,14 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 #### `into_db`
 
-- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but don't want to drop it.
+- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.
 - **Key**: `into_db`
 - **Value**: The name of the database you want to use
 - **Example**: `WITH into_db = 'newdb'`
 
 #### `skip_missing_foreign_keys`
 
-- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
+- **Description**: If you want to restore a table with a foreign key but do not want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_foreign_keys`
@@ -134,7 +134,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 <span class="version-tag">New in v2.0</span>
 
-- **Description**: If you want to restore a table that depends on a sequence but don't want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
+- **Description**: If you want to restore a table that depends on a sequence but do not want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
 - **Key**: `skip_missing_sequences`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_sequences`

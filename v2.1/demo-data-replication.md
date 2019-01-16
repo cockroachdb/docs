@@ -23,7 +23,7 @@ $ cockroach start \
 
 ## Step 2. Write data
 
-In a new terminal, use [`cockroach workload`](cockroach-workload.html) command command to generate an example `intro` database:
+In a new terminal, use [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell

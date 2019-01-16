@@ -93,7 +93,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
 1. SSH to the first machine.
 
-2. Find the the ID of the Hyper-V Time Synchronization device:
+2. Find the ID of the Hyper-V Time Synchronization device:
 
     {% include copy-clipboard.html %}
     ~~~ shell

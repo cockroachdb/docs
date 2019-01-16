@@ -62,7 +62,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
         | Priority | Any value > 1000 |
     - **Application support**:
 
-        {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you won't need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
+        {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you will not need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
 
         | Field | Recommended Value |
         |-------|-------------------|

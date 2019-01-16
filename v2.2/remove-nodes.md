@@ -304,7 +304,7 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
 
 If you accidentally decommissioned any nodes, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
 
-### Step 1. Identify the IDs of the decomissioned nodes
+### Step 1. Identify the IDs of the decommissioned nodes
 
 Open the Admin UI and select the **Node List** view. Note the IDs of the nodes listed under **Decommissioned Nodes**:
 

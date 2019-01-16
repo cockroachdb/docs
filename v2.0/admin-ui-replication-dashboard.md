@@ -71,7 +71,7 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 <img src="{{ 'images/v2.0/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
-Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionaly the Raft protocol itself will request the snapshot.
+Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
 
 Metric | Description
 -------|------------

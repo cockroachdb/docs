@@ -31,7 +31,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
 
-    The process can take a few minutes, so don't move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
+    The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
 {% if page.secure == true %}
 

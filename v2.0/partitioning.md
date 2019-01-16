@@ -39,7 +39,7 @@ For more details about these flags, see the [`cockroach start`](start-a-node.htm
 
 You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-Note that the following features don't work with an **expired license**:
+Note that the following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index

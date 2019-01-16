@@ -244,7 +244,7 @@ When you create the `StatefulSet`, you'll want to check to make sure that all th
 
 #### Resource limits
 
-Resource limits are conceptually similar to resource requests, but serve a different purpose. They let you cap the resources used by a pod to no more than the provided limit, which can have a couple of different uses. For one, it makes for more predictable performance because your pods will not be allowed to use any excess capacity on their machines, meaning that they won't have more resources available to them at some times (during lulls in traffic) than others (busy periods where the other pods on a machine are also fully utilizing their reserved resources). Secondly, it also increases the ["Quality of Service" guaranteed by the Kubernetes runtime](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md) on Kubernetes versions 1.8 and below, making the pods less likely to be preempted when a machine is oversubscribed. Finally, memory limits in particular limit the amount of memory that the container knows is available to it, which help when you specify percentages for the CockroachDB `--cache` and `--max-sql-memory` flags, as our default configuration file does.
+Resource limits are conceptually similar to resource requests, but serve a different purpose. They let you cap the resources used by a pod to no more than the provided limit, which can have a couple of different uses. For one, it makes for more predictable performance because your pods will not be allowed to use any excess capacity on their machines, meaning that they will not have more resources available to them at some times (during lulls in traffic) than others (busy periods where the other pods on a machine are also fully utilizing their reserved resources). Secondly, it also increases the ["Quality of Service" guaranteed by the Kubernetes runtime](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md) on Kubernetes versions 1.8 and below, making the pods less likely to be preempted when a machine is oversubscribed. Finally, memory limits in particular limit the amount of memory that the container knows is available to it, which help when you specify percentages for the CockroachDB `--cache` and `--max-sql-memory` flags, as our default configuration file does.
 
 Setting resource limits works about the same as setting resource requests. If you wanted to set resource limits in addition to requests on the config from the [Resource Requests](#resource-requests) section above, you'd change the config to:
 
@@ -267,7 +267,7 @@ Setting resource limits works about the same as setting resource requests. If yo
           name: http
 ~~~
 
-The pods would then be restricted to only use the resource they have reserved and guaranteed to not be preempted except in very exceptional circumstances. This typically won't give you better performance on an under-utilized Kubernetes cluster, but will give you more predictable performance as other workloads are run.
+The pods would then be restricted to only use the resource they have reserved and guaranteed to not be preempted except in very exceptional circumstances. This typically will not give you better performance on an under-utilized Kubernetes cluster, but will give you more predictable performance as other workloads are run.
 
 {{site.data.alerts.callout_danger}}While setting memory limits is strongly recommended, <a href="https://github.com/kubernetes/kubernetes/issues/51135">setting CPU limits can hurt tail latencies as currently implemented by Kubernetes</a>. We recommend not setting CPU limits at all unless you have explicitly enabled the non-default <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy">Static CPU Management Policy</a> when setting up your Kubernetes cluster, and even then only setting integer (non-fractional) CPU limits and memory limits exactly equal to the corresponding requests.{{site.data.alerts.end}}
 
@@ -382,7 +382,7 @@ If you aren't using a hosted Kubernetes service, you'll typically have to choose
 
 #### Using the host's network
 
-If you are already content with your cluster's networking setup or do not want to have to mess with it, Kubernetes does offer an escape hatch for exceptional cases that lets you avoid network performance overhead -- the `hostNetwork` setting, which allows you to run pods using their host machine's network directly and bypass the layers of abstraction. This comes with a number of downsides, of course. For example, two pods using `hostNetwork` on the same machine cannot use the same ports, and it also can have serious security implications if your machines are reachable on the public Internet. If you want to give it a try, though, to see what effects it has for your workload, you just have to add two lines to the CockroachDB YAML configuration file and to any client applications that desparately need better performance, changing:
+If you are already content with your cluster's networking setup or do not want to have to mess with it, Kubernetes does offer an escape hatch for exceptional cases that lets you avoid network performance overhead -- the `hostNetwork` setting, which allows you to run pods using their host machine's network directly and bypass the layers of abstraction. This comes with a number of downsides, of course. For example, two pods using `hostNetwork` on the same machine cannot use the same ports, and it also can have serious security implications if your machines are reachable on the public Internet. If you want to give it a try, though, to see what effects it has for your workload, you just have to add two lines to the CockroachDB YAML configuration file and to any client applications that desperately need better performance, changing:
 
 ~~~ yaml
     spec:
@@ -400,7 +400,7 @@ To be:
 
 `hostNetwork: true` tells Kubernetes to put the pods in the host machine's network namespace, using its IP address, hostname, and entire networking stack. The `dnsPolicy: ClusterFirstWithHostNet` line tells Kubernetes to configure the pods to still be able to use the cluster's DNS infrastructure for service discovery.
 
-This won't work miracles, so use it with caution. In our testing, it pretty reliably gives about a 6% improvement in database throughput when running [our `kv` load generator](https://hub.docker.com/r/cockroachdb/loadgen-kv/) against a 3-node cluster on GKE.
+This will not work miracles, so use it with caution. In our testing, it pretty reliably gives about a 6% improvement in database throughput when running [our `kv` load generator](https://hub.docker.com/r/cockroachdb/loadgen-kv/) against a 3-node cluster on GKE.
 
 ### Running in a DaemonSet
 

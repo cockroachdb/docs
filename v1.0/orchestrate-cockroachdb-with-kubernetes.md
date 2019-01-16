@@ -97,7 +97,7 @@ Kubectl is now configured to use the cluster.
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
+3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -136,7 +136,7 @@ Kubectl is now configured to use the cluster.
     pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
     ~~~
 
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
+3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -241,7 +241,7 @@ To see this in action:
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
+The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you do not have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
 1. Add a worker node:
   - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).

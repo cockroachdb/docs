@@ -75,7 +75,7 @@ It's best to set the default database directly in your [connection string](manag
 > SET DATABASE = bank;
 ~~~
 
-When working in the default database, you don't need to reference it explicitly in statements. To see whi
+When working in the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
 
 {% include copy-clipboard.html %}
 ~~~ sql

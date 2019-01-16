@@ -4,7 +4,7 @@ summary:
 toc: true
 ---
 
-In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the end result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
+In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
@@ -268,9 +268,9 @@ Again, this anomaly is the result of Postgres' default isolation level of `READ 
 (1 row)
 ~~~
 
-### Step 8. Stop Posgres
+### Step 8. Stop Postgres
 
-Exit each SQL shell with `\q` and then stop the Posgres server:
+Exit each SQL shell with `\q` and then stop the Postgres server:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -483,7 +483,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-transaction-retries) that would transparently observe that the one doctor can't take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](build-an-app-with-cockroachdb.html) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-transaction-retries) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](build-an-app-with-cockroachdb.html) tutorials.
     {{site.data.alerts.end}}
 
 4. In the terminal for doctor 2, the application tries to commit the transaction:

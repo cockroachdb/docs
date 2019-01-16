@@ -17,7 +17,7 @@ the right place.
 
 In order to keep your data consistent, CockroachDB only works when at least a
 majority of its nodes are running. This means that if only one node of a three
-node cluster is running, that one node won't be able to do anything. The
+node cluster is running, that one node will not be able to do anything. The
 `--background` flag of [`cockroach start`](start-a-node.html) causes the start
 command to wait until the node has fully initialized and is able to start
 serving queries.
@@ -26,7 +26,7 @@ Together, these two facts mean that the `--background` flag will cause
 `cockroach start` to hang until a majority of nodes are running. In order to
 restart your cluster, you should either use multiple terminals so that you can
 start multiple nodes at once or start each node in the background using your
-shell's functionality (e.g. `cockroach start &`) instead of the `--background`
+shell's functionality (e.g., `cockroach start &`) instead of the `--background`
 flag.
 
 ## Why is memory usage increasing despite lack of traffic?
