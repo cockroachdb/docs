@@ -66,7 +66,7 @@ When designing indexes, it's important to consider which columns you index and t
 
 ### Storing columns
 
-Storing a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but do not filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
+Storing a column optimizes the performance of queries that retrieve its values but are not used for filtering. This is because indexing values are only useful when they're filtered, but if the index itself is mainly used to retrieve a small subset of the columns from the table, then storing the values along with the index can save a trip to the table to retrieve the values.
 
 However, for SQL to use stored columns, queries must filter another column in the same index.
 
