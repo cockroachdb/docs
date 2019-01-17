@@ -48,6 +48,13 @@ When a table is created, all columns are stored as a single column family. This 
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
 
+However, the above is only true for tables where all operations (e.g., [`SELECT`](selection-queries.html) or [`INSERT`](insert.html)) are performed on a single value shared between both tables.  The following types of operations may actually become slower after interleaving:
+
+- Operations that span multiple values.
+- Operations that do not specify the interleaved parent ID.
+
+This happens because when data is interleaved, queries that work on the parent table(s) will need to "skip over" the data in interleaved children, which increases the read and write latencies to the parent in proportion to the number of interleaved values.
+
 ## Unique ID best practices
 
 A traditional approach for generating unique IDs is one of the following:
