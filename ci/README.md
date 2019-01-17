@@ -10,7 +10,7 @@ Versioning the build script along with the code means we can isolate build
 script changes to one branch and atomically update the configuration when that
 branch merges.
 
-To save time, pull requests don't check external links. Those are instead
+To save time, pull requests do not check external links. Those are instead
 checked every night when TeamCity triggers an automatic run of the `nightly`
 script in this repository.
 

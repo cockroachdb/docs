@@ -127,7 +127,7 @@ CockroachDB requires TCP communication on two ports:
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
 - **8080** (`tcp:8080`) for accessing the Web UI
 
-Since GCE instances communicate on their internal IP addresses by default, you don't need to take any action to enable inter-node communication. However, if you want to access the Web UI from your local network, you must [create a firewall rule for your project](https://cloud.google.com/vpc/docs/using-firewalls):
+Since GCE instances communicate on their internal IP addresses by default, you do not need to take any action to enable inter-node communication. However, if you want to access the Web UI from your local network, you must [create a firewall rule for your project](https://cloud.google.com/vpc/docs/using-firewalls):
 
 Field | Recommended Value
 ------|------------------
@@ -1028,7 +1028,7 @@ This is a complex query plan, but the important thing to note is the full table 
 
 #### Using `IN (list)` with explicit values
 
-Because CockroachDB won't use an available secondary index when using `IN (list)` with a subquery, it's much more performant to have your application first select the top 5 vehicles:
+Because CockroachDB will not use an available secondary index when using `IN (list)` with a subquery, it's much more performant to have your application first select the top 5 vehicles:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -1621,7 +1621,7 @@ For the single range containing `users` data, one replica is in each zone, with 
 
 ### Step 13. Partition data by city
 
-For this service, the most effective technique for improving read and write latency is to [geo-partition](partitioning.html) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone](configure-replication-zones.html) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city don't have to leave that region.
+For this service, the most effective technique for improving read and write latency is to [geo-partition](partitioning.html) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone](configure-replication-zones.html) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city do not have to leave that region.
 
 1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/pricing/start-trial/).
 

@@ -172,7 +172,7 @@ To see this in action:
 
 ## Step 5. Stop the cluster
 
-In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you don't delete these resources, AWS will continue to charge you for them.
+In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you do not delete these resources, AWS will continue to charge you for them.
 
 ## See Also
 

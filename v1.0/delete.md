@@ -29,7 +29,7 @@ table td:first-child {
 |-----------|-------------|
 |`relation_expr` | The name of the table you want to delete rows from.<br><br>Deleting from multiple tables in a single statement is not supported.|
 |`AS name` | Create an alias for the table name, completely hiding its original name. All subsequent references to the table must use its alias.<br><br>Aliases are primarily used with `JOIN`, which is not yet supported but is coming in a [future release](https://github.com/cockroachdb/cockroach/issues/2970).|
-|`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g. `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__|
+|`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__|
 |`RETURNING ...`<br>| Retrieve a table of deleted rows using [all columns](#use-all-columns) (`*`) or [specific columns](#use-specific-columns) (named in `a_expr`).<br><br>To return nothing in the response, not even the number of rows affected, use `RETURNING NOTHING`.|
 |`AS col_label`| In the retrieved table, change the column label from `a_expr` to `col_label`.<br><br>You can also change column labels with an `identifier`, but must follow [these rules](keywords-and-identifiers.html#identifiers).|
 
@@ -39,7 +39,7 @@ Successful `DELETE` statements return one of the following:
 
 | Response | Description |
 |-----------|-------------|
-|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that don't delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
+|`DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response. |
 |Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)|
 
 ## Disk Space Usage After Deletes

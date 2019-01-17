@@ -39,7 +39,7 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.loa
 
 #### When to modify the load-based splitting threshold
 
-Some workloads might find splitting ranges more aggressively (i.e. a lower QPS threshold) can improve performance.
+Some workloads might find splitting ranges more aggressively (i.e., a lower QPS threshold) can improve performance.
 
 On the other hand, some workloads with very large machines might want to increase the QPS threshold to split more conservatively.
 

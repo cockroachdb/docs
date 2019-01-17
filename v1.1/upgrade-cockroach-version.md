@@ -143,7 +143,7 @@ For each node in your cluster, complete the following steps.
     $ rm /usr/local/bin/cockroach_old
     ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    If you leave versioned binaries on your servers, you do not need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
@@ -163,7 +163,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the v1.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the v1.1.x series, you do not need to take any further action.{{site.data.alerts.end}}
 
 1. [Back up the cluster](back-up-data.html).
 

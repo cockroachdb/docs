@@ -567,7 +567,7 @@ Some options are supported, with the restrictions described below. For more info
 
 - [Column families](column-families.html)
 
-- Index definitions: CockroachDB supports creating indexes as part of the [`CREATE TABLE`](create-table.html) statement, e.g.:
+- Index definitions: CockroachDB supports creating indexes as part of the [`CREATE TABLE`](create-table.html) statement, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -714,7 +714,7 @@ Some options are supported, with the restrictions described below. For more info
 |--------------------------------------------+-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ADD COLUMN`                               | Yes         | See [`ADD COLUMN`](add-column.html).                                                                                                                                     |
 | `DROP COLUMN`                              | Yes         | See [`DROP COLUMN`](drop-column.html).                                                                                                                                   |
-| `ALTER COLUMN [SET DATA] TYPE`             | Partial     | Only conversions that do not require column rewrites are supported, e.g. `INT2 -> INT4`, `CHAR(10) -> CHAR(100)`.                                                        |
+| `ALTER COLUMN [SET DATA] TYPE`             | Partial     | Only conversions that do not require column rewrites are supported, e.g., `INT2 -> INT4`, `CHAR(10) -> CHAR(100)`.                                                        |
 | `ALTER COLUMN SET DEFAULT`                 | Yes         | See [`ALTER COLUMN`](alter-column.html).                                                                                                                                 |
 | `ALTER COLUMN DROP DEFAULT`                | Yes         | See [`ALTER COLUMN`](alter-column.html).                                                                                                                                 |
 | `ALTER COLUMN DROP NOT NULL`               | Yes         | See row below, and [`ALTER COLUMN`](alter-column.html).                                                                                                                  |

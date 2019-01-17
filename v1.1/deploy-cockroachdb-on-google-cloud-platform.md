@@ -51,7 +51,7 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 
 Applications will not connect directly to your CockroachDB nodes. Instead, they'll connect to GCE's TCP Proxy Load Balancing service, which automatically routes traffic to the instances that are closest to the user. Because this service is implemented at the edge of the Google Cloud, you'll need to create a firewall rule to allow traffic from the load balancer and health checker to your instances. This is covered in [Step 4](#step-4-set-up-tcp-proxy-load-balancing).
 
-{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across regions. You might also consider using the HAProxy load balancer (see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.).{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.).{{site.data.alerts.end}}
 
 ## Step 2. Create instances
 
@@ -81,7 +81,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
-{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it can't be used across regions. You might also consider using the HAProxy load balancer (see <a href="deploy-cockroachdb-on-premises.html">Deploy CockroachDB On-Premises</a> for guidance).{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see <a href="deploy-cockroachdb-on-premises.html">Deploy CockroachDB On-Premises</a> for guidance).{{site.data.alerts.end}}
 
 To use GCE's TCP Proxy Load Balancing service:
 

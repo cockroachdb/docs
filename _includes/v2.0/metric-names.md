@@ -1,8 +1,8 @@
 Name | Help
 -----|-----
-`addsstable.applications` | Number of SSTable ingestions applied (i.e. applied by Replicas)
+`addsstable.applications` | Number of SSTable ingestions applied (i.e., applied by Replicas)
 `addsstable.copies` | Number of SSTable ingestions that required copying files during application
-`addsstable.proposals` | Number of SSTable ingestions proposed (i.e. sent to Raft by lease holders)
+`addsstable.proposals` | Number of SSTable ingestions proposed (i.e., sent to Raft by lease holders)
 `build.timestamp` | Build information
 `capacity.available` | Available storage capacity
 `capacity.reserved` | Capacity reserved for snapshots
@@ -138,7 +138,7 @@ Name | Help
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
-`rebalancing.writespersecond` | Number of keys written (i.e. applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
+`rebalancing.writespersecond` | Number of keys written (i.e., applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
 `replicas.commandqueue.combinedwritecount` | Number of read-write commands in all CommandQueues combined

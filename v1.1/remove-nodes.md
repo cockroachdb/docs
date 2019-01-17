@@ -35,7 +35,7 @@ In this scenario, each range is replicated 3 times, with each replica on a diffe
 
 <div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the process will hang indefinitely because the cluster can't move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
+If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
 
 <div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -59,7 +59,7 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 
 <div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB won't allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
+If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v1.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -321,7 +321,7 @@ In about 5 minutes, you'll see the nodes listed under **Decommissioned Nodes**:
 
 If you accidentally decommissioned any nodes, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
 
-### Step 1. Identify the IDs of the decomissioned nodes
+### Step 1. Identify the IDs of the decommissioned nodes
 
 Open the Admin UI, click **View nodes list** in the **Summary** area, and note the IDs of the nodes listed under **Decommissioned Nodes**:
 

@@ -7,7 +7,7 @@ twitter: false
 
 This tutorial shows you how build a simple Rust application with CockroachDB using a PostgreSQL-compatible driver.
 
-We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust postgres driver</a> enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust Postgres driver</a> enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 
@@ -15,9 +15,9 @@ We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ign
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-## Step 1. Install the Rust postgres driver
+## Step 1. Install the Rust Postgres driver
 
-Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 
@@ -84,9 +84,9 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-## Step 1. Install the Rust postgres driver
+## Step 1. Install the Rust Postgres driver
 
-Install the Rust posgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 
@@ -153,6 +153,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's next?
 
-Read more about using the [Rust postgres driver](https://crates.io/crates/postgres/).
+Read more about using the [Rust Postgres driver](https://crates.io/crates/postgres/).
 
 {% include {{ page.version.version }}/app/see-also-links.md %}

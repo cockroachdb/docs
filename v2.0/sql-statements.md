@@ -137,7 +137,7 @@ Statement | Usage
 
 ## Backup & Restore Statements (Enterprise)
 
-The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+The following statements are available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 
 {{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 

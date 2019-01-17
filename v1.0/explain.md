@@ -147,7 +147,7 @@ When looking at the **Ordering** column, we can also sort by descending (`DESC`)
 +-------+------+-------+-------------+---------+--------------+
 ~~~
 
-{{site.data.alerts.callout_info}}In some cases the <strong>Ordering</strong> details report a column ordering with an equal sign (e.g. <code>=k</code>). This is a side effect of the internal ordering analysis performed by CockroachDB and merely indicates that CockroachDB has found that only one row matches a <code>WHERE</code> expression.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In some cases the <strong>Ordering</strong> details report a column ordering with an equal sign (e.g., <code>=k</code>). This is a side effect of the internal ordering analysis performed by CockroachDB and merely indicates that CockroachDB has found that only one row matches a <code>WHERE</code> expression.{{site.data.alerts.end}}
 
 ### `QUALIFY` Option
 

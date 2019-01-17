@@ -174,7 +174,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
     $ rm /usr/local/bin/cockroach_old
     ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    If you leave versioned binaries on your servers, you do not need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
@@ -197,7 +197,7 @@ Once you have monitored the upgraded cluster for at least one day:
 ### Finalize the upgrade
 
 {{site.data.alerts.callout_info}}
-These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the v2.0.x series, you don't need to take any further action.
+These final steps are required after upgrading from v1.1.x to v2.0. For upgrades within the v2.0.x series, you do not need to take any further action.
 {{site.data.alerts.end}}
 
 1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.

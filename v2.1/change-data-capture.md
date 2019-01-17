@@ -188,7 +188,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
-1. If you don't already have one, [request a trial enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
 2. In a terminal window, start `cockroach`:
 
@@ -345,7 +345,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
 
-1. If you don't already have one, [request a trial enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
 2. In a terminal window, start `cockroach`:
 

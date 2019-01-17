@@ -50,7 +50,7 @@ The following sections provide details on each of these options.
 
 ## Table expressions that generate data
 
-The following sections decribe primary table expressions that produce
+The following sections describe primary table expressions that produce
 data.
 
 ### Access a table or view

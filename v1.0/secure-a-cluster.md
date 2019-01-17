@@ -251,7 +251,7 @@ Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
 {{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ shell
 $ rm -rf cockroach-data node2 node3
@@ -270,7 +270,7 @@ $ cockroach start \
 --http-host=localhost
 ~~~
 
-{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you won't see a response to the above command until after you restart the second node.
+{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
 {{site.data.alerts.end}}
 
 In a new terminal, restart the second node from the parent directory of `node2/`:

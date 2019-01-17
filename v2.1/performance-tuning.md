@@ -832,7 +832,7 @@ This is a complex query plan, but the important thing to note is the full table 
 
 #### Using `IN (list)` with explicit values
 
-Because CockroachDB won't use an available secondary index when using `IN (list)` with a subquery, it's much more performant to have your application first select the top 5 vehicles:
+Because CockroachDB will not use an available secondary index when using `IN (list)` with a subquery, it's much more performant to have your application first select the top 5 vehicles:
 
 {% include copy-clipboard.html %}
 ~~~ shell

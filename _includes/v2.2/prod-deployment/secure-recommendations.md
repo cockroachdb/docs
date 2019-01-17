@@ -1,4 +1,4 @@
-- If you plan to use CockroachDB in production, carefully review the the [Production Checklist](recommended-production-settings.html).
+- If you plan to use CockroachDB in production, carefully review the [Production Checklist](recommended-production-settings.html).
 
 - Decide how you want to access your Admin UI:
 

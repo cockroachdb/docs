@@ -229,7 +229,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 address>:26257
 	~~~
 
-	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
+	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports will not cause conflicts.
 
 4. Repeat these steps for each node you want to add.
 

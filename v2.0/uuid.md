@@ -14,7 +14,7 @@ A `UUID` value can be expressed using the following formats:
 
 Format | Description
 -------|-------------
-Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-seperated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
+Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-separated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
 With braces | The standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.<br><br>Example: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`
 As `BYTES` | `UUID` value specified as bytes.<br><br>Example: `b'kafef00ddeadbeed'`
 `UUID` used as a URN | `UUID` can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`

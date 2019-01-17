@@ -4,7 +4,7 @@ summary: Import CSV data into your CockroachDB cluster.
 toc: true
 ---
 
-The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) into a single table.
+The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g., CSVs) into a single table.
 
 {{site.data.alerts.callout_danger}}<strong>This is an experimental feature</strong>. To enable it, you must run <a href="set-cluster-setting.html"><code>SET CLUSTER SETTING experimental.importcsv.enabled = true</code></a>{{site.data.alerts.end}}
 
@@ -36,7 +36,7 @@ Before using [`IMPORT`](import.html), you should have:
 
 - The schema of the table you want to import.
 - The tabular data you want to import (e.g., CSV), preferably hosted on cloud storage.
-- A location to store data before it is fully imported into all your nodes (referred to in this document as a "temp" directory). This location *must* be accessible to all nodes using the same address (i.e. cannot use a node's local file storage).
+- A location to store data before it is fully imported into all your nodes (referred to in this document as a "temp" directory). This location *must* be accessible to all nodes using the same address (i.e., cannot use a node's local file storage).
 
     For ease of use, we recommend using cloud storage. However, if that isn't readily available to you, we also have a [guide on easily creating your own file server](create-a-file-server.html).
 
@@ -96,13 +96,13 @@ However, if you do want to store the file locally to import it, there are a numb
 
 {{site.data.alerts.callout_info}}Because you must have remote/cloud storage available to complete the <code>IMPORT</code> process, we recommend using it instead of local file storage.<br/><br/>If you do not have access to cloud storage, you can easily create a file server using <a href="create-a-file-server.html">this guide</a>.{{site.data.alerts.end}}
 
-Because CockroachDB is designed as a distributed system, the ergonomics of local file storage require some understanding to use successfully. Though we don't recommend this process, if you do want to use a locally stored file, this procedure is likely to cause you the fewest headaches:
+Because CockroachDB is designed as a distributed system, the ergonomics of local file storage require some understanding to use successfully. Though we do not recommend this process, if you do want to use a locally stored file, this procedure is likely to cause you the fewest headaches:
 
 1. Ensure the node you want to use has available storage space at least 2x the size of the data you want to import; 1x for the file itself, and 1x for the converted key-value data.
 
     For example, if you want to import 10GiB of data, your node needs 20GiB of available storage.
 2. Upload the tabular data file to a single node, and then connect to that node.
-3. Execute the [`IMPORT`](import.html) statement, importing to the locally stored file with the `nodelocal` prefix, e.g. `nodelocal://backup.csv`.
+3. Execute the [`IMPORT`](import.html) statement, importing to the locally stored file with the `nodelocal` prefix, e.g., `nodelocal://backup.csv`.
 
     However, the "temp" directory you choose must use a location available to all nodes in the cluster (i.e., you cannot use local file storage). You will need to use either cloud storage, a custom HTTP server, or NFS connected to all nodes in the cluster.
 
@@ -114,7 +114,7 @@ To distribute the data you want to import to all nodes in your cluster, the [`IM
 - Network file storage mounted to every node
 - HTTP file server
 
-{{site.data.alerts.callout_info}}If you don't currently have any of these options available, you can easily <a href="create-a-file-server.html">create a file server</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you do not currently have any of these options available, you can easily <a href="create-a-file-server.html">create a file server</a>.{{site.data.alerts.end}}
 
 The temp directory must have at least as much storage space as the size of the data you want to import.
 

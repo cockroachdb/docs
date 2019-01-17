@@ -101,7 +101,7 @@ There are two exceptions however, made for compatibility with PostgreSQL:
   specifies that `NaN` is different from itself.
 - `NaN` is considered to be smaller than every other value, including
   `-INFINITY`. IEEE 754 specifies that `NaN` does not order with any
-  other value, i.e. `x <= NaN` and `x >= NaN` are both false for every
+  other value, i.e., `x <= NaN` and `x >= NaN` are both false for every
   value of `x` including infinities.
 
 These exceptions exist so that the value `NaN` can be used in `WHERE`
@@ -198,7 +198,7 @@ For example:
 
 #### Typing rule
 
-`IN` requires its right operand to be a homogenous tuple type and its left operand
+`IN` requires its right operand to be a homogeneous tuple type and its left operand
 to match the tuple element type. The result has type `BOOL`.
 
 ### String Pattern Matching
@@ -218,7 +218,7 @@ or `FALSE` otherwise, or the inverted value for the `NOT` variants.
 
 Patterns can contain `_` to match any single
 character, or `%` to match any sequence of zero or more characters.
-`ILIKE` causes the match to be tested case-insentively.
+`ILIKE` causes the match to be tested case-insensitively.
 
 For example:
 

@@ -226,7 +226,7 @@ However, counting the number of distinct values excludes `NULL`s, which is consi
 
 ## NULLs as Other Values
 
-In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calcuations.
+In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calculations.
 
 For example, let's say you want to calculate the average value of column `b` as being the `SUM()` of all numbers in `b` divided by the total number of rows, regardless of whether `b`'s value is `NULL`. In this case, you would use `AVG(IFNULL(b, 0))`, where `IFNULL(b, 0)` substitutes a value of zero (0) for `NULL`s during the calculation.
 
