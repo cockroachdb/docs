@@ -1726,6 +1726,12 @@
             "urls": [
               "/${VERSION}/architecture/storage-layer.html"
             ]
+          },
+          {
+            "title": "Life of a Distributed Transaction",
+            "urls": [
+              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+            ]
           }
         ]
       },
