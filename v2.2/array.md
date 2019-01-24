@@ -26,6 +26,10 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 
 ## Examples
 
+{{site.data.alerts.callout_success}}
+For a complete list of array functions built into CockroachDB, see the [documentation on array functions](functions-and-operators.html#array-functions).
+{{site.data.alerts.end}}
+
 ### Creating an array column by appending square brackets
 
 {% include copy-clipboard.html %}
