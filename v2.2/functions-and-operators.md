@@ -40,6 +40,10 @@ functions but have special evaluation rules:
 
 ## Aggregate functions
 
+{{site.data.alerts.callout_success}}
+For examples showing how to use aggregate functions, see [the `SELECT` clause documentation](select-clause.html#aggregate-functions).
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/sql/aggregates.md %}
 
 ## Window functions
