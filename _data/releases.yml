@@ -1,8 +1,10 @@
 - title: Production Releases
   releases:
+    - date: Jan 22, 2019
+      version: v2.1.4
+      latest: true
     - date: Dec 17, 2018
       version: v2.1.3
-      latest: true
     - date: Dec 10, 2018
       version: v2.1.2
     - date: Nov 19, 2018
