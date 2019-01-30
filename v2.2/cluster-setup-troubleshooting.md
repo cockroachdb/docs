@@ -370,6 +370,22 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
   -   If CGo allocated memory is larger than the configured `cache` size, file an issue.
   -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, file an issue.
 
+### Node crashes because of insufficient memory
+
+Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system killing it suddenly due to low memory. So if you're seeing node crashes where the logs in `logs` directory just end abruptly, it's probably because the node is running out of memory. On most Unix systemsn, you can verify if the cockroach process was killed because the node ran out of memory by running:
+
+~~~ shell
+$ sudo dmesg | grep -iC 3 "cockroach"
+~~~
+
+If the command returns the following message:
+
+~~~ shell
+$ host kernel: Out of Memory: Killed process <process_id> (cockroach).
+~~~
+
+Then you know the node crashed due to insufficient memory. To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](https://www.cockroachlabs.com/docs/stable/start-a-node.html#flags).
+
 ## Decommissioning issues
 
 ### Decommissioning process hangs indefinitely
