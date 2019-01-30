@@ -100,6 +100,22 @@ By default, commands besides `cockroach start` discard messages with the `INFO` 
 
 {% include {{ page.version.version }}/misc/logging-flags.md %}
 
+## Node doesn't log errors
+
+Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system killing it suddenly due to low memory. So if you're seeing node crashes where the logs in `logs` directory just end abruptly, it's probably because the node is running out of memory. To verify if the cockroach process was killed because the node ran out of memory, run:
+
+~~~ shell
+$ sudo dmesg | grep -iC 3 "cockroach"
+~~~
+
+If the command returns the following message:
+
+~~~ shell
+$ host kernel: Out of Memory: Killed process <process_id> (cockroach).
+~~~
+
+Then you know the node crashed due to insufficient memory. <How do they rectify the issue?>
+
 ## See also
 
 - [Troubleshooting Overview](troubleshooting-overview.html)

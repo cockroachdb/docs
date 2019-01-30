@@ -49,7 +49,7 @@ The components of the toolchain might have some incompatibilities that need to b
 
 ### Incompatible CPU
 
-Check if the Cockroach binary is using instructions (i.e. sse4.2) that are incompatible with your CPU.
+If the cockroach process had exit status `132 (SIGILL)`, it attempted to use an instruction that is not supported by your CPU. Non-release builds of CockroachDB may not be able to run on older hardware platforms than the one used to build them. Release builds should run on any x86-64 CPU.
 
 ### Default ports already in use
 
@@ -67,7 +67,7 @@ Networking issues might prevent the node from communicating with itself on its h
 
 See [https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
 
-## Cannot run SQL statements using in-build SQL client
+## Cannot run SQL statements using built-in SQL client
 
 If the Cockroach node appeared to [start ok](https://www.cockroachlabs.com/docs/start-a-local-cluster.html), in a separate terminal run:
 
