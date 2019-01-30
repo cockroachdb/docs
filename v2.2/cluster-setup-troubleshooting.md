@@ -80,12 +80,12 @@ You should see a list of the built-in databases:
 
 ~~~
 +--------------------+
-| Database |
+| Database           |
 +--------------------+
-| crdb_internal |
+| crdb_internal      |
 | information_schema |
-| pg_catalog |
-| system |
+| pg_catalog         |
+| system             |
 +--------------------+
 (4 rows)
 ~~~
