@@ -59,13 +59,13 @@ Other services running on port 26257 or 8080 (CockroachDB's default `--listen-ad
 
 ### Networking issues
 
-Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the `[--listen-addr` flag](https://www.cockroachlabs.com/docs/dev/start-a-node.html#networking).
+Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](https://www.cockroachlabs.com/docs/dev/start-a-node.html#networking).
 
   If you change the host, you will need to include `--host=<specified host>` in each subsequent cockroach command.
 
 ### CockroachDB process hangs when trying to start a node in the background
 
-See [https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
+See [Why is my process hanging when I try to start it in the background](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
 
 ## Cannot run SQL statements using built-in SQL client
 
@@ -228,7 +228,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 If the Admin UI lists live nodes in the **Dead Nodes** table, then you might have a network partition.
 
-**Explanation:** <What is a network partition?>
+**Explanation:** A network partition indicates that the nodes can't communicate with each other in one or both directions because of a configuration problem with the network itself. A symmetric partition is one where the communication is broken in both directions. An asymmetric partition means the connection works in one direction but not the other. An example of a scenario that can cause a network partition is when specific IP addresses or hostnames are whitelisted in the firewall, and then those addresses or names change after tearing down and rebuilding a node.
 
 The effect of a network partition depends on which nodes are partitioned and where the ranges are located. It depends on a large extent on whether localities have been defined.
 
@@ -242,8 +242,6 @@ To identify a network partition:
 2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3.  On the Advanced Debugging page, click **Network Latency**.
 4.  In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition.
-
-<Is there another solution that involves setting localities?>
 
 ## CockroachDB authentication issues
 
@@ -291,18 +289,18 @@ Failed running "sql"
 
 ### Node clocks are not properly synchronized
 
-[https://www.cockroachlabs.com/docs/dev/operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+See [What happens when node clocks are not properly synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
 How can I tell how well node clocks are synchronized?
 
-[https://www.cockroachlabs.com/docs/dev/operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
+See [How can I tell how well node clocks are synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
 
 ## Capacity planning issues
 
 Possible issues:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and / or swapping that will result in poor performance of stability issues.
+-   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance of stability issues.
 -   Running storage at 100% capacity causes writes to fail causing various processes to stop.
 -   Running storage at 100% utilization read/write will causes poor service time.
 -   Running network at 100% utilization causes response between databases and client to be poor.
@@ -335,19 +333,19 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a Cockroach node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
-- [https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
--   [https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--   [https://www.cockroachlabs.com/docs/dev/operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
+- [Why is memory usage increasing despite lack of traffic](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
+- [Why is disk usage increasing despite lack of writes](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
+-  [Can I reduce or disable the storage of timeseries data](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
 
 ### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a Cockroach cluster tracks. See the `--cache` flag in `cockroach start`.
+A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a Cockroach cluster tracks. See the `--cache` flag in [`cockroach start`](start-a-node.html#general).
 
 Cockroach memory usage has 3 components:
 
--   Go allocated memory: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
--   CGo allocated memory: Memory allocated by the C/C++ libraries linked into Cockroach and primarily concerns RocksDB and the RocksDB block cache. This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
--   Overhead (the process resident set size minus Go/CGo allocated memory)
+-   **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
+-   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into Cockroach and primarily concerns RocksDB and the RocksDB block cache. This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
+-   **Overhead**: (the process resident set size minus Go/CGo allocated memory)
 
 If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your Cockroach process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
 
