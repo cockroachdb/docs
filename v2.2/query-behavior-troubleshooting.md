@@ -40,15 +40,15 @@ See [Cancel query](https://www.cockroachlabs.com/docs/v2.1/manage-long-running-q
 
 Throughput is affected by the Disk I/O, CPU usage, and Network latency. Use the Admin UI to check the following metrics:
 
-Disk I/O: [https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#disk-iops-in-progress](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#disk-iops-in-progress)
+Disk I/O: [Disk IOPS in progress](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#disk-iops-in-progress)
 
-CPU usage: [https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#cpu-percent](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#cpu-percent)
+CPU usage: [CPU percent](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#cpu-percent)
 
-Network latency: [https://www.cockroachlabs.com/docs/v2.1/admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile](https://www.cockroachlabs.com/docs/v2.1/admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile)
+Network latency: [Service latency SQL 99th percentile](https://www.cockroachlabs.com/docs/v2.1/admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile)
 
 ## Single hot node: One node has much higher resource usage than other nodes
 
-To determine if you have a hot node in your cluster, access the Admin UI, click Metrics on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
 
 -   Replication dashboard > Average queries per store graph.
 
@@ -64,7 +64,7 @@ To determine if you have a hot node in your cluster, access the Admin UI, click 
 
 -   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior.
 
--   If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
+-   If the **SQL Connections** graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
 -   Check load balancer settings.
 
@@ -76,7 +76,7 @@ To determine if you have a hot node in your cluster, access the Admin UI, click 
 
 Use the [Statements page](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html) to identify the slow [SQL statements](https://www.cockroachlabs.com/docs/stable/sql-statements.html). To view the Statements page, [access the Admin UI](https://www.cockroachlabs.com/docs/stable/admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
 
-Refer to the following documents to improve `INSERT` \ `UPDATE` performance:
+Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 
 -   [Multi-row DML](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#multi-row-dml-best-practices)
 
@@ -84,11 +84,23 @@ Refer to the following documents to improve `INSERT` \ `UPDATE` performance:
 
 ## Per-node queries per second (QPS) is high
 
-If a cluster is not idle, it is useful to monitor the per-node queries per second. Cockroach will automatically distribute load throughout the cluster. If one or more nodes is not performing any queries there is likely something to investigate. See exec_success which and exec_errors which track operations at the KV layer and sql_{select,insert,update,delete}_count which track operations at the SQL layer.
+If a cluster is not idle, it is useful to monitor the per-node queries per second. Cockroach will automatically distribute load throughout the cluster. If one or more nodes is not performing any queries there is likely something to investigate. See `exec_success` and `exec_errors` which track operations at the KV layer and `sql_{select,insert,update,delete}_count` which track operations at the SQL layer.
 
 ## Increasing number of nodes does not improve performance
 
-[https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
+See [Why would increasing the number of nodes not result in more operations per second](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
+
+## `bad connection` & `closed` responses
+
+If you receive a response of `bad connection` or `closed`, this normally indicates that the node you connected to died. You can check this by connecting to another node in the cluster and running [`cockroach node status`](view-node-details.html#show-the-status-of-all-nodes).
+
+Once you find the downed node, you can check its [logs](debug-and-error-logs.html) (stored in `cockroach-data/logs` by default).
+
+Because this kind of behavior is entirely unexpected, you should [file an issue](file-an-issue.html).
+
+## SQL logging
+
+{% include {{ page.version.version }}/faq/sql-query-logging.md %}
 
 ## Something else?
 

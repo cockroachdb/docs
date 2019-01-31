@@ -119,7 +119,7 @@ The zone's replica count is reduced to 1. For more information, see [`ALTER RANG
 
 ### When running a multi-node cluster
 
-When running a multi-node CockroachDB cluster, if you see an error like the one above about replicas failing, some nodes might not be able to talk to each other. For recommended actions, see [Cluster Setup Troubleshooting](cluster-setup-troubleshooting.html#replication-error-in-a-multi-node-cluster).
+When running a multi-node CockroachDB cluster, if you see an error like the one above about replicas failing, some nodes might not be able to talk to each other. For recommended actions, see [Cluster Setup Troubleshooting](cluster-setup-troubleshooting.html#replication-issues).
 
 ## clock synchronization error: this node is more than 500ms away from at least half of the known nodes
 

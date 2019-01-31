@@ -598,4 +598,4 @@ See [the Kubernetes documentation on in-place updates](https://kubernetes.io/doc
 - [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
 - [Production Checklist](recommended-production-settings.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Troubleshooting Performance Issues](query-behavior-troubleshooting.html#performance-issues)
+- [Troubleshooting Performance Issues](query-behavior-troubleshooting.html)
