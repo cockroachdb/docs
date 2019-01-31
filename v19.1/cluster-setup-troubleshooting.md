@@ -93,7 +93,7 @@ You should see a list of the built-in databases:
 If you’re not seeing the output above, check for the following:
 
 -   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](https://www.cockroachlabs.com/docs/dev/common-errors.html#connection-refused).
--   The node crashed. To ascertain if the node crashed, run `ps` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
+-   The node crashed. To ascertain if the node crashed, run `ps` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html), including the logs from your node and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
@@ -238,7 +238,7 @@ A partition is a lot like an outage, where all nodes in a smaller partition are 
 
 To identify a network partition:
 
-1.  Access the Admin UI.
+1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
 2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3.  On the Advanced Debugging page, click **Network Latency**.
 4.  In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition.
@@ -272,7 +272,7 @@ If you’re running a secure cluster, be sure to monitor your certificate expira
 
 To check the certificate expiration date:
 
-1. Access the Admin UI.
+1. [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
 2. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
@@ -307,7 +307,7 @@ Possible issues:
 -   Running storage at 100% utilization read/write will causes poor service time.
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
-**Solution:** Access the Admin UI and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
+**Solution:** [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
 
 First, check adequate capacity was available for the incident for the following components.
 
@@ -353,7 +353,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 **Solution:** To determine Go/CGo allocated memory:
 
-1. Access the Admin UI.
+1. [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
 
 2. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
@@ -367,8 +367,8 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
   CGo Allocated | Memory allocated by the C layer.
   CGo Total | Total memory managed by the C layer.
 
-  -   If CGo allocated memory is larger than the configured `cache` size, file an issue.
-  -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, file an issue.
+  -   If CGo allocated memory is larger than the configured `cache` size, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
+  -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
 
 ### Node crashes because of insufficient memory
 
@@ -419,9 +419,11 @@ An under-replicated range is one in which the number of “up to date” replica
 
 To identify under-replicated/unavailable ranges:
 
-1.  Access the Admin UI.
+1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
 
 2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
+
+3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
 
 **Add nodes to the cluster:**
 
@@ -429,11 +431,12 @@ On the Admin UI’s Cluster Overview page, check if any nodes are down. If the n
 
 If you still under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
-1.  On the Admin UI, click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
+1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui)
+2.  On the Admin UI, click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 2.  On the Advanced Debugging page, click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, file an issue.
+5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
 
 ## Something else?
 
