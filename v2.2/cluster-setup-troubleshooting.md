@@ -93,7 +93,7 @@ You should see a list of the built-in databases:
 If you’re not seeing the output above, check for the following:
 
 -   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](https://www.cockroachlabs.com/docs/dev/common-errors.html#connection-refused).
--   The node crashed. To ascertain if the node crashed, run `ps` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html), including the logs from your node and any errors you received.
+-   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html), including the logs from your node and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
@@ -327,7 +327,7 @@ RAM capacity | Memory Usage | Consistently more than 80%
 CPU capacity | CPU Percent | Consistently less than 20% in idle (ie:80% busy)
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
 
-## Memory issues
+## Storage issues
 
 ### Disks filling up
 
@@ -336,6 +336,8 @@ Like any database system, if you run out of disk space the system will no longer
 - [Why is memory usage increasing despite lack of traffic](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
 -  [Can I reduce or disable the storage of timeseries data](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
+
+## Memory issues
 
 ### Suspected memory leak
 
@@ -390,7 +392,7 @@ Then you know the node crashed due to insufficient memory. To rectify the issue,
 
 **Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.
 
-**Solution:** Confirm that there are enough nodes to take over the replicas from the node you want to remove.
+**Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
 
 ### Decommissioned nodes displayed in UI forever
 
@@ -407,7 +409,7 @@ You can follow the discussion here: [https://github.com/cockroachdb/cockroach/is
 
 An under-replicated range is one in which the number of “up to date” replicas is below the desired replication. An unavailable range is one in which the number of “up to date” replicas is below quorum. When a Cockroach node dies (or is partitioned) the under-replicated range count will briefly spike while the system recovers.
 
-**Explanation:** Cockroach uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. is For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
+**Explanation:** Cockroach uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
 
 -   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges will only have a single replica, but as soon as other nodes are available, they will replicate to them until they've reached their desired replication factor. If a range does not have enough replicas, the range is said to be "under-replicated".
 
