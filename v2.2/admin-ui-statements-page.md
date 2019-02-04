@@ -68,6 +68,13 @@ The **Statement Details** page displays the logical plan as well as the details 
 
 <span class="version-tag">New in v2.2</span> The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](https://www.cockroachlabs.com/docs/stable/sql-grammar.html#preparable_stmt). You can then use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](https://www.cockroachlabs.com/docs/stable/explain.html).
 
+By default, the logical plan for each fingerprint is sampled every 5 minutes. You can use the `sql.metrics.statement_details.plan_collection.period` [cluster setting](cluster-settings.html) to change this time interval. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
+~~~
+
 ### Latency by Phase
 
 The **Latency by Phase** table provides the mean value and one standard deviation of the mean value of the overall service latency as well as latency for each execution phase (parse, plan, run) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as color-coded bar graphs: blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency.
