@@ -9,6 +9,13 @@ The **Advanced Debugging** page of the Admin UI provides links to advanced monit
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
  {{site.data.alerts.end}}
 
+## License and node information
+
+On the right-side of the page, the following information is displayed:
+
+- CockroachDB license type: Helps determine if you have access to Enterprise features.
+- Current node ID: Helps identify the current node when viewing the Admin UI through a load balancer.
+
 ## Reports and Configuration
 
 The following debug reports and configuration views are useful for monitoring and troubleshooting CockroachDB:
