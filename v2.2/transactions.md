@@ -68,6 +68,8 @@ For more details about transaction contention and best practices for avoiding co
 
 Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability). (However, it's possible to mitigate read-write conflicts by performing reads using [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).)
 
+For more details about this situation, see [Transaction retry errors](transaction-retry-errors.html).
+
 There are two cases in which transaction retries occur:
 
 1. [Automatic retries](#automatic-retries), which CockroachDB processes for you.
@@ -269,6 +271,7 @@ For more information about the relationship between these levels, see [this pape
 
 ## See also
 
+- [Transaction retry errors](transaction-retry-errors.html)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 - [`ROLLBACK`](rollback-transaction.html)

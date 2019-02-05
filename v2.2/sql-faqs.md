@@ -38,6 +38,22 @@ For example, this is how you’d use `RETURNING` to return a value auto-generate
 > INSERT INTO users (name) VALUES ('mike') RETURNING id;
 ~~~
 
+## Why does my client receive error 40001 "retry txn"?
+
+CockroachDB has determined that another concurrent transaction was
+conflicting or potentially conflicting, so the current statement or
+transaction could not commit successfully without violating the
+guarantees of the SERIALIZABLE isolation level. This error is more
+likely to occur as contention increases.
+
+For more details, see the next FAQ below, and the description of
+[Transaction retry errors](transaction-retry-errors.html).
+
+The solution is to retry the statement or transaction. When using the
+CockroachDB savepoint-based retry protocol, the statement or
+1transaction is guaranteed to commit eventually. For more information,
+see [Transaction Retries](transactions.html#transaction-retries).
+
 ## What is transaction contention?
 
 Transaction contention occurs when transactions issued from multiple
