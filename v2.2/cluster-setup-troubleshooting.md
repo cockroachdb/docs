@@ -311,8 +311,6 @@ First, check adequate capacity was available for the incident for the following 
 
 Type | Time Series | What to look for
 --------|--------|--------|
-File system storage capacity | ?? | File system at 99%
-Storage IOPS / bandwidth capacity | Disk IOPS in Progress | Consistent non-zero values
 RAM capacity | Memory Usage | Any non-zero value
 CPU capacity | CPU Percent | Consistent non-zero values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Any non-zero value
@@ -321,8 +319,6 @@ Check Near Out of Capacity Conditions:
 
 Type | Time Series | What to look for
 --------|--------|--------|
-Storage bandwidth capacity | ?? | Consistently more than 80% or unusually high values
-Storage IOPS capacity | Disk IOPS in Progress | Consistently more than 1ms or unusually high values
 RAM capacity | Memory Usage | Consistently more than 80%
 CPU capacity | CPU Percent | Consistently less than 20% in idle (ie:80% busy)
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
