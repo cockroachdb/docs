@@ -116,3 +116,4 @@ Field | Description
 - [`RENAME INDEX`](rename-index.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

@@ -7,7 +7,7 @@ toc: true
 CockroachDB comes with built-in load generators for simulating different types of client workloads, printing per-operation statistics and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command](cockroach-commands.html) as described below.
 
 {{site.data.alerts.callout_danger}}
-The `cockroach workload` command is experimental. The interface and output are subject to change.
+The `cockroach workload` command is [experimental](experimental-feature-lifecycle.html). The interface and output are subject to change.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -600,6 +600,7 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for the `workload` command](programmability-of-command-line-interfaces.html#guarantees-per-command)
 - [`cockroach demo`](cockroach-demo.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c.html)

@@ -47,3 +47,4 @@ Parameter | Description
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

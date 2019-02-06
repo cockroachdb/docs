@@ -90,3 +90,4 @@ Time: 30.337ms
 
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

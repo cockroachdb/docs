@@ -701,7 +701,7 @@ specified explicitly using a type annotation. For example:
 
 {{site.data.alerts.callout_success}}To convert the results of a subquery to an array, use <a href="#conversion-of-subquery-results-to-an-array"><code>ARRAY(...)</code></a> instead.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}CockroachDB also recognizes the syntax <code>ARRAY(a, b, c)</code> as an alias for <code>ARRAY[a, b, c]</code>. This is an experimental, CockroachDB-specific SQL extension and may be removed in a later version of CockroachDB.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}CockroachDB also recognizes the syntax <code>ARRAY(a, b, c)</code> as an alias for <code>ARRAY[a, b, c]</code>. This is an <a href="experimental-feature-lifecycle.html">experimental</a>, CockroachDB-specific SQL extension and may be removed in a later version of CockroachDB.{{site.data.alerts.end}}
 
 #### Typing rule
 

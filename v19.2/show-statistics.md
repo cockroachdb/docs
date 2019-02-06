@@ -58,3 +58,4 @@ CREATE STATISTICS
 - [`INSERT`](insert.html)
 - [`IMPORT`](import.html)
 - [SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

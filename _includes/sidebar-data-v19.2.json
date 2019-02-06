@@ -1877,6 +1877,82 @@
             ]
           }
         ]
+      },
+      {
+          "title": "APIs and forward compatibility",
+          "items": [
+			  {
+				  "title": "Interface types",
+				  "urls": [
+					  "/${VERSION}/interface-types.html"
+				  ]
+			  },
+			  {
+				  "title": "Compatibility and programmability guarantees",
+				  "urls": [
+					  "/${VERSION}/compatibility-and-programmability-guarantees.html"
+				  ]
+			  },
+			  {
+			  	  "title": "Experimental feature lifecycle",
+			  	  "urls": [
+			  		  "/${VERSION}/experimental-feature-lifecycle.html"
+			  	  ]
+			  },
+			  {
+				  "title": "Overview of APIs and interfaces",
+				  "urls": [
+					  "/${VERSION}/overview-of-apis-and-interfaces.html"
+				  ]
+			  },
+			  {
+				  "title": "Programmability of command-line interfaces",
+				  "urls": [
+					  "/${VERSION}/programmability-of-command-line-interfaces.html"
+				  ]
+			  },
+			  {
+				  "title": "SQL APIs and compatibility",
+				  "items": [
+					  {
+						  "title": "Client-server protocol",
+						  "urls": [
+							  "/${VERSION}/client-server-protocol.html"
+						  ]
+					  },
+					  {
+						  "title": "SQL functional behavior guarantees",
+						  "urls": [
+							  "/${VERSION}/sql-functional-behavior-guarantees.html"
+						  ]
+					  },
+					  {
+						  "title": "Programmability of session variables",
+						  "urls": [
+							  "/${VERSION}/programmability-of-session-variables.html"
+						  ]
+					  },
+					  {
+						  "title": "Time and memory cost model",
+						  "urls": [
+							  "/${VERSION}/time-and-memory-cost-model.html"
+						  ]
+					  },
+					  {
+						  "title": "Introspection interfaces",
+						  "urls": [
+							  "/${VERSION}/introspection-interfaces.html"
+						  ]
+					  }
+				  ]
+			  },
+			  {
+				  "title": "Programmability of other interfaces",
+				  "urls": [
+					  "/${VERSION}/programmability-of-other-interfaces.html"
+				  ]
+			  }
+		   ]
       }
     ]
   },

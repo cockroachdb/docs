@@ -107,3 +107,4 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
 - [`COMMENT ON`](comment-on.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

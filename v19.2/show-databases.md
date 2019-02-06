@@ -106,3 +106,4 @@ The `postgres` and `defaultdb` databases can be [deleted](drop-database.html) if
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

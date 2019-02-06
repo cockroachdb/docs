@@ -113,13 +113,15 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 Type | Details
 -----|--------
-`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
 `TIME` | Converts to the time portion (HH:MM:SS) of the timestamp
-`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
 `DATE` | --
 `STRING` | --
 
 ## See also
 
 [Data Types](data-types.html)
+
+[experimental]: experimental-feature-lifecycle.html

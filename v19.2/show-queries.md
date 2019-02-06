@@ -210,3 +210,4 @@ To cancel this long-running query, and stop it from consuming resources, you not
 - [`SHOW SESSIONS`](show-sessions.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [Other SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

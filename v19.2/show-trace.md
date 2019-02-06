@@ -476,3 +476,4 @@ In this example, we use session tracing to show an [automatic transaction retry]
 
 - [`EXPLAIN`](explain.html)
 - [`SET (session settings)`](set-vars.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

@@ -115,6 +115,10 @@ non-deterministic order. "Non-deterministic" means that the actual order
 can depend on the logical plan, the order of data on disk, the topology
 of the CockroachDB cluster, and is generally variable over time.
 
+See also the [programmability and forward compatibility guarantees
+related to row
+ordering](sql-functional-behavior-guarantees.html#data-manipulation-language).
+
 ## Sorting using simple column selections
 
 Considering the following table:

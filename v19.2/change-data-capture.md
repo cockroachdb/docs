@@ -753,7 +753,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-**This is an experimental feature.** The interface and output are subject to change.
+**This is an [experimental] feature.** The interface and output are subject to change.
 
 There is an open correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
 {{site.data.alerts.end}}
@@ -869,3 +869,5 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 - [`CANCEL JOB`](cancel-job.html)
 - [Other SQL Statements](sql-statements.html)
 - [Changefeed Dashboard](admin-ui-cdc-dashboard.html)
+
+[experimental]: experimental-feature-lifecycle.html

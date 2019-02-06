@@ -52,3 +52,4 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-centra
 - [Locality](start-a-node.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

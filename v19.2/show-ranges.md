@@ -283,3 +283,4 @@ A `NULL` in the *End Key* column means "end of table".
 - [Partitioning tables](partitioning.html)
 + [Follow-the-Workload](demo-follow-the-workload.html)
 + [Architecture Overview](architecture/overview.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

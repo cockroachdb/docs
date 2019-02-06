@@ -107,6 +107,7 @@ Special syntax cases supported for compatibility:
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for session variables](programmability-of-session-variables.html)
 - [`SET` (session variable)](set-vars.html)
 - [Transactions](transactions.html), including [Priority levels](transactions.html#transaction-priorities)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
@@ -117,3 +118,5 @@ Special syntax cases supported for compatibility:
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)
 - [`SHOW USERS`](show-users.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees
+- [Experimental feature lifecycle](experimental-feature-lifecycle.html)

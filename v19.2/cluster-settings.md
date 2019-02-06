@@ -38,6 +38,7 @@ Before changing a cluster setting, please note the following:
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
+- [Programmability and forward compatibility for cluster settings](programmability-of-other-interfaces.html#cluster-settings)
 - [Diagnostics Reporting](diagnostics-reporting.html)
 - [Start a Node](start-a-node.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)

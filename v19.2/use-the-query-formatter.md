@@ -151,6 +151,7 @@ SELECT (1 * 2) + 3, (1 + 2) * 3
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for the `sqlfmt` command](programmability-of-command-line-interfaces.html#guarantees-per-command)
 - [Sequel Fumpt](https://sqlfum.pt/)
 - [`cockroach demo`](cockroach-demo.html)
 - [`cockroach sql`](use-the-built-in-sql-client.html)

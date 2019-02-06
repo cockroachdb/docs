@@ -81,12 +81,14 @@ String literal implicitly typed as `DATE`:
 
 Type | Details
 -----|--------
-`DECIMAL` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`FLOAT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
+`FLOAT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
 `TIMESTAMP` | Sets the time to 00:00 (midnight) in the resulting timestamp
-`INT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`INT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB [experimental] feature which may be changed without notice.
 `STRING` | ––
 
 ## See also
 
 [Data Types](data-types.html)
+
+[experimental]: experimental-feature-lifecycle.html

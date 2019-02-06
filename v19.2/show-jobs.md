@@ -161,3 +161,4 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 - [`ALTER TABLE`](alter-table.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

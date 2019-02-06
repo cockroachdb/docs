@@ -229,6 +229,7 @@ This command starts a demo cluster with the `movr` database preloaded and then i
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for the `demo` shell](programmability-of-command-line-interfaces.html#guarantees-per-command)
 - [`cockroach sql`](use-the-built-in-sql-client.html)
 - [`cockroach workload`](cockroach-workload.html)
 - [Other Cockroach Commands](cockroach-commands.html)

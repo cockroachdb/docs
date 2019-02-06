@@ -11,7 +11,7 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-**This is an experimental feature and should not be used in production due to correctness issues.** See [Known limitations](#known-limitations) below for more information.
+**This is an [experimental](experimental-feature-lifecycle.html) feature and should not be used in production due to correctness issues.** See [Known limitations](#known-limitations) below for more information.
 {{site.data.alerts.end}}
 
 ## Required privileges

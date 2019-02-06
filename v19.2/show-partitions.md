@@ -163,3 +163,4 @@ Use [`CONFIGURE ZONE`](configure-zone.html) to create [replication zone](configu
 - [Define Table Partitions](partitioning.html)
 - [SQL Statements](sql-statements.html)
 - [Geo-Partitioning](demo-geo-partitioning.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

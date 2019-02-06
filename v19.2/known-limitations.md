@@ -153,7 +153,7 @@ This limitation will be lifted when the cost-based optimizer covers all queries.
 
 ### Conversion of integers to date/time values
 
-CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
+CockroachDB supports an [experimental](experimental-feature-lifecycle.html) extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
 
 This conversion is currently only well defined for a small range of integers, i.e., large absolute values are not properly converted. For example, `(-9223372036854775808):::int64::date` converts to `1970-01-01 00:00:00+00:00`.
 

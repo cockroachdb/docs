@@ -7,7 +7,7 @@ toc: true
 This page lists the experimental features that are available in CockroachDB {{ page.version.version }}.
 
 {{site.data.alerts.callout_danger}}
-**This page describes experimental features.**  Their interfaces and outputs are subject to change, and there may be bugs.
+**This page describes experimental features.**  Their interfaces and outputs are [subject to change](experimental-feature-lifecycle.html), and there may be bugs.
 <br />
 <br />
 If you encounter a bug, please [file an issue](file-an-issue.html).
@@ -157,6 +157,7 @@ The vectorized execution engine has the following limitations:
 
 ## See Also
 
+- [Experimental feature lifecycle](experimental-feature-lifecycle.html)
 - [`SHOW` (session)](show-vars.html)
 - [Functions and Operators](functions-and-operators.html)
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
