@@ -1,6 +1,7 @@
 <table>
 <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
 <tbody>
+<tr><td><code>changefeed.push.enabled</code></td><td>boolean</td><td><code>true</code></td><td>if set, changed are pushed instead of pulled. This requires the kv.rangefeed.enabled setting.</td></tr>
 <tr><td><code>cloudstorage.gs.default.key</code></td><td>string</td><td><code></code></td><td>if set, JSON key to use during Google Cloud Storage operations</td></tr>
 <tr><td><code>cloudstorage.http.custom_ca</code></td><td>string</td><td><code></code></td><td>custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage</td></tr>
 <tr><td><code>cloudstorage.timeout</code></td><td>duration</td><td><code>10m0s</code></td><td>the timeout for import/export storage operations</td></tr>
@@ -42,6 +43,8 @@
 <tr><td><code>kv.transaction.write_pipelining_enabled</code></td><td>boolean</td><td><code>true</code></td><td>if enabled, transactional writes are pipelined through Raft consensus</td></tr>
 <tr><td><code>kv.transaction.write_pipelining_max_batch_size</code></td><td>integer</td><td><code>128</code></td><td>if non-zero, defines that maximum size batch that will be pipelined through Raft consensus</td></tr>
 <tr><td><code>rocksdb.min_wal_sync_interval</code></td><td>duration</td><td><code>0s</code></td><td>minimum duration between syncs of the RocksDB WAL</td></tr>
+<tr><td><code>schemachanger.bulk_index_backfill.batch_size</code></td><td>integer</td><td><code>5000000</code></td><td>number of rows to process at a time during bulk index backfill</td></tr>
+<tr><td><code>schemachanger.bulk_index_backfill.enabled</code></td><td>boolean</td><td><code>false</code></td><td>backfill indexes in bulk via addsstable</td></tr>
 <tr><td><code>schemachanger.lease.duration</code></td><td>duration</td><td><code>5m0s</code></td><td>the duration of a schema change lease</td></tr>
 <tr><td><code>schemachanger.lease.renew_fraction</code></td><td>float</td><td><code>0.5</code></td><td>the fraction of schemachanger.lease_duration remaining to trigger a renew of the lease</td></tr>
 <tr><td><code>server.clock.forward_jump_check_enabled</code></td><td>boolean</td><td><code>false</code></td><td>if enabled, forward clock jumps > max_offset/2 will cause a panic.</td></tr>
@@ -60,12 +63,10 @@
 <tr><td><code>server.time_until_store_dead</code></td><td>duration</td><td><code>5m0s</code></td><td>the time after which if there is no new gossiped information about a store, it is considered dead</td></tr>
 <tr><td><code>server.web_session_timeout</code></td><td>duration</td><td><code>168h0m0s</code></td><td>the duration that a newly created web session will be valid</td></tr>
 <tr><td><code>sql.defaults.default_int_size</code></td><td>integer</td><td><code>8</code></td><td>the size, in bytes, of an INT type</td></tr>
-<tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>1</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2, 2.0-off = 3, 2.0-auto = 4]</td></tr>
-<tr><td><code>sql.defaults.experimental_automatic_statistics</code></td><td>boolean</td><td><code>false</code></td><td>default experimental automatic statistics mode</td></tr>
-<tr><td><code>sql.defaults.experimental_optimizer_mutations</code></td><td>boolean</td><td><code>false</code></td><td>default experimental_optimizer_mutations mode</td></tr>
+<tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>1</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2]</td></tr>
 <tr><td><code>sql.defaults.experimental_vectorize</code></td><td>enumeration</td><td><code>0</code></td><td>default experimental_vectorize mode [off = 0, on = 1, always = 2]</td></tr>
 <tr><td><code>sql.defaults.optimizer</code></td><td>enumeration</td><td><code>1</code></td><td>default cost-based optimizer mode [off = 0, on = 1, local = 2]</td></tr>
-<tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
+<tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can be overridden on an individual connection with the 'results_buffer_size' parameter. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
 <tr><td><code>sql.defaults.serial_normalization</code></td><td>enumeration</td><td><code>0</code></td><td>default handling of SERIAL in table definitions [rowid = 0, virtual_sequence = 1, sql_sequence = 2]</td></tr>
 <tr><td><code>sql.distsql.distribute_index_joins</code></td><td>boolean</td><td><code>true</code></td><td>if set, for index joins we instantiate a join reader on every node that has a stream; if not set, we use a single join reader</td></tr>
 <tr><td><code>sql.distsql.flow_stream_timeout</code></td><td>duration</td><td><code>10s</code></td><td>amount of time incoming streams wait for a flow to be set up before erroring out</td></tr>
@@ -77,10 +78,12 @@
 <tr><td><code>sql.distsql.temp_storage.workmem</code></td><td>byte size</td><td><code>64 MiB</code></td><td>maximum amount of memory in bytes a processor can use before falling back to temp storage</td></tr>
 <tr><td><code>sql.metrics.statement_details.dump_to_logs</code></td><td>boolean</td><td><code>false</code></td><td>dump collected statement statistics to node logs when periodically cleared</td></tr>
 <tr><td><code>sql.metrics.statement_details.enabled</code></td><td>boolean</td><td><code>true</code></td><td>collect per-statement query statistics</td></tr>
-<tr><td><code>sql.metrics.statement_details.sample_logical_plans</code></td><td>boolean</td><td><code>true</code></td><td>periodically save a logical plan for each fingerprint</td></tr>
+<tr><td><code>sql.metrics.statement_details.plan_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>periodically save a logical plan for each fingerprint</td></tr>
+<tr><td><code>sql.metrics.statement_details.plan_collection.period</code></td><td>duration</td><td><code>5m0s</code></td><td>the time until a new logical plan is collected</td></tr>
 <tr><td><code>sql.metrics.statement_details.threshold</code></td><td>duration</td><td><code>0s</code></td><td>minimum execution time to cause statistics to be collected</td></tr>
 <tr><td><code>sql.parallel_scans.enabled</code></td><td>boolean</td><td><code>true</code></td><td>parallelizes scanning different ranges when the maximum result size can be deduced</td></tr>
-<tr><td><code>sql.query_cache.enabled</code></td><td>boolean</td><td><code>false</code></td><td>enable the query cache</td></tr>
+<tr><td><code>sql.query_cache.enabled</code></td><td>boolean</td><td><code>true</code></td><td>enable the query cache</td></tr>
+<tr><td><code>sql.stats.experimental_automatic_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>experimental automatic statistics collection mode</td></tr>
 <tr><td><code>sql.tablecache.lease.refresh_limit</code></td><td>integer</td><td><code>50</code></td><td>maximum number of tables to periodically refresh leases for</td></tr>
 <tr><td><code>sql.trace.log_statement_execute</code></td><td>boolean</td><td><code>false</code></td><td>set to true to enable logging of executed statements</td></tr>
 <tr><td><code>sql.trace.session_eventlog.enabled</code></td><td>boolean</td><td><code>false</code></td><td>set to true to enable session tracing</td></tr>
@@ -92,6 +95,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set.</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1-4</code></td><td>set the active cluster version in the format '<major>.<minor>'.</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1-5</code></td><td>set the active cluster version in the format '<major>.<minor>'.</td></tr>
 </tbody>
 </table>
