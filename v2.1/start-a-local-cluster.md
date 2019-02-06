@@ -53,7 +53,7 @@ nodeID:              1
 This command starts a node in insecure mode, accepting most [`cockroach start`](start-a-node.html) defaults.
 
 - The `--insecure` flag makes communication unencrypted.
-- Since this is a purely local cluster, `--listen-addr=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
+- Since this is a purely local cluster, `--listen-addr=localhost` tells the node to listen only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 - Node data is stored in the `cockroach-data` directory.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 
@@ -249,7 +249,7 @@ Restart the first node from the parent directory of `cockroach-data/`:
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=localhost:26257
+--listen-addr=localhost
 ~~~
 
 {{site.data.alerts.callout_info}}
