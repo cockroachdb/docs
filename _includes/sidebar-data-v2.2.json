@@ -1681,6 +1681,12 @@
             ]
           }
         ]
+      },
+      {
+        "title": "API Stability",
+        "urls": [
+            "/${VERSION}/api-stability.html"
+        ]
       }
     ]
   },
