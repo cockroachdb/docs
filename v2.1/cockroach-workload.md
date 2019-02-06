@@ -371,7 +371,7 @@ $ cockroach start \
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload run bank \
+    $ cockroach workload run tpcc \
     --duration=10m \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
