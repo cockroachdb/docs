@@ -249,7 +249,7 @@ Restart the first node from the parent directory of `cockroach-data/`:
 ~~~ shell
 $ cockroach start \
 --insecure \
---host=localhost
+--listen-addr=localhost
 ~~~
 
 {{site.data.alerts.callout_info}}

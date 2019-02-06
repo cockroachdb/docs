@@ -90,7 +90,7 @@ Exit the SQL shell:
 
 ## Step 4. Run a sample workload
 
-CockroachDB comes with [built-in load generators](cockroach-workload.html) for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `tpcc` workload to simulates transaction processing using a rich schema of multiple tables.
+CockroachDB comes with [built-in load generators](cockroach-workload.html) for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. In this tutorial, you'll use the `tpcc` workload to simulate transaction processing using a rich schema of multiple tables.
 
 1. Load the initial schema and data:
 
