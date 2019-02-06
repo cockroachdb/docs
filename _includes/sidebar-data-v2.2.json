@@ -1558,6 +1558,12 @@
             ]
           },
           {
+            "title": "<code>cockroach debug merge-logs</code>",
+            "urls": [
+              "/${VERSION}/debug-merge-logs.html"
+            ]
+          },
+          {
             "title": "<code>cockroach gen</code>",
             "urls": [
               "/${VERSION}/generate-cockroachdb-resources.html"
