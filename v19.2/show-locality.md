@@ -86,3 +86,4 @@ For a more extensive example, see [Create a table with node locality information
 - [Locality](cockroach-start.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

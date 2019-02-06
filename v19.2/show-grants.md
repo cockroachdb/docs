@@ -257,3 +257,4 @@ SHOW GRANTS ON ROLE FOR carl;
 - [Manage Users](authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

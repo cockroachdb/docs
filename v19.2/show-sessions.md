@@ -194,3 +194,4 @@ Alternatively, if you know that you want to cancel the query based on the detail
 - [`SHOW QUERIES`](show-queries.html)
 - [`CANCEL QUERY`](cancel-query.html)
 - [Other SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

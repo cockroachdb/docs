@@ -185,4 +185,5 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 ## See also
 
+- [Programmability and forward compatibility of HTTP status endpoints](programmability-of-other-interfaces.html#http-status-endpoints)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
