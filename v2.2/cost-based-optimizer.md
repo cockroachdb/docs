@@ -143,6 +143,25 @@ The query plan cache is still under development and has the following limitation
 - If you use the query plan cache in conjunction with table statistics, cached plans do not yet get invalidated when new statistics are created.
 {{site.data.alerts.end}}
 
+## Join reordering
+
+<span class="version-tag">New in v2.2</span>: The cost-based optimizer will explore additional join orderings in an attempt to find the lowest-cost execution plan for a query involving multiple joins. Specifically, it applies the rule of join associativity to generate even more possible join orderings to choose from, which can lead to significantly better performance in some cases.
+
+Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used on queries with 4 or fewer joins by default, as determined by the `experimental_reorder_joins_limit` [session variable](set-vars.html).
+
+To change the number of joins that will be reordered by the optimizer, set the variable as shown below.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET experimental_reorder_joins_limit = 8;
+~~~
+
+{{site.data.alerts.callout_danger}}
+We strongly recommend not setting this value higher than 12 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
+{{site.data.alerts.end}}
+
+For more information about the difficulty of selecting an optimal join ordering (spoiler: it's NP-complete), see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+
 ## How to turn the optimizer off
 
 With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
