@@ -74,16 +74,17 @@ pq: unsupported statement: *tree.Insert
 The cost-based optimizer supports most SQL statements. Specifically, the following types of statements are supported:
 
 - [`CREATE TABLE`](create-table.html)
-- [`INSERT`](insert.html)
+- [`UPDATE`](update.html)
+- [`INSERT`](insert.html), including:
+  - `INSERT .. ON CONFLICT DO NOTHING`
+  - `INSERT .. ON CONFLICT .. DO UPDATE`
+- [`UPSERT`](upsert.html)
+- [`DELETE`](delete.html)
+- `FILTER` clauses on [aggregate functions](functions-and-operators.html#aggregate-functions)
 - [Sequences](create-sequence.html)
 - [Views](views.html)
 
-The following additional statements are supported by the optimizer if you set the `experimental_optimizer_updates` [cluster setting](set-cluster-setting.html) to `true`:
-
-- [`UPDATE`](update.html)
-- [`UPSERT`](upsert.html)
-
-For instructions showing how to check whether a particular query will be run with the cost-based optimizer, see the [View query plan](#view-query-plan) section.
+This is not meant to be an exhaustive list. To check whether a particular query will be run with the cost-based optimizer, follow the instructions in the [View query plan](#view-query-plan) section.
 
 ## Table statistics
 

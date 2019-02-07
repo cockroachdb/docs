@@ -62,7 +62,6 @@
 <tr><td><code>sql.defaults.default_int_size</code></td><td>integer</td><td><code>8</code></td><td>the size, in bytes, of an INT type</td></tr>
 <tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>1</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2, 2.0-off = 3, 2.0-auto = 4]</td></tr>
 <tr><td><code>sql.defaults.experimental_automatic_statistics</code></td><td>boolean</td><td><code>false</code></td><td>default experimental automatic statistics mode</td></tr>
-<tr><td><code>sql.defaults.experimental_optimizer_mutations</code></td><td>boolean</td><td><code>false</code></td><td>default experimental_optimizer_mutations mode</td></tr>
 <tr><td><code>sql.defaults.experimental_vectorize</code></td><td>enumeration</td><td><code>0</code></td><td>default experimental_vectorize mode [off = 0, on = 1, always = 2]</td></tr>
 <tr><td><code>sql.defaults.optimizer</code></td><td>enumeration</td><td><code>1</code></td><td>default cost-based optimizer mode [off = 0, on = 1, local = 2]</td></tr>
 <tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
@@ -92,6 +91,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set.</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1-4</code></td><td>set the active cluster version in the format '<major>.<minor>'.</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1-4</code></td><td>set the active cluster version in the format '{major}.{minor}'.</td></tr>
 </tbody>
 </table>
