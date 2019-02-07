@@ -15,7 +15,7 @@ For more information, see [Change Data Capture](change-data-capture.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html). There will be a core version in a future version.
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [CHANGEFEED FOR](changefeed-for.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
