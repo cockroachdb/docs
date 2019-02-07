@@ -1,5 +1,5 @@
 ---
-title: Enterprise Licensing
+title: Enterprise Features
 summary: Request and set trial and enterprise license keys for CockroachDB
 toc: true
 ---
