@@ -114,6 +114,20 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
+## Enable rangefeeds to reduce latency
+
+<span class="version-tag">New in v2.2:</span> By default, changefeeds collect changes by periodically sending a request for any recent changes. However, you now have the option to connect a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes as well as transaction restarts on tables being watched by a changefeed for some workloads.
+
+Rangefeeds are disabled by default because they currently have a small performance cost, whether or not the rangefeed is being using in a changefeed. To enable rangefeeds, set the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html) to `true`.
+
+Rangefeeds also require the `changefeed.push.enabled` [cluster setting](cluster-settings.html) to be `true`. This is the default, so no change is necessary to enable rangefeeds. To revert back to the previous behavior, set this setting to `false`. Note that this setting will be removed in a future release, so if you have to use the fallback, please [file a Github issue](file-an-issue.html).
+
+The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used when rangefeeds are enabled. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+
+{{site.data.alerts.callout_info}}
+To enable rangefeeds for an existing changefeed, you must also restart the changefeed. For an enterprise changefeed, [pause](#pause) and [resume](#resume) the changefeed. For a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
+{{site.data.alerts.end}}
+
 ## Configure a changefeed
 
 ### Create
