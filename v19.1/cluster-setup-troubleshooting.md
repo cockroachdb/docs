@@ -24,7 +24,7 @@ If the process exits prematurely, check for the following:
 
 ### An existing storage directory
 
-When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit cockroach, and then tried to start another cluster using the same directory. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot start.
+When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit `cockroach`, and then tried to start another cluster using the same directory. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot start.
 
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
@@ -53,23 +53,23 @@ If the cockroach process had exit status `132 (SIGILL)`, it attempted to use an 
 
 ### Default ports already in use
 
-Other services running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the `[--listen-addr` and `--http-addr](https://www.cockroachlabs.com/docs/dev/start-a-node.html#networking)` flags.
+Other services running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](start-a-node.html#networking).
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
 ### Networking issues
 
-Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](https://www.cockroachlabs.com/docs/dev/start-a-node.html#networking).
+Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](start-a-node.html#networking).
 
   If you change the host, you will need to include `--host=<specified host>` in each subsequent cockroach command.
 
 ### CockroachDB process hangs when trying to start a node in the background
 
-See [Why is my process hanging when I try to start it in the background](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
+See [Why is my process hanging when I try to start it in the background](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
 
 ## Cannot run SQL statements using built-in SQL client
 
-If the Cockroach node appeared to [start ok](https://www.cockroachlabs.com/docs/start-a-local-cluster.html), in a separate terminal run:
+If the Cockroach node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -92,8 +92,8 @@ You should see a list of the built-in databases:
 
 If you’re not seeing the output above, check for the following:
 
--   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](https://www.cockroachlabs.com/docs/dev/common-errors.html#connection-refused).
--   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html), including the logs from your node and any errors you received.
+-   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
+-   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](file-an-issue.html), including the logs from your node and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
@@ -190,14 +190,14 @@ W180815 17:21:00.316845 237 gossip/client.go:123 [n1] failed to start gossip cli
 
 ## Client connection issues
 
-If a client cannot connect to the cluster, check basic network connectivity (ping), port connectivity (telnet), and certificate validity.
+If a client cannot connect to the cluster, check basic network connectivity (`ping`), port connectivity (`telnet`), and certificate validity.
 
 ### Networking issues
 
 Most networking-related issues are caused by one of two issues:
 
 -   Firewall rules, which require your network administrator to investigate
--   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](https://www.cockroachlabs.com/docs/dev/start-a-node.html#networking)
+-   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](start-a-node.html#networking)
 
 
 **Solution:**
@@ -289,15 +289,15 @@ Failed running "sql"
 
 ### Node clocks are not properly synchronized
 
-See [What happens when node clocks are not properly synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+See [What happens when node clocks are not properly synchronized](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
 How can I tell how well node clocks are synchronized?
 
-See [How can I tell how well node clocks are synchronized](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
+See [How can I tell how well node clocks are synchronized](operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
 
 ## Capacity planning issues
 
-Possible issues:
+Following are some of the possible issues you might have while planning capacity for your cluster:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
 -   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance of stability issues.
@@ -329,9 +329,9 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a Cockroach node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
-- [Why is memory usage increasing despite lack of traffic](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
-- [Why is disk usage increasing despite lack of writes](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--  [Can I reduce or disable the storage of timeseries data](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
+- [Why is memory usage increasing despite lack of traffic](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
+- [Why is disk usage increasing despite lack of writes](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
+-  [Can I reduce or disable the storage of timeseries data](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
 
 ## Memory issues
 
@@ -363,8 +363,8 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
   CGo Allocated | Memory allocated by the C layer.
   CGo Total | Total memory managed by the C layer.
 
-  -   If CGo allocated memory is larger than the configured `cache` size, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
-  -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
+  -   If CGo allocated memory is larger than the configured `cache` size, [file an issue](file-an-issue.html).
+  -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, [file an issue](file-an-issue.html).
 
 ### Node crashes because of insufficient memory
 
@@ -380,7 +380,7 @@ If the command returns the following message:
 $ host kernel: Out of Memory: Killed process <process_id> (cockroach).
 ~~~
 
-Then you know the node crashed due to insufficient memory. To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](https://www.cockroachlabs.com/docs/stable/start-a-node.html#flags).
+Then you know the node crashed due to insufficient memory. To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](start-a-node.html#flags).
 
 ## Decommissioning issues
 
@@ -419,7 +419,7 @@ To identify under-replicated/unavailable ranges:
 
 2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html).
+3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
 
 **Add nodes to the cluster:**
 
@@ -432,7 +432,7 @@ If you still under-replicated/unavailable ranges on the Cluster Overview page, i
 2.  On the Advanced Debugging page, click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](https://www.cockroachlabs.com/docs/dev/file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
+5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
 
 ## Something else?
 

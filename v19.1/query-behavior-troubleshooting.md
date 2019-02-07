@@ -10,45 +10,45 @@ If a SQL statement returns an unexpected result or takes longer than expected to
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
--  [Table scan best practices](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#table-scans-best-practices)
+-  [Table scan best practices](performance-best-practices-overview.html#table-scans-best-practices)
 
--  [Indexes best practices](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#indexes-best-practices)
+-  [Indexes best practices](performance-best-practices-overview.html#indexes-best-practices)
 
 ## Query is always slow
 
-To detect whether your cluster has slow queries, check the [service latency graph](https://www.cockroachlabs.com/docs/stable/admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#cpu-percent). If the graphs show latency spikes or CPU usage spikes, it might be an indication of slow queries in your cluster.
+To detect whether your cluster has slow queries, check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent). If the graphs show latency spikes or CPU usage spikes, it might indicate slow queries in your cluster.
 
-Once you determine that you do have slow queries in your cluster, use the [Statements page](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html) to identify the high latency [SQL statements](https://www.cockroachlabs.com/docs/stable/sql-statements.html). To view the Statements page, [access the Admin UI](https://www.cockroachlabs.com/docs/stable/admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
+Once you determine that you do have slow queries in your cluster, use the [Statements page](admin-ui-statements-page.html) to identify the high latency [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
 
-You can then use the [Statements Details](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements. You can also use [`EXPLAIN ANALYZE`](https://www.cockroachlabs.com/docs/stable/explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
+You can then use the [Statements Details](admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements. You can also use [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
-If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, contact us.
+If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, [contact us](file-an-issue.html).
 
 ## Query is sometimes slow
 
 If the query performance is irregular:
 
-1.  Run [`SHOW TRACE`](https://www.cockroachlabs.com/docs/stable/show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
+1.  Run [`SHOW TRACE`](show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
 
-2.  Contact us to analyze the outputs of the `SHOW TRACE` command.
+2.  [Contact us](file-an-issue.html) to analyze the outputs of the `SHOW TRACE` command.
 
 ## Cancelling running queries
 
-See [Cancel query](https://www.cockroachlabs.com/docs/v2.1/manage-long-running-queries.html#cancel-long-running-queries)
+See [Cancel query](manage-long-running-queries.html#cancel-long-running-queries)
 
 ## Low throughput
 
-Throughput is affected by the Disk I/O, CPU usage, and Network latency. Use the Admin UI to check the following metrics:
+Throughput is affected by the disk I/O, CPU usage, and network latency. Use the Admin UI to check the following metrics:
 
-Disk I/O: [Disk IOPS in progress](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](admin-ui-hardware-dashboard.html#disk-iops-in-progress)
 
-CPU usage: [CPU percent](https://www.cockroachlabs.com/docs/v2.1/admin-ui-hardware-dashboard.html#cpu-percent)
+- CPU usage: [CPU percent](admin-ui-hardware-dashboard.html#cpu-percent)
 
-Network latency: [Service latency SQL 99th percentile](https://www.cockroachlabs.com/docs/v2.1/admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile)
+- Network latency: [Service latency SQL 99th percentile](admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile)
 
-## Single hot node: One node has much higher resource usage than other nodes
+## Single hot node
 
-To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
 
 -   Replication dashboard > Average queries per store graph.
 
@@ -68,19 +68,19 @@ To determine if you have a hot node in your cluster, [access the Admin UI](admin
 
 -   Check load balancer settings.
 
--   Check for [transaction contention](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+-   Check for [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
--   Use `UUID` instead of `SERIAL`. See [UUID Best practices](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#unique-id-best-practices) for more information.
+-   Use `UUID` instead of `SERIAL` to distribute the . See [UUID Best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 
 ## INSERT/UPDATE statements are slow
 
-Use the [Statements page](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html) to identify the slow [SQL statements](https://www.cockroachlabs.com/docs/stable/sql-statements.html). To view the Statements page, [access the Admin UI](https://www.cockroachlabs.com/docs/stable/admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
+Use the [Statements page](admin-ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 
--   [Multi-row DML](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#multi-row-dml-best-practices)
+-   [Multi-row DML](performance-best-practices-overview.html#multi-row-dml-best-practices)
 
--   [Bulk-Insert best practices](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html#bulk-insert-best-practices)
+-   [Bulk-Insert best practices](performance-best-practices-overview.html#bulk-insert-best-practices)
 
 ## Per-node queries per second (QPS) is high
 
@@ -88,7 +88,7 @@ If a cluster is not idle, it is useful to monitor the per-node queries per secon
 
 ## Increasing number of nodes does not improve performance
 
-See [Why would increasing the number of nodes not result in more operations per second](https://www.cockroachlabs.com/docs/dev/operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
+See [Why would increasing the number of nodes not result in more operations per second](operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
 
 ## `bad connection` & `closed` responses
 
