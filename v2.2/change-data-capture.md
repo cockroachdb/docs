@@ -125,7 +125,7 @@ Rangefeeds are disabled by default because they currently have a small performan
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used when rangefeeds are enabled. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
 {{site.data.alerts.callout_info}}
-Changes to `changefeed.push.enabled` do not take effect until a changefeed is restarted. To restart an enterprise changefeed, pause, unpause, or kill a node. To restart a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
+Changes to `changefeed.push.enabled` do not take effect until a changefeed is restarted. To restart an enterprise changefeed, [pause](#pause) and [resume](#resume). To restart a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
 {{site.data.alerts.end}}
 
 ## Configure a changefeed
