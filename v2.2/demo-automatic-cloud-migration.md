@@ -6,19 +6,16 @@ toc: true
 
 CockroachDB's flexible [replication controls](configure-replication-zones.html) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page walks you through a local simulation of the process.
 
-
 ## Watch the demo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cCJkgZy6s2Q" frameborder="0" allowfullscreen></iframe>
 
 ## Step 1. Install prerequisites
 
-In this tutorial, you'll use CockroachDB, the HAProxy load balancer, and CockroachDB's version of the YCSB load generator, which requires Go. Before you begin, make sure these applications are installed:
+In this tutorial, you'll use CockroachDB, its built-in `ycsb` workload, and the HAProxy load balancer. Before you begin, make sure these applications are installed:
 
 - Install the latest version of [CockroachDB](install-cockroachdb.html).
 - Install [HAProxy](http://www.haproxy.org/). If you're on a Mac and using Homebrew, use `brew install haproxy`.
-- Install [Go](https://golang.org/doc/install) version 1.9 or higher. If you're on a Mac and using Homebrew, use `brew install go`. You can check your local version by running `go version`.
-- Install the [CockroachDB version of YCSB](https://github.com/cockroachdb/loadgen/tree/master/ycsb): `go get github.com/cockroachdb/loadgen/ycsb`
 
 Also, to keep track of the data files and logs for your cluster, you may want to create a new directory (e.g., `mkdir cloud-migration`) and start all your nodes in that directory.
 
@@ -125,18 +122,47 @@ Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 $ haproxy -f haproxy.cfg
 ~~~
 
-## Step 5. Start a load generator
+## Step 5. Run a sample workload
 
-Now that you have a load balancer running in front of your cluster, let's use the YCSB load generator that you installed earlier to simulate multiple client connections, each performing mixed read/write workloads.
+Now that you have a load balancer running in front of your cluster, lets use the YCSB workload built into CockroachDB to simulate multiple client connections, each performing mixed read/write workloads.
 
-In a new terminal, start `ycsb`, pointing it at HAProxy's port:
+1. In a new terminal, load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ $HOME/go/bin/ycsb -duration 20m -tolerate-errors -concurrency 10 -max-rate 1000 'postgresql://root@localhost:26000?sslmode=disable'
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init ycsb \
+    'postgresql://root@localhost:26000?sslmode=disable'
+    ~~~
 
-This command initiates 10 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
+2. Run the `ycsb` workload, pointing it at HAProxy's port:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run ycsb \
+    --duration=20m \
+    --concurrency=10 \
+    --max-rate=1000
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    This command initiates 10 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
+
+    You'll soon see per-operation statistics print to standard output every second:
+
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+          1s        0         9258.1         9666.6      0.7      1.3      2.0      8.9 read
+          1s        0          470.1          490.9      1.7      2.9      4.1      5.0 update
+          2s        0        10244.6         9955.6      0.7      1.2      2.0      6.6 read
+          2s        0          559.0          525.0      1.6      3.1      6.0      7.3 update
+          3s        0         9870.8         9927.4      0.7      1.4      2.4     10.0 read
+          3s        0          500.0          516.6      1.6      4.2      7.9     15.2 update
+          4s        0         9847.2         9907.3      0.7      1.4      2.4     23.1 read
+          4s        0          506.8          514.2      1.6      3.7      7.6     17.8 update
+          5s        0        10084.4         9942.6      0.7      1.3      2.1      7.1 read
+          5s        0          537.2          518.8      1.5      3.5     10.0     15.2 update
+    ...
+    ~~~
 
 ## Step 6. Watch data balance across all 3 nodes
 
