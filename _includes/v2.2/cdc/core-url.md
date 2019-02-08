@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+Core changefeeds require a dedicated connection for two reasons. First, CockroachDB improves performance by buffering results before returning them to a client. However, this is not desirable for changefeeds, so the `results_buffer_size` connection string parameter is used to disable it. Second, a core changefeed can only be closed by [`CANCEL QUERY`](cancel-query.html) or by closing the connection (**CTRL+C**). Combined, this means that the connection should be dialed directly, instead of using one from a connection pool (which is what most client drivers do by default).
+{{site.data.alerts.end}}
