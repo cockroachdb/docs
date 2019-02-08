@@ -20,7 +20,7 @@ Make sure you have already completed [Cluster Startup and Scaling](cluster-start
 
 ## Step 1. Set up load balancing
 
-In this module, you'll run a load generator to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to spread requests evenly across nodes. You'll use the open-source [HAProxy](http://www.haproxy.org/) load balancer to do that here.
+In this module, you'll run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to spread requests evenly across nodes. You'll use the open-source [HAProxy](http://www.haproxy.org/) load balancer to do that here.
 
 1. In a new terminal, install HAProxy. If you're on a Mac and use Homebrew, run:
 
@@ -91,54 +91,37 @@ In this module, you'll run a load generator to simulate multiple client connecti
     $ haproxy -f haproxy.cfg
     ~~~
 
-## Step 2. Start a load generator
+## Step 2. Run a sample workload
 
-Now that you have a load balancer running in front of your cluster, download and start a load generator to simulate client traffic.
+Now that you have a load balancer running in front of your cluster, use the YCSB workload built into CockroachDB to simulate multiple client connections, each performing mixed read/write workloads.
 
-1. In a new terminal, download the archive for the CockroachDB version of YCSB, and extract the binary:
-
-    <div class="filters clearfix">
-      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
-      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
-    </div>
-    <p></p>
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ curl {{site.url}}/docs/v2.2/training/resources/crdb-ycsb-mac.tar.gz \
-    | tar -xJ
-    ~~~
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget -qO- {{site.url}}/docs/v2.2/training/resources/crdb-ycsb-linux.tar.gz \
-    | tar xvz
-    ~~~
-    </div>
-
-2. Start `ycsb`, pointing it at HAProxy's port:
+1. In a new terminal, load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./ycsb \
-    -duration 20m \
-    -tolerate-errors \
-    -concurrency 3 \
-    -splits 50 \
-    -max-rate 100 \
+    $ cockroach workload init ycsb \
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
-    This command initiates 3 concurrent client workloads for 20 minutes, but limits the benchmark to just 100 operations per second (since you're running everything on a single machine).
+2. Run the `ycsb` workload, pointing it at HAProxy's port:
 
-    Also, the `-splits` flag tells the load generator to manually split ranges a number of times. This is not something you'd normally do, but for the purpose of this training, it makes it easier to visualize the movement of data in the cluster.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run ycsb \
+    --duration=20m \
+    --concurrency=3 \
+    --max-rate=1000 \
+    --splits=50 \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    This command initiates 3 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
+
+    Also, the `--splits` flag tells the workload to manually split ranges a number of times. This is not something you'd normally do, but for the purpose of this training, it makes it easier to visualize the movement of data in the cluster.
 
 ## Step 3. Check the workload
 
-Initially, the load generator creates a new database called `ycsb`, creates a `usertable` table in that database, and inserts a bunch of rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
+Initially, the workload creates a new database called `ycsb`, creates a `usertable` table in that database, and inserts a bunch of rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
 
 1. To check the SQL queries getting executed, go back to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, click **Metrics** on the left, and hover over the **SQL Queries** graph at the top:
 
