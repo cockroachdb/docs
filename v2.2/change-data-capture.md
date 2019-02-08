@@ -6,14 +6,6 @@ toc: true
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
-{{site.data.alerts.callout_danger}}
-**This feature is under active development** and only works for a [targeted use case](#usage-examples). Please [file a Github issue](file-an-issue.html) if you have feedback on the roadmap.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-CDC is an [enterprise-only](enterprise-licensing.html). There will be a core version in a future release.
-{{site.data.alerts.end}}
-
 ## What is change data capture?
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
@@ -114,7 +106,18 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-## Configure a changefeed
+## Create a core changefeed
+
+<span class="version-tag">New in v2.2:</span> To create a core changefeed:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPERIMENTAL CHANGEFEED FOR TABLE name;
+~~~
+
+For more information, see [CHANGEFEED FOR](changefeed-for.html).
+
+## Configure a changefeed (Enterprise)
 
 ### Create
 
@@ -160,7 +163,11 @@ To cancel a changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
-## Monitor a changefeed
+### Monitor a changefeed
+
+{{site.data.alerts.callout_info}}
+Monitoring is only available for enterprise changefeeds.
+{{site.data.alerts.end}}
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
@@ -184,7 +191,176 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ## Usage examples
 
+### Create a core changefeed
+
+<span class="version-tag">New in v2.2:</span> In this example, you'll set up a core changefeed for a single-node cluster.
+
+1. In a terminal window, start `cockroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure --listen-addr=localhost --background
+    ~~~
+
+2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    ~~~
+
+3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
+
+   {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+4. Create table `foo`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE foo (a INT PRIMARY KEY);
+    ~~~
+
+5. Insert a row into the table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO foo VALUES (0);
+    ~~~
+
+6. Start the core changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > EXPERIMENTAL CHANGEFEED FOR foo;
+    ~~~
+    ~~~
+    table,key,value
+    foo,[0],"{""after"": {""a"": 0}}"
+    ~~~
+
+7. In a new terminal, add another row:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    ~~~
+
+8. Back in the terminal where the core changefeed is streaming, the following output has appeared:
+
+    ~~~
+    foo,[1],"{""after"": {""a"": 1}}"
+    ~~~
+
+    Note that records may take a couple of seconds to display in the core changefeed.
+
+9. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
+
+10. To stop `cockroach`, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure
+    ~~~
+
+### Create a core changefeed with Avro
+
+<span class="version-tag">New in v2.2:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
+
+1. In a terminal window, start `cockroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure --listen-addr=localhost --background
+    ~~~
+
+2. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/).
+
+3. Move into the extracted `confluent-<version>` directory and start Confluent:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent start
+    ~~~
+
+    Only `schema-registry` is needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
+
+4. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    ~~~
+
+5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
+
+   {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+6. Create table `bar`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE bar (a INT PRIMARY KEY);
+    ~~~
+
+7. Insert a row into the table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO bar VALUES (0);
+    ~~~
+
+8. Start the core changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > EXPERIMENTAL CHANGEFEED FOR foo WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    ~~~
+    ~~~
+
+    ~~~
+
+9. In a new terminal, add another row:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    ./cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    ~~~
+
+10. Back in the terminal where the core changefeed is streaming, the following output has appeared:
+
+    ~~~
+
+    ~~~
+
+    Note that records may take a couple of seconds to display in the core changefeed.
+
+11. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
+
+12. To stop `cockroach`, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure
+    ~~~
+
+13. To stop Confluent, move into the extracted `confluent-<version>` directory and stop Confluent:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent stop
+    ~~~
+
 ### Create a changefeed connected to Kafka
+
+{{site.data.alerts.callout_info}}
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
 
@@ -342,6 +518,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
 ### Create a changefeed in Avro connected to Kafka
+
+{{site.data.alerts.callout_info}}
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-with-avro).
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
 
@@ -505,6 +685,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## See also
 
 - [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`CHANGEFEED FOR`](changefeed-for.html)
 - [`PAUSE JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Other SQL Statements](sql-statements.html)
