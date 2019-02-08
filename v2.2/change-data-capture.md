@@ -106,7 +106,9 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-## Create a core changefeed
+## Configure a changefeed (Core)
+
+### Create
 
 <span class="version-tag">New in v2.2:</span> To create a core changefeed:
 
@@ -115,7 +117,7 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 > EXPERIMENTAL CHANGEFEED FOR TABLE name;
 ~~~
 
-For more information, see [CHANGEFEED FOR](changefeed-for.html).
+For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
 ## Configure a changefeed (Enterprise)
 
