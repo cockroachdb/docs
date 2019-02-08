@@ -118,11 +118,15 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 
 <span class="version-tag">New in v2.2:</span> Changefeeds operate on an end-to-end "push" model, which reduces the latency of row changes. Some workloads will also see fewer transaction restarts on tables being watched by a changefeed.
 
-Previously, changefeeds would collect changes by periodically sending a request for any recent changes. Now, they connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen.
+Previously, changefeeds would collect changes by periodically sending a request for any recent changes. Now, they connect a long-lived request (i.e., a rangefeed), which pushes changes as they happen. Changefeeds use push by default, but can be reverted back to the previous behavior with the `changefeed.push.enabled` [cluster setting](cluster-settings.html). A future release will remove this setting, so if you have to use the fallback, please [file a Github issue](file-an-issue.html).
 
-Enabling rangefeeds has a small performance cost currently, whether or not the rangefeed is being using in a changefeed, so rangefeeds are disabled by default. To enable the rangefeeds, set the `kv.rangefeed.enabled` and `changefeed.push.enabled` [cluster settings](cluster-settings.html) to `true`.
+Rangefeeds are disabled by default because they currently have a small performance cost, whether or not the rangefeed is being using in a changefeed. To enable the rangefeeds, the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html) is required when `changefeed.push.enabled` is on.
 
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used when rangefeeds are enabled. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+
+{{site.data.alerts.callout_info}}
+Changes to `changefeed.push.enabled` do not take effect until a changefeed is restarted. To restart an enterprise changefeed, pause, unpause, or kill a node. To restart a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
+{{site.data.alerts.end}}
 
 ## Configure a changefeed
 
