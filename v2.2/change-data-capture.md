@@ -131,7 +131,7 @@ To enable rangefeeds for an existing changefeed, you must also restart the chang
 > EXPERIMENTAL CHANGEFEED FOR TABLE name;
 ~~~
 
-For more information, see [CHANGEFEED FOR](changefeed-for.html).
+For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
 ## Configure a changefeed (Enterprise)
 
