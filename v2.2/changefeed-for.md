@@ -64,8 +64,6 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
 
 ### Create a changefeed
 
-Note: the SQL client has to be started with a special connection string.
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPERIMENTAL CHANGEFEED FOR TABLE demo WITH updated, resolved;

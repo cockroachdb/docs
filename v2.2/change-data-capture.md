@@ -211,9 +211,11 @@ You can use the high-water timestamp to [start a new changefeed where another en
     ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
     ~~~
 
+    {% include {{ page.version.version }}/cdc/core-url.md %}
+
 3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
 
-   {% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
@@ -296,9 +298,11 @@ You can use the high-water timestamp to [start a new changefeed where another en
     ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
     ~~~
 
+    {% include {{ page.version.version }}/cdc/core-url.md %}
+
 5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
 
-   {% include copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
