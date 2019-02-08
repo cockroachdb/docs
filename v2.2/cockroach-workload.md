@@ -50,6 +50,7 @@ Workload | Description
 `kv` | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 `startrek` | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 `tpcc` | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+`ycsb` | The Yahoo! Cloud Serving Benchmark.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 ## Flags
 
@@ -137,6 +138,30 @@ Flag | Description
 `--warehouses` | The number of warehouses for loading initial data, at approximately 200 MB per warehouse.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--workers` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `--warehouses` * 10
 `--zones` | The number of [replication zones](configure-replication-zones.html) for partitioning. This number should match the number of `--partitions` and the zones used to start the cluster.<br><br>**Applicable command:** `init`
+
+### `ycsb` workload
+
+Flag | Description
+-----|------------
+`--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`
+`--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `ycsb`
+`--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
+`--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
+`--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--initial-rows` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
+`--json` | Use JSONB rather than relational data.<br><br>**Applicable commands:** `init` or `run`
+`--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
+`--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
+`--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `prepare`
+`--pprofport` | The port for pprof endpoint.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.<br>**Default:** `33333`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
+`--request-distribution` | Distribution for the random number generator (`zipfian`, `uniform`).<br><br>**Applicable commands:** `init` or `run`.<br>**Default:** `zipfian`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--splits` | Number of [splits](split-at.html) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
+`--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
+`--workload` | The type of workload to run (`A` - `F`).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `B`
 
 ### Logging
 
@@ -399,6 +424,49 @@ $ cockroach start \
     _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
       600.0s        0         823902         1373.2      5.8      5.5     10.0     15.2    209.7
     ~~~
+
+### Run the `ycsb` workload
+
+1. Load the initial schema and data:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init ycsb \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+2. Run the workload for 10 minutes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run ycsb \
+    --duration=10m \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    You'll see per-operation statistics print to standard output every second:
+
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+          1s        0         9258.1         9666.6      0.7      1.3      2.0      8.9 read
+          1s        0          470.1          490.9      1.7      2.9      4.1      5.0 update
+          2s        0        10244.6         9955.6      0.7      1.2      2.0      6.6 read
+          2s        0          559.0          525.0      1.6      3.1      6.0      7.3 update
+          3s        0         9870.8         9927.4      0.7      1.4      2.4     10.0 read
+          3s        0          500.0          516.6      1.6      4.2      7.9     15.2 update
+          4s        0         9847.2         9907.3      0.7      1.4      2.4     23.1 read
+          4s        0          506.8          514.2      1.6      3.7      7.6     17.8 update
+          5s        0        10084.4         9942.6      0.7      1.3      2.1      7.1 read
+          5s        0          537.2          518.8      1.5      3.5     10.0     15.2 update
+    ...
+    ~~~
+
+    After the specified duration (10 minutes in this case), the workload will stop and you'll see totals printed to standard output:
+
+    ~~~
+    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+      600.0s        0        4728286         7880.2      1.0      0.9      2.2      5.2    268.4
+    ~~~  
 
 ## See also
 
