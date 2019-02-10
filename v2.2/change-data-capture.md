@@ -114,7 +114,7 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR TABLE name;
+> EXPERIMENTAL CHANGEFEED FOR name;
 ~~~
 
 For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
@@ -213,6 +213,8 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
 
+    {% include {{ page.version.version }}/cdc/core-csv.md %}
+
 3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
 
     {% include copy-clipboard.html %}
@@ -271,7 +273,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Create a core changefeed with Avro
 
-<span class="version-tag">New in v2.2:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
+<span class="version-tag">New in v2.2:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits [Avro](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html#wire-format) records.
 
 1. In a terminal window, start `cockroach`:
 
@@ -289,7 +291,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
     $ ./bin/confluent start
     ~~~
 
-    Only `schema-registry` is needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
+    Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
 4. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
@@ -325,24 +327,27 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > EXPERIMENTAL CHANGEFEED FOR foo WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > EXPERIMENTAL CHANGEFEED FOR bar WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
-    ~~~
-
-    ~~~
+    <!-- ~~~
+    table,key,value
+    bar,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
+    ~~~ -->
 
 9. In a new terminal, add another row:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    ./cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
-10. Back in the terminal where the core changefeed is streaming, the following output has appeared:
+10. Back in the terminal where the core changefeed is streaming, the output will appear
+
+<!-- the following output has appeared:
 
     ~~~
 
-    ~~~
+    ~~~ -->
 
     Note that records may take a couple of seconds to display in the core changefeed.
 
