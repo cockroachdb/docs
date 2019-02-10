@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v2.2:</span> The `CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which provides row-level change subscriptions.
 
-Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record that is returned as a stream over the PostgreSQL connection.
+Core changefeeds work differently than other CockroachDB SQL statements. Instead of returning a finite result set to the client, a core changefeed streams changes to the watched rows indefinitely until the underlying connection is closed or the changefeed query is canceled. This has important implications for the connection and client parameters related to server- and client-side result buffering.
 
 For more information, see [Change Data Capture](change-data-capture.html).
 
@@ -66,10 +66,10 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR TABLE demo WITH updated, resolved;
+> EXPERIMENTAL CHANGEFEED FOR foo WITH updated, resolved;
 ~~~
 
-Note, it may take a couple of seconds for records to display in the changefeed after a change is made.
+Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
 
 ~~~
 table,key,value
@@ -86,11 +86,15 @@ For more information on how to create a core changefeed, see [Change Data Captur
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR TABLE name WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
-~~~
+> EXPERIMENTAL CHANGEFEED FOR foo WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
 ~~~
 
+Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
+<!-- 
 ~~~
+table,key,value
+foo,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
+~~~ -->
 
 To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
