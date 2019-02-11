@@ -1,11 +1,9 @@
 ---
-title: SHOW STATISTICS (Experimental)
+title: SHOW STATISTICS
 summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
-
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 ## Synopsis
 
@@ -47,6 +45,10 @@ CREATE STATISTICS
   students        | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
 (1 row)
 ~~~
+
+### Delete statistics
+
+{% include {{ page.version.version }}/misc/delete-statistics.md %}
 
 ## See Also
 

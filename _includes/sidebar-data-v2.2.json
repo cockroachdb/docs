@@ -338,6 +338,12 @@
                 ]
               },
               {
+                "title": "Enable the Node Map",
+                "urls": [
+                  "/${VERSION}/enable-node-map.html"
+                ]
+              },
+              {
                 "title": "Use Prometheus and Alertmanager",
                 "urls": [
                   "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
@@ -365,32 +371,21 @@
             ]
           },
           {
+            "title": "Table Partitioning",
+            "urls": [
+              "/${VERSION}/partitioning.html"
+            ]
+          },
+          {
+            "title": "Change Data Capture",
+            "urls": [
+              "/${VERSION}/change-data-capture.html"
+            ]
+          },
+          {
             "title": "Enterprise Features",
-            "items": [
-              {
-                "title": "Request an Enterprise License",
-                "urls": [
-                  "/${VERSION}/enterprise-licensing.html"
-                ]
-              },
-              {
-                "title": "Table Partitioning",
-                "urls": [
-                  "/${VERSION}/partitioning.html"
-                ]
-              },
-              {
-                "title": "Node Map",
-                "urls": [
-                  "/${VERSION}/enable-node-map.html"
-                ]
-              },
-              {
-                "title": "Change Data Capture (Enterprise)",
-                "urls": [
-                  "/${VERSION}/change-data-capture.html"
-                ]
-              }
+            "urls": [
+              "/${VERSION}/enterprise-licensing.html"
             ]
           }
         ]
@@ -733,7 +728,7 @@
                 ]
               },
               {
-                "title": "<code>CREATE STATISTICS</code> (Experimental)",
+                "title": "<code>CREATE STATISTICS</code>",
                 "urls": [
                   "/${VERSION}/create-statistics.html"
                 ]
@@ -1075,7 +1070,7 @@
                 ]
               },
               {
-                "title": "<code>SHOW STATISTICS</code> (Experimental)",
+                "title": "<code>SHOW STATISTICS</code>",
                 "urls": [
                   "/${VERSION}/show-statistics.html"
                 ]
@@ -1589,6 +1584,12 @@
             "title": "Cost-Based Optimizer",
             "urls": [
               "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Follower Reads",
+            "urls": [
+              "/${VERSION}/follower-reads.html"
             ]
           },
           {
