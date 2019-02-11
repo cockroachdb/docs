@@ -82,7 +82,7 @@ For more detail about the risks that large clock offsets can cause, see [What ha
 
 ### Timestamp cache
 
-To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
+As part of providing serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
 Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
 
@@ -100,6 +100,16 @@ However, `client.Txn` is actually just a wrapper around `TxnCoordSender`, which 
 
 After setting up this bookkeeping, the request is passed to the `DistSender` in the distribution layer.
 
+### Latch manager
+
+As write operations occur for a range, the range's leaseholder serializes them; that is to say that they are placed into some consistent order. 
+
+To enforce this serialization, the leaseholder creates a "latch" for the keys in the write value, providing uncontested access to the keys. If other operations come into the leaseholder for the same set of keys, they must wait for the latch to be released before they can proceed.
+
+Of note, only write operations generate a latch for the keys. Read operations do not block other operations from executing.
+
+Another way to think of a latch is like a mutex, which is only needed for the duration of a low-level operation. To coordinate longer-running, higher-level operations (i.e., client transactions), we use a durable system of [write intents](#write-intents).
+
 ### Transaction records
 
 When a transaction starts, `TxnCoordSender` writes a transaction record to the range containing the first key modified in the transaction. As mentioned above, the transaction record provides the system with a source of truth about the status of a transaction.
@@ -110,15 +120,15 @@ The transaction record expresses one of the following dispositions of a transact
 - `COMMITTED`: Once a transaction has completed, this status indicates that the value can be read.
 - `ABORTED`: If a transaction fails or is aborted by the client, it's moved into this state.
 
-The transaction record for a committed transaction remains until all its write intents are converted to MVCC values. For an aborted transaction, the transaction record can be deleted at any time, which also means that CockroachDB treats missing transaction records as if they belong to aborted transactions.
+The transaction record for a committed transaction remains until all its write intents are converted to multi-version concurrency control values (also known as MVCC, which is [explained in greater depth in the storage layer](storage-layer.html#mvcc)). For an aborted transaction, the transaction record can be deleted at any time, which also means that CockroachDB treats missing transaction records as if they belong to aborted transactions.
 
 ### Write intents
 
-Values in CockroachDB are not directly written to the storage layer; instead everything is written in a provisional state known as a "write intent." These are essentially MVCC values with an additional value added to them which identifies the transaction record to which the value belongs.
+Values in CockroachDB are not written directly to the storage layer; instead everything is written in a provisional state known as a "write intent." These are essentially MVCC records with an additional value added to them which identifies the transaction record to which the value belongs.
 
 Whenever an operation encounters a write intent (instead of an MVCC value), it looks up the status of the transaction record to understand how it should treat the write intent value.
 
-#### Resolving write intent
+#### Resolving write intents
 
 Whenever an operation encounters a write intent for a key, it attempts to "resolve" it, the result of which depends on the write intent's transaction record:
 
