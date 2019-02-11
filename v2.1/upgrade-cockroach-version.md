@@ -13,13 +13,11 @@ This page shows you how to upgrade to the latest v2.1 release ({{page.release_in
 
 ## Step 1. Verify that you can upgrade
 
-When upgrading, you can skip patch releases, **but you cannot skip full releases**. Therefore, if you are upgrading from v1.1.x to v2.1:
+If you are upgrading from v2.0.5 or later to v2.1, you do not have to go through intermediate releases; continue to step 2. However, if you are upgrading from 2.0.4 or earlier to v2.1, complete the following steps first:
 
-1. First [upgrade to v2.0](../v2.0/upgrade-cockroach-version.html). Be sure to complete all the steps, include the [finalization step](../v2.0/upgrade-cockroach-version.html#finalize-the-upgrade).
+1. [Upgrade to v2.0.5 or any later patch release in the 2.0.x series](../v2.0/upgrade-cockroach-version.html). If upgrading from v1.1.x, be sure to complete all the steps, including the [finalization step](../v2.0/upgrade-cockroach-version.html#finalize-the-upgrade).
 
-2. Then return to this page and perform a second rolling upgrade to v2.1.
-
-If you are upgrading from v2.0.x or from any v2.1.x patch release, you do not have to go through intermediate releases; continue to step 2.
+2. Return to this page and perform a second rolling upgrade to v2.1.
 
 ## Step 2. Prepare to upgrade
 

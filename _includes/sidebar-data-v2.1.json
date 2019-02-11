@@ -386,7 +386,7 @@
                 ]
               },
               {
-                "title": "Change Data Capture (Enterprise)",
+                "title": "Change Data Capture",
                 "urls": [
                   "/${VERSION}/change-data-capture.html"
                 ]
