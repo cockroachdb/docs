@@ -229,7 +229,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
-3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
+3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -316,7 +316,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
 
-5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-setting.html):
+5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
