@@ -27,13 +27,13 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 ## View query plan
 
-To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If the query is unsupported (i.e., it returns an error like `pq: unsupported statement: *tree.Insert` or `pq: aggregates with FILTER are not supported yet`), the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
+To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If the query is unsupported (i.e., it returns an error message that starts with e.g., `pq: unsupported statement` or `pq: aggregates with FILTER are not supported yet`), the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
 
 For example, the following query (which uses [CockroachDB's TPC-H data set](https://github.com/cockroachdb/cockroach/tree/b1a57102d8e99b301b74c97527c1b8ffd4a4f3f1/pkg/workload/tpch)) returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN(OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
+> EXPLAIN (OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~
@@ -58,32 +58,27 @@ group-by
 (16 rows)
 ~~~
 
-In contrast, this query returns `pq: unsupported statement: *tree.Insert`, which means that it will use the legacy heuristic planner instead of the cost-based optimizer:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (OPT) INSERT INTO l_shipmode VALUES ("truck");
-~~~
-
-~~~
-pq: unsupported statement: *tree.Insert
-~~~
+In contrast, queries that are not supported by the cost-based optimizer return errors that begin with the string `pq: unsupported statement: ...` or specific messages like `pq: aggregates with FILTER are not supported yet`.  Such queries will use the legacy heuristic planner instead of the cost-based optimizer.
 
 ## Types of statements supported by the cost-based optimizer
 
 The cost-based optimizer supports most SQL statements. Specifically, the following types of statements are supported:
 
 - [`CREATE TABLE`](create-table.html)
-- [`INSERT`](insert.html)
+- [`UPDATE`](update.html)
+- [`INSERT`](insert.html), including:
+  - `INSERT .. ON CONFLICT DO NOTHING`
+  - `INSERT .. ON CONFLICT .. DO UPDATE`
+- [`UPSERT`](upsert.html)
+- [`DELETE`](delete.html)
+- `FILTER` clauses on [aggregate functions](functions-and-operators.html#aggregate-functions)
 - [Sequences](create-sequence.html)
 - [Views](views.html)
+- All [`SELECT`](select.html) statements that do not include window functions
+- All `UNION` statements that do not include window functions
+- All `VALUES` statements that do not include window functions
 
-The following additional statements are supported by the optimizer if you set the `experimental_optimizer_updates` [cluster setting](set-cluster-setting.html) to `true`:
-
-- [`UPDATE`](update.html)
-- [`UPSERT`](upsert.html)
-
-For instructions showing how to check whether a particular query will be run with the cost-based optimizer, see the [View query plan](#view-query-plan) section.
+This is not meant to be an exhaustive list. To check whether a particular query will be run with the cost-based optimizer, follow the instructions in the [View query plan](#view-query-plan) section.
 
 ## Table statistics
 
