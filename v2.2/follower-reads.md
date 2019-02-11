@@ -1,20 +1,28 @@
 ---
 title: Follower Reads
-summary: To reduce latency for `SELECT` operations, you can choose to have the closest node serve the request using the "Follower Reads" feature.
+summary: To reduce latency for read queries, you can choose to have the closest node serve the request using the "Follower reads" feature.
 toc: true
 ---
 
-<span class="version-tag">New in v2.2:</span> To reduce latency for `SELECT` operations, you can choose to have the closest node serve the request using the "Follower Reads" feature. The trade-off here is that the response might not have the most recent version of the data, though the data will be consistent at the point in time the read is served from.
+<span class="version-tag">New in v2.2:</span> To reduce latency for read queries, you can choose to have the closest node serve the request using the follower read  feature. For this to work, though, the response might not have the most recent version of the data, though the data will be consistent at the point in time the read is served from.
 
 {{site.data.alerts.callout_danger}}
 The Follower Read feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 {{site.data.alerts.end}}
 
+## What are Follower reads?
+
+Follower reads are a mechanism to let any replica of a range serve a read request, but are only available for read queries that are sufficiently in the past, i.e., using `AS OF SYSTEM TIME`. Currently, follower reads are available for any read operation at least 48 seconds in the past, though there is active work reduce that window. 
+
+To future-proof this feature in your code, we've also included a convenience function that runs your queries at a time as close as possible to the present time while remaining safe for follower reads.
+
+In widely distributed deployments, using follower reads can reduce the latency of read operations (which can also increase throughput) by letting the replica closest to the gateway serve the request, instead of forcing the gateway to communicate with the leaseholder, which could be geographically distant.
+
 ## Settings
 
-### Enable/disable Follower Reads
+### Enable/disable Follower reads
 
-Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.by_load_enabled` to:
+Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.closed_timestamp.follower_reads_enabled` to:
 
 - `false` to disable follower reads _(default)_
 - `true` to enable follower reads 
@@ -24,15 +32,15 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.by_
 > SET CLUSTER SETTING kv.closed_timestamp.follower_reads_enabled = true;
 ~~~
 
-#### When to use Follower Reads
+#### When to use Follower reads
 
-Follower Reads return consistent historical reads; currently a minimum of 48 seconds in the past, though we are actively working on reducing that number.
+Follower reads return consistent historical reads; currently a minimum of 48 seconds in the past, though we are actively working on reducing that number.
 
-As long as your `SELECT` operations can tolerate slightly outdated data, Follower Reads can reduce read latencies.
+As long as your `SELECT` operations can tolerate slightly outdated data, Follower reads can reduce read latencies and increase throughput.
 
-#### When not to use Follower Reads
+#### When not to use Follower reads
 
-Long-running write operations can have negative interactions with Follower Reads because the Follower Read can either get blocked by the long-running write or cause it to be retried. However, this can be mitigated by placing Follower Reads in `HIGH` priority transactions and using [transaction retries](transactions.html#client-side-transaction-retries) for the write operation.
+You should not use follower reads when you need up-to-date data.
 
 ### Make Follower Read-compatible queries
 
@@ -41,7 +49,7 @@ Any `SELECT` statement with an `AS OF SYSTEM TIME` value at least 48 seconds in 
 To simplify this calculation, we've added a convenience function that will always set the `AS OF SYSTEM TIME` value to the minimum required for follower reads, `experimental_follower_read_timestamp()`:
 
 ``` sql
-SELECT ... FROM ... AS OF SYSTEM TIME(experimental_follower_read_timestamp())
+SELECT ... FROM ... AS OF SYSTEM TIME experimental_follower_read_timestamp();
 ```
 
 ### Make Follower Read-compatible transactions
@@ -49,7 +57,7 @@ SELECT ... FROM ... AS OF SYSTEM TIME(experimental_follower_read_timestamp())
 You can set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
 
 ```sql
-BEGIN AS OF SYSTEM TIME(experimental_follower_read_timestamp());
+BEGIN AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
 SAVEPOINT cockroach_restart;
 
@@ -59,15 +67,17 @@ SELECT ...
 COMMIT;
 ```
 
-## How Follower Reads works
+## How Follower reads works
 
 In CockroachDB's general architecture, all reads are served by a range's [leaseholder](architecture/replication-layer.html#leases), which is a replica elected to coordinate all write operations. Because this node contains information about all of a range's writes, it can also serve reads for the range while still guaranteeing `SERIALIZABLE` isolation. With this architecture, the client might need to communicate with a machine that is far away, creating greater network latencies.
 
-However, if you were lower the isolation requirements of an operation, it's possible to serve the read from _any_ replica, not only the leaseholder. To accomplish this is CockroachDB, we've create a mechanism to let you express that a historical read is sufficient (`AS OF SYSTEM TIME`) and that any node can server the request (`kv.closed_timestamp.follower_reads_enabled`).
+However, if you were lower the isolation requirements of an operation, it's possible to serve the read from _any_ replica, not only the leaseholder. To accomplish this is CockroachDB, we've create a mechanism to let you express that a historical read is sufficient (`AS OF SYSTEM TIME`) and that any node can serve the request (`kv.closed_timestamp.follower_reads_enabled`).
+
+For a more detailed explanation, you can also read the [follower reads RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20180603_follower_reads.md).
 
 ### Reading from followers
 
-Each CockroachDB node tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward every 30 seconds. If the replica receives a write at a timestamp less than its closed timestamp, it rejects the write.
+Each CockroachDB node tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the replica receives a write at a timestamp less than its closed timestamp, it rejects the write.
 
 With follower reads enabled, any replica on a node can serve a read for a key as long as the time at which the operation is performed (i.e. the `AS OF SYSTEM TIME` value) is less or equal to the node's closed timestamp.
 
@@ -77,12 +87,12 @@ Every node keeps a record of its latency with all other nodes in the system. Whe
 
 ### Interactions with long-running writes
 
-Long-running write transactions will create write intents with a timestamp near when the transaction began. When a Follower Read encounters a write intent, it will often end up in a `Wait Queue`, waiting for the operation to complete; however, this runs counter to the benefit Follower Reads provides.
+Long-running write transactions will create write intents with a timestamp near when the transaction began. When a Follower Read encounters a write intent, it will often end up in a `Wait Queue`, waiting for the operation to complete; however, this runs counter to the benefit Follower reads provides.
 
-To counteract this, you can issue all Follower Reads in explicit transactions set with `HIGH` priority:
+To counteract this, you can issue all Follower reads in explicit transactions set with `HIGH` priority:
 
 ```sql
-BEGIN PRIORITY HIGH AS OF SYSTEM TIME(experimental_follower_read_timestamp());
+BEGIN PRIORITY HIGH AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
 SAVEPOINT cockroach_restart;
 
