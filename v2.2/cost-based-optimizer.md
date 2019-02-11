@@ -128,6 +128,25 @@ Finally, note that only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
+## Join reordering
+
+<span class="version-tag">New in v2.2</span>: The cost-based optimizer will explore additional join orderings in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
+
+Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
+
+To change this setting, which is controlled by the `experimental_reorder_joins_limit` [session variable](set-vars.html), run the statement shown below.  To disable this feature, set the variable to `0`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET experimental_reorder_joins_limit = 6;
+~~~
+
+{{site.data.alerts.callout_danger}}
+We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
+{{site.data.alerts.end}}
+
+For more information about the difficulty of selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+
 ## How to turn the optimizer off
 
 With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
