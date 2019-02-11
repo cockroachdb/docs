@@ -96,34 +96,18 @@ There are several ways to generate table statistics:
 
 Each method is described below.
 
+### Automatic table statistics
+
+{% include {{ page.version.version }}/misc/automatic-statistics.md %}
+
 ### Manually generating table statistics
 
-To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on -- specifically, it chooses columns which are part of the primary key or an index.
+To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses columns which are part of the primary key or an index.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS __auto__ FROM employees;
+> CREATE STATISTICS employees_stats FROM employees;
 ~~~
-
-### Automatic table statistics
-
-<span class="version-tag">New in v2.2</span>: CockroachDB can generate table statistics automatically as tables are updated.
-
-To turn on this feature:
-
-1. For each table in the database, run [`CREATE STATISTICS`](create-statistics.html) manually **before** enabling the automatic statistics flag. This is necessary to prevent the system from getting too overloaded right after the feature is enabled.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE STATISTICS __auto__ FROM table1;  -- Repeat for table2, table3, ..., tableN.
-    ~~~
-
-2. Run the following statement to turn on the automatic statistics system:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET sql.defaults.experimental_automatic_statistics=true
-    ~~~
 
 ## Query plan cache
 

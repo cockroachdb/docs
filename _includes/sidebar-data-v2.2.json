@@ -728,7 +728,7 @@
                 ]
               },
               {
-                "title": "<code>CREATE STATISTICS</code> (Experimental)",
+                "title": "<code>CREATE STATISTICS</code>",
                 "urls": [
                   "/${VERSION}/create-statistics.html"
                 ]
@@ -1070,7 +1070,7 @@
                 ]
               },
               {
-                "title": "<code>SHOW STATISTICS</code> (Experimental)",
+                "title": "<code>SHOW STATISTICS</code>",
                 "urls": [
                   "/${VERSION}/show-statistics.html"
                 ]
