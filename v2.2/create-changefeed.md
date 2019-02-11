@@ -11,7 +11,7 @@ Changefeeds target a whitelist of tables, called the "watched rows." Every chang
 For more information, see [Change Data Capture](change-data-capture.html).
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [CHANGEFEED FOR](changefeed-for.html).
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
