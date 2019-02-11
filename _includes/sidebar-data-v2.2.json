@@ -823,6 +823,12 @@
                 ]
               },
               {
+                "title": "<code>EXPERIMENTAL CHANGEFEED FOR</code>",
+                "urls": [
+                  "/${VERSION}/changefeed-for.html"
+                ]
+              },
+              {
                 "title": "<code>EXPLAIN</code>",
                 "urls": [
                   "/${VERSION}/explain.html"
