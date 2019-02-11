@@ -174,4 +174,5 @@ CDC is an enterprise feature. There will be a core version in a future release.
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | Create a new changefeed, which provides row-level change subscriptions.
+[`CREATE CHANGEFEED`](create-changefeed.html) | _(Enterprise)_ Create a new changefeed, which provides row-level change subscriptions.
+[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | _(Core)_ Create a new core changefeed, which provides row-level change subscriptions.
