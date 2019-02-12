@@ -102,13 +102,18 @@ After setting up this bookkeeping, the request is passed to the `DistSender` in 
 
 ### Latch manager
 
-As write operations occur for a range, the range's leaseholder serializes them; that is to say that they are placed into some consistent order. 
+As write operations occur for a range, the range's leaseholder serializes them; that is to say that they are placed into some order. 
 
-To enforce this serialization, the leaseholder creates a "latch" for the keys in the write value, providing uncontested access to the keys. If other operations come into the leaseholder for the same set of keys, they must wait for the latch to be released before they can proceed.
+To enforce this serialization, the leaseholder creates a "latch" for the keys in the write value, providing uncontested access to the keys. This latch blocks the following operations for any keys in the write holding the latch:
 
-Of note, only write operations generate a latch for the keys. Read operations do not block other operations from executing.
+- Reads at lower timestamps
+- All writes
 
-Another way to think of a latch is like a mutex, which is only needed for the duration of a low-level operation. To coordinate longer-running, higher-level operations (i.e., client transactions), we use a durable system of [write intents](#write-intents).
+Once the write operation completes the latch is freed and blocked operations can continue.
+
+Reads operations also maintain latches, though they only block writes at lower timestamps. Note that this is necessary because reads do not bump the timestamp cache until the read _completes_.
+
+One way to conceptualize these latches is as timestamp aware read-write mutexes, which are only needed for the duration of a low-level operation. To coordinate longer-running, higher-level operations (i.e., client transactions), we use a durable system of [write intents](#write-intents).
 
 ### Transaction records
 
@@ -120,7 +125,7 @@ The transaction record expresses one of the following dispositions of a transact
 - `COMMITTED`: Once a transaction has completed, this status indicates that the value can be read.
 - `ABORTED`: If a transaction fails or is aborted by the client, it's moved into this state.
 
-The transaction record for a committed transaction remains until all its write intents are converted to multi-version concurrency control values (also known as MVCC, which is [explained in greater depth in the storage layer](storage-layer.html#mvcc)) values. For an aborted transaction, the transaction record can be deleted at any time, which also means that CockroachDB treats missing transaction records as if they belong to aborted transactions.
+The transaction record for a committed transaction remains until all its write intents are converted to multi-version concurrency control values (also known as MVCC, which is [explained in greater depth in the storage layer](storage-layer.html#mvcc)).
 
 ### Write intents
 
