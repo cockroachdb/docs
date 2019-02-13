@@ -4,17 +4,14 @@ summary: The Foreign Key constraint specifies a column can contain only values e
 toc: true
 ---
 
-The foreign key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
+A foreign key is a column (or combination of columns) in a table T2 whose values are required to match values of a key in some other table T1. The purpose of foreign keys is to enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
 
-For example, if you create a foreign key on `orders.customer` that references `customers.id`:
+For example, given a `customers` table and an `orders` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
 
-- Each value inserted or updated in `orders.customer` must exactly match a value in `customers.id`.
-- Values in `customers.id` that are referenced by `orders.customer` cannot be deleted or updated. However, `customers.id` values that _aren't_ present in `orders.customer` can be.
+- Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`.
+- Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated. However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
-{{site.data.alerts.callout_success}}
-If you plan to use foreign keys in your schema, consider using [interleaved tables](interleave-in-parent.html), which can dramatically improve query performance.
-{{site.data.alerts.end}}
-
+Unlike primary keys, foreign keys must be allowed to contain _NULL_ values; otherwise circular references between tables would not be possible. For more information, see the [_NULL_ values](#null-values) section below.
 
 ## Details
 
@@ -42,14 +39,46 @@ If you plan to use foreign keys in your schema, consider using [interleaved tabl
 
 Single-column foreign keys accept _NULL_ values.
 
-Multiple-column foreign keys only accept _NULL_ values in these scenarios:
+Multiple-column (composite) foreign keys only accept _NULL_ values in the scenarios described in the [Composite foreign key matching](#composite-foreign-key-matching) section.
 
-- The row you're ultimately referencing&mdash;determined by the statement's other values&mdash;contains _NULL_ as the value of the referenced column (i.e., _NULL_ is valid from the perspective of referential integrity)
-- The write contains _NULL_ values for all foreign key columns
+Note that allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [`NOT NULL` constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
 
-For example, if you have a Foreign Key constraint on columns `(A, B)` and try to insert `(1, NULL)`, the write would fail unless the row with the value `1` for `(A)` contained a _NULL_ value for `(B)`. However, inserting `(NULL, NULL)` would succeed.
+### Composite foreign key matching
 
-However, allowing _NULL_ values in either your foreign key or referenced columns can degrade their referential integrity. To avoid this, you can use the [`NOT NULL` constraint](not-null.html) on both sets of columns when [creating your tables](create-table.html). (The Not Null constraint cannot be added to existing tables.)
+Composite foreign keys accept _NULL_ values in the following scenarios:
+
+- The row you're ultimately referencing&mdash;determined by the statement's other values&mdash;contains _NULL_ as the value of the referenced column (i.e., _NULL_ is valid from the perspective of referential integrity).
+- The write contains _NULL_ values for all foreign key columns.
+
+<span class="version-tag">New in v2.2</span>: By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as Postgres). `MATCH FULL` is available if specified. If you upgrade to version 2.2 or greater from an earlier version of CockroachDB, and your schema currently uses composite keys, it may require updates, since this change may affect your foreign key constraints and cascading behavior.
+
+#### How it works
+
+For matching purposes, composite foreign keys can be in one of 3 states:
+
+- _Valid_: Keys that can be used for matching foreign key relationships.
+
+- _Invalid_: Keys that will not be used for matching (including for any cascading operations).
+
+- _Unacceptable_: Keys that cannot be inserted at all (an error is signalled).
+
+`MATCH SIMPLE` stipulates that:
+
+- _Valid_ keys may not contain any _NULL_ values.
+
+- _Invalid_ keys contain one or more _NULL_ values.
+
+- _Unacceptable_ keys do not exist from the point of view of `MATCH SIMPLE`; all composite keys are acceptable.
+
+`MATCH FULL` stipulates that:
+
+- _Valid_ keys may not contain any _NULL_ values.
+
+- _Invalid_ keys must have all _NULL_ values.
+
+- _Unacceptable_ keys have any combination of both _NULL_ and non-_NULL_ values. In other words, `MATCH FULL` requires that if any column of a composite key is _NULL_, then all columns of the key must be _NULL_.
+
+For examples showing how these key matching algorithms work, see [Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`](#match-composite-foreign-keys-with-match-simple-and-match-full).
 
 ### Foreign key actions
 
@@ -58,7 +87,7 @@ When you set a foreign key constraint, you can control what happens to the const
 Parameter | Description
 ----------|------------
 `ON DELETE NO ACTION` | _Default action._ If there are any existing references to the key being deleted, the transaction will fail at the end of the statement. The key can be updated, depending on the `ON UPDATE` action. <br><br>Alias: `ON DELETE RESTRICT`
-`ON UPDATE NO ACTION` | _Default action._ If there are any existing references to the key being updated, the transaction will fail at the end of the statement. The key can be deleted, depending on the `ON DELETE` action.  <br><br>Alias: `ON UPDATE RESTRICT`
+`ON UPDATE NO ACTION` | _Default action._ If there are any existing references to the key being updated, the transaction will fail at the end of the statement. The key can be deleted, depending on the `ON DELETE` action. <br><br>Alias: `ON UPDATE RESTRICT`
 `ON DELETE RESTRICT` / `ON UPDATE RESTRICT` | `RESTRICT` and `NO ACTION` are currently equivalent until options for deferring constraint checking are added. To set an existing foreign key action to `RESTRICT`, the foreign key constraint must be dropped and recreated.
 `ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated, respectively. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete will take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
 `ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
@@ -66,13 +95,9 @@ Parameter | Description
 
 ### Performance
 
-Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys.
+Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
 
-We're currently working to improve the performance of these statements, though.
-
-{{site.data.alerts.callout_success}}
-You can improve the performance of some statements that use Foreign Keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html).
-{{site.data.alerts.end}}
+You can improve the performance of some statements that use foreign keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html), but there are tradeoffs. For more information about the performance implications of interleaved tables (as well as the limitations), see the **Interleave tables** section of [Performance best practices](performance-best-practices-overview.html#interleave-tables).
 
 ## Syntax
 
@@ -609,6 +634,88 @@ Let's check to make sure the corresponding `customer_id` value to `id = 101`, wa
 | 103 |        9999 |
 +-----+-------------+
 ~~~
+
+### Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`
+
+The examples in this section will show how composite foreign key matching works for both the `MATCH SIMPLE` and `MATCH FULL` algorithms. For a conceptual overview, see [Composite foreign key matching](#composite-foreign-key-matching).
+
+First, let's create some tables. `parent` is a table with a composite key:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE parent (x INT, y INT,  z INT, UNIQUE (x, y, z));
+~~~
+
+`full_test` has a foreign key on `parent` that uses the `MATCH FULL` algorithm:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE full_test (
+    x INT,
+    y INT,
+    z INT,
+    FOREIGN KEY (x, y, z) REFERENCES parent (x, y, z) MATCH FULL ON DELETE CASCADE ON UPDATE CASCADE
+  );
+~~~
+
+`simple_test` has a foreign key on `parent` that uses the `MATCH SIMPLE` algorithm (the default):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE simple_test (
+    x INT,
+    y INT,
+    z INT,
+    FOREIGN KEY (x, y, z) REFERENCES parent (x, y, z) ON DELETE CASCADE ON UPDATE CASCADE
+  );
+~~~
+
+Next, we populate `parent` with some values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT
+    INTO parent
+  VALUES (1, 1, 1),
+         (2, 1, 1),
+         (1, 2, 1),
+         (1, 1, 2),
+         (NULL, NULL, NULL),
+         (1, NULL, NULL),
+         (NULL, 1, NULL),
+         (NULL, NULL, 1),
+         (1, 1, NULL),
+         (1, NULL, 1),
+         (NULL, 1, 1);
+~~~
+
+Now let's look at some `INSERT` statements to see how the different key matching algorithms work.
+
+- [MATCH SIMPLE](#match-simple)
+- [MATCH FULL](#match-full)
+
+#### MATCH SIMPLE
+
+Inserting values into the table using the `MATCH SIMPLE` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
+
+| Statement                                         | Can insert? | Throws error? | Notes                         |
+|---------------------------------------------------+-------------+---------------+-------------------------------|
+| `INSERT INTO simple_test VALUES (1,1,1)`          | Yes         | No            | References `parent (1,1,1)`.  |
+| `INSERT INTO simple_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.  |
+| `INSERT INTO simple_test VALUES (1,NULL,NULL)`    | Yes         | No            | Does not reference `parent`.  |
+| `INSERT INTO simple_test VALUES (2,2,NULL)`       | Yes         | No            | Does not reference `parent`.  |
+| `INSERT INTO simple_test VALUES (2,2,2)`          | No          | Yes           | No `parent` reference exists. |
+
+#### MATCH FULL
+
+Inserting values into the table using the `MATCH FULL` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
+
+| Statement                                       | Can insert? | Throws error? | Notes                                            |
+|-------------------------------------------------+-------------+---------------+--------------------------------------------------|
+| `INSERT INTO full_test VALUES (1,1,1)`          | Yes         | No            | References `parent(1,1,1)`.                      |
+| `INSERT INTO full_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.                     |
+| `INSERT INTO full_test VALUES (1,NULL,NULL)`    | No          | Yes           | Can't mix _NULL_ and non-_NULL_ in `MATCH FULL`. |
+| `INSERT INTO full_test VALUES (2,2,2)`          | No          | Yes           | No `parent` reference exists.                    |
 
 ## See also
 
