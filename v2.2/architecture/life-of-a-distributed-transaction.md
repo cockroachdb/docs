@@ -117,14 +117,6 @@ If the write operation is valid according to the evaluator, the leaseholder send
 
 Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining](transaction-layer.html#transaction-pipelining)). There are no issues if an operation passes the evaluator but doesn't end up committing.
 
-### Writing the transaction record
-
-The very first range that a transaction interacts with also receives a write for a key known as its transaction record. This includes a UUID to uniquely identify the transaction, as well as the canonical record of its state&mdash;e.g. `PENDING`, `ABORTED`, or `COMMITTED`. This record is used by all operations to determine the state of the transaction. For example, when a write is blocked by another write, it periodically checks its own transaction record to ensure that it hasn't been aborted.
-
-As soon as the write for the transaction record completes (i.e., achieves consensus through Raft), it begins communicating with the gateway node's `TxnCoordSender`, which regularly heartbeats the transaction to keep it alive (i.e., in a `PENDING` state). If the heartbeating from the `TxnCoordSender` stops, the `TxnRecord` moves itself into `ABORTED` status.
-
-This write is handled like all other writes, which we'll discuss in more detail in a subsequent section.
-
 ### Reads from RocksDB
 
 All operations (including writes) begin by reading from the local instance of RocksDB to check for write intents for the operation's key. We talk much more about [write intents in the transaction layer of the CockroachDB architecture](transaction-layer.html#write-intents), which is worth reading, but a simplified explanation is that these are provisional, uncommitted writes that express that some other concurrent transaction plans to write a value to the key.
@@ -174,6 +166,16 @@ Once the command achieves consensus (i.e. a majority of nodes including itself a
 Once the leader commits the Raft log entry, it’s considered committed. At this point the value is considered written, and if another operation comes in and performs a read on RocksDB for this key, they’ll encounter this value.
 
 Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node sets the transaction record's status to `COMMITTED`.
+
+### Writing the transaction record
+
+THIS IS NOW VERY LAST (unless the txn coordsender heartbeat creates it, in which case it could be interleaved in with some other operations).
+
+The very first range that a transaction interacts with also receives a write for a key known as its transaction record. This includes a UUID to uniquely identify the transaction, as well as the canonical record of its state&mdash;e.g. `PENDING`, `ABORTED`, or `COMMITTED`. This record is used by all operations to determine the state of the transaction. For example, when a write is blocked by another write, it periodically checks its own transaction record to ensure that it hasn't been aborted.
+
+As soon as the write for the transaction record completes (i.e., achieves consensus through Raft), it begins communicating with the gateway node's `TxnCoordSender`, which regularly heartbeats the transaction to keep it alive (i.e., in a `PENDING` state). If the heartbeating from the `TxnCoordSender` stops, the `TxnRecord` moves itself into `ABORTED` status.
+
+This write is handled like all other writes, which we'll discuss in more detail in a subsequent section.
 
 ## On the way back up
 
