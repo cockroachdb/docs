@@ -112,13 +112,13 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 
 To enable rangefeeds, set the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html) to `true`. Any created changefeed will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost, whether or not the rangefeed is being using in a changefeed.
 
-Rangefeeds also require the `changefeed.push.enabled` [cluster setting](cluster-settings.html) to be `true`. This is the default, so no change is necessary to enable rangefeeds. If you are experiencing an issue, you can revert back to the previous behavior by setting `changefeed.push.enabled` to `false`. Note that this setting will be removed in a future release; if you have to use the fallback, please [file a Github issue](file-an-issue.html).
+If you are experiencing an issue, you can revert back to the previous behavior by setting `changefeed.push.enabled` to `false`. Note that this setting will be removed in a future release; if you have to use the fallback, please [file a Github issue](file-an-issue.html).
 
 {{site.data.alerts.callout_info}}
 To enable rangefeeds for an existing changefeed, you must also restart the changefeed. For an enterprise changefeed, [pause](#pause) and [resume](#resume) the changefeed. For a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
 {{site.data.alerts.end}}
 
-The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used when rangefeeds are enabled. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with push changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
 ## Configure a changefeed (Core)
 
