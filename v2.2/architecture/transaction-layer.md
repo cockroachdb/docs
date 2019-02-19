@@ -102,21 +102,22 @@ After setting up this bookkeeping, the request is passed to the `DistSender` in 
 
 ### Transaction records
 
-To track the status of a transaction's execution, we write TxnRecords...
+To track the status of a transaction's execution, we write a value called a transaction record to our key-value store. This lets any transaction check the status of any other transaction, which is important for handling concurrency.
 
-When TxnCoordSender begins transaction, it chooses where the txn record will live so it can include reference to it in all write intents––even though the record will likely not exist until the end of the transaction––this location will always be the same range as the first key in the transaction.
+When a `TxnCoordSender` begins transaction, it determines where to write the transaction record (this location will always be the same range as the first key in the transaction), and then includes a reference to the transaction record in all of its write intents.
 
-These records are written either when the transaction commits or when the TxnCoordSender sends its first heartbeat (whichever happens first).
+However, the transaction record itself isn't created until one of the following conditions occur:
 
+- The write operation commits
+- The `TxnCoordSender` heartbeats the transaction
+- An operation forces the transaction to abort
 
-When a transaction starts, `TxnCoordSender` writes a transaction record to the range containing the first key modified in the transaction. As mentioned above, the transaction record provides the system with a source of truth about the status of a transaction.
-
-The transaction record expresses one of the following dispositions of a transaction:
+Given this mechanism, the transaction record uses the following states:
 
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
-- `COMMITTED`: Once a transaction has completed, this status indicates that the value can be read.
-- `ABORTED`: If a transaction fails or is aborted by the client, it's moved into this state.
-- _TxnRecord DNE_: Becuse TxnRecord doesn't necessarily exist when writes occur, contending transactions look at the write intent's timestamp to asses whether or not the transaction is recent enough.
+- `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
+- `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
+- _Record does not exist_: Because records might not have been written yet, a missing record require the contending transaction to look at the write intent's timestamp. If it was created within the last two seconds, the transaction is treated as if it's `PENDING`, otherwise the transaction is considered `ABORTED`.
 
 The transaction record for a committed transaction remains until all its write intents are converted to MVCC values.
 
@@ -124,7 +125,7 @@ The transaction record for a committed transaction remains until all its write i
 
 Values in CockroachDB are not directly written to the storage layer; instead everything is written in a provisional state known as a "write intent." These are essentially multi-version concurrency control values (also known as MVCC, which is explained in greater depth in the storage layer) with an additional value added to them which identifies the transaction record to which the value belongs.
 
-Whenever an operation encounters a write intent (instead of an MVCC value), it looks up the status of the transaction record to understand how it should treat the write intent value. If the txn record DNE, then the contending transaction  synthesizes a transaction record at the write intent's timestamp and evaluates whether or not it would have expired.
+Whenever an operation encounters a write intent (instead of an MVCC value), it looks up the status of the transaction record to understand how it should treat the write intent value. If the transaction record is missing, the operation checks the write intent's timestamp and evaluates whether or not it is considered expired.
 
 #### Resolving write intent
 
@@ -133,7 +134,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `COMMITTED`: The operation reads the write intent and converts it to an MVCC value by removing the write intent's pointer to the transaction record.
 - `ABORTED`: The write intent is ignored and deleted.
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
-- _TxnRecord DNE_: Same as `PENDING`.
+- _Record does not exist_: If the write intent was created within the last two seconds, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
 
 ### Isolation levels
 
@@ -158,7 +159,9 @@ CockroachDB proceeds through the following steps:
 
 1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp pushed (in the write/read case).
 
-1. If the encountered transaction is expired, it's `ABORTED` and conflict resolution succeeds. Expiration: MAX(timestamp on write intent, last heartbeated time on TxnRecord if it exists); check whether this is sufficiently in the past 2s.
+1. If the encountered transaction is expired, it's `ABORTED` and conflict resolution succeeds. We consider a write intent expired if:
+	- It doesn't have a transaction record and is more than two seconds old.
+	- Its transaction record hasn't been heartbeated in the last two seconds.
 
 2. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
