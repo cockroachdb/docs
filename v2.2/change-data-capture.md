@@ -311,7 +311,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
     ~~~
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
@@ -343,25 +343,24 @@ You can use the high-water timestamp to [start a new changefeed where another en
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR bar WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
-    <!-- ~~~
+
+    ~~~
     table,key,value
-    bar,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
-    ~~~ -->
+    bar,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
+    ~~~
 
 9. In a new terminal, add another row:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
+    $ ./cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
-10. Back in the terminal where the core changefeed is streaming, the output will appear
-
-<!-- the following output has appeared:
+10. Back in the terminal where the core changefeed is streaming, the output will appear:
 
     ~~~
-
-    ~~~ -->
+    bar,\000\000\000\000\001\002\002,\000\000\000\000\002\002\002\002
+    ~~~
 
     Note that records may take a couple of seconds to display in the core changefeed.
 
@@ -379,6 +378,13 @@ You can use the high-water timestamp to [start a new changefeed where another en
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent stop
+    ~~~
+
+    To stop all Confluent processes, use:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent destroy
     ~~~
 
 ### Create a changefeed connected to Kafka
