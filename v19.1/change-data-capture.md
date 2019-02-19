@@ -53,7 +53,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
-- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the `RESOLVED` option to emit periodic "resolved" timestamp messages to each Kafka partition. A **resolved timestamp** is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the `RESOLVED` option to emit periodic "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
@@ -77,7 +77,11 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
 When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema.
 
-For example, start with the changefeed created in the [example below](#create-a-changefeed-connected-to-kafka):
+Rows that have been backfilled by a schema change are always re-emitted because Avro's default schema change functionality is not powerful enough to represent the schema changes that CockroachDB supports (e.g., CockroachDB columns can have default values that are arbitrary SQL expressions, but Avro only supports static default values).
+
+To ensure that the Avro schemas that CockroachDB publishes will work with the (undocumented and inconsistent) schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible. Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+
+For an example of a schema change with column backfill, start with the changefeed created in the [example below](#create-a-changefeed-connected-to-kafka):
 
 ~~~ shell
 [1]	{"id": 1, "name": "Petee H"}
@@ -122,7 +126,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
 ## Configure a changefeed (Core)
 
-## Create
+### Create
 
 <span class="version-tag">New in v19.1:</span> To create a core changefeed:
 
@@ -222,7 +226,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    oach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
@@ -265,7 +269,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
     ~~~
 
 8. Back in the terminal where the core changefeed is streaming, the following output has appeared:
@@ -311,7 +315,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
@@ -343,25 +347,24 @@ You can use the high-water timestamp to [start a new changefeed where another en
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR bar WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
-    <!-- ~~~
+
+    ~~~
     table,key,value
-    bar,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
-    ~~~ -->
+    bar,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
+    ~~~
 
 9. In a new terminal, add another row:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
+    $ cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
-10. Back in the terminal where the core changefeed is streaming, the output will appear
-
-<!-- the following output has appeared:
+10. Back in the terminal where the core changefeed is streaming, the output will appear:
 
     ~~~
-
-    ~~~ -->
+    bar,\000\000\000\000\001\002\002,\000\000\000\000\002\002\002\002
+    ~~~
 
     Note that records may take a couple of seconds to display in the core changefeed.
 
@@ -379,6 +382,13 @@ You can use the high-water timestamp to [start a new changefeed where another en
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent stop
+    ~~~
+
+    To stop all Confluent processes, use:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/confluent destroy
     ~~~
 
 ### Create a changefeed connected to Kafka
@@ -444,21 +454,28 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-8. Create a database called `cdc_demo`:
+8. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+9. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-9. Set the database as the default:
+10. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-10. Create a table and add data:
+11. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -479,7 +496,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-11. Start the changefeed:
+12. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -495,7 +512,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -513,29 +530,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
-13. Back in the SQL client, insert more data:
+14. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     [3]	{"id": 3, "name": "Ernie"}
     ~~~
 
-15. When you are done, exit the SQL shell (`\q`).
+16. When you are done, exit the SQL shell (`\q`).
 
-16. To stop `cockroach`, run:
+17. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -605,21 +622,28 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-8. Create a database called `cdc_demo`:
+8. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+9. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-9. Set the database as the default:
+10. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-10. Create a table and add data:
+11. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -640,7 +664,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-11. Start the changefeed:
+12. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -656,7 +680,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -674,29 +698,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
-13. Back in the SQL client, insert more data:
+14. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     {"id":3}    {"id":3,"name":{"string":"Ernie"}}
     ~~~
 
-15. When you are done, exit the SQL shell (`\q`).
+16. When you are done, exit the SQL shell (`\q`).
 
-16. To stop `cockroach`, run:
+17. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell

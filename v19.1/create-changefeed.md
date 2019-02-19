@@ -40,10 +40,10 @@ Parameter | Description
 
 Option | Value | Description
 -------|-------|------------
-`updated` | N/A | Include updated timestamps with each row.
+`updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](../v19.1/architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan.. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](change-data-capture.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
 `resolved` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
-`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
+`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. By default, you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
 `format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
 
@@ -59,6 +59,22 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
     {{site.data.alerts.end}}
 
 - [`TIME`, `DATE`, `INTERVAL`](https://github.com/cockroachdb/cockroach/issues/32472), [`UUID`, `INET`](https://github.com/cockroachdb/cockroach/issues/34417), [`ARRAY`](https://github.com/cockroachdb/cockroach/issues/34420), [`JSONB`](https://github.com/cockroachdb/cockroach/issues/34421), `BIT`, and collated `STRING` are not supported in Avro yet.
+
+## Responses
+
+The messages (i.e., keys and values) emitted to a Kafka topic are composed of the following:
+
+- **Key**: Always composed of the table's `PRIMARY KEY` field (e.g., `[1]` or `{"id":1}`).
+- **Value**:
+    - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
+    - For [`DELETE`](delete.html), `null`.
+
+For example:
+
+Statement                                      | Response
+-----------------------------------------------+-----------------------------------------------------------------------
+`INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":1}    {"id":1,"name":{"string":"Petee"}}`
+`DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":1}    {null}`
 
 ## Examples
 
@@ -152,6 +168,8 @@ Use the `high_water_timestamp` to start the new changefeed:
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name INTO 'kafka//host:port' WITH cursor = <high_water_timestamp>;
 ~~~
+
+Note that because the cursor is provided, the initial scan is not performed.
 
 ## See also
 
