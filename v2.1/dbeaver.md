@@ -67,7 +67,15 @@ Click **Finish** to get started using DBeaver with CockroachDB.
 
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 
-If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues).
+## Report Issues with DBeaver & CockroachDB
+
+If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
+
+- CockroachDB version ([`cockroach version`](view-version-details.html))
+- DBeaver version
+- Operating system
+- Steps to reproduce the behavior
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [`SQL audit logging`](sql-audit-logging.html).
 
 ## See Also
 

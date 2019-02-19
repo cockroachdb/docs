@@ -8,18 +8,18 @@ CockroachDB's support of the PostgreSQL wire protocol enables support for many [
 
 ## Support
 
-We currently have two levels of support with third-party tools:
+We offer the following levels of support with third-party tools:
 
-- **Full support** indicates that the vast majority of the tool's features should work without issue with CockroachDB.
-- **Beta support** indicates that the tool works with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit undesirable behavior.
+- **Comprehensive support** indicates that the vast majority of the tool's features should work without issue with CockroachDB.
+- **Partial support** indicates that the tool works with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit undesirable behavior.
 
 ## Graphical User Interface
 
-- [DBeaver](dbeaver.html) _(full support)_
+- [DBeaver](dbeaver.html) _(comprehensive support)_
 
 ## Integrated Development Environment (IDE)
 
-- [Intellij IDEA (Java)](intellij-idea.html) _(beta support)_
+- [Intellij IDEA (Java)](intellij-idea.html) _(partial support)_
 
 ## See Also
 

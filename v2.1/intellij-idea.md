@@ -8,39 +8,42 @@ toc: true
 
 ## Support
 
-As of CockroachDB {{page.version.version}}, IntelliJ IDEA only has **beta-level support**. This means that the application is mostly functional, but its integration still has a few rough edges.
+As of CockroachDB {{page.version.version}}, IntelliJ IDEA only has **partial support**. This means that the application is mostly functional, but its integration still has a few rough edges.
 
 ### Verions
 
 The level of support in this document was tested as of the following versions:
 
 - CockroachDB 2.1
-- PostgreSQL JDBC 41.1
 - IntelliJ IDEA Ultimate 18.1.3
+- PostgreSQL JDBC 41.1
 
-### Errors
+### Warnings & Errors
 
-Users can expect to encounter the following behaviors when using CockroachDB within IntelliJ IDEA:
+Users can expect to encounter the following behaviors when using CockroachDB within IntelliJ IDEA.
 
-<hr/>
+- **Warnings** do not require any action on the user's end and can be ignored. Note that even if a message indicates that it is an "error", it can still be treated as a warning by this definition.
+- **Errors** require the user to take action to resolve the problem and cannot be ignored.
 
-#### [XX000] ERROR: could not decorrelate subquery...
+#### Warnings
+
+##### [XX000] ERROR: could not decorrelate subquery...
 
 <img src="{{ 'images/v2.1/intellij/XX000_error_could_not_decorrelate_subquery.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
-Displays once per load of schema. Does not impact functionality.
+Displays once per load of schema.
 
 <hr/>
 
-#### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve...
+##### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve...
 
 <img src="{{ 'images/v2.1/intellij/42883_error_pg_function_is_visible.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 Display periodically. Does not impact functionality.
 
-<hr/>
+#### Errors
 
-#### [42703] org.postgresql.util.PSQLException: ERROR: column "n.xmin" does not exist
+##### [42703] org.postgresql.util.PSQLException: ERROR: column "n.xmin" does not exist
 
 <img src="{{ 'images/v2.1/intellij/42073_error_column_n_xmin_does_not_exist.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
@@ -70,6 +73,16 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 1. Click **OK**.
 
 You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window.html) to interact with your CockroachDB cluster.
+
+## Report Issues with IntelliJ IDEA & CockroachDB
+
+If you encounter issues other than those outlined above, please [file an issue on the `cockroachdb/cockroach` GitHub repo](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md), including the following details about the environment where you encountered the issue:
+
+- CockroachDB version ([`cockroach version`](view-version-details.html))
+- IntelliJ IDEA version
+- Operating system
+- Steps to reproduce the behavior
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [`SQL audit logging`](sql-audit-logging.html).
 
 ## See Also
 
