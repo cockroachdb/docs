@@ -222,7 +222,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
+    oach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable&results_buffer_size=0" --format=csv
     ~~~
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
@@ -265,7 +265,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
     ~~~
 
 8. Back in the terminal where the core changefeed is streaming, the following output has appeared:
@@ -353,7 +353,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
+    $ cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
 10. Back in the terminal where the core changefeed is streaming, the output will appear:
