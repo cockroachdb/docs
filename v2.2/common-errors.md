@@ -7,17 +7,18 @@ redirect_from: general-troubleshooting.html
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).
 
-Topic | Message
-------|--------
-Client connection | [`connection refused`](#connection-refused)
-Client connection | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)
-Transactions | [`retry transaction`](#retry-transaction)
-Node startup | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
-Node configuration | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
-Node configuration | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
-Replication | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
-Deadline exceeded | [`context deadline exceeded`](#context-deadline-exceeded)
-Ambiguous results | [`result is ambiguous`](#result-is-ambiguous)
+| Topic                                  | Message                                                                                                                                                                                                                                         |
+|----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     |
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  |
+| Transactions                           | [`retry transaction`](#retry-transaction)                                                                                                                                                                                                       |
+| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) |
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  |
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   |
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   |
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       |
+| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   |
+| Read within uncertainty interval error | [`restart transaction: TransactionRetryWithProtoRefreshError: ReadWithinUncertaintyIntervalError`](#read-within-uncertainty-interval)                                                                                                           |
 
 ## connection refused
 
@@ -49,6 +50,20 @@ To resolve this issue, use the [`cockroach cert client-create`](create-security-
 ## retry transaction
 
 Messages with the error code `40001` and the string `retry transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+
+## read within uncertainty interval
+
+Uncertainty errors are always possible with near-realtime reads under contention. For example, given two different clients each performing a transaction on the same table, one of which issues an [`UPDATE`](update.html) in the middle of its transaction, you may see a retry error message that contains the value `ReadWithinUncertaintyIntervalError`.
+
+When errors like this occur, the application has the following options:
+
+- Prefer consistent historical reads using [AS OF SYSTEM TIME](as-of-system-time.html) to reduce contention.
+- Design the schema and queries to reduce contention. For information on how to avoid contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+- Be prepared to retry on uncertainty (and other) errors. For more information, see [Transaction retries](transactions.html#transaction-retries).
+
+{{site.data.alerts.callout_info}}
+Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
+{{site.data.alerts.end}}
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 
