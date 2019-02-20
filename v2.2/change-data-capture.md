@@ -122,7 +122,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
 ## Configure a changefeed (Core)
 
-## Create
+### Create
 
 <span class="version-tag">New in v2.2:</span> To create a core changefeed:
 
@@ -450,21 +450,28 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-8. Create a database called `cdc_demo`:
+8. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+9. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-9. Set the database as the default:
+10. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-10. Create a table and add data:
+11. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -485,7 +492,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-11. Start the changefeed:
+12. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -501,7 +508,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -519,29 +526,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
-13. Back in the SQL client, insert more data:
+14. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     [3]	{"id": 3, "name": "Ernie"}
     ~~~
 
-15. When you are done, exit the SQL shell (`\q`).
+16. When you are done, exit the SQL shell (`\q`).
 
-16. To stop `cockroach`, run:
+17. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -611,21 +618,28 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-8. Create a database called `cdc_demo`:
+8. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+9. Create a database called `cdc_demo`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_demo;
     ~~~
 
-9. Set the database as the default:
+10. Set the database as the default:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_demo;
     ~~~
 
-10. Create a table and add data:
+11. Create a table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -646,7 +660,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-11. Start the changefeed:
+12. Start the changefeed:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -662,7 +676,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-12. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -680,29 +694,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
-13. Back in the SQL client, insert more data:
+14. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-14. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     {"id":3}    {"id":3,"name":{"string":"Ernie"}}
     ~~~
 
-15. When you are done, exit the SQL shell (`\q`).
+16. When you are done, exit the SQL shell (`\q`).
 
-16. To stop `cockroach`, run:
+17. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-17. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell

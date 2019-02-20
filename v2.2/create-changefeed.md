@@ -60,6 +60,22 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
 
 - [`TIME`, `DATE`, `INTERVAL`](https://github.com/cockroachdb/cockroach/issues/32472), [`UUID`, `INET`](https://github.com/cockroachdb/cockroach/issues/34417), [`ARRAY`](https://github.com/cockroachdb/cockroach/issues/34420), [`JSONB`](https://github.com/cockroachdb/cockroach/issues/34421), `BIT`, and collated `STRING` are not supported in Avro yet.
 
+## Responses
+
+The messages (i.e., keys and values) emitted to a Kafka topic are composed of the following:
+
+- **Key**: Always composed of the table's `PRIMARY KEY` field (e.g., `[1]`).
+- **Value**:
+    - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
+    - For [`DELETE`](delete.html), `null`.
+
+For example:
+
+Statement                                      | Response
+-----------------------------------------------+-----------------------------------------------------------------------
+`INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":1}    {"id":1,"name":{"string":"Petee"}}`
+`DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":1}    {null}`
+
 ## Examples
 
 ### Create a changefeed
