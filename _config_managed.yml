@@ -5,6 +5,6 @@ destination: _site/managed
 
 versions:
   stable: v2.1
-  dev: v2.2
+  dev: v19.1
 
 managed: true
