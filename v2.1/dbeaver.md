@@ -75,7 +75,7 @@ If you run into problems, please file an issue on the [DBeaver issue tracker](ht
 - DBeaver version
 - Operating system
 - Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [`SQL audit logging`](sql-audit-logging.html).
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](sql-query-logging.md).
 
 ## See Also
 
