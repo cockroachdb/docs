@@ -73,7 +73,11 @@ To successfully decommission a node, you need to first add a 6th node:
 
 ### Before you begin
 
-Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
+To ensure your cluster can adequately handle decommissioning nodes:
+
+- Only decommission one node at a time.
+- **Do not** kill or quit the `cockroach` process on a decommissioning node, which can cause unrecoverable data loss. If you have a decommissioning node that appears to be stuck or hung, [contact our support team](support-resources.html)
+- Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
 
 ### Step 1. Check the node before decommissioning
 
