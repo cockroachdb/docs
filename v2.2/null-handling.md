@@ -8,8 +8,9 @@ This page summarizes how `NULL` values are handled in CockroachDB
 SQL. Each topic is demonstrated via the [built-in SQL
 client](use-the-built-in-sql-client.html).
 
-{{site.data.alerts.callout_info}}When using the built-in client, <code>NULL</code> values are displayed using the word <code>NULL</code>. This distinguishes them from a character field that contains an empty string ("").{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string ("").
+{{site.data.alerts.end}}
 
 ## NULLs and simple comparisons
 
@@ -210,7 +211,7 @@ the second operand is `NULL`.
 
 `AND`, `OR` and `IS` implement ternary logic, as follows.
 
- |Expression        | Result |
+| Expression       | Result |
 -------------------|---------
  `FALSE AND FALSE` | `FALSE`
  `FALSE AND TRUE`  | `FALSE`
@@ -222,7 +223,7 @@ the second operand is `NULL`.
  `NULL AND TRUE`   | `NULL`  
  `NULL AND NULL`   | `NULL`  
 
-| Expression       | Result |
+| Expression      | Result |
 ------------------|---------
  `FALSE OR FALSE` | `FALSE`
  `FALSE OR TRUE`  | `TRUE`  
@@ -233,7 +234,8 @@ the second operand is `NULL`.
  `NULL OR FALSE`  | `NULL`  
  `NULL OR TRUE`   | `TRUE`  
  `NULL OR NULL`   | `NULL`  
-| Expression       | Result  |
+
+| Expression      | Result  |
 ------------------|---------
  `FALSE IS FALSE` | `TRUE`  
  `FALSE IS TRUE`  | `FALSE`
@@ -244,6 +246,7 @@ the second operand is `NULL`.
  `NULL IS FALSE`  | `FALSE`
  `NULL IS TRUE`   | `FALSE`
  `NULL IS NULL`   | `TRUE`  
+
 ## NULLs and arithmetic
 
 Arithmetic operations involving a `NULL` value will yield a `NULL` result.
