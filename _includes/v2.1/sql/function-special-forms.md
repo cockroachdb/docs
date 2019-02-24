@@ -5,7 +5,6 @@
 | `CURRENT_ROLE`                                            | `current_user()`                            |
 | `CURRENT_SCHEMA`                                          | `current_schema()`                          |
 | `CURRENT_TIMESTAMP`                                       | `current_timestamp()`                       |
-| `CURRENT_TIMESTAMP`                                       | `current_timestamp()`                       |
 | `CURRENT_TIME`                                            | `current_time()`                            |
 | `CURRENT_USER`                                            | `current_user()`                            |
 | `EXTRACT(<part> FROM <value>)`                            | `extract("<part>", <value>)`                |
