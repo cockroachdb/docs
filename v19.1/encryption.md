@@ -21,8 +21,7 @@ Encryption at Rest provides transparent encryption of a node's data on the local
 If you encounter a bug, please [file an issue](file-an-issue.html).
 {{site.data.alerts.end}}
 
-Encryption at Rest allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
-sizes allowed.
+Encryption at Rest allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all AES-Standard key sizes allowed.
 
 Encryption is performed in the [storage layer](architecture/storage-layer.html) and configured per store.
 All files used by the store, regardless of contents, are encrypted with the desired algorithm.
@@ -35,8 +34,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, we use tw
 
 Store keys are specified at node startup by passing a path to a locally readable file. The file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating key files](#generating-key-files) below.
 
-Also during node startup, CockroachDB uses a data key with the same length as the store key. If encryption has just been enabled,
-the key size has changed, or the data key is too old (default lifetime is one week), CockroachDB generates a new data key.
+Also during node startup, CockroachDB uses a data key with the same length as the store key. If encryption has just been enabled, the key size has changed, or the data key is too old (default lifetime is one week), CockroachDB generates a new data key.
 
 Any new file created by the store uses the currently-active data key. All data keys (both active and previous) are stored in a key registry file and encrypted with the active store key.
 
@@ -68,17 +66,6 @@ Once rotated, an old store key cannot be made the active key again.
 Upon store key rotation the data keys registry is decrypted using the old key and encrypted with the new
 key. The newly-generated data key is used to encrypt all new data from this point on.
 
-### Changing encryption type
-
-The user can change the encryption type from plaintext to encryption, between different encryption algorithms
-(using various key sizes), or from encryption to plaintext.
-
-When changing the encryption type to plaintext, the data key registry is no longer encrypted and all previous
-data keys are readable by anyone. All data on the store is effectively readable.
-
-When changing from plaintext to encryption, it will take some time for all data to eventually be re-written
-and encrypted.
-
 ### Recommendations
 
 There are a number of considerations to keep in mind when running with encryption.
@@ -90,7 +77,7 @@ To prevent key leakage, production deployments should:
 * Use encrypted swap, or disable swap entirely.
 * Disable core files.
 
-CockroachDB attempts to disable core files at startup when encryption is requested, but it may fail.
+Core files are generated when a process crashes. They contain some (or all) of the program's memory. This can include the areas of memory that store the encryption keys. CockroachDB attempts to disable core files at startup when encryption is requested, but it may fail.
 
 #### Key handling
 
@@ -113,13 +100,12 @@ A few other recommendations apply for best security practices:
 Note that backups taken with the [`BACKUP`](backup.html) statement **are not encrypted** even if Encryption at Rest is enabled. Encryption at Rest only applies to the CockroachDB node's data on the local disk. If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
 {{site.data.alerts.end}}
 
-### Examples
+### Using Encryption at Rest
 
-#### Generating key files
+#### Step 1. Generate store key files
 
-Cockroach determines which encryption algorithm to use based on the size of the key file.
-The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32
-bytes depending on the encryption algorithm).
+Cockroach determines which encryption algorithm to use based on the size of the store key file.
+The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32 bytes depending on the encryption algorithm).
 
 | Algorithm | Key size | Key file size |
 |-|-|-|
@@ -131,21 +117,67 @@ Generating a key file can be done using the `cockroach` CLI:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
+$ cockroach gen encryption-key -s 128 aes-128.key
 ~~~
 
 Or the equivalent [openssl](https://www.openssl.org/docs/man1.0.2/apps/openssl.html) CLI command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ openssl rand -out /path/to/my/aes-128.key 48
+$ openssl rand -out aes-128.key 48
 ~~~
 
-#### Starting a node with encryption
+#### Step 2. Create security certificates
+
+You can use either [`cockroach cert`](create-security-certificates.html) commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
+
+1. Create a directory for certificates and a safe directory for the CA key:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs my-safe-directory
+    ~~~
+
+    If using the default certificate directory (`${HOME}/.cockroach-certs`), make sure it is empty.
+
+2. Create the CA (Certificate Authority) certificate and key pair:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+3. Create the client certificate and key, in this case for the `root` user:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+    These files, `client.root.crt` and `client.root.key`, will be used to secure communication between the built-in SQL shell and the cluster (see step 4).
+
+4. Create the node certificate and key:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-node \
+    localhost \
+    $(hostname) \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+    These files, `node.crt` and `node.key`, will be used to secure communication between nodes. Typically, you would generate these separately for each node since each node has unique addresses; in this case, however, since all nodes will be running locally, you need to generate only one node certificate and key.
+
+#### Step 3. Start a node with encryption
 
 Encryption is configured at node start time using the `--enterprise-encryption` command line flag.
-The flag specifies the encryption options for one of the stores on the node. If multiple stores exist,
-the flag must be specified for each store.
+The flag specifies the encryption options for one of the stores on the node. If multiple stores exist, the flag must be specified for each store.
 
 The flag takes the form: `--enterprise-encryption=path=<store path>,key=<key file>,old-key=<old key file>,rotation-period=<period>`.
 
@@ -165,16 +197,16 @@ Starting a node for the first time using AES-128 encryption can be done using:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-128.key,old-key=plain
+$ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=aes-128.key,old-key=plain --certs-dir=certs
 ~~~
 
 {{site.data.alerts.callout_danger}}
 Once specified for a given store, the `--enterprise-encryption` flag must always be present.
 {{site.data.alerts.end}}
 
-#### Checking encryption status
+#### Step 4. Check the encryption status
 
-Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at <https://localhost:8888/#/reports/stores/local>.
+Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at <https://localhost:8080/#/reports/stores/local>.
 
 The report shows encryption status for all stores on the selected node, including:
 
@@ -191,7 +223,11 @@ Information about keys is written to [the logs](debug-and-error-logs.html), incl
 * Active/old key information at startup.
 * New key information after data key rotation.
 
-#### Changing encryption algorithm or keys
+### Changing encryption algorithm or keys
+
+The user can change the encryption type from plaintext to encryption, between different encryption algorithms
+(using various key sizes), or from encryption to plaintext. When changing the encryption type to plaintext, the data key registry is no longer encrypted and all previous data keys are readable by anyone. All data on the store is effectively readable. When changing from plaintext to encryption, it will take some time for all data to eventually be re-written
+and encrypted.
 
 Encryption type and keys can be changed at any time by restarting the node.
 To change keys or encryption type, the `key` component of the `--enterprise-encryption` flag is set to the new key,
@@ -201,7 +237,7 @@ For example, we can switch from AES-128 to AES-256 using:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-256.key,old-key=/path/to/my/aes-128.key
+$ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=aes-256.key,old-key=aes-128.key --certs-dir=certs
 ~~~
 
 Upon starting, the node will read the existing data keys using the old encryption key (`aes-128.key`), then rewrite
@@ -211,7 +247,7 @@ To check that the new key is active, use the stores report page in the Admin UI 
 
 To disable encryption, specify `key=plain`. The data keys will be stored in plaintext and new data will not be encrypted.
 
-To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
+To rotate keys, specify `key=new-aes-128.key` and `old-key=old-aes-128.key`. The data keys
 will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
 
 ## Encryption known issues
