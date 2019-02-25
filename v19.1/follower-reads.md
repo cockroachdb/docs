@@ -4,7 +4,7 @@ summary: To reduce latency for read queries, you can choose to have the closest 
 toc: true
 ---
 
-<span class="version-tag">New in v19.1:</span> To reduce latency for read queries, you can use the follower reads feature, which lets the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.
+<span class="version-tag">New in v19.1:</span> To reduce latency for read queries, you can use the follower reads feature, which lets the closest replica serve the read request at the expense of potentially serving outdated data.
 
 {{site.data.alerts.callout_danger}}
 The Follower reads feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
