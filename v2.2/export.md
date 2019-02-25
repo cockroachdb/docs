@@ -55,7 +55,7 @@ You can control the [`EXPORT`](export.html) process's behavior using any of the 
 
 #### `delimiter`
 
-If not using comma as your column delimiter, you can specify another Unicode character as the delimiter.
+If not using comma as your column delimiter, you can specify another ASCII character as the delimiter.
 
 <table>
 	<tbody>
@@ -69,7 +69,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The unicode character that delimits columns in your rows</td>
+			<td>The ASCII character that delimits columns in your rows</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -94,7 +94,7 @@ Convert SQL *NULL* values so they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The string that should be used to represent <em>NULL</em> values</td>
+			<td>The string that should be used to represent <em>NULL</em> values. It is important to pick `nullas` values unlikely to appear in the exported data to avoid collusions.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
