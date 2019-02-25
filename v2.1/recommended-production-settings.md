@@ -43,6 +43,16 @@ For added context about CockroachDB's fault tolerance and automated repair capab
 
 ## Hardware
 
+### Terminology
+
+To properly select your cluster's hardware, it's important to review define basic hardware terminology:
+
+Term | Definition
+-----|------------
+**CPU** | The [physical central processing unit (CPU)](https://en.wikipedia.org/wiki/Central_processing_unit) that runs a CockroachDB server run on a (virtual) machine.</br>Also known as: central processor, main processor
+**vCPU** | Four virtual central processing units (vCPU) comprise a CPU. vCPUs increase a core's performance by running multiple tasks simultaneously. </br>Also known as: hyperthread, scheduling unit
+**Core** | A core is the basic unit for processing instructions in a CPU. A rule of thumb for cloud providers is that there are typically 2 vCPUs per core.
+
 ### Basic hardware recommendations
 
 Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
