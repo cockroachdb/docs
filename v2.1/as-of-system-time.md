@@ -38,6 +38,7 @@ Format | Notes
 [`INT`](int.html) | Nanoseconds since the Unix epoch.
 negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thus must be negative.
 [`STRING`](string.html) | A [`TIMESTAMP`](timestamp.html), [`INT`](int.html) of nanoseconds, or negative [`INTERVAL`](interval.html).
+[`DECIMAL`](decimal.html) | A decimal value representing a [hybrid logical clock](architecture/transaction-layer.html#time-and-hybrid-logical-clocks) value, namely that returned by the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) built-in function.
 
 ## Examples
 
