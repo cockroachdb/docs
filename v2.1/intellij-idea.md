@@ -18,6 +18,10 @@ The level of support in this document was tested as of the following versions:
 - IntelliJ IDEA Ultimate 18.1.3
 - PostgreSQL JDBC 41.1
 
+{{site.data.alerts.callout_info}}
+This feature should also work with other JetBrains IDEs, such as PyCharm, but Cockroach Labs has not yet tested its integration.
+{{site.data.alerts.end}}
+
 ### Warnings & Errors
 
 Users can expect to encounter the following behaviors when using CockroachDB within IntelliJ IDEA.
@@ -82,7 +86,7 @@ If you encounter issues other than those outlined above, please [file an issue o
 - IntelliJ IDEA version
 - Operating system
 - Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [`SQL audit logging`](sql-audit-logging.html).
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](query-behavior-troubleshooting.html#sql-logging).
 
 ## See Also
 
