@@ -45,16 +45,16 @@ For added context about CockroachDB's fault tolerance and automated repair capab
 
 ### Basic hardware recommendations
 
-Nodes should have sufficient vCPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
+Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
-#### vCPU and memory
+#### CPU and memory
 
 - At a bare minimum, each node should have **2 GB of RAM and 2 vCPUs**.
 
     More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of vCPUs and additional memory to match the requirements of the workload.
 
     {{site.data.alerts.callout_danger}}
-    Avoid "burstable" or "shared-core" virtual machines that limit the load on vCPU resources.
+    Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
     {{site.data.alerts.end}}
 
 - The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
@@ -96,7 +96,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
     For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPU and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
-    Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on vCPU resources.
+    Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.
     {{site.data.alerts.end}}
 
 - Use `c5` instances with EBS as a primary AWS configuration. To simulate bare-metal deployments, use `c5d` with [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html).
@@ -111,7 +111,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
     For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
 
     {{site.data.alerts.callout_danger}}
-    Do not use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on vCPU resources. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
+    Do not use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on CPU resources. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
     {{site.data.alerts.end}}
 
 - Use [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). Note that [the size of a Premium Storage disk affects its IOPS](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage#premium-storage-disk-limits).
@@ -128,7 +128,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
     For example, Cockroach Labs has used `n1-standard-16` for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
 
     {{site.data.alerts.callout_danger}}
-    Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on vCPU resources.
+    Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
     {{site.data.alerts.end}}
 
 - Use [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). Note that [the IOPS of SSD persistent disks depends both on the disk size and number of vCPUs on the machine](https://cloud.google.com/compute/docs/disks/performance#optimizessdperformance).
@@ -506,6 +506,6 @@ This section, "File Descriptors Limit", is in part derivative of the chapter *Op
 When running CockroachDB on Kubernetes, making the following minimal customizations will result in better, more reliable performance:
 
 * Use [SSDs instead of traditional HDDs](kubernetes-performance.html#disk-type).
-* Configure vCPU and memory [resource requests and limits](kubernetes-performance.html#resource-requests-and-limits).
+* Configure CPU and memory [resource requests and limits](kubernetes-performance.html#resource-requests-and-limits).
 
 For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
