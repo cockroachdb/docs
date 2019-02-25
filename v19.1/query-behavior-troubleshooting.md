@@ -70,7 +70,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 -   Check for [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
--   Use `UUID` instead of `SERIAL` to distribute the . See [UUID Best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
+-   Use `UUID` instead of `SERIAL` to auto-generate unique IDs. See [UUID Best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 
 ## INSERT/UPDATE statements are slow
 
@@ -88,7 +88,7 @@ If a cluster is not idle, it is useful to monitor the per-node queries per secon
 
 ## Increasing number of nodes does not improve performance
 
-See [Why would increasing the number of nodes not result in more operations per second](operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
+See [Why would increasing the number of nodes not result in more operations per second?](operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
 
 ## `bad connection` & `closed` responses
 

@@ -49,11 +49,11 @@ The components of the toolchain might have some incompatibilities that need to b
 
 ### Incompatible CPU
 
-If the cockroach process had exit status `132 (SIGILL)`, it attempted to use an instruction that is not supported by your CPU. Non-release builds of CockroachDB may not be able to run on older hardware platforms than the one used to build them. Release builds should run on any x86-64 CPU.
+If the `cockroach` process had exit status `132 (SIGILL)`, it attempted to use an instruction that is not supported by your CPU. Non-release builds of CockroachDB may not be able to run on older hardware platforms than the one used to build them. Release builds should run on any x86-64 CPU.
 
 ### Default ports already in use
 
-Other services running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](start-a-node.html#networking).
+Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](start-a-node.html#networking).
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
@@ -65,11 +65,11 @@ Networking issues might prevent the node from communicating with itself on its h
 
 ### CockroachDB process hangs when trying to start a node in the background
 
-See [Why is my process hanging when I try to start it in the background](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
+See [Why is my process hanging when I try to start it in the background?](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
 
 ## Cannot run SQL statements using built-in SQL client
 
-If the Cockroach node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
+If the CockroachDB node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -79,23 +79,24 @@ $ cockroach sql --insecure -e "show databases"
 You should see a list of the built-in databases:
 
 ~~~
-+--------------------+
-| Database           |
-+--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
-| system             |
-+--------------------+
-(4 rows)
+  database_name
++---------------+
+  defaultdb
+  postgres
+  system
+(3 rows)
 ~~~
 
 If you’re not seeing the output above, check for the following:
 
 -   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
--   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the cockroach process (i.e., it crashed), [file an issue](file-an-issue.html), including the logs from your node and any errors you received.
+-   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html), including the logs from your node and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
+
+{{site.data.alerts.callout_info}}
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+{{site.data.alerts.end}}
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
 
@@ -129,7 +130,7 @@ no resolvers found; use --join to specify a connected node
 node belongs to cluster {"cluster hash"} but is attempting to connect to a gossip network for cluster {"another cluster hash"}
 ~~~
 
-**Explanation:** When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit cockroach, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.  
+**Explanation:** When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit the `cockroach` process, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.  
 
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
@@ -164,9 +165,7 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 ### Missing `--join` address
 
-If you try to add another node to the cluster, but the `--join` address is missing entirely, which causes the new node to start its own separate cluster.
-
-The startup process succeeds but, because a `--join` address wasn't specified, the node initializes itself as a new cluster instead of joining the existing cluster. You can see this in the `status` field printed to `stdout`:
+If you try to add another node to the cluster, but the `--join` address is missing entirely, then the new node will initialize itself as a new cluster instead of joining the existing cluster. You can see this in the status field printed to stdout:
 
 ~~~
 CockroachDB node starting at 2018-02-08 16:30:26.690638 +0000 UTC (took 0.2s)  
@@ -180,7 +179,7 @@ clusterID: cfcd80ee-9005-4975-9ae9-9c36d9aaa57e
 nodeID: 1
 ~~~
 
-Now if you try to start the node again, but this time include a correct `--join` address, the startup process fails because the cluster notices that the node's cluster ID does not match the cluster ID of the nodes it is trying to join to:
+If you then stop the node and start it again with a correct `--join` address, the startup process will fail because the cluster will notice that the node's cluster ID does not match the cluster ID of the nodes it is trying to join to:
 
 ~~~
 W180815 17:21:00.316845 237 gossip/client.go:123 [n1] failed to start gossip client to localhost:26258: initial connection heartbeat failed: rpc error: code = Unknown desc = client cluster ID "9a6ed934-50e8-472a-9d55-c6ecf9130984" doesn't match server cluster ID "ab6960bb-bb61-4e6f-9190-992f219102c6"
@@ -204,13 +203,13 @@ Most networking-related issues are caused by one of two issues:
 
 To check your networking setup:
 
-1.  Use `ping`. Every machine you are using as a Cockroach node should be able to ping every other machine, using the hostnames or IP addresses used in the `--join` flags (and the `--advertise-host` flag if you are using it).
+1.  Use `ping`. Every machine you are using as a CockroachDB node should be able to ping every other machine, using the hostnames or IP addresses used in the `--join` flags (and the `--advertise-host` flag if you are using it).
 
-2.  If the machines are all pingable, check if you can connect to the appropriate ports. With your Cockroach nodes still running, log in to each node and use `telnet` or` nc` to verify machine to machine connectivity on the desired port. For instance, if you are running Cockroach on the default port of 26257, run either:
-  -   telnet <other-machine> 26257
-  -   nc <other-machine> 26257
+2.  If the machines are all pingable, check if you can connect to the appropriate ports. With your CockroachDB nodes still running, log in to each node and use `telnet` or` nc` to verify machine to machine connectivity on the desired port. For instance, if you are running CockroachDB on the default port of 26257, run either:
+  -   `telnet <other-machine> 26257`
+  -   `nc <other-machine> 26257`
 
-  Both telnet and nc will exit immediately if a connection cannot be established. If you are running in a firewalled environment, the firewall might be blocking traffic to the desired ports even though it is letting ping packets through.
+  Both `telnet` and `nc` will exit immediately if a connection cannot be established. If you are running in a firewalled environment, the firewall might be blocking traffic to the desired ports even though it is letting ping packets through.
 
 To efficiently troubleshoot the issue, it's important to understand where and why it's occurring. We recommend checking the following network-related issues:
 
@@ -218,9 +217,9 @@ To efficiently troubleshoot the issue, it's important to understand where and wh
   -   Change the hostname each node uses to advertises itself with `--advertise-addr`
   -   Set `--listen-addr=<node's IP address>` if the IP is a valid interface on the machine
 -   Every node in the cluster should be able to ping each other node on the hostnames or IP addresses you use in the `--join`, `--listen-addr`, or `--advertise-addr` flags.
--   Every node should be able to connect to other nodes on the port you're using for CockroachDB (26257 by default) through telnet or nc:
-  -   telnet <other node host> 26257
-  -   nc <other node host> 26257
+-   Every node should be able to connect to other nodes on the port you're using for CockroachDB (26257 by default) through `telnet` or `nc`:
+  -   `telnet <other node host> 26257`
+  -   `nc <other node host> 26257`
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
@@ -230,7 +229,7 @@ If the Admin UI lists live nodes in the **Dead Nodes** table, then you might hav
 
 **Explanation:** A network partition indicates that the nodes can't communicate with each other in one or both directions because of a configuration problem with the network itself. A symmetric partition is one where the communication is broken in both directions. An asymmetric partition means the connection works in one direction but not the other. An example of a scenario that can cause a network partition is when specific IP addresses or hostnames are whitelisted in the firewall, and then those addresses or names change after tearing down and rebuilding a node.
 
-The effect of a network partition depends on which nodes are partitioned and where the ranges are located. It depends on a large extent on whether localities have been defined.
+The effect of a network partition depends on which nodes are partitioned and where the ranges are located. It depends to a large extent on whether localities have been defined.
 
 A partition is a lot like an outage, where all nodes in a smaller partition are down. If you don’t provide localities, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 
@@ -240,7 +239,7 @@ To identify a network partition:
 
 1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
 2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-3.  On the Advanced Debugging page, click **Network Latency**.
+3.  Click **Network Latency**.
 4.  In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition.
 
 ## CockroachDB authentication issues
@@ -276,7 +275,7 @@ To check the certificate expiration date:
 
 ### Client password not set
 
-While connecting to a secure cluster as a user, CockroachDB first checks if the client certificate exists in the `cert` directory. If the client certificate doesn’t exist, it prompts for a password. If password is not set and you press Enter, the connection attempt fails, and the following error is printed to stderr:
+While connecting to a secure cluster as a user, CockroachDB first checks if the client certificate exists in the `cert` directory. If the client certificate doesn’t exist, it prompts for a password. If password is not set and you press Enter, the connection attempt fails, and the following error is printed to `stderr`:
 
 ~~~
 Error: pq: invalid password  
@@ -289,19 +288,18 @@ Failed running "sql"
 
 ### Node clocks are not properly synchronized
 
-See [What happens when node clocks are not properly synchronized](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+See the following FAQs:
 
-How can I tell how well node clocks are synchronized?
-
-See [How can I tell how well node clocks are synchronized](operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
+- [What happens when node clocks are not properly synchronized](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+- [How can I tell how well node clocks are synchronized](operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
 
 ## Capacity planning issues
 
 Following are some of the possible issues you might have while planning capacity for your cluster:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance of stability issues.
--   Running storage at 100% capacity causes writes to fail causing various processes to stop.
+-   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
+-   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
 -   Running storage at 100% utilization read/write will causes poor service time.
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
@@ -327,25 +325,25 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 ### Disks filling up
 
-Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a Cockroach node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
+Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
-- [Why is memory usage increasing despite lack of traffic](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
-- [Why is disk usage increasing despite lack of writes](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--  [Can I reduce or disable the storage of timeseries data](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
+- [Why is memory usage increasing despite lack of traffic?](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
+- [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
+-  [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
 
 ## Memory issues
 
 ### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a Cockroach cluster tracks. See the `--cache` flag in [`cockroach start`](start-a-node.html#general).
+A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a CockroachDB cluster tracks. See the `--cache` flag in [`cockroach start`](start-a-node.html#general).
 
-Cockroach memory usage has 3 components:
+CockroachDB memory usage has 3 components:
 
 -   **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
--   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into Cockroach and primarily concerns RocksDB and the RocksDB block cache. This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
--   **Overhead**: (the process resident set size minus Go/CGo allocated memory)
+-   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns RocksDB and the RocksDB block cache. This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
+-   **Overhead**: The process resident set size minus Go/CGo allocated memory.
 
-If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your Cockroach process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
+If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
 
 **Solution:** To determine Go/CGo allocated memory:
 
@@ -368,19 +366,19 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 ### Node crashes because of insufficient memory
 
-Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system killing it suddenly due to low memory. So if you're seeing node crashes where the logs in `logs` directory just end abruptly, it's probably because the node is running out of memory. On most Unix systemsn, you can verify if the cockroach process was killed because the node ran out of memory by running:
+Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system killing it suddenly due to low memory. So if you're seeing node crashes where the logs just end abruptly, it's probably because the node is running out of memory. On most Unix systems, you can verify if the `cockroach` process was killed because the node ran out of memory by running:
 
 ~~~ shell
 $ sudo dmesg | grep -iC 3 "cockroach"
 ~~~
 
-If the command returns the following message:
+If the command returns the following message, then you know the node crashed due to insufficient memory:
 
 ~~~ shell
 $ host kernel: Out of Memory: Killed process <process_id> (cockroach).
 ~~~
 
-Then you know the node crashed due to insufficient memory. To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](start-a-node.html#flags).
+To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](start-a-node.html#flags).
 
 ## Decommissioning issues
 
@@ -403,9 +401,9 @@ You can follow the discussion here: [https://github.com/cockroachdb/cockroach/is
 
 ### Admin UI shows under-replicated/unavailable ranges
 
-An under-replicated range is one in which the number of “up to date” replicas is below the desired replication. An unavailable range is one in which the number of “up to date” replicas is below quorum. When a Cockroach node dies (or is partitioned) the under-replicated range count will briefly spike while the system recovers.
+When a CockroachDB node dies (or is partitioned) the under-replicated range count will briefly spike while the system recovers.
 
-**Explanation:** Cockroach uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
+**Explanation:** CockroachDB uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
 
 -   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges will only have a single replica, but as soon as other nodes are available, they will replicate to them until they've reached their desired replication factor. If a range does not have enough replicas, the range is said to be "under-replicated".
 
@@ -425,11 +423,11 @@ To identify under-replicated/unavailable ranges:
 
 On the Admin UI’s Cluster Overview page, check if any nodes are down. If the number of nodes down is less than (n-1)/2, then that is most probably the cause of the under-replicated/unavailable ranges. Add nodes to the cluster such that the cluster has the required number of nodes to replicate ranges properly.
 
-If you still under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
+If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
 1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui)
-2.  On the Admin UI, click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-2.  On the Advanced Debugging page, click **Problem Ranges**.
+2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
+2.  Click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
