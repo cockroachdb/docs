@@ -6,9 +6,6 @@ toc: true
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
-
-
-
 ## Aliases
 
 In CockroachDB, the following are aliases for `STRING`:
@@ -128,6 +125,33 @@ Type | Details
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+
+### `STRING` vs. `BYTES`
+
+While both `STRING` and `BYTES` can appear to have similar behavior in many situations, one should understand their nuance before casting one into the other.
+
+`STRING` treats all of its data as characters, or more specificially, unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE f (x STRING, y BYTES);
+~~~
+~~~
+CREATE TABLE
+~~~
+~~~ sql
+INSERT INTO f (x, y) VALUES ('\xff', b'\xff'); 
+SELECT LENGTH(x), LENGTH(y) FROM f;
+~~~
+~~~
++-----------+-----------+
+| length(x) | length(y) |
++-----------+-----------+
+|         4 |         1 |
++-----------+-----------+
+~~~
+
+In this case, `LENGTH(bytes)` measures the number of bytes; whereas `LENGTH(string)` measures the number of unicode code points present in the string. Each character (or unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
 ## See also
 

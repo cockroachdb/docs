@@ -66,6 +66,33 @@ valid UTF-8 byte sequences; an error is reported otherwise.
 `STRING` values can be cast explicitly to `BYTES`. This conversion
 always succeeds.
 
+### `STRING` vs. `BYTES`
+
+While both `STRING` and `BYTES` can appear to have similar behavior in many situations, one should understand their nuance before casting one into the other.
+
+`STRING` treats all of its data as characters, or more specificially, unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE f (x STRING, y BYTES);
+~~~
+~~~
+CREATE TABLE
+~~~
+~~~ sql
+INSERT INTO f (x, y) VALUES ('\xff', b'\xff'); 
+SELECT LENGTH(x), LENGTH(y) FROM f;
+~~~
+~~~
++-----------+-----------+
+| length(x) | length(y) |
++-----------+-----------+
+|         4 |         1 |
++-----------+-----------+
+~~~
+
+In this case, `LENGTH(bytes)` measures the number of bytes; whereas `LENGTH(string)` measures the number of characters, or more specifically "unicode code points," present in the string. Each character (or unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+
 ## See also
 
 [Data Types](data-types.html)
