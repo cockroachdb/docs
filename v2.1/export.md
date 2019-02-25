@@ -130,6 +130,24 @@ Convert SQL *NULL* values so they match the specified string.
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
+### View an export
+
+View exports by using [`SHOW QUERIES`](show-queries.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW QUERIES;
+~~~
+
+### Cancel an export
+
+Use [`SHOW QUERIES`](show-queries.html) to get the export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
+~~~
+
 ## Known limitation
 
 `EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
