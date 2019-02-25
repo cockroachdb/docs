@@ -1,13 +1,21 @@
 ---
-title: Enterprise Licensing
+title: Enterprise Features
 summary: Request and set trial and enterprise license keys for CockroachDB
 toc: true
 ---
 
 CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). You can use core features without any license key. However, to use the enterprise features, you need either a trial or an enterprise license key.
 
-This page shows you how to obtain and set trial and enterprise license keys for CockroachDB.
+This page lists enterprise features, and shows you how to obtain and set trial and enterprise license keys for CockroachDB.
 
+## Enterprise features
+
+Feature | Description
+--------+-------------------------
+[`BACKUP`](backup.html) / [`RESTORE`](restore.html) | CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create full or incremental backups of your cluster's schema and data that are consistent as of a given timestamp. The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+[Change Data Capture](change-data-capture.html) | Change data capture (CDC) provides efficient, distributed, row-level [change feeds into Apache Kafka](create-changefeed.html) for downstream processing such as reporting, caching, or full-text indexing.
+[Cluster Visualization](enable-node-map.html) | The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map.
+[Table Partitioning](partitioning.html) | CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 ## Types of licenses
 
