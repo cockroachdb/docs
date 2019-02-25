@@ -125,7 +125,7 @@ Given this mechanism, the transaction record uses the following states:
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
 - `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
 - `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
-- _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the last two seconds, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
+- _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the transaction liveness threshold, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
 
 The transaction record for a committed transaction remains until all its write intents are converted to MVCC values.
 
@@ -142,7 +142,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `COMMITTED`: The operation reads the write intent and converts it to an MVCC value by removing the write intent's pointer to the transaction record.
 - `ABORTED`: The write intent is ignored and deleted.
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
-- _Record does not exist_: If the write intent was created within the last two seconds, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
+- _Record does not exist_: If the write intent was created within the transaction liveness threshold, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
 
 ### Isolation levels
 
@@ -168,8 +168,8 @@ CockroachDB proceeds through the following steps:
 1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp pushed (in the write/read case).
 
 1. If the encountered transaction is expired, it's `ABORTED` and conflict resolution succeeds. We consider a write intent expired if:
-	- It doesn't have a transaction record and is more than two seconds old.
-	- Its transaction record hasn't been heartbeated in the last two seconds.
+	- It doesn't have a transaction record and its timestamp is outside of the transaction liveness threshold.
+	- Its transaction record hasn't been heartbeated within the transaction liveness threshold.
 
 2. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
