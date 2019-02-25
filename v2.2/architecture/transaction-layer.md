@@ -112,11 +112,9 @@ Another way to think of a latch is like a mutex, which is only needed for the du
 
 ### Transaction records
 
-To track the status of a transaction's execution, we write a value called a transaction record to our key-value store. This lets any transaction check the status of any other transaction, which is important for handling concurrency.
+To track the status of a transaction's execution, we write a value called a transaction record to our key-value store. All of a transaction's write intents point back to this record, which lets any transaction check the status of any write intents it encounters. This kind of canonical record is crucial for supporting concurrency in a distributed environment.
 
-When a `TxnCoordSender` begins transaction, it determines where to write the transaction record (this location will always be the same range as the first key in the transaction), and then includes a reference to the transaction record in all of its write intents.
-
-However, the transaction record itself isn't created until one of the following conditions occur:
+Transaction records are always written to the same range as the first key in the transaction, which is known by the `TxnCoordSender`. However, the transaction record itself isn't created until one of the following conditions occur:
 
 - The write operation commits
 - The `TxnCoordSender` heartbeats the transaction
@@ -127,7 +125,7 @@ Given this mechanism, the transaction record uses the following states:
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
 - `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
 - `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
-- _Record does not exist_: Because records might not have been written yet, a missing record require the contending transaction to look at the write intent's timestamp. If it was created within the last two seconds, the transaction is treated as if it's `PENDING`, otherwise the transaction is considered `ABORTED`.
+- _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the last two seconds, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
 
 The transaction record for a committed transaction remains until all its write intents are converted to MVCC values.
 
