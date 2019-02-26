@@ -196,6 +196,7 @@ If a value has been obtained from the sequence in the current session, you can a
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`SHOW CREATE`](show-create.html)
+- [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
