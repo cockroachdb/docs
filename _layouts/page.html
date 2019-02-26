@@ -19,6 +19,10 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
+   {% if page.url contains 'v1.0' %}
+      {% include v1.0/misc/unsupported-version.md %}
+   {% endif %}
+
    {{content}}
 
    {% if page.feedback != false %}
