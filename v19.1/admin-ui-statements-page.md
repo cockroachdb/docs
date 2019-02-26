@@ -15,7 +15,7 @@ The **Statements** page displays the details of the SQL statements executed with
 
 ## Selecting an application
 
-If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the particular application from the **App** dropdown menu.
+By default, the **Statements** page displays the statements executed for all applications running on the cluster as well as the internally executed statements. To view the statements for a particular application, select the application from the **App** dropdown menu.
 
 ## Understanding the Statements page
 
