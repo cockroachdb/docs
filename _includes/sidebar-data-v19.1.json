@@ -1664,6 +1664,12 @@
             ]
           },
           {
+            "title": "Changefeeds Dashboard",
+            "urls": [
+              "/${VERSION}/admin-ui-cdc-dashboard.html"
+            ]
+          },
+          {
             "title": "Databases Page",
             "urls": [
               "/${VERSION}/admin-ui-databases-page.html"
