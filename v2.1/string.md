@@ -133,28 +133,36 @@ Type | Details
 
 While both `STRING` and `BYTES` can appear to have similar behavior in many situations, one should understand their nuance before casting one into the other.
 
-`STRING` treats all of its data as characters, or more specificially, unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example:
+`STRING` treats all of its data as characters, or more specificially, unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex ASCII character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE TABLE f (x STRING, y BYTES);
-~~~
-~~~
-CREATE TABLE
-~~~
-~~~ sql
-INSERT INTO f (x, y) VALUES ('\xff', b'\xff'); 
-SELECT LENGTH(x), LENGTH(y) FROM f;
-~~~
-~~~
-+-----------+-----------+
-| length(x) | length(y) |
-+-----------+-----------+
-|         4 |         1 |
-+-----------+-----------+
+SELECT length('☃'::string);
 ~~~
 
-In this case, `LENGTH(bytes)` measures the number of bytes; whereas `LENGTH(string)` measures the number of unicode code points present in the string. Each character (or unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+~~~
+  length
++--------+
+       1
+~~~
+
+~~~ sql
+SELECT length('☃'::bytes);
+~~~
+~~~
+  length
++--------+
+       3
+~~~
+
+In this case, `LENGTH(string)` measures the number of unicode code points present in the string, where as `LENGTH(bytes)` measures the number of bytes required to store that value. Each character (or unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+
+#### Translating literals to `STRING` vs. `BYTES`
+
+A literals entered through a SQL client will be translated into a different value based on the type:
+
++ `BYTES` give a special meaning to the pair `\x` at the beginning, and translate the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255.
++ `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
 ## See also
 
