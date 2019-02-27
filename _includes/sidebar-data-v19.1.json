@@ -174,12 +174,6 @@
             "urls": [
               "/${VERSION}/demo-json-support.html"
             ]
-          },
-          {
-           "title": "Third-Party Database Tools",
-            "urls": [
-                "/${VERSION}/third-party-database-tools.html"
-            ]
           }
         ]
       },
@@ -1691,6 +1685,29 @@
             "title": "Custom Chart Debug Page",
             "urls": [
               "/${VERSION}/admin-ui-custom-chart-debug-page.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Third-Party Database Tools",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "DBeaver",
+            "urls": [
+              "/${VERSION}/dbeaver.html"
+            ]
+          },
+          {
+            "title": "IntelliJ IDEA",
+            "urls": [
+              "/${VERSION}/intellij-idea.html"
             ]
           }
         ]
