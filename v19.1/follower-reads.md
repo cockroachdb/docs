@@ -7,12 +7,12 @@ toc: true
 <span class="version-tag">New in v19.1:</span> To reduce latency for read queries, you can use the follower reads feature, which lets the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.
 
 {{site.data.alerts.callout_danger}}
-The Follower reads feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+The follower reads feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 {{site.data.alerts.end}}
 
 ## What are Follower reads?
 
-Follower reads are a mechanism to let any replica of a range serve a read request, but are only available for read queries that are sufficiently in the past, i.e., using `AS OF SYSTEM TIME`. Currently, follower reads are available for any read operation at least 48 seconds in the past, though there is active work reduce that window. 
+Follower reads are a mechanism to let any replica of a range serve a read request, but are only available for read queries that are sufficiently in the past, i.e., using `AS OF SYSTEM TIME`. Currently, follower reads are available for any read operation at least 48 seconds in the past, though there is active work to reduce that window. 
 
 In widely distributed deployments, using follower reads can reduce the latency of read operations (which can also increase throughput) by letting the replica closest to the gateway serve the request, instead of forcing the gateway to communicate with the leaseholder, which could be geographically distant.
 
