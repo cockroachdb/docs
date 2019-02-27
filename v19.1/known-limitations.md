@@ -12,6 +12,10 @@ None identified yet.
 
 ## Unresolved limitations
 
+### Database renames are not transactional
+
+Database renames using [`ALTER TABLE .. RENAME DATABASE`](rename-database.html) are not transactional.  When run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions.  For more information, see [Database renaming considerations](rename-database.html#database-renaming-considerations).
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
