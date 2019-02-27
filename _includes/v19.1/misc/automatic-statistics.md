@@ -1,17 +1,6 @@
-<span class="version-tag">New in v19.1</span>: CockroachDB can generate table statistics automatically as tables are updated.
+<span class="version-tag">New in v19.1</span>: By default, CockroachDB generates table statistics automatically as tables are updated.
 
-To turn on automatic statistics collection:
-
-1. Run the following statement to enable the automatic statistics [cluster setting](cluster-settings.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING sql.stats.experimental_automatic_collection.enabled=true
-    ~~~
-
-2. Restart the nodes in your cluster so it can generate statistics for all tables at startup (including read-only tables).
-
-To turn off automatic statistics collection:
+If you need to turn off automatic statistics collection:
 
 1. Run the following statement to disable the automatic statistics [cluster setting](cluster-settings.html):
 

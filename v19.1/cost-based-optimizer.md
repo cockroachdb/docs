@@ -58,7 +58,7 @@ group-by
 (16 rows)
 ~~~
 
-In contrast, queries that are not supported by the cost-based optimizer return errors that begin with the string `pq: unsupported statement: ...` or specific messages like `pq: aggregates with FILTER are not supported yet`.  Such queries will use the legacy heuristic planner instead of the cost-based optimizer.
+In contrast, queries that are not supported by the cost-based optimizer return errors that begin with the string `pq: unsupported statement: ...` or specific messages like `pq: aggregates with FILTER are not supported yet`. Such queries will use the legacy heuristic planner instead of the cost-based optimizer.
 
 ## Types of statements supported by the cost-based optimizer
 
@@ -84,25 +84,23 @@ This is not meant to be an exhaustive list. To check whether a particular query 
 
 The cost-based optimizer can often find more performant query execution plans if it has access to statistical data on the contents of your database's tables. This statistical data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-There are several ways to generate table statistics:
-
-1. Run the [`CREATE STATISTICS`](create-statistics.html) statement manually.
-2. <span class="version-tag">New in v19.1</span> Enable the automatic table statistics feature.
-
-Each method is described below.
-
-### Automatic table statistics
-
 {% include {{ page.version.version }}/misc/automatic-statistics.md %}
 
-### Manually generating table statistics
+To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses:
 
-To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses columns which are part of the primary key or an index.
+- Columns that are part of the primary key or an index (in other words, all indexed columns).
+- Up to 100 non-indexed columns.
+
+Note that the above also describes the statistics gathered by the automatic statistics feature, since it runs a query similar to the one shown below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS employees_stats FROM employees;
 ~~~
+
+{{site.data.alerts.callout_info}}
+Every time the [`CREATE STATISTICS`](create-statistics.html) statement is executed, it kicks off a background job. For more information, see [View statistics jobs](create-statistics.html#view-statistics-jobs).
+{{site.data.alerts.end}}
 
 ## Query plan cache
 
@@ -129,7 +127,7 @@ Finally, note that only the following statements use the plan cache:
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
 
-To change this setting, which is controlled by the `experimental_reorder_joins_limit` [session variable](set-vars.html), run the statement shown below.  To disable this feature, set the variable to `0`.
+To change this setting, which is controlled by the `experimental_reorder_joins_limit` [session variable](set-vars.html), run the statement shown below. To disable this feature, set the variable to `0`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
