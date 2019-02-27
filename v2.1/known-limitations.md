@@ -137,6 +137,16 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 ## Unresolved limitations
 
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html), respectively, are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+
+### Changes to the default replication zone are not applied to existing replication zones
+
+{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+
 ### Silent validation error with `DECIMAL` values
 
 Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:

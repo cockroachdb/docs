@@ -141,6 +141,12 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ## Unresolved Limitations
 
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html), respectively, are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+
 ### Available capacity metric in the Admin UI
 
 {% include v2.0/misc/available-capacity-metric.md %}

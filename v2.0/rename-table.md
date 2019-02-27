@@ -8,8 +8,11 @@ The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table.
 
 {{site.data.alerts.callout_info}}It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Table renames **are not transactional**. For more information, see [Table renaming considerations](#table-renaming-considerations).
+{{site.data.alerts.end}}
 
-## Required Privileges
+## Required privileges
 
 The user must have the `DROP` [privilege](privileges.html) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
@@ -30,6 +33,18 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 ## Viewing Schema Changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Table renaming considerations
+
+Table renames are not transactional. There are two phases during a rename:
+
+1. The `system.namespace` table is updated. This phase is transactional, and will be rolled back if the transaction aborts.
+2. The table descriptor (an internal data structure) is updated, and announced to every other node. This phase is **not** transactional. The rename will be announced to other nodes only if the transaction commits, but there is no guarantee on how much time this operation will take.
+3. Once the new name has propagated to every node in the cluster, another internal transaction is run that declares the old name ready for reuse in another context.
+
+This yields a surprising and undesirable behavior: when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. This violates A, C and I in [ACID](https://en.wikipedia.org/wiki/ACID_(computer_science)). Only D is guaranteed: if the transaction commits successfully, the new name will persist after that.
+
+This is a [known limitation](known-limitations.html#database-and-table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
 ## Examples
 
