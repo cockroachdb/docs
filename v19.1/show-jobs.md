@@ -6,8 +6,9 @@ toc: true
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
 
-- Schema changes through `ALTER TABLE`, `DROP DATABASE`, `DROP TABLE`, and `TRUNCATE`
-- Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html)
+- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
+- Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
+- Database [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 

@@ -84,25 +84,23 @@ This is not meant to be an exhaustive list. To check whether a particular query 
 
 The cost-based optimizer can often find more performant query execution plans if it has access to statistical data on the contents of your database's tables. This statistical data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-There are several ways to generate table statistics:
-
-1. Run the [`CREATE STATISTICS`](create-statistics.html) statement manually.
-2. <span class="version-tag">New in v19.1</span> Enable the automatic table statistics feature.
-
-Each method is described below.
-
-### Automatic table statistics
-
 {% include {{ page.version.version }}/misc/automatic-statistics.md %}
 
-### Manually generating table statistics
+To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses:
 
-To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses columns which are part of the primary key or an index.
+- Columns which are part of the primary key or an index (in other words, all indexed columns).
+- Up to 100 non-indexed columns.
+
+Note that the above also describes the statistics gathered by the automatic statistics feature, since it runs a query similar to the one shown below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS employees_stats FROM employees;
 ~~~
+
+{{site.data.alerts.callout_info}}
+Every time the [`CREATE STATISTICS`](create-statistics.html) statement is executed, it kicks off a background job.  For more information, see [View statistics jobs](create-statistics.html#view-statistics-jobs).
+{{site.data.alerts.end}}
 
 ## Query plan cache
 
