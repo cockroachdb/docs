@@ -41,10 +41,10 @@ release_info:
     start_time: 2019-02-19 15:10:52.34274101 +0000 UTC
   v19.1:
     name: v19.1.0
-    version: v19.1.0-beta.20190225
+    version: v19.1.0-beta.20190304
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2019/02/25 14:48:26 (go1.11)
-    start_time: 2018-02-25 15:10:52.34274101 +0000 UTC
+    build_time: 2019/03/04 14:48:26 (go1.11)
+    start_time: 2018-03-04 15:10:52.34274101 +0000 UTC
 
 training:
   ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
