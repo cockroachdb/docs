@@ -15,7 +15,12 @@ The **Statements** page displays the details of the SQL statements executed with
 
 ## Selecting an application
 
-By default, the **Statements** page displays the statements executed for all applications running on the cluster as well as the internally executed statements. To view the statements for a particular application, select the application from the **App** dropdown menu.
+By default, the **Statements** page displays the following statements:
+
+- Statements executed for all applications running on the cluster
+- Statements executed internally for CockroachDB 
+
+To view the statements for a particular application, select the application from the **App** dropdown menu.
 
 ## Understanding the Statements page
 
