@@ -71,7 +71,7 @@ When replicating data, whether table or system, CockroachDB always uses the most
 4. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
 5. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
 
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
 {{site.data.alerts.end}}
 
