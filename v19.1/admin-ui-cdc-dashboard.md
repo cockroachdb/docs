@@ -11,8 +11,6 @@ The **Changefeeds** dashboard displays the following time series graphs:
 
 ## Sink Byte Traffic
 
-<img src="{{ 'images/v19.1/admin_ui_sink_byte_traffic.png' | relative_url }}" alt="CockroachDB Admin UI Sink Byte Traffic graph" style="border:1px solid #eee;max-width:100%" />
-
 - In the node view, the graph shows the number of bytes emitted by CockroachDB into the sink across all changefeeds for the selected node.
 
 - In the cluster view, the graph shows the number of bytes emitted by CockroachDB into the sink across all changefeeds and across all nodes in the cluster.
@@ -24,8 +22,6 @@ Metric | Description
 **Emitted Bytes** | The number of bytes emitted by CockroachDB into the sink for all changefeeds.
 
 ## Sink Timings
-
-<img src="{{ 'images/v19.1/admin_ui_sink_timings.png' | relative_url }}" alt="CockroachDB Admin UI Sink Timings" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the time in milliseconds per second required by CockroachDB to send messages to the sink as well as the time CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
 
@@ -39,8 +35,6 @@ Metric | Description
 **Flush Time** | The time in milliseconds per second that CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
 
 ## Sink Counts
-
-<img src="{{ 'images/v19.1/admin_ui_sink_counts.png' | relative_url }}" alt="CockroachDB Admin UI Sink Counts" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of messages that CockroachDB sent to the sink as well as the number of flushes that the sink performed for all changefeeds.
 
