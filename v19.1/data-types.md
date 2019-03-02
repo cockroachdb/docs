@@ -11,6 +11,7 @@ CockroachDB supports the following data types. Click a type for more details.
 Type | Description | Example
 -----|-------------|--------
 [`ARRAY`](array.html) | A 1-dimensional, 1-indexed, homogeneous array of any non-array data type. | `{"sky","road","car"}`
+[`BIT`](bit.html) | A string of binary digits (bits). | `B'10010101'`
 [`BOOL`](bool.html) | A Boolean value. | `true`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`
