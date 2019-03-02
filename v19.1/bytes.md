@@ -60,11 +60,31 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 
 `BYTES` values can be
 [cast](data-types.html#data-type-conversions-and-casts) explicitly to
-`STRING`. The conversion verifies that the byte array contains only
-valid UTF-8 byte sequences; an error is reported otherwise.
+`STRING`. This conversion always succeeds. Two conversion modes are
+supported, controlled by the session variable `bytea_output`:
+
+- when set to the default value `hex`, the output of the conversion
+  starts with the two characters `\`, `x` and the rest of the string is
+  composed by the hexadecimal encoding of each byte in the input.
+
+  For example: `x'48AA'::STRING` produces `'\x48AA'`.
+
+- when set to the value `escape`, the output of the conversion
+  contains each byte in the input, as-is if it is an ASCII character,
+  or encoded using the octal escape format `\NNN` otherwise.
+
+  For example: `x'48AA'::STRING` produces `'0\252'`.
 
 `STRING` values can be cast explicitly to `BYTES`. This conversion
-always succeeds.
+always succeeds. Two conversion modes are supported:
+
+- if the string starts with the special two characters `\`, `x`
+  (e.g. `\xAABB`), the rest of the string is interpreted as a sequence
+  of hexadecimal digits. The string is then converted to a byte array
+  where each pair of hexadecimal digits is converted to one byte.
+
+- otherwise, the string is converted to a byte array that contains
+  its UTF-8 encoding.
 
 ## See also
 

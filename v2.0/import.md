@@ -48,7 +48,7 @@ The tabular data to import must be valid [CSV files](https://tools.ietf.org/html
 
 CockroachDB-specific requirements:
 
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [string literal](sql-constants.html#string-literals) beginning with the two characters `\`, `x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
 ### Object Dependencies
 
