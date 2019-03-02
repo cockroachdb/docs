@@ -15,6 +15,8 @@ There are five categories of constants in CockroachDB:
   be inferred from context, for example, `'hello'`.
 - [Numeric literals](#numeric-literals): these define numeric values but their actual data
   type will be inferred from context, for example, `-12.3`.
+- [Bit array literals](#bit-array-literals): these define bit array values with data type
+  `BIT`, for example, `B'1001001'`.
 - [Byte array literals](#byte-array-literals): these define byte array values with data type
   `BYTES`, for example, `b'hello'`.
 - [Interpreted literals](#interpreted-literals): these define arbitrary values with an explicit
@@ -157,6 +159,21 @@ refined depending on context.
 
 Check our blog for
 [more information about the typing of numeric literals](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/).
+
+## Bit array literals
+
+Bit array literals consist of the `B` prefix followed by a string of
+binary digits (bits) enclosed in single quotes.
+
+For example: `B'1001010101'`
+
+Bit array literals are acceptable both when values of types
+[`BIT`](bit.html) or [`VARBIT`](bit.html) (`BIT VARYING`) are
+expected.
+
+The number of bits is arbitrary. An empty bit array is denoted `B''`;
+the number of bits need not be a multiple of 8, and bit arrays can
+contain more than 64 bits.
 
 ## Byte array literals
 
