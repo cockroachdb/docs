@@ -3,6 +3,7 @@ title: User Management
 summary:
 toc: true
 build_for: [managed]
+redirect_from: /v2.2/managed-user-management.html
 ---
 
 The "admin" user identified in your initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.

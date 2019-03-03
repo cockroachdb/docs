@@ -3,6 +3,7 @@ title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
 toc: true
 build_for: [standard, managed]
+redirect_from: /v2.2/learn-cockroachdb-sql.html
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).

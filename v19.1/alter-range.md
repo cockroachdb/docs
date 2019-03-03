@@ -2,6 +2,7 @@
 title: ALTER RANGE
 summary: Use the ALTER RANGE statement to change an existing system range.
 toc: false
+redirect_from: /v2.2/alter-range.html
 ---
 
 The `ALTER RANGE` [statement](sql-statements.html) applies a schema change to a system range.

@@ -4,6 +4,7 @@ summary: Orchestrate the deployment and management of an local cluster using Kub
 toc: true
 secure: true
 redirect_from: orchestration-with-kubernetes.html
+redirect_from: /v2.2/orchestrate-a-local-cluster-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">

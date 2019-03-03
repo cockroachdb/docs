@@ -2,6 +2,7 @@
 title: Follower Reads
 summary: To reduce latency for read queries, you can choose to have the closest node serve the request using the follower reads feature.
 toc: true
+redirect_from: /v2.2/follower-reads.html
 ---
 
 <span class="version-tag">New in v19.1:</span> To reduce latency for read queries, you can use the follower reads feature, which lets the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.

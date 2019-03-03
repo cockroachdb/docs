@@ -2,6 +2,7 @@
 title: Inverted Indexes
 summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data in a JSONB column.
 toc: true
+redirect_from: /v2.2/inverted-indexes.html
 ---
 
 Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.

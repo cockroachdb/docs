@@ -2,6 +2,7 @@
 title: CONFIGURE ZONE
 summary: Use the CONFIGURE ZONE statement to add, modify, reset, and remove replication zones.
 toc: true
+redirect_from: /v2.2/configure-zone.html
 ---
 
 Use `CONFIGURE ZONE` to add, modify, reset, and remove [replication zones](configure-replication-zones.html). To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).

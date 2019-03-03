@@ -2,6 +2,7 @@
 title: SHOW STATISTICS
 summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
+redirect_from: /v2.2/show-statistics.html
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 

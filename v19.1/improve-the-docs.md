@@ -2,6 +2,7 @@
 title: Improve the Docs
 summary: Contribute to the improvement and expansion of CockroachDB documentation.
 toc: false
+redirect_from: /v2.2/improve-the-docs.html
 ---
 
 The CockroachDB docs are open source just like the database itself. We welcome your contributions!

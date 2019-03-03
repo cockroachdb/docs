@@ -3,6 +3,7 @@ title: Build a C++ App with CockroachDB
 summary: Learn how to use CockroachDB from a simple C++ application with a low-level client driver.
 toc: true
 twitter: false
+redirect_from: /v2.2/build-a-c++-app-with-cockroachdb.html
 ---
 
 This tutorial shows you how build a simple C++ application with CockroachDB using a PostgreSQL-compatible driver.

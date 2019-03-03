@@ -2,6 +2,7 @@
 title: SHOW USERS
 summary: The SHOW USERS statement lists the users for all databases.
 toc: true
+redirect_from: /v2.2/show-users.html
 ---
 
 The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.

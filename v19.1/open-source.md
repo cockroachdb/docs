@@ -2,6 +2,7 @@
 title: Open Source
 summary: CockroachDB is completely open source.
 toc: false
+redirect_from: /v2.2/open-source.html
 ---
 
 Run on your laptop, development cluster, and public or private cloud without complex licensing, mock implementations, or inscrutable closed-source error output. Be a part of our vibrant community of developers and users! And if you really love databases, you can contribute to the design and implementation as it evolves.

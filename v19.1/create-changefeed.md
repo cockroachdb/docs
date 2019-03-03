@@ -2,6 +2,7 @@
 title: CREATE CHANGEFEED
 summary: The CREATE CHANGEFEED statement creates a new changefeed, which provides row-level change subscriptions.
 toc: true
+redirect_from: /v2.2/create-changefeed.html
 ---
 
 The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.

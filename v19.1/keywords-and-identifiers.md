@@ -1,6 +1,7 @@
 ---
 title: Keywords & Identifiers
 toc: false
+redirect_from: /v2.2/keywords-and-identifiers.html
 ---
 
 SQL statements consist of two fundamental components:

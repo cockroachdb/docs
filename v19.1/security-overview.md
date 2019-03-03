@@ -2,6 +2,7 @@
 title: CockroachDB Security
 summary: Learn about the authentication, encryption, authorization, and audit log features for secure CockroachDB clusters.
 toc: true
+redirect_from: /v2.2/security-overview.html
 ---
 
 An insecure CockroachDB cluster comes with serious risks:

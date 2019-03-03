@@ -3,6 +3,7 @@ title: Use the Admin UI for Your Managed Cluster
 summary:
 toc: true
 build_for: [managed]
+redirect_from: /v2.2/managed-use-the-admin-ui.html
 ---
 
 Cockroach Labs actively monitors and manages the health of your cluster, but the Admin UI gives you the ability to observe your cluster's health and performance as well.

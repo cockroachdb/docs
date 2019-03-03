@@ -5,6 +5,7 @@ toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 redirect_from: manual-deployment-insecure.html
 
+redirect_from: /v2.2/deploy-cockroachdb-on-premises-insecure.html
 ---
 
 <div class="filters filters-big clearfix">

@@ -2,6 +2,7 @@
 title: ALTER USER
 summary: The ALTER USER statement can be used to add or change a user's password.
 toc: true
+redirect_from: /v2.2/alter-user.html
 ---
 
 The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-and-manage-users.html) password.

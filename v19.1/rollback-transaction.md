@@ -2,6 +2,7 @@
 title: ROLLBACK
 summary: Abort the current transaction, discarding all updates made by statements included in the transaction with the ROLLBACK statement in CockroachDB.
 toc: true
+redirect_from: /v2.2/rollback-transaction.html
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.

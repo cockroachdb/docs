@@ -2,6 +2,7 @@
 title: Experimental Features
 summary: Learn about the experimental features available in CockroachDB
 toc: true
+redirect_from: /v2.2/experimental-features.html
 ---
 
 This page lists the experimental features that are available in CockroachDB v19.1.

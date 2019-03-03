@@ -2,6 +2,7 @@
 title: Manage Roles
 summary: Roles are SQL groups that contain any number of users and roles as members.
 toc: true
+redirect_from: /v2.2/roles.html
 ---
 
 Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:

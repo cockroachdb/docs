@@ -2,6 +2,7 @@
 title: DROP DATABASE
 summary: The DROP DATABASE statement removes a database and all its objects from a CockroachDB cluster.
 toc: true
+redirect_from: /v2.2/drop-database.html
 ---
 
 The `DROP DATABASE` [statement](sql-statements.html) removes a database and all its objects from a CockroachDB cluster.

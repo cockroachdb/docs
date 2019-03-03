@@ -2,6 +2,7 @@
 title: Ordering Query Results
 summary: The ORDER BY clause controls the order of rows.
 toc: true
+redirect_from: /v2.2/query-order.html
 ---
 
 The `ORDER BY` clause controls the order in which rows are returned or

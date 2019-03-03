@@ -2,6 +2,7 @@
 title: SHOW ZONE CONFIGURATIONS
 summary: Use the SHOW ZONE CONFIGURATIONS statement to list details about existing replication zones.
 toc: true
+redirect_from: /v2.2/show-zone-configurations.html
 ---
 
 Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view details about existing [replication zones](configure-replication-zones.html).

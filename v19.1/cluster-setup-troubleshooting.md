@@ -2,6 +2,7 @@
 title: Troubleshoot Cluster Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
 toc: true
+redirect_from: /v2.2/cluster-setup-troubleshooting.html
 ---
 
 If you're having trouble starting or scaling your cluster, this page will help you troubleshoot the issue.

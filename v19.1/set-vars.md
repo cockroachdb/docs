@@ -6,6 +6,7 @@ redirect_from:
 - set-application-name.html
 - set-database.html
 - set-time-zone.html
+redirect_from: /v2.2/set-vars.html
 ---
 
 The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html).

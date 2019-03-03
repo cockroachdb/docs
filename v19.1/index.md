@@ -7,6 +7,7 @@ toc: true
 twitter: false
 contribute: false
 build_for: [standard, managed]
+redirect_from: /v2.2/index.html
 ---
 
 {% if site.managed %}

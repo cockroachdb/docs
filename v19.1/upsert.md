@@ -2,6 +2,7 @@
 title: UPSERT
 summary: The UPSERT statement inserts rows when values do not violate uniqueness constraints, and it updates rows when values do violate uniqueness constraints.
 toc: true
+redirect_from: /v2.2/upsert.html
 ---
 
 The `UPSERT` [statement](sql-statements.html) is short-hand for [`INSERT ON CONFLICT`](insert.html#on-conflict-clause). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.

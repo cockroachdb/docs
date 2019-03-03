@@ -2,6 +2,7 @@
 title: BEGIN
 summary: Initiate a SQL transaction with the BEGIN statement in CockroachDB.
 toc: true
+redirect_from: /v2.2/begin-transaction.html
 ---
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.

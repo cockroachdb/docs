@@ -2,6 +2,7 @@
 title: Constraints
 summary: Constraints offer additional data integrity by enforcing conditions on the data within a column.
 toc: true
+redirect_from: /v2.2/constraints.html
 ---
 
 Constraints offer additional data integrity by enforcing conditions on the data within a column. Whenever values are manipulated (inserted, deleted, or updated), constraints are checked and modifications that violate constraints are rejected.

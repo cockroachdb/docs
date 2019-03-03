@@ -3,6 +3,7 @@ title: Build a Java App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Java application with the JDBC driver.
 toc: true
 twitter: false
+redirect_from: /v2.2/build-a-java-app-with-cockroachdb.html
 ---
 
 <div class="filters filters-big clearfix">

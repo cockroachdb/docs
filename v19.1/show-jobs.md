@@ -2,6 +2,7 @@
 title: SHOW JOBS
 summary: The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs.
 toc: true
+redirect_from: /v2.2/show-jobs.html
 ---
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:

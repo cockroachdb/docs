@@ -2,6 +2,7 @@
 title: CREATE SEQUENCE
 summary:
 toc: true
+redirect_from: /v2.2/create-sequence.html
 ---
 
 The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.

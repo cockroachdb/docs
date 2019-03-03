@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB with Docker Swarm
 summary: How to orchestrate the deployment and management of a secure three-node CockroachDB cluster as a Docker swarm.
 toc: true
+redirect_from: /v2.2/orchestrate-cockroachdb-with-docker-swarm.html
 ---
 
 <div class="filters filters-big clearfix">

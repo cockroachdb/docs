@@ -2,6 +2,7 @@
 title: Troubleshoot SQL Behavior
 summary: Learn how to troubleshoot issues with specific SQL statements with CockroachDB
 toc: true
+redirect_from: /v2.2/query-behavior-troubleshooting.html
 ---
 
 If a SQL statement returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.

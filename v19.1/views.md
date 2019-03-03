@@ -2,6 +2,7 @@
 title: Views
 summary:
 toc: true
+redirect_from: /v2.2/views.html
 ---
 
 A view is a stored [selection query](selection-queries.html) and provides a shorthand name for it. CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.

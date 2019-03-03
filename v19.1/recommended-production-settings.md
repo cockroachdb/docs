@@ -2,6 +2,7 @@
 title: Production Checklist
 summary: Recommended settings for production deployments.
 toc: true
+redirect_from: /v2.2/recommended-production-settings.html
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.

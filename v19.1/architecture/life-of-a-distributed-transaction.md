@@ -2,6 +2,7 @@
 title: Life of a Distributed Transaction
 summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to RocksDB (and then back out again).
 toc: true
+redirect_from: /v2.2/life-of-a-distributed-transaction.html
 ---
 
 Because CockroachDB is a distributed transactional database, the path queries take is dramatically different from many other database architectures. To help familiarize you with CockroachDB's internals, this guide covers what that path actually is.

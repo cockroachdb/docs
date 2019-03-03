@@ -2,6 +2,7 @@
 title: SHOW QUERIES
 summary: The SHOW QUERIES statement lists all currently active queries across the cluster or on the local node.
 toc: true
+redirect_from: /v2.2/show-queries.html
 ---
 
 The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:

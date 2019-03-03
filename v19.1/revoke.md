@@ -2,6 +2,7 @@
 title: REVOKE &lt;privileges&gt;
 summary: The REVOKE statement revokes privileges from users and/or roles.
 toc: true
+redirect_from: /v2.2/revoke.html
 ---
 
 The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](create-and-manage-users.html) and/or [roles](authorization.html#create-and-manage-roles).

@@ -2,6 +2,7 @@
 title: UPDATE
 summary: The UPDATE statement updates rows in a table.
 toc: true
+redirect_from: /v2.2/update.html
 ---
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.

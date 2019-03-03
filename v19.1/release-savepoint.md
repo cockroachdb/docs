@@ -2,6 +2,7 @@
 title: RELEASE SAVEPOINT
 summary: Commit a transaction's changes once there are no retryable errors with the RELEASE SAVEPOINT statement in CockroachDB.
 toc: true
+redirect_from: /v2.2/release-savepoint.html
 ---
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), the `RELEASE SAVEPOINT` statement commits the transaction.

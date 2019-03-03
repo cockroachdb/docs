@@ -3,6 +3,7 @@ title: Sign Up for a Managed Cluster
 summary:
 toc: true
 build_for: [managed]
+redirect_from: /v2.2/managed-sign-up-for-a-cluster.html
 ---
 
 The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:

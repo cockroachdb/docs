@@ -3,6 +3,7 @@ title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
 keywords: reflection
 toc: true
+redirect_from: /v2.2/show-grants.html
 ---
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users.

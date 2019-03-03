@@ -2,6 +2,7 @@
 title: SHOW SCHEMAS
 summary: The SHOW SCHEMAS statement lists the schemas in a database.
 toc: true
+redirect_from: /v2.2/show-schemas.html
 ---
 
 The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.

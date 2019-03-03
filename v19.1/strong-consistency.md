@@ -2,6 +2,7 @@
 title: Strong Consistency
 summary: CockroachDB implements consistent replication via majority consensus between replicas.
 toc: false
+redirect_from: /v2.2/strong-consistency.html
 ---
 
 CockroachDB replicates your data multiple times and guarantees consistency between replicas.

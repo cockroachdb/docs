@@ -4,6 +4,7 @@ summary: Learn how to migrate data into a CockroachDB cluster.
 redirect_from: import-data.html
 toc: true
 build_for: [standard, managed]
+redirect_from: /v2.2/migration-overview.html
 ---
 
 CockroachDB supports importing data from the following databases:

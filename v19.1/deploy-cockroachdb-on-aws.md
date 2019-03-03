@@ -5,6 +5,7 @@ toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
+redirect_from: /v2.2/deploy-cockroachdb-on-aws.html
 ---
 
 <div class="filters filters-big clearfix">

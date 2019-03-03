@@ -2,6 +2,7 @@
 title: Third-Party Database Tools
 summary: Learn about third-party software that works with CockroachDB.
 toc: true
+redirect_from: /v2.2/third-party-database-tools.html
 ---
 
 CockroachDB's support of the PostgreSQL wire protocol enables support for many [drivers](build-an-app-with-cockroachdb.html), [ORMs](build-an-app-with-cockroachdb.html), and other types of third-party database tools.

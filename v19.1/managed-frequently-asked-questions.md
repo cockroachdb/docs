@@ -3,6 +3,7 @@ title: Frequently Asked Questions
 summary:
 toc: true
 build_for: [managed]
+redirect_from: /v2.2/managed-frequently-asked-questions.html
 ---
 
 ## Cluster basics

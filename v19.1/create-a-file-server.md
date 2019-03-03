@@ -2,6 +2,7 @@
 title: Create a File Server for Imports and Backups
 summary: Learn how to create a simple file server for use with CockroachDB IMPORT and BACKUP
 toc: true
+redirect_from: /v2.2/create-a-file-server.html
 ---
 
 If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB enterprise backups](backup.html), but do not have access to (or simply cannot use) cloud storage providers, you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).

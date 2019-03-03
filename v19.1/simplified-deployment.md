@@ -2,6 +2,7 @@
 title: Simplified Deployment
 summary: Deploying CockroachDB is simple and straightforward.
 toc: false
+redirect_from: /v2.2/simplified-deployment.html
 ---
 
 Deploying and maintaining databases has forever been a difficult and expensive prospect. Simplicity is one of our foremost design goals. CockroachDB is self contained and eschews external dependencies. There are no explicit roles like masters, slaves, primaries, or secondaries to get in the way. Instead, every CockroachDB node is symmetric and equally important, meaning no single points of failure in the architecture.

@@ -2,6 +2,7 @@
 title: Range Merges
 summary: To help improve performance, CockroachDB can automatically merge small ranges of data together.
 toc: true
+redirect_from: /v2.2/range-merges.html
 ---
 
 To help improve your cluster's performance, CockroachDB can automatically merge small ranges of data together to form fewer, larger ranges. This can both improve query latency, as well as your cluster's survivability.

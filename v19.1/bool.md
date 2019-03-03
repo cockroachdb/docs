@@ -2,6 +2,7 @@
 title: BOOL
 summary: The BOOL data type stores Boolean values of false or true.
 toc: true
+redirect_from: /v2.2/bool.html
 ---
 
 The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`.

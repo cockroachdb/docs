@@ -2,6 +2,7 @@
 title: RENAME TABLE
 summary: The RENAME TABLE statement changes the name of a table.
 toc: true
+redirect_from: /v2.2/rename-table.html
 ---
 
 The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table. It can also be used to move a table from one database to another.

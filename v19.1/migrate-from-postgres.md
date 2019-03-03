@@ -3,6 +3,7 @@ title: Migrate from Postgres
 summary: Learn how to migrate data from Postgres into a CockroachDB cluster.
 toc: true
 build_for: [standard, managed]
+redirect_from: /v2.2/migrate-from-postgres.html
 ---
 
 {% include {{page.version.version}}/misc/beta-warning.md %}

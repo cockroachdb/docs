@@ -2,6 +2,7 @@
 title: Subqueries
 summary: Subqueries enable the use of the results from a query within another query.
 toc: true
+redirect_from: /v2.2/subqueries.html
 ---
 
 SQL subqueries enable reuse of the results from a [selection query](selection-queries.html) within another query.

@@ -2,6 +2,7 @@
 title: SHOW INDEX
 summary: The SHOW INDEX statement returns index information for a table.
 toc: true
+redirect_from: /v2.2/show-index.html
 ---
 
 The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table.

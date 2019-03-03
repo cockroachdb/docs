@@ -1,6 +1,7 @@
 ---
 title: Statements Page
 toc: true
+redirect_from: /v2.2/admin-ui-statements-page.html
 ---
 
 The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

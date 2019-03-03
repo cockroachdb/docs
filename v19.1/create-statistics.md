@@ -2,6 +2,7 @@
 title: CREATE STATISTICS
 summary: Use the CREATE STATISTICS statement to generate table statistics for the cost-based optimizer to use.
 toc: true
+redirect_from: /v2.2/create-statistics.html
 ---
 Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
 

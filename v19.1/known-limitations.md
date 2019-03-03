@@ -2,6 +2,7 @@
 title: Known Limitations in CockroachDB v19.1
 summary: Known limitations in CockroachDB v19.1.
 toc: true
+redirect_from: /v2.2/known-limitations.html
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.

@@ -2,6 +2,7 @@
 title: DROP VIEW
 summary: The DROP VIEW statement removes a view from a database.
 toc: true
+redirect_from: /v2.2/drop-view.html
 ---
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.

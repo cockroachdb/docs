@@ -2,6 +2,7 @@
 title: Information Schema
 summary: The information_schema database contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
+redirect_from: /v2.2/information-schema.html
 ---
 
 CockroachDB provides a virtual schema called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.

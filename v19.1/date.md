@@ -2,6 +2,7 @@
 title: DATE
 summary: The DATE data type stores a year, month, and day.
 toc: true
+redirect_from: /v2.2/date.html
 ---
 
 The `DATE` [data type](data-types.html) stores a year, month, and day.

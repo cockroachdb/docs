@@ -4,6 +4,7 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
+redirect_from: /v2.2/node-startup-troubleshooting.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQfBd8ZbrmBUp6iXAkesniVSBZGLp5d4fG04PzeIHtOu1K8skQJ5qj-SSlAIvyzGGsJ8g-TgUvqBCj_/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

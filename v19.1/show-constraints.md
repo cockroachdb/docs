@@ -2,6 +2,7 @@
 title: SHOW CONSTRAINTS
 summary: The SHOW CONSTRAINTS statement lists the constraints on a table.
 toc: true
+redirect_from: /v2.2/show-constraints.html
 ---
 
 The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed [`CHECK`](check.html) constraints on a table.

@@ -2,6 +2,7 @@
 title: Not Null Constraint
 summary: The NOT NULL constraint specifies the column may not contain NULL values.
 toc: true
+redirect_from: /v2.2/not-null.html
 ---
 
 The `NOT NULL` [constraint](constraints.html) specifies a column may not contain *NULL* values.

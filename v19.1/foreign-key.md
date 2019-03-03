@@ -2,6 +2,7 @@
 title: Foreign Key Constraint
 summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
 toc: true
+redirect_from: /v2.2/foreign-key.html
 ---
 
 The foreign key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.

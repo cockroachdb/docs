@@ -2,6 +2,7 @@
 title: Intellij IDEA
 summary: Learn how to use IntelliJ IDEA with CockroachDB.
 toc: true
+redirect_from: /v2.2/intellij-idea.html
 ---
 
 You can use CockroachDB in [IntelliJ IDEA](https://www.jetbrains.com/idea/) as a [database data source](https://www.jetbrains.com/help/idea/managing-data-sources.html#data_sources), which lets you accomplish tasks like managing your database's schema from within your IDE.

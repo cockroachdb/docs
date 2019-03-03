@@ -4,6 +4,7 @@ summary: The tutorials in this section show you how to build a simple applicatio
 tags: golang, python, java
 toc: true
 twitter: false
+redirect_from: /v2.2/build-an-app-with-cockroachdb.html
 ---
 
 The tutorials in this section show you how to build a simple application with CockroachDB using PostgreSQL-compatible client drivers and ORMs.

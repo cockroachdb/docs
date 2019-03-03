@@ -2,6 +2,7 @@
 title: SET TRANSACTION
 summary: The SET TRANSACTION statement sets the transaction priority for the current session or an individual transaction.
 toc: true
+redirect_from: /v2.2/set-transaction.html
 ---
 
 The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.

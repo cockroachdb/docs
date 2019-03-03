@@ -2,6 +2,7 @@
 title: DBeaver
 summary: Learn how to use DBeaver with CockroachDB.
 toc: true
+redirect_from: /v2.2/dbeaver.html
 ---
 
 The [DBeaver database tool][dbeaver] is a tool that completely integrates with CockroachDB to provide a GUI for managing your database.
