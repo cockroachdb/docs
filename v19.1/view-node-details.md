@@ -2,6 +2,7 @@
 title: View Node Details
 summary: To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags.
 toc: true
+redirect_from: /v2.2/view-node-details.html
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.

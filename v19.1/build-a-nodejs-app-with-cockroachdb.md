@@ -3,6 +3,7 @@ title: Build a Node.js App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Node.js application with the Node.js pg driver.
 toc: true
 twitter: false
+redirect_from: /v2.2/build-a-nodejs-app-with-cockroachdb.html
 ---
 
 <div class="filters filters-big clearfix">

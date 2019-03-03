@@ -3,6 +3,7 @@ title: Locality and Replication Zones
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /v2.2/locality-and-replication-zones.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQExkRfyBBEOBe5-0uGDsIK7MhwE6eEN7Ok9xpTw83gq7XEkQAT3kZ0rdxwUVRHJEwo6E3H7bgontsX/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

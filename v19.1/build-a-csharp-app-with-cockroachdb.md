@@ -3,6 +3,7 @@ title: Build a C# (.NET) App with CockroachDB
 summary: Learn how to use CockroachDB from a simple C# (.NET) application with a low-level client driver.
 toc: true
 twitter: true
+redirect_from: /v2.2/build-a-csharp-app-with-cockroachdb.html
 ---
 
 This tutorial shows you how build a simple C# (.NET) application with CockroachDB using a PostgreSQL-compatible driver.

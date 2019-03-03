@@ -2,6 +2,7 @@
 title: Automated Scaling & Repair
 summary: CockroachDB transparently manages scale with an upgrade path from a single node to hundreds.
 toc: false
+redirect_from: /v2.2/automated-scaling-and-repair.html
 ---
 
 CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or a private or public cloud. [Adding capacity](start-a-node.html) is as easy as pointing a new node at the running cluster. 

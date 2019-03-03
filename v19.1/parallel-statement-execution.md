@@ -2,6 +2,7 @@
 title: Parallel Statement Execution
 summary: The parallel statement execution feature allows parallel execution of multiple independent SQL statements within a transaction.
 toc: true
+redirect_from: /v2.2/parallel-statement-execution.html
 ---
 
 CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. 

@@ -3,6 +3,7 @@ title: Connect to Your Managed Cluster
 summary:
 toc: true
 build_for: [managed]
+redirect_from: /v2.2/managed-connect-to-your-cluster.html
 ---
 
 Once your Managed CockroachDB cluster is available and you've received your [connection details](managed-sign-up-for-a-cluster.html#connection-details), you can start interacting with your cluster using the CockroachDB SQL client or a Postgres-compatible driver or ORM.

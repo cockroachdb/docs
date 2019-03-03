@@ -2,6 +2,7 @@
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
 toc: true
+redirect_from: /v2.2/connection-parameters.html
 ---
 
 Client applications, including [`cockroach` client

@@ -2,6 +2,7 @@
 title: CREATE DATABASE
 summary: The CREATE DATABASE statement creates a new CockroachDB database.
 toc: true
+redirect_from: /v2.2/create-database.html
 ---
 
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.

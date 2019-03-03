@@ -2,6 +2,7 @@
 title: Data Types
 summary: Learn about the data types supported by CockroachDB.
 toc: true
+redirect_from: /v2.2/data-types.html
 ---
 
 ## Supported types

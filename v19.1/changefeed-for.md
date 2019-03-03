@@ -2,6 +2,7 @@
 title: EXPERIMENTAL CHANGEFEED FOR
 summary: The EXPERIMENTAL CHANGEFEED FOR statement creates a new core changefeed, which provides row-level change subscriptions.
 toc: true
+redirect_from: /v2.2/changefeed-for.html
 ---
 
 <span class="version-tag">New in v19.1:</span> The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which provides row-level change subscriptions.

@@ -2,6 +2,7 @@
 title: CREATE VIEW
 summary: The CREATE VIEW statement creates a .
 toc: true
+redirect_from: /v2.2/create-view.html
 ---
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.

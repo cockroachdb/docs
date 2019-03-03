@@ -2,6 +2,7 @@
 title: Stop a Node
 summary: Learn how to temporarily stop a CockroachDB node.
 toc: true
+redirect_from: /v2.2/stop-a-node.html
 ---
 
 This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).

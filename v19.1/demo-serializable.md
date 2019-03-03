@@ -2,6 +2,7 @@
 title: Serializable Transactions
 summary:
 toc: true
+redirect_from: /v2.2/demo-serializable.html
 ---
 
 In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.

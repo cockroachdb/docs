@@ -1,6 +1,7 @@
 ---
 title: Cluster Overview Page
 toc: true
+redirect_from: /v2.2/admin-ui-cluster-overview-page.html
 ---
 
 The **Cluster Overview** page of the Admin UI provides details of the cluster nodes and their liveness status, replication status, uptime, and key hardware metrics. [Enterprise users](enterprise-licensing.html) can enable and switch to the [Node Map](admin-ui-cluster-overview-page.html#node-map-enterprise) view.

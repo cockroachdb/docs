@@ -2,6 +2,7 @@
 title: IMPORT
 summary: Import data into your CockroachDB cluster.
 toc: true
+redirect_from: /v2.2/import.html
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:

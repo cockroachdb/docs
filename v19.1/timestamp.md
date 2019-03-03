@@ -2,6 +2,7 @@
 title: TIMESTAMP
 summary: The TIMESTAMP data type stores a date and time pair in UTC, whereas TIMESTAMPTZ stores a date and time pair with a time zone offset from UTC.
 toc: true
+redirect_from: /v2.2/timestamp.html
 ---
 
 The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC, whereas `TIMESTAMPTZ` stores a date and time pair with a time zone offset from UTC.

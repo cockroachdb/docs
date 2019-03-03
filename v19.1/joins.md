@@ -2,6 +2,7 @@
 title: Join Expressions
 summary: Join expressions combine data from two or more table expressions.
 toc: true
+redirect_from: /v2.2/joins.html
 ---
 
 Join expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).

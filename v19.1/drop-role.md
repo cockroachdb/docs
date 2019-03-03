@@ -2,6 +2,7 @@
 title: DROP ROLE (Enterprise)
 summary: The DROP ROLE statement removes one or more SQL roles.
 toc: true
+redirect_from: /v2.2/drop-role.html
 ---
 
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.

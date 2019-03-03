@@ -2,6 +2,7 @@
 title: STRING
 summary: The STRING data type stores a string of Unicode characters.
 toc: true
+redirect_from: /v2.2/string.html
 ---
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.

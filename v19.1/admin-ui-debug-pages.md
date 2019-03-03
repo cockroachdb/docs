@@ -1,6 +1,7 @@
 ---
 title: Advanced Debugging Page
 toc: true
+redirect_from: /v2.2/admin-ui-debug-pages.html
 ---
 
 The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view the **Advanced Debugging** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click the gear icon on the left-hand navigation bar.

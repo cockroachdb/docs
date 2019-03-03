@@ -2,6 +2,7 @@
 title: Storage Layer
 summary: The storage layer of CockroachDB's architecture reads and writes data to disk.
 toc: true
+redirect_from: /v2.2/storage-layer.html
 ---
 
 The storage layer of CockroachDB's architecture reads and writes data to disk.

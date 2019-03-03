@@ -2,6 +2,7 @@
 title: SHOW CLUSTER SETTING
 summary: The SHOW CLUSTER SETTING statement displays the current cluster settings.
 toc: true
+redirect_from: /v2.2/show-cluster-setting.html
 ---
 
 The `SHOW CLUSTER SETTING` [statement](sql-statements.html) can

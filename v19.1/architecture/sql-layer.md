@@ -2,6 +2,7 @@
 title: SQL Layer
 summary: The SQL layer of CockroachDB's architecture exposes its SQL API to developers and converts SQL statements into key-value operations.
 toc: true
+redirect_from: /v2.2/sql-layer.html
 ---
 
 The SQL layer of CockroachDB's architecture exposes its SQL API to developers and converts SQL statements into key-value operations used by the rest of the database.

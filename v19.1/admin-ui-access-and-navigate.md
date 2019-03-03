@@ -2,6 +2,7 @@
 title: Use the CockroachDB Admin UI
 summary: Learn how to access and navigate the Admin UI.
 toc: true
+redirect_from: /v2.2/admin-ui-access-and-navigate.html
 ---
 
 The built-in Admin UI helps you monitor and troubleshoot CockroachDB by providing information about the cluster's health, configuration, and operations.

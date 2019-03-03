@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB with Mesosphere DC/OS (Insecure)
 summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Mesosphere DC/OS.
 toc: true
+redirect_from: /v2.2/orchestrate-cockroachdb-with-mesosphere-insecure.html
 ---
 
 This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Mesosphere DC/OS](https://mesosphere.com/).

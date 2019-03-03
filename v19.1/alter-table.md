@@ -2,6 +2,7 @@
 title: ALTER TABLE
 summary: Use the ALTER TABLE statement to change the schema of a table.
 toc: true
+redirect_from: /v2.2/alter-table.html
 ---
 
 The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table.

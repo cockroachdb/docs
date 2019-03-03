@@ -2,6 +2,7 @@
 title: Authentication
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
+redirect_from: /v2.2/authentication.html
 ---
 
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.

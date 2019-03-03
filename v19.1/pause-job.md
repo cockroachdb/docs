@@ -2,6 +2,7 @@
 title: PAUSE JOB
 summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs.
 toc: true
+redirect_from: /v2.2/pause-job.html
 ---
 
 The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and [`changefeeds`](change-data-capture.html).

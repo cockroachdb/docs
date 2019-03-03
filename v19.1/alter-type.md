@@ -2,6 +2,7 @@
 title: ALTER TYPE
 summary: Use the ALTER TYPE statement to change a column's data type.
 toc: true
+redirect_from: /v2.2/alter-type.html
 ---
 
 The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).

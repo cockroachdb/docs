@@ -6,6 +6,7 @@ redirect_from:
 - show-all.html
 - show-transaction.html
 - show-time-zone.html
+redirect_from: /v2.2/show-vars.html
 ---
 
 The `SHOW` [statement](sql-statements.html) can display the value of either one or all of

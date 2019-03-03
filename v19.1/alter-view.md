@@ -2,6 +2,7 @@
 title: ALTER VIEW
 summary: The ALTER VIEW statement changes the name of a view.
 toc: true
+redirect_from: /v2.2/alter-view.html
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) changes the name of a [view](views.html).

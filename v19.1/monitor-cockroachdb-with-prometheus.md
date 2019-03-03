@@ -2,6 +2,7 @@
 title: Monitor CockroachDB with Prometheus
 summary: Use Prometheus to monitor CockroachDB.
 toc: true
+redirect_from: /v2.2/monitor-cockroachdb-with-prometheus.html
 ---
 
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.

@@ -3,6 +3,7 @@ title: Build a Clojure App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Clojure application with a low-level client driver.
 toc: true
 twitter: false
+redirect_from: /v2.2/build-a-clojure-app-with-cockroachdb.html
 ---
 
 This tutorial shows you how build a simple Clojure application with CockroachDB using [leiningen](https://leiningen.org/) and a PostgreSQL-compatible driver.

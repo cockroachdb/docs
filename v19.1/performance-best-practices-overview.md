@@ -3,6 +3,7 @@ title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
 build_for: [standard, managed]
+redirect_from: /v2.2/performance-best-practices-overview.html
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.

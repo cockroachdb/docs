@@ -4,6 +4,7 @@ summary: Essential techniques for getting fast reads and writes in a single- and
 toc: true
 certs: --insecure
 app: ./tuning.py
+redirect_from: /v2.2/performance-tuning-insecure.html
 ---
 
 <div class="filters filters-big clearfix">

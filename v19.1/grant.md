@@ -2,6 +2,7 @@
 title: GRANT &lt;privileges&gt;
 summary: The GRANT statement grants user privileges for interacting with specific databases and tables.
 toc: true
+redirect_from: /v2.2/grant.html
 ---
 
 The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](authorization.html#create-and-manage-roles) or [user's](create-and-manage-users.html) SQL [privileges](authorization.html#assign-privileges) for interacting with specific databases and tables.

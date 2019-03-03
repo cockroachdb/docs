@@ -1,6 +1,7 @@
 ---
 title: Detailed SQL Standard Comparison
 summary: Details of CockroachDB's conformance to the SQL standard and which common extensions it supports.
+redirect_from: /v2.2/detailed-sql-support.html
 ---
 
 This page lists which SQL standard features are supported, partially-supported, and unsupported by CockroachDB.

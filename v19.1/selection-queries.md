@@ -4,6 +4,7 @@ summary: Selection Queries can read and process data.
 toc: true
 redirect_from: selection-clauses.html
 key: selection-clauses.html
+redirect_from: /v2.2/selection-queries.html
 ---
 
 Selection queries read and process data in CockroachDB.  They are more

@@ -3,6 +3,7 @@ title: Common Table Expressions
 summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
 toc: true
 toc_not_nested: true
+redirect_from: /v2.2/common-table-expressions.html
 ---
 
 Common Table Expressions, or CTEs, provide a shorthand name to a

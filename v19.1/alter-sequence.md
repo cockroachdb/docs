@@ -2,6 +2,7 @@
 title: ALTER SEQUENCE
 summary: Use the ALTER SEQUENCE statement to change the name, increment values, and other settings of a sequence.
 toc: true
+redirect_from: /v2.2/alter-sequence.html
 ---
 
 The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.

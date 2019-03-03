@@ -2,6 +2,7 @@
 title: JSON Support
 summary: Use a local cluster to explore how CockroachDB can store and query unstructured JSONB data.
 toc: true
+redirect_from: /v2.2/demo-json-support.html
 ---
 
 This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.

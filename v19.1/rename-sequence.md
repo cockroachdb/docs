@@ -2,6 +2,7 @@
 title: RENAME SEQUENCE
 summary: The RENAME SEQUENCE statement changes the name of a sequence.
 toc: true
+redirect_from: /v2.2/rename-sequence.html
 ---
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.

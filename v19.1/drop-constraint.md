@@ -2,6 +2,7 @@
 title: DROP CONSTRAINT
 summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
 toc: true
+redirect_from: /v2.2/drop-constraint.html
 ---
 
 The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes Check and Foreign Key constraints from columns.

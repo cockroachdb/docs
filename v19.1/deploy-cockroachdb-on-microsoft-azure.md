@@ -4,6 +4,7 @@ summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: true
 toc_not_nested: true
 ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
+redirect_from: /v2.2/deploy-cockroachdb-on-microsoft-azure.html
 ---
 
 <div class="filters filters-big clearfix">

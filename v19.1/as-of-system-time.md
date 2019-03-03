@@ -2,6 +2,7 @@
 title: AS OF SYSTEM TIME
 summary: The AS OF SYSTEM TIME clause executes a statement as of a specified time.
 toc: true
+redirect_from: /v2.2/as-of-system-time.html
 ---
 
 The `AS OF SYSTEM TIME timestamp` clause causes statements to execute

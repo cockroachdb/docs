@@ -2,6 +2,7 @@
 title: ALTER INDEX
 summary: Use the ALTER INDEX statement to change an existing index.
 toc: false
+redirect_from: /v2.2/alter-index.html
 ---
 
 The `ALTER INDEX` [statement](sql-statements.html) applies a schema change to an index.

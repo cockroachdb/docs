@@ -2,6 +2,7 @@
 title: Reformat SQL Queries for Enhanced Clarity
 summary: Use cockroach sqlfmt to enhance the text layout of a SQL query.
 toc: true
+redirect_from: /v2.2/use-the-query-formatter.html
 ---
 
 The `cockroach sqlfmt`

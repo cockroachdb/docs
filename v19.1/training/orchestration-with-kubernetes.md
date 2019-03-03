@@ -3,6 +3,7 @@ title: Orchestration with Kubernetes
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
+redirect_from: /v2.2/orchestration-with-kubernetes.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vT1GMwEQx4USCuIdhsKVWECdBcyXgjB69uO3tLiePzec3ULRAx46jiq-9FKCBar-wp2UMPJVC5UTNqD/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

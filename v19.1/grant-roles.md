@@ -2,6 +2,7 @@
 title: GRANT &lt;roles&gt;
 summary: The GRANT <roles> statement grants user privileges for interacting with specific databases and tables.
 toc: true
+redirect_from: /v2.2/grant-roles.html
 ---
 
 The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](authorization.html#create-and-manage-roles) or [user](create-and-manage-users.html) as a member to a role.

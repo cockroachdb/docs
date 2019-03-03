@@ -2,6 +2,7 @@
 title: ALTER DATABASE
 summary: Use the ALTER DATABASE statement to change an existing database.
 toc: false
+redirect_from: /v2.2/alter-database.html
 ---
 
 The `ALTER DATABASE` [statement](sql-statements.html) applies a schema change to a database.

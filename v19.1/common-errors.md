@@ -3,6 +3,7 @@ title: Common Errors
 summary: Understand and resolve common errors.
 toc: false
 redirect_from: general-troubleshooting.html
+redirect_from: /v2.2/common-errors.html
 ---
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).

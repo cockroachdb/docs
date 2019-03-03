@@ -2,6 +2,7 @@
 title: SPLIT AT
 summary: The SPLIT AT statement forces a key-value layer range split at the specified row in a table or index.
 toc: true
+redirect_from: /v2.2/split-at.html
 ---
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.

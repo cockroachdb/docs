@@ -2,6 +2,7 @@
 title: Porting from PostgreSQL
 summary: Porting an application from PostgreSQL
 toc: true
+redirect_from: /v2.2/porting-postgres.html
 ---
 
 Although CockroachDB supports PostgreSQL syntax and drivers, it does not offer exact compatibility. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.

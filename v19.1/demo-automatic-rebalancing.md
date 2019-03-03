@@ -2,6 +2,7 @@
 title: Automatic Rebalancing
 summary: Use a local cluster to explore how CockroachDB automatically rebalances data as you scale.
 toc: true
+redirect_from: /v2.2/demo-automatic-rebalancing.html
 ---
 
 This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll run a sample workload and watch the replica count increase. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.

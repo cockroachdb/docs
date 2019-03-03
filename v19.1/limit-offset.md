@@ -2,6 +2,7 @@
 title: Limiting Query Results
 summary: LIMIT and OFFSET restrict an operation to a few row.
 toc: true
+redirect_from: /v2.2/limit-offset.html
 ---
 
 The `LIMIT` and `OFFSET` clauses restrict the operation of:

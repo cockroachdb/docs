@@ -2,6 +2,7 @@
 title: Open a SQL Shell to a Temporary Cluster
 summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, single-node CockroachDB cluster.
 toc: true
+redirect_from: /v2.2/cockroach-demo.html
 ---
 
 The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster, optionally with a pre-loaded dataset, and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to the cluster.  

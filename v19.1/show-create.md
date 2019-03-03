@@ -6,6 +6,7 @@ redirect_from:
 - show-create-table.html
 - show-create-view.html
 - show-create-sequence.html
+redirect_from: /v2.2/show-create.html
 ---
 
 The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).

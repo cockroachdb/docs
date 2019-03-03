@@ -3,6 +3,7 @@ title: INTERLEAVE IN PARENT
 summary: Interleaving tables improves query performance by optimizing the key-value structure of closely related table's data.
 toc: true
 toc_not_nested: true
+redirect_from: /v2.2/interleave-in-parent.html
 ---
 
 Interleaving tables improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same [key-value range](frequently-asked-questions.html#how-does-cockroachdb-scale) if it's likely to be read and written together.

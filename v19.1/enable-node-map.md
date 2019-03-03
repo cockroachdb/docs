@@ -2,6 +2,7 @@
 title: Enable the Node Map
 summary: Learn how to enable the node map in the Admin UI.
 toc: true
+redirect_from: /v2.2/enable-node-map.html
 ---
 
 The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.

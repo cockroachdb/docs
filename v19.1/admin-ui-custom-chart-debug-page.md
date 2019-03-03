@@ -1,6 +1,7 @@
 ---
 title: Custom Chart Debug Page
 toc: true
+redirect_from: /v2.2/admin-ui-custom-chart-debug-page.html
 ---
 
 The **Custom Chart** debug page in the Admin UI can be used to create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).

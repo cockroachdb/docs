@@ -2,6 +2,7 @@
 title: Follow-the-Workload
 summary: CockroachDB can dynamically optimize read latency for the location from which most of the workload is originating.
 toc: true
+redirect_from: /v2.2/demo-follow-the-workload.html
 ---
 
 "Follow-the-workload" refers to CockroachDB's ability to dynamically optimize read latency for the location from which most of the workload is originating. This page explains how "follow-the-workload" works and walks you through a simple demonstration using a local cluster.

@@ -2,6 +2,7 @@
 title: RENAME COLUMN
 summary: The RENAME COLUMN statement changes the name of a column in a table.
 toc: true
+redirect_from: /v2.2/rename-column.html
 ---
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.

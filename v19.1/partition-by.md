@@ -2,6 +2,7 @@
 title: PARTITION BY
 summary: Use the ALTER TABLE statement to define partitions and subpartitions, repartition, or unpartition a table.
 toc: true
+redirect_from: /v2.2/partition-by.html
 ---
 
 `PARTITION BY` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to define partitions and subpartitions on a table, and repartition or unpartition a table.

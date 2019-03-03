@@ -2,6 +2,7 @@
 title: DROP USER
 summary: The DROP USER statement removes one or more SQL users.
 toc: true
+redirect_from: /v2.2/drop-user.html
 ---
 
 The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.

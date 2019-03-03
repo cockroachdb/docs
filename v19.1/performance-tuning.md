@@ -4,6 +4,7 @@ summary: Essential techniques for getting fast reads and writes in a single- and
 toc: true
 certs: --certs-dir=certs
 app: ./tuning-secure.py
+redirect_from: /v2.2/performance-tuning.html
 ---
 
 <div class="filters filters-big clearfix">

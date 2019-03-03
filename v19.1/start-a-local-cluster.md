@@ -4,6 +4,7 @@ summary: Run an insecure multi-node CockroachDB cluster locally with each node l
 toc: true
 toc_not_nested: true
 asciicast: true
+redirect_from: /v2.2/start-a-local-cluster.html
 ---
 
 <div class="filters filters-big clearfix">

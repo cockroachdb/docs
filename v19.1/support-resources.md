@@ -2,6 +2,7 @@
 title: Support Resources
 summary: Get help using CockroachDB
 toc: false
+redirect_from: /v2.2/support-resources.html
 ---
 
 If you're having an issue with CockroachDB, you can reach out for support from Cockroach Labs and our community:

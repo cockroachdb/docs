@@ -2,6 +2,7 @@
 title: ARRAY
 summary: The ARRAY data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array data types.
 toc: true
+redirect_from: /v2.2/array.html
 ---
 
 The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type](data-types.html).

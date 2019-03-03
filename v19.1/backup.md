@@ -2,6 +2,7 @@
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
+redirect_from: /v2.2/backup.html
 ---
 
 {{site.data.alerts.callout_danger}}

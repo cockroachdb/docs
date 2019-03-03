@@ -2,6 +2,7 @@
 title: DROP SEQUENCE
 summary:
 toc: true
+redirect_from: /v2.2/drop-sequence.html
 ---
 
 The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
