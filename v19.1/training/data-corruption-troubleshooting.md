@@ -4,7 +4,6 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/data-corruption-troubleshooting.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQuOKrRv9JEUuEnbvs-_YY8rRaDIzxkaH6G54lOWba3DvCwZCfEl-Vq9842__lPPRL6IdOh86plx8hs/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
