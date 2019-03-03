@@ -2,9 +2,10 @@
 title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
 toc: true
-redirect_from: select.html
 key: select.html
-redirect_from: /v2.2/select-clause.html
+redirect_from:
+- select.html
+- /v2.2/select-clause.html
 ---
 
 The simple `SELECT` clause is the main SQL syntax to read and process

@@ -2,7 +2,7 @@
 title: SQL Basics
 toc: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /v2.2/sql-basics.html
+redirect_from: /v2.2/training/sql-basics.html
 ---
 
 <style>

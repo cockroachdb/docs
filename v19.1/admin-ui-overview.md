@@ -2,9 +2,10 @@
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
 toc: false
-redirect_from: explore-the-admin-ui.html
 key: explore-the-admin-ui.html
-redirect_from: /v2.2/admin-ui-overview.html
+redirect_from:
+- explore-the-admin-ui.html
+- /v2.2/admin-ui-overview.html
 ---
 
 The CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance by monitoring the following areas:
