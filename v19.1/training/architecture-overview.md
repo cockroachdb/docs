@@ -3,7 +3,6 @@ title: Architecture Overview
 summary: Learn more about CockroachDB's underlying architecture
 toc: false
 sidebar_data: sidebar-data-training.json
-redirect_from: /training/architecture-overview.html
 ---
 
 Watch the rest of Alex Robinson's talk, where he explains the CockroachDB architecture and how it was built. You can also read through a related set of slides.

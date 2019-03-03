@@ -3,7 +3,6 @@ title: Cluster Startup and Scaling
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /training/cluster-startup-and-scaling.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vReMGQvxlD5A84On802gukVFgoSuL4gJKl0JX2xy9aQenikBOmO12W08566QaKVJzD5c6VkoYlWUPKI/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
