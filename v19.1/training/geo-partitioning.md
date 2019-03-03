@@ -3,7 +3,7 @@ title: Geo-Partitioning
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /v2.2/geo-partitioning.html
+redirect_from: /v2.2/training/geo-partitioning.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTv2TOeo0h6p5GlTfTXnloz9wfRaqlwfDk8yqDUjCoNC61_l7sRR91dvliZyzTmDotsDW9MwBJ2kWRk/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

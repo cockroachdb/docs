@@ -4,7 +4,7 @@ summary: Learn how to benchmark CockroachDB against TPC-C.
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /v2.2/performance-benchmarking.html
+redirect_from: /v2.2/training/performance-benchmarking.html
 ---
 
 This lab walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on CockroachDB. It measures tpmC (new order transactions/minute) on a TPC-C dataset of 10 warehouses (for a total dataset size of 2GB) on 3 nodes.
