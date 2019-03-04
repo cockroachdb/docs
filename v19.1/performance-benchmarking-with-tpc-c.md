@@ -261,7 +261,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     ~~~ shell
     $  ./workload.LATEST fixtures load tpcc \
     --warehouses=10000 \
-    "postgres://root@<node1 address>?sslmode=disable postgres://root@<node2 address>?sslmode=disable postgres://root@<node3 address>?sslmode=disable [...space separated list]"
+    "postgres://root@<node1 address>?sslmode=disable"
     ~~~
 
     This command runs the TPC-C workload against the cluster. This will take at about an hour and loads 10,000 "warehouses" of data.
