@@ -67,6 +67,26 @@ For more information about how the `AS OF SYSTEM TIME` clause works, including s
 
 {% include {{ page.version.version }}/misc/delete-statistics.md %}
 
+### View statistics jobs
+
+Every time the `CREATE STATISTICS` statement is executed, it kicks off a background job.  This is true for queries issued by your application as well as queries issued by the [automatic stats](#automatic-table-statistics) feature.
+
+To view statistics jobs, issue the following query that uses [`SHOW JOBS`](show-jobs.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW JOBS] WHERE job_type LIKE '%CREATE STATS%';
+~~~
+
+~~~
+       job_id       |   job_type   |                                     description                                     | user_name |  status   | running_status |          created           |          started           |          finished          |          modified          | fraction_completed | error | coordinator_id 
+--------------------+--------------+-------------------------------------------------------------------------------------+-----------+-----------+----------------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------
+ 429997863416791041 | CREATE STATS | CREATE STATISTICS employee_stats FROM test.public.employees AS OF SYSTEM TIME '-1m' | root      | succeeded |                | 2019-02-27 19:22:13.904065 | 2019-02-27 19:22:13.909684 | 2019-02-27 19:22:14.203006 | 2019-02-27 19:22:14.203007 |                  1 |       |              1
+ 429996681838297089 | CREATE STATS | CREATE STATISTICS __auto__ FROM [67] AS OF SYSTEM TIME '-30s'                       | root      | succeeded |                | 2019-02-27 19:16:13.314916 | 2019-02-27 19:16:13.317949 | 2019-02-27 19:16:13.63022  | 2019-02-27 19:16:13.630221 |                  1 |       |              1
+ 429996676782456833 | CREATE STATS | CREATE STATISTICS __auto__ FROM [66] AS OF SYSTEM TIME '-30s'                       | root      | succeeded |                | 2019-02-27 19:16:11.771999 | 2019-02-27 19:16:11.775159 | 2019-02-27 19:16:13.308078 | 2019-02-27 19:16:13.308079 |                  1 |       |              1
+ 429996676018601985 | CREATE STATS | CREATE STATISTICS __auto__ FROM [65] AS OF SYSTEM TIME '-30s'                       | root      | succeeded |                | 2019-02-27 19:16:11.538883 | 2019-02-27 19:16:11.542195 | 2019-02-27 19:16:11.762671 | 2019-02-27 19:16:11.762672 |                  1 |       |              1
+~~~
+
 ## See Also
 
 - [Cost-Based Optimizer](cost-based-optimizer.html)
@@ -74,4 +94,5 @@ For more information about how the `AS OF SYSTEM TIME` clause works, including s
 - [`CREATE TABLE`](create-table.html)
 - [`INSERT`](insert.html)
 - [`IMPORT`](import.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [SQL Statements](sql-statements.html)
