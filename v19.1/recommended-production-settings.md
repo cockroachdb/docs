@@ -63,7 +63,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
 
-    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPU per node; higher vCPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
 - For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 vCPUs per node.
 
@@ -97,7 +97,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
 
-    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPU and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
+    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.
