@@ -79,10 +79,6 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
 
-    {{site.data.alerts.callout_info}}
-    {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-    {{site.data.alerts.end}}
-
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 ### Cloud-specific recommendations

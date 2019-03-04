@@ -59,7 +59,7 @@ In addition, CockroachDB stores internal [**system data**](architecture/distribu
 Level | Description
 ------|------------
 Cluster | The `.default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
-System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
+System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from `.default`. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
 
 ### Level priorities
 
@@ -70,10 +70,6 @@ When replicating data, whether table or system, CockroachDB always uses the most
 3. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the table replication zone.
 4. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
 5. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
-
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-{{site.data.alerts.end}}
 
 ## Manage replication zones
 
