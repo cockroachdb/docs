@@ -55,7 +55,7 @@ You can control the [`EXPORT`](export.html) process's behavior using any of the 
 
 #### `delimiter`
 
-If not using comma as your column delimiter, you can specify another Unicode character as the delimiter.
+If not using comma as your column delimiter, you can specify another ASCII character as the delimiter.
 
 <table>
 	<tbody>
@@ -69,7 +69,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The unicode character that delimits columns in your rows</td>
+			<td>The ASCII character that delimits columns in your rows</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -94,7 +94,7 @@ Convert SQL *NULL* values so they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The string that should be used to represent <em>NULL</em> values</td>
+			<td>The string that should be used to represent <em>NULL</em> values. To avoid collisions, it is important to pick <code>nullas</code> values that does not appear in the exported data.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -128,6 +128,24 @@ Convert SQL *NULL* values so they match the specified string.
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+### View a running export
+
+View running exports by using [`SHOW QUERIES`](show-queries.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW QUERIES;
+~~~
+
+### Cancel a running export
+
+Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 ## Known limitation
