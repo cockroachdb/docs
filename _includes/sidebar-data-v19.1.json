@@ -1064,6 +1064,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW SEQUENCES</code>",
+                "urls": [
+                  "/${VERSION}/show-sequences.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW SESSIONS</code>",
                 "urls": [
                   "/${VERSION}/show-sessions.html"

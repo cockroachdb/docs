@@ -126,4 +126,5 @@ RENAME SEQUENCE
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
+- [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)

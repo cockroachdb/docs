@@ -68,6 +68,7 @@ Statement | Usage
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
+[`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
