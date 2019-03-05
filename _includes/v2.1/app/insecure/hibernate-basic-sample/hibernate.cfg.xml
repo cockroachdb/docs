@@ -6,7 +6,7 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
         <property name="connection.url">jdbc:postgresql://127.0.0.1:26257/bank?sslmode=disable</property>
         <property name="connection.username">maxroach</property>
 
