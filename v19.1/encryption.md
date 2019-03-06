@@ -70,14 +70,11 @@ key. The newly-generated data key is used to encrypt all new data from this poin
 
 ### Changing encryption type
 
-The user can change the encryption type from plaintext to encryption, between different encryption algorithms
-(using various key sizes), or from encryption to plaintext.
+The user can change the encryption type from plaintext to encryption, between different encryption algorithms (using various key sizes), or from encryption to plaintext.
 
-When changing the encryption type to plaintext, the data key registry is no longer encrypted and all previous
-data keys are readable by anyone. All data on the store is effectively readable.
+When changing the encryption type to plaintext, the data key registry is no longer encrypted and all previous data keys are readable by anyone. All data on the store is effectively readable.
 
-When changing from plaintext to encryption, it will take some time for all data to eventually be re-written
-and encrypted.
+When changing from plaintext to encryption, it will take some time for all data to eventually be re-written and encrypted.
 
 ### Recommendations
 
@@ -143,7 +140,7 @@ $ openssl rand -out /path/to/my/aes-128.key 48
 
 #### Starting a node with encryption
 
-Encryption is configured at node start time using the `--enterprise-encryption` command line flag.
+Encryption at Rest is configured at node start time using the `--enterprise-encryption` command line flag.
 The flag specifies the encryption options for one of the stores on the node. If multiple stores exist,
 the flag must be specified for each store.
 
