@@ -34,6 +34,7 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
  Variable name | Description | Initial value |  Can be modified with [`SET`](set-vars.html)?
 ---------------|-------------|---------------|-----------------------------------------------
  `application_name` | The current application name for statistics collection. | Empty string, or `cockroach` for sessions from the [built-in SQL client](use-the-built-in-sql-client.html)  | Yes
+ `bytea_output` | The [mode for conversions from `STRING` to `BYTES`](bytes.html#supported-conversions). | `hex` | Yes |
  `database` | The [current database](sql-name-resolution.html#current-database). Database in connection string, or empty if not specified | Yes |
  `default_transaction_isolation` | All transactions execute with `SERIALIZABLE` isolation. See [Transactions: Isolation levels](transactions.html#isolation-levels). | `SERIALIZABLE`  | No
  `default_transaction_read_only` | The default transaction access mode for the current session. If set to `on`, only read operations are allowed in transactions in the current session; if set to `off`, both read and write operations are allowed. See [`SET TRANSACTION`](set-transaction.html) for more details. | `off` | Yes

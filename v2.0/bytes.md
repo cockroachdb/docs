@@ -60,11 +60,22 @@ The size of a `BYTES` value is variable, but it's recommended to keep values und
 
 `BYTES` values can be
 [cast](data-types.html#data-type-conversions-casts) explicitly to
-`STRING`. The conversion verifies that the byte array contains only
-valid UTF-8 byte sequences; an error is reported otherwise.
+[`STRING`](string.html). The output of the conversion starts with the
+two characters `\`, `x` and the rest of the string is composed by the
+hexadecimal encoding of each byte in the input. For example,
+`x'48AA'::STRING` produces `'\x48AA'`.
 
 `STRING` values can be cast explicitly to `BYTES`. This conversion
-always succeeds.
+will fail if the hexadecimal digits are not valid, or if there is an
+odd number of them. Two conversion modes are supported:
+
+- If the string starts with the two special characters `\` and `x`
+  (e.g. `\xAABB`), the rest of the string is interpreted as a sequence
+  of hexadecimal digits. The string is then converted to a byte array
+  where each pair of hexadecimal digits is converted to one byte.
+
+- Otherwise, the string is converted to a byte array that contains
+  its UTF-8 encoding.
 
 ## See Also
 

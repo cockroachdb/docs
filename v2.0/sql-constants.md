@@ -180,14 +180,13 @@ with character escapes are as follows:
 ### Hexadecimal-encoded byte array literals
 
 This is a CockroachDB-specific extension to express byte array
-literals: the delimiter `x'` or `e'\\x` followed by an arbitrary sequence of
+literals: the delimiter `x'` followed by an arbitrary sequence of
 hexadecimal digits, followed by a closing `'`.
 
 For example, all the following formats are equivalent to `b'cat'`:
 
 - `x'636174'`
 - `X'636174'`
-- `e'\\x636174'::BYTES`
 
 ## Interpreted literals
 
