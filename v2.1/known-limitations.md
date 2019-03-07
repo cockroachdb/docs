@@ -137,10 +137,6 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 ## Unresolved limitations
 
-### Changes to the default replication zone are not applied to existing replication zones
-
-{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-
 ### Silent validation error with `DECIMAL` values
 
 Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:

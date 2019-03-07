@@ -1,7 +1,3 @@
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
-{{site.data.alerts.end}}
-
 To edit the default replication zone, use the `ALTER RANGE ... CONFIGURE ZONE` statement to define the values you want to change (other values will remain the same):
 
 {% include copy-clipboard.html %}

@@ -1,4 +1,4 @@
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
 {{site.data.alerts.end}}
 
