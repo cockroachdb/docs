@@ -437,12 +437,12 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T024 | Spaces in binary literals | No |
 |  T031 | BOOLEAN data type | Yes |
 |  T041 | Basic LOB data type support | No |
-|  T041-01 | BLOB data type | No |
+|  T041-01 | BLOB data type | Partial |
 |  T041-02 | CLOB data type | No |
-|  T041-03 | POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types | No |
-|  T041-04 | Concatenation of LOB data types | No |
+|  T041-03 | POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types | Partial |
+|  T041-04 | Concatenation of LOB data types | Yes |
 |  T041-05 | LOB locator: non-holdable | No |
-|  T042 | Extended LOB data type support | No |
+|  T042 | Extended LOB data type support | Partial |
 |  T043 | Multiplier T | No |
 |  T044 | Multiplier P | No |
 |  T051 | Row types | Yes |
