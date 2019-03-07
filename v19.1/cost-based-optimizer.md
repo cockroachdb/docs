@@ -140,6 +140,32 @@ We strongly recommend not setting this value higher than 8 to avoid performance 
 
 For more information about the difficulty of selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
 
+## Join hints
+
+<span class="version-tag">New in v19.1</span>: The optimizer supports hint syntax to force the use of a specific join algorithm.  The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, resulting in e.g.,
+
+- `INNER HASH JOIN`
+- `OUTER MERGE JOIN`
+- `LEFT LOOKUP JOIN`
+
+Note that the hint cannot be specified with a bare `JOIN` keyword - in that case, the `INNER` keyword must be added.  For example, `a MERGE JOIN b` will not work, but `a INNER MERGE JOIN b` will work.
+
+Supported join algorithms include:
+
+- `HASH`: Forces a hash join; in other words, it disables merge and lookup joins.  A hash join is always possible, even if there are no equality columns - we consider the quadratic join a degenerate case of the hash join (i.e., a hash table with one bucket).
+
+- `MERGE`: Forces a merge join, even if it requires re-sorting both sides of the join.
+
+- `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index.  Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
+
+If it is not possible to use the algorithm specified in the hint, an error is signalled.
+
+Additional considerations:
+
+- When a join hint is specified, the two tables will not be reordered by the optimizer.
+
+- This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that they use `LOOP` instead of `LOOKUP`.
+
 ## How to turn the optimizer off
 
 With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
