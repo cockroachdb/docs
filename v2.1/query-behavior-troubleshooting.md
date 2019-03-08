@@ -19,10 +19,9 @@ If your queries return unexpected results, there are several possibilities:
 
 If queries are taking longer than expected to process, there are a few things you can check into:
 
-- Review your deployment's monitoring. General network latency or partitioning events can affect query response times.
-
+- Make sure you're following our [SQL Best Practices](performance-best-practices-overview.html). For a demonstration of several essential SQL tuning techniques, see [Performance Tuning](performance-tuning.html).
+- Review your deployment's [monitoring](monitoring-and-alerting.html). General network latency or partitioning events can affect query response times.
 - [Identify and cancel long-running queries](manage-long-running-queries.html).
-
 - [Turn on SQL logging](#sql-logging).
 
 If you're still unable to determine why the query executes slowly, please [file an issue](file-an-issue.html).
@@ -43,6 +42,6 @@ Because this kind of behavior is entirely unexpected, you should [file an issue]
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [Chatting with other members of the CockroachDB community on Gitter](https://gitter.im/cockroachdb/cockroach)
