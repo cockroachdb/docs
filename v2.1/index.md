@@ -1,7 +1,7 @@
 ---
 title: CockroachDB Docs
 summary: CockroachDB user documentation.
-toc: false
+toc: true
 contribute: false
 build_for: [standard, managed]
 ---
@@ -51,7 +51,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 .column {
   float: left;
-  width: 30%;
+  width: 45%;
   margin: 15px;
   box-shadow: 0 2px 5px 0 rgba(17,29,57,0.1), 0 4px 20px 0 rgba(17,29,57,0.12);
 }
@@ -107,6 +107,8 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices.html">SQL Best Practices</a></p>
     </div>
   </div>
+</div>
+<div class="row">
   <div class="column">
     <div class="column-content">
       <!-- <h3>Deploy</h3> -->
@@ -118,8 +120,6 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
     </div>
   </div>
-</div>
-<div class="row">
   <div class="column">
     <div class="column-content">
       <p class="column-title">Migrate</p>
@@ -130,6 +130,8 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices-overview.html#bulk-insert-best-practices">Bulk Insert Best Practices</a></p>
     </div>
   </div>
+</div>
+<div class="row">
   <div class="column">
     <div class="column-content">
       <p class="column-title">Troubleshoot</p>
