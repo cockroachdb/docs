@@ -104,7 +104,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="connection-parameters.html">Connection Parameters</a></p>
         <p><a href="sql-statements.html">SQL Statements</a></p>
         <p><a href="data-types.html">Data Types</a></p>
-        <p><a href="performance-best-practices.html">SQL Best Practices</a></p>
+        <p><a href="performance-best-practices-overview.html">SQL Best Practices</a></p>
     </div>
   </div>
   <div class="column">
@@ -113,7 +113,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
       <p class="column-title">Deploy</p>
         <p><a href="recommended-production-settings.html">Production Checklist</a></p>
         <p><a href="manual-deployment.html">Manual Deployment</a></p>
-        <p><a href="orchestrated-deployment.html">Orchestration</a></p>
+        <p><a href="orchestration.html">Orchestration</a></p>
         <p><a href="security-overview.html">Security</a></p>
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
     </div>
@@ -143,7 +143,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
   <div class="column">
     <div class="column-content">
       <p class="column-title">Reference</p>
-        <p><a href="client-drivers.html">SQL</a></p>
+        <p><a href="sql-feature-support.html">SQL</a></p>
         <p><a href="cockroach-commands.html">CLI</a></p>
         <p><a href="cluster-settings.html">Cluster Settings</a></p>
         <p><a href="admin-ui-overview.html">Admin UI</a></p>
