@@ -3733,4 +3733,28 @@ a.accordion-toggle {
   /* remove scrollbar space */
   background: transparent; }
 
+/* Docs landing page */
+.docs-landing .row {
+  margin-left: 0px;
+  margin-right: 0px; }
+
+.docs-landing .column {
+  float: left;
+  width: 32%;
+  margin: 5px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 10px; }
+
+.docs-landing .column-title {
+  font-family: 'Graphik-Semibold', sans-serif;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding-top: 15px;
+  padding-bottom: 10px; }
+
+.docs-landing .column-content p {
+  line-height: 25px; }
+
 /*# sourceMappingURL=customstyles.css.map */
