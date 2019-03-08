@@ -51,9 +51,9 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 .column {
   float: left;
-  width: 45%;
-  margin: 15px;
-  box-shadow: 0 2px 5px 0 rgba(17,29,57,0.1), 0 4px 20px 0 rgba(17,29,57,0.12);
+  width: 30%;
+  margin: 5px;
+  <!-- box-shadow: 0 2px 5px 0 rgba(17,29,57,0.1), 0 4px 20px 0 rgba(17,29,57,0.12); -->
 }
 
 .column-title {
@@ -66,8 +66,8 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 }
 
 .column-content {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 25px;
+  padding-right: 25px;
   padding-bottom: 20px;
 }
 
@@ -107,8 +107,6 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices.html">SQL Best Practices</a></p>
     </div>
   </div>
-</div>
-<div class="row">
   <div class="column">
     <div class="column-content">
       <!-- <h3>Deploy</h3> -->
@@ -120,25 +118,25 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
     </div>
   </div>
+</div>
+<div class="row">  
   <div class="column">
     <div class="column-content">
       <p class="column-title">Migrate</p>
-        <p><a href="migration-overview.html">Migration Overview</a></p>
+        <p><a href="migration-overview.html">Overview</a></p>
         <p><a href="migrate-from-postgres.html">Migrate from Postgres</a></p>
         <p><a href="migrate-from-mysql.html">Migrate from MySQL</a></p>
         <p><a href="migrate-from-csv.html">Migrate from CSV</a></p>
-        <p><a href="performance-best-practices-overview.html#bulk-insert-best-practices">Bulk Insert Best Practices</a></p>
+        <p><a href="performance-best-practices-overview.html#multi-row-dml-best-practices">Insert Best Practices</a></p>
     </div>
   </div>
-</div>
-<div class="row">
   <div class="column">
     <div class="column-content">
       <p class="column-title">Troubleshoot</p>
-        <p><a href="common-errors.html">Troubleshooting Overview</a></p>
+        <p><a href="common-errors.html">Overview</a></p>
         <p><a href="common-errors.html">Common Errors</a></p>
-        <p><a href="cluster-setup-troubleshooting.html">Troubleshoot Cluster Setup</a></p>
-        <p><a href="query-behavior-troubleshooting.html">Troubleshoot Query Behavior</a></p>
+        <p><a href="cluster-setup-troubleshooting.html">Cluster Setup</a></p>
+        <p><a href="query-behavior-troubleshooting.html">Query Behavior</a></p>
         <p><a href="support-resources.html">Support Resources</a></p>
     </div>
   </div>
