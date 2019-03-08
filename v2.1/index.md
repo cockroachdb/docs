@@ -57,8 +57,10 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 }
 
 .column-title {
-  font-size: 24px;
-  font-weight: 300;
+  font-family: 'Graphik-Semibold', sans-serif;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
   padding-top: 20px;
   padding-bottom: 10px;
 }
