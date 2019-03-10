@@ -33,20 +33,11 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 {% else %}
 
-<!-- <style>
-
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-  }
-}
-</style> -->
-
 CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
 
-<div class="docs-landing">
+<div class="container">
   <div class="row">
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Get Started</p>
       <div class="column-content">
         <p><a href="frequently-asked-questions.html">What is CockroachDB?</a></p>      
@@ -56,7 +47,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="build-an-app-with-cockroachdb.html">Build an App</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Develop</p>
       <div class="column-content">
         <p><a href="install-client-drivers.html">Client Drivers</a></p>
@@ -66,7 +57,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices-overview.html">SQL Best Practices</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Deploy</p>
       <div class="column-content">
         <p><a href="recommended-production-settings.html">Production Checklist</a></p>
@@ -76,9 +67,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
       </div>
     </div>
-  </div>
-  <div class="row">  
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Migrate</p>
       <div class="column-content">
         <p><a href="migration-overview.html">Overview</a></p>
@@ -88,7 +77,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices-overview.html#multi-row-dml-best-practices">Insert Best Practices</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Troubleshoot</p>
       <div class="column-content">
         <p><a href="common-errors.html">Overview</a></p>
@@ -98,7 +87,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="support-resources.html">Support Resources</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Reference</p>
       <div class="column-content">
         <p><a href="sql-feature-support.html">SQL</a></p>
@@ -108,9 +97,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="third-party-database-tools.html">Third-Party Tools</a></p>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Learn More</p>
       <div class="column-content">
         <p><a href="architecture/overview.html">Architecture</a></p>
@@ -119,7 +106,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="https://www.cockroachlabs.com/guides/">Whitepapers</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">FAQs</p>
       <div class="column-content">
         <p><a href="frequently-asked-questions.html">Product FAQs</a></p>
@@ -128,7 +115,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="cockroachdb-in-comparison.html">DB Comparisons</a></p>
       </div>
     </div>
-    <div class="column">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="column-title">Releases</p>
       <div class="column-content">
         <p><a href="../releases/{{page.release_info.version}}.html">Latest Stable Release</a></p>
