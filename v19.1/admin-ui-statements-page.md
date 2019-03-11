@@ -13,14 +13,9 @@ To view the **Statements** page, [access the Admin UI](admin-ui-access-and-navig
 
 The **Statements** page displays the details of the SQL statements executed within a specified time interval. At the end of the interval, the display is wiped clean, and you'll not see any statements on the page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
 
-## Selecting an application
+## Filtering by application
 
-By default, the **Statements** page displays the following statements:
-
-- Statements executed for all applications running on the cluster
-- Statements executed internally for CockroachDB 
-
-To view the statements for a particular application, select the application from the **App** dropdown menu.
+If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the [application name](connection-parameters.html#additional-connection-parameters) from the **App** dropdown menu. If you haven't set the application name in the connection string, it appears as `unset` in the dropdown menu.
 
 ## Understanding the Statements page
 
