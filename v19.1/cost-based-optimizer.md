@@ -140,6 +140,128 @@ We strongly recommend not setting this value higher than 8 to avoid performance 
 
 For more information about the difficulty of selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
 
+## Preferring the nearest index
+
+<span class="version-tag">New in v19.1</span>: Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
+
+This feature enables scenarios where reference data such as a table of postal codes can be replicated to different regions, and queries will use the copy in the same region.
+
+{{site.data.alerts.callout_info}}
+The optimizer preferring the nearest index is not an enterprise feature, but in order to take advantage of it you need to be able to [create a replication zone for a secondary index](configure-replication-zones.html#create-a-replication-zone-for-a-secondary-index), which is an [enterprise feature](enterprise-licensing.html).
+{{site.data.alerts.end}}
+
+To take advantage of this feature, you will need to:
+
+1. Have an [enterprise license](enterprise-licensing.html).
+2. Determine which of your data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
+3. Create multiple indexes on the reference tables.
+4. Create replication zones for each index.
+
+With the above pieces in place, the optimizer will automatically choose the index nearest the gateway node that is planning the query.
+
+We can demonstrate the necessary configuration steps using a local cluster. The instructions below assume that you are already familiar with:
+
+- How to [Start a local cluster](start-a-local-cluster.html).
+- The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- Using [the built-in SQL client](use-the-built-in-sql-client.html).
+
+First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them all in the same region, while putting each in a different datacenter as denoted by `dc=dc1`, `dc=dc2`, etc.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=east,dc=dc1 --insecure --store=/tmp/node0 --host=localhost --port=26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+$ cockroach start --locality=region=east,dc=dc2 --insecure --store=/tmp/node1 --host=localhost --port=26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+$ cockroach start --locality=region=east,dc=dc3 --insecure --store=/tmp/node2 --host=localhost --port=26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+$ cockroach init --insecure --host=localhost --port=26257
+~~~
+
+Next, from the SQL client, add your organization name and enterprise license:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
+SET CLUSTER SETTING enterprise.license = 'xxxxx';
+~~~
+
+Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE IF NOT EXISTS test;
+USE test;
+CREATE TABLE t (
+    k INT PRIMARY KEY,
+    v STRING,
+    INDEX secondary (k) STORING (v),
+    INDEX ternary (k) STORING (v)
+);
+~~~
+
+Next, we modify the replication zone configuration via SQL so that:
+
+- Nodes in DC1 will use the primary key index.
+- Nodes in DC2 will use the `t@secondary` index (which is identical to the primary key index).
+- Nodes in DC3 will use the `t@ternary` index (which is also identical to the primary key index).
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE t CONFIGURE ZONE USING constraints='["+region=east","+dc=dc1"]';
+ALTER INDEX t@secondary CONFIGURE ZONE USING constraints='["+region=east","+dc=dc2"]';
+ALTER INDEX t@ternary CONFIGURE ZONE USING constraints='["+region=east","+dc=dc3"]';
+~~~
+
+To verify this is working as expected, we'll query the database from each of our 3 local nodes as shown below. Each node should be in a different "datacenter" according to the replication zone configuration, and should therefore be using the index pinned to that datacenter's location.
+
+As expected, the node in "dc1" uses the primary key index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM t WHERE k=1;'
+~~~
+
+~~~
+ tree | field | description
+------+-------+-------------
+ scan |       |
+      | table | t@primary
+      | spans | /10-/10/#
+(3 rows)
+~~~
+
+As expected, the node in "dc2" uses the `t@secondary` index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM t WHERE k=1;'
+~~~
+
+~~~
+  tree | field | description
++------+-------+-------------+
+  scan |       |
+       | table | t@secondary
+       | spans | /10-/11
+(3 rows)
+~~~
+
+As expected, the node in "dc3" uses the `t@ternary` index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM t WHERE k=1;'
+~~~
+
+~~~
+  tree | field | description
++------+-------+-------------+
+  scan |       |
+       | table | t@ternary
+       | spans | /10-/11
+(3 rows)
+~~~
+
+You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
+
 ## How to turn the optimizer off
 
 With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
