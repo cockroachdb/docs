@@ -1,19 +1,21 @@
 ---
-title: Use the Admin UI for Your Managed Cluster
+title: Monitoring Page
 summary:
 toc: true
 build_for: [managed]
 ---
 
-Cockroach Labs actively monitors and manages the health of your cluster, but the Admin UI gives you the ability to observe your cluster's health and performance as well.
+The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in Admin UI to see them.
 
 ## Access the Admin UI
 
-To access the admin UI:
+To access the Admin UI:
 
-1. Go to the URL provided in the [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) you received from Cockroach Labs. This URL is a combination of the global hostname and port `8080`.
+1. On the cluster's **Monitoring** page, click **Open Admin UI**.
 
-2. Log in with your username and password. If you're using the default user, the credentials were provided in the confirmation email.
+    You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+
+2. Log in with your [SQL username](managed-user-management.html) and password.
 
 {{site.data.alerts.callout_info}}
 For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](managed-user-management.html).

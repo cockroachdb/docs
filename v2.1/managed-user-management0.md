@@ -9,9 +9,26 @@ The "admin" user identified in your initial [confirmation email](managed-sign-up
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster with your "admin" user.
+Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-console) to your cluster with your "admin" user.
 
-## Creating users
+## Create a SQL user
+
+### Use the Console
+
+Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
+
+1. Navigate to your cluster's **SQL Users** page.
+2. Click the **Add User** button in the top right corner.
+
+    The **Add User** modal displays.
+
+3. Enter a **Username**.
+4. Enter and confirm the **Password**.
+5. Click **Create**.
+
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+
+## Use the CockroachDB SQL client
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html) statement:
 
@@ -44,7 +61,7 @@ To assign a user more limited privileges for one table in a database:
 
 For more details, see [Privileges](authorization.html#assign-privileges) and [`GRANT`](grant.html).
 
-## Managing users
+## Managing SQL users
 
 - To change a users password, use the [`ALTER USER`](alter-user.html) statement:
 
