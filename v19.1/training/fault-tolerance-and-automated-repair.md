@@ -88,7 +88,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ haproxy -f haproxy.cfg
+    $ haproxy -f haproxy.cfg &
     ~~~
 
 ## Step 2. Run a sample workload
@@ -99,7 +99,7 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init ycsb \
+    $ ./cockroach workload init ycsb \
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
@@ -107,12 +107,12 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload run ycsb \
+    $ ./cockroach workload run ycsb \
     --duration=20m \
     --concurrency=3 \
     --max-rate=1000 \
     --splits=50 \
-    'postgresql://root@localhost:26257?sslmode=disable'
+    'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
     This command initiates 3 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
@@ -151,7 +151,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost:26257 \
+    --host=localhost:26000 \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
@@ -166,43 +166,11 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 ## Step 5. Check load continuity and cluster health
 
-1. Go back to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
+Go back to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-    <img src="{{ 'images/v19.1/training-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/training-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
-
-2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and see how the count is increasing:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach sql \
-    --insecure \
-    --host=localhost:26257 \
-    --execute="SELECT count(*) FROM ycsb.usertable;"
-    ~~~
-
-    ~~~
-      count
-    +-------+
-      10579
-    (1 row)
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./cockroach sql \
-    --insecure \
-    --host=localhost:26257 \
-    --execute="SELECT count(*) FROM ycsb.usertable;"
-    ~~~
-
-    ~~~
-      count
-    +-------+
-      10853
-    (1 row)
-    ~~~
+This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
 ## Step 6. Watch the cluster repair itself
 
@@ -234,7 +202,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
     ~~~
 
 3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
