@@ -98,7 +98,7 @@ When starting a node with the [`cockroach start`](start-a-node.html) command, yo
 
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | Using the `--locality` flag, you can assign arbitrary key-value pairs that describe the locality of the node. Locality might include country, region, datacenter, rack, etc. The key-value pairs should be ordered from most inclusive to least inclusive (e.g., country before datacenter before rack), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=east,datacenter=us-east-2`<br>`--locality=region=west,datacenter=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. However, locality can be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB also uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](demo-follow-the-workload.html) for more details.
+**Node Locality** | Using the [`--locality`](start-a-node.html#locality) flag, you can assign arbitrary key-value pairs that describe the locality of the node. Locality might include country, region, datacenter, rack, etc. The key-value pairs should be ordered from most inclusive to least inclusive (e.g., country before datacenter before rack), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=east,datacenter=us-east-2`<br>`--locality=region=west,datacenter=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order determining the priority. However, locality can be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB also uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](demo-follow-the-workload.html) for more details.
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
@@ -214,7 +214,7 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 **Approach:**
 
-Start each node with its datacenter location specified in the `--locality` flag:
+Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
 ~~~ shell
 # Start the two nodes in datacenter 1:
@@ -250,7 +250,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its region and datacenter location specified in the `--locality` flag:
+1. Start each node with its region and datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
     ~~~ shell
     # Start the four nodes:
@@ -330,7 +330,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its datacenter location specified in the `--locality` flag:
+1. Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
     ~~~ shell
     # Start the three nodes in datacenter 1:
@@ -530,7 +530,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with a different locality attribute:
+1. Start each node with a different [locality](start-a-node.html#locality) attribute:
 
     ~~~ shell
     # Start the nodes:
