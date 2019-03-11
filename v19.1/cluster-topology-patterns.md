@@ -8,24 +8,21 @@ This page covers common cluster topology patterns with setup examples, as well a
 
 ## Considerations
 
-When selecting a pattern for your cluster, the following must be taken into consideration:
+Before selecting a pattern:
 
-- The function of a CockroachDB [leaseholder](architecture/replication-layer.html#leases)
-- The impacts of the [leaseholder](architecture/life-of-a-distributed-transaction.html#leaseholder-node) on read and write activities
-- The leaseholders are local to reader and writers within the datacenter
-- The `--locality` flag must be set properly on each node to enable [follow-the-workload](demo-follow-the-workload.html)
-- The leaseholder migration among the datacenters is minimized by using [partitioning](partitioning.html), an Enterprise feature
-- Whether the application is designed to use the [partitioning feature](partitioning.html) or not
+- Review the recommendations and requirements in our [Production Checklist](recommended-production-settings.html).
+- Review the [CockroachDB architecture](architecture/overview.html). It's especially important to understand how data is stored in ranges, how ranges are replicated, and how one replica in each range serves as the "leaseholder" that coordinates all read and write requests for that range. See our [Performance Tuning](performance-tuning.html#important-concepts) tutorial for more details about these important concepts and for simple read and write examples.
+- Learn about the concept of [locality](start-a-node.html#locality), which makes CockroachDB aware of the location of nodes and able to intelligently balance replicas across localities. Locality is also a prerequisite for the [follow-the-workload](demo-follow-the-workload.html) feature and for enterprise [partitioning](partitioning.html).
 
 {{site.data.alerts.callout_info}}
 This page does not factor in hardware differences.
 {{site.data.alerts.end}}
 
-## Single datacenter clusters
+## Single-region clusters
 
-### Basic pattern for a single datacenter cluster
+### Single datacenter, basic pattern
 
-This first example is of a single datacenter cluster, i.e., a local deployment. This pattern is common starting point for smaller organizations who may not have the resources (or need) to worry about a datacenter failure, but still want to take advantage of CockroachDB's [high availability](high-availability.html). The cluster is self-hosted with each node on a different machine within the same datacenter. The network latency among the nodes is expected to be the same, around 1ms.
+This first example is of a single-datacenter cluster, with each node on a different machine as per our [basic topology recommendations](recommended-production-settings.html#basic-topology-recommendations). This pattern is common starting point for smaller organizations who may not have the resources (or need) to worry about a datacenter failure but still want to take advantage of CockroachDB's [high availability](high-availability.html).
 
 <img src="{{ 'images/v19.1/topology-patterns/basic-local-deployment.png' | relative_url }}" alt="Local deployment" style="border:1px solid #eee;max-width:100%" />
 
@@ -33,34 +30,32 @@ For the diagram above:
 
 **Configuration**
 
-- `App` is an application that accesses CockroachDB
-- `Load Balancer` is a software-based load balancer
-- The 3 nodes are all running in a single datacenter
-- All CockroachDB nodes communicate with each other
-- The cluster is using the default replication factor of 3 (represented by `r1`, `r2`, `r3`)
+- `App` is an application that accesses CockroachDB.
+- `Load Balancer` is a software-based load balancer.
+- The 3 nodes are all running in a single datacenter.
+- The cluster is using the default replication factor of 3 (represented by `r1`, `r2`, `r3`). Each range has 3 replicas, with each replica on a different node.
 
 **Availability expectations**
 
-- The cluster can survive 1 node failure because a majority of replicas (2/3) remains available. It will not survive a datacenter failure.
+- With the default replication factor of 3, the cluster can tolerate 1 node failure. In such a case, all ranges still have 2 replicas on live nodes and, thus, a majority.
+- The cluster cannot tolerate the simultaneous or near-simultaneous failure of 2 or more nodes.
 
 **Performance expectations**
 
-- The network latency among the nodes is expected to be the same, sub-millisecond.
+- The network latency among the nodes is expected to be sub-millisecond.
 
-### More resilient local deployment
+### Single datacenter, more resilient and/or performant
 
-While the [basic local deployment](#basic-pattern-for-a-local-deployment) takes advantage of CockroachDB's high availability, shares the load, and spreads capacity, dynamically scaling out the nodes from 3 (to 4) to 5 has many benefits:
+While the [basic single-datacenter deployment](#single-datacenter-basic-pattenr) takes advantage of CockroachDB's high availability, shares the load, and spreads capacity, scaling out the nodes has many benefits:
 
-- There will be more room to increase replication factor, which increases resiliency against the failure of more than one node.
-- You can scale out; because there are more nodes, you can increase throughput, add storage, etc.
+- Resiliency: There will be more room to increase the replication factor, which increases resiliency against the failure of more than one node. For example, with 5 nodes and a replication factor of 5, each range has 5 replicas, with each replica on a different node. In this case, even with 2 nodes down, each range retains a majority of its replicas (3/5).
+- Performance: Adding nodes for more processing power and/or storage typically increases throughput.
 
 There are no constraints on node increments.
 
 <img src="{{ 'images/v19.1/topology-patterns/resilient-local-deployment.png' | relative_url }}" alt="Resilient local deployment" style="border:1px solid #eee;max-width:100%" />
 
-## Single-region clusters
-
-### Single-region, multiple datacenters cluster
+### Multiple datacenters
 
 Once an organization begins to grow, a datacenter outage isn't acceptable and a cluster needs to be available all of the time. This is where a single-region cluster with multiple datacenters is useful. For example, an organization can do a cloud deployment across multiple datacenters within the same geographical region.
 
@@ -70,11 +65,10 @@ For the diagram above:
 
 **Configuration**
 
-- `App` is an application that accesses CockroachDB
-- `Load Balancer` is a software-based load balancer
-- The 3 nodes are each in a different datacenter, all located in the `us-east` region
-- All CockroachDB nodes communicate with each other
-- The cluster is using the default replication factor of 3 (represented by `r1`, `r2`, `r3`)
+- `App` is an application that accesses CockroachDB.
+- `Load Balancer` is a software-based load balancer.
+- The 3 nodes are each in a different datacenter, all located in the `us-east` region. Although not necessary with just 3 nodes, with more than 3 nodes, it's important to start each node with the `--locality` flag set to identify its datacenter (e.g., `--locality=region=us-east,datacenter=us-east-a`).
+- The cluster is using the default replication factor of 3 (represented by `r1`, `r2`, `r3`).
 
 **Availability expectations**
 
@@ -82,13 +76,13 @@ For the diagram above:
 
 **Performance expectations**
 
-- The network latency among the nodes is expected to be the same, sub-millisecond.
+- Since all nodes are within a single region, the network latency between the nodes is still expected to be close  sub-millisecond.
 
 ## Multi-region clusters
 
-### Basic pattern for a multi-region cluster
+### Multiple regions, basic pattern
 
-For even more resiliency, use a multi-region cluster. A multi-region cluster is comprised of multiple datacenters in different regions (e.g., `East`, `West`), that each have with multiple nodes. CockroachDB will automatically try to diversify replica placement across localities (i.e., place a replica in each region). Using this setup, many organization will also transition to using different cloud providers (one provider per region).
+For even more resiliency, use a multi-region cluster. A multi-region cluster is comprised of multiple datacenters in different regions (e.g., `East`, `West`), each with multiple nodes. CockroachDB will automatically try to diversify replica placement across localities (i.e., place a replica in each region). Using this setup, many organization will also transition to using different cloud providers (one provider per region).
 
 In this example, the cluster has an asymmetrical setup where `Central` is closer to the `West` than the `East`. This configuration will provide better write latency to the write workloads in the `West` and `Central` because there is a lower latency (versus writing in the `East`). This is assuming you are not using zone configurations.
 
@@ -96,13 +90,12 @@ In this example, the cluster has an asymmetrical setup where `Central` is closer
 
 For this example:
 
-**Configuration**
+#### Configuration
 
-- Nodes are spread across 3 regions within a country (`West`, `East`, `Central`)
-- A software-based load balancer directs traffic to any of the regions' nodes at random
-- Every region has 3 datacenters
-- All CockroachDB nodes communicate with each other
-- Similar to the [local](#single-datacenter-clusters) topology, more regions can be added dynamically
+- Nodes are spread across 3 regions within a country (`West`, `East`, `Central`).
+- A software-based load balancer directs traffic to any of the regions' nodes at random.
+- Every region has 3 datacenters.
+- Similar to the [single-datacenter](#single-region-clusters) topology, more regions can be added dynamically
 - A homogenous configuration among the regions for simplified operations is recommended
 - For sophisticated workloads, each region can have different node count and node specification. This heterogeneous configuration could better handle regional specific concurrency and load characteristics.
 
@@ -122,7 +115,7 @@ If all of the nodes for a preferred locality are down, then the app will try dat
 - [Follow-the-workload](demo-follow-the-workload.html) will keep the performance quick for where the load is so you do not pay cross-country latency on reads.
 - Write latencies will not be faster than the slowest quorum between two regions.
 
-### More performant multi-region cluster
+### Multiple regions, more performant (with partitioning)
 
 While the [basic pattern for a multi-region cluster](#basic-pattern-for-a-multi-region-cluster) can help protect against regional failures, there will be high latency due to cross-country roundtrips. This is not ideal for organizations who have users spread out across the country. For any multi-region cluster, [partitioning](partitioning.html) should be used to keep data close to the users who access it.
 
