@@ -35,7 +35,7 @@ For the diagram above:
 - `Load Balancer` is a software-based load balancer.
 - Leaseholders are denoted by a dashed line.
 - The 3 nodes are all running in a single datacenter.
-- The cluster is using the default replication factor of 3 (represented by `r1`, `r2`, `r3`). Each range has 3 replicas, with each replica on a different node.
+- The cluster is using the default replication factor of 3 (represented by 3 blocks of the same color). Each range (e.g., `r1`) has 3 replicas, with each replica on a different node.
 - All CockroachDB nodes communicate with each other
 
 **Availability expectations**
@@ -90,7 +90,7 @@ For this example:
     --locality=region=us-east,datacenter=us-east-b
     ~~~
 
-- The cluster is using a replication factor of 5 (represented by `r1`, `r2`, `r3`, `r4`, `r5`).
+- The cluster is using a replication factor of 5 (represented by 5 blocks of the same color). Each range (e.g., `r1`) has 5 replicas, with each replica on a different node.
 - All CockroachDB nodes communicate with each other
 - Similar to the [single-datacenter](#single-region-clusters) topology, more regions can be added dynamically.
 
@@ -134,7 +134,7 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
     --locality=region=us-east,datacenter=us-east-b
     ~~~
 
-- The cluster is using a replication factor of 3 (represented by `r1`, `r2`, `r3`). Each replica has a prefix (`w-` for West, `c-` for Central, `e-` for East), which denotes the partition that is replicated.
+- The cluster is using a replication factor of 3 (represented by the 3 blocks of the same color). Each range (e.g., `r1`) has a prefix (`w-` for West, `c-` for Central, `e-` for East), which denotes the partition that is replicated.
 - Leaseholders are denoted by a dashed line. Using [zone configurations](configure-replication-zones.html), leaseholders can be pinned (represented by the `x`) to a datacenter close to the users.
 - All CockroachDB nodes communicate with each other.
 
@@ -149,7 +149,7 @@ However, to make the cluster more performant, you need to add [partitions](parti
 **Availability expectations**
 
 - If a datacenter with 1 replica is lost, the cluster will not lose a region because there is a majority of replicas (2/3) in the region's other datacenter.
-- If a datacenter with 2 replicas is lost, the cluster will lose a region (i.e., data is unavailable) because there is only 1 replica in the region's other datacenter. For more information, see the [Locality-resilience tradeoff](partitioning#locality-resilience-tradeoff) section of the [Define Table Partitions](partitioning.html) doc.
+- If a datacenter with 2 range is lost, the cluster will lose a region (i.e., data is unavailable) because there is only 1 range in the region's other datacenter. For more information, see the [Locality-resilience tradeoff](partitioning#locality-resilience-tradeoff) section of the [Define Table Partitions](partitioning.html) doc.
 
 **Performance expectations**
 
