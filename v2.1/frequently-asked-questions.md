@@ -70,7 +70,7 @@ The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is i
 - Partition Tolerance
 
 CockroachDB is a CP (consistent and partition tolerant) system. This means
-that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgements from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
+that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgments from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
 
 Separately, CockroachDB is also Highly Available, although "available" here means something different than the way it is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
 
@@ -99,7 +99,7 @@ Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID sema
 
 No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s an open source database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-For more details on how CockroachDB handles unsychronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
+For more details on how CockroachDB handles unsynchronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
 
 ## What languages can I use to work with CockroachDB?
 
@@ -164,9 +164,19 @@ For more details, see the [Managed CockroachDB](../managed/v2.1/) docs.
 
 {% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
+## Why are my deletes getting slower over time?
+
+> I need to delete a large amount of data. I'm iteratively deleting a certain number of rows using a [`DELETE`](delete.html) statement with a [`LIMIT`](limit-offset.html) clause, but it's getting slower over time. Why?
+
+CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](strong-consistency.html). As such, when you delete a row it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) [zone configuration](show-zone-configurations.html) has passed.  By default, this period is 25 hours.
+
+This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within the last 25 hours. This means that if you try to delete 10,000 rows 10 times within the same 25 hour period, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
+
+If you need to iteratively delete rows in constant time, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and run your `DELETE` statement once per GC interval. We strongly recommend returning `gc.ttlseconds` to the default value after your large deletion is completed.
+
 ## Have questions that weren’t answered?
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
+- [File a support ticket](https://support.cockroachlabs.com): Contact CockroachDB support privately.
 - [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
 - [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
