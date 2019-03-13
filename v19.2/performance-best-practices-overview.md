@@ -38,6 +38,10 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
+## Bulk deletion best practices
+
+To get the best performance when deleting large amounts of data, follow the instructions in [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+
 ## Assign column families
 
 A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
