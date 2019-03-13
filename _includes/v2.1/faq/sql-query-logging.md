@@ -22,7 +22,7 @@ For production clusters, the best way to log all queries is to turn on the [clus
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
 
-With this setting on, each node of the cluster writes all SQL queries it executes to its log file. When you no longer need to log queries, you can turn the setting back off:
+With this setting on, each node of the cluster writes all SQL queries it executes to a separate log file `cockroach-sql-exec.log`. When you no longer need to log queries, you can turn the setting back off:
 
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
