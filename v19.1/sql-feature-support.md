@@ -36,7 +36,7 @@ table tr td:nth-child(2) {
  `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html)
  `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html)
  `AUTO INCREMENT` | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
- Key-value pairs | Alternative | Extension | [Key-Value FAQ](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store)
+ Key-value pairs | Alternative | Extension | [Key-Value FAQ](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store)
  `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html)
  `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html)
  JSON | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)

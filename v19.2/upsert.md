@@ -10,7 +10,7 @@ The `UPSERT` [statement](sql-statements.html) is semantically equivalent to [`IN
 
 - `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
 
-- When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store).
+- When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
 
 - A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 

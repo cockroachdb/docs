@@ -75,6 +75,12 @@ deleted rows more frequently.
 For more information about ordering query results in general, see
 [Ordering Query Results](query-order.html).
 
+## Delete performance on large data sets
+
+If you are deleting a large amount of data using iterative `DELETE ... LIMIT` statements, you are likely to see a drop in performance for each subsequent `DELETE` statement.
+
+For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+
 ## Examples
 
 ### Delete all rows
