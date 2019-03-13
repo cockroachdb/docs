@@ -4,7 +4,7 @@ summary: The Default Value constraint specifies a value to populate a column wit
 toc: true
 ---
 
-The `DEFAULT` vale [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
+The `DEFAULT` value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
 
 
 ## Details

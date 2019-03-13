@@ -4,20 +4,20 @@ summary: The Default Value constraint specifies a value to populate a column wit
 toc: true
 ---
 
-The `DEFAULT` vale [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
+The `DEFAULT` value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
 
 
 ## Details
 
 - The [data type](data-types.html) of the Default Value must be the same as the data type of the column.
-- The `DEFAULT` vale constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a *NULL* into an optional (nullable) column by explicitly inserting *NULL*. For example, `INSERT INTO foo VALUES (1, NULL);`.
+- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a *NULL* into an optional (nullable) column by explicitly inserting *NULL*. For example, `INSERT INTO foo VALUES (1, NULL);`.
 
 ## Syntax
 
-You can only apply the `DEFAULT` vale constraint to individual columns.
+You can only apply the `DEFAULT` value constraint to individual columns.
 
 {{site.data.alerts.callout_info}}
-You can also add the `DEFAULT` vale constraint to an existing table through [`ALTER COLUMN`](alter-column.html#set-or-change-a-default-value).
+You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-column.html#set-or-change-a-default-value).
 {{site.data.alerts.end}}
 
 <section> {% include {{ page.version.version }}/sql/diagrams/default_value_column_level.html %} </section>
