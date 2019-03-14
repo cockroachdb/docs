@@ -12,7 +12,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
-{% include v2.1/known-limitations/cdc.md %}
+{% include {{page.version.version}}/known-limitations/cdc.md %}
 
 ### Admin UI may become inaccessible for secure clusters
 
@@ -135,6 +135,10 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
+### Importing an interleaved table from a `cockroach dump` output
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
+
 ## Unresolved limitations
 
 ### Silent validation error with `DECIMAL` values
@@ -191,15 +195,15 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ### Available capacity metric in the Admin UI
 
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{page.version.version}}/misc/available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
-{% include v2.1/misc/schema-changes-within-transactions.md %}
+{% include {{page.version.version}}/misc/schema-changes-within-transactions.md %}
 
 ### Schema changes between executions of prepared statements
 
-{% include v2.1/misc/schema-changes-between-prepared-statements.md %}
+{% include {{page.version.version}}/misc/schema-changes-between-prepared-statements.md %}
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
