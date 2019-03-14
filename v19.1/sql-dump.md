@@ -10,7 +10,6 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 CockroachDB [enterprise license](https://www.cockroachlabs.com/pricing/) users can also back up their cluster's data using [`BACKUP`](backup.html).
 {{site.data.alerts.end}}
 
-
 ## Considerations
 
 When `cockroach dump` is executed:
@@ -23,6 +22,10 @@ When `cockroach dump` is executed:
 {{site.data.alerts.callout_info}}
 The user must have the `SELECT` privilege on the target table(s).
 {{site.data.alerts.end}}
+
+## Known limitations
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
 ## Synopsis
 
