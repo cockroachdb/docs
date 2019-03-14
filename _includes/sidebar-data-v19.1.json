@@ -377,6 +377,12 @@
             ]
           },
           {
+            "title": "GSSAPI Authentication",
+            "urls": [
+              "/${VERSION}/gssapi_authentication.html"
+            ]
+          },
+          {
             "title": "Enterprise Features",
             "urls": [
               "/${VERSION}/enterprise-licensing.html"
@@ -1150,12 +1156,6 @@
                 "title": "<code>ARRAY</code>",
                 "urls": [
                   "/${VERSION}/array.html"
-                ]
-              },
-              {
-                "title": "<code>BIT</code>",
-                "urls": [
-                  "/${VERSION}/bit.html"
                 ]
               },
               {

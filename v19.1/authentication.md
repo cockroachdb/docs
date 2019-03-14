@@ -28,7 +28,7 @@ Based on your security setup, you can use the [`cockroach cert` commands](create
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the Admin UI. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
 - Node authentication using [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
-- Client authentication using either TLS digital certificates or passwords.
+- Client authentication using TLS digital certificates, passwords, or GSSAPI authentication (for Enterprise users).
 
 ### Node authentication
 
@@ -40,7 +40,7 @@ To set up a secure cluster without using an existing certificate authority, you'
 
 ### Client authentication
 
-CockroachDB offers two methods for client authentication:
+CockroachDB offers three methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
@@ -59,6 +59,8 @@ CockroachDB offers two methods for client authentication:
    ~~~
 
    Note that the client still needs the CA certificate to validate the nodes' certificates.
+
+- [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
 ### Using `cockroach cert` or `openssl` commands
 
