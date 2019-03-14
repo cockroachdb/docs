@@ -10,7 +10,7 @@ CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos au
 
 To use Kerberos authentication with CockroachDB, configure a Kerberos service principal name (SPN) for CockroachDB and generate a valid keytab file with the following specifications:
 
-- Set the SPN to `postgres`.
+- Set the SPN to the name specified by your client driver. For example, if you use the psql client, set SPN to `postgres`.
 - Create SPNs for all DNS addresses that a user would use to connect to your CockroachDB cluster (including any TCP load balancers between the user and the CockroachDB node) and ensure that the keytab contains the keys for every SPN you create.
 
 ## Configuring the CockroachDB node
@@ -69,7 +69,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+6. (Optional)[Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
 
 7. Enable GSSAPI authentication:
 
@@ -90,7 +90,7 @@ The cockroach sql shell does not yet support GSSAPI authentication. You need to 
 
 1. Install and configure your Kerberos client.
 2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
-3. Get a Kerberos TGT from Active Directory using `kinit`.
+3. Get a Kerberos TGT from the KDC using `kinit`.
 4. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
@@ -98,7 +98,7 @@ The cockroach sql shell does not yet support GSSAPI authentication. You need to 
     > psql "postgresql://localhost:26257/defaultdb?sslmode=require"
     ~~~
 
-5. You should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful.
+5. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
 
 ## See also
 
