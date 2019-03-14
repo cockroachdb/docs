@@ -1159,6 +1159,12 @@
                 ]
               },
               {
+                "title": "<code>BIT</code>",
+                "urls": [
+                  "/${VERSION}/bit.html"
+                ]
+              },
+              {
                 "title": "<code>BOOL</code>",
                 "urls": [
                   "/${VERSION}/bool.html"

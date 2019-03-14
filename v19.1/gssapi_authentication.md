@@ -8,82 +8,96 @@ CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos au
 
 ## Configuring KDC
 
-This document assumes you have configured a Kerberos service principal name (SPN) for CockroachDB and generated a valid keytab file for CockroachDB as well.
+To use Kerberos authentication with CockroachDB, configure a Kerberos service principal name (SPN) for CockroachDB and generate a valid keytab file with the following specifications:
+
+- Set the SPN to `postgres`.
+- Create SPNs for all DNS addresses that a user would use to connect to your CockroachDB cluster (including any TCP load balancers between the user and the CockroachDB node) and ensure that the keytab contains the keys for every SPN you create.
 
 ## Configuring the CockroachDB node
 1. Copy the keytab file at a location accessible by the cockroach binary.
+
 2. [Create certificates](create-security-certificates.html) for internode and root user authentication:
 
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ mkdir certs my-safe-directory
-  ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs my-safe-directory
+    ~~~
 
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach cert create-ca \
-  --certs-dir=certs \
-  --ca-key=my-safe-directory/ca.key
-  ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach cert create-node \
-  localhost \
-  $(hostname) \
-  --certs-dir=certs \
-  --ca-key=my-safe-directory/ca.key
-  ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-node \
+    localhost \
+    $(hostname) \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach cert create-client \
-  root \
-  --certs-dir=certs \
-  --ca-key=my-safe-directory/ca.key
-  ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
-4. Provide the path to the keytab in the `KRB5_KTNAME` environment variable:
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ KRB5_KTNAME=<path to keytab file>
-  ~~~
+3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable:
 
-5. Start a CockroachDB node:
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach start \
-  --certs-dir=certs \
-  --listen-addr=localhost
-  ~~~
+      {% include copy-clipboard.html %}
+      ~~~ shell
+      $ KRB5_KTNAME=<path to keytab file>
+      ~~~
 
-6. Connect to CockroachDB as root using the root client certificate generated above:
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach sql --certs-dir=certs
-  ~~~
+4. Start a CockroachDB node:
 
-7. [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+      {% include copy-clipboard.html %}
+      ~~~ shell
+      $ cockroach start \
+      --certs-dir=certs \
+      --listen-addr=0.0.0.0
+      ~~~
 
-8. Enable GSSAPI authentication:
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
-  ~~~
+5. Connect to CockroachDB as root using the root client certificate generated above:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs
+    ~~~
 
-  Note that the `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
+6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+
+7. Enable GSSAPI authentication:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
+    ~~~
+
+  Setting the `server.host_based_authentication.configuration` cluster setting makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
+
+  The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
 ## Configuring the client
 
-Note: You can use only psql clients to authenticate using Kerberos.
+{{site.data.alerts.callout_info}}
+The cockroach sql shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible Postgres client, such as Postgres's `psql` client.
+{{site.data.alerts.end}}
 
 1. Install and configure your Kerberos client.
 2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
 3. Get a Kerberos TGT from Active Directory using `kinit`.
 4. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
-  ~~~ shell
-  > psql "postgresql://ad-client2.cockroach.industries:26257/defaultdb?sslmode=require"
-  ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > psql "postgresql://localhost:26257/defaultdb?sslmode=require"
+    ~~~
+
 5. You should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful.
 
 ## See also
