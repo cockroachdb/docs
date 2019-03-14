@@ -24,6 +24,10 @@ When `cockroach dump` is executed:
 The user must have the `SELECT` privilege on the target table(s).
 {{site.data.alerts.end}}
 
+## Known Issues
+
+When using interleaved tables, the output of `COCKROACH DUMP` must be edited before import. See [#35462](https://github.com/cockroachdb/cockroach/issues/35462) for the workaround and more details.
+
 ## Synopsis
 
 ~~~ shell
