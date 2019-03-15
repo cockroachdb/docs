@@ -149,7 +149,7 @@ However, to make the cluster more performant, you need to add [partitions](parti
 **Availability expectations**
 
 - If a datacenter with 1 replica is lost, the cluster will not lose a region because there is a majority of replicas (2/3) in the region's other datacenter.
-- If a datacenter with 2 range is lost, the cluster will lose a region (i.e., data is unavailable) because there is only 1 range in the region's other datacenter. For more information, see the [Locality-resilience tradeoff](partitioning#locality-resilience-tradeoff) section of the [Define Table Partitions](partitioning.html) doc.
+- If a datacenter with 2 range is lost, the cluster will lose a region (i.e., data is unavailable) because there is only 1 range in the region's other datacenter. For more information, see the [Locality-resilience tradeoff](partitioning.html#locality-resilience-tradeoff) section of the [Define Table Partitions](partitioning.html) doc.
 
 **Performance expectations**
 
