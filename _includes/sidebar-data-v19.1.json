@@ -313,6 +313,12 @@
                 "urls": [
                   "/${VERSION}/sql-audit-logging.html"
                 ]
+              },
+              {
+                "title": "GSSAPI Authentication",
+                "urls": [
+                  "/${VERSION}/gssapi_authentication.html"
+                ]
               }
             ]
           },
