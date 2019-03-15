@@ -1,9 +1,11 @@
 ---
 title: Console Settings
-summary:
+summary: Learn how to manage Console settings for your organization.
 toc: true
 build_for: [managed]
 ---
+
+As a Console administrator, you can manage Console settings for your organization.
 
 To edit Console settings:
 
@@ -13,7 +15,7 @@ To edit Console settings:
 
 2. Select the name of your organization.
 
-    The **Users** page displays with a list of the users who can access the Console for your organization. This is where you can [add Console users](#add-console-users).
+    The **Users** page displays a list of the users who can access the Console for your organization. This is where you can [add Console users](#add-console-users).
 
 ## Add Console users
 

@@ -1,11 +1,13 @@
 ---
 title: Monitoring Page
-summary:
+summary: The Monitoring page is currently under development. In the future, time series charts will display here.
 toc: true
 build_for: [managed]
 ---
 
 The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in Admin UI to see them.
+
+You can use the cluster's built-in Admin UI to view time series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
 ## Access the Admin UI
 

@@ -1,6 +1,6 @@
 ---
 title: Frequently Asked Questions
-summary:
+summary: Managed CockroachDB FAQs
 toc: true
 build_for: [managed]
 ---
@@ -79,4 +79,4 @@ Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happ
 
 ### Do you have a UI? How can I see details?
 
-All customers of our managed service can manage their clusters through the [Console](https://cockroachlabs.cloud/).
+All customers of our managed service can view their clusters in the [Console](https://cockroachlabs.cloud/).

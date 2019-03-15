@@ -1,12 +1,12 @@
 ---
 title: Networking Page
-summary:
+summary: The Networking page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster.
 toc: true
 build_for: [managed]
 ---
 
 
-The **Network** page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster. For each network, the following displays:
+The **Networking** page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster. For each network, the following displays:
 
 - The **Network** IP address in [CIDR notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
 - If the network can connect to the cluster's **UI**, **SQL** client, or both (with ports for each listed in the table heading)

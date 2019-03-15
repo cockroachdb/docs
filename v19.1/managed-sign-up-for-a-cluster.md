@@ -1,6 +1,6 @@
 ---
 title: Sign Up for a Managed Cluster
-summary:
+summary: Learn how to sign up for a Managed CockroachDB cluster.
 toc: true
 build_for: [managed]
 ---

@@ -1,11 +1,11 @@
 ---
 title: Connect to Your Managed Cluster
-summary:
+summary: Learn how to connect and start interacting with your cluster.
 toc: true
 build_for: [managed]
 ---
 
-Once your Managed CockroachDB cluster is available and you've [set your password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster using [the Console](#use-the-console), [CockroachDB SQL client](#use-the-cockroachdb-sql-client), or a [Postgres-compatible driver or ORM](#use-a-postgres-driver-or-orm).
+Once your Managed CockroachDB cluster is available and you've [set your  SQL username password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
 
 ## Before you begin
 
@@ -13,7 +13,7 @@ Once your Managed CockroachDB cluster is available and you've [set your password
 
     Any client connecting to the cluster will need access to the `ca.crt` file.
 
-2. Make sure you have a user and password to use in your connection string.
+2. Make sure you have a SQL user and password to use in your connection string.
 
     For details on creating additional users, see [User Management](managed-user-management.html).
 
@@ -24,7 +24,7 @@ Before you connect to your cluster, you need to authorize your network (i.e., wh
 Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
 
 1. Navigate to your cluster's [Networking](managed-networking-page.html) page.
-2. Click the **+ Add Network** button in the top right corner.
+2. Click the **Add Network** button in the top right corner.
 
     The **Add Network** modal displays.
 
@@ -36,9 +36,14 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
     192.168.15.161/32
     ~~~
 
-    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`) a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+
+    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
 
 4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
+
+    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
+
 5. Click **Save**.
 
 Once you have authorized your network, [generate the cluster's connection string](#generate-the-connection-string), and connect to your cluster through [the CockroachDB SQL client](#use-the-cockroachdb-sql-client) or [by using a Postgres driver or ORM](#use-a-postgres-driver-or-orm).
@@ -53,11 +58,14 @@ On the machine where you want to run your application:
     The **Connect** modal displays.
 
 3. Select a **Region** to connect to.
-4. Enter a **Database** name to connect to.
+4. Select a **Database** name to connect to.
+
+    The default database is `defaultdb`. For more information, see [`Default databases`](show-databases.html#default-databases).
+
 5. Select a **User** from the dropdown to log into the cluster.
 6. Copy the **Cockroach SQL Invocation**.
 
-    This is how you will access the built-in SQL client later. You will need to replace the `<password>` and `<certs_dir>` placeholders with your username's password and the path to your `certs` directory, respectively.
+    This is how you will access the built-in SQL client later. You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
 
 7. Click the **Download CA Cert** button
 
