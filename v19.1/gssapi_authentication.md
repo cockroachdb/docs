@@ -4,7 +4,11 @@ summary: Learn about the GSSAPI authentication features for secure CockroachDB c
 toc: true
 ---
 
-CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication as an [Enterprise feature](enterprise-licensing.html).
+CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication.
+
+{{site.data.alerts.callout_info}}
+GSSAPI authentication is an [enterprise-only](enterprise-licensing.html) feature.
+{{site.data.alerts.end}}
 
 ## Configuring KDC
 
@@ -14,7 +18,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 - Create SPNs for all DNS addresses that a user would use to connect to your CockroachDB cluster (including any TCP load balancers between the user and the CockroachDB node) and ensure that the keytab contains the keys for every SPN you create.
 
 ## Configuring the CockroachDB node
-1. Copy the keytab file at a location accessible by the cockroach binary.
+1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
 2. [Create certificates](create-security-certificates.html) for internode and root user authentication:
 
@@ -69,7 +73,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. (Optional)[Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+6. (Optional) [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
 
 7. Enable GSSAPI authentication:
 
@@ -78,14 +82,14 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
 
-  Setting the `server.host_based_authentication.configuration` cluster setting makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
+      Setting the `server.host_based_authentication.configuration` cluster setting makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
 
-  The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
+      The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
 ## Configuring the client
 
 {{site.data.alerts.callout_info}}
-The cockroach sql shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible Postgres client, such as Postgres's `psql` client.
+The `cockroach sql` shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible Postgres client, such as Postgres's `psql` client.
 {{site.data.alerts.end}}
 
 1. Install and configure your Kerberos client.
