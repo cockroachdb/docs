@@ -100,7 +100,7 @@ For instance, consider the database of a global online learning portal that has 
 
 **Primary Key Considerations**
 
-- Currently, you cannot change the primary key after you create the table. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `expected_graduation_date` in the future, define the primary key as `(country, expected_graduation_date, id)`. 
+- Currently, you cannot change the primary key after you create the table. Provision for all future subpartitions by including those columns in the primary key. In the example of the online learning portal, if you think you might want to subpartition based on `expected_graduation_date` in the future, define the primary key as `(country, expected_graduation_date, id)`.
 - The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
 #### Partition using secondary index
@@ -146,9 +146,10 @@ CockroachDB uses the most granular zone config available. Zone configs that targ
 
 ### Define table partitions by list
 
-Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have two datacenters: one in the United States and another in Australia. To reduce latency, we want to keep the students' data closer to their locations:
+Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have three datacenters: one in the United States, one in Germany, and another in Australia. To reduce latency, we want to keep the students' data closer to their locations:
 
 - We want to keep the data of the students located in the United States and Canada in the United States datacenter.
+- We want to keep the data of students located in Germany and Switzerland in the German datacenter.
 - We want to keep the data of students located in Australia and New Zealand in the Australian datacenter.
 
 #### Step 1. Identify the partitioning method
@@ -157,98 +158,285 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 #### Step 2. Start each node with its datacenter location specified in the `--locality` flag
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Start the node in the US datacenter:
-$ cockroach start \
---insecure \
---locality=region=us1  \
---advertise-addr=<node1 hostname> \
---join=<node1 hostname>,<node2 hostname>
-~~~
+1. Start 3 nodes in the US datacenter:
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Start the node in the AUS datacenter:
-$ cockroach start \
---insecure \
---locality=region=aus1 \
---advertise-addr=<node2 hostname> \
---join=<node1 hostname>,<node2 hostname>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=us \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --store=node1 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Initialize the cluster:
-$ cockroach init \
---insecure \
---host=<address of any node>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=us \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --store=node2 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-#### Step 3. Set the enterprise license
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=us \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --store=node3 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+2. Initialize the cluster:
 
-#### Step 4. Create a table with the appropriate partitions
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init \
+    --insecure \
+    --host=localhost:26257
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE students_by_list (
-    id INT DEFAULT unique_rowid(),
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,   
-    PRIMARY KEY (country, id))
-    PARTITION BY LIST (country)
-      (PARTITION north_america VALUES IN ('CA','US'),
-      PARTITION australia VALUES IN ('AU','NZ'),
-      PARTITION DEFAULT VALUES IN (default));
-~~~
+3. Add 3 nodes in the German datacenter:
 
-#### Step 5. Create and apply corresponding zone configurations
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=de \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
+    --store=node4 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=de \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
+    --store=node5 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER PARTITION north_america OF TABLE roachlearn.students_by_list \
-    CONFIGURE ZONE USING constraints='[+datacenter=us1]';
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=de \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
+    --store=node6 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER PARTITION australia OF TABLE roachlearn.students_by_list \
-    CONFIGURE ZONE USING constraints='[+datacenter=au1]';
-~~~
+3. Add 3 nodes in the Australian datacenter:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=aus \
+    --listen-addr=localhost:26263 \
+    --http-addr=localhost:8086 \
+    --store=node7 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=aus \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
+    --store=node8 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --listen-addr=localhost \
+    --locality=region=aus \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
+    --store=node9 \
+    --background \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+
+#### Step 3. Request and set a trial enterprise license
+
+See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+
+#### Step 4. Create the `roachlearn` database and `students` table
+
+1. Open the CockroachDB SQL shell:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure --host=localhost:26157
+    ~~~
+
+2. Create the database and set it as current:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE roachlearn;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET DATABASE = roachlearn;
+    ~~~
+
+3. Create the table with the appropriate partitions:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE students (
+        id INT DEFAULT unique_rowid(),
+        name STRING,
+        email STRING,
+        country STRING,
+        expected_graduation_date DATE,   
+        PRIMARY KEY (country, id))
+        PARTITION BY LIST (country) (
+          PARTITION north_america VALUES IN ('CA','US'),
+          PARTITION europe VALUES IN ('DE', 'CH'),
+          PARTITION australia VALUES IN ('AU','NZ'),
+          PARTITION DEFAULT VALUES IN (default)
+        );
+    ~~~
+
+    Alternatively, you can create and partition the table as separate steps:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE students (
+        id INT DEFAULT unique_rowid(),
+        name STRING,
+        email STRING,
+        country STRING,
+        expected_graduation_date DATE,   
+        PRIMARY KEY (country, id))
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE students
+      PARTITION BY LIST (country) (
+        PARTITION north_america VALUES IN ('CA','US'),
+        PARTITION europe VALUES IN ('DE', 'CH'),
+        PARTITION australia VALUES IN ('AU','NZ'),
+        PARTITION DEFAULT VALUES IN (default)
+      );
+    ~~~    
+
+#### Step 5. Create and apply corresponding replication zones
+
+To create replication zone and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
+
+1. Create a replication zone for the `north_america` partition and constrain its data to the US datacenter:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER PARTITION north_america OF TABLE roachlearn.students \
+        CONFIGURE ZONE USING constraints='[+region=us]';
+    ~~~
+
+2. Create a replication zone for the `europe` partition and constrain its data to the German datacenter:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER PARTITION europe OF TABLE roachlearn.students \
+        CONFIGURE ZONE USING constraints='[+region=de]';
+    ~~~
+
+3. Create a replication zone for the `australia` partition and constrain its data to the Australian datacenter:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER PARTITION australia OF TABLE roachlearn.students \
+        CONFIGURE ZONE USING constraints='[+region=aus]';
+    ~~~
+
+4. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE roachlearn.students;
+    ~~~
+
+    ~~~
+                  zone_name             |                                           config_sql
+    +-----------------------------------+------------------------------------------------------------------------------------------------+
+      roachlearn.students.north_america | ALTER PARTITION north_america OF INDEX roachlearn.public.students@primary CONFIGURE ZONE USING
+                                        |     range_min_bytes = 16777216,
+                                        |     range_max_bytes = 67108864,
+                                        |     gc.ttlseconds = 90000,
+                                        |     num_replicas = 3,
+                                        |     constraints = '[+region=us]',
+                                        |     lease_preferences = '[]'
+    ~~~
+
 
 #### Step 6. Verify table partitions
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students_by_list;
+> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE roachlearn.students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 You should see the following output:
 
 ~~~
-+-----------------+-----------------+----------+----------+--------------+
-| start_key       | end_key         | range_id | replicas | lease_holder |
-+-----------------+-----------------+----------+----------+--------------+
-| NULL            | /"AU"           |      251 | {1,2,3}  |            1 |
-| /"AU"           | /"AU"/PrefixEnd |      257 | {1,2,3}  |            1 |
-| /"AU"/PrefixEnd | /"CA"           |      258 | {1,2,3}  |            1 |
-| /"CA"           | /"CA"/PrefixEnd |      252 | {1,2,3}  |            1 |
-| /"CA"/PrefixEnd | /"NZ"           |      253 | {1,2,3}  |            1 |
-| /"NZ"           | /"NZ"/PrefixEnd |      256 | {1,2,3}  |            1 |
-| /"NZ"/PrefixEnd | /"US"           |      259 | {1,2,3}  |            1 |
-| /"US"           | /"US"/PrefixEnd |      254 | {1,2,3}  |            1 |
-| /"US"/PrefixEnd | NULL            |      255 | {1,2,3}  |            1 |
-+-----------------+-----------------+----------+----------+--------------+
-(9 rows)
-
-Time: 7.209032ms
+  start_key |     end_key     | range_id | replicas | lease_holder
++-----------+-----------------+----------+----------+--------------+
+  /"AU"     | /"AU"/PrefixEnd |       26 | {7,8,9}  |            8
+  /"CA"     | /"CA"/PrefixEnd |       22 | {1,2,3}  |            1
+  /"CH"     | /"CH"/PrefixEnd |       41 | {4,5,6}  |            5
+  /"DE"     | /"DE"/PrefixEnd |       43 | {4,5,6}  |            5
+  /"NZ"     | /"NZ"/PrefixEnd |       45 | {7,8,9}  |            7
+  /"US"     | /"US"/PrefixEnd |       24 | {1,2,3}  |            1
+(6 rows)
 ~~~
+
+For reference, here's how the nodes map to zones:
+
+Node IDs | Zone
+---------|-----
+1-3 | `north_america`
+4-6 | `europe`
+7-9 | `australia`
+
+We can see that, after partitioning, the replicas for `US` and `CA`-based students are located on nodes 1-3 in `north_america`, the replicas for `DE` and `CH`-based students are located on nodes 4-6 in `europe`, and the replicas for `AU` and `NZ`-based students are located on nodes 7-9 in `australia`.
 
 ### Define table partitions by range
 
@@ -496,6 +684,12 @@ You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](p
 ~~~ sql
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
+
+### Show the replication zone for a partition
+
+To view the replication zone for a partition, use the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
+
+{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}
 
 ## Locality–resilience tradeoff
 
