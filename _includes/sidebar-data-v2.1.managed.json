@@ -53,12 +53,6 @@
             "urls": [
               "/${VERSION}/managed-monitoring-page.html"
             ]
-          },
-          {
-            "title": "Settings",
-            "urls": [
-              "/${VERSION}/managed-console-settings.html"
-            ]
           }
         ]
       },

@@ -28,6 +28,8 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     The **Add Network** modal displays.
 
+    <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+
 3. Enter the public IP address of the machine in the **Network** field.
 
     The IP address should be written in Classless Inter-Domain Routing (CIDR) notation. For example:
@@ -52,28 +54,28 @@ Once you have authorized your network, [generate the cluster's connection string
 
 On the machine where you want to run your application:
 
-1. Navigate to your cluster's [Overview](managed-cluster-overview.html) page.
-2. Click the **Connect** button in the top right corner.
+1. In the top right corner of the Console, click the **Connect** button.
 
     The **Connect** modal displays.
 
-3. Select a **Region** to connect to.
-4. Select a **Database** name to connect to.
+    <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />    
+
+3. Select you **User** from the dropdown to log into the cluster.
+
+4. Select a **Region** to connect to.
+5. Select a **Database** name to connect to.
 
     The default database is `defaultdb`. For more information, see [`Default databases`](show-databases.html#default-databases).
 
-5. Select a **User** from the dropdown to log into the cluster.
-6. Copy the **Cockroach SQL Invocation**.
+6. On the **Connect from Shell** tab, click **Copy connection string**.
 
     This is how you will access the built-in SQL client later. You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
 
-7. Click the **Download CA Cert** button
+7. Click the **Download ca.crt** button
 
-    The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings. Move the `ca.crt` to the `certs` directory you previously created.
+    Move the `ca.crt` file to the `certs` directory you previously created. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
-8. Click **Done**.
-
-9. [Connect to the cluster.](#connect-to-the-cluster)
+8. When you are done, close the modal and [connect to the cluster](#connect-to-the-cluster).
 
 ## Connect to the cluster
 

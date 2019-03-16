@@ -40,6 +40,8 @@ Once you are approved and your Managed CockroachDB cluster is available, you'll 
 
     The **Set Password** page displays.
 
+    <img src="{{ 'images/v19.1/managed/sign-up.png' | relative_url }}" alt="Sign up" style="border:1px solid #eee;max-width:100%" />
+
 2. Enter your name.
 3. Enter and confirm your password.
 4. Click **Submit**.
