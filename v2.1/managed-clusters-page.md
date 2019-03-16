@@ -28,7 +28,7 @@ To add Console users:
 
     The **Invite Team Members** modal displays.
 
-    <img src="{{ 'images/v2.1/invite-team-members-modal.png' | relative_url }}" alt="Invite team members" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/managed/invite-team-members-modal.png' | relative_url }}" alt="Invite team members" style="border:1px solid #eee;max-width:100%" />
 
 2. Enter the user's **Email**.
 3. To add multiple users, click **Add another** and repeat steps 3 and 4.
