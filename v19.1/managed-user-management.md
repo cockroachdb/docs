@@ -1,17 +1,41 @@
 ---
 title: User Management
-summary:
+summary: Learn how to create SQL users.
 toc: true
 build_for: [managed]
 ---
 
-The "admin" user identified in your initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster with your "admin" user.
+Make sure you have already [connected to the cluster](managed-connect-to-your-cluster.html) with your `admin` SQL user.
 
-## Creating users
+## Create a SQL user
+
+- [Use the Console](#use-the-console)
+- [Use the CockroachDB SQL client](#use-the-cockroachdb-sql-client)
+
+### Use the Console
+
+Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
+
+1. Navigate to your cluster's **SQL Users** page.
+2. Click the **Add User** button in the top right corner.
+
+    The **Add User** modal displays.
+
+    <img src="{{ 'images/v19.1/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+
+3. Enter a **Username**.
+4. Enter and confirm the **Password**.
+5. Click **Create**.
+
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+
+### Use the CockroachDB SQL client
+
+Once you have [connected to the cluster's SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html) statement:
 
@@ -44,7 +68,7 @@ To assign a user more limited privileges for one table in a database:
 
 For more details, see [Privileges](authorization.html#assign-privileges) and [`GRANT`](grant.html).
 
-## Managing users
+## Managing SQL users
 
 - To change a users password, use the [`ALTER USER`](alter-user.html) statement:
 

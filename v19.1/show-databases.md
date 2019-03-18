@@ -35,7 +35,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the d
 (3 rows)
 ~~~
 
-## Default Databases
+## Default databases
 
 New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to v2.1 or later will include three auto-generated databases, with the following purposes:
 

@@ -24,7 +24,7 @@ Make sure you have already [connected the CockroachDB SQL client](managed-connec
 
 ## Create a database
 
-Your Managed CockroachDB cluster comes with a pre-created database, mentioned in your [confirmation email](managed-sign-up-for-a-cluster.html#connection-details), as well as a `defaultdb` for testing and some internal databases.
+Your Managed CockroachDB cluster comes with a `defaultdb` for testing and some internal databases.
 
 To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
