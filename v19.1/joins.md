@@ -8,6 +8,9 @@ Join expressions, also called "joins", combine the results of two or more table 
 
 Join expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
 
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v19.1</span>: The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to force the use of a specific join algorithm.  For more information, see [Join hints](cost-based-optimizer.html#join-hints).
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -167,6 +170,7 @@ Lookup joins are performed on two tables as follows:
 
 ## See also
 
+- [Cost-based Optimizer: Join Hints](cost-based-optimizer.html#join-hints)
 - [Scalar Expressions](scalar-expressions.html)
 - [Table Expressions](table-expressions.html)
 - [Simple `SELECT` Clause](select-clause.html)
