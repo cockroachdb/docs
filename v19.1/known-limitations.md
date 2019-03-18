@@ -12,6 +12,12 @@ None identified yet.
 
 ## Unresolved limitations
 
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
