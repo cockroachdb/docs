@@ -36,7 +36,6 @@ For the diagram above:
 - Leaseholders are denoted by a dashed line.
 - The 3 nodes are all running in a single datacenter.
 - The cluster is using the default replication factor of 3 (represented by 3 blocks of the same color). Each range (e.g., `r1`) has 3 replicas, with each replica on a different node.
-- All CockroachDB nodes communicate with each other
 
 **Availability expectations**
 
@@ -90,21 +89,19 @@ For this example:
     --locality=region=us-east,datacenter=us-east-b
     ~~~
 
-- The cluster is using a replication factor of 5 (represented by 5 blocks of the same color). Each range (e.g., `r1`) has 5 replicas, with each replica on a different node.
-- All CockroachDB nodes communicate with each other
-- Similar to the [single-datacenter](#single-region-clusters) topology, more regions can be added dynamically.
+- The cluster is using a replication factor of 3 (represented by 3 blocks of the same color). Each range (e.g., `r1`) has 3 replicas, with each replica on a different node.
 
 **Availability expectations**
 
 - If all of the nodes for a preferred locality are down, then the app will try datacenters in other localities.
 - The cluster can withstand a datacenter failure without losing a region because there are 2 nodes in each region.
-- The cluster can withstand a regional failure because even with 2 nodes down, each range retains a majority of its replicas (3/5). In general, multi-regions can help protect against natural disaster.
+- The cluster can withstand a regional failure because, with `--locality` specified on each node as shown above, the cluster balances each range across all 3 regions; with one region down, each range still has a majority of its replicas (2/3).
 
 **Performance expectations**
 
-- The latency numbers (e.g., `60ms`) in the first diagram represent network round-trip from one datacenter to another.
-- [Follow-the-workload](demo-follow-the-workload.html) will increase the speed for reads.
-- Write latencies will be as fast as the slowest quorum between 2 regions.
+- The latency numbers (e.g., `60ms`) in the first diagram represent network round-trip from one region to another.
+- For reads, if the gateway node (the node the app connects to) is in the region containing the leaseholder replica of the relevant range, latency should be around 2ms. If the gateway node is in a region that does not contain the leaseholder, the cluster will route the request to the node with the leaseholder in another region, that node will retrieve the data, and then the cluster will return the data to the gateway node. In this case, the network round-trips from one region to another will add latency. In some cases, [follow-the-workload](demo-follow-the-workload.html) will increase the speed for reads by moving the leaseholder closer to the application.
+- For writes, because a majority of replicas are always required to agree before a write is committed, latencies will be as fast as the slowest quorum between 2 regions.
 
 ### Multiple regions, more performant (with partitioning)
 
@@ -123,33 +120,55 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
 - 9 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
 - A client connects to geographically close `app` server via `GSLB`.
 - Inside each region, an `app` server connects to one of the CockroachDB nodes within the region through a software-based `load balancer`.
-- Every region has 3 nodes across 2 datacenters (e.g., `us-west-a`, `us-west-b`). Note that most cloud providers only have 2 datacenters per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers only have 2 datacenters per region. Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
     --locality=region=us-west,datacenter=us-west-b
+    --locality=region=us-west,datacenter=us-west-c
     --locality=region=us-central,datacenter=us-central-a
     --locality=region=us-central,datacenter=us-central-b
+    --locality=region=us-central,datacenter=us-central-c
     --locality=region=us-east,datacenter=us-east-a
     --locality=region=us-east,datacenter=us-east-b
+    --locality=region=us-east,datacenter=us-east-c
     ~~~
 
 - The cluster is using a replication factor of 3 (represented by the 3 blocks of the same color). Each range (e.g., `r1`) has a prefix (`w-` for West, `c-` for Central, `e-` for East), which denotes the partition that is replicated.
-- Leaseholders are denoted by a dashed line. Using [zone configurations](configure-replication-zones.html), leaseholders can be pinned (represented by the `x`) to a datacenter close to the users.
-- All CockroachDB nodes communicate with each other.
+- Leaseholders are denoted by a dashed line.
+- Tables are [partitioned](partitioning.html) at the row level by locality, for example:
 
-However, to make the cluster more performant, you need to add [partitions](partitioning.html) (an enterprise-only feature). In this example:
+    ~~~
+    > CREATE TABLE customers (
+        id INT DEFAULT unique_rowid(),
+        name STRING,
+        email STRING,
+        state STRING,
+        expected_graduation_date DATE,   
+        PRIMARY KEY (state, id))
+        PARTITION BY LIST (state) (
+          PARTITION west VALUES IN ('CA','OR','WA'[...]),
+          PARTITION central VALUES IN ('OH','IL','MI'[...]),
+          PARTITION east VALUES IN ('NY','MA','VA'[...]),
+          PARTITION DEFAULT VALUES IN (default)
+        );
+    ~~~
 
-- Tables are [partitioned](partitioning.html) at the row level by locality.
+    ~~~
+    > ALTER PARTITION west OF TABLE customers \
+        CONFIGURE ZONE USING constraints='[+region=us-west]';
+    ~~~
+
 - Partition replicas are distributed among the 3 nodes within each region.
+- Rows within each partition have their leaseholder constrained to a datacenter in the corresponding region. For more information, see [Define table partitions by list](partitioning.html#define-table-partitions-by-list).
 - Rows with the `region=us-west` partition have their leaseholder constrained to a `us-west-b` datacenter.
 - Rows with the `region=us-central` partition have their leaseholder constrained to a `us-central-a` datacenter.
 - Rows with the `region=us-east` partition have their leaseholder constrained to a `us-east-b` datacenter.
 
 **Availability expectations**
 
-- If a datacenter with 1 replica is lost, the cluster will not lose a region because there is a majority of replicas (2/3) in the region's other datacenter.
-- If a datacenter with 2 range is lost, the cluster will lose a region (i.e., data is unavailable) because there is only 1 range in the region's other datacenter. For more information, see the [Locality-resilience tradeoff](partitioning.html#locality-resilience-tradeoff) section of the [Define Table Partitions](partitioning.html) doc.
+- The cluster as a whole can withstand a regional failure because system-level ranges have their replicas balanced across regions. However, because user data is partitioning and pinned to specific regions, region-specific data will be unavailable during a regional failure.
+- Within a region, partitions pinned to the region will remain available as long as 2/3 datacenters are up.
 
 **Performance expectations**
 
@@ -162,7 +181,7 @@ However, to make the cluster more performant, you need to add [partitions](parti
 Anti-patterns are commonly used patterns that are ineffective or risky. Consider the following when choosing a cluster pattern:
 
 - Do not deploy to 2 datacenters. A cluster across 2 datacenters is not protected against datacenter failure and can lead to a [split-brain scenario](https://en.wikipedia.org/wiki/Split-brain_(computing)). For CockroachDB to work from a resiliency standpoint, it is best practice to deploy your cluster across 3 or more datacenters.
-- Do not deploy to regions with high network latency (e.g., `us-west`, `asia`, and `europe`) without using partitioning.
+- Do not deploy to regions with high network latency (e.g., `us-west`, `asia`, and `europe`) without using [partitioning](partitioning.html).
 - The cluster's replication factor does not need to be the same as the number of nodes in the cluster. In fact, as you scale your cluster, you should add nodes (but keep the replication factor at 5, for example) to improve performance. This is shown in the [Single datacenter, more resilient and/or performant](#single-datacenter-more-performant-and-or-resilient) section.
 
 <!-- ### High-Performance
