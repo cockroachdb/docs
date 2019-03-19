@@ -78,7 +78,7 @@ For this example:
 - `Load Balancer`s are software-based load balancers that direct traffic to each of the regions' nodes at random.
 - Leaseholders are denoted by a dashed line.
 - 6 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
-- Every region has 2 nodes across 2 datacenters (e.g., `us-west-a`, `us-west-b`). Note that most cloud providers only have 2 datacenters per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 2 nodes across 2 datacenters (e.g., `us-west-a`, `us-west-b`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -120,7 +120,7 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
 - 9 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
 - A client connects to geographically close `app` server via `GSLB`.
 - Inside each region, an `app` server connects to one of the CockroachDB nodes within the region through a software-based `load balancer`.
-- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers only have 2 datacenters per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 2 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -167,7 +167,7 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
 
 **Availability expectations**
 
-- The cluster as a whole can withstand a regional failure because system-level ranges have their replicas balanced across regions. However, because user data is partitioning and pinned to specific regions, region-specific data will be unavailable during a regional failure.
+- The cluster as a whole can withstand a regional failure because system-level ranges have their replicas balanced across regions. However, because user data is partitioned and pinned to specific regions, region-specific data will be unavailable during a regional failure.
 - Within a region, partitions pinned to the region will remain available as long as 2/3 datacenters are up.
 
 **Performance expectations**
@@ -180,7 +180,7 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
 
 Anti-patterns are commonly used patterns that are ineffective or risky. Consider the following when choosing a cluster pattern:
 
-- Do not deploy to 2 datacenters. A cluster across 2 datacenters is not protected against datacenter failure and can lead to a [split-brain scenario](https://en.wikipedia.org/wiki/Split-brain_(computing)). For CockroachDB to work from a resiliency standpoint, it is best practice to deploy your cluster across 3 or more datacenters.
+- Do not deploy to 2 datacenters. A cluster across 2 datacenters is not protected against datacenter failure. In order to survive the failure of a datacenter, you need to deploy your cluster across 3 or more datacenters.
 - Do not deploy to regions with high network latency (e.g., `us-west`, `asia`, and `europe`) without using [partitioning](partitioning.html).
 - The cluster's replication factor does not need to be the same as the number of nodes in the cluster. In fact, as you scale your cluster, you should add nodes (but keep the replication factor at 5, for example) to improve performance. This is shown in the [Single datacenter, more resilient and/or performant](#single-datacenter-more-performant-and-or-resilient) section.
 
