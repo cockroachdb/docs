@@ -5,7 +5,11 @@ toc: true
 build_for: [managed]
 ---
 
-The **Clusters** page of the Console provides a high-level view of your clusters. For each cluster, the following details display:
+The **Clusters** page of the Console provides a high-level view of your clusters.
+
+<img src="{{ 'images/v19.1/managed/all-clusters-page.png' | relative_url }}" alt="All Clusters" style="border:1px solid #eee;max-width:100%" />
+
+For each cluster, the following details display:
 
 - The cluster's **Name**
 - The **Version** of CockroachDB the cluster is running
