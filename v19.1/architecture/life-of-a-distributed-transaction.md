@@ -6,9 +6,9 @@ toc: true
 
 Because CockroachDB is a distributed transactional database, the path queries take is dramatically different from many other database architectures. To help familiarize you with CockroachDB's internals, this guide covers what that path actually is.
 
-If you've already read the [CockroachDB architecture documentation](https://www.cockroachlabs.com/docs/stable/architecture/overview.html), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
+If you've already read the [CockroachDB architecture documentation](overview.html), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
 
-To get the most out of this guide, we recommend beginning with the architecture documentation's [overview](https://www.cockroachlabs.com/docs/stable/architecture/overview.html) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
+To get the most out of this guide, we recommend beginning with the architecture documentation's [overview](overview.html) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
 
 ## Overview
 
@@ -130,7 +130,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 - `COMMITTED`, this operation converts the write intent to a regular key-value pair, and then proceeds as if it had read that value instead of a write intent.
 - `ABORTED`, this operation discards the write intent and reads the next-most-recent value from RocksDB.
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e. ahead of this transaction's timestmap); however, this only succeeds if the write intent's transaction has become inactive.
-  
+
   If the push succeeds, the operation continues.
 
   If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
@@ -140,7 +140,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 
     Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records](transaction-layer.html#transaction-records).
 
-Check out our architecture documentation for more information about [CockroachDB's transactional model](transaction-layer.html). 
+Check out our architecture documentation for more information about [CockroachDB's transactional model](transaction-layer.html).
 
 #### Read Operations
 
