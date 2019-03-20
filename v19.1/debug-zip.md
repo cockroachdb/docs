@@ -20,6 +20,8 @@ The `debug zip` [command](cockroach-commands.html) connects to your cluster and 
 - Heap profiles
 - Problem ranges
 
+Additionally, you can run the [`debug merge-logs`](debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
+
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
 
@@ -45,7 +47,7 @@ You can locate logs in the unarchived file's `debug/nodes/[node dir]/logs` direc
 
 ## Subcommands
 
-While the `cockroach debug` command has a few subcommands, the only subcommand users are expected to use is `zip` which collects all of your cluster's debug information in a single file.
+While the `cockroach debug` command has a few subcommands, users are expected to only use the `zip` and [`debug-merge`](debug-merge-logs.html) subcommands.
 
 `debug`'s other subcommands are useful only to CockroachDB's developers and contributors.
 
