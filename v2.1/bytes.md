@@ -86,6 +86,41 @@ odd number of them. Two conversion modes are supported:
 - Otherwise, the string is converted to a byte array that contains
   its UTF-8 encoding.
 
+### `STRING` vs. `BYTES`
+
+While both `STRING` and `BYTES` can appear to have similar behavior in many situations, one should understand their nuance before casting one into the other.
+
+`STRING` treats all of its data as characters, or more specificially, Unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex Unicode character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT length('☃'::string);
+~~~
+
+~~~
+  length
++--------+
+       1
+~~~
+
+~~~ sql
+> SELECT length('☃'::bytes);
+~~~
+~~~
+  length
++--------+
+       3
+~~~
+
+In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+
+#### Translating literals to `STRING` vs. `BYTES`
+
+A literal entered through a SQL client will be translated into a different value based on the type:
+
++ `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
++ `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
+
 ## See also
 
 [Data Types](data-types.html)
