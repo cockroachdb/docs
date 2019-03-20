@@ -14,26 +14,16 @@ For insights into your cluster's performance and health, use the built-in [Admin
 
 ## What gets shared
 
-When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized details on an hourly basis, including data about the following:
+When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized details on an hourly basis, including (but not limited to):
 
-- Stores on the node
-- Hardware the node is running on
-- Structure of tables stored on the node
-- Types of SQL queries executed by the node
-- [Replication zones](configure-replication-zones.html) applying to the node
-- [`CLUSTER SETTINGS`](cluster-settings.html) that have been altered
-- Crashes reported by the node
-- Admin UI user information and page views
-- Attempts to use unsupported features
-- Names of SQL built-in function that produce errors  
+- Deployment and configuration characteristics, such as size of hardware, [cluster settings](cluster-settings.html) that have been altered from defaults, number of [replication zones](configure-replication-zones.html) configured, etc.
+- Usage and cluster health details, such as crashes, unexpected errors, attempts to use unsupported features, types of queries run and their execution characteristics as well as types of schemas used, etc.
+
+To view the full diagnostics details that a node reports to Cockroach Labs, use the `http://<node-address>:<http-port>/_status/diagnostics/local` JSON endpoint.
 
 {{site.data.alerts.callout_info}}
 In all cases, names and other string values are scrubbed and replaced with underscores. Also, the details that get shared may change over time, but as that happens, we will announce the changes in release notes.
 {{site.data.alerts.end}}
-
-## How to view diagnostics details
-
-To view the diagnostics details that a node reports to Cockroach Labs, use the `http://<node-address>:<http-port>/_status/diagnostics/local` JSON endpoint.
 
 ## Opt out of diagnostics reporting
 
@@ -62,11 +52,9 @@ To check the state of diagnostics reporting, [use the built-in SQL client](use-t
 ~~~
 
 ~~~
+  diagnostics.reporting.enabled
 +-------------------------------+
-| diagnostics.reporting.enabled |
-+-------------------------------+
-| false                         |
-+-------------------------------+
+              false
 (1 row)
 ~~~
 

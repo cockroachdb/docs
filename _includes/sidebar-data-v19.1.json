@@ -463,12 +463,6 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
-          },
-          {
-            "title": "Diagnostics Reporting",
-            "urls": [
-              "/${VERSION}/diagnostics-reporting.html"
-            ]
           }
         ]
       },
@@ -1734,6 +1728,12 @@
               "/${VERSION}/intellij-idea.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
         ]
       }
     ]
