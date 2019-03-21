@@ -4,7 +4,7 @@ summary: The SHOW JOBS statement lists all currently active schema changes and b
 toc: true
 ---
 
-The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
+The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
@@ -13,7 +13,7 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
 {{site.data.alerts.callout_info}}
-The `SHOW JOBS` statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the [SQL Audit Logging (Experimental)](sql-audit-logging.html) feature.
+The `SHOW JOBS` statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the [SQL Audit Logging (Experimental)](sql-audit-logging.html) feature. Also, for jobs older than 12 hours, query the `crdb_internal.jobs` table.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -28,9 +28,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
 ## Response
 
-The result list of jobs shows first ongoing jobs, then completed
-jobs. The list of ongoing jobs is sorted by starting time, whereas the
-list of completed jobs is sorted by finished time.
+The result list of jobs shows first ongoing jobs, then completed jobs within the last 12 hours. The list of ongoing jobs is sorted by starting time, whereas the list of completed jobs is sorted by finished time.
 
 The following fields are returned for each job:
 
