@@ -147,11 +147,12 @@ For more information about the difficulty of selecting an optimal join ordering,
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
+- `CROSS MERGE JOIN`
 
 Note that the hint cannot be specified with a bare hint keyword (e.g., `MERGE`) - in that case, the `INNER` keyword must be added. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
 
 {{site.data.alerts.callout_info}}
-Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to SQL's implicit `AS` syntax. If you're not careful you can make `MERGE` be an alias for a table; for example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is just a long way of saying `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. In this case, the correct syntax is `a INNER MERGE JOIN b`.
+Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to SQL's implicit `AS` syntax. If you're not careful, you can make `MERGE` be an alias for a table; for example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is just a long way of saying `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. In this case, the correct syntax is `a INNER MERGE JOIN b`.
 {{site.data.alerts.end}}
 
 ### Supported join algorithms
@@ -165,8 +166,6 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
 ### Additional considerations
-
-- CockroachDB does not support a `CROSS <hint> JOIN`, but the same effect can be achieved with `a INNER <hint> JOIN b ON true`.
 
 - This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that:
 
