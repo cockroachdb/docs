@@ -7,14 +7,13 @@ toc_not_nested: true
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-
 ## How do indexes work?
 
 When you create an index, CockroachDB "indexes" the columns you specify, which creates a copy of the columns and then sorts their values (without sorting the values in the table itself).
 
 After a column is indexed, SQL can easily filter its values using the index instead of scanning each row one-by-one. On large tables, this greatly reduces the number of rows SQL has to use, executing queries exponentially faster.
 
-For example, if you index an `INT` column and then filter it <code>WHERE &lt;indexed column&gt; = 10</code>, SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate _every_ row in the column for values equaling 10.
+For example, if you index an `INT` column and then filter it <code>WHERE &lt;indexed column&gt; = 10</code>, SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate _every_ row in the column for values equaling 10.  This is also known as a "full table scan", and it is very bad for query performance.
 
 ### Creation
 
@@ -55,6 +54,10 @@ We recommend creating indexes for all of your common queries. To design the most
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
 - [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
 
+{{site.data.alerts.callout_success}}
+For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
+{{site.data.alerts.end}}
+
 ### Indexing columns
 
 When designing indexes, it's important to consider which columns you index and the order you list them. Here are a few guidelines to help you make the best choices:
@@ -94,6 +97,8 @@ You could create a single index of `col1` and `col2` that stores `col3`:
 ## See also
 
 - [Inverted Indexes](inverted-indexes.html)
+- [SQL Performance Best Practices](performance-best-practices-overview.html)
+- [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
