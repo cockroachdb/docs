@@ -4,7 +4,7 @@ summary: The SHOW JOBS statement lists all currently active schema changes and b
 toc: true
 ---
 
-The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
+The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
@@ -12,8 +12,11 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
-{{site.data.alerts.callout_info}} The <code>SHOW JOBS</code> statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the <a href="sql-audit-logging.html">SQL Audit Logging (Experimental)</a> feature.{{site.data.alerts.end}}
+## Considerations
 
+- The `SHOW JOBS` statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the [SQL Audit Logging (Experimental)](sql-audit-logging.html) feature.
+- For jobs older than 12 hours, query the `crdb_internal.jobs` table.
+- Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
 
 ## Required privileges
 
@@ -27,9 +30,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
 ## Response
 
-The result list of jobs shows first ongoing jobs, then completed
-jobs. The list of ongoing jobs is sorted by starting time, whereas the
-list of completed jobs is sorted by finished time.
+The result list of jobs shows first ongoing jobs, then completed jobs within the last 12 hours. The list of ongoing jobs is sorted by starting time, whereas the list of completed jobs is sorted by finished time.
 
 The following fields are returned for each job:
 
@@ -37,11 +38,11 @@ Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
 `job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), and [`RESTORE`](restore.html), [`IMPORT`](import.html).
-`description` | The command that started the job.
+`description` | The statement that started the job, or a textual description of the job.
+`statement` | <span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column. This applies to internal jobs, such as the automatic generation of [table statistics](cost-based-optimizer.html#table-statistics) for the cost-based optimizer.
 `user_name` | The user who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
-`running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table
-data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, or `RocksDB compaction`.
+`running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, or `RocksDB compaction`.  
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
 `finished` | The `TIMESTAMP` when the job was `succeeded`, `failed`, or `canceled`.
