@@ -86,7 +86,12 @@ Column | Description
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
 `character_set_name` | Always `NULL` (unsupported by CockroachDB).
+`domain_catalog` | Always `NULL` (unsupported by CockroachDB).
+`domain_schema` | Always `NULL` (unsupported by CockroachDB).
+`domain_name` | Always `NULL` (unsupported by CockroachDB).
 `generation_expression` | The expression used for computing the column value in a computed column.
+`is_hidden` | Whether or not the column is hidden. Possible values: `true` or `false`.
+`crdb_sql_type` | [Data type](data-types.html) of the column.
 
 ### column_privileges
 
