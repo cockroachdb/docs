@@ -121,7 +121,7 @@ Constraints can be specified such that they apply to all replicas in a zone or s
 Constraint Scope | Description | Syntax
 -----------------|-------------|-------
 **All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints = '[+ssd, -region=west]'`
-**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores. | `constraints: '{+ssd,-region=west: 2, +region=east: 1}'`
+**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores.<br><br>See the [Per-replica constraints](#per-replica-constraints-to-specific-datacenters) example for more details. | `constraints: '{"+ssd,-region=west": 2, "+region=east": 1}', num_replicas = 3`
 
 ### Node/replica recommendations
 
@@ -287,7 +287,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER DATABASE west_app_db CONFIGURE ZONE USING constraints = '{+region=us-west1: 2, +region=us-central1: 1}';
+    > ALTER DATABASE west_app_db \
+    CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
     ~~~
 
     ~~~
