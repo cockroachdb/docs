@@ -240,6 +240,10 @@ $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
 {{site.data.alerts.end}}
 
+## Time zone data
+
+Certain features of CockroachDB require the [`tzdata`](https://www.iana.org/time-zones) package (sometimes called `tz` or `zoneinfo`), for example, to support using place names as time zone identifiers. Therefore, ensure that this package is installed and kept up-to-date on all VMs where CockroachDB nodes are running. 
+
 ## File descriptors limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
