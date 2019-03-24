@@ -13,7 +13,7 @@ All [aggregate functions][aggregate-functions] can also be used as [window funct
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-The examples on this page use the "users", "rides", and "vehicles" tables from the `movr` database used in the [CockroachDB 2.0 demo][demo].
+The examples on this page use the `users`, `rides`, and `vehicles` tables from our open-source fictional peer-to-peer ride-sharing application,[MovR](https://github.com/cockroachdb/movr).
 {{site.data.alerts.end}}
 
 ## How window functions work
