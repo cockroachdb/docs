@@ -242,6 +242,22 @@ $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
 {{site.data.alerts.end}}
 
+## Dependencies
+
+The [CockroachDB binary for Linux](install-cockroachdb-linux.html) depends on the following libraries:
+
+Library | Description
+-----------|------------
+[`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
+`libncurses` | Required by the [built-in SQL shell](use-the-built-in-sql-client.html).
+[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using place names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.
+
+These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date.
+
+{{site.data.alerts.callout_info}}
+In Docker-based deployments of CockroachDB, these dependencies do not need to be manually addressed. The Docker image for CockroachDB includes them and keeps them up to date with each release of CockroachDB.
+{{site.data.alerts.end}}
+
 ## File descriptors limit
 
 CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
