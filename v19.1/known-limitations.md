@@ -8,7 +8,9 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-None identified yet.
+### Install on Mac via Homebrew
+
+{% include {{ page.version.version }}/known-limitations/homebrew.md %}
 
 ## Unresolved limitations
 
