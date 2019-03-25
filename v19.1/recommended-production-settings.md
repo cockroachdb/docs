@@ -10,7 +10,7 @@ This page provides important recommendations for production deployments of Cockr
 
 ### Terminology
 
-To properly plan your cluster's topology, it's important to review some basic CockroachDB-specific terminology:
+To properly plan your [cluster's topology](cluster-topology-patterns.html), it's important to review some basic CockroachDB-specific terminology:
 
 Term | Definition
 -----|------------
