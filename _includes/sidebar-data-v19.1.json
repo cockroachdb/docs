@@ -187,15 +187,15 @@
             ]
           },
           {
-            "title": "Test Deployment",
-            "urls": [
-              "/${VERSION}/deploy-a-test-cluster.html"
-            ]
-          },
-          {
             "title": "Cluster Topology Patterns",
             "urls": [
               "/${VERSION}/cluster-topology-patterns.html"
+            ]
+          },
+          {
+            "title": "Test Deployment",
+            "urls": [
+              "/${VERSION}/deploy-a-test-cluster.html"
             ]
           },
           {
