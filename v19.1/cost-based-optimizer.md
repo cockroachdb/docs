@@ -179,6 +179,166 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 
    - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
 
+## Preferring the nearest index
+
+<span class="version-tag">New in v19.1</span>: Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
+
+This feature enables scenarios where reference data such as a table of postal codes can be replicated to different regions, and queries will use the copy in the same region.
+
+{{site.data.alerts.callout_info}}
+The optimizer preferring the nearest index is not an enterprise feature, but in order to take advantage of it you need to be able to [create a replication zone for a secondary index](configure-replication-zones.html#create-a-replication-zone-for-a-secondary-index), which is an [enterprise feature](enterprise-licensing.html).
+{{site.data.alerts.end}}
+
+To take advantage of this feature, you need to:
+
+1. Have an [enterprise license](enterprise-licensing.html).
+2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
+3. Create multiple indexes on the reference tables. Note that the indexes need to include (in key or using [`STORED`](create-index.html#store-columns)) the columns that you wish to query.
+4. Create replication zones for each index.
+
+With the above pieces in place, the optimizer will automatically choose the index nearest the gateway node that is planning the query.
+
+{{site.data.alerts.callout_info}}
+The optimizer does not actually understand geographic locations, i.e., the relative closeness of the gateway node to other nodes that are located to its "east" or "west". It is matching against the [node locality constraints](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) you provided when you configured your replication zones.
+{{site.data.alerts.end}}
+
+### Example
+
+We can demonstrate the necessary configuration steps using a local cluster. The instructions below assume that you are already familiar with:
+
+- How to [Start a local cluster](start-a-local-cluster.html).
+- The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- Using [the built-in SQL client](use-the-built-in-sql-client.html).
+
+First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach init --insecure --host=localhost --port=26257
+~~~
+
+Next, from the SQL client, add your organization name and enterprise license:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING enterprise.license = 'xxxxx';
+~~~
+
+Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE IF NOT EXISTS test;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+USE test;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE postal_codes (
+    id INT PRIMARY KEY,
+    code STRING,
+    INDEX idx_eu (id) STORING (code),
+    INDEX idx_apac (id) STORING (code)
+);
+~~~
+
+Next, we modify the replication zone configuration via SQL so that:
+
+- Nodes in the USA will use the primary key index.
+- Nodes in the EU will use the `postal_codes@idx_eu` index (which is identical to the primary key index).
+- Nodes in APAC will use the `postal_codes@idx_apac` index (which is also identical to the primary key index).
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE postal_codes CONFIGURE ZONE USING constraints='["+region=usa"]';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER INDEX postal_codes@idx_eu CONFIGURE ZONE USING constraints='["+region=eu"]';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER INDEX postal_codes@idx_apac CONFIGURE ZONE USING constraints='["+region=apac"]';
+~~~
+
+To verify this feature is working as expected, we'll query the database from each of our local nodes as shown below. Each node has been configured to be in a different region, and it should now be using the index pinned to that region.
+
+As expected, the node in the USA region uses the primary key index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree | field |      description
++------+-------+----------------------+
+  scan |       |
+       | table | postal_codes@primary
+       | spans | /1-/1/#
+(3 rows)
+~~~
+
+As expected, the node in the EU uses the `idx_eu` index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree | field |     description
++------+-------+---------------------+
+  scan |       |
+       | table | postal_codes@idx_eu
+       | spans | /1-/2
+(3 rows)
+~~~
+
+As expected, the node in APAC uses the `idx_apac` index.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree | field |      description
++------+-------+-----------------------+
+  scan |       |
+       | table | postal_codes@idx_apac
+       | spans | /1-/2
+(3 rows)
+~~~
+
+You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
+
 ## How to turn the optimizer off
 
 With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
