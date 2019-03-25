@@ -11,7 +11,7 @@ This page covers common cluster topology patterns with setup examples, as well a
 Before selecting a pattern:
 
 - Review the recommendations and requirements in our [Production Checklist](recommended-production-settings.html).
-- Review the [CockroachDB architecture](architecture/overview.html). It's especially important to understand how data is stored in ranges, how ranges are replicated, and how one replica in each range serves as the "leaseholder" that coordinates all read and write requests for that range. See our [Performance Tuning](performance-tuning.html#important-concepts) tutorial for more details about these important concepts and for simple read and write examples.
+- Review the [CockroachDB architecture](architecture/overview.html). It's especially important to understand how data is stored in ranges, how ranges are replicated, and how one replica in each range serves as the "leaseholder" that coordinates all read and write requests for that range. For more details and some example scenarios, see [Reads and Writes in CockroachDB](reads-and-writers-overview.html).
 - Learn about the concept of [locality](start-a-node.html#locality), which makes CockroachDB aware of the location of nodes and able to intelligently balance replicas across localities. Locality is also a prerequisite for the [follow-the-workload](demo-follow-the-workload.html) feature and for enterprise [partitioning](partitioning.html).
 - Learn about [follower reads](follower-reads.html), an enterprise feature, which reduces latency for read queries by letting the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.
 
@@ -66,7 +66,7 @@ In this example, the cluster has an asymmetrical setup where `Central` is closer
 
 <img src="{{ 'images/v19.1/topology-patterns/basic-multi-region.png' | relative_url }}" alt="Basic pattern for multi-region" style="border:1px solid #eee;max-width:100%" />
 
-Each region has 2 nodes across 2 datacenters and does not use partitioning:
+Each region has 3 nodes across 3 datacenters and does not use partitioning:
 
 <img src="{{ 'images/v19.1/topology-patterns/basic-multi-region-layout.png' | relative_url }}" alt="Basic pattern for multi-region" style="border:1px solid #eee;max-width:100%" />
 
@@ -78,15 +78,18 @@ For this example:
 - `Load Balancer`s are software-based load balancers that direct traffic to each of the regions' nodes at random.
 - Leaseholders are denoted by a dashed line.
 - 6 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
-- Every region has 2 nodes across 2 datacenters (e.g., `us-west-a`, `us-west-b`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
     --locality=region=us-west,datacenter=us-west-b
+    --locality=region=us-west,datacenter=us-west-c
     --locality=region=us-central,datacenter=us-central-a
     --locality=region=us-central,datacenter=us-central-b
+    --locality=region=us-central,datacenter=us-central-c
     --locality=region=us-east,datacenter=us-east-a
     --locality=region=us-east,datacenter=us-east-b
+    --locality=region=us-east,datacenter=us-east-c
     ~~~
 
 - The cluster is using a replication factor of 3 (represented by 3 blocks of the same color). Each range (e.g., `r1`) has 3 replicas, with each replica on a different node.
@@ -117,10 +120,10 @@ This setup uses a modern [multi-tier architecture](https://en.wikipedia.org/wiki
 
 A multi-region cluster with partitioning has a similar setup as the [basic multi-region pattern](#multiple-regions-basic-pattern):
 
-- 9 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
+- 9 nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
 - A client connects to geographically close `app` server via `GSLB`.
 - Inside each region, an `app` server connects to one of the CockroachDB nodes within the region through a software-based `load balancer`.
-- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 2 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -154,16 +157,12 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
         );
     ~~~
 
+- Using [replication zones](partitioning.html#define-table-partitions-by-list), partitions are pinned to the nodes in their locality, for example:
+
     ~~~
     > ALTER PARTITION west OF TABLE customers \
         CONFIGURE ZONE USING constraints='[+region=us-west]';
     ~~~
-
-- Partition replicas are distributed among the 3 nodes within each region.
-- Rows within each partition have their leaseholder constrained to a datacenter in the corresponding region. For more information, see [Define table partitions by list](partitioning.html#define-table-partitions-by-list).
-- Rows with the `region=us-west` partition have their leaseholder constrained to a `us-west-b` datacenter.
-- Rows with the `region=us-central` partition have their leaseholder constrained to a `us-central-a` datacenter.
-- Rows with the `region=us-east` partition have their leaseholder constrained to a `us-east-b` datacenter.
 
 **Availability expectations**
 
@@ -183,171 +182,3 @@ Anti-patterns are commonly used patterns that are ineffective or risky. Consider
 - Do not deploy to 2 datacenters. A cluster across 2 datacenters is not protected against datacenter failure. In order to survive the failure of a datacenter, you need to deploy your cluster across 3 or more datacenters.
 - Do not deploy to regions with high network latency (e.g., `us-west`, `asia`, and `europe`) without using [partitioning](partitioning.html).
 - The cluster's replication factor does not need to be the same as the number of nodes in the cluster. In fact, as you scale your cluster, you should add nodes (but keep the replication factor at 5, for example) to improve performance. This is shown in the [Single datacenter, more resilient and/or performant](#single-datacenter-more-performant-and-or-resilient) section.
-
-<!-- ### High-Performance
-
-Some applications have high-performance requirements. In the diagram below, `NJ` and `NY` depict two separate datacenters, each with 3+ nodes, that are connected by a high bandwidth, low-latency network:
-
-~~~
-   NJ ---1ms--- NY
-     \       /  
-     20ms  20ms  
-        \  /
-         \/  
-       Central
-         /\  
-        /  \
-     20ms  20ms  
-     /       \  
-  CA ---1ms--- NV
-~~~
-
-**Configuration**
-
-In this pattern:
-
-- `NJ` and `NY` have the performance characteristics of the [local topology](#single-datacenter-clusters), but the benefit of Zero RPO (recovery point objective) and near Zero RTO (recovery time objective) disaster recovery SLA. `CA` and `NV` are set up similarly.
-- The `Central` region serves as the quorum. `NJ` and `NY` are close, `CA` and `NV` are close to each other, and `Central` is halfway between both pairs to achieve quorum fast. To do this, the cluster needs to be [partitioned](partitioning.html).
-- downsides: you'd have to use zone configs for this (right?) and east - west partition their data. this might require application changes.
-
-**Availability expectations**
-
-- Can survive a single datacenter failure, since a majority of the replicas will remain available.
-
-**Performance expectations**
-
-- Fast performance on each coast, while still being a multi-region cluster for better resiliency.
-
-**Application expectations**
-
-- [Zone configurations](configure-replication-zones.html) are needed for this, as well all as [partitioning](partitioning.html). This might require application changes.
-
-### Dual East datacenters
-
-In this example, the cluster is [following-the-workload](demo-follow-the-workload.html).
-
-here, we're doing follow the workloads
-- east will have fast writes
-- you would do this if you're write heavy on the east
-
-~~~
-App                App
- \                  /
-West ---60ms--- East1
-     \           |
-       \        5ms
-        60ms     |
-           \____East2
-~~~
-
-**Configuration**
-
-- West `App` servers connect to the `West` CockroachDB nodes
-- East `App` servers connect to the `East1` CockroachDB nodes
-- Rows with the `West` partition will have the leaseholder in the `West` datacenter.
-- Rows with the `East` partition will have the leaseholder in the `East1` datacenter.
-- The 3 replicas will be evenly distributed among the three datacenters.
-- Abbreviated startup flag for each datacenter:
-
-    ~~~
-    --loc=Region=East,DC=1
-    --loc=Region=East,DC=2
-    --loc=Region=West
-    ~~~
-
-**Availability expectations**
-
-- Can survive a single datacenter failure, since a majority of the replicas will remain available.
-
-**Performance expectations**
-
-- The reader can expect to have a couple of milliseconds response time.
-- The `East` writers can expect to have a 5ms response time.
-- The `West` writers can expect to have a 60ms response time.
-
-### Dual East and West datacenters
-
-bring down write speeds on the west to be just as fast
-
-pros: everything is fast and you only need 4 nodes (or regions or whatever) to do it
-
-~~~
-App                App
- \                  /
-West1 ---60ms--- East1
-  |   \        /   |
-  5ms  - 60ms -    5ms
-  |   /        \   |
-West2----60ms----East2
-~~~
-
-**Configuration**
-
-- Rows with the `West` partition will have the leaseholder in the `West1` datacenter.
-- Rows with the `East` partition will have the leaseholder in the `East1` datacenter.
-- West partitions will have 1 replica each in `West1` and `West2`, then 1 replica in `East1` or `East2`.
-- East partitions will have 1 replica each in `East1` and `East2`, then 1 replica in `West1` or `West2`.
-- Abbreviated startup flag for each datacenter:
-
-    ~~~
-    --loc=Region=West,DC=1
-    --loc=Region=West,DC=2
-    --loc=Region=East,DC=1
-    --loc=Region=East,DC=2
-    ~~~
-- This setup requires zone configurations and [partitioning](partitioning.html).
-
-**Availability expectations**
-
-- Four nodes lets you have survivabilty of two regions (are these two regions or two datacenters?)
-
-**Performance expectations**
-
-In this example, every request is fast and you only need 4 regions to do it:
-
-- The reader can expect to have a couple of milliseconds response time.
-- The writers can expect to have a 5ms response time.
-
-## Global clusters
-
-### Basic structure for minimum resilience
-
-As an organization grows and establishes itself as a global presence, it will need its data to be near its customers. In this case, the organization would want to create regions on every continent in order to provide fast, local copies of data for their users in those regions. This is also a great solution for GDPR compliance.
-
-The global pattern connects [multiple regional clusters](#multi-region-clusters) together to form a single database that is globally distributed. Transactions are globally consistent. To do this, the cluster requires load balancers, [partitioning](partitioning.html), and [zone configurations](configure-replication-zones.html). Partitions along zone configurations are an [Enterprise feature](enterprise-licensing.html).
-
-~~~
-    West-----East            West-------East
-       \      /                \        /
-        \Asia/                  \Europe/
-         \  /                    \    /
-          \/                      \  /
-        Central                 Central
-                Asia------Europe
-                   \     /  
-                    \   /  
-                     \ /  
-                   Americas
-
-               West---------East
-                  \          /
-                   \Americas/  
-                    \      /
-                    Central
-~~~
-
-**Configuration**
-
-- Each region (i.e., `Asia`, `Europe`, `Americas`) contains three datacenters (i.e., `West`, `East`, `Central`)
-- The application needs to be location aware, i.e., reference a specific region. For more information, see [Define Table Partitions](partitioning.html).
-- TO DO: stipulate number of nodes in each region, replication factor (number of replicas in zone configs)
-
-**Availability expectations**
-
-- The cluster can withstand regional failures (???)
-
-**Performance expectations**
-
-- With correct load balancer setup and geopartiioning, reads can be executes in less than 10ms.
-- Writes are limited by the the fastest latency that will allow them to achieve quorum.
-- In general, performance will be better for users because their data is kept local. -->
