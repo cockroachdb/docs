@@ -410,6 +410,9 @@ HAVING COUNT(name) > 1;
 +----------------+--------------+
 ~~~
 
+### Select from a specific index
+
+{% include {{page.version.version}}/misc/force-index-selection.md %}
 
 ### Select historical data (time-travel)
 

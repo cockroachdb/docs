@@ -85,39 +85,7 @@ For example:
 
 #### Force index selection
 
-By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) when reading from a named table.
-
-{{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a query.{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM accounts;
-~~~
-~~~
-+----------+-------------------+--------+-----+--------+-----------+---------+----------+
-|  Table   |       Name        | Unique | Seq | Column | Direction | Storing | Implicit |
-+----------+-------------------+--------+-----+--------+-----------+---------+----------+
-| accounts | primary           | true   |   1 | id     | ASC       | false   | false    |
-| accounts | accounts_name_idx | false  |   1 | name   | ASC       | false   | false    |
-| accounts | accounts_name_idx | false  |   2 | id     | ASC       | false   | true     |
-+----------+-------------------+--------+-----+--------+-----------+---------+----------+
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT name, balance
-FROM accounts@accounts_name_idx
-WHERE name = 'Edna Barath';
-~~~
-~~~
-+-------------+---------+
-|    name     | balance |
-+-------------+---------+
-| Edna Barath |     750 |
-| Edna Barath |    2200 |
-+-------------+---------+
-~~~
+{% include {{page.version.version}}/misc/force-index-selection.md %} 
 
 ### Access a common table expression
 
