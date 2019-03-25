@@ -81,7 +81,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
-8. Create CockroachDB users for every Kerberos user. For example, if one of your Kerberos users is Carl, create a CockroachDB user named `carl`:
+8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -92,7 +92,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    > GRANT ALL ON DATABASE defaultdb TO carl;;
+    > GRANT ALL ON DATABASE defaultdb TO carl;
     ~~~
 
 ## Configuring the client
