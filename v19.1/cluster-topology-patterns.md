@@ -11,7 +11,7 @@ This page covers common cluster topology patterns with setup examples, as well a
 Before selecting a pattern:
 
 - Review the recommendations and requirements in our [Production Checklist](recommended-production-settings.html).
-- Review the [CockroachDB architecture](architecture/overview.html). It's especially important to understand how data is stored in ranges, how ranges are replicated, and how one replica in each range serves as the "leaseholder" that coordinates all read and write requests for that range. For more details and some example scenarios, see [Reads and Writes in CockroachDB](reads-and-writers-overview.html).
+- Review the [CockroachDB architecture](architecture/overview.html). It's especially important to understand how data is stored in ranges, how ranges are replicated, and how one replica in each range serves as the "leaseholder" that coordinates all read and write requests for that range. For more details and some example scenarios, see [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html).
 - Learn about the concept of [locality](start-a-node.html#locality), which makes CockroachDB aware of the location of nodes and able to intelligently balance replicas across localities. Locality is also a prerequisite for the [follow-the-workload](demo-follow-the-workload.html) feature and for enterprise [partitioning](partitioning.html).
 - Learn about [follower reads](follower-reads.html), an enterprise feature, which reduces latency for read queries by letting the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.
 
@@ -78,7 +78,7 @@ For this example:
 - `Load Balancer`s are software-based load balancers that direct traffic to each of the regions' nodes at random.
 - Leaseholders are denoted by a dashed line.
 - 6 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
-- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -91,6 +91,8 @@ For this example:
     --locality=region=us-east,datacenter=us-east-b
     --locality=region=us-east,datacenter=us-east-c
     ~~~
+
+    <!-- Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. -->
 
 - The cluster is using a replication factor of 3 (represented by 3 blocks of the same color). Each range (e.g., `r1`) has 3 replicas, with each replica on a different node.
 
@@ -123,7 +125,7 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
 - 9 nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
 - A client connects to geographically close `app` server via `GSLB`.
 - Inside each region, an `app` server connects to one of the CockroachDB nodes within the region through a software-based `load balancer`.
-- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. Each node is started with the `--locality` flag to identify which region it is in:
+- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Each node is started with the `--locality` flag to identify which region it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -136,6 +138,9 @@ A multi-region cluster with partitioning has a similar setup as the [basic multi
     --locality=region=us-east,datacenter=us-east-b
     --locality=region=us-east,datacenter=us-east-c
     ~~~
+
+    <!-- Note that most cloud providers have 3 availability zones (i.e., datacenters) per region. -->
+
 
 - The cluster is using a replication factor of 3 (represented by the 3 blocks of the same color). Each range (e.g., `r1`) has a prefix (`w-` for West, `c-` for Central, `e-` for East), which denotes the partition that is replicated.
 - Leaseholders are denoted by a dashed line.
