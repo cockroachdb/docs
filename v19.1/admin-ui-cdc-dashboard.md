@@ -9,6 +9,12 @@ The **Changefeeds** dashboard in the CockroachDB Admin UI lets you monitor the [
 
 The **Changefeeds** dashboard displays the following time series graphs:
 
+## Max Changefeed Latency
+
+- In the node view, the graph shows the maximum latency (in nanoseconds) of any running changefeed for the node.
+
+- In the cluster view, the graph shows the maximum latency (in nanoseconds) of any running changefeed across all nodes.
+
 ## Sink Byte Traffic
 
 - In the node view, the graph shows the number of bytes emitted by CockroachDB into the sink across all changefeeds for the selected node.
@@ -20,19 +26,6 @@ On hovering over the graph, the values for the following metrics are displayed:
 Metric | Description
 --------|----
 **Emitted Bytes** | The number of bytes emitted by CockroachDB into the sink for all changefeeds.
-
-## Sink Timings
-
-- In the node view, the graph shows the time in milliseconds per second required by CockroachDB to send messages to the sink as well as the time CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
-
-- In the cluster view, the graph shows the time in milliseconds per second required by CockroachDB to send messages to the sink as the time CockroachDB spent waiting for the sink to flush the messages for all changefeeds across the cluster.
-
-On hovering over the graph, the values for the following metrics are displayed:
-
-Metric | Description
---------|----
-**Message Emit Time** | The time in milliseconds per second required by CockroachDB to send messages to the sink for all changefeeds.
-**Flush Time** | The time in milliseconds per second that CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
 
 ## Sink Counts
 
@@ -46,6 +39,19 @@ Metric | Description
 --------|----
 **Messages** | The number of messages that CockroachDB sent to the sink for all changefeeds.
 **Flushes** | The the number of flushes that the sink performed for all changefeeds.
+
+## Sink Timings
+
+- In the node view, the graph shows the time in milliseconds per second required by CockroachDB to send messages to the sink as well as the time CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
+
+- In the cluster view, the graph shows the time in milliseconds per second required by CockroachDB to send messages to the sink as the time CockroachDB spent waiting for the sink to flush the messages for all changefeeds across the cluster.
+
+On hovering over the graph, the values for the following metrics are displayed:
+
+Metric | Description
+--------|----
+**Message Emit Time** | The time in milliseconds per second required by CockroachDB to send messages to the sink for all changefeeds.
+**Flush Time** | The time in milliseconds per second that CockroachDB spent waiting for the sink to flush the messages for all changefeeds.
 
 ## See also
 
