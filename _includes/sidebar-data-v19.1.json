@@ -1564,9 +1564,9 @@
             ]
           },
           {
-            "title": "<code>cockroach debug encryption-status</code>",
+            "title": "<code>cockroach debug encryption-active-key</code>",
             "urls": [
-              "/${VERSION}/debug-encryption-status.html"
+              "/${VERSION}/debug-encryption-active-key.html"
             ]
           },
           {

@@ -4,7 +4,7 @@ summary: Learn the command for viewing the algorithm and store key for an encryp
 toc: true
 ---
 
-The `debug encryption-status` [command](cockroach-commands.html) displays the encryption algorithm and store key for an encrypted store.
+The `debug encryption-active-key` [command](cockroach-commands.html) displays the encryption algorithm and store key for an encrypted store.
 
 ## Synopsis
 

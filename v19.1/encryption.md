@@ -180,7 +180,7 @@ Information about keys is written to [the logs](debug-and-error-logs.html), incl
 * Active/old key information at startup.
 * New key information after data key rotation.
 
-Alternatively, you can use the [`cockroach debug encryption-status`](debug-encryption-status.html) command to view information about a store's encryption algorithm and store key.
+Alternatively, you can use the [`cockroach debug encryption-active-key`](debug-encryption-active-key.html) command to view information about a store's encryption algorithm and store key.
 
 #### Changing encryption algorithm or keys
 
