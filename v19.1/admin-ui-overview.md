@@ -18,6 +18,7 @@ Area | Description
 [SQL Performance](admin-ui-sql-dashboard.html) | View metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 [Storage Utilization](admin-ui-storage-dashboard.html) | View metrics about storage capacity and file descriptors.
 [Replication Details](admin-ui-replication-dashboard.html) | View metrics about how data is replicated across the cluster, such as range status, replicas per store, and replica quiescence.
+[Changefeed Details](admin-ui-cdc-dashboard.html) | View metrics about the [changefeeds](change-data-capture.html) created across your cluster. 
 [Nodes Details](admin-ui-access-and-navigate.html#summary-panel) | View details of live, dead, and decommissioned nodes.
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
