@@ -10,18 +10,9 @@ Data encryption and decryption is the process of transforming plaintext data to 
 
 CockroachDB uses TLS 1.2 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
 
-## Encryption at Rest (Experimental)(Enterprise)
+## Encryption at Rest (Enterprise)
 
-Encryption at Rest provides transparent encryption of a node's data on the local disk.
-
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature.**  In the case of a bug or user error, all data on an encrypted node's store could be rendered unusable.  Do not use Encryption at Rest for production data until it has graduated from experimental status.  Until then, this feature should only be used in a testing environment.
-<br />
-<br />
-If you encounter a bug, please [file an issue](file-an-issue.html).
-{{site.data.alerts.end}}
-
-Encryption at Rest allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
+Encryption at Rest provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
 sizes allowed.
 
 Encryption is performed in the [storage layer](architecture/storage-layer.html) and configured per store.
@@ -112,7 +103,7 @@ Note that backups taken with the [`BACKUP`](backup.html) statement **are not enc
 
 ### Examples
 
-#### Generating key files
+#### Generating store key files
 
 Cockroach determines which encryption algorithm to use based on the size of the key file.
 The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32
@@ -169,12 +160,13 @@ $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-
 Once specified for a given store, the `--enterprise-encryption` flag must always be present.
 {{site.data.alerts.end}}
 
-#### Checking encryption status
+#### Checking encryption status using the Admin UI
 
 Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at <https://localhost:8888/#/reports/stores/local>.
 
 The report shows encryption status for all stores on the selected node, including:
 
+* Encryption algorithm.
 * Active store key information.
 * Active data key information.
 * The fraction of files/bytes encrypted using the active data key.
@@ -187,6 +179,8 @@ Information about keys is written to [the logs](debug-and-error-logs.html), incl
 
 * Active/old key information at startup.
 * New key information after data key rotation.
+
+Alternatively, you can use the [`cockroach debug encryption-status`](debug-encryption-status.html) command to view information about a store's encryption algorithm and store key.
 
 #### Changing encryption algorithm or keys
 
@@ -219,7 +213,11 @@ Backups taken with the `BACKUP` statement are not encrypted even if Encryption a
 
 A workaround for the issue is to use a cloud storage provider that is configured to transparently encrypt your data (e.g., AWS S3 default encryption).
 
-### Encryption for touchpoints with other services:
+### Higher CPU utilization
+
+Enabling encryption-at-rest might result in a higher CPU utilization. We estimate a 5-10% increase in CPU utilization. 
+
+### Encryption for touchpoints with other services
 
 - S3 backup encryption
 - Encrypted comms with Kafka

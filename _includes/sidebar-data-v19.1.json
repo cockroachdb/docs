@@ -1564,15 +1564,21 @@
             ]
           },
           {
-            "title": "<code>cockroach debug zip</code>",
+            "title": "<code>cockroach debug encryption-status</code>",
             "urls": [
-              "/${VERSION}/debug-zip.html"
+              "/${VERSION}/debug-encryption-status.html"
             ]
           },
           {
             "title": "<code>cockroach debug merge-logs</code>",
             "urls": [
               "/${VERSION}/debug-merge-logs.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug zip</code>",
+            "urls": [
+              "/${VERSION}/debug-zip.html"
             ]
           },
           {
