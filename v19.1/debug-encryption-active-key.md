@@ -1,5 +1,5 @@
 ---
-title: View the encryption algorithm and store key
+title: View the Encryption Algorithm and Store Key
 summary: Learn the command for viewing the algorithm and store key for an encrypted store.
 toc: true
 ---

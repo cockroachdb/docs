@@ -47,7 +47,7 @@ You can locate logs in the unarchived file's `debug/nodes/[node dir]/logs` direc
 
 ## Subcommands
 
-While the `cockroach debug` command has a few subcommands, users are expected to only use the `zip` and [`debug-merge`](debug-merge-logs.html) subcommands.
+While the `cockroach debug` command has a few subcommands, users are expected to only use the [`encryption-active-key`](debug-encryption-active-key.html), `zip` and [`debug-merge`](debug-merge-logs.html) subcommands.
 
 `debug`'s other subcommands are useful only to CockroachDB's developers and contributors.
 

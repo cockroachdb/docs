@@ -215,7 +215,7 @@ A workaround for the issue is to use a cloud storage provider that is configured
 
 ### Higher CPU utilization
 
-Enabling encryption-at-rest might result in a higher CPU utilization. We estimate a 5-10% increase in CPU utilization.
+Enabling Encryption at Rest might result in a higher CPU utilization. We estimate a 5-10% increase in CPU utilization.
 
 ### Encryption for touchpoints with other services
 

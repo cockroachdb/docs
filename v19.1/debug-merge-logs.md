@@ -1,5 +1,5 @@
 ---
-title: Merge debug logs for all nodes
+title: Merge Debug Logs for All Nodes
 summary: Learn the command for merging the collected debug logs from all nodes in your cluster.
 toc: true
 ---
@@ -12,7 +12,7 @@ The file produced by `cockroach debug merge-log` can contain highly sensitive, u
 
 ## Subcommands
 
-While the `cockroach debug` command has a few subcommands, users are expected to only use the [`zip`](debug-zip.html) and `debug-merge` subcommands.
+While the `cockroach debug` command has a few subcommands, users are expected to only use the [`encryption-active-key`](debug-encryption-active-key.html), [`zip`](debug-zip.html), and `debug-merge` subcommands.
 
 `debug`'s other subcommands are useful only to CockroachDB's developers and contributors.
 
