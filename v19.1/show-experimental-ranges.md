@@ -34,7 +34,7 @@ The user must have the `SELECT` [privilege](authorization.html#assign-privileges
 Parameter | Description
 ----------|------------
 [`table_name`](sql-grammar.html#table_name) | The name of the table you want range information about.
-[`table_name_with_index`](sql-grammar.html#table_name_with_index) | The name of the index you want range information about.
+[`table_name_with_index`](sql-grammar.html#table_index_name) | The name of the index you want range information about.
 
 ## Examples
 

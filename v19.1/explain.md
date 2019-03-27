@@ -40,7 +40,7 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
 --------------------+------------
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
- `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
+ `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br><span class="version-tag">New in v19.1</span>: To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
  `DISTSQL`          | Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
  `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
 
@@ -162,7 +162,7 @@ For example, the following query returns the query plan tree, which means that i
 (5 rows)
 ~~~
 
-To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
+<span class="version-tag">New in v19.1</span>: To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -199,7 +199,7 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
 (24 rows)
 ~~~
 
-To include cost and type details, use `OPT, TYPES`:
+<span class="version-tag">New in v19.1</span>: To include cost and type details, use `OPT, TYPES`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -238,7 +238,7 @@ To include cost and type details, use `OPT, TYPES`:
 (26 rows)
 ~~~
 
-To include all details used by the optimizer, including statistics, use `OPT, ENV`:
+<span class="version-tag">New in v19.1</span>: To include all details used by the optimizer, including statistics, use `OPT, ENV`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
