@@ -246,6 +246,10 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
                                                  -- The index order is inverted.
 ~~~
 
+## Sorting the output of deletes
+
+{% include {{page.version.version}}/misc/sorting-delete-output.md %}
+
 ## Processing order during aggregations
 
 CockroachDB currently processes aggregations (e.g., `SELECT ... GROUP BY`)

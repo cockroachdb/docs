@@ -34,7 +34,7 @@ table td:first-child {
  `table_name` | The name of the table that contains the rows you want to update.
  `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__
- `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
+ `sort_clause` | An `ORDER BY` clause. For more information, see [Sorting the output of deletes](#sorting-the-output-of-deletes).
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
@@ -67,6 +67,13 @@ collected. Certain database usage patterns that frequently scan over
 and delete lots of rows will want to reduce the
 [time-to-live](configure-replication-zones.html) values to clean up
 deleted rows more frequently.
+
+## Sorting the output of deletes
+
+{% include {{page.version.version}}/misc/sorting-delete-output.md %}
+
+For more information about ordering query results in general, see
+[Ordering Query Results](query-order.html).
 
 ## Examples
 
@@ -101,11 +108,12 @@ In this example, `account_id` is our primary key and we want to delete the row w
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;
 ~~~
 ~~~
-+------------+---------+--------------+
-| account_id | balance | account_type |
-+------------+---------+--------------+
-|          1 |   32000 | Savings      |
-+------------+---------+--------------+
+ account_id | balance | account_type
+------------+---------+--------------
+          1 |   32000 | Savings
+(1 row)
+
+DELETE 1
 ~~~
 
 #### Delete rows using non-unique columns
@@ -117,12 +125,13 @@ Deleting rows using non-unique columns removes _every_ row that returns `TRUE` f
 > DELETE FROM account_details WHERE balance = 30000 RETURNING *;
 ~~~
 ~~~
-+------------+---------+--------------+
-| account_id | balance | account_type |
-+------------+---------+--------------+
-|          2 |   30000 | Checking     |
-|          3 |   30000 | Savings      |
-+------------+---------+--------------+
+ account_id | balance | account_type
+------------+---------+--------------
+          2 |   30000 | Checking
+          3 |   30000 | Savings
+(2 rows)
+
+DELETE 2
 ~~~
 
 The example statement deleted two rows, which might be unexpected.
@@ -140,11 +149,12 @@ By specifying `*`, you retrieve all columns of the delete rows.
 > DELETE FROM account_details WHERE balance < 23000 RETURNING *;
 ~~~
 ~~~
-+------------+---------+--------------+
-| account_id | balance | account_type |
-+------------+---------+--------------+
-|          4 |   22000 | Savings      |
-+------------+---------+--------------+
+ account_id | balance | account_type
+------------+---------+--------------
+          4 |   22000 | Savings
+(1 row)
+
+DELETE 1
 ~~~
 
 #### Use specific columns
@@ -156,11 +166,12 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 > DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
 ~~~
 ~~~
-+------------+--------------+
-| account_id | account_type |
-+------------+--------------+
-|          5 | Checking     |
-+------------+--------------+
+ account_id | account_type
+------------+--------------
+          5 | Checking
+(1 row)
+
+DELETE 1
 ~~~
 
 #### Change column labels
@@ -169,14 +180,64 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details WHERE balance < 22500 RETURNING account_id, balance AS final_balance;
+> DELETE FROM account_details WHERE balance < 24500 RETURNING account_id, balance AS final_balance;
 ~~~
 ~~~
-+------------+---------------+
-| account_id | final_balance |
-+------------+---------------+
-|          6 |         23500 |
-+------------+---------------+
+ account_id | final_balance 
+------------+---------------
+          6 |         23500
+(1 row)
+
+DELETE 1
+~~~
+
+#### Sort and return deleted rows
+
+To sort and return deleted rows, we recommend using a statement like the following:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [DELETE FROM account_details RETURNING *] ORDER BY account_id;
+~~~
+
+~~~
+ account_id | balance  | account_type
+------------+----------+--------------
+          7 | 79493.51 | Checking
+          8 | 40761.66 | Savings
+          9 |  2111.67 | Checking
+         10 | 59173.15 | Savings
+(4 rows)
+~~~
+
+Alternatively, you can use a `DELETE` with an
+[`ORDER BY`](query-order.html) as shown below.
+
+This returns zero rows because we just deleted all of the remaining
+rows with the previous query.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM account_details ORDER BY account_id LIMIT (SELECT COUNT(*) FROM account_details) RETURNING *;
+~~~
+
+~~~
+ account_id | balance | account_type
+------------+---------+--------------
+(0 rows)
+
+DELETE 0
+~~~
+
+Note that in versions 19.1 and later of CockroachDB, the [`LIMIT`](limit-offset.html) clause is required:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM account_details ORDER BY account_id RETURNING *;
+~~~
+
+~~~
+ERROR:  DELETE statement requires LIMIT when ORDER BY is used
 ~~~
 
 ## See also
@@ -194,3 +255,26 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 <!-- Reference Links -->
 
 [truncate]: truncate.html
+
+<!--
+
+SQL for example table:
+
+CREATE TABLE account_details (
+       account_id INT PRIMARY KEY,
+       balance FLOAT,
+       account_type VARCHAR
+);
+
+INSERT INTO account_details (account_id, balance, account_type) VALUES (1, 32000, 'Savings');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (2, 30000, 'Checking');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (3, 30000, 'Savings');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (4, 22000, 'Savings');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (5, 43696.95, 'Checking');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (6, 23500, 'Savings');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (7, 79493.51, 'Checking');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (8, 40761.66, 'Savings');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (9, 2111.67, 'Checking');
+INSERT INTO account_details (account_id, balance, account_type) VALUES (10, 59173.15, 'Savings');
+
+-->
