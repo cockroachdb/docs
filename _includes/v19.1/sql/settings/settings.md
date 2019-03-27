@@ -33,7 +33,7 @@
 <tr><td><code>kv.bulk_io_write.max_rate</code></td><td>byte size</td><td><code>8.0 EiB</code></td><td>the rate limit (bytes/sec) to use for writes to disk on behalf of bulk io ops</td></tr>
 <tr><td><code>kv.bulk_sst.sync_size</code></td><td>byte size</td><td><code>2.0 MiB</code></td><td>threshold after which non-Rocks SST writes must fsync (0 disables)</td></tr>
 <tr><td><code>kv.closed_timestamp.close_fraction</code></td><td>float</td><td><code>0.2</code></td><td>fraction of closed timestamp target duration specifying how frequently the closed timestamp is advanced</td></tr>
-<tr><td><code>kv.closed_timestamp.follower_reads_enabled</code></td><td>boolean</td><td><code>false</code></td><td>allow (all) replicas to serve consistent historical reads based on closed timestamp information</td></tr>
+<tr><td><code>kv.closed_timestamp.follower_reads_enabled</code></td><td>boolean</td><td><code>true</code></td><td>allow (all) replicas to serve consistent historical reads based on closed timestamp information</td></tr>
 <tr><td><code>kv.closed_timestamp.target_duration</code></td><td>duration</td><td><code>30s</code></td><td>if nonzero, attempt to provide closed timestamp notifications for timestamps trailing cluster time by approximately this duration</td></tr>
 <tr><td><code>kv.follower_read.target_multiple</code></td><td>float</td><td><code>3</code></td><td>if above 1, encourages the distsender to perform a read against the closest replica if a request is older than kv.closed_timestamp.target_duration * (1 + kv.closed_timestamp.close_fraction * this) less a clock uncertainty interval. This value also is used to create follower_timestamp(). (WARNING: may compromise cluster stability or correctness; do not edit without supervision)</td></tr>
 <tr><td><code>kv.import.batch_size</code></td><td>byte size</td><td><code>32 MiB</code></td><td>the maximum size of the payload in an AddSSTable request (WARNING: may compromise cluster stability or correctness; do not edit without supervision)</td></tr>
@@ -65,6 +65,8 @@
 <tr><td><code>server.declined_reservation_timeout</code></td><td>duration</td><td><code>1s</code></td><td>the amount of time to consider the store throttled for up-replication after a reservation was declined</td></tr>
 <tr><td><code>server.eventlog.ttl</code></td><td>duration</td><td><code>2160h0m0s</code></td><td>if nonzero, event log entries older than this duration are deleted every 10m0s. Should not be lowered below 24 hours.</td></tr>
 <tr><td><code>server.failed_reservation_timeout</code></td><td>duration</td><td><code>5s</code></td><td>the amount of time to consider the store throttled for up-replication after a failed reservation call</td></tr>
+<tr><td><code>server.goroutine_dump.num_goroutines_threshold</code></td><td>integer</td><td><code>1000</code></td><td>a threshold beyond which if number of goroutines increases, then goroutine dump can be triggered</td></tr>
+<tr><td><code>server.goroutine_dump.total_dump_size_limit</code></td><td>byte size</td><td><code>500 MiB</code></td><td>total size of goroutine dumps to be kept. Dumps are GC'ed in the order of creation time. The latest dump is always kept even if its size exceeds the limit.</td></tr>
 <tr><td><code>server.heap_profile.max_profiles</code></td><td>integer</td><td><code>5</code></td><td>maximum number of profiles to be kept. Profiles with lower score are GC'ed, but latest profile is always kept.</td></tr>
 <tr><td><code>server.heap_profile.system_memory_threshold_fraction</code></td><td>float</td><td><code>0.85</code></td><td>fraction of system memory beyond which if Rss increases, then heap profile is triggered</td></tr>
 <tr><td><code>server.host_based_authentication.configuration</code></td><td>string</td><td><code></code></td><td>host-based authentication configuration to use during connection authentication</td></tr>
@@ -95,8 +97,10 @@
 <tr><td><code>sql.metrics.statement_details.threshold</code></td><td>duration</td><td><code>0s</code></td><td>minimum execution time to cause statistics to be collected</td></tr>
 <tr><td><code>sql.parallel_scans.enabled</code></td><td>boolean</td><td><code>true</code></td><td>parallelizes scanning different ranges when the maximum result size can be deduced</td></tr>
 <tr><td><code>sql.query_cache.enabled</code></td><td>boolean</td><td><code>true</code></td><td>enable the query cache</td></tr>
-<tr><td><code>sql.stats.experimental_automatic_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>experimental automatic statistics collection mode</td></tr>
-<tr><td><code>sql.stats.experimental_automatic_collection.max_fraction_idle</code></td><td>float</td><td><code>0.9</code></td><td>maximum fraction of time that automatic statistics sampler processors are idle</td></tr>
+<tr><td><code>sql.stats.automatic_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>automatic statistics collection mode</td></tr>
+<tr><td><code>sql.stats.automatic_collection.fraction_stale_rows</code></td><td>float</td><td><code>0.2</code></td><td>target fraction of stale rows per table that will trigger a statistics refresh</td></tr>
+<tr><td><code>sql.stats.automatic_collection.max_fraction_idle</code></td><td>float</td><td><code>0.9</code></td><td>maximum fraction of time that automatic statistics sampler processors are idle</td></tr>
+<tr><td><code>sql.stats.automatic_collection.min_stale_rows</code></td><td>integer</td><td><code>500</code></td><td>target minimum number of stale rows per table that will trigger a statistics refresh</td></tr>
 <tr><td><code>sql.stats.post_events.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, an event is shown for every CREATE STATISTICS job</td></tr>
 <tr><td><code>sql.tablecache.lease.refresh_limit</code></td><td>integer</td><td><code>50</code></td><td>maximum number of tables to periodically refresh leases for</td></tr>
 <tr><td><code>sql.trace.log_statement_execute</code></td><td>boolean</td><td><code>false</code></td><td>set to true to enable logging of executed statements</td></tr>
