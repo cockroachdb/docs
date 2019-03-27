@@ -20,7 +20,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-2. [Create certificates](create-security-certificates.html) for internode and root user authentication:
+2. [Create certificates](create-security-certificates.html) for internode and `root` user authentication:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -51,40 +51,50 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable:
-
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ KRB5_KTNAME=<path to keytab file>
-      ~~~
+3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable.
 
 4. Start a CockroachDB node:
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ cockroach start \
-      --certs-dir=certs \
-      --listen-addr=0.0.0.0
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --listen-addr=0.0.0.0
+    ~~~
 
-5. Connect to CockroachDB as root using the root client certificate generated above:
+5. Connect to CockroachDB as `root` using the `root` client certificate generated above:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. (Optional) [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you don't need to enable an enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
 
-      Setting the `server.host_based_authentication.configuration` cluster setting makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
+      Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
+
+8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER carl;
+    ~~~
+
+    Grant privileges to the user:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT ALL ON DATABASE defaultdb TO carl;
+    ~~~
 
 ## Configuring the client
 
@@ -94,12 +104,12 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
 1. Install and configure your Kerberos client.
 2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
-3. Get a Kerberos TGT from the KDC using `kinit`.
+3. Get a Kerberos TGT for the Kerberos user from the KDC using `kinit`.
 4. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    > psql "postgresql://localhost:26257/defaultdb?sslmode=require"
+    > psql "postgresql://localhost:26257/defaultdb?sslmode=require" -U carl
     ~~~
 
 5. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
