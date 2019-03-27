@@ -40,7 +40,7 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
 --------------------+------------
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
- `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.
+ `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
  `DISTSQL`          | Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
  `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
 
@@ -68,18 +68,18 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM kv WHERE v > 3 ORDER BY v;
+> EXPLAIN SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
 
 ~~~
-    tree    | field  | description
-+-----------+--------+-------------+
+    tree    | field  |   description
++-----------+--------+------------------+
   sort      |        |
-   │        | order  | +v
+   │        | order  | +season
    └── scan |        |
-            | table  | kv@primary
+            | table  | episodes@primary
             | spans  | ALL
-            | filter | v > 3
+            | filter | season > 3
 (6 rows)
 ~~~
 
@@ -94,30 +94,29 @@ The `VERBOSE` option:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
+> EXPLAIN (VERBOSE) SELECT * FROM quotes AS q \
+JOIN episodes AS e ON q.episode = e.id \
+WHERE e.season = '1' \
+ORDER BY e.stardate ASC;
 ~~~
 
 ~~~
-         tree         |     field      | description |   columns    | ordering
-+---------------------+----------------+-------------+--------------+----------+
-  sort                |                |             | (k, v, v)    | -v
-   │                  | order          | -v          |              |
-   └── render         |                |             | (k, v, v)    |
-        │             | render 0       | k           |              |
-        │             | render 1       | v           |              |
-        │             | render 2       | v           |              |
-        └── join      |                |             | (k, v, k, v) |
-             │        | type           | inner       |              |
-             │        | equality       | (k) = (k)   |              |
-             │        | mergeJoinOrder | +"(k=k)"    |              |
-             ├── scan |                |             | (k, v)       | +k
-             │        | table          | kv@primary  |              |
-             │        | spans          | ALL         |              |
-             │        | filter         | v > 3       |              |
-             └── scan |                |             | (k, v)       | +k
-                      | table          | kv@primary  |              |
-                      | spans          | ALL         |              |
-(17 rows)
+       tree      |       field        |   description    |                                 columns                                  | ordering
++----------------+--------------------+------------------+--------------------------------------------------------------------------+-----------+
+  sort           |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) | +stardate
+   │             | order              | +stardate        |                                                                          |
+   └── hash-join |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) |
+        │        | type               | inner            |                                                                          |
+        │        | equality           | (episode) = (id) |                                                                          |
+        │        | right cols are key |                  |                                                                          |
+        ├── scan |                    |                  | (quote, characters, stardate, episode)                                   |
+        │        | table              | quotes@primary   |                                                                          |
+        │        | spans              | ALL              |                                                                          |
+        └── scan |                    |                  | (id, season, num, title, stardate)                                       |
+                 | table              | episodes@primary |                                                                          |
+                 | spans              | ALL              |                                                                          |
+                 | filter             | season = 1       |                                                                          |
+(13 rows)
 ~~~
 
 ### `TYPES` option
@@ -126,63 +125,207 @@ The `TYPES` mode includes the types of the values used in the query plan.  It al
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 ORDER BY v;
+> EXPLAIN (TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
 
 ~~~
-    tree    | field  |         description         |    columns     | ordering
-+-----------+--------+-----------------------------+----------------+----------+
-  sort      |        |                             | (k int, v int) | +v
-   │        | order  | +v                          |                |
-   └── scan |        |                             | (k int, v int) |
-            | table  | kv@primary                  |                |
-            | spans  | ALL                         |                |
-            | filter | ((v)[int] > (3)[int])[bool] |                |
+    tree    | field  |           description            |                            columns                            | ordering
++-----------+--------+----------------------------------+---------------------------------------------------------------+----------+
+  sort      |        |                                  | (id int, season int, num int, title string, stardate decimal) | +season
+   │        | order  | +season                          |                                                               |
+   └── scan |        |                                  | (id int, season int, num int, title string, stardate decimal) |
+            | table  | episodes@primary                 |                                                               |
+            | spans  | ALL                              |                                                               |
+            | filter | ((season)[int] > (3)[int])[bool] |                                                               |
 (6 rows)
 ~~~
 
 ### `OPT` option
 
-The `OPT` option displays a query plan tree, along with some information that was used to plan the query, if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
+The `OPT` option displays a query plan tree, if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
 
 For example, the following query returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN(OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
+> EXPLAIN (OPT) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
 
 ~~~
-                                     text
-+-----------------------------------------------------------------------------+
-group-by
-├── columns: l_shipmode:15(string!null) avg:17(float)
-├── grouping columns: l_shipmode:15(string!null)
-├── stats: [rows=700, distinct(15)=700]
-├── cost: 1207
-├── key: (15)
-├── fd: (15)-->(17)
-├── prune: (17)
-├── scan lineitem
-│    ├── columns: l_extendedprice:6(float!null) l_shipmode:15(string!null)
-│    ├── stats: [rows=1000, distinct(15)=700]
-│    ├── cost: 1180
-│    └── prune: (6,15)
-└── aggregations [outer=(6)]
-└── avg [type=float, outer=(6)]
-└── variable: l_extendedprice [type=float, outer=(6)]
-(16 rows)
+            text
++---------------------------+
+  sort
+   └── select
+        ├── scan episodes
+        └── filters
+             └── season > 3
+(5 rows)
 ~~~
 
-In contrast, this query returns `pq: unsupported statement: *tree.Insert`, which means that it will use the heuristic planner instead of the cost-based optimizer:
+To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) INSERT INTO l_shipmode VALUES ("truck");
+> EXPLAIN (OPT, VERBOSE) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
 
 ~~~
-pq: unsupported statement: *tree.Insert
+                                                    text
++----------------------------------------------------------------------------------------------------------+
+  sort
+   ├── columns: id:1 season:2 num:3 title:4 stardate:5
+   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
+   ├── cost: 90.7319109
+   ├── key: (1)
+   ├── fd: (1)-->(2-5)
+   ├── ordering: +2
+   ├── prune: (1,3-5)
+   └── select
+        ├── columns: id:1 season:2 num:3 title:4 stardate:5
+        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
+        ├── cost: 87.71
+        ├── key: (1)
+        ├── fd: (1)-->(2-5)
+        ├── prune: (1,3-5)
+        ├── scan episodes
+        │    ├── columns: id:1 season:2 num:3 title:4 stardate:5
+        │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
+        │    ├── cost: 86.91
+        │    ├── key: (1)
+        │    ├── fd: (1)-->(2-5)
+        │    └── prune: (1-5)
+        └── filters
+             └── season > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
+(24 rows)
+~~~
+
+To include cost and type details, use `OPT, TYPES`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT, TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+~~~
+
+~~~
+                                                    text
++----------------------------------------------------------------------------------------------------------+
+  sort
+   ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
+   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
+   ├── cost: 90.7319109
+   ├── key: (1)
+   ├── fd: (1)-->(2-5)
+   ├── ordering: +2
+   ├── prune: (1,3-5)
+   └── select
+        ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
+        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
+        ├── cost: 87.71
+        ├── key: (1)
+        ├── fd: (1)-->(2-5)
+        ├── prune: (1,3-5)
+        ├── scan episodes
+        │    ├── columns: id:1(int!null) season:2(int) num:3(int) title:4(string) stardate:5(decimal)
+        │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
+        │    ├── cost: 86.91
+        │    ├── key: (1)
+        │    ├── fd: (1)-->(2-5)
+        │    └── prune: (1-5)
+        └── filters
+             └── gt [type=bool, outer=(2), constraints=(/2: [/4 - ]; tight)]
+                  ├── variable: season [type=int]
+                  └── const: 3 [type=int]
+(26 rows)
+~~~
+
+To include all details used by the optimizer, including statistics, use `OPT, ENV`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+~~~
+
+~~~
+                                                              text
++-------------------------------------------------------------------------------------------------------------------------------+
+  Version: CockroachDB CCL v19.1.0-beta.20190318-377-gc45b9a400f (x86_64-apple-darwin17.7.0, built 2019/03/26 19:46:42, go1.11)
+
+  CREATE TABLE episodes (
+      id INT8 NOT NULL,
+      season INT8 NULL,
+      num INT8 NULL,
+      title STRING NULL,
+      stardate DECIMAL NULL,
+      CONSTRAINT "primary" PRIMARY KEY (id ASC),
+      FAMILY "primary" (id, season, num, title, stardate)
+  );
+
+  ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
+      {
+          "columns": [
+              "id"
+          ],
+          "created_at": "2019-03-26 19:49:53.18699+00:00",
+          "distinct_count": 79,
+          "histo_col_type": "",
+          "name": "__auto__",
+          "null_count": 0,
+          "row_count": 79
+      },
+      {
+          "columns": [
+              "season"
+          ],
+          "created_at": "2019-03-26 19:49:53.18699+00:00",
+          "distinct_count": 3,
+          "histo_col_type": "",
+          "name": "__auto__",
+          "null_count": 0,
+          "row_count": 79
+      },
+      {
+          "columns": [
+              "num"
+          ],
+          "created_at": "2019-03-26 19:49:53.18699+00:00",
+          "distinct_count": 29,
+          "histo_col_type": "",
+          "name": "__auto__",
+          "null_count": 0,
+          "row_count": 79
+      },
+      {
+          "columns": [
+              "title"
+          ],
+          "created_at": "2019-03-26 19:49:53.18699+00:00",
+          "distinct_count": 79,
+          "histo_col_type": "",
+          "name": "__auto__",
+          "null_count": 0,
+          "row_count": 79
+      },
+      {
+          "columns": [
+              "stardate"
+          ],
+          "created_at": "2019-03-26 19:49:53.18699+00:00",
+          "distinct_count": 75,
+          "histo_col_type": "",
+          "name": "__auto__",
+          "null_count": 4,
+          "row_count": 79
+      }
+  ]';
+
+  EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+  ----
+  sort
+   └── select
+        ├── scan episodes
+        └── filters
+             └── season > 3
+(77 rows)
 ~~~
 
 ### `DISTSQL` option
