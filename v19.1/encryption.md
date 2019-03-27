@@ -173,8 +173,6 @@ The report shows encryption status for all stores on the selected node, includin
 
 CockroachDB relies on RocksDB compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force RocksDB compaction with the `cockroach debug compact` command (the node must first be [stopped](stop-a-node.html)).
 
-A more detailed list of encryption keys in use for each file is available using the `cockroach debug encryption-status` command.
-
 Information about keys is written to [the logs](debug-and-error-logs.html), including:
 
 * Active/old key information at startup.
