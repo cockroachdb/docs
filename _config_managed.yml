@@ -4,7 +4,7 @@ baseurl: "/docs/managed"
 destination: _site/managed
 
 versions:
-  stable: v2.1
-  dev: v19.1
+  stable: v19.1
+  # dev: v19.1
 
 managed: true
