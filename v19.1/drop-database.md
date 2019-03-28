@@ -25,6 +25,10 @@ Parameter | Description
 `CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT` | Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Drop a database and its objects (`CASCADE`)
@@ -96,5 +100,6 @@ pq: database "db2" is not empty and CASCADE was not specified
 - [`SHOW DATABASES`](show-databases.html)
 - [`RENAME DATABASE`](rename-database.html)
 - [`SET DATABASE`](set-vars.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Other SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

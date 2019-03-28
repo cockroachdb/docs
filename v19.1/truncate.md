@@ -34,6 +34,10 @@ Parameter | Description
 
 `TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes](online-schema-changes.html).
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Truncate a table (no foreign key dependencies)
@@ -155,5 +159,6 @@ pq: "customers" is referenced by foreign key from table "orders"
 ## See also
 
 - [`DELETE`](delete.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Foreign Key constraint](foreign-key.html)
 - [Online Schema Changes](online-schema-changes.html)

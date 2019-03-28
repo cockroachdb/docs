@@ -55,6 +55,10 @@ Currently, only the `root` user can configure replication zones.
 `value` | The value of the variable to change.
 `DISCARD` | Remove a replication zone.
 
+### Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ### Variables
 
 {% include {{ page.version.version }}/zone-configs/variables.md %}
@@ -112,5 +116,6 @@ CONFIGURE ZONE 1
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER INDEX`](alter-index.html)
 - [`ALTER RANGE`](alter-range.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Table Partitioning](partitioning.html)
 - [Other SQL Statements](sql-statements.html)

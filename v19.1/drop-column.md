@@ -90,3 +90,4 @@ pq: view "customer_view" does not exist
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)
+- [`SHOW JOBS`](show-jobs.html)

@@ -26,6 +26,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. To drop a `UNIQUE INDEX`, you must use `CASCADE`.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
  `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Remove an index (no dependencies)
@@ -132,3 +136,4 @@ pq: index "orders_auto_index_fk_customer_ref_customers" is in use as a foreign k
 
 - [Indexes](indexes.html)
 - [Online Schema Changes](online-schema-changes.html)
+- [`SHOW JOBS`](show-jobs.html)

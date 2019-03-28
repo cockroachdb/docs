@@ -25,6 +25,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `table_name`      | The name of the table in which the constraint you'd like to validate lives.
  `constraint_name` | The name of the constraint on `table_name` you'd like to validate.          
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 In [`ADD CONSTRAINT`](add-constraint.html), we [added a foreign key constraint](add-constraint.html#add-the-foreign-key-constraint-with-cascade) like so:
@@ -53,3 +57,4 @@ If present in a [`CREATE TABLE`](create-table.html) statement, the table is cons
 - [`RENAME CONSTRAINT`](rename-constraint.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`CREATE TABLE`](create-table.html)
+- [`SHOW JOBS`](show-jobs.html)

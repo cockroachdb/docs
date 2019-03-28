@@ -45,6 +45,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.
 `opt_partition_by` | Docs coming soon.
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Create standard indexes
@@ -161,5 +165,6 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 - [`SHOW INDEX`](show-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Other SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

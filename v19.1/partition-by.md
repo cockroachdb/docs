@@ -37,6 +37,10 @@ Parameter | Description |
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Define a list partition on an existing table
@@ -95,3 +99,4 @@ Suppose we have an yet another existing table named `students` with the primary 
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Define Table Partitions](partitioning.html)
+- [`SHOW JOBS`](show-jobs.html)

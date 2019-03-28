@@ -25,6 +25,10 @@ Parameter | Description
 `CASCADE` | Drop all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints](constraints.html) and [views](views.html)) depend on it.
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Remove a table (no dependencies)
@@ -135,4 +139,5 @@ DROP TABLE
 - [`DELETE`](delete.html)
 - [`DROP INDEX`](drop-index.html)
 - [`DROP VIEW`](drop-view.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Online Schema Changes](online-schema-changes.html)
