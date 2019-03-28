@@ -55,8 +55,29 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
+> ALTER TABLE orders ADD CONSTRAINT check_id_non_zero CHECK (id > 0);
 ~~~
+
+<span class="version-tag">New in v19.1</span>: Check constraints can be added to columns that were created earlier in the transaction.  For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+> ALTER TABLE customers ADD COLUMN gdpr_status STRING;
+> ALTER TABLE customers ADD CONSTRAINT check_gdpr_status CHECK (gdpr_status IN ('yes', 'no', 'unknown'));
+> COMMIT;
+~~~
+
+~~~
+BEGIN
+ALTER TABLE
+ALTER TABLE
+COMMIT
+~~~
+
+{{site.data.alerts.callout_info}}
+If an existing row is found that violates the check constraint, the entire transaction will be rolled back, including any new columns that were added.
+{{site.data.alerts.end}}
 
 ### Add the foreign key constraint with `CASCADE`
 
