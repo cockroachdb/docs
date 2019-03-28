@@ -44,9 +44,7 @@ Before starting the upgrade, complete the following steps.
 This step is relevant only when upgrading from v2.1.x to v19.1. For upgrades within the v19.1.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain performance improvements and bug fixes introduced in v19.1. After finalization, however, it will no longer be possible to perform a downgrade to v2.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
-
-We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in step 5:
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v19.1](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v2.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
 1. [Upgrade to v2.1](../v2.1/upgrade-cockroach-version.html), if you haven't already.
 
@@ -60,6 +58,14 @@ We recommend disabling auto-finalization so you can monitor the stability and pe
     ~~~
 
     It is only possible to set this setting to the current cluster version.
+
+### Features that require upgrade finalization
+
+When upgrading from v2.1 to v19.1, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+
+- **Cascading replication zones:** After finalization, [replication zones](configure-replication-zones.html) will inherit empty values from their parent. For example, if the replication zone for a table is not explicitly set with `num_replicas`, it will inherit that value from its direct parent, whether that's the `.default` replication zone from the entire cluster or the replication zone for the database containing the table.  
+- **Table statistics generation:** After finalization, CockroachDB will generate [table statistics](cost-based-optimizer.html#table-statistics) automatically as tables are updated, and you will be able to manually generate table statistics using the [`CREATE STATISTICS`](create-statistics.html) statement.
+- **Load-based splitting:** After finalization, CockroachDB will [automatically split frequently accessed keys](load-based-splitting.html) into smaller ranges to optimize your cluster’s performance.
 
 ## Step 4. Perform the rolling upgrade
 
@@ -210,7 +216,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 This step is relevant only when upgrading from v2.1.x to v19.1. For upgrades within the v19.1.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in step 3 above, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
 Once you are satisfied with the new version, re-enable auto-finalization:
 
