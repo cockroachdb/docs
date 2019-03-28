@@ -127,11 +127,11 @@ Finally, note that only the following statements use the plan cache:
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
 
-To change this setting, which is controlled by the `experimental_reorder_joins_limit` [session variable](set-vars.html), run the statement shown below. To disable this feature, set the variable to `0`.
+To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the statement shown below. To disable this feature, set the variable to `0`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET experimental_reorder_joins_limit = 6;
+> SET reorder_joins_limit = 6;
 ~~~
 
 {{site.data.alerts.callout_danger}}
