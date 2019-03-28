@@ -145,3 +145,4 @@ Adding a foreign key for a non-empty table without an appropriate index will fai
 - [`ALTER COLUMN`](alter-column.html)
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
+- [`SHOW JOBS`](show-jobs.html)

@@ -158,8 +158,9 @@ To move a table from one database to another, use the above syntax but specify t
 
 ## See also
 
-- [`CREATE TABLE`](create-table.html)  
-- [`ALTER TABLE`](alter-table.html)  
-- [`SHOW TABLES`](show-tables.html)  
-- [`DROP TABLE`](drop-table.html)  
+- [`CREATE TABLE`](create-table.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`SHOW TABLES`](show-tables.html)
+- [`DROP TABLE`](drop-table.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Other SQL Statements](sql-statements.html)

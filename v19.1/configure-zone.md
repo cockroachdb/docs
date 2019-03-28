@@ -59,6 +59,10 @@ Currently, only the `root` user can configure replication zones.
 
 {% include {{ page.version.version }}/zone-configs/variables.md %}
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Edit a replication zone
@@ -112,5 +116,6 @@ CONFIGURE ZONE 1
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER INDEX`](alter-index.html)
 - [`ALTER RANGE`](alter-range.html)
+- [`SHOW JOBS`](show-jobs.html)
 - [Table Partitioning](partitioning.html)
 - [Other SQL Statements](sql-statements.html)

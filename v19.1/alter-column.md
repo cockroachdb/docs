@@ -75,3 +75,4 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 - [`ADD CONSTRAINT`](add-constraint.html)
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
+- [`SHOW JOBS`](show-jobs.html)

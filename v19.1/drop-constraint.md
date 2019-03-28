@@ -77,3 +77,4 @@ ALTER TABLE
 - [`DROP COLUMN`](drop-column.html)
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)
+- [`SHOW JOBS`](show-jobs.html)

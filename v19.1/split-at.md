@@ -6,7 +6,6 @@ toc: true
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
 
-
 ## Synopsis
 
 <div>
@@ -27,6 +26,10 @@ The user must have the `INSERT` [privilege](authorization.html#assign-privileges
 -----------|-------------
  `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split.
  `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index.
+
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Why manually split a range?
 
@@ -248,3 +251,4 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 - [Selection Queries](selection-queries.html)
 - [Distribution Layer](architecture/distribution-layer.html)
 - [Replication Layer](architecture/replication-layer.html)
+- [`SHOW JOBS`](show-jobs.html)
