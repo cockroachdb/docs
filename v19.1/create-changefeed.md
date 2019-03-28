@@ -29,12 +29,36 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. There are query parameters that vary per type. Currently, the `kafka` scheme only has `topic_prefix`, which adds a prefix to all of the topic names.<br><br>Sink URI scheme: `'[scheme]://[host]:[port][?topic_prefix=[foo]]'` <br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. For more information, see [Kafka query parameters](#kafka-query-parameters) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
-
 
 <!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
 `name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). -->
+
+### Kafka query parameters
+
+The sink URI scheme for Kafka follows the basic format of:
+
+~~~
+'kafka://[host]:[port][?query_parameters]'
+~~~
+
+For example:
+
+~~~
+'kafka://broker.address.com:9092?tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones'
+~~~
+
+Query parameters include:
+
+Parameter | Value | Description
+----------+-------+---------------
+`topic_prefix` | [`STRING`](string.html) | Adds a prefix to all of the topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`tls_enabled=true` | [`BOOL`](bool.html) | If `true`, use a Transport Layer Security (TLS) connection. This can be used with a `ca_cert` (see below).
+`ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`sasl_enabled` | [`BOOL`](bool.html) | If `true`, use Simple Authentication and Security Layer (SASL) to authenticate. This requires a `sasl_user` and `sasl_password` (see below).
+`sasl_user` | [`STRING`](string.html) | Your SASL username.
+`sasl_password` | [`STRING`](string.html) | Your SASL password.
 
 ### Options
 
