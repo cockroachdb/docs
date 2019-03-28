@@ -6,7 +6,7 @@ If you need to turn off automatic statistics collection:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING sql.stats.experimental_automatic_collection.enabled=false
+    > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     ~~~
 
 2. Look up what statistics were created by the automatic statistics generator using the [`SHOW STATISTICS`](show-statistics.html) statement.
