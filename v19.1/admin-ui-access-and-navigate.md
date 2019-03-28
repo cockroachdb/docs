@@ -83,7 +83,7 @@ Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-cluste
 Dead Nodes | The number of [dead nodes](admin-ui-cluster-overview-page.html#dead-nodes) in the cluster.
 Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
-Queries per second | The number of SQL queries executed per second.
+Queries per second | The total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second across the cluster.
 P50 Latency | The 50th percentile of service latency. Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
 P99 Latency | The 99th percentile of service latency.
 
