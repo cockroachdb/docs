@@ -743,6 +743,113 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent stop
     ~~~
 
+### Create a changefeed connected to a cloud storage sink
+
+{{site.data.alerts.callout_info}}
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+<span class="version-tag">New in v19.1:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS sink. Note that you can set up changefeeds for any of [these cloud storages](create-changefeed.html#cloud-storage-sink).
+
+1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
+
+2. In a terminal window, start `cockroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure --listen-addr=localhost --background
+    ~~~
+
+3. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
+
+4. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET CLUSTER SETTING cluster.organization = '<organization name>';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    > SET CLUSTER SETTING enterprise.license = '<secret>';
+    ~~~
+
+5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+6. Create a database called `cdc_demo`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE cdc_demo;
+    ~~~
+
+7. Set the database as the default:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET DATABASE = cdc_demo;
+    ~~~
+
+8. Create a table and add data:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE office_dogs (
+         id INT PRIMARY KEY,
+         name STRING);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO office_dogs VALUES
+       (1, 'Petee'),
+       (2, 'Carl');
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
+    ~~~
+
+9. Start the changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'experimental-s3://test-s3encryption/test?AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOPQ&AWS_SECRET_ACCESS_KEY=LS0tLS1CRUdJTiBDRVJUSUZ' with updated, resolved='10s';
+    ~~~
+
+    ~~~
+            job_id       
+    +--------------------+
+      360645287206223873
+    (1 row)
+    ~~~
+
+    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
+
+10. Monitor your changefeed on the Admin UI (http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see Changefeeds Dashboard.
+
+11. When you are done, exit the SQL shell (`\q`).
+
+12. To stop `cockroach`, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure
+    ~~~
+
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}

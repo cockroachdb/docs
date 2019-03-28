@@ -29,24 +29,28 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type; currently, only `kafka`. For more information, see [Kafka query parameters](#kafka-query-parameters) below.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
 <!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
 `name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). -->
 
-### Kafka query parameters
+### Sink URI
 
-The sink URI scheme for Kafka follows the basic format of:
-
-~~~
-'kafka://[host]:[port][?query_parameters]'
-~~~
-
-For example:
+The sink URI follows the basic format of:
 
 ~~~
-'kafka://broker.address.com:9092?tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones'
+'[scheme]://[host]:[port]?[query_parameters]'
+~~~
+
+The `scheme` can be [`kafka`](#kafka) or any [cloud storage sink](#cloud-storage-sink).
+
+#### Kafka
+
+Example of a Kafka sink URI:
+
+~~~
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones'
 ~~~
 
 Query parameters include:
@@ -59,6 +63,22 @@ Parameter | Value | Description
 `sasl_enabled` | [`BOOL`](bool.html) | If `true`, use Simple Authentication and Security Layer (SASL) to authenticate. This requires a `sasl_user` and `sasl_password` (see below).
 `sasl_user` | [`STRING`](string.html) | Your SASL username.
 `sasl_password` | [`STRING`](string.html) | Your SASL password.
+
+#### Cloud storage sink
+
+Example of a cloud storage sink (i.e., AWS) URI:
+
+~~~
+'experimental-s3://test-s3encryption/test?AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOPQ&AWS_SECRET_ACCESS_KEY=LS0tLS1CRUdJTiBDRVJUSUZ'
+~~~
+
+{{site.data.alerts.callout_info}}
+The `scheme` for a cloud storage sink should be prepended with `experimental-`.
+{{site.data.alerts.end}}
+
+Any of the cloud storages below can be used as a sink:
+
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Options
 
