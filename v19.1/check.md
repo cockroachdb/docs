@@ -9,7 +9,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ## Details
 
-- If you add a `CHECK` constraint to an existing table, added values, along with any updates to current values, are checked. To check the existing rows, use [`VALIDATE CONSTRAINT`](validate-constraint.html).
+- <span class="version-tag">New in v19.1</span>: If you add a `CHECK` constraint to an existing table, CockroachDB starts validating existing table data asynchronously as soon as the transaction where the constraint was added commits.  This is in addition to validating all data added to the columns affected by the constraint.  Versions prior to 19.1 required you to issue a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement to check the data already in the table.
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 - You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
