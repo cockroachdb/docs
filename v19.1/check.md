@@ -6,10 +6,10 @@ toc: true
 
 The `CHECK` [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
 
-
 ## Details
 
-- If you add a `CHECK` constraint to an existing table, added values, along with any updates to current values, are checked. To check the existing rows, use [`VALIDATE CONSTRAINT`](validate-constraint.html).
+- <span class="version-tag">New in v19.1</span>: If you add a `CHECK` constraint to an existing table, CockroachDB will run a background job to validate existing table data in the process of adding the constraint. If a row is found that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail. This differs from previous versions of CockroachDB, which allowed you to add a check constraint that was enforced for writes but could be violated by rows that existed prior to adding the constraint.
+- <span class="version-tag">New in v19.1</span>: Check constraints can be added to columns that were created earlier in the same transaction.  For an example, see [Add the `CHECK` constraint](add-constraint.html#add-the-check-constraint).
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 - You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
