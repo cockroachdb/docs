@@ -4,12 +4,12 @@
 
 | Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
 |-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------|
-| Amazon S3                                                   | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`                               |
+| Amazon S3                                                   | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN `                              |
 | Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
 | Google Cloud&nbsp;[<sup>1</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional): can be `default` or `implicit`                          |
 | HTTP&nbsp;[<sup>2</sup>](#considerations)                   | `http`      | Remote host                                      | N/A                                                                        |
 | NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | N/A (see [Example file URLs](#example-file-urls) | N/A                                                                        |
-| S3-compatible services&nbsp;[<sup>4</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`&nbsp;[<sup>5</sup>](#considerations) (optional), `AWS_ENDPOINT` |
+| S3-compatible services&nbsp;[<sup>4</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN, `AWS_REGION`&nbsp;[<sup>5</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
 {{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.

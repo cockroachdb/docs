@@ -99,7 +99,7 @@ foo,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
 
 To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
-For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed-with-avro).
+For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed-in-avro).
 
 <!-- ### Pause and resume a changefeed
 

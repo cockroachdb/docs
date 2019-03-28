@@ -141,7 +141,7 @@ Statement                                      | Response
 
 ## Examples
 
-### Create a changefeed
+### Create a changefeed connected to Kafka
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -158,7 +158,7 @@ Statement                                      | Response
 
 For more information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
 
-### Create a changefeed with Avro
+### Create a changefeed connected to Kafka in Avro
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -173,7 +173,26 @@ For more information on how to create a changefeed connected to Kafka, see [Chan
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-in-avro-connected-to-kafka).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka-in-avro).
+
+### Create a changefeed connected to a cloud storage sink
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE CHANGEFEED FOR TABLE name INTO 'experimental-scheme://host?parameters' WITH updated, resolved;
+~~~
+~~~
++--------------------+
+|       job_id       |
++--------------------+
+| 360645287206223873 |
++--------------------+
+(1 row)
+~~~
+
+For more information on how to create a changefeed connected to a cloud storage sink, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
 
 ### Manage a changefeed
 

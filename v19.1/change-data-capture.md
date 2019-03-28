@@ -124,9 +124,7 @@ To enable rangefeeds for an existing changefeed, you must also restart the chang
 
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with push changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
-## Configure a changefeed (Core)
-
-### Create
+## Create a changefeed (Core)
 
 <span class="version-tag">New in v19.1:</span> To create a core changefeed:
 
@@ -145,7 +143,7 @@ To create a changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'kafka://host:port';
+> CREATE CHANGEFEED FOR TABLE name INTO 'schema://host:port';
 ~~~
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
@@ -305,7 +303,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
     $ cockroach quit --insecure
     ~~~
 
-### Create a core changefeed with Avro
+### Create a core changefeed in Avro
 
 <span class="version-tag">New in v19.1:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits [Avro](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html#wire-format) records.
 
@@ -575,10 +573,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent stop
     ~~~
 
-### Create a changefeed in Avro connected to Kafka
+### Create a changefeed connected to Kafka in Avro
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-with-avro).
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-in-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
@@ -839,7 +837,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-10. Monitor your changefeed on the Admin UI (http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see Changefeeds Dashboard.
+10. Monitor your changefeed on the Admin UI (http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
 
 11. When you are done, exit the SQL shell (`\q`).
 
