@@ -6,14 +6,13 @@ toc: true
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
-- [`CHECK`](check.html)
-- [Foreign key](foreign-key.html)
-- [`UNIQUE`](unique.html)
+- [Unique](#add-the-unique-constraint)
+- [Check](#add-the-check-constraint)
+- [Foreign key](#add-the-foreign-key-constraint-with-cascade)
 
 {{site.data.alerts.callout_info}}
 The [`PRIMARY KEY`](primary-key.html) and [`NOT NULL`](not-null.html) constraints can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) constraint is managed through [`ALTER COLUMN`](alter-column.html).
 {{site.data.alerts.end}}
-
 
 ## Synopsis
 
@@ -59,9 +58,9 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 
 ### Add the foreign key constraint with `CASCADE`
 
-Before you can add the [foreign key](foreign-key.html) constraint to columns, the columns must already be indexed. If they are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the `ADD CONSTRAINT` statement to add the Foreign Key constraint to the columns.
+Adding a foreign key constraint is done using the steps shown below.
 
-For example, let's say you have two tables, `orders` and `customers`:
+Given two tables, `customers` and `orders`,
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -69,17 +68,15 @@ For example, let's say you have two tables, `orders` and `customers`:
 ~~~
 
 ~~~
-+-----------+-------------------------------------------------+
-|   Table   |                   CreateTable                   |
-+-----------+-------------------------------------------------+
-| customers | CREATE TABLE customers (␤                       |
-|           |     id INT NOT NULL,␤                           |
-|           |     "name" STRING NOT NULL,␤                    |
-|           |     address STRING NULL,␤                       |
-|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤ |
-|           |     FAMILY "primary" (id, "name", address)␤     |
-|           | )                                               |
-+-----------+-------------------------------------------------+
+ table_name |                  create_statement
+------------+----------------------------------------------------
+ customers  | CREATE TABLE customers (                          +
+            |         id INT8 NOT NULL,                         +
+            |         name STRING NOT NULL,                     +
+            |         address STRING NULL,                      +
+            |         CONSTRAINT "primary" PRIMARY KEY (id ASC),+
+            |         FAMILY "primary" (id, name, address)      +
+            | )
 (1 row)
 ~~~
 
@@ -89,46 +86,51 @@ For example, let's say you have two tables, `orders` and `customers`:
 ~~~
 
 ~~~
-+--------+-------------------------------------------------------------------------------------------------------------+
-| Table  |                                                 CreateTable                                                 |
-+--------+-------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                      |
-|        |     id INT NOT NULL,␤                                                                                       |
-|        |     customer_id INT NULL,␤                                                                                  |
-|        |     status STRING NOT NULL,␤                                                                                |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                             |
-|        |     FAMILY "primary" (id, customer_id, status),␤                                                            |
-|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))␤ |
-|        | )                                                                                                           |
-+--------+-------------------------------------------------------------------------------------------------------------+
+ table_name |                                                create_statement
+------------+----------------------------------------------------------------------------------------------------------------
+ orders     | CREATE TABLE orders (                                                                                         +
+            |         id INT8 NOT NULL,                                                                                     +
+            |         customer_id INT8 NULL,                                                                                +
+            |         status STRING NOT NULL,                                                                               +
+            |         CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                            +
+            |         FAMILY "primary" (id, customer_id, status),                                                           +
+            |         CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))+
+            | )
 (1 row)
 ~~~
 
-To ensure that each value in the `orders.customer_id` column matches a unique value in the `customers.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
+you can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON orders (customer_id);
-~~~
+Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, all dependent objects are also deleted.
 
-Then you add the foreign key constraint.
-
-You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
-
-In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
-
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`CASCADE` does not list the objects it drops or updates, so it should be used with caution.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~
 
-If you had tried to add the constraint before indexing the column, you would have received an error:
+<span class="version-tag">New in v19.1</span>: An index on the referenced columns is automatically created for you when you add a foreign key constraint to an empty table. You can see it using [`SHOW INDEXES`](show-index.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES FROM orders;
+~~~
 
 ~~~
-pq: foreign key requires an existing index on columns ("customer_id")
+ table_name |          index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit
+------------+-------------------------------+------------+--------------+-------------+-----------+---------+----------
+ orders     | primary                       | f          |            1 | id          | ASC       | f       | f
+ orders     | orders_auto_index_customer_fk | t          |            1 | customer_id | ASC       | f       | f
+ orders     | orders_auto_index_customer_fk | t          |            2 | id          | ASC       | f       | t
+(3 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+Adding a foreign key for a non-empty, non-indexed table will fail, since foreign key columns must be indexed. For more information about the requirements for creating foreign keys, see [Rules for creating foreign keys](foreign-key.html#rules-for-creating-foreign-keys).
+{{site.data.alerts.end}}
 
 ## See also
 
