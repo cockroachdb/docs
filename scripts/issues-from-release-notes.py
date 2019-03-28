@@ -70,7 +70,7 @@ with open("../releases/" + release_notes) as file:
             try:
                 issue = {"title": title,
                          "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
-                         "labels": ["O-release-note", "ready"],
+                         "labels": ["C-release-note"],
                          "milestone": milestone}
                 url = "https://api.github.com/repos/cockroachdb/docs/issues"
                 access_token = os.getenv("GITHUB_ACCESS_TOKEN")
