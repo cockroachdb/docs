@@ -127,7 +127,7 @@ Only members of the `admin` role can run `BACKUP`. By default, the `root` user b
 
 ### Backup file URLs
 
-The path to each backup must be unique. The URL for your backup's destination/locations must use the following format:
+We will use the URL provided to construct a secure API call to the service you specify. The path to each backup must be unique, and the URL for your backup's destination/locations must use the following format:
 
 {% include {{ page.version.version }}/misc/external-urls.md %}
 
