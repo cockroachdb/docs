@@ -16,7 +16,7 @@ The location parameters often contain special characters that need to be URI-enc
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `http_proxy` and `https_proxy` environment variables when starting CockroachDB.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB.
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
