@@ -1,3 +1,4 @@
+
 ---
 title: CREATE CHANGEFEED
 summary: The CREATE CHANGEFEED statement creates a new changefeed, which provides row-level change subscriptions.
@@ -58,15 +59,15 @@ Query parameters include:
 Parameter | Value | Description
 ----------+-------+---------------
 `topic_prefix` | [`STRING`](string.html) | Adds a prefix to all of the topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`tls_enabled=true` | [`BOOL`](bool.html) | If `true`, use a Transport Layer Security (TLS) connection. This can be used with a `ca_cert` (see below).
+`tls_enabled=true` | [`BOOL`](bool.html) | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
 `ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`sasl_enabled` | [`BOOL`](bool.html) | If `true`, use Simple Authentication and Security Layer (SASL) to authenticate. This requires a `sasl_user` and `sasl_password` (see below).
+`sasl_enabled` | [`BOOL`](bool.html) | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
 `sasl_user` | [`STRING`](string.html) | Your SASL username.
 `sasl_password` | [`STRING`](string.html) | Your SASL password.
 
 #### Cloud storage sink
 
-Example of a cloud storage sink (i.e., AWS) URI:
+Example of a cloud storage sink (i.e., AWS S3) URI:
 
 ~~~
 'experimental-s3://test-s3encryption/test?AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOPQ&AWS_SECRET_ACCESS_KEY=LS0tLS1CRUdJTiBDRVJUSUZ'
@@ -84,7 +85,7 @@ Any of the cloud storages below can be used as a sink:
 
 Option | Value | Description
 -------|-------|------------
-`updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](../v19.1/architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan.. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](change-data-capture.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
+`updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](../v19.1/architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](change-data-capture.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
 `resolved` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. By default, you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR=1536242855577149065.0000000000`
@@ -125,10 +126,14 @@ CockroachDB Type | Avro Type | Avro Logical Type
 
 ## Responses
 
-The messages (i.e., keys and values) emitted to a Kafka topic are composed of the following:
+The messages (i.e., keys and values) emitted to a Kafka topic are specific to the [`envelope`](#options). The default format is `wrapped`, and the output messages are composed of the following:
 
-- **Key**: Always composed of the table's `PRIMARY KEY` field (e.g., `[1]` or `{"id":1}`).
+- **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` or `{"id":1}`).
 - **Value**:
+    - One of three possible level fields:
+        - `after`, which contains the state of the row after the update (or 'null' for `DELETE`s).
+        - `updated`, which contains the updated timestamp.
+        - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an "after" value since they only function as checkpoints.
     - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
     - For [`DELETE`](delete.html), `null`.
 
@@ -158,7 +163,7 @@ Statement                                      | Response
 
 For more information on how to create a changefeed connected to Kafka, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka).
 
-### Create a changefeed connected to Kafka in Avro
+### Create a changefeed connected to Kafka using Avro
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -173,7 +178,7 @@ For more information on how to create a changefeed connected to Kafka, see [Chan
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka-in-avro).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [Change Data Capture](change-data-capture.html#create-a-changefeed-connected-to-kafka-using-avro).
 
 ### Create a changefeed connected to a cloud storage sink
 
@@ -257,4 +262,4 @@ Note that because the cursor is provided, the initial scan is not performed.
 
 - [Change Data Capture](change-data-capture.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard) 
+- [Changefeed Dashboard](admin-ui-cdc-dashboard)

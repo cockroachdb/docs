@@ -79,7 +79,7 @@ When schema changes with column backfill (e.g., adding a column with a default, 
 
 Rows that have been backfilled by a schema change are always re-emitted because Avro's default schema change functionality is not powerful enough to represent the schema changes that CockroachDB supports (e.g., CockroachDB columns can have default values that are arbitrary SQL expressions, but Avro only supports static default values).
 
-To ensure that the Avro schemas that CockroachDB publishes will work with the (undocumented and inconsistent) schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible. Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible. Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
 
 For an example of a schema change with column backfill, start with the changefeed created in the [example below](#create-a-changefeed-connected-to-kafka):
 
@@ -143,7 +143,7 @@ To create a changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'schema://host:port';
+> CREATE CHANGEFEED FOR TABLE name INTO 'scheme://host:port';
 ~~~
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
@@ -210,11 +210,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Debug a changefeed
 
-{{site.data.alerts.callout_info}}
-Debugging is only available for enterprise changefeeds.
-{{site.data.alerts.end}}
-
-For changefeeds connected to Kafka, use log information to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For changefeeds connected to Kafka, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
@@ -241,7 +237,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    oach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
+    $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
     {% include {{ page.version.version }}/cdc/core-url.md %}
@@ -304,9 +300,9 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
     $ cockroach quit --insecure
     ~~~
 
-### Create a core changefeed in Avro
+### Create a core changefeed using Avro
 
-<span class="version-tag">New in v19.1:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits [Avro](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html#wire-format) records.
+<span class="version-tag">New in v19.1:</span> In this example, you'll set up a core changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
 1. In a terminal window, start `cockroach`:
 
@@ -574,10 +570,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent stop
     ~~~
 
-### Create a changefeed connected to Kafka in Avro
+### Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-in-avro).
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
@@ -750,7 +746,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<span class="version-tag">New in v19.1:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS sink. Note that you can set up changefeeds for any of [these cloud storages](create-changefeed.html#cloud-storage-sink).
+<span class="version-tag">New in v19.1:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. Note that you can set up changefeeds for any of [these cloud storages](create-changefeed.html#cloud-storage-sink).
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
@@ -826,7 +822,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'experimental-s3://test-s3encryption/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
+    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'experimental-s3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
     ~~~
 
     ~~~
@@ -860,4 +856,4 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 - [`PAUSE JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard) 
+- [Changefeed Dashboard](admin-ui-cdc-dashboard)
