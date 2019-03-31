@@ -5,11 +5,11 @@
 | Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
 |-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------|
 | Amazon S3                                                   | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`                               |
-| Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
+| Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls)) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
 | Google Cloud&nbsp;[<sup>1</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional): can be `default` or `implicit`                          |
 | HTTP&nbsp;[<sup>2</sup>](#considerations)                   | `http`      | Remote host                                      | N/A                                                                        |
-| NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | N/A (see [Example file URLs](#example-file-urls) | N/A                                                                        |
-| S3-compatible services&nbsp;[<sup>4</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>5</sup>](#considerations) (optional), `AWS_ENDPOINT` |
+| NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | Empty or `nodeID` [<sup>4</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A                                                                        |
+| S3-compatible services&nbsp;[<sup>5</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>6</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
 {{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -27,9 +27,11 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 - <sup>3</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-- <sup>4</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+- <sup>4</sup> <span class="version-tag">New in v19.1:</span> The host component of a NFS/Local can either be empty or the `nodeID`. If the `nodeID` is specified, it is currently ignored (i.e., any node can be sent work and it will look in its local input/output directory); however, the `nodeID` will likely be required in the future.
 
-- <sup>5</sup> The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
+- <sup>5</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+
+- <sup>6</sup> The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
 
 #### Example file URLs
 
@@ -39,4 +41,4 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 | Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///employees.sql`                                                     |
+| NFS/Local    | `nodelocal:///employees.sql`, `nodelocal://2/employees.sql`                      |
