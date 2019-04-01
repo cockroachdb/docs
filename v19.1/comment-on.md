@@ -1,0 +1,103 @@
+---
+title: COMMENT ON
+summary: The COMMENT ON statement associates comments to databases, tables, or columns.
+toc: true
+---
+
+<span class="version-tag">New in v19.1:</span> The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), or [columns](add-column.html).
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the object they are commenting on.
+
+## Synopsis
+
+<section>{% include {{ page.version.version }}/sql/diagrams/comment.html %}</section>
+
+## Parameters
+
+ Parameter | Description
+------------|--------------
+`database_name` | The name of the database you are commenting on.
+`table_name` | The name of the  table you are commenting on.
+`column_name` | The name column you are commenting on.
+`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
+
+## Examples
+
+### Add a comment to a database
+
+To add a comment to a database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE customers IS 'This is a sample comment';
+~~~
+
+~~~
+COMMENT ON DATABASE
+~~~
+
+~~~ sql
+> SELECT * FROM system.comments;
+~~~
+
+To view all comments:
+
+~~~
+  type | object_id | sub_id |         comment
++------+-----------+--------+--------------------------+
+     0 |        54 |      0 | This is a sample comment
+(1 row)
+~~~
+
+### Add a comment to a table
+
+To add a comment to a table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON TABLE dogs IS 'This is a sample comment';
+~~~
+
+~~~
+COMMENT ON TABLE
+~~~
+
+[To view table comments](show-tables.html):
+
+~~~ sql
+> SHOW TABLES FROM customers WITH COMMENT;
+~~~
+
+~~~
+  table_name |         comment
++------------+--------------------------+
+  dogs       | This is a sample comment
+(1 row)
+~~~
+
+### Add a comment to a column
+
+To add a comment to a column:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON TABLE name IS 'This is a sample comment';
+~~~
+
+~~~
+COMMENT ON COLUMN
+~~~
+
+To view column comments:
+
+
+
+## See also
+
+- [`CREATE DATABASE`](create-database.html)
+- [`CREATE TABLE`](create-table.html)
+- [`ADD COLUMN`](add-column.html)
+- [`SHOW TABLES`](show-tables.html)
+- [Other SQL Statements](sql-statements.html)

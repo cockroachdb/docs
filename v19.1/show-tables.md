@@ -23,7 +23,10 @@ No [privileges](authorization.html#assign-privileges) are required to list the t
 
 Parameter | Description
 ----------|------------
-`name` | The name of the schema or database for which to show tables. When omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
+`database_name` | The name of the database for which to show tables.
+`schema_name` | The name of the schema for which to show tables.
+
+When a `database_name` and `schema_name` are omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
 
 `SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution](sql-name-resolution.html).
 
@@ -113,10 +116,28 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 (3 rows)
 ~~~
 
+### Show tables with comments
+
+<span class="version-tag">New in v19.1:</span> To view a table's comments:
+
+~~~ sql
+> SHOW TABLES FROM customers WITH COMMENT;
+~~~
+
+~~~
+  table_name |         comment
++------------+--------------------------+
+  dogs       | This is a sample comment
+(1 row)
+~~~
+
+For more information, see [`COMMENT ON`](comment-on.html).
+
 ## See also
 
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE VIEW`](create-view.html)
+- [`COMMENT ON`](comment-on.html)
 - [Information Schema](information-schema.html)
