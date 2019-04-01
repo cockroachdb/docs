@@ -36,21 +36,22 @@ run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs
 # to post as a comment on the pull request.
 git fetch origin master
 COMMENT_BODY=$(
-git diff --name-status origin/master | \
+git diff --name-status $(git merge-base HEAD origin/master) | \
 awk -v "base_url=http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/" '
 BEGIN {
   print "Online preview: " base_url 
 }
 
-/^[AM]\s+[^_].*\.md/ {
+/^[AM]\s+[^_].*\.(md|html)/ {
   if (!header_printed) {
     print ""
     print "Edited pages:"
     header_printed=1
   }
   gsub(/^.\s+/, "")
-  gsub(/\.md$/, "")
-  print "- [" $_ ".md](" base_url $_ ".html)"
+  basename=$_
+  gsub(/\.(md|html)$/, "")
+  print "- [" basename "](" base_url $_ ".html)"
 }
 '
 )
