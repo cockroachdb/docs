@@ -189,7 +189,7 @@ Monitoring is only available for enterprise changefeeds.
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
-- On the [Changefeed Dashboard](admin-ui-cdc-dashboard) of the Admin UI.
+- On the [Changefeed Dashboard](admin-ui-cdc-dashboard.html) of the Admin UI.
 - On the [Jobs page](admin-ui-jobs-page.html) of the Admin UI. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `crdb_internal.jobs`:
 
@@ -856,4 +856,4 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 - [`PAUSE JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard)
+- [Changefeed Dashboard](admin-ui-cdc-dashboard.html)

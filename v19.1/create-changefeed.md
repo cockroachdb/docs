@@ -261,4 +261,4 @@ Note that because the cursor is provided, the initial scan is not performed.
 
 - [Change Data Capture](change-data-capture.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard)
+- [Changefeed Dashboard](admin-ui-cdc-dashboard.html)
