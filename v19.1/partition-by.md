@@ -6,11 +6,11 @@ toc: true
 
 `PARTITION BY` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to define partitions and subpartitions on a table, and repartition or unpartition a table.
 
-{{site.data.alerts.callout_info}}<a href="partitioning.html">Defining table partitions</a> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
-If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
+[Defining table partitions](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
 {{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Primary key requirements
 

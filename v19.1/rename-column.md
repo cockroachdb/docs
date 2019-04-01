@@ -6,8 +6,11 @@ toc: true
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.
 
-{{site.data.alerts.callout_info}}It is not possible to rename a column referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+It is not possible to rename a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+{{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 
@@ -32,44 +35,83 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Example
+## Examples
 
 ### Rename a column
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users;
-~~~
-~~~
-+----+-------+-------+
-| id | name  | title |
-+----+-------+-------+
-|  1 | Tom   | cat   |
-|  2 | Jerry | rat   |
-+----+-------+-------+
+> CREATE TABLE users (
+    id INT PRIMARY KEY,
+    first_name STRING,
+    family_name STRING
+  );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE users RENAME COLUMN title TO species;
+> ALTER TABLE users RENAME COLUMN family_name TO last_name;
+~~~
+
+~~~
+  table_name |                 create_statement
++------------+--------------------------------------------------+
+  users      | CREATE TABLE users (
+             |     id INT8 NOT NULL,
+             |     first_name STRING NULL,
+             |     last_name STRING NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY "primary" (id, first_name, last_name)
+             | )
+(1 row)
+~~~
+
+### Add and rename columns atomically
+
+<span class="version-tag">New in v19.1</span>: Some subcommands can be used in combination in a single [`ALTER TABLE`](alter-table.html) statement. For example, let's say you create a `users` table with 2 columns, an `id` column for the primary key and a `name` column for each user's last name:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name STRING
+  );
+~~~
+
+Then you decide you want distinct columns for each user's first name, last name, and full name, so you execute a single `ALTER TABLE` statement renaming `name` to `last_name`, adding `first_name`, and adding a [computed column](computed-columns.html) called `name` that concatenates `first_name` and `last_name`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users
+    RENAME COLUMN name TO last_name,
+    ADD COLUMN first_name STRING,
+    ADD COLUMN name STRING
+      AS (CONCAT(first_name, ' ', last_name)) STORED;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users;
+> SHOW CREATE TABLE users;
 ~~~
 
 ~~~
-+----+-------+---------+
-| id | name  | species |
-+----+-------+---------+
-|  1 | Tom   | cat     |
-|  2 | Jerry | rat     |
-+----+-------+---------+
+  table_name |                           create_statement
++------------+----------------------------------------------------------------------+
+  users      | CREATE TABLE users (
+             |     id INT8 NOT NULL,
+             |     last_name STRING NULL,
+             |     first_name STRING NULL,
+             |     name STRING NULL AS (concat(first_name, ' ', last_name)) STORED,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY "primary" (id, last_name, first_name, name)
+             | )
+(1 row)
 ~~~
 
 ## See also
 
+- [`ALTER TABLE`](alter-table.html)
+- [`ADD CONSTRAINT`](add-constraint.html)
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
-- [`ALTER TABLE`](alter-table.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)

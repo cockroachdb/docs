@@ -4,10 +4,9 @@ summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
 ---
 
-The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column.
+The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column. This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
 
-This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
-
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Required privileges
 
@@ -50,4 +49,7 @@ If present in a [`CREATE TABLE`](create-table.html) statement, the table is cons
 
 - [Constraints](constraints.html)
 - [`ADD CONSTRAINT`](add-constraint.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)
+- [`DROP CONSTRAINT`](drop-constraint.html)
 - [`CREATE TABLE`](create-table.html)

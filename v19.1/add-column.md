@@ -6,6 +6,8 @@ toc: true
 
 The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
+
 ## Synopsis
 
 <div>

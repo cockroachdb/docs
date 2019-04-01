@@ -14,6 +14,7 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 The [`PRIMARY KEY`](primary-key.html) and [`NOT NULL`](not-null.html) constraints can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) constraint is managed through [`ALTER COLUMN`](alter-column.html).
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 
@@ -134,6 +135,10 @@ pq: foreign key requires an existing index on columns ("customer_id")
 
 - [Constraints](constraints.html)
 - [Foreign Key Constraint](foreign-key.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)
+- [`DROP CONSTRAINT`](drop-constraint.html)
+- [`VALIDATE CONSTRAINT`](validate-constraint.html)
 - [`ALTER COLUMN`](alter-column.html)
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)

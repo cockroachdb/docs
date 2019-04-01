@@ -17,6 +17,8 @@ For a detailed description of exactly what is logged, see the [Audit Log File Fo
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
+
 ## Synopsis
 
 <div>

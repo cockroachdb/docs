@@ -10,6 +10,7 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 

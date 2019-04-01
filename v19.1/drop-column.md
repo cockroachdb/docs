@@ -6,6 +6,7 @@ toc: true
 
 The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and removes columns from a table.
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 
