@@ -4,12 +4,11 @@ summary: The PAUSE JOB statement lets you temporarily halt the process of potent
 toc: true
 ---
 
-The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and [`changefeeds`](change-data-capture.html).
+The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [user-created table statistics](create-statistics.html) jobs, [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, and [`changefeeds`](change-data-capture.html).
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
 {{site.data.alerts.callout_info}}You cannot pause schema changes.{{site.data.alerts.end}}
-
 
 ## Required privileges
 
@@ -61,6 +60,32 @@ To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrie
 ~~~
 
 All jobs created by `maxroach` will be paused.
+
+### Pause automatic table statistics jobs
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW AUTOMATIC JOBS;
+~~~
+
+~~~
+        job_id       |       job_type      |                    description                      |...
++--------------------+---------------------+-----------------------------------------------------+...
+  438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users |...
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PAUSE JOB 438235476849557505;
+~~~
+
+To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
 
 ## See also
 
