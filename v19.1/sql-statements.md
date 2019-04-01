@@ -58,6 +58,7 @@ Statement | Usage
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
+[`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.

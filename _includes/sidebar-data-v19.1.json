@@ -890,6 +890,12 @@
                 ]
               },
               {
+                "title": "<code>RENAME CONSTRAINT</code>",
+                "urls": [
+                  "/${VERSION}/rename-constraint.html"
+                ]
+              },
+              {
                 "title": "<code>RENAME DATABASE</code>",
                 "urls": [
                   "/${VERSION}/rename-database.html"

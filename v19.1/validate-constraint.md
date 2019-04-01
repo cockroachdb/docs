@@ -50,4 +50,7 @@ If present in a [`CREATE TABLE`](create-table.html) statement, the table is cons
 
 - [Constraints](constraints.html)
 - [`ADD CONSTRAINT`](add-constraint.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)
+- [`DROP CONSTRAINT`](drop-constraint.html)
 - [`CREATE TABLE`](create-table.html)
