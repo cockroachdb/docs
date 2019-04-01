@@ -692,6 +692,12 @@
                 ]
               },
               {
+                "title": "<code>COMMENT ON</code>",
+                "urls": [
+                  "/${VERSION}/comment-on.html"
+                ]
+              },
+              {
                 "title": "<code>COMMIT</code>",
                 "urls": [
                   "/${VERSION}/commit-transaction.html"
