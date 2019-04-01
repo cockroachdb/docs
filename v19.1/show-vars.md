@@ -81,7 +81,7 @@ Special syntax cases supported for compatibility:
 | default_transaction_read_only  | off            |
 | distsql                        | auto           |
 | experimental_force_lookup_join | off            |
-| experimental_force_zigzag_join | off            |
+| experimental_enable_zigzag_join | off           |
 | experimental_opt               | on             |
 | extra_float_digits             | 0              |
 | integer_datetimes              | on             |
