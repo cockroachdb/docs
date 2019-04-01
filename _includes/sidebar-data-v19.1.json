@@ -1058,6 +1058,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW AUTOMATIC JOBS</code>",
+                "urls": [
+                  "/${VERSION}/show-automatic-jobs.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW QUERIES</code>",
                 "urls": [
                   "/${VERSION}/show-queries.html"

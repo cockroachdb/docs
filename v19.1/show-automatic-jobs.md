@@ -4,7 +4,7 @@ summary: The SHOW AUTOMATIC JOBS statement lists all currently active schema cha
 toc: true
 ---
 
-The `SHOW AUTOMATIC JOBS` [statement](sql-statements.html) lists the database statistics jobs created for use by the cost-based optimizer in your cluster in the last 12 hours.
+The `SHOW AUTOMATIC JOBS` [statement](sql-statements.html) lists the automatic table statistics jobs created for use by the cost-based optimizer in your cluster in the last 12 hours.
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -81,9 +81,8 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 ## See also
 
+- [`SHOW JOBS`](show-jobs.html)
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
-- [`ALTER TABLE`](alter-table.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
+- [`CREATE STATISTICS`](create-statistics.html)

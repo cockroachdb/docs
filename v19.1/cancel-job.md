@@ -4,7 +4,7 @@ summary: The CANCEL JOB statement stops long-running jobs.
 toc: true
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, schema changes, and [changefeeds](change-data-capture.html).
+The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, schema changes, database [statistics][create-statistics.html] jobs, [automatic table statistics jobs](show-automatic-jobs.html), and [changefeeds](change-data-capture.html).
 
 
 ## Limitations
@@ -57,6 +57,15 @@ To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retri
 ~~~
 
 All jobs created by `maxroach` will be cancelled.
+
+### Cancel automatic table statistics jobs
+
+Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` cluster setting:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
 
 ## See also
 
