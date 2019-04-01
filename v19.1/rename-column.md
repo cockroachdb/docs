@@ -6,8 +6,13 @@ toc: true
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.
 
-{{site.data.alerts.callout_info}}It is not possible to rename a column referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+It is not possible to rename a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v19.1</span>: `RENAME COLUMN` can be used alongside other commands in a single [`ALTER TABLE`](alter-table.html) statement. For more details, see the [Add and rename columns atomically](#add-and-rename-columns-atomically) example.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -32,44 +37,83 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Example
+## Examples
 
 ### Rename a column
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users;
-~~~
-~~~
-+----+-------+-------+
-| id | name  | title |
-+----+-------+-------+
-|  1 | Tom   | cat   |
-|  2 | Jerry | rat   |
-+----+-------+-------+
+> CREATE TABLE users (
+    id INT PRIMARY KEY,
+    first_name STRING,
+    family_name STRING
+  );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE users RENAME COLUMN title TO species;
+> ALTER TABLE users RENAME COLUMN family_name TO last_name;
+~~~
+
+~~~
+  table_name |                 create_statement
++------------+--------------------------------------------------+
+  users      | CREATE TABLE users (
+             |     id INT8 NOT NULL,
+             |     first_name STRING NULL,
+             |     last_name STRING NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY "primary" (id, first_name, last_name)
+             | )
+(1 row)
+~~~
+
+### Add and rename columns atomically
+
+<span class="version-tag">New in v19.1</span>: `RENAME COLUMN` can be used alongside other commands in a single [`ALTER TABLE`](alter-table.html) statement. For example, let's say you create a `names` table with 3 columns:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE names (
+    id INT PRIMARY KEY,
+    first_name STRING,
+    family_name STRING
+  );
+~~~
+
+Then you both want to rename the `family_name` column to `last_name` and add a [computed column](computed-columns.html) that concatenates the `first_name` and `last_name` columns:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE names
+    RENAME COLUMN family_name TO last_name,
+    ADD COLUMN full_name STRING
+      AS (CONCAT(first_name, ' ', last_name)) STORED;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users;
+> SHOW CREATE TABLE names;
 ~~~
 
 ~~~
-+----+-------+---------+
-| id | name  | species |
-+----+-------+---------+
-|  1 | Tom   | cat     |
-|  2 | Jerry | rat     |
-+----+-------+---------+
+  table_name |                             create_statement
++------------+---------------------------------------------------------------------------+
+  names      | CREATE TABLE names (
+             |     id INT8 NOT NULL,
+             |     first_name STRING NULL,
+             |     last_name STRING NULL,
+             |     full_name STRING NULL AS (concat(first_name, ' ', last_name)) STORED,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY "primary" (id, first_name, last_name, full_name)
+             | )
+(1 row)
 ~~~
 
 ## See also
 
+- [`ALTER TABLE`](alter-table.html)
+- [`ADD CONSTRAINT`](add-constraint.html)
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
-- [`ALTER TABLE`](alter-table.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)
