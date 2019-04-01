@@ -1,4 +1,3 @@
-
 ---
 title: CREATE CHANGEFEED
 summary: The CREATE CHANGEFEED statement creates a new changefeed, which provides row-level change subscriptions.
