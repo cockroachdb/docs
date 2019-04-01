@@ -8,7 +8,6 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
-- Database [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -39,8 +38,7 @@ Field | Description
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
 `job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), and [`RESTORE`](restore.html), [`IMPORT`](import.html).
 `description` | The statement that started the job, or a textual description of the job.
-`statement` | <span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column. This applies to internal jobs, such as the automatic generation of [table statistics](cost-based-optimizer.html#table-statistics) for the cost-based optimizer.
-`user_name` | The user who started the job.
+`statement` | This field is populated for the [`SHOW AUTOMATIC JOBS`](show-automatic-jobs.html) command and left blank for `SHOW JOBS`.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined).  
 `created` | The `TIMESTAMP` when the job was created.
