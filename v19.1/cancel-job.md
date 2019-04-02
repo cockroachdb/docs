@@ -60,7 +60,7 @@ All jobs created by `maxroach` will be cancelled.
 
 ### Cancel automatic table statistics jobs
 
-Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` cluster setting:
+Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
