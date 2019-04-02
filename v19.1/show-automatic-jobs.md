@@ -35,10 +35,10 @@ Field | Description
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
 `job_type` | The type of job. Possible values: `AUTO CREATE STATS`.
 `description` | The statement that started the job, or a textual description of the job.
-`statement` | <span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column. This applies to internal jobs, such as the automatic generation of table statistics for the cost-based optimizer.
+`statement` | <span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column.
 `user_name` | The user who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
-`running_status` | The job's detailed running status. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined).
+`running_status` | The job's detailed running status. Value: `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
 `finished` | The `TIMESTAMP` when the job was `succeeded`, `failed`, or `canceled`.

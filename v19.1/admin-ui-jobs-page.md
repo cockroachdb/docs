@@ -3,12 +3,12 @@ title: Jobs Page
 toc: true
 ---
 
-The **Jobs** page of the Admin UI provides details about the backup/restore jobs, schema changes, database statistics and automatic table statistics jobs, and changefeeds performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
+The **Jobs** page of the Admin UI provides details about the backup/restore jobs, schema changes, [user-created table statistics](create-statistics.html) and [automatic table statistics](show-automatic-jobs.html) jobs, and changefeeds performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
 
 
 ## Job details
 
-The **Jobs** table displays the ID, description, user, creation time, and status of each backup and restore job, schema changes, database statistics and automatic table statistics jobs, and changefeeds performed across all nodes in the cluster. To view the job's the full description, click the drop-down arrow in the first column.
+The **Jobs** table displays the ID, description, user, creation time, and status of each backup and restore job, schema changes, user-created table statistics and automatic table statistics jobs, and changefeeds performed across all nodes in the cluster. To view the job's the full description, click the drop-down arrow in the first column.
 
 <img src="{{ 'images/v19.1/admin_ui_jobs_page_new.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
