@@ -8,7 +8,7 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
-- User-created table [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html). The automatic table statistics are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, see [SHOW AUTOMATIC JOBS](show-automatic-jobs.html)
+- User-created table [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html). The automatic table statistics are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, see [`SHOW AUTOMATIC JOBS`](show-automatic-jobs.html).
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 

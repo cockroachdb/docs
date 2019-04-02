@@ -38,7 +38,7 @@ Field | Description
 `statement` | <span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column.
 `user_name` | The user who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
-`running_status` | The job's detailed running status. Value: `NULL`.
+`running_status` | The job's detailed running status. This field is more useful for the [`SHOW JOBS`](show-jobs.html) statement. For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
 `finished` | The `TIMESTAMP` when the job was `succeeded`, `failed`, or `canceled`.
