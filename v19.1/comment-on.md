@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v19.1:</span> The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), or [columns](add-column.html).
 
+{{site.data.alerts.callout_success}}
+`COMMENT ON` is best suited for use with database GUI navigation tools (e.g., [dBeaver](dbeaver.html)).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the object they are commenting on.
@@ -38,18 +42,7 @@ To add a comment to a database:
 COMMENT ON DATABASE
 ~~~
 
-~~~ sql
-> SELECT * FROM system.comments;
-~~~
-
-To view all comments:
-
-~~~
-  type | object_id | sub_id |         comment
-+------+-----------+--------+--------------------------+
-     0 |        54 |      0 | This is a sample comment
-(1 row)
-~~~
+To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dBeaver.html)).
 
 ### Add a comment to a table
 
@@ -90,9 +83,7 @@ To add a comment to a column:
 COMMENT ON COLUMN
 ~~~
 
-To view column comments:
-
-
+To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dBeaver.html)).
 
 ## See also
 
@@ -101,3 +92,4 @@ To view column comments:
 - [`ADD COLUMN`](add-column.html)
 - [`SHOW TABLES`](show-tables.html)
 - [Other SQL Statements](sql-statements.html)
+- [dBeaver](dbeaver.html)
