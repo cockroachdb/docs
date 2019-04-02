@@ -57,7 +57,7 @@ Query parameters include:
 
 Parameter | Value | Description
 ----------+-------+---------------
-`topic_prefix` | [`STRING`](string.html) | Adds a prefix to all of the topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`topic_prefix` | [`STRING`](string.html) | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled=true` | [`BOOL`](bool.html) | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
 `ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `sasl_enabled` | [`BOOL`](bool.html) | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
@@ -136,7 +136,7 @@ The messages (i.e., keys and values) emitted to a Kafka topic are specific to th
 - **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":1}` for Avro).
 - **Value**:
     - One of three possible top-level fields:
-        - `after`, which contains the state of the row after the update (or 'null' for `DELETE`s).
+        - `after`, which contains the state of the row after the update (or `null`' for `DELETE`s).
         - `updated`, which contains the updated timestamp.
         - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an "after" value since they only function as checkpoints.
     - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
