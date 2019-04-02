@@ -64,7 +64,7 @@ Flag | Description
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `bank`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
-`--duration` | The duration to run.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
@@ -94,7 +94,7 @@ Flag | Description
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`  `--cycle-length`| The number of keys repeatedly accessed by each writer.**Applicable commands:** `init` or `run`<br>**Default:** `9223372036854775807`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `kv`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`
-`--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
 `--max-block-bytes` | The maximum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `2`
@@ -117,7 +117,7 @@ Flag | Description
 `--active-warehouses` | Run the load generator against a specific number of warehouses.<br><br>**Applicable commands:** `init` or `run`<br>**Defaults:** Value of `--warehouses`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `tpcc`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
-`--duration` | The duration to run.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
