@@ -27,7 +27,7 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 - <sup>3</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-- <sup>4</sup> <span class="version-tag">New in v19.1:</span> The host component of a NFS/Local can either be empty or the `nodeID`. If the `nodeID` is specified, it is currently ignored (i.e., any node can be sent work and it will look in its local input/output directory); however, the `nodeID` will likely be required in the future.
+- <sup>4</sup> <span class="version-tag">New in v19.1:</span> The host component of NFS/Local can either be empty or the `nodeID`. If the `nodeID` is specified, it is currently ignored (i.e., any node can be sent work and it will look in its local input/output directory); however, the `nodeID` will likely be required in the future.
 
 - <sup>5</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
 
