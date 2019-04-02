@@ -18,7 +18,7 @@ The automatic table statistics jobs are not displayed even when the **TYPE** dro
 
 ## Filtering results
 
-You can filter the results based on the status of the jobs or the type of jobs (backups, restores, schema changes, or changefeeds). You can also choose to view either the latest 50 jobs or all the jobs across all nodes.
+You can filter the results based on the status of the jobs or the type of jobs (backups, restores, schema changes, changefeeds, user-created table statistics, and automatic table statistics). You can also choose to view either the latest 50 jobs or all the jobs across all nodes.
 
 Filter By | Description
 ----------|------------
