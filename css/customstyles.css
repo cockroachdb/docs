@@ -3404,7 +3404,8 @@ h2:target:before,
 h3:target:before,
 h4:target:before,
 h5:target:before,
-h6:target:before {
+h6:target:before,
+td a:target:before {
   content: '';
   display: block;
   height: 155px;
