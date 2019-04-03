@@ -43,7 +43,7 @@ For more examples of schema change statements, see the [`ALTER TABLE`][alter-tab
 
 As noted in [Limitations](#limitations), you cannot run schema changes inside transactions in general.
 
-However, as of version 2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
+However, as of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -81,6 +81,10 @@ COMMIT
 COMMIT
 ~~~
 
+### Run multiple schema changes in a single `ALTER TABLE` statement
+
+As of v19.1, some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
+
 ### Show all schema change jobs
 
 You can check on the status of the schema change jobs on your system at any time using the [`SHOW JOBS`][show-jobs] statement:
@@ -109,17 +113,13 @@ Schema changes keep your data consistent at all times, but they do not run insid
 
 Specifically, this behavior is necessary because making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
 
-{{site.data.alerts.callout_success}}
-As of version 2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For more information, [see this example](#run-schema-changes-inside-a-transaction-with-create-table).
-{{site.data.alerts.end}}
-
 ### No schema changes within transactions
 
-{% include {{ page.version.version }}/misc/schema-changes-within-transactions.md %}
+{% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
 ### No schema changes between executions of prepared statements
 
-{% include {{ page.version.version }}/misc/schema-changes-between-prepared-statements.md %}
+{% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
 ### Examples of statements that fail
 

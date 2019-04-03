@@ -6,8 +6,11 @@ toc: true
 
 The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes Check and Foreign Key constraints from columns.
 
-{{site.data.alerts.callout_info}}For information about removing other constraints, see <a href="constraints.html#remove-constraints">Constraints: Remove Constraints</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+For information about removing other constraints, see [Constraints: Remove Constraints](constraints.html#remove-constraints).
+{{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 
@@ -67,6 +70,10 @@ ALTER TABLE
 
 ## See also
 
+- [`ADD CONSTRAINT`](add-constraint.html)
+- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`RENAME CONSTRAINT`](rename-constraint.html)
+- [`VALIDATE CONSTRAINT`](validate-constraint.html)
 - [`DROP COLUMN`](drop-column.html)
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)

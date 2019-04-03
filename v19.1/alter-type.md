@@ -6,6 +6,8 @@ toc: true
 
 The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).
 
+{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
+
 ## Considerations
 
 You can use the `ALTER TYPE` subcommand if the following conditions are met:

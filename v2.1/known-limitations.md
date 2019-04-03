@@ -18,12 +18,6 @@ Change data capture (CDC) provides efficient, distributed, row-level change feed
 
 Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
 
-### Setting `application_name` in the client parameters
-
-CockroachDB does not fully process the parameter `application_name` when passed through the connection string via the client driver. As a result, the statements issued by the clients are not properly attributed to that application name for the purpose of displaying statement statistics. The workaround is to set `application_name` using a [`SET`](https://www.cockroachlabs.com/docs/stable/set-vars.html) statement immediately after the SQL connection is established. This will be addressed in a 2.1.x release.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31766)
-
 ### `AS OF SYSTEM TIME` in `SELECT` statements
 
 `AS OF SYSTEM TIME` can only be used in a top-level `SELECT` statement. That is, we do not support statements like `INSERT INTO t SELECT * FROM t2 AS OF SYSTEM TIME <time>` or two subselects in the same statement with differing `AS OF SYSTEM TIME` arguments.
