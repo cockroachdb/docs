@@ -42,7 +42,7 @@ To add a comment to a database:
 COMMENT ON DATABASE
 ~~~
 
-To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dBeaver.html)).
+To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dbeaver.html)).
 
 ### Add a comment to a table
 
@@ -83,7 +83,7 @@ To add a comment to a column:
 COMMENT ON COLUMN
 ~~~
 
-To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dBeaver.html)).
+To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dbeaver.html)).
 
 ## See also
 
