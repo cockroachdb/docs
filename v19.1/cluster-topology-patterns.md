@@ -25,7 +25,7 @@ This page does not factor in hardware differences.
 
 This first example is of a single-datacenter cluster, with each node on a different machine as per our [basic topology recommendations](recommended-production-settings.html#basic-topology-recommendations). This pattern is common starting point for smaller organizations who may not have the resources (or need) to worry about a datacenter failure but still want to take advantage of CockroachDB's [high availability](high-availability.html).
 
-<img src="{{ 'images/v19.1/topology-patterns/basic-local-deployment.png' | relative_url }}" alt="Local deployment" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/basic-local-deployment.png' | relative_url }}" alt="Local deployment" style="max-width:100%" />
 
 For the diagram above:
 
@@ -54,7 +54,7 @@ While the [basic single-datacenter deployment](#single-datacenter-basic-pattern)
 
 There are no constraints on node increments.
 
-<img src="{{ 'images/v19.1/topology-patterns/local-scaling.png' | relative_url }}" alt="Resilient local deployment" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/local-scaling.png' | relative_url }}" alt="Resilient local deployment" style="max-width:100%" />
 
 ## Multi-region clusters
 
@@ -62,13 +62,13 @@ There are no constraints on node increments.
 
 Once an organization begins to grow, a datacenter outage isn't acceptable and a cluster needs to be available all of the time. This is where a multi-region cluster is useful. A multi-region cluster is comprised of multiple datacenters in different regions (e.g., `us-east`, `us-west`), each with multiple nodes. CockroachDB will automatically try to diversify replica placement across localities (i.e., place a replica in each region). This setup can be used when your application is not SLA-sensitive, or you do not care about write performance. With this cluster pattern, many organizations will consider transitioning to using a variety of cloud providers (one provider per region).
 
-In this example, the cluster has an asymmetrical setup where `Central` is closer to the `West` than the `East`. This configuration will provide better write latency to the write workloads in the `West` and `Central` because there is a lower latency (versus writing in the `East`).
+In this example, the cluster has an asymmetrical setup where `us-central` is closer to the `us-west` than the `us-east`. This configuration will provide better write latency to the write workloads in `us-west` and `us-central` because there is a lower latency (versus writing in the `us-east`).
 
-<img src="{{ 'images/v19.1/topology-patterns/basic-multi-region.png' | relative_url }}" alt="Basic pattern for multi-region" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/basic-multi-region.png' | relative_url }}" alt="Basic pattern for multi-region" style="max-width:100%" />
 
 Each region has 3 nodes across 3 datacenters and does not use partitioning:
 
-<img src="{{ 'images/v19.1/topology-patterns/basic-multi-region-layout.png' | relative_url }}" alt="Basic pattern for multi-region" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/basic-multi-region-layout.png' | relative_url }}" alt="Basic pattern for multi-region" style="max-width:100%" />
 
 For this example:
 
@@ -77,8 +77,8 @@ For this example:
 - `App` is an application that accesses CockroachDB.
 - `Load Balancer`s are software-based load balancers that direct traffic to each of the regions' nodes at random.
 - Leaseholders are denoted by a dashed line.
-- 6 Nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
-- Every region has 3 nodes across 3 datacenters (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Each node is started with the `--locality` flag to identify which region it is in:
+- 9 nodes are spread across 3 regions (`us-west`, `us-central`, `us-east`) within a country (`us`).
+- Every region has 3 nodes, with each node in a different datacenter (e.g., `us-west-a`, `us-west-b`, `us-west-c`). Each node is started with the `--locality` flag to identify which region and datacenter it is in:
 
     ~~~
     --locality=region=us-west,datacenter=us-west-a
@@ -116,7 +116,7 @@ In this example, a table is partitioned by a column indicating the region where 
 
 This setup uses a modern [multi-tier architecture](https://en.wikipedia.org/wiki/Multitier_architecture), which is simplified to global server load balancer (`GSLB`), `App`, and `Load Balancer` layers in the below diagram:
 
-<img src="{{ 'images/v19.1/topology-patterns/multi-region-partition.png' | relative_url }}" alt="Partitioned multi-region" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/multi-region-partition.png' | relative_url }}" alt="Partitioned multi-region" style="max-width:100%" />
 
 **Configuration**
 
