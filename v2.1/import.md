@@ -109,14 +109,15 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
-### Object dependencies
+#### Skip foreign keys
 
-When importing single tables rather than entire databases, you must be mindful of the following rules because `IMPORT` only creates new tables; it will fail if those tables already exist.  By default, `IMPORT` behaves as follows:
+By default, the [Postgres][postgres] and [MySQL][mysql] import formats support foreign keys. Add the `skip_foreign_keys` [option](#import-options) to speed up data import by ignoring foreign key constraints in the dump file's DDL.  It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
 
-- If a table being imported has a foreign key onto another table, that table must be in the import as well (or be ignored with `skip_foreign_keys`, about which see below). This means that by default, it's only possible to import tables with foreign keys via the [`PGDUMP`](#import-a-postgres-database-dump) or [`MYSQLDUMP`](#import-a-mysql-database-dump) import formats.
-- Objects that depend on an imported table can only be created after the import completes.
+{{site.data.alerts.callout_info}}
+The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](#import-options).
 
-The most common dependency issues are caused by unsatisfied foreign key relationships.  You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed.  For more information, see the list of [import options](#import-options).
+For example, if you get the error message `pq: there is no unique constraint matching given keys for referenced table tablename`, use `IMPORT ... WITH skip_foreign_keys`.
+{{site.data.alerts.end}}
 
 ### Available storage
 

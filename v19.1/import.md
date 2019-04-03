@@ -109,14 +109,9 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
-### Object dependencies
-
-When importing single tables rather than entire databases, you must be mindful of the following rules because `IMPORT` only creates new tables; it will fail if those tables already exist.  By default, `IMPORT` behaves as follows:
-
-- If a table being imported has a foreign key onto another table, that table must be in the import as well (or be ignored with `skip_foreign_keys`, about which see below). This means that by default, it's only possible to import tables with foreign keys via the [`PGDUMP`](#import-a-postgres-database-dump) or [`MYSQLDUMP`](#import-a-mysql-database-dump) import formats.
-- Objects that depend on an imported table can only be created after the import completes.
-
-The most common dependency issues are caused by unsatisfied foreign key relationships.  You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed.  For more information, see the list of [import options](#import-options).
+{{site.data.alerts.callout_info}}
+By default, the [Postgres][postgres] and [MySQL][mysql] import formats support foreign keys. However, the most common dependency issues during import are caused by unsatisfied foreign key relationships that cause errors like `pq: there is no unique constraint matching given keys for referenced table tablename`. You can avoid these issues by adding the [`skip_foreign_keys`](#import-options) option to your `IMPORT` statement as needed. Ignoring foreign constraints will also speed up data import.
+{{site.data.alerts.end}}
 
 ### Available storage
 
