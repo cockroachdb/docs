@@ -57,7 +57,7 @@ To add a comment to a table:
 COMMENT ON TABLE
 ~~~
 
-[To view table comments](show-tables.html):
+To view table comments, use [`SHOW TABLES`](show-tables.html):
 
 ~~~ sql
 > SHOW TABLES FROM customers WITH COMMENT;
