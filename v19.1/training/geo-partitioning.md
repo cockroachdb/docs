@@ -15,24 +15,163 @@ sidebar_data: sidebar-data-training.json
 
 ## Before you begin
 
-Make sure you have already completed [Locality and Replication Zones](locality-and-replication-zones.html) and have 9 nodes running locally across 3 distinct localities:
+In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
-- `--locality=region=us-east,datacenter=us-east1`
-- `--locality=region=us-west,datacenter=us-west1`
-- `--locality=region=us-west,datacenter=us-west2`
+## Step 1. Start a cluster in one US region
 
-## Step 1. Add an Enterprise license
+Start a cluster like you did previously, using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are in the `us-east1` region, with each node in a distinct datacenter:
 
-The table partitioning feature requires an Enterprise license. For the purpose of this training, we've created a temporary license.
+1. Start node 1:
 
-1. Enable the temporary enterprise license:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-east1,datacenter=us-east1-a \
+    --store=node1 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+2. Start node 2:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-east1,datacenter=us-east1-b \
+    --store=node2 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
+
+3. Start node 3:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-east1,datacenter=us-east1-c \
+    --store=node3 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
+
+4. Use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach init --insecure --host=localhost:26257
+    ~~~
+
+## Step 2. Expand into 2 more US regions
+
+Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, with each node in a distinct datacenter:
+
+1. Start node 4:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west1,datacenter=us-west1-a \
+    --store=node4 \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+2. Start node 5:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west1,datacenter=us-west1-b \
+    --store=node5 \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+3. Start node 6:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west1,datacenter=us-west1-c \
+    --store=node6 \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+4. Start node 7:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west2,datacenter=us-west2-a \
+    --store=node7 \
+    --listen-addr=localhost:26263 \
+    --http-addr=localhost:8086 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+5. Start node 8:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west2,datacenter=us-west2-b \
+    --store=node8 \
+    --listen-addr=localhost:26264 \
+    --http-addr=localhost:8087 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+6. Start node 9:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./cockroach start \
+    --insecure \
+    --locality=region=us-west2,datacenter=us-west2-c \
+    --store=node9 \
+    --listen-addr=localhost:26265 \
+    --http-addr=localhost:8088 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~~
+
+## Step 1. Enable a trail enterprise license
+
+The table partitioning feature requires an [enterprise license](https://www.cockroachlabs.com/get-cockroachdb/).
+
+1. [Request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/). You should receive your trial license via email within a few minutes.
+
+2. Enable your trial license:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training';"
+    --execute="SET CLUSTER SETTING cluster.organization = '<your organization>';"
     ~~~
 
     {% include copy-clipboard.html %}
@@ -40,9 +179,8 @@ The table partitioning feature requires an Enterprise license. For the purpose o
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';"
+    --execute="SET CLUSTER SETTING enterprise.license = '<your license key>';"
     ~~~
-
 
 ## Step 2. Import the Movr dataset
 
@@ -67,7 +205,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     > SET DATABASE = movr;
     ~~~
 
-3. Run the [`IMPORT`](../import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables, using CSV files we've made publicly available Amazon S3 storage:
+3. Run the [`IMPORT`](../import.html) statement to create and populate the `users`, `rides`, and `vehicles` tables, using CSV files we've made publicly available Amazon S3 storage:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -90,24 +228,6 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
       390345990764396545 | succeeded |                  1 | 1998 |             0 |              0 | 241052
     (1 row)
     ~~~    
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > IMPORT TABLE vehicles (
-        id UUID NOT NULL,
-        city STRING NOT NULL,
-        type STRING NULL,
-        owner_id UUID NULL,
-        creation_time TIMESTAMP NULL,
-        status STRING NULL,
-        ext JSON NULL,
-        mycol STRING NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
-    )
-    CSV DATA (
-        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/vehicles/n1.0.csv'
-    );
-    ~~~
 
     ~~~
             job_id       |  status   | fraction_completed | rows  | index_entries | system_records |  bytes
@@ -152,6 +272,24 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     (1 row)
     ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > IMPORT TABLE vehicles (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING NULL,
+        owner_id UUID NULL,
+        creation_time TIMESTAMP NULL,
+        status STRING NULL,
+        ext JSON NULL,
+        mycol STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
+    )
+    CSV DATA (
+        'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/perf-tuning/vehicles/n1.0.csv'
+    );
+    ~~~
+
     {{site.data.alerts.callout_success}}
     You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the <a href="http://localhost:8080/#/jobs" data-proofer-ignore><strong>Jobs</strong> page</a> of the Web UI.
     {{site.data.alerts.end}}
@@ -168,7 +306,7 @@ At this point, the data for the three Movr tables (`users`, `rides`, and `vehicl
 ~~~
   start_key | end_key | range_id | replicas | lease_holder
 +-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       24 | {2,4,9}  |            4
+  NULL      | NULL    |       27 | {1,4,8}  |            8
 (1 row)
 ~~~    
 
@@ -180,19 +318,25 @@ At this point, the data for the three Movr tables (`users`, `rides`, and `vehicl
 ~~~
   start_key | end_key | range_id | replicas | lease_holder
 +-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       36 | {3,4,8}  |            8
+  NULL      | NULL    |       41 | {3,5,7}  |            3
 (1 row)
 ~~~
 
 For added clarity, here's a key showing how nodes map to localities:
 
-Node IDs | Locality
----------|---------
-1 - 3 | `--locality=region=us-east,datacenter=us-east1`
-4 - 6 | `--locality=region=us-west,datacenter=us-west1`
-7 - 9 | `--locality=region=us-west,datacenter=us-west2`
+Node ID | Region | Datacenter
+--------|--------|-----------
+1 | `us-east1` | `us-east1-a`
+2 | `us-east1` | `us-east1-b`
+3 | `us-east1` | `us-east1-c`
+4 | `us-west1` | `us-west1-a`
+5 | `us-west1` | `us-west1-b`
+6 | `us-west1` | `us-west1-c`
+7 | `us-west2` | `us-west2-a`
+8 | `us-west2` | `us-west2-b`
+9 | `us-west2` | `us-west2-c`
 
-In this case, for the single range containing `vehicles` data, one replica is in each datacenter, and the leaseholder is in the `us-west1` datacenter. The same is true for the single range containing `users` data, but the leaseholder is in the `us-west2` datacenter.
+In this case, for the single range containing `vehicles` data, one replica is in region, and the leaseholder is in the `us-west2` region. The same is true for the single range containing `users` data, but the leaseholder is in the `us-east1` region.
 
 ## Step 4. Consider performance before partitioning
 
@@ -200,7 +344,7 @@ In a real deployment, with nodes truly distributed across 3 regions of the US, h
 
 ### Reads
 
-For example, imagine you are a Movr administrator in New York, and you want to get the IDs and descriptions of all New York-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-east1` datacenter:
+For example, imagine you are a Movr administrator in New York, and you want to get the IDs and descriptions of all New York-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-east1` region:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -208,9 +352,9 @@ For example, imagine you are a Movr administrator in New York, and you want to g
 WHERE city = 'new york' AND type = 'bike' AND status = 'in_use';
 ~~~
 
-All requests initially go to the leaseholder for the relevant range. As you saw earlier, the leaseholder for the single range of the `vehicles` table is in the `us-west1` datacenter, so in this case, the following would happen:
+All requests initially go to the leaseholder for the relevant range. As you saw earlier, the leaseholder for the single range of the `vehicles` table is in the `us-east1` region, so in this case, the following would happen:
 
-1. The node receiving the request (the gateway node) in the `us-east1` datacenter would route the request to the node in the `us-west1` datacenter with the leaseholder.
+1. The node receiving the request (the gateway node) in the `us-east1` region would route the request to the node in the `us-west2` region with the leaseholder.
 
 2. The leaseholder node would execute the query and return the data to the gateway node.
 
@@ -220,13 +364,7 @@ In summary, this simple read request have to travel back and forth across the en
 
 ### Writes
 
-The geographic distribution of the Movr data is even more likely to impact write performance. For example, imagine that a user in Seattle and a user in New York want to create new Movr accounts:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO users \
-VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347');
-~~~
+The geographic distribution of the Movr data is even more likely to impact write performance. For example, imagine that a user in New York and a user in Seattle want to create new Movr accounts:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -234,19 +372,21 @@ VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379
 VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347');
 ~~~
 
-For the single range containing `users` data, one replica is in each datacenter, with the leaseholder in the `us-west2` datacenter. This means that:
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users \
+VALUES (gen_random_uuid(), 'seattle', 'Seatller', '111 East Street', '1736352379937347');
+~~~
 
-- When creating the user in Seattle, the request doesn't have to leave the region to reach the leaseholder. However, since a write requires consensus from its replica group, the write has to wait for confirmation from either the replica in `us-west1` (Los Angeles, San Francisco) or `us-east1` (New York, Boston, Washington DC) before committing and then returning confirmation to the client.
+For the single range containing `users` data, one replica is in each region, with the leaseholder in the `us-east1` region. This means that:
 
-- When creating the user in New York, there are more network hops and, thus, increased latency. The request first needs to travel across the continent to the leaseholder in `us-west1`. It then has to wait for confirmation from either the replica in us-west2 (Los Angeles, San Francisco) or `us-east1` (New York, Boston, Washington DC) before committing and then returning confirmation to the client back in the east.
+- When creating the user in New York, the request doesn't have to leave the region to reach the leaseholder. However, since a write requires consensus from its replica group, the write has to wait for confirmation from either the replica in `us-west1` (Seattle) or `us-west2` (Los Angeles, San Francisco) before committing and then returning confirmation to the client.
+
+- When creating the user in Seattle, there are more network hops and, thus, increased latency. The request first needs to travel across the continent to the leaseholder in `us-east1`. It then has to wait for confirmation from either the replica in `us-west1` (Seattle) or `us-west2` (Los Angeles, San Francisco) before committing and then returning confirmation to the client back in the west.
 
 ## Step 5. Partition data by city
 
 For this service, the most effective technique for improving read and write latency is to geo-partition the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges.
-
-{{site.data.alerts.callout_info}}
-The following steps partition each table by city to demonstrate the feature. In production, it is recommended that you use a `region` constraint on the database instead.
-{{site.data.alerts.end}}
 
 1. Partition the `users` table by city:
 
@@ -303,38 +443,34 @@ With the data partitioned by city, you can now use [replication zones](../config
 
 City | Locality
 -----|---------
-New York | `datacenter=us-east1`
-Boston | `datacenter=us-east1`
-Washington DC | `datacenter=us-east1`
-Seattle | `datacenter=us-west1`
-San Francisco | `datacenter=us-west2`
-Los Angelese | `datacenter=us-west2`
-
-{{site.data.alerts.callout_info}}
-Since our nodes are located in 3 specific datacenters, we're only going to use the `datacenter=` portion of node locality. If we were using multiple datacenters per regions, we would likely use the `region=` portion of the node locality instead.
-{{site.data.alerts.end}}
+New York | `region=us-east1`
+Boston | `region=us-east1`
+Washington DC | `region=us-east1`
+Seattle | `region=us-west1`
+San Francisco | `region=us-west2`
+Los Angelese | `region=us-west2`
 
 1. Start with the `users` table partitions:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION boston OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION washington_dc OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION seattle OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
+    CONFIGURE ZONE USING constraints='[+region=us-west1]';
 
     > ALTER PARTITION san_francisco OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
 
     > ALTER PARTITION los_angeles OF TABLE movr.users \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
     ~~~
 
 2. Move on to the `vehicles` table partitions:
@@ -342,22 +478,22 @@ Since our nodes are located in 3 specific datacenters, we're only going to use t
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION boston OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION washington_dc OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION seattle OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
+    CONFIGURE ZONE USING constraints='[+region=us-west1]';
 
     > ALTER PARTITION san_francisco OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
 
     > ALTER PARTITION los_angeles OF TABLE movr.vehicles \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
     ~~~
 
 3. Finish with the `rides` table partitions:
@@ -365,22 +501,22 @@ Since our nodes are located in 3 specific datacenters, we're only going to use t
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION boston OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION washington_dc OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-east1]';
+    CONFIGURE ZONE USING constraints='[+region=us-east1]';
 
     > ALTER PARTITION seattle OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west1]';
+    CONFIGURE ZONE USING constraints='[+region=us-west1]';
 
     > ALTER PARTITION san_francisco OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
 
     > ALTER PARTITION los_angeles OF TABLE movr.rides \
-    CONFIGURE ZONE USING constraints='[+datacenter=us-west2]';
+    CONFIGURE ZONE USING constraints='[+region=us-west2]';
     ~~~
 
 {{site.data.alerts.callout_info}}
@@ -402,12 +538,12 @@ WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
      start_key     |          end_key           | range_id | replicas | lease_holder
 +------------------+----------------------------+----------+----------+--------------+
-  /"boston"        | /"boston"/PrefixEnd        |       72 | {1,2,3}  |            3
-  /"los angeles"   | /"los angeles"/PrefixEnd   |       85 | {7,8,9}  |            8
-  /"new york"      | /"new york"/PrefixEnd      |       70 | {1,2,3}  |            1
-  /"san francisco" | /"san francisco"/PrefixEnd |      113 | {7,8,9}  |            7
-  /"seattle"       | /"seattle"/PrefixEnd       |      111 | {4,5,6}  |            5
-  /"washington dc" | /"washington dc"/PrefixEnd |       74 | {1,2,3}  |            3
+  /"boston"        | /"boston"/PrefixEnd        |       33 | {1,2,3}  |            1
+  /"los angeles"   | /"los angeles"/PrefixEnd   |       81 | {7,8,9}  |            8
+  /"new york"      | /"new york"/PrefixEnd      |       31 | {1,2,3}  |            1
+  /"san francisco" | /"san francisco"/PrefixEnd |       39 | {7,8,9}  |            8
+  /"seattle"       | /"seattle"/PrefixEnd       |       37 | {4,5,6}  |            5
+  /"washington dc" | /"washington dc"/PrefixEnd |       35 | {1,2,3}  |            3
 (6 rows)
 ~~~    
 
@@ -417,11 +553,11 @@ The `WHERE` clause in this query excludes the empty ranges between the city rang
 
 For added clarity, here's a key showing how nodes map to datacenters and cities:
 
-Node IDs | Datacenter | Cities
----------|------------|-------
-1 - 3 | `datacenter=us-east1` | New York, Boston, Washington DC
-4 - 6 | `datacenter=us-west1` | Seattle
-7 - 9 | `datacenter=us-west2` | San Francisco, Los Angeles
+Node IDs | Region | Cities
+---------|--------|-------
+1 - 3 | `region=us-east1` | New York, Boston, Washington DC
+4 - 6 | `region=us-west1` | Seattle
+7 - 9 | `region=us-west2` | San Francisco, Los Angeles
 
 We can see that, after partitioning, the replicas for New York, Boston, and Washington DC are located on nodes 1-3 in `us-east1`, replicas for Seattle are located on nodes 4-6 in `us-west1`, and replicas for San Francisco and Los Angeles are located on nodes 7-9 in `us-west2`.
 
@@ -436,12 +572,12 @@ WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
      start_key     |          end_key           | range_id | replicas | lease_holder
 +------------------+----------------------------+----------+----------+--------------+
-  /"boston"        | /"boston"/PrefixEnd        |       64 | {1,2,3}  |            1
-  /"los angeles"   | /"los angeles"/PrefixEnd   |       68 | {7,8,9}  |            8
-  /"new york"      | /"new york"/PrefixEnd      |       62 | {1,2,3}  |            2
-  /"san francisco" | /"san francisco"/PrefixEnd |       83 | {7,8,9}  |            8
-  /"seattle"       | /"seattle"/PrefixEnd       |       81 | {4,5,6}  |            6
-  /"washington dc" | /"washington dc"/PrefixEnd |       66 | {1,2,3}  |            2
+  /"boston"        | /"boston"/PrefixEnd        |       54 | {1,2,3}  |            3
+  /"los angeles"   | /"los angeles"/PrefixEnd   |       59 | {7,8,9}  |            7
+  /"new york"      | /"new york"/PrefixEnd      |       52 | {1,2,3}  |            2
+  /"san francisco" | /"san francisco"/PrefixEnd |       58 | {7,8,9}  |            7
+  /"seattle"       | /"seattle"/PrefixEnd       |       71 | {4,5,6}  |            4
+  /"washington dc" | /"washington dc"/PrefixEnd |       56 | {1,2,3}  |            2
 (6 rows)
 ~~~
 
@@ -451,7 +587,7 @@ After partitioning, reads and writes for a specific city will be much faster bec
 
 ### Reads
 
-Once again, imagine you are a Movr administrator in New York, and you want to get the IDs and descriptions of all New York-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-east1` datacenter:
+Once again, imagine you are a Movr administrator in New York, and you want to get the IDs and descriptions of all New York-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-east1` region:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -459,7 +595,7 @@ Once again, imagine you are a Movr administrator in New York, and you want to ge
 WHERE city = 'new york' AND type = 'bike' AND status = 'in_use';
 ~~~
 
-- Before partitioning, the leaseholder for the `vehicles` table was in the `us-west1` datacenter, causing the request to travel back and forth across the entire country.
+- Before partitioning, the leaseholder for the `vehicles` table was in the `us-west2` region, causing the request to travel back and forth across the entire country.
 
 - Now, as you saw above, the leaseholder for the New York partition of the `vehicles` table is the `us-east1` datacenter. This means that the read request does not need to leave the region.
 
