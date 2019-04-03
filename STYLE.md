@@ -186,17 +186,31 @@ Link capitalization can be either title- or sentence-case:
 
 Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
 
-- To another page in the docs, use just the name of the file.
+- To link to another page in the docs, use just the name of the file.
 
     **Example:** `[here](name-of-article.html)`
 
-- To a specific section on another page, use the name of the file plus the heading.
+- To link to a specific heading on another page, use the name of the file plus the heading.
 
     **Example:** `[xyz](name-of-article.html#heading-on-page)`
 
-- To a specific section on the current page, use just the heading.
+- To link to a specific heading on the current page, use just the heading.
 
     **Example:** `[xyz](#heading-on-page)`
+
+- To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `name` parameter:
+
+    **Example:**
+
+    ```
+    # Anchor:
+    <a name="flags-max-offset"></a>`--max-offset`
+    ```
+
+    ```
+    # Link:
+    [--max-offset](#flags-max-offset)
+    ```
 
 ### Tips, notes, and warnings
 
