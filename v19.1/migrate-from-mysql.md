@@ -156,6 +156,8 @@ By default, [`IMPORT ... MYSQLDUMP`][import] supports foreign keys.  **Default: 
 {{site.data.alerts.callout_info}}
 The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](import.html#import-options).
 
+<!-- new -->
+
 For example, if you get the error message `pq: there is no unique constraint matching given keys for referenced table tablename`, use `IMPORT ... WITH skip_foreign_keys`.
 {{site.data.alerts.end}}
 
