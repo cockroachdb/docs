@@ -118,7 +118,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ### Show tables with comments
 
-<span class="version-tag">New in v19.1:</span>You can add and view comments on a table. To view a table's comments:
+<span class="version-tag">New in v19.1:</span>You can use [`COMMENT ON`](comment-on.html) to add comments on a table. To view a table's comments:
 
 ~~~ sql
 > SHOW TABLES FROM customers WITH COMMENT;

@@ -42,7 +42,7 @@ To add a comment to a database:
 COMMENT ON DATABASE
 ~~~
 
-To view column comments, use a database GUI navigation tool (e.g., [dBeaver](dbeaver.html)).
+To view database comments, use a database GUI navigation tool (e.g., [dBeaver](dbeaver.html)).
 
 ### Add a comment to a table
 
@@ -59,6 +59,7 @@ COMMENT ON TABLE
 
 To view table comments, use [`SHOW TABLES`](show-tables.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM customers WITH COMMENT;
 ~~~
@@ -76,7 +77,7 @@ To add a comment to a column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> COMMENT ON TABLE name IS 'This is a sample comment';
+> COMMENT ON COLUMN dogs.name IS 'This is a sample comment';
 ~~~
 
 ~~~
