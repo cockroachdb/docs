@@ -32,7 +32,7 @@ Accessing the Admin UI for a secure cluster now requires login information (i.e.
 
 ### Setting `application_name` in the client parameters
 
-CockroachDB does not fully process the parameter `application_name` when passed through the connection string via the client driver. As a result, the statements issued by the clients are not properly attributed to that application name for the purpose of displaying statement statistics. The workaround is to set `application_name` using a [`SET`](https://www.cockroachlabs.com/docs/stable/set-vars.html) statement immediately after the SQL connection is established. This will be addressed in a 2.1.x release.
+CockroachDB does not fully process the parameter `application_name` when passed through the connection string via the client driver. As a result, the statements issued by the clients are not properly attributed to that application name for the purpose of displaying statement statistics. The workaround is to set `application_name` using a [`SET`](set-vars.html) statement immediately after the SQL connection is established.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31766)
 
@@ -64,7 +64,7 @@ CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING`
 
 ### Using SQLAlchemy with CockroachDB
 
-Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB 2.1.
+Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB v19.1.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28772)
 
@@ -82,8 +82,7 @@ Applications developed for PostgreSQL that use `GROUP BY` to refer to column ali
 
 ### `TRUNCATE` does not behave like `DELETE`
 
-`TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes
-: Limitations](online-schema-changes.html#limitations)
+`TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
 
@@ -209,11 +208,11 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ### Schema changes within transactions
 
-{% include {{ page.version.version }}/misc/schema-changes-within-transactions.md %}
+{% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
 ### Schema changes between executions of prepared statements
 
-{% include {{ page.version.version }}/misc/schema-changes-between-prepared-statements.md %}
+{% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
