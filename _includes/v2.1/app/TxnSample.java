@@ -107,6 +107,7 @@ public class TxnSample {
         props.setProperty("sslrootcert", "certs/ca.crt");
         props.setProperty("sslkey", "certs/client.maxroach.pk8");
         props.setProperty("sslcert", "certs/client.maxroach.crt");
+        props.setProperty("ApplicationName", "roachtest");
 
         Connection db = DriverManager
             .getConnection("jdbc:postgresql://127.0.0.1:26257/bank", props);
