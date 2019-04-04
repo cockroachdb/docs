@@ -112,9 +112,9 @@ Altering the minimum or maximum value of a series does not check the current val
 
 ### Using common table expressions in `VALUES` and `UNION` clauses
 
-When the [cost-based optimizer](cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
+When the [cost-based optimizer](cost-based-optimizer.html) is disabled, or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
 
-This limitation will be lifted when the cost-based optimizer covers all queries. Until then applications can work around this limitation by including the entire CTE query in the place where it is used.
+This limitation will be lifted when the cost-based optimizer covers all queries. Until then, applications can work around this limitation by including the entire CTE query in the place where it is used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 
