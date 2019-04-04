@@ -42,6 +42,7 @@ Statement | Usage
 [`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
+[`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
