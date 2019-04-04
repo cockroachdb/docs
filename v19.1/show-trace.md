@@ -34,7 +34,7 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 Parameter | Description
 ----------|------------
 `COMPACT` | If specified, fewer columns are returned by the statement. See [Response](#response) for more details.
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 
 ## Trace description
 
