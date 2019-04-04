@@ -206,6 +206,8 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     (1 row)
     ~~~
 
+- Setting up an alert on the `changefeed.max_behind_nanos` metric to track when changefeeds' high water marks are at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). For more information, see [Monitoring and Alerting](monitoring-and-alerting.html#changefeed-is-experiencing-high-latency).
+
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
