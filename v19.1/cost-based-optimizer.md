@@ -82,25 +82,42 @@ This is not meant to be an exhaustive list. To check whether a particular query 
 
 ## Table statistics
 
-The cost-based optimizer can often find more performant query execution plans if it has access to statistical data on the contents of your database's tables. This statistical data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
+The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-{% include {{ page.version.version }}/misc/automatic-statistics.md %}
-
-To manually generate statistics for a table, run a [`CREATE STATISTICS`](create-statistics.html) statement like the one shown below. It automatically figures out which columns to get statistics on &mdash; specifically, it chooses:
+<span class="version-tag">New in v19.1</span>: By default, CockroachDB generates table statistics automatically as tables are updated. It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically figures out which columns to get statistics on &mdash; specifically, it chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
-Note that the above also describes the statistics gathered by the automatic statistics feature, since it runs a query similar to the one shown below.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE STATISTICS employees_stats FROM employees;
-~~~
-
 {{site.data.alerts.callout_info}}
-Every time the [`CREATE STATISTICS`](create-statistics.html) statement is executed, it kicks off a background job. For more information, see [View statistics jobs](create-statistics.html#view-statistics-jobs).
+[Schema changes](online-schema-changes.html) trigger automatic statistics collection for the affected table(s).
 {{site.data.alerts.end}}
+
+### Controlling automatic statistics
+
+For best query performance, most users should leave automatic statistics enabled with the default settings. The information provided in this section is useful for troubleshooting or performance tuning by advanced users.
+
+To control how often the automatic statistics jobs run on your cluster, adjust the following [cluster settings](cluster-settings.html). They define the target number of rows in a table that should be stale before statistics on that table are refreshed.
+
+- [`sql.stats.automatic_collection.fraction_stale_rows`](cluster-settings.html#sql.stats.automatic_collection.fraction_stale_rows)
+- [`sql.stats.automatic_collection.min_stale_rows`](cluster-settings.html#sql.stats.automatic_collection.min_stale_rows)
+
+If you need to turn off automatic statistics collection, follow the steps below.
+
+1. Run the following statement to disable the automatic statistics [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+    ~~~
+
+2. Look up what statistics were created by the automatic statistics generator using the [`SHOW STATISTICS`](show-statistics.html) statement.
+
+3. Delete the automatically generated statistics using the instructions in [delete statistics](create-statistics.html#delete-statistics).
+
+4. Restart the nodes in your cluster to clear the statistics caches.
+
+For instructions showing how to manually generate statistics, see the examples in the [`CREATE STATISTICS` documentation](create-statistics.html).
 
 ## Query plan cache
 
