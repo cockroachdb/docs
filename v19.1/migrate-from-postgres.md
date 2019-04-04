@@ -188,7 +188,7 @@ Example usage:
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
-    emp_no INTEGER NOT NULL,
+    emp_no INTEGER PRIMARY KEY,
     birth_date DATE NOT NULL,
     first_name STRING NOT NULL,
     last_name STRING NOT NULL,
