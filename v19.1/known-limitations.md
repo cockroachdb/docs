@@ -14,6 +14,14 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
+### Location-based time zone names on Windows
+
+Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
+
+To work around this limitation, install the Go toolchain on the Windows machines running CockroachDB nodes. In this case, the CockroachDB nodes will use the timezone data from that toolchain.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
+
 ### Database and table renames are not transactional
 
 Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
@@ -112,9 +120,9 @@ Altering the minimum or maximum value of a series does not check the current val
 
 ### Using common table expressions in `VALUES` and `UNION` clauses
 
-When the [cost-based optimizer](cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
+When the [cost-based optimizer](cost-based-optimizer.html) is disabled, or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
 
-This limitation will be lifted when the cost-based optimizer covers all queries. Until then applications can work around this limitation by including the entire CTE query in the place where it is used.
+This limitation will be lifted when the cost-based optimizer covers all queries. Until then, applications can work around this limitation by including the entire CTE query in the place where it is used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 

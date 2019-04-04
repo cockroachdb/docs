@@ -135,6 +135,14 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 ## Unresolved limitations
 
+### Location-based time zone names on Windows
+
+Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
+
+To work around this limitation, install the Go toolchain on the Windows machines running CockroachDB nodes. In this case, the CockroachDB nodes will use the timezone data from that toolchain.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
+
 ### Database and table renames are not transactional
 
 Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.

@@ -199,9 +199,9 @@ the user.
 
 ## invalid value for parameter "TimeZone"
 
-This error indicates that the machine running the CockroachDB node is missing the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`), which is required by certain features of CockroachDB that use time zone data, for example, to support using place names as time zone identifiers.
+This error indicates that the machine running the CockroachDB node is missing the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`), which is required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers.
 
-To resolve this issue, install the `tzdata` library and keep it up-to-date.
+To resolve this issue, install the `tzdata` library and keep it up-to-date. It's important for all nodes to have the same version, so when updating the library, do so as quickly as possible across all nodes.
 
 For details about other libraries the CockroachDB binary for Linux depends on, see [Dependencies](recommended-production-settings.html#dependencies).
 
