@@ -121,7 +121,7 @@ ORDER BY e.stardate ASC;
 
 ### `TYPES` option
 
-The `TYPES` mode includes the types of the values used in the query plan.  It also includes the SQL expressions that were involved in each processing stage, and includes the columns used by each level.
+The `TYPES` mode includes the types of the values used in the query plan. It also includes the SQL expressions that were involved in each processing stage, and includes the columns used by each level.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -162,6 +162,8 @@ For example, the following query returns the query plan tree, which means that i
 (5 rows)
 ~~~
 
+<a name="opt-verbose-option"></a>
+
 <span class="version-tag">New in v19.1</span>: To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
 
 {% include copy-clipboard.html %}
@@ -198,6 +200,8 @@ For example, the following query returns the query plan tree, which means that i
              └── season > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
 (24 rows)
 ~~~
+
+<a name="opt-types-option"></a>
 
 <span class="version-tag">New in v19.1</span>: To include cost and type details, use `OPT, TYPES`:
 
@@ -237,6 +241,8 @@ For example, the following query returns the query plan tree, which means that i
                   └── const: 3 [type=int]
 (26 rows)
 ~~~
+
+<a name="opt-env-option"></a>
 
 <span class="version-tag">New in v19.1</span>: To include all details used by the optimizer, including statistics, use `OPT, ENV`:
 
