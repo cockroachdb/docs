@@ -6,17 +6,17 @@ toc: true
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
-- [CockroachDB dump files](sql-dump.html)
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
+- [CockroachDB dump files](sql-dump.html)
 
 {{site.data.alerts.callout_success}}
 This page has reference information about the `IMPORT` statement.  For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-Note that `IMPORT` only works for creating new tables.  It does not support adding data to existing tables.
+`IMPORT` only works for creating new tables. It does not support adding data to existing tables. Also, `IMPORT` cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -25,22 +25,38 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 
 ## Synopsis
 
+**Import a table from CSV**
+
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_table.html %}
+  {% include {{ page.version.version }}/sql/diagrams/import_csv.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
+**Import a database or table from dump file**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/import_dump.html %}
+</div>
 
 ## Parameters
 
-| Parameter             | Description                                                                                                                                                                                                                                                   |
-|-----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `import_format`       | Currently supported formats: [CSV](#manually-specify-the-columns-of-an-imported-table), [PGDUMP](#import-a-postgres-database-dump), [MYSQLDUMP](#import-a-mysql-database-dump).                                                                               |
-| `file_location`       | The URL of a text file containing one of (depending on its location in the statement): a dump file to import; a CSV file to import; a SQL [`CREATE TABLE`](create-table.html) statement to execute.  For example syntax, see the [Examples](#examples) below. |
-| `table_name`          | The name of the table you want to import/create.                                                                                                                                                                                                              |
-| `table_elem_list`     | The table definition you want to use (see [this example for syntax](#manually-specify-the-columns-of-an-imported-table)).                                                                                                                                     |
-| `file_to_import`      | The URL of the file you want to import.                                                                                                                                                                                                                       |
-| `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).                                                                                                                                                                                         |
+### For import from CSV
+
+Parameter | Description
+----------|------------
+`table_name` | The name of the table you want to import/create.
+`table_elem_list` | The table schema you want to use.  
+`CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-urls) of a CSV file containing the table schema.
+`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import a table from CSV](#import-a-table-from-csv) below.
+`WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
+
+### For import from dump file
+
+Parameter | Description
+----------|------------
+`table_name` | The name of the table you want to import/create. Use this when the dump file contains a specific table. Leave out `TABLE table_name FROM` when the dump file contains an entire database.
+`import_format` | [PGDUMP](#import-a-postgres-database-dump) or [MYSQLDUMP](#import-a-mysql-database-dump)
+`file_location` | The [URL](#import-file-urls) of a dump file you want to import.
+`WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
 ### Import file URLs
 
@@ -87,9 +103,9 @@ You can specify the target database in the table name in the `IMPORT` statement.
 
 Your `IMPORT` statement must reference a `CREATE TABLE` statement representing the schema of the data you want to import.  You have several options:
 
-- Specify the table's columns explicitly from the [SQL client](use-the-built-in-sql-client.html).  For an example, see [Manually specify the columns of an imported table](#manually-specify-the-columns-of-an-imported-table) below.
+- Specify the table's columns explicitly from the [SQL client](use-the-built-in-sql-client.html). For an example, see [Import a table from CSV](#import-a-table-from-csv) below.
 
-- Load a file that already contains a `CREATE TABLE` statement.  For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
+- Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
@@ -141,17 +157,9 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Examples
 
-### Use a `CREATE TABLE` statement from a file
+### Import a table from a CSV file
 
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
-~~~
-
-### Manually specify the columns of an imported table
+To manually specify the table schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -164,7 +172,35 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
-### Import a tab-separated file
+To use a file to specify the table schema:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+;
+~~~
+
+### Import a table from multiple CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://acme-co/customer-import-data1.1.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
+    'azure://acme-co/customer-import-data1.2.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
+    'azure://acme-co/customer-import-data1.3.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
+    'azure://acme-co/customer-import-data1.4.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
+    'azure://acme-co/customer-import-data1.5.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',    
+);
+~~~
+
+### Import a table from a TSV file
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -235,7 +271,7 @@ CockroachDB chooses the decompression codec based on the filename (the common ex
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co)'
 ;
 ~~~
 
@@ -263,7 +299,7 @@ WITH
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
 
-### Import a single table from a Postgres database dump
+### Import a table from a Postgres database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql

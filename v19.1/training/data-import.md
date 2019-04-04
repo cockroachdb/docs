@@ -93,7 +93,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --insecure \
     --host=localhost:26257 \
     --database="tabular_import" \
-    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
+    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1' WITH delimiter = '|';"
     ~~~
 
     The import will take a minute or two. To check the status of the import, navigate to the **Admin UI > [Jobs page](../admin-ui-jobs-page.html)**. Once it completes, you'll see a confirmation with details:

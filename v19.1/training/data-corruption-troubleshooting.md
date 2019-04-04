@@ -89,7 +89,7 @@ Before you can manually corrupt data, you need to import enough data so that the
     --insecure \
     --host=localhost:26257 \
     --database="import_test" \
-    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA ('https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1') WITH delimiter = '|';"
+    --execute="IMPORT TABLE orders CREATE USING 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/schema/orders.sql' CSV DATA 'https://storage.googleapis.com/cockroach-fixtures/tpch-csv/sf-1/orders.tbl.1' WITH delimiter = '|';"
     ~~~
 
     The import will take a minute or two. Once it completes, you'll see a confirmation with details:
