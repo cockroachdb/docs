@@ -75,7 +75,7 @@ The following additional parameters can be passed after the `?` character in the
 
 Parameter | Description | Default value
 ----------|-------------|---------------
-`application_name` | An initial value for the [`application_name` session variable](set-vars.html). | Empty string.
+`application_name` | An initial value for the [`application_name` session variable](set-vars.html).<br><br>Note: For [Java JBDC](build-a-java-app-with-cockroachdb.html), use `ApplicationName`. | Empty string.
 `sslmode` | Which type of secure connection to use: `disable`, `allow`, `prefer`, `require`, `verify-ca` or `verify-full`. See [Secure Connections With URLs](#secure-connections-with-urls) for details. | `disable`
 `sslrootcert` | Path to the [CA certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
 `sslcert` | Path to the [client certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
