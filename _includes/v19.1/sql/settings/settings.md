@@ -28,6 +28,7 @@
 <tr><td><code>kv.allocator.load_based_rebalancing</code></td><td>enumeration</td><td><code>2</code></td><td>whether to rebalance based on the distribution of QPS across stores [off = 0, leases = 1, leases and replicas = 2]</td></tr>
 <tr><td><code>kv.allocator.qps_rebalance_threshold</code></td><td>float</td><td><code>0.25</code></td><td>minimum fraction away from the mean a store's QPS (such as queries per second) can be before it is considered overfull or underfull</td></tr>
 <tr><td><code>kv.allocator.range_rebalance_threshold</code></td><td>float</td><td><code>0.05</code></td><td>minimum fraction away from the mean a store's range count can be before it is considered overfull or underfull</td></tr>
+<tr><td><code>kv.bulk_io_write.concurrent_addsstable_requests</code></td><td>integer</td><td><code>1</code></td><td>number of AddSSTable requests a store will handle concurrently before queuing</td></tr>
 <tr><td><code>kv.bulk_io_write.concurrent_export_requests</code></td><td>integer</td><td><code>3</code></td><td>number of export requests a store will handle concurrently before queuing</td></tr>
 <tr><td><code>kv.bulk_io_write.concurrent_import_requests</code></td><td>integer</td><td><code>1</code></td><td>number of import requests a store will handle concurrently before queuing</td></tr>
 <tr><td><code>kv.bulk_io_write.max_rate</code></td><td>byte size</td><td><code>8.0 EiB</code></td><td>the rate limit (bytes/sec) to use for writes to disk on behalf of bulk io ops</td></tr>
@@ -55,7 +56,9 @@
 <tr><td><code>kv.transaction.write_pipelining_max_batch_size</code></td><td>integer</td><td><code>128</code></td><td>if non-zero, defines that maximum size batch that will be pipelined through Raft consensus</td></tr>
 <tr><td><code>kv.transaction.write_pipelining_max_outstanding_size</code></td><td>byte size</td><td><code>256 KiB</code></td><td>maximum number of bytes used to track in-flight pipelined writes before disabling pipelining</td></tr>
 <tr><td><code>rocksdb.min_wal_sync_interval</code></td><td>duration</td><td><code>0s</code></td><td>minimum duration between syncs of the RocksDB WAL</td></tr>
-<tr><td><code>schemachanger.bulk_index_backfill.batch_size</code></td><td>integer</td><td><code>5000000</code></td><td>number of rows to process at a time during bulk index backfill</td></tr>
+<tr><td><code>schemachanger.backfiller.buffer_size</code></td><td>byte size</td><td><code>196 MiB</code></td><td>amount to buffer in memory during backfills</td></tr>
+<tr><td><code>schemachanger.backfiller.max_sst_size</code></td><td>byte size</td><td><code>16 MiB</code></td><td>target size for ingested files during backfills</td></tr>
+<tr><td><code>schemachanger.bulk_index_backfill.batch_size</code></td><td>integer</td><td><code>5000</code></td><td>number of rows to process at a time during bulk index backfill</td></tr>
 <tr><td><code>schemachanger.bulk_index_backfill.enabled</code></td><td>boolean</td><td><code>true</code></td><td>backfill indexes in bulk via addsstable</td></tr>
 <tr><td><code>schemachanger.lease.duration</code></td><td>duration</td><td><code>5m0s</code></td><td>the duration of a schema change lease</td></tr>
 <tr><td><code>schemachanger.lease.renew_fraction</code></td><td>float</td><td><code>0.5</code></td><td>the fraction of schemachanger.lease_duration remaining to trigger a renew of the lease</td></tr>
@@ -80,6 +83,7 @@
 <tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>1</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2]</td></tr>
 <tr><td><code>sql.defaults.experimental_vectorize</code></td><td>enumeration</td><td><code>0</code></td><td>default experimental_vectorize mode [off = 0, on = 1, always = 2]</td></tr>
 <tr><td><code>sql.defaults.optimizer</code></td><td>enumeration</td><td><code>1</code></td><td>default cost-based optimizer mode [off = 0, on = 1, local = 2]</td></tr>
+<tr><td><code>sql.defaults.reorder_joins_limit</code></td><td>integer</td><td><code>4</code></td><td>default number of joins to reorder</td></tr>
 <tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can be overridden on an individual connection with the 'results_buffer_size' parameter. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
 <tr><td><code>sql.defaults.serial_normalization</code></td><td>enumeration</td><td><code>0</code></td><td>default handling of SERIAL in table definitions [rowid = 0, virtual_sequence = 1, sql_sequence = 2]</td></tr>
 <tr><td><code>sql.distsql.distribute_index_joins</code></td><td>boolean</td><td><code>true</code></td><td>if set, for index joins we instantiate a join reader on every node that has a stream; if not set, we use a single join reader</td></tr>
@@ -112,6 +116,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>2.1-10</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>19.1</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
 </tbody>
 </table>
