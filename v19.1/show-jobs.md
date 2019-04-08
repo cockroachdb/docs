@@ -8,7 +8,8 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
-- User-created table [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html). The automatic table statistics are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, see [`SHOW AUTOMATIC JOBS`](show-automatic-jobs.html).
+- User-created table [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
+- The automatic table statistics are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`.
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -37,11 +38,11 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html).
+`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is `AUTO CREATE STATS`.
 `description` | The statement that started the job, or a textual description of the job.
-`statement` | This field is populated for the [`SHOW AUTOMATIC JOBS`](show-automatic-jobs.html) command and left blank for `SHOW JOBS`.
+`statement` | This field is populated for the `SHOW AUTOMATIC JOBS` command and left blank for `SHOW JOBS`.<br><br><span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
-`running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined).  
+`running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
 `finished` | The `TIMESTAMP` when the job was `succeeded`, `failed`, or `canceled`.
@@ -84,9 +85,38 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 +----------------+------------+-------------------------------------------+...
 ~~~
 
+### Show automatic jobs
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW AUTOMATIC JOBS;
+~~~
+
+~~~
+        job_id       |       job_type      |                    description                      |...
++--------------------+---------------------+-----------------------------------------------------+...
+  438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users |...
+(1 row)
+~~~
+
+### Filter automatic jobs
+
+You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE status = ('succeeded') ORDER BY created DESC;
+~~~
+
+~~~
+        job_id       |       job_type      |                    description                      | ...
++--------------------+---------------------+-----------------------------------------------------+ ...
+  438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users | ...
+(1 row)
+~~~
+
 ## See also
 
-- [`SHOW AUTOMATIC JOBS`](show-automatic-jobs.html)
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
