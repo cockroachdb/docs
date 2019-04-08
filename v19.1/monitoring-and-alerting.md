@@ -177,7 +177,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 ### Changefeed is experiencing high latency
 
-- **Rule:** Send an alert when the latency of any changefeed running across all nodes is higher than the set threshold, which depends on the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable set in the cluster.
+- **Rule:** Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable set in the cluster.
 
 - **How to detect:** Calculate this using a threshold, where the threshold is less than the value of the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable. For example, `changefeed.max_behind_nanos > [some threshold]`.
 
