@@ -4,7 +4,7 @@ summary: The PAUSE JOB statement lets you temporarily halt the process of potent
 toc: true
 ---
 
-The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [user-created table statistics](create-statistics.html) jobs, automatic table statistics jobs, and [`changefeeds`](change-data-capture.html).
+The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [user-created table statistics](create-statistics.html) jobs, [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, and [`changefeeds`](change-data-capture.html).
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 

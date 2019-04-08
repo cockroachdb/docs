@@ -8,8 +8,8 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 - Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
-- User-created table [statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
-- The automatic table statistics are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`.
+- [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
+- The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`.
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -38,7 +38,7 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is `AUTO CREATE STATS`.
+`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is [`AUTO CREATE STATS`](cost-based-optimizer.html#table-statistics).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | This field is populated for the `SHOW AUTOMATIC JOBS` command and left blank for `SHOW JOBS`.<br><br><span class="version-tag">New in v19.1</span>: When `description` is a textual description of the job, the statement that started the job is returned in this column.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
@@ -61,11 +61,9 @@ Field | Description
 ~~~
 
 ~~~
-+----------------+------------+-------------------------------------------+...
-| job_id         | job_type   | description                               |...
-+----------------+------------+-------------------------------------------+...
-| 27536791415282 | RESTORE    | RESTORE db.* FROM 'azure://backup/db/tbl' |...
-+----------------+------------+-------------------------------------------+...
+ job_id         | job_type   |               description                 |...
++---------------+------------+-------------------------------------------+...
+ 27536791415282 | RESTORE    | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
 
 ### Filter jobs
@@ -78,11 +76,10 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 ~~~
-+----------------+------------+-------------------------------------------+...
-| job_id         | job_type   | description                               |...
+|     job_id     | job_type   |              description                  |...
 +----------------+------------+-------------------------------------------+...
 | 27536791415282 | RESTORE    | RESTORE db.* FROM 'azure://backup/db/tbl' |...
-+----------------+------------+-------------------------------------------+...
+
 ~~~
 
 ### Show automatic jobs
