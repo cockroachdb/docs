@@ -1,7 +1,7 @@
 ---
 title: Cluster Settings
 summary: Learn about cluster settings that apply to all nodes of a CockroachDB cluster.
-toc: true
+toc: false
 ---
 
 Cluster settings apply to all nodes of a CockroachDB cluster and control, for example, whether or not to share diagnostic details with Cockroach Labs as well as advanced options for debugging and cluster tuning.
