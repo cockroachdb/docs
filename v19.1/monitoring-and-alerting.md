@@ -17,7 +17,7 @@ The [built-in Admin UI](admin-ui-access-and-navigate.html) gives you essential m
 
 #### Accessing the Admin UI for a secure cluster
 
-For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords. 
+For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). On accessing the Admin UI, the users will see a Login screen, where they will need to enter their usernames and passwords.
 
 {{site.data.alerts.callout_danger}}Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.{{site.data.alerts.end}}
 
@@ -174,6 +174,12 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - **Rule:** Send an alert when a node's certificate will expire in less than a year.
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
+
+### Changefeed is experiencing high latency
+
+- **Rule:** Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable set in the cluster.
+
+- **How to detect:** Calculate this using a threshold, where the threshold is less than the value of the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable. For example, `changefeed.max_behind_nanos > [some threshold]`.
 
 ## See also
 
