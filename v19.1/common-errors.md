@@ -51,9 +51,17 @@ To resolve this issue, use the [`cockroach cert client-create`](create-security-
 
 Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
 
-The sections below describe different types of transaction retry errors.  Your application's retry logic does not need to distinguish between these types of errors; they are listed here for reference.
+The sections below describe different types of transaction retry errors. **Your application's retry logic does not need to distinguish between these types of errors**; they are listed here for reference.
 
 - [read within uncertainty interval](#read-within-uncertainty-interval)
+- [transaction deadline exceeded](#transaction-deadline-exceeded)
+
+{{site.data.alerts.callout_success}}
+To understand how transactions work in CockroachDB, and why transaction retries are necessary to maintain serializable isolation in a distributed database, see:
+
+- [Transaction Layer](architecture/transaction-layer.html)
+- [Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html)
+{{site.data.alerts.end}}
 
 ### read within uncertainty interval
 
@@ -72,6 +80,24 @@ When errors like this occur, the application has the following options:
 {{site.data.alerts.callout_info}}
 Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
 {{site.data.alerts.end}}
+
+### transaction deadline exceeded
+
+<span class="version-tag">New in v19.1</span>: Errors which were previously
+reported to the client as opaque `TransactionStatusError`s are now transaction
+retry errors with the error message "transaction deadline exceeded" and error
+code `40001`. This error can occur for long-running transactions (with
+execution time on the order of minutes) that also experience conflicts with
+other transactions and thus attempt to commit at a timestamp different than
+their original timestamp (the mechanics of this process are described in 
+[Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html)).
+If the timestamp at which the transaction attempts to commit is above a
+"deadline" imposed by the various schema elements that the transaction has used
+(i.e. table structures), then this error might get returned to the client.
+
+When this error occurs, the application must retry the transaction. For more
+information about how to retry transactions, see [Transaction
+retries](transactions.html#transaction-retries).
 
 <!-- ### write too old -->
 
