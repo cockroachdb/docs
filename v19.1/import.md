@@ -165,7 +165,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 ;
 ~~~
 
@@ -202,8 +202,8 @@ Amazon S3:
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
-CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456'
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]'
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 ;
 ~~~
 
@@ -239,10 +239,10 @@ Amazon S3:
 		INDEX name_idx (name)
 )
 CSV DATA (
-    's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
-    's3://acme-co/customers2.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
-    's3://acme-co/customers3.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
-    's3://acme-co/customers4.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
+    's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]',
+    's3://acme-co/customers2.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]',
+    's3://acme-co/customers3.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]',
+    's3://acme-co/customers4.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]',
 );
 ~~~
 
@@ -292,7 +292,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.tsv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/customers.tsv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 WITH
 	delimiter = e'\t'
 ;
@@ -341,7 +341,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 WITH
 	comment = '#'
 ;
@@ -390,7 +390,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 WITH
 	skip = '2'
 ;
@@ -439,7 +439,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 WITH
 	nullif = ''
 ;
@@ -488,7 +488,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 ;
 ~~~
 
@@ -529,7 +529,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
 WITH
 	decompress = 'gzip'
 ;
@@ -571,7 +571,7 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]';
 ~~~
 
 Azure:
@@ -596,7 +596,7 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]' WITH skip_foreign_keys;
 ~~~
 
 Azure:
@@ -625,7 +625,7 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]';
 ~~~
 
 Azure:
@@ -649,7 +649,7 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]';
 ~~~
 
 Azure:
@@ -674,7 +674,7 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]' WITH skip_foreign_keys
 ~~~
 
 Azure:
