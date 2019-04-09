@@ -25,38 +25,9 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 ## View query plan
 
-To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html). The `OPT` option displays a query plan tree, along with some information that was used to plan the query. If the query is unsupported (i.e., it returns an error message that starts with e.g., `pq: unsupported statement` or `pq: aggregates with FILTER are not supported yet`), the query will not be run with the cost-based optimizer and will be run with the legacy heuristic planner.
+To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query.
 
-For example, the following query (which uses [CockroachDB's TPC-H data set](https://github.com/cockroachdb/cockroach/tree/b1a57102d8e99b301b74c97527c1b8ffd4a4f3f1/pkg/workload/tpch)) returns the query plan tree, which means that it will be run with the cost-based optimizer:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN (OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
-~~~
-
-~~~
-                                     text
-+-----------------------------------------------------------------------------+
-group-by
-├── columns: l_shipmode:15(string!null) avg:17(float)
-├── grouping columns: l_shipmode:15(string!null)
-├── stats: [rows=700, distinct(15)=700]
-├── cost: 1207
-├── key: (15)
-├── fd: (15)-->(17)
-├── prune: (17)
-├── scan lineitem
-│    ├── columns: l_extendedprice:6(float!null) l_shipmode:15(string!null)
-│    ├── stats: [rows=1000, distinct(15)=700]
-│    ├── cost: 1180
-│    └── prune: (6,15)
-└── aggregations [outer=(6)]
-└── avg [type=float, outer=(6)]
-└── variable: l_extendedprice [type=float, outer=(6)]
-(16 rows)
-~~~
-
-In contrast, queries that are not supported by the cost-based optimizer return errors that begin with the string `pq: unsupported statement: ...` or specific messages like `pq: aggregates with FILTER are not supported yet`. Such queries will use the legacy heuristic planner instead of the cost-based optimizer.
+If the query is unsupported it will return an error message that starts with e.g., `pq: unsupported statement`. In such cases, the query will be run with the legacy heuristic planner. This should be rare since the optimizer [supports most SQL statements](#types-of-statements-supported-by-the-cost-based-optimizer).
 
 ## Types of statements supported by the cost-based optimizer
 
