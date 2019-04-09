@@ -133,8 +133,6 @@ Hash joins are performed on two tables as follows:
 
 The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
 
-{{site.data.alerts.callout_info}}Lookup joins are only valid on inner joins and left outer joins.{{site.data.alerts.end}}
-
 Lookup joins are performed on two tables as follows:
 
 1. CockroachDB reads each row in the small table.
