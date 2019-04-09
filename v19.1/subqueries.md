@@ -39,59 +39,61 @@ query only observes 1 row using [`LIMIT`](limit-offset.html).
 
 ## Correlated subqueries
 
-CockroachDB's
-[cost-based optimizer](cost-based-optimizer.html) supports several
-common types of correlated subqueries.
+<span class="version-tag">New in v19.1</span>: CockroachDB's [cost-based optimizer](cost-based-optimizer.html) supports most correlated subqueries.
 
-A subquery is said to be "correlated" when it uses table or column
-names defined in the surrounding query.
+A subquery is said to be "correlated" when it uses table or column names defined in the surrounding query.
 
-For example:
+For example, to find every customer with at least one order, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-# Find every customer with at least one order.
-> SELECT c.name
-    FROM customers c
-   WHERE EXISTS(SELECT * FROM orders o WHERE o.customer_id = c.id);
+> SELECT
+      c.name
+  FROM
+      customers AS c
+  WHERE
+      EXISTS(
+          SELECT * FROM orders AS o WHERE o.customer_id = c.id
+      );
 ~~~
 
-The subquery is correlated because it uses `c` defined in the
-surrounding query.
+The subquery is correlated because it uses `c` defined in the surrounding query.
 
+### Limitations
 
-### Limited support for correlated subqueries
+The [cost-based optimizer](cost-based-optimizer.html) supports most correlated subqueries, with the following exceptions:
 
-When the [cost-based optimizer](cost-based-optimizer.html) (CBO) is
-explicitly disabled (e.g., `SET optimizer = off`), or when a query is
-not recognized by the CBO, support for correlated subqueries is
-disabled.
+- Correlated subqueries that generate side effects inside a `CASE` statement.
 
-For example, the following correlated subqueries are not yet supported
-for this reason:
+- Correlated subqueries that result in implicit `LATERAL` joins. Given a cross-join expression `a,b`, if `b` is an application of a [set-returning function](functions-and-operators.html#set-returning-functions) that references a variable defined in the surrounding query, the `LATERAL` keyword is assumed as shown below.
 
-- `INSERT INTO tb SELECT x FROM a WHERE EXISTS(SELECT x FROM b where b.y = a.y)`
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT
+          e.last_name, s.salary, noise
+      FROM
+          employees AS e,
+          salaries AS s,
+          -- Join with a set-returning function implies LATERAL below
+          generate_series(0, s.salary, 10000) AS noise
+      WHERE
+          e.emp_no = s.emp_no
+      ORDER BY
+          s.salary DESC
+      LIMIT
+          10;
+    ~~~
 
-    Because the CBO does not support [`INSERT`](insert.html) yet.
+    ~~~
+    ERROR:  no data source matches prefix: s
+    ~~~
 
-- `CREATE TABLE tb AS SELECT x FROM a WHERE EXISTS(SELECT x FROM b where b.y = a.y)`
+    For more information, see [the Github issue tracking `LATERAL` join implementation](https://github.com/cockroachdb/cockroach/issues/24560).
 
-    Because the CBO does not support [`CREATE TABLE ... AS`](create-table-as.html) yet.
-
-In addition, the CBO handles correlated subqueries by automatically
-transforming them into uncorrelated queries before query
-execution. When this transformation is impossible, query planning will
-fail.
-
-For example, the following correlated subquery is not supported for this reason:
-
-- `SELECT x[(SELECT x FROM tb2 WHERE tb2.x=tb1.x[2])] FROM tb1`
-
-    Because the CBO cannot automatically decorrelate a subquery inside
-    an array indexing operation (`x[...]`).
+    Note that the example above uses the [employees data set](https://github.com/datacharmer/test_db) that is also used in our [Migrate from MySQL](migrate-from-mysql.html) instructions (and the [MySQL docs](https://dev.mysql.com/doc/employee/en/)).
 
 {{site.data.alerts.callout_info}}
-If you come across an unsupported correlated subquery, please [file a Github issue](file-an-issue.html).
+If you come across an unsupported correlated subquery other than those described above, please [file a Github issue](file-an-issue.html).
 {{site.data.alerts.end}}
 
 ## Performance best practices

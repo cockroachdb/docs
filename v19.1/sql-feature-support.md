@@ -123,7 +123,7 @@ table tr td:nth-child(2) {
  Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-or-view-names)
  `AS` in table expressions | ✓ | Standard | [Aliased table expressions documentation](table-expressions.html#aliased-table-expressions)
  `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | [Functional](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/) | Standard | [Join expressions documentation](table-expressions.html#join-expressions)
- Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions); some [correlated subqueries](subqueries.html#correlated-subqueries) are not.
+ Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions), as are most [correlated subqueries](subqueries.html#correlated-subqueries).
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 
@@ -139,8 +139,8 @@ table tr td:nth-child(2) {
  `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](scalar-expressions.html#string-pattern-matching)
  `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](scalar-expressions.html#string-matching-using-sql-regular-expressions)
  Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](scalar-expressions.html#string-matching-using-posix-regular-expressions)
- `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries); correlated are not. Currently works only with small data sets.
- Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries); correlated are not. Currently works only with small data sets.
+ `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
+ Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
  Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](scalar-expressions.html#unary-and-binary-operations)
  Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](scalar-expressions.html#array-constructors) and [Subscripting](scalar-expressions.html#subscripted-expressions)
  `COLLATE`| ✓ | Standard | [Collation expressions documentation](scalar-expressions.html#collation-expressions)
