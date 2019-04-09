@@ -137,16 +137,7 @@ A lookup join is beneficial to use when there is a large imbalance in size betwe
 
 {{site.data.alerts.callout_info}}Lookup joins are only valid on inner joins and left outer joins.{{site.data.alerts.end}}
 
-To use a lookup join:
-
-1. Open the [built-in SQL shell](use-the-built-in-sql-client.html) and enable the feature:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET experimental_force_lookup_join = true;
-    ~~~
-
-2. In your query, specify the indexes to use if not the default index. For example:
+To use a lookup join in your query, specify the indexes to use if not the default index. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
