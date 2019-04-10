@@ -34,6 +34,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 -----------|-------------
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
+`AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.
 
  CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
@@ -116,6 +117,28 @@ You can also set a transaction's priority with [`SET TRANSACTION`](set-transacti
 {{site.data.alerts.callout_danger}}
 This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
 {{site.data.alerts.end}}
+
+### Use the `AS OF SYSTEM TIME` option
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM products;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMIT;
+~~~
 
 ### Begin a transaction with automatic retries
 

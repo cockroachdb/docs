@@ -25,10 +25,6 @@ including but not limited to:
 - In [`BACKUP`](backup.html), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`](restore.html), after the parameters of the `FROM` sub-clause.
 
-Currently, CockroachDB does not support `AS OF SYSTEM TIME` in
-[explicit transactions](transactions.html). This limitation may be
-lifted in the future.
-
 ## Parameters
 
 The `timestamp` argument supports the following formats:
