@@ -4,7 +4,7 @@ summary: The SET TRANSACTION statement sets the transaction priority for the cur
 toc: true
 ---
 
-The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.
+The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority, access mode, and "as of" timestamp after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.
 
 ## Synopsis
 
@@ -69,7 +69,30 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 ### Use the `AS OF SYSTEM TIME` option
 
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+> SET TRANSACTION AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM products;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMIT;
+~~~
 
 ## See also
 
