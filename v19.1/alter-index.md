@@ -10,6 +10,8 @@ The `ALTER INDEX` [statement](sql-statements.html) applies a schema change to an
 
 For information on using `ALTER INDEX`, see the documents for its relevant subcommands.
 
+{% include {{{ page.version.version }}/misc/schema-change-view-job.md %}
+
 Subcommand | Description
 -----------|------------
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for an index.

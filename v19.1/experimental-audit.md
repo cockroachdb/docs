@@ -83,6 +83,10 @@ To store the audit log files in a specific directory, pass the `--sql-audit-dir`
 If your deployment requires particular lifecycle and access policies for audit log files, point `--sql-audit-dir` at a directory that has permissions set so that only CockroachDB can create/delete files.
 {{site.data.alerts.end}}
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Turn on audit logging
@@ -123,3 +127,4 @@ ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 - [SQL Audit Logging](sql-audit-logging.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`cockroach start` logging flags](start-a-node.html)
+- [`SHOW JOBS`](show-jobs.html)

@@ -144,7 +144,9 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ~~~
 
 ## See also
+
 - [`ALTER TABLE`](alter-table.html)
 - [Column-level Constraints](constraints.html)
 - [Collation](collate.html)
 - [Column Families](column-families.html)
+- [`SHOW JOBS`](show-jobs.html)

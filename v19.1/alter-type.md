@@ -33,6 +33,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 | `column_name` | The name of the column whose data type you want to change.
 | `typename` | The new [data type](data-types.html) you want to use.
 
+## Viewing schema changes
+
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
 ## Examples
 
 ### Success scenario
@@ -78,3 +82,4 @@ pq: type conversion not yet implemented
 
 - [`ALTER TABLE`](alter-table.html)
 - [Other SQL Statements](sql-statements.html)
+- [`SHOW JOBS`](show-jobs.html)

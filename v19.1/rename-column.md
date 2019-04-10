@@ -115,3 +115,4 @@ Then you decide you want distinct columns for each user's first name, last name,
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
 - [`RENAME CONSTRAINT`](rename-constraint.html)
+- [`SHOW JOBS`](show-jobs.html)
