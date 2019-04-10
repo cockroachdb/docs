@@ -31,7 +31,7 @@ Users can expect to encounter the following behaviors when using CockroachDB wit
 
 #### Warnings
 
-##### [XX000] ERROR: could not decorrelate subquery...
+##### [XXUUU] ERROR: could not decorrelate subquery...
 
 <img src="{{ 'images/v2.1/intellij/XX000_error_could_not_decorrelate_subquery.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
