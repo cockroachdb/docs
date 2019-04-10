@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 Start and initialize an insecure cluster like you did in previous modules.
 
-1. In a new terminal, start node 1:
+1. Start node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -32,10 +32,11 @@ Start and initialize an insecure cluster like you did in previous modules.
     --store=node1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
-    ~~~~
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-2. In a new terminal, start node 2:
+2. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -44,10 +45,11 @@ Start and initialize an insecure cluster like you did in previous modules.
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In a new terminal, start node 3:
+3. Start node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -56,10 +58,11 @@ Start and initialize an insecure cluster like you did in previous modules.
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-4. In a new terminal, perform a one-time initialization of the cluster:
+4. Perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -107,8 +110,7 @@ Start and initialize an insecure cluster like you did in previous modules.
     ~~~ shell
     $ ./cockroach dump startrek \
     --insecure \
-    --host=localhost:26257 \
-    > startrek_backup.sql
+    --host=localhost:26257 > startrek_backup.sql
     ~~~
 
 4. Take a look at the generated `startrek_backup.sql` file.
@@ -155,7 +157,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
-    --host=localhost:26257 \    
+    --host=localhost:26257 \
     --execute="DROP TABLE startrek.episodes,startrek.quotes CASCADE;"
     ~~~
 
@@ -184,8 +186,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --database=startrek \
-    < startrek_backup.sql
+    --database=startrek < startrek_backup.sql
     ~~~
 
 3. Check the contents of the `startrek` database again:
@@ -216,16 +217,16 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 ## Step 4. Perform an "enterprise" backup
 
-Next, you'll use the enterprise `BACKUP` feature to create a backup of the `startrek` database on S3. Before you can use this or any enterprise feature, you must obtain an enterprise license from Cockroach Labs. For this training, we've created a temporary license.
+Next, you'll use the enterprise `BACKUP` feature to create a backup of the `startrek` database on S3.
 
-1. Enable the temporary enterprise license:
+1. If you requested and enabled a trial enterprise license in the [Geo-Partitioning](geo-partitioning.html) module, skip to step 2. Otherwise, [request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/) and then enable your license:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING cluster.organization = 'Cockroach Labs Training';"
+    --execute="SET CLUSTER SETTING cluster.organization = '<your organization>';"
     ~~~
 
     {% include copy-clipboard.html %}
@@ -233,7 +234,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING enterprise.license = '{{site.training.ccl_license}}';"
+    --execute="SET CLUSTER SETTING enterprise.license = '<your license key>';"
     ~~~
 
 2. Use the `BACKUP` SQL statement to generate a backup of the `startrek` database and store it on S3. To ensure your backup doesn't conflict with anyone else's, prefix the filename with your name:
