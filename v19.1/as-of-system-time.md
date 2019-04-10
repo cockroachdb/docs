@@ -24,10 +24,8 @@ including but not limited to:
 - In [`SELECT` clauses](select-clause.html), at the very end of the `FROM` sub-clause.
 - In [`BACKUP`](backup.html), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`](restore.html), after the parameters of the `FROM` sub-clause.
-
-Currently, CockroachDB does not support `AS OF SYSTEM TIME` in
-[explicit transactions](transactions.html). This limitation may be
-lifted in the future.
+- <span class="version-tag">New in v19.1</span> In [`BEGIN`](begin-transaction.html), after the `BEGIN` keyword.
+- <span class="version-tag">New in v19.1</span> In [`SET`](set-transaction.html), after the `SET TRANSACTION` keyword.
 
 ## Parameters
 
@@ -163,6 +161,16 @@ For example:
            AS OF SYSTEM TIME '-4h'  -- same timestamp as above - OK.
      WHERE x < 123;
 ~~~
+
+### Using `AS OF SYSTEM TIME` in transactions
+
+You can use the [`BEGIN`](begin-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+{% include {{ page.version.version }}/sql/begin-transaction-as-of-system-time-example.md %}
+
+Alternatively, you can use the [`SET`](set-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+{% include {{ page.version.version }}/sql/set-transaction-as-of-system-time-example.md %}
 
 ## See also
 

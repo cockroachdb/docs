@@ -4,7 +4,7 @@ summary: The SET TRANSACTION statement sets the transaction priority for the cur
 toc: true
 ---
 
-The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.
+The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority, access mode, and "as of" timestamp after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.
 
 ## Synopsis
 
@@ -22,6 +22,7 @@ Parameter | Description
 ----------|------------
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br><br>Transactions with higher priority are less likely to need to be retried.<br><br>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br><br>The current priority is also exposed as the [session variable](show-vars.html) `transaction_priority`.<br><br>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
+`AS OF SYSTEM TIME` | <span class="version-tag">New in v19.1</span> Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> The `AS OF SYSTEM TIME` clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the `READ WRITE` mode is specified, an error will be returned.<br/><br/>For more information, see [AS OF SYSTEM TIME](as-of-system-time.html).<br/><br/>
 
 CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
@@ -65,6 +66,12 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 ~~~ sql
 > COMMIT;
 ~~~
+
+### Use the `AS OF SYSTEM TIME` option
+
+You can execute the transaction using the database contents "as of" a specified time in the past.
+
+{% include {{ page.version.version }}/sql/set-transaction-as-of-system-time-example.md %}
 
 ## See also
 
