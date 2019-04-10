@@ -131,32 +131,14 @@ Hash joins are performed on two tables as follows:
 
 ### Lookup joins
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
-
-A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
-
-{{site.data.alerts.callout_info}}Lookup joins are only valid on inner joins and left outer joins.{{site.data.alerts.end}}
-
-To use a lookup join:
-
-1. Open the [built-in SQL shell](use-the-built-in-sql-client.html) and enable the feature:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET experimental_force_lookup_join = true;
-    ~~~
-
-2. In your query, specify the indexes to use if not the default index. For example:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT * FROM weather@index_1 LEFT OUTER JOIN cities ON (weather.city = cities.name);
-    ~~~
+The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
 
 Lookup joins are performed on two tables as follows:
 
 1. CockroachDB reads each row in the small table.
 2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+
+You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
 ## Performance best practices
 
