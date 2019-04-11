@@ -69,6 +69,8 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 ### Use the `AS OF SYSTEM TIME` option
 
+You can execute the transaction using the database contents "as of" a specified time in the past.
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;

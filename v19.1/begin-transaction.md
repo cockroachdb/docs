@@ -120,6 +120,8 @@ This example assumes you're using [client-side intervention to handle transactio
 
 ### Use the `AS OF SYSTEM TIME` option
 
+You can execute the transaction using the database contents "as of" a specified time in the past.
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';

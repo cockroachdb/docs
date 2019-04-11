@@ -24,6 +24,8 @@ including but not limited to:
 - In [`SELECT` clauses](select-clause.html), at the very end of the `FROM` sub-clause.
 - In [`BACKUP`](backup.html), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`](restore.html), after the parameters of the `FROM` sub-clause.
+- In [`BEGIN`](begin-transaction.html), after the `BEGIN` keyword.
+- In [`SET`](set-transaction.html), after the `SET TRANSACTION` keyword.
 
 ## Parameters
 
@@ -158,6 +160,57 @@ For example:
            JOIN u ON tp.x = u.y
            AS OF SYSTEM TIME '-4h'  -- same timestamp as above - OK.
      WHERE x < 123;
+~~~
+
+### Using `AS OF SYSTEM TIME` in transactions
+
+You can use the [`BEGIN`](begin-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM products;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMIT;
+~~~
+
+Alternatively, you can use the [`SET`](set-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET TRANSACTION AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM products;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMIT;
 ~~~
 
 ## See also
