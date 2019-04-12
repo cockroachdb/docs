@@ -36,6 +36,7 @@ Format | Notes
 [`INT`](int.html) | Nanoseconds since the Unix epoch.
 negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thus must be negative.
 [`STRING`](string.html) | A [`TIMESTAMP`](timestamp.html), [`INT`](int.html) of nanoseconds, or negative [`INTERVAL`](interval.html).
+`experimental_follower_read_timestamp()`| A [function](functions-and-operators.html) that runs your queries at a time as close as possible to the present time while remaining safe for [follower reads](follower-reads.html#what-are-follower-reads).
 
 ## Examples
 
