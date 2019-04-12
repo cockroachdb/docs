@@ -84,7 +84,7 @@ Use the [`ALTER ... CONFIGURE ZONE`](configure-zone.html) [statement](sql-statem
 > ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
 
-{% include v19.1/zone-configs/variables.md %}
+{% include {{page.version.version}}/zone-configs/variables.md %}
 
 ### Replication constraints
 
