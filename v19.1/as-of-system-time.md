@@ -24,8 +24,8 @@ including but not limited to:
 - In [`SELECT` clauses](select-clause.html), at the very end of the `FROM` sub-clause.
 - In [`BACKUP`](backup.html), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`](restore.html), after the parameters of the `FROM` sub-clause.
-- In [`BEGIN`](begin-transaction.html), after the `BEGIN` keyword.
-- In [`SET`](set-transaction.html), after the `SET TRANSACTION` keyword.
+- <span class="version-tag">New in v19.1</span> In [`BEGIN`](begin-transaction.html), after the `BEGIN` keyword.
+- <span class="version-tag">New in v19.1</span> In [`SET`](set-transaction.html), after the `SET TRANSACTION` keyword.
 
 ## Parameters
 

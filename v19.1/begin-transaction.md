@@ -34,7 +34,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 -----------|-------------
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
-`AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/>For more information, see [AS OF SYSTEM TIME](as-of-system-time.html).<br/><br/>
+`AS OF SYSTEM TIME` | <span class="version-tag">New in v19.1</span> Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> When using the `AS OF SYSTEM TIME` clause, the transaction access mode is set to `READ ONLY` by default. `READ WRITE` mode cannot be used with this clause. <br/><br/>For more information, see [AS OF SYSTEM TIME](as-of-system-time.html).<br/><br/>
 
  CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
