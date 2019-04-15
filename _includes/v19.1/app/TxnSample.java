@@ -105,7 +105,7 @@ public class TxnSample {
         props.setProperty("user", "maxroach");
         props.setProperty("sslmode", "require");
         props.setProperty("sslrootcert", "certs/ca.crt");
-        props.setProperty("sslkey", "certs/client.maxroach.pk8");
+        props.setProperty("sslkey", "certs/client.maxroach.key.pk8");
         props.setProperty("sslcert", "certs/client.maxroach.crt");
         props.setProperty("ApplicationName", "roachtest");
 
