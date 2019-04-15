@@ -175,7 +175,7 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 This feature enables scenarios where reference data such as a table of postal codes can be replicated to different regions, and queries will use the copy in the same region.
 
 {{site.data.alerts.callout_info}}
-The optimizer preferring the nearest index is not an enterprise feature, but in order to take advantage of it you need to be able to [create a replication zone for a secondary index](configure-replication-zones.html#create-a-replication-zone-for-a-secondary-index), which is an [enterprise feature](enterprise-licensing.html).
+This feature is only available to [enterprise](enterprise-licensing.html) users.
 {{site.data.alerts.end}}
 
 To take advantage of this feature, you need to:
