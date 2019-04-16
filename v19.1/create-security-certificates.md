@@ -119,6 +119,7 @@ Flag | Description
 `--overwrite` | When running `create-*` subcommands, pass this flag to allow existing files in the certificate directory (`--certs-dir`) to be overwritten.<br><br>This flag helps avoid accidentally overwriting sensitive certificates and keys.
 `--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
 `--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
+<a name="flag-pkcs8"></a> `--also-generate-pkcs8-key` | <span class="version-tag">New in v19.1</span>: Also create a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format used by Java.  For example usage, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
 
 ### Logging
 

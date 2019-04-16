@@ -63,23 +63,14 @@ For other ways to install Gradle, see [its official documentation](https://gradl
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
-
-## Step 4. Convert the key file for use with Java
-
-The private key generated for user `maxroach` by CockroachDB is [PEM encoded](https://tools.ietf.org/html/rfc1421).  To read the key in a Java application, you will need to convert it into [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java.
-
-To convert the key to PKCS#8 format, run the following OpenSSL command on the `maxroach` user's key file in the directory where you stored your certificates (`/tmp/certs` in this example):
+<span class="version-tag">New in v19.1</span>: You can pass the [`--also-generate-pkcs8-key` flag](create-security-certificates.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ openssl pkcs8 -topk8 -inform PEM -outform DER -in client.maxroach.key -out client.maxroach.pk8 -nocrypt
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
 
-## Step 5. Run the Java code
+## Step 4. Run the Java code
 
 Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/v19.1/app/hibernate-basic-sample/hibernate-basic-sample.tgz), which contains a Java project that includes the following files:
 

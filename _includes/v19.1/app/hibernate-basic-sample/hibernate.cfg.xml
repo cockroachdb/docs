@@ -8,7 +8,7 @@
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
          <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
-        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.pk8&sslcert=certs/client.maxroach.crt]]></property>
+        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key.pk8&sslcert=certs/client.maxroach.crt]]></property>
         <property name="hibernate.connection.username">maxroach</property>
 
         <!-- Required so a table can be created from the 'Account' class in Sample.java -->
