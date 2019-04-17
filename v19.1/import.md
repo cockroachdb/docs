@@ -156,6 +156,21 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 To manually specify the table schema:
 
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
+;
+~~~
+
+Azure:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -167,7 +182,32 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+;
+~~~
+
 To use a file to specify the table schema:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -177,7 +217,36 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 ;
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'gs://acme-co/customers-create-table.sql'
+CSV DATA ('gs://acme-co/customers.csv')
+;
+~~~
+
 ### Import a table from multiple CSV files
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
+    's3://acme-co/customers2.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder',
+    's3://acme-co/customers3.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
+    's3://acme-co/customers4.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
+);
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -195,7 +264,41 @@ CSV DATA (
 );
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'gs://acme-co/customers.csv',
+    'gs://acme-co/customers2.csv',
+    'gs://acme-co/customers3.csv',
+    'gs://acme-co/customers4.csv',
+);
+~~~
+
 ### Import a table from a TSV file
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.tsv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	delimiter = e'\t'
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -210,7 +313,41 @@ WITH
 ;
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.tsv')
+WITH
+	delimiter = e'\t'
+;
+~~~
+
 ### Skip commented lines
+
+The `comment` option determines which Unicode character marks the rows in the data to be skipped.
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	comment = '#'
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -225,7 +362,41 @@ WITH
 ;
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+WITH
+	comment = '#'
+;
+~~~
+
 ### Skip first *n* lines
+
+The `skip` option determines the number of header rows to skip when importing a file.
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	skip = '2'
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -240,7 +411,41 @@ WITH
 ;
 ~~~
 
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+WITH
+	skip = '2'
+;
+~~~
+
 ### Use blank characters as `NULL`
+
+The `nullif` option defines which string should be converted to `NULL`.
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	nullif = ''
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -255,9 +460,7 @@ WITH
 ;
 ~~~
 
-### Import a compressed CSV file
-
-CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -266,11 +469,73 @@ CockroachDB chooses the decompression codec based on the filename (the common ex
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co)'
+CSV DATA ('gs://acme-co/customers.csv')
+WITH
+	nullif = ''
+;
+~~~
+
+### Import a compressed CSV file
+
+CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv.gz')
 ;
 ~~~
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	decompress = 'gzip'
+;
+~~~
+
+Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -285,23 +550,70 @@ WITH
 ;
 ~~~
 
-### Import a Postgres database dump
+Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv.gz')
+WITH
+	decompress = 'gzip'
+;
 ~~~
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+### Import a Postgres database dump
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'gs://acme-co/employees.sql';
+~~~
+
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres][postgres].
 
 ### Import a table from a Postgres database dump
 
+Amazon S3:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
 ~~~
 
-If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
 
@@ -309,27 +621,74 @@ For the command above to succeed, you need to have created the dump file with sp
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP`.
 
+Amazon S3:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+Azure:
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'gs://acme-co/employees.sql';
 ~~~
 
 For more information, see [SQL Dump (Export)](sql-dump.html).
 
 ### Import a MySQL database dump
 
+Amazon S3:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 'gs://acme-co/employees.sql';
 ~~~
 
 For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
 
 ### Import a table from a MySQL database dump
 
+Amazon S3:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
