@@ -21,7 +21,7 @@ Each of the following SQL statements control transactions in some way.
  [`SAVEPOINT`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values.
  [`RELEASE SAVEPOINT`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries).
  [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction.
- [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Handle [retryable errors](#error-handling) by rolling back a transaction's changes and increasing its priority.
+ [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Handle [retry errors](#error-handling) by rolling back a transaction's changes and increasing its priority.
  [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began.
  [`SHOW`](show-vars.html) | Display the current transaction settings.
 
@@ -54,7 +54,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retryable Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
+**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
 **Ambiguous Errors** | Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. See [here](common-errors.html#result-is-ambiguous) for more about this kind of error.
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -75,18 +75,13 @@ There are two cases in which transaction retries occur:
 
 ### Automatic retries
 
-CockroachDB automatically retries individual statements (implicit transactions)
-and transactions sent from the client as a single batch, as long as the size of
-the results being produced for the client (including protocol overhead) is less
-than 16KiB. Once that buffer overflows, CockroachDB starts streaming results back to
-the client, at which point automatic retries cannot be performed any more. As
-long as the results of a single statement or batch of statements are known to
-stay clear of this limit, the client does not need to worry about transaction
-retries.
+CockroachDB automatically retries individual statements (implicit transactions) and transactions sent from the client as a single batch, as long as the size of the results being produced for the client, including protocol overhead, is less than 16KiB by default. Once that buffer overflows, CockroachDB starts streaming results back to the client, at which point automatic retries cannot be performed any more. As long as the results of a single statement or batch of statements are known to stay clear of this limit, the client does not need to worry about transaction retries.
 
-In future versions of CockroachDB, we plan on providing stronger guarantees for
-read-only queries that return at most one row, regardless of the size of that
-row.
+{{site.data.alerts.callout_success}}
+You can change the results buffer size for all new sessions using the `sql.defaults.results.buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Note, however, that decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
+{{site.data.alerts.end}}
+
+In future versions of CockroachDB, we plan on providing stronger guarantees for read-only queries that return at most one row, regardless of the size of that row.
 
 #### Individual statements
 
@@ -102,7 +97,7 @@ For example, the following statement would be automatically retried by Cockroach
 
 #### Batched statements
 
-Transactions can be sent from the client as a single batch. Batching implies that CockroachDB receives multiple statements without being asked to return results in between them; instead, CockroachDB returns results after executing all of the statements (except if the accumulated results overflow an internal buffer, in which case they are returned sooner and automatic retries can no longer be performed).
+Transactions can be sent from the client as a single batch. Batching implies that CockroachDB receives multiple statements without being asked to return results in between them; instead, CockroachDB returns results after executing all of the statements, except when the accumulated results overflow the buffer mentioned above, in which case they are returned sooner and automatic retries can no longer be performed.
 
 Batching is generally controlled by your driver or client's behavior. Technically, it can be achieved in two ways, both supporting automatic retries:
 
@@ -205,7 +200,7 @@ For greater detail, here's the process a retryable transaction goes through.
 
 3. The statements in the transaction are executed.
 
-4. If a statement returns a retryable error (identified via the `40001` error code or `"retry transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
+4. If a statement returns a retry error (identified via the `40001` error code or `"retry transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
 
     You must now issue the statements in the transaction again.
 
@@ -213,7 +208,7 @@ For greater detail, here's the process a retryable transaction goes through.
 
 5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
-    In some cases, the [`RELEASE SAVEPOINT`](release-savepoint.html) statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
+    In some cases, the [`RELEASE SAVEPOINT`](release-savepoint.html) statement itself can fail with a retry error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retry error is handled as described in step 4.
 
 ##### Customizing the savepoint name
 
