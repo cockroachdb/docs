@@ -476,7 +476,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     > COMMIT;
     ~~~
 
-    Since CockroachDB uses `SERIALIZABLE` isolation, the database detects that the previous check (the `SELECT` query) is no longer true due to a concurrent transaction. It therefore prevents the transaction from committing, returning a "retryable error" that indicates that the transaction must be attempted again:
+    Since CockroachDB uses `SERIALIZABLE` isolation, the database detects that the previous check (the `SELECT` query) is no longer true due to a concurrent transaction. It therefore prevents the transaction from committing, returning a retry error that indicates that the transaction must be attempted again:
 
     ~~~
     pq: restart transaction: HandledRetryableTxnError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE): "sql txn" id=57dd0454 key=/Table/53/1/17809/1/0 rw=true pri=0.00710012 iso=SERIALIZABLE stat=PENDING epo=0 ts=1539116499.676097000,2 orig=1539115078.961557000,0 max=1539115078.961557000,0 wto=false rop=false seq=4
