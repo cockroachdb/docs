@@ -22,6 +22,10 @@ We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) and [SQLAlc
 The example code on this page uses Python 3.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+SQLAlchemy relies on the existence of foreign keys to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, SQLAlchemy won't generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
+{{site.data.alerts.end}}
+
 ## Step 1. Install SQLAlchemy
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
@@ -310,3 +314,6 @@ In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Eng
 
 [session.flush]: https://docs.sqlalchemy.org/en/latest/orm/session_api.html#sqlalchemy.orm.session.Session.flush
 [session]: https://docs.sqlalchemy.org/en/latest/orm/session.html
+
+<!--  LocalWords:  dir ca py FooModel
+ -->

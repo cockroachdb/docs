@@ -44,7 +44,7 @@ $ go get -u github.com/jinzhu/gorm
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -154,3 +154,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 Read more about using the [GORM ORM](http://gorm.io), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{ page.version.version }}/app/see-also-links.md %}
+
+<!--  LocalWords:  pq db dir ca AutoMigrate
+ -->

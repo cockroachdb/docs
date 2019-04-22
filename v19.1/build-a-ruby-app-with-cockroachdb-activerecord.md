@@ -43,7 +43,7 @@ The exact command above will vary depending on the desired version of ActiveReco
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -169,3 +169,6 @@ Then, issue the following statement:
 Read more about using the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{page.version.version}}/app/see-also-links.md %}
+
+<!--  LocalWords:  pg dir ca rb
+ -->
