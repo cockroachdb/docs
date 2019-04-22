@@ -69,6 +69,35 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "Secure Your Cluster",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/managed-security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/managed-authentication.html"
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/managed-authorization.html"
+            ]
+          },
+          {
+            "title": "SQL Audit Logging",
+            "urls": [
+              "/${VERSION}/managed-sql-audit-logging.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Migrate Data",
         "items": [
           {
@@ -109,12 +138,6 @@
     "title": "Manage Your Account",
     "is_top_level": true,
     "items": [
-      {
-        "title": "User Management",
-        "urls": [
-          "/${VERSION}/managed-user-management.html"
-        ]
-      },
       {
         "title": "Cluster Management",
         "urls": [

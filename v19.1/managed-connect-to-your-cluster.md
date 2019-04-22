@@ -15,7 +15,7 @@ Once your Managed CockroachDB cluster is available and you've [set your password
 
 2. Make sure you have a SQL user and password to use in your connection string.
 
-    For details on creating additional users, see [User Management](managed-user-management.html).
+    For details on creating additional users, see [User Management](managed-authorization.html#use-the-console).
 
 ## Authorize your network
 
