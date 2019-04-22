@@ -18,6 +18,12 @@ We have tested the [Ruby pg driver](https://rubygems.org/gems/pg) and the [Activ
 For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+ActiveRecord relies on the existence of foreign keys to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, ActiveRecord won't generate joins for you. Instead, you'll have to issue raw SQL (via [`Client.find_by_sql()`](https://guides.rubyonrails.org/active_record_querying.html#finding-by-sql)) or do the equivalent work in your application.
+
+For more information, see [Association Basics](https://guides.rubyonrails.org/association_basics.html) from the ActiveRecord documentation.
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
@@ -43,7 +49,7 @@ The exact command above will vary depending on the desired version of ActiveReco
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -169,3 +175,6 @@ Then, issue the following statement:
 Read more about using the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{page.version.version}}/app/see-also-links.md %}
+
+<!--  LocalWords:  pg dir ca rb
+ -->

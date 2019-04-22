@@ -18,6 +18,12 @@ We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [
 For a more realistic use of GORM with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Gorm relies on the existence of foreign keys to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, Gorm won't generate joins for you. Instead, you'll have to issue raw SQL (via [`db.Exec()`](http://doc.gorm.io/advanced.html#sql-builder)) or do the equivalent work in your application.
+
+For more information, see [Associations](http://doc.gorm.io/associations.html) from the Gorm documentation.
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
@@ -44,7 +50,7 @@ $ go get -u github.com/jinzhu/gorm
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -154,3 +160,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 Read more about using the [GORM ORM](http://gorm.io), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{ page.version.version }}/app/see-also-links.md %}
+
+<!--  LocalWords:  pq db dir ca AutoMigrate
+ -->
