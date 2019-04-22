@@ -43,7 +43,7 @@ The exact command above will vary depending on the desired version of ActiveReco
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
