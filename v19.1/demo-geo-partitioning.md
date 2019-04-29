@@ -9,7 +9,7 @@ CockroachDB's [geo-partitioning](partitioning.html) feature gives you low-latenc
 
 ## Watch a demo
 
-STILL NEED TO POST VIDEO TO YOUTUBE
+<iframe width="640" height="385" src="https://www.youtube.com/embed/TgnQwOOk9Js" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Before you begin
 
