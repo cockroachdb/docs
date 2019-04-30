@@ -3,6 +3,12 @@
   "is_top_level": true,
   "items": [
     {
+      "title": "v19.1.0",
+      "urls": [
+        "/releases/v19.1.0.html"
+      ]
+    },
+    {
       "title": "v2.1.6",
       "urls": [
         "/releases/v2.1.6.html"
@@ -24,18 +30,6 @@
       "title": "v2.0",
       "urls": [
         "/releases/v2.0.0.html"
-      ]
-    },
-    {
-      "title": "v1.1.9",
-      "urls": [
-        "/releases/v1.1.9.html"
-      ]
-    },
-    {
-      "title": "v1.1",
-      "urls": [
-        "/releases/v1.1.0.html"
       ]
     },
     {
