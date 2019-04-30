@@ -1,9 +1,9 @@
 CockroachDB requires TCP communication on two ports:
 
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
-- **8080** (`tcp:8080`) for accessing the Web UI
+- **8080** (`tcp:8080`) for accessing the Admin UI
 
-Since GCE instances communicate on their internal IP addresses by default, you do not need to take any action to enable inter-node communication. However, if you want to access the Web UI from your local network, you must [create a firewall rule for your project](https://cloud.google.com/vpc/docs/using-firewalls):
+Since GCE instances communicate on their internal IP addresses by default, you do not need to take any action to enable inter-node communication. However, to access the Admin UI from your local network, you must [create a firewall rule for your project](https://cloud.google.com/vpc/docs/using-firewalls):
 
 Field | Recommended Value
 ------|------------------
