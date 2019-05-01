@@ -193,14 +193,12 @@ This page shows you how key features of CockroachDB stack up against other datab
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "Spanner", "SQL Server"]'>Yes</span>
       <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
-      <span class="support" data-dbs='["Spanner"]'>Read-only</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "Spanner", "SQL Server"]'>Yes</span>
       <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
-      <span class="support" data-dbs='["Spanner"]'>Read-only</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#why-is-cockroachdb-sql">Yes</a></td>
   </tr>
