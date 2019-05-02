@@ -354,9 +354,10 @@ Before you can run MovR against the cluster and demonstrate the geo-partitioning
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT into system.locations VALUES ('region', 'us-east1', 33.836082, -81.163727);
-    INSERT into system.locations VALUES ('region', 'us-central1', 42.032974, -93.581543);
-    INSERT into system.locations VALUES ('region', 'us-west1', 43.804133, -120.554201);
+    > INSERT into system.locations VALUES
+        ('region', 'us-east1', 33.836082, -81.163727),
+        ('region', 'us-central1', 42.032974, -93.581543),
+        ('region', 'us-west1', 43.804133, -120.554201);
     ~~~
 
     Inserting these coordinates enables you to visualize your cluster on the [**Node Map**](enable-node-map.html) feature of the Admin UI.
@@ -510,11 +511,11 @@ To understand why SQL latency is so high, use the built-in SQL shell to check th
     {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW EXPERIMENTAL_RANGES FROM TABLE users;
-    SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles;
-    SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users;
-    SHOW EXPERIMENTAL_RANGES FROM TABLE rides;
-    SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users;
-    SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicles;
+      SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles;
+      SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users;
+      SHOW EXPERIMENTAL_RANGES FROM TABLE rides;
+      SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users;
+      SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicles;
     ~~~
 
     ~~~
@@ -658,54 +659,72 @@ Now that all tables and secondary indexes have been partitioned by city, for eac
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york OF TABLE movr.users CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago OF TABLE movr.users CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle OF TABLE movr.users CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york OF TABLE movr.users
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago OF TABLE movr.users
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle OF TABLE movr.users
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 2. Create replication zones for the partitions of the `vehicles` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 3. Create replication zones for the partitions of the secondary index on the `vehicles` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york_idx OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago_idx OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle_idx OF TABLE movr.vehicles
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 4. Create replication zones for the partitions of the `rides` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 5. Create replication zones for the partitions of the first secondary index on the `rides` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york_idx1 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago_idx1 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle_idx1 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 6. Create replication zones for the partitions of the other secondary index on the `rides` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-east1]';
-    ALTER PARTITION chicago_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-central1]';
-    ALTER PARTITION seattle_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+region=us-west1]';
+    > ALTER PARTITION new_york_idx2 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-east1]';
+      ALTER PARTITION chicago_idx2 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-central1]';
+      ALTER PARTITION seattle_idx2 OF TABLE movr.rides
+        CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
 ## Step 13. Re-check replica distribution
@@ -714,12 +733,18 @@ Still in the SQL shell on one of your client VMs, use the [`SHOW EXPERIMENTAL_RA
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE users] WHERE "start_key" NOT LIKE '%Prefix%';
-SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles] WHERE "start_key" NOT LIKE '%Prefix%';
-SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users] WHERE "start_key" NOT LIKE '%Prefix%';
-SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE rides] WHERE "start_key" NOT LIKE '%Prefix%';
-SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users] WHERE "start_key" NOT LIKE '%Prefix%';
-SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicle] WHERE "start_key" NOT LIKE '%Prefix%';
+> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE users]
+    WHERE "start_key" NOT LIKE '%Prefix%';
+  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles]
+    WHERE "start_key" NOT LIKE '%Prefix%';
+  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users]
+    WHERE "start_key" NOT LIKE '%Prefix%';
+  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE rides]
+    WHERE "start_key" NOT LIKE '%Prefix%';
+  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users]
+    WHERE "start_key" NOT LIKE '%Prefix%';
+  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicle]
+    WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 ~~~
