@@ -43,25 +43,29 @@ For added context about CockroachDB's fault tolerance and automated repair capab
 
 ## Hardware
 
+{{site.data.alerts.callout_info}}
+Mentions of "CPU resources" refer to vCPUs, which are also known as hyperthreads.
+{{site.data.alerts.end}}
+
 ### Basic hardware recommendations
 
 Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
 
 #### CPU and memory
 
-- At a bare minimum, each node should have **2 GB of RAM and 2 CPUs**.
+- At a bare minimum, each node should have **2 GB of RAM and 2 vCPUs**.
 
-    More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of CPUs and additional memory to match the requirements of the workload.
+    More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of vCPUs and additional memory to match the requirements of the workload.
 
     {{site.data.alerts.callout_danger}}
     Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
     {{site.data.alerts.end}}
 
-- The ideal configuration is 4-16 CPUs, 8-64 GB memory nodes (2-4 GB of memory per CPU).
+- The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
 
-    To add more processing power (up to 16 CPUs), adding more CPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher CPU per node; higher CPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
-- For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 CPUs per node.
+- For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 vCPUs per node.
 
 #### Storage
 
@@ -79,7 +83,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) (enterprise-only).
 
-    {{site.data.alerts.callout_danger}}
+    {{site.data.alerts.callout_info}}
     {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
     {{site.data.alerts.end}}
 
@@ -93,7 +97,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
 
-    For example, Cockroach Labs has used `c5d.4xlarge` (16 CPU and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
+    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.
@@ -103,12 +107,12 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
     [Provisioned IOPS SSD-backed (`io1`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) need to have IOPS provisioned, which can be very expensive. Cheaper `gp2` volumes can be used instead, if your performance needs are less demanding. Allocating more disk space than you will use can improve performance of `gp2` volumes.
 
-- We recommend using 16 CPUs, 32-64 GiB memory each.
+- We recommend using 16 vCPUs, 32-64 GiB memory each.
 
 #### Azure
 
 - Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs.
-    For example, Cockroach Labs has used `Standard_L4s` VMs (4 CPUs and 32 GiB of RAM per VM) for internal testing.
+    For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on CPU resources. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
@@ -131,7 +135,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
     {{site.data.alerts.end}}
 
-- Use [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). Note that [the IOPS of SSD persistent disks depends both on the disk size and number of CPUs on the machine](https://cloud.google.com/compute/docs/disks/performance#optimizessdperformance).
+- Use [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). Note that [the IOPS of SSD persistent disks depends both on the disk size and number of vCPUs on the machine](https://cloud.google.com/compute/docs/disks/performance#optimizessdperformance).
 - `nobarrier` can be used with SSDs, but only if it has battery-backed write cache. Without one, data can be corrupted in the event of a crash.
 
     Cockroach Labs conducts most of our [internal performance tests](https://www.cockroachlabs.com/blog/2018_cloud_report/) using `nobarrier` to demonstrate the best possible performance, but understand that not all use cases can support this option.
@@ -236,6 +240,22 @@ $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 
 {{site.data.alerts.callout_danger}}
 Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
+{{site.data.alerts.end}}
+
+## Dependencies
+
+The [CockroachDB binary for Linux](install-cockroachdb-linux.html) depends on the following libraries:
+
+Library | Description
+-----------|------------
+[`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
+`libncurses` | Required by the [built-in SQL shell](use-the-built-in-sql-client.html).
+[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br>When running CockroachDB on a Windows machine, install the Go toolchain to ensure that location-based time zone names resolve successfully. For more details, see this [known limitation](known-limitations.html#location-based-time-zone-names-on-windows).
+
+These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date. For the `tzdata` library in particular, it's important for all nodes to have the same version; when updating the library, do so as quickly as possible across all nodes.
+
+{{site.data.alerts.callout_info}}
+In Docker-based deployments of CockroachDB, these dependencies do not need to be manually addressed. The Docker image for CockroachDB includes them and keeps them up to date with each release of CockroachDB.
 {{site.data.alerts.end}}
 
 ## File descriptors limit

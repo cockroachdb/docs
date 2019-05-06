@@ -34,25 +34,30 @@ release_info:
     build_time: 2018/12/10 14:48:26 (go1.10)
     start_time: 2018-12-10 15:10:52.34274101 +0000 UTC
   v2.1:
-    name: v2.1.5
-    version: v2.1.5
+    name: v2.1.6
+    version: v2.1.6
     docker_image: cockroachdb/cockroach
-    build_time: 2019/02/19 14:48:26 (go1.10.3)
-    start_time: 2019-02-19 15:10:52.34274101 +0000 UTC
-  v2.2:
-    name: v2.2
-    version: v2.2.0-alpha.20190211
-    docker_image: cockroachdb/cockroach-unstable
-    build_time: 2019/02/11 14:48:26 (go1.11)
-    start_time: 2018-02-11 15:10:52.34274101 +0000 UTC
+    build_time: 2019/03/11 14:48:26 (go1.10.3)
+    start_time: 2019-03-11 15:10:52.34274101 +0000 UTC
+  v19.1:
+    name: v19.1.0
+    version: v19.1.0
+    docker_image: cockroachdb/cockroach
+    build_time: 2019/04/30 14:48:26 (go1.11.6)
+    start_time: 2018-04-30 15:10:52.34274101 +0000 UTC
+  # v19.2:
+  #   name: v19.2.0
+  #   version: v19.2.0
+  #   docker_image: cockroachdb/cockroach-unstable
+  #   build_time: 2019/04/30 14:48:26 (go1.11.6)
+  #   start_time: 2018-04-30 15:10:52.34274101 +0000 UTC
 
 training:
-  ccl_license: crl-0-EIDA4OgGGAEiF0NvY2tyb2FjaCBMYWJzIFRyYWluaW5n
   aws_access_key: AKIAIXNAWDKXMDDNHRCA
   aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
 include: ["_redirects"]
-exclude: ["ci", "vendor", "v1.1/training/unused", "v2.0/training/unused", "v2.1/training/unused", "v2.2/training/unused", "hackathon.md"]
+exclude: ["ci", "vendor", "v1.1/training/unused", "v2.0/training/unused", "v2.1/training/unused", "v19.1/training/unused", "hackathon.md"]
 
 keep_files: [_internal]
 

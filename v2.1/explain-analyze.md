@@ -48,7 +48,7 @@ stall time | How long the processor spent not doing work. This is aggregated int
 stored side | The smaller table that was stored as an in-memory hash table.
 max memory used | How much memory (if any) is used to buffer rows.
 by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows.
-max disk used | How much disk (if any) is used to buffer rows. The router will spill to disk buffering if there is not enough memory to buffer the rows.
+max disk used | How much disk (if any) is used to buffer rows. Routers and processors will spill to disk buffering if there is not enough memory to buffer the rows.
 rows routed | How many rows were sent by routers, which can be used to understand network usage.
 bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication.
 Response | The response back to the client.

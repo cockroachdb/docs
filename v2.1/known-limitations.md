@@ -12,17 +12,11 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
-{% include v2.1/known-limitations/cdc.md %}
+{% include {{page.version.version}}/known-limitations/cdc.md %}
 
 ### Admin UI may become inaccessible for secure clusters
 
 Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
-
-### Setting `application_name` in the client parameters
-
-CockroachDB does not fully process the parameter `application_name` when passed through the connection string via the client driver. As a result, the statements issued by the clients are not properly attributed to that application name for the purpose of displaying statement statistics. The workaround is to set `application_name` using a [`SET`](https://www.cockroachlabs.com/docs/stable/set-vars.html) statement immediately after the SQL connection is established. This will be addressed in a 2.1.x release.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31766)
 
 ### `AS OF SYSTEM TIME` in `SELECT` statements
 
@@ -135,7 +129,25 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
+### Importing an interleaved table from a `cockroach dump` output
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
+
 ## Unresolved limitations
+
+### Location-based time zone names on Windows
+
+Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
+
+To work around this limitation, install the Go toolchain on the Windows machines running CockroachDB nodes. In this case, the CockroachDB nodes will use the timezone data from that toolchain.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
+
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
 ### Changes to the default replication zone are not applied to existing replication zones
 
@@ -195,15 +207,15 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 ### Available capacity metric in the Admin UI
 
-{% include v2.1/misc/available-capacity-metric.md %}
+{% include {{page.version.version}}/misc/available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
-{% include v2.1/misc/schema-changes-within-transactions.md %}
+{% include {{page.version.version}}/misc/schema-changes-within-transactions.md %}
 
 ### Schema changes between executions of prepared statements
 
-{% include v2.1/misc/schema-changes-between-prepared-statements.md %}
+{% include {{page.version.version}}/misc/schema-changes-between-prepared-statements.md %}
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 

@@ -125,7 +125,7 @@
         ]
       },
       {
-        "title": "Explore Features",
+        "title": "Explore Capabilities",
         "items": [
           {
             "title": "Data Replication",
@@ -173,12 +173,6 @@
             "title": "JSON Support",
             "urls": [
               "/${VERSION}/demo-json-support.html"
-            ]
-          },
-          {
-           "title": "Third-Party Database Tools",
-            "urls": [
-                "/${VERSION}/third-party-database-tools.html"
             ]
           }
         ]
@@ -468,12 +462,6 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
-          },
-          {
-            "title": "Diagnostics Reporting",
-            "urls": [
-              "/${VERSION}/diagnostics-reporting.html"
-            ]
           }
         ]
       },
@@ -560,6 +548,12 @@
             "title": "Client Connection Parameters",
             "urls": [
               "/${VERSION}/connection-parameters.html"
+            ]
+          },
+          {
+            "title": "SQL Best Practices",
+            "urls": [
+              "/${VERSION}/performance-best-practices-overview.html"
             ]
           },
           {
@@ -1306,6 +1300,12 @@
             "title": "SQL Syntax",
             "items": [
               {
+                "title": "Full SQL Grammar",
+                "urls": [
+                  "/${VERSION}/sql-grammar.html"
+                ]
+              },
+              {
                 "title": "Keywords & Identifiers",
                 "urls": [
                   "/${VERSION}/keywords-and-identifiers.html"
@@ -1388,12 +1388,6 @@
                 "urls": [
                   "/${VERSION}/null-handling.html"
                 ]
-              },
-              {
-                "title": "Full SQL Grammar",
-                "urls": [
-                  "/${VERSION}/sql-grammar.html"
-                ]
               }
             ]
           },
@@ -1418,12 +1412,6 @@
           {
             "title": "Performance Optimization",
             "items": [
-              {
-                "title": "SQL Best Practices",
-                "urls": [
-                  "/${VERSION}/performance-best-practices-overview.html"
-                ]
-              },
               {
                 "title": "Indexes",
                 "urls": [
@@ -1681,6 +1669,35 @@
             ]
           }
         ]
+      },
+      {
+        "title": "Third-Party Database Tools",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "DBeaver",
+            "urls": [
+              "/${VERSION}/dbeaver.html"
+            ]
+          },
+          {
+            "title": "IntelliJ IDEA",
+            "urls": [
+              "/${VERSION}/intellij-idea.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
+        ]
       }
     ]
   },
@@ -1731,6 +1748,12 @@
             "title": "Life of a Distributed Transaction",
             "urls": [
               "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+            ]
+          },
+          {
+            "title": "Reads and Writes Overview",
+            "urls": [
+              "/${VERSION}/architecture/reads-and-writes-overview.html"
             ]
           }
         ]

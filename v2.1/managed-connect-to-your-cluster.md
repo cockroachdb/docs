@@ -1,25 +1,85 @@
 ---
 title: Connect to Your Managed Cluster
-summary:
+summary: Learn how to connect and start interacting with your cluster.
 toc: true
 build_for: [managed]
 ---
 
-Once your Managed CockroachDB cluster is available and you've received your [connection details](managed-sign-up-for-a-cluster.html#connection-details), you can start interacting with your cluster using the CockroachDB SQL client or a Postgres-compatible driver or ORM.
+Once your Managed CockroachDB cluster is available and you've [set your  SQL username password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
 
 ## Before you begin
 
-1. On the machine from which you want to connect to the cluster, create a `certs` directory, and put the `ca.crt` file that you received from Cockroach Labs in the directory.
+1. On the machine from which you want to connect to the cluster, create a `certs` directory. The `ca.crt` file that you download later will go here.
 
     Any client connecting to the cluster will need access to the `ca.crt` file.
 
-2. If you haven't already, reach out to Cockroach Labs at [support.cockroachlabs.com](https://support.cockroachlabs.com) to whitelist the public IP address of the machine. Otherwise, connections from this machine will be rejected.
-
-3. If you're not using the "admin" user identified in the initial [confirmation email](managed-sign-up-for-a-cluster.html#confirmation-email) from Cockroach Labs, make sure you have a user and password to use in your connection string.
+2. Make sure you have a SQL user and password to use in your connection string.
 
     For details on creating additional users, see [User Management](managed-user-management.html).
 
-## Use the CockroachDB SQL client
+## Authorize your network
+
+Before you connect to your cluster, you need to authorize your network (i.e., whitelist the public IP address of the machine). Otherwise, connections from this machine will be rejected.
+
+Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
+
+1. Navigate to your cluster's [Networking](managed-networking-page.html) page.
+2. Click the **Add Network** button in the top right corner.
+
+    The **Add Network** modal displays.
+
+    <img src="{{ 'images/v2.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+
+3. Enter the public IP address of the machine in the **Network** field.
+
+    The IP address should be written in Classless Inter-Domain Routing (CIDR) notation. For example:
+
+    ~~~
+    192.168.15.161/32
+    ~~~
+
+    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+
+    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
+
+4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
+
+    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
+
+5. Click **Save**.
+
+Once you have authorized your network, [generate the cluster's connection string](#generate-the-connection-string), and connect to your cluster through [the CockroachDB SQL client](#use-the-cockroachdb-sql-client) or [by using a Postgres driver or ORM](#use-a-postgres-driver-or-orm).
+
+## Generate the connection string
+
+On the machine where you want to run your application:
+
+1. In the top right corner of the Console, click the **Connect** button.
+
+    The **Connect** modal displays.
+
+    <img src="{{ 'images/v2.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+
+3. Select you **User** from the dropdown to log into the cluster.
+
+4. Select a **Region** to connect to.
+5. Select a **Database** name to connect to.
+
+    The default database is `defaultdb`. For more information, see [`Default databases`](show-databases.html#default-databases).
+
+6. On the **Connect from Shell** tab, click **Copy connection string**.
+
+    This is how you will access the built-in SQL client later. You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
+
+7. Click the **Download ca.crt** button
+
+    Move the `ca.crt` file to the `certs` directory you previously created. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
+
+8. When you are done, close the modal and [connect to the cluster](#connect-to-the-cluster).
+
+## Connect to the cluster
+
+### Use the CockroachDB SQL client
 
 The CockroachDB binary comes with a built-in SQL client for executing SQL statements from an interactive shell or directly from the command line. The CockroachDB SQL client is the best tool for executing one-off queries and performing DDL and DML operations.
 
@@ -61,14 +121,14 @@ On the machine where you want to run the CockroachDB SQL client:
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}..linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
     ~~~
     </section>
 
-3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the connection string with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
+3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the connection string with the correct username, password, and path to the `ca.cert`:
 
     {{site.data.alerts.callout_info}}
-    For the hostname portion of your connection URL, use the "global hostname" you received in the initial confirmation email. This address will direct you to one of the regional load balancers for you cluster.
+    [Generate the connection string from the Console.](#generate-the-connection-string)
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
@@ -92,7 +152,7 @@ On the machine where you want to run the CockroachDB SQL client:
 For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](use-the-built-in-sql-client.html) documentation.
 {{site.data.alerts.end}}
 
-## Use a Postgres driver or ORM
+### Use a Postgres driver or ORM
 
 These steps show you how to connect simple Python test applications to your Managed CockroachDB cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
 
@@ -101,7 +161,7 @@ Start by choosing the Python driver or ORM:
 - [psycopg2 driver](#psycopg2-driver)
 - [SQLAlchemy ORM](#sqlalchemy-orm)
 
-### psycopg2 driver
+#### psycopg2 driver
 
 On the machine where you want to run your application:
 
@@ -116,7 +176,7 @@ On the machine where you want to run your application:
 
 2. Run code to execute basic SQL statements, creating a table, inserting some rows, and reading and printing the rows.
 
-    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
+    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#generate-the-connection-string) and the appropriate SQL user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
@@ -179,7 +239,7 @@ On the machine where you want to run your application:
 
 3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs and the appropriate user and password:
+    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#generate-the-connection-string) and the appropriate SQL user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
@@ -283,7 +343,7 @@ On the machine where you want to run your application:
         ['4', '350']
         ~~~
 
-### SQLAlchemy ORM
+#### SQLAlchemy ORM
 
 On the machine where you want to run your application:
 
@@ -304,7 +364,7 @@ On the machine where you want to run your application:
     The [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL. Using `postgres://` to connect to your cluster will not work.
     {{site.data.alerts.end}}
 
-    1. Create a `sqlalchemy-basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](managed-sign-up-for-a-cluster.html#connection-details) you received from Cockroach Labs:
+    1. Create a `sqlalchemy-basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#generate-the-connection-string):
 
         {% include copy-clipboard.html %}
         ~~~ python

@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-r", "--release_notes", required=True,
     help="release notes file from which to create docs issues")
 parser.add_argument("-m", "--milestone", required=True,
-    help="milestone to assign to docs issues, e.g., 2.2, 2.1.x, 2.1")
+    help="milestone to assign to docs issues, e.g., 19.2, 19.1, 2.1.x")
 
 args = parser.parse_args()
 
@@ -33,8 +33,10 @@ release_notes = args.release_notes
 milestone = args.milestone
 
 # Map milestones to their internal IDs.
-if milestone == "2.2":
-    milestone = 11
+if milestone == "19.2":
+    milestone = 14
+if milestone == "19.1":
+    milestone = 15
 if milestone == "2.1.x":
     milestone = 12
 if milestone == "2.1":
@@ -68,7 +70,7 @@ with open("../releases/" + release_notes) as file:
             try:
                 issue = {"title": title,
                          "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
-                         "labels": ["O-release-note", "ready"],
+                         "labels": ["C-release-note"],
                          "milestone": milestone}
                 url = "https://api.github.com/repos/cockroachdb/docs/issues"
                 access_token = os.getenv("GITHUB_ACCESS_TOKEN")

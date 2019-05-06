@@ -22,9 +22,38 @@
         ]
       },
       {
-        "title": "Use the Admin UI",
-        "urls": [
-          "/${VERSION}/managed-use-the-admin-ui.html"
+        "title": "Use the Console",
+        "items": [
+          {
+            "title": "Clusters Page",
+            "urls": [
+              "/${VERSION}/managed-clusters-page.html"
+            ]
+          },
+          {
+            "title": "Overview Page",
+            "urls": [
+              "/${VERSION}/managed-cluster-overview.html"
+            ]
+          },
+          {
+            "title": "SQL Users Page",
+            "urls": [
+              "/${VERSION}/managed-sql-users-page.html"
+            ]
+          },
+          {
+            "title": "Networking Page",
+            "urls": [
+              "/${VERSION}/managed-networking-page.html"
+            ]
+          },
+          {
+            "title": "Monitoring Page",
+            "urls": [
+              "/${VERSION}/managed-monitoring-page.html"
+            ]
+          }
         ]
       },
       {

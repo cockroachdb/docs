@@ -1,0 +1,149 @@
+[
+  {
+    "title": "Get Started",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Sign Up for the Service",
+        "urls": [
+          "/${VERSION}/managed-sign-up-for-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Connect to Your Cluster",
+        "urls": [
+          "/${VERSION}/managed-connect-to-your-cluster.html"
+        ]
+      },
+      {
+        "title": "Learn CockroachDB SQL",
+        "urls": [
+          "/${VERSION}/learn-cockroachdb-sql.html"
+        ]
+      },
+      {
+        "title": "Use the Console",
+        "items": [
+          {
+            "title": "Clusters Page",
+            "urls": [
+              "/${VERSION}/managed-clusters-page.html"
+            ]
+          },
+          {
+            "title": "Overview Page",
+            "urls": [
+              "/${VERSION}/managed-cluster-overview.html"
+            ]
+          },
+          {
+            "title": "SQL Users Page",
+            "urls": [
+              "/${VERSION}/managed-sql-users-page.html"
+            ]
+          },
+          {
+            "title": "Networking Page",
+            "urls": [
+              "/${VERSION}/managed-networking-page.html"
+            ]
+          },
+          {
+            "title": "Monitoring Page",
+            "urls": [
+              "/${VERSION}/managed-monitoring-page.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "FAQs",
+        "urls": [
+          "/${VERSION}/managed-frequently-asked-questions.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Use Your Cluster",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Secure Your Cluster",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/managed-security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/managed-authentication.html"
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/managed-authorization.html"
+            ]
+          },
+          {
+            "title": "SQL Audit Logging",
+            "urls": [
+              "/${VERSION}/managed-sql-audit-logging.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Migrate Data",
+        "items": [
+          {
+            "title": "Migration Overview",
+            "urls": [
+              "/${VERSION}/migration-overview.html"
+            ]
+          },
+          {
+            "title": "Migrate from Postgres",
+            "urls": [
+              "/${VERSION}/migrate-from-postgres.html"
+            ]
+          },
+          {
+            "title": "Migrate from MySQL",
+            "urls": [
+              "/${VERSION}/migrate-from-mysql.html"
+            ]
+          },
+          {
+            "title": "Migrate from CSV",
+            "urls": [
+              "/${VERSION}/migrate-from-csv.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Tune Performance",
+        "urls": [
+          "/${VERSION}/performance-best-practices-overview.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Manage Your Account",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Cluster Management",
+        "urls": [
+          "/${VERSION}/managed-cluster-management.html"
+        ]
+      }
+    ]
+  }
+]

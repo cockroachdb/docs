@@ -3404,7 +3404,8 @@ h2:target:before,
 h3:target:before,
 h4:target:before,
 h5:target:before,
-h6:target:before {
+h6:target:before,
+td a:target:before {
   content: '';
   display: block;
   height: 155px;
@@ -3732,5 +3733,26 @@ a.accordion-toggle {
   width: 0px;
   /* remove scrollbar space */
   background: transparent; }
+
+/* Docs landing page */
+.landing-column-title {
+  font-family: 'Graphik-Semibold', sans-serif;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding-top: 15px;
+  padding-bottom: 10px; }
+
+.landing-column-content p {
+  line-height: 25px; }
+
+/* Use flexbox to keep columns at equal height */
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap; }
+
+.row.display-flex > [class*='col-'] {
+  display: flex;
+  flex-direction: column; }
 
 /*# sourceMappingURL=customstyles.css.map */

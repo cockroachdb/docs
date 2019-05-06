@@ -7,17 +7,18 @@ redirect_from: general-troubleshooting.html
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).
 
-Topic | Message
-------|--------
-Client connection | [`connection refused`](#connection-refused)
-Client connection | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)
-Transactions | [`retry transaction`](#retry-transaction)
-Node startup | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
-Node configuration | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
-Node configuration | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
-Replication | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
-Deadline exceeded | [`context deadline exceeded`](#context-deadline-exceeded)
-Ambiguous results | [`result is ambiguous`](#result-is-ambiguous)
+| Topic                                  | Message                                                                                                                                                                                                                                         |
+|----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     |
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  |
+| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   |
+| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) |
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  |
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   |
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   |
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       |
+| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   |
+| Time zone data                         | [`invalid value for parameter "TimeZone"`](#invalid-value-for-parameter-timezone)                                                                                                                                                               |
 
 ## connection refused
 
@@ -46,9 +47,35 @@ This message indicates that the cluster is using TLS encryption to protect netwo
 
 To resolve this issue, use the [`cockroach cert client-create`](create-security-certificates.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
-## retry transaction
+## restart transaction
 
-Messages with the error code `40001` and the string `retry transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+
+The sections below describe different types of transaction retry errors.  Your application's retry logic does not need to distinguish between these types of errors; they are listed here for reference.
+
+- [read within uncertainty interval](#read-within-uncertainty-interval)
+
+### read within uncertainty interval
+
+Uncertainty errors can occur when two transactions which start on different gateway nodes attempt to operate on the same data at close to the same time. The uncertainty comes from the fact that we can't tell which one started first - the clocks on the two gateway nodes may not be perfectly in sync.
+
+For example, if the clock on node A is ahead of the clock on node B, a transaction started on node A may be able to commit a write with a timestamp that is still in the "future" from the perspective of node B. A later transaction that starts on node B should be able to see the earlier write from node A, even if B's clock has not caught up to A. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node B's transaction retries, it will unambiguously occur after the transaction from node A.
+
+Note that as long as the [client-side retry protocol](transactions.html#client-side-intervention) is followed, a transaction that has restarted once is much less likely to hit another uncertainty error, and the [`--max-offset` option](start-a-node.html#flags) provides an upper limit on how long a transaction can continue to restart due to uncertainty.
+
+When errors like this occur, the application has the following options:
+
+- Prefer consistent historical reads using [AS OF SYSTEM TIME](as-of-system-time.html) to reduce contention.
+- Design the schema and queries to reduce contention. For information on how to avoid contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+- Be prepared to retry on uncertainty (and other) errors. For more information, see [Transaction retries](transactions.html#transaction-retries).
+
+{{site.data.alerts.callout_info}}
+Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
+{{site.data.alerts.end}}
+
+<!-- ### write too old -->
+
+<!-- ### async write failure -->
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 
@@ -169,6 +196,14 @@ idempotent. If your transaction is not idempotent, then you should
 decide whether to retry or not based on whether it would be better for
 your application to apply the transaction twice or return an error to
 the user.
+
+## invalid value for parameter "TimeZone"
+
+This error indicates that the machine running the CockroachDB node is missing the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`), which is required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers.
+
+To resolve this issue, install the `tzdata` library and keep it up-to-date. It's important for all nodes to have the same version, so when updating the library, do so as quickly as possible across all nodes.
+
+For details about other libraries the CockroachDB binary for Linux depends on, see [Dependencies](recommended-production-settings.html#dependencies).
 
 ## Something else?
 
