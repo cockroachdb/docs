@@ -19,7 +19,7 @@ While developing and testing your application, you may whitelist `0.0.0.0/0`, wh
 
 ## User authorization
 
-An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created using the Console is assigned to the `admin` role. An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ### Before you begin
 
@@ -84,7 +84,7 @@ For more details, see [Privileges](authorization.html#assign-privileges) and [`G
 
 ### Managing SQL users
 
-- To change a users password, use the [`ALTER USER`](alter-user.html) statement:
+- To change a user's password, use the [`ALTER USER`](alter-user.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
