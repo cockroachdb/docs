@@ -131,6 +131,11 @@ Role-based access control is an Enterprise feature available to all managed clus
 
 - To create a role, use the [`CREATE ROLE`](create-role.html) statement:
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE ROLE <role>;
+    ~~~
+
 - To grant privileges to a role, use the [`GRANT <privilege>`](grant.html) statement:
 
     {% include copy-clipboard.html %}
