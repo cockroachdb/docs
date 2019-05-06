@@ -1,5 +1,5 @@
 *~
-*.swp
+.*.swp
 .DS_Store
 generate/generate
 Railroad.jar
