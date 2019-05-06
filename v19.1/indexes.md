@@ -43,7 +43,7 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 
 ### Performance
 
-Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
+Indexes create a trade-off: they greatly improve the speed of queries, but may slightly slow down writes to an affected column (because new values have to be written for both the table _and_ the index).
 
 To maximize your indexes' performance, we recommend following a few [best practices](#best-practices).
 
