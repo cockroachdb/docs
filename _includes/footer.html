@@ -1,65 +1,133 @@
 <section class="footer">
-	{% if page.back_to_top == true %}
-		{% include back-to-top.html %}
-	{% endif %}
-	{% comment %}
-	{% unless page.drift == false %}
-		{% include help-widget.html %}
-  {% endunless %}
-	{% endcomment %}
-	<div class="container">
-		<div class="footer__flex-wrap">
-			<ul class="footer-nav">
-				<li class="header">Product<span class="blue-arrow blue-arrow--down"></span></li>
-				<ul class="footer-sub-nav">
-					<li><a href="https://www.cockroachlabs.com/product/managed/">Managed CockroachDB</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/sql/">Distributed SQL</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/cloud-neutral/">Cloud Neutral</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/scale/">Massive Scalability</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/availability/">High Availability</a></li>
-					<li><a href="https://www.cockroachlabs.com/product/geo-distributed/">Geo-Distributed</a></li>
-					<li><a href="https://www.cockroachlabs.com/pricing/">Licensing</a></li>
-				</ul>
-			</ul>
-			<ul class="footer-nav">
-				<li class="header">Resources<span class="blue-arrow blue-arrow--down"></span></li>
-				<ul class="footer-sub-nav">
-					<li><a href="https://www.cockroachlabs.com/docs/stable/">Docs</a></li>
-					<li><a href="https://www.cockroachlabs.com/guides/">Guides</a></li>
-					<li><a href="https://www.cockroachlabs.com/docs/stable/training/">Training</a></li>
-					<li><a href="https://www.cockroachlabs.com/community/tech-talks">Videos &amp; Webinars</a></li>
-					<li><a href="https://www.cockroachlabs.com/docs/stable/architecture/overview.html">Architecture Overview</a></li>
-				</ul>
-			</ul>
-			<ul class="footer-nav">
-				<li class="header">Support Channels<span class="blue-arrow blue-arrow--down"></span></li>
-				<ul class="footer-sub-nav">
-					<li><a href="https://github.com/cockroachdb/cockroach/" data-proofer-ignore>Github</a></li>
-					<li><a href="https://stackoverflow.com/questions/tagged/cockroachdb">Stack Overflow</a></li>
-					<li><a href="https://forum.cockroachlabs.com/">Forum</a></li>
-					<li><a href="https://gitter.im/cockroachdb/cockroach" class="ft-btn-facebook">Gitter</a></li>
-					<li><a href="https://www.cockroachlabs.com/contact/">Contact Us</a>
-				</ul>
-			</ul>
-		</div>
-		<div class="footer__right">
-			<ul class="footer-nav">
-				<li class="header">Company<span class="blue-arrow blue-arrow--down"></span></li>
-				<ul class="footer-sub-nav">
-					<li><a href="https://www.cockroachlabs.com/about/">About</a></li>
-					<li><a href="https://www.cockroachlabs.com/blog/">Blog</a>
-					<li><a href="https://www.cockroachlabs.com/careers/">Careers</a></li>
-					<li><a href="https://www.cockroachlabs.com/customers/">Customers</a></li>
-					<li><a href="https://www.cockroachlabs.com/community/events/">Events</a></li>
-					<li><a href="https://www.cockroachlabs.com/press/">News</a></li>
-					<li><a href="https://www.cockroachlabs.com/privacy/">Privacy</a></li>
-				</ul>
-			</ul>
-		</div>
-		<div class="copyright"><span class="year">&copy; {{ 'now' | date: "%Y" }} </span>Cockroach Labs </div>
-	</div>
+  {% if page.back_to_top == true %} {% include back-to-top.html %} {% endif %}
+  {% comment %} {% unless page.drift == false %} {% include help-widget.html %}
+  {% endunless %} {% endcomment %}
+  <div class="container">
+    <div class="footer__flex-wrap">
+      <ul class="footer-nav">
+        <li class="header">
+          Product<span class="blue-arrow blue-arrow--down"></span>
+        </li>
+        <ul class="footer-sub-nav">
+          <li>
+            <a href="https://www.cockroachlabs.com/product/managed/"
+              >Managed CockroachDB</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/product/sql/"
+              >Distributed SQL</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/product/cloud-neutral/"
+              >Cloud Neutral</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/product/scale/"
+              >Massive Scalability</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/product/availability/"
+              >High Availability</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/product/geo-distributed/"
+              >Geo-Distributed</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/pricing/">Licensing</a>
+          </li>
+        </ul>
+      </ul>
+      <ul class="footer-nav">
+        <li class="header">
+          Resources<span class="blue-arrow blue-arrow--down"></span>
+        </li>
+        <ul class="footer-sub-nav">
+          <li><a href="https://www.cockroachlabs.com/docs/stable/">Docs</a></li>
+          <li><a href="https://www.cockroachlabs.com/guides/">Guides</a></li>
+          <li>
+            <a href="https://www.cockroachlabs.com/docs/stable/training/"
+              >Training</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/community/tech-talks"
+              >Videos &amp; Webinars</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.cockroachlabs.com/docs/stable/architecture/overview.html"
+              >Architecture Overview</a
+            >
+          </li>
+        </ul>
+      </ul>
+      <ul class="footer-nav">
+        <li class="header">
+          Support Channels<span class="blue-arrow blue-arrow--down"></span>
+        </li>
+        <ul class="footer-sub-nav">
+          <li>
+            <a
+              href="https://github.com/cockroachdb/cockroach/"
+              data-proofer-ignore
+              >Github</a
+            >
+          </li>
+          <li>
+            <a href="https://stackoverflow.com/questions/tagged/cockroachdb"
+              >Stack Overflow</a
+            >
+          </li>
+          <li><a href="https://forum.cockroachlabs.com/">Forum</a></li>
+          <li>
+            <a
+              href="https://gitter.im/cockroachdb/cockroach"
+              class="ft-btn-facebook"
+              >Gitter</a
+            >
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/contact/">Contact Us</a>
+          </li>
+        </ul>
+      </ul>
+    </div>
+    <div class="footer__right">
+      <ul class="footer-nav">
+        <li class="header">
+          Company<span class="blue-arrow blue-arrow--down"></span>
+        </li>
+        <ul class="footer-sub-nav">
+          <li><a href="https://www.cockroachlabs.com/about/">About</a></li>
+          <li><a href="https://www.cockroachlabs.com/blog/">Blog</a></li>
+          <li><a href="https://www.cockroachlabs.com/careers/">Careers</a></li>
+          <li>
+            <a href="https://www.cockroachlabs.com/customers/">Customers</a>
+          </li>
+          <li>
+            <a href="https://www.cockroachlabs.com/community/events/">Events</a>
+          </li>
+          <li><a href="https://www.cockroachlabs.com/press/">News</a></li>
+          <li>
+            <a href="https://www.cockroachlabs.com/security/">Security</a>
+          </li>
+          <li><a href="https://www.cockroachlabs.com/privacy/">Privacy</a></li>
+        </ul>
+      </ul>
+    </div>
+    <div class="copyright">
+      <span class="year">&copy; 2018 </span>Cockroach Labs
+    </div>
+  </div>
 </section>
 
-{% if page.sidebar_data != "sidebar-data-training.json" %}
-	{% include newsletter-popout.html %}
-{% endif %}
+{% if page.sidebar_data != "sidebar-data-training.json" %} {% include
+newsletter-popout.html %} {% endif %}
