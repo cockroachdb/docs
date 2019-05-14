@@ -151,7 +151,7 @@
     certificatesigningrequest "default.client.root" approved
     ~~~
 
-7. Confirm that cluster initialization has completed successfully, with each pod showing `1/1` under `READY`:
+7. Confirm that cluster initialization has completed successfully, with the pods for nodes showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -159,10 +159,11 @@
     ~~~
 
     ~~~
-    NAME                       READY     STATUS    RESTARTS   AGE
-    my-release-cockroachdb-0   1/1       Running   0          8m
-    my-release-cockroachdb-1   1/1       Running   0          8m
-    my-release-cockroachdb-2   1/1       Running   0          8m
+    NAME                                READY     STATUS      RESTARTS   AGE
+    my-release-cockroachdb-0            1/1       Running     0          8m
+    my-release-cockroachdb-1            1/1       Running     0          8m
+    my-release-cockroachdb-2            1/1       Running     0          8m
+    my-release-cockroachdb-init-hxzsc   0/1       Completed   0          1h
     ~~~
 
 8. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:

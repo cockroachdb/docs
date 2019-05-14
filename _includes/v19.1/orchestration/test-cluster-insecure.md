@@ -3,16 +3,26 @@
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- sql --insecure --host=cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- sql \
+    --insecure \
+    --host=cockroachdb-public
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- sql --insecure --host=my-release-cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- sql \
+    --insecure \
+    --host=my-release-cockroachdb-public
     ~~~    
     </section>
 

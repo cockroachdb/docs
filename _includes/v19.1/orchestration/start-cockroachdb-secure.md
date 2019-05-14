@@ -6,7 +6,8 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
 
     ~~~
@@ -133,7 +134,8 @@ If you want to use a different certificate authority than the one Kubernetes use
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
+        $ kubectl create \
+        -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
         ~~~
 
         ~~~
