@@ -12,7 +12,7 @@ You can also use the [`cockroach user set`](create-and-manage-users.html) comman
 
 ## Considerations
 
-- Role names:
+- Usernames:
     - Are case-insensitive
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, or underscores
