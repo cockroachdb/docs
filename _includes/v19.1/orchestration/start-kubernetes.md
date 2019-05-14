@@ -46,7 +46,9 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org>
+    $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
+    --clusterrole=cluster-admin \
+    --user=<your.google.cloud.email@example.org>
     ~~~
 
     ~~~

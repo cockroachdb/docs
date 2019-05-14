@@ -5,7 +5,8 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
     ~~~
 
     ~~~
@@ -18,7 +19,10 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -26,12 +30,14 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     # All statements must be terminated by a semicolon.
     # To exit: CTRL + D.
     #
-    # Server version: CockroachDB CCL v1.1.2 (linux amd64, built 2017/11/02 19:32:03, go1.8.3) (same version as client)
-    # Cluster ID: 3292fe08-939f-4638-b8dd-848074611dba
+    # Client version: CockroachDB CCL v19.1.0 (x86_64-unknown-linux-gnu, built 2019/04/29 18:36:40, go1.11.6)
+    # Server version: CockroachDB CCL v19.1.0 (x86_64-unknown-linux-gnu, built 2019/04/29 18:36:40, go1.11.6)
+
+    # Cluster ID: 256a8705-e348-4e3a-ab12-e1aba96857e4
     #
     # Enter \? for a brief introduction.
     #
-    root@cockroachdb-public:26257/>
+    root@cockroachdb-public:26257/defaultdb>
     ~~~
 
 3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -57,11 +63,9 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~
 
     ~~~
+      id | balance
     +----+---------+
-    | id | balance |
-    +----+---------+
-    |  1 |  1000.5 |
-    +----+---------+
+       1 | 1000.50
     (1 row)
     ~~~
 
@@ -112,7 +116,10 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
     ~~~
 
     ~~~
@@ -120,12 +127,14 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     # All statements must be terminated by a semicolon.
     # To exit: CTRL + D.
     #
-    # Server version: CockroachDB CCL v1.1.2 (linux amd64, built 2017/11/02 19:32:03, go1.8.3) (same version as client)
-    # Cluster ID: 3292fe08-939f-4638-b8dd-848074611dba
+    # Client version: CockroachDB CCL v19.1.0 (x86_64-unknown-linux-gnu, built 2019/04/29 18:36:40, go1.11.6)
+    # Server version: CockroachDB CCL v19.1.0 (x86_64-unknown-linux-gnu, built 2019/04/29 18:36:40, go1.11.6)
+
+    # Cluster ID: 256a8705-e348-4e3a-ab12-e1aba96857e4
     #
     # Enter \? for a brief introduction.
     #
-    root@my-release-cockroachdb-public:26257/>
+    root@my-release-cockroachdb-public:26257/defaultdb>
     ~~~
 
 3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -151,11 +160,9 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~
 
     ~~~
+      id | balance
     +----+---------+
-    | id | balance |
-    +----+---------+
-    |  1 |  1000.5 |
-    +----+---------+
+       1 | 1000.50
     (1 row)
     ~~~
 

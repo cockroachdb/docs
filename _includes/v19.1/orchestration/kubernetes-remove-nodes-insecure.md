@@ -1,4 +1,4 @@
-To safely remove a node from your cluster, you must first decommission the node and only then adjust the `--replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+To safely remove a node from your cluster, you must first decommission the node and only then adjust the `Replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
 
 {{site.data.alerts.callout_danger}}
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
@@ -9,17 +9,22 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- node status --insecure --host=cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- node status \
+    --insecure \
+    --host=cockroachdb-public
     ~~~
 
     ~~~
       id |               address                                     | build  |            started_at            |            updated_at            | is_available | is_live
     +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
-       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
-       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
-       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
-       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
     (4 rows)
     ~~~
 
@@ -28,17 +33,22 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- node status --insecure --host=my-release-cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- node status \
+    --insecure \
+    --host=my-release-cockroachdb-public
     ~~~    
 
     ~~~
       id |                                     address                                     | build  |            started_at            |            updated_at            | is_available | is_live
     +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
-       1 | my-release-cockroachdb-0.my-release-cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
-       2 | my-release-cockroachdb-2.my-release-cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
-       3 | my-release-cockroachdb-1.my-release-cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
-       4 | my-release-cockroachdb-3.my-release-cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+       1 | my-release-cockroachdb-0.my-release-cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | my-release-cockroachdb-2.my-release-cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | my-release-cockroachdb-1.my-release-cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | my-release-cockroachdb-3.my-release-cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
     (4 rows)
     ~~~
     </section>
@@ -52,16 +62,26 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- node decommission <node ID> --insecure --host=cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- node decommission <node ID> \
+    --insecure \
+    --host=cockroachdb-public
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
-    -- node decommission <node ID> --insecure --host=my-release-cockroachdb-public
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:{{page.release_info.version}} \
+    --rm \
+    --restart=Never \
+    -- node decommission <node ID> \
+    --insecure \
+    --host=my-release-cockroachdb-public
     ~~~    
     </section>
 
@@ -85,7 +105,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.
     ~~~
 
-3. Once the node has been decommissioned, use the `kubectl scale` command to remove a pod from your StatefulSet:
+3. Once the node has been decommissioned, remove a pod from your StatefulSet:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -101,10 +121,10 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl scale statefulset my-release-cockroachdb --replicas=3
-    ~~~
-
-    ~~~
-    statefulset "my-release-cockroachdb" scaled
+    $ helm upgrade \
+    my-release \
+    stable/cockroachdb \
+    --set Replicas=3 \
+    --reuse-values
     ~~~
     </section>

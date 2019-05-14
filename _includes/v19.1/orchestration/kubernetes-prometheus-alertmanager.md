@@ -42,7 +42,8 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml
+    $ kubectl apply \
+    -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml
     ~~~
 
     ~~~
@@ -68,7 +69,8 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
+    $ kubectl apply \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
     ~~~
 
     ~~~
@@ -115,7 +117,8 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create secret generic alertmanager-cockroachdb --from-file=alertmanager.yaml=alertmanager-config.yaml
+    $ kubectl create secret generic alertmanager-cockroachdb \
+    --from-file=alertmanager.yaml=alertmanager-config.yaml
     ~~~
 
     ~~~
@@ -139,7 +142,8 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
+    $ kubectl apply \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
     ~~~
 
     ~~~
@@ -168,7 +172,8 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
+    $ kubectl apply \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
     ~~~
 
     ~~~

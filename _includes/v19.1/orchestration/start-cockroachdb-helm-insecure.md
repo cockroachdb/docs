@@ -64,7 +64,7 @@
     You can customize your deployment by passing [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
     {{site.data.alerts.end}}
 
-4. Confirm that three pods are `Running` successfully:
+4. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -72,10 +72,11 @@
     ~~~
 
     ~~~
-    NAME                       READY     STATUS    RESTARTS   AGE
-    my-release-cockroachdb-0   1/1       Running   0          48s
-    my-release-cockroachdb-1   1/1       Running   0          47s
-    my-release-cockroachdb-2   1/1       Running   0          47s
+    NAME                                READY     STATUS      RESTARTS   AGE
+    my-release-cockroachdb-0            1/1       Running     0          1m
+    my-release-cockroachdb-1            1/1       Running     0          1m
+    my-release-cockroachdb-2            1/1       Running     0          1m
+    my-release-cockroachdb-init-k6jcr   0/1       Completed   0          1m
     ~~~
 
 5. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
