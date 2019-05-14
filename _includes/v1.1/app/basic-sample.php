@@ -4,7 +4,8 @@ try {
     'maxroach', null, array(
       PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_EMULATE_PREPARES => true,
-  ));
+      PDO::ATTR_PERSISTENT => true
+    ));
 
   $dbh->exec('INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)');
 
