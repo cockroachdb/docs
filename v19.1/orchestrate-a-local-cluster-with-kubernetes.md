@@ -52,7 +52,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## Step 6. Add nodes
 
-1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
+1. Add a pod for another CockroachDB node:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -61,14 +61,18 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl scale statefulset my-release-cockroachdb --replicas=4
+    $ helm upgrade \
+    my-release \
+    stable/cockroachdb \
+    --set Replicas=4 \
+    --reuse-values
     ~~~
 
     ~~~
@@ -76,7 +80,34 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
     </section>
 
-2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
+2. Get the name of the `Pending` CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
+
+    ~~~
+    NAME                         AGE       REQUESTOR                                   CONDITION
+    default.client.root          8m        system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-0   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-1   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-2   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-3   2m        system:serviceaccount:default:cockroachdb   Pending
+    ~~~
+
+3. Approve the CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
+    ~~~
+
+4. Confirm that pod for the fourth node, `cockroachdb-3`, is `Running` successfully:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -85,12 +116,12 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
     <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
-    NAME                      READY     STATUS    RESTARTS   AGE
-    cockroachdb-0             1/1       Running   0          28m
-    cockroachdb-1             1/1       Running   0          27m
-    cockroachdb-2             1/1       Running   0          10m
-    cockroachdb-3             1/1       Running   0          5s
-    example-545f866f5-2gsrs   1/1       Running   0          25m
+    NAME                         READY     STATUS    RESTARTS   AGE
+    cockroachdb-0                1/1       Running   0          28m
+    cockroachdb-1                1/1       Running   0          27m
+    cockroachdb-2                1/1       Running   0          10m
+    cockroachdb-3                1/1       Running   0          5s
+    cockroachdb-client-secure    1/1       Running   0          25m
     ~~~
     </section>
 
