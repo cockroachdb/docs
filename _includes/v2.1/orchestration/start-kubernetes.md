@@ -16,14 +16,14 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters create cockroachdb
+    $ gcloud container clusters create cockroachdb --machine-type n1-standard-4
     ~~~
 
     ~~~
     Creating cluster cockroachdb...done.
     ~~~
 
-    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`.
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--machine-type` flag tells the node pool to use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
     The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
