@@ -134,9 +134,26 @@
             ]
           },
           {
-            "title": "Cluster Topology Patterns",
-            "urls": [
-              "/${VERSION}/cluster-topology-patterns.html"
+            "title": "Topology Patterns",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/topology-patterns.html"
+                ]
+              },
+              {
+                "title": "Single-Region Topologies",
+                "urls": [
+                  "/${VERSION}/single-region-topologies.html"
+                ]
+              },
+              {
+                "title": "Multi-Region Topologies",
+                "urls": [
+                  "/${VERSION}/multi-region-topologies.html"
+                ]
+              }
             ]
           },
           {
