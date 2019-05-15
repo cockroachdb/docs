@@ -1,3 +1,5 @@
+- Carefully review the [Production Checklist](recommended-production-settings.html) and recommended [Topology Patterns](topology-patterns.html).
+
 - You must have [SSH access]({{page.ssh-link}}) to each machine. This is necessary for distributing and starting CockroachDB binaries.
 
 - Your network configuration must allow TCP communication on the following ports:
