@@ -48,15 +48,15 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
     ~~~
 
     ~~~
-    serviceaccount "cockroachdb" created
-    role "cockroachdb" created
-    clusterrole "cockroachdb" created
-    rolebinding "cockroachdb" created
-    clusterrolebinding "cockroachdb" created
-    service "cockroachdb-public" created
-    service "cockroachdb" created
-    poddisruptionbudget "cockroachdb-budget" created
-    statefulset "cockroachdb" created
+    serviceaccount/cockroachdb created
+    role.rbac.authorization.k8s.io/cockroachdb created
+    clusterrole.rbac.authorization.k8s.io/cockroachdb created
+    rolebinding.rbac.authorization.k8s.io/cockroachdb created
+    clusterrolebinding.rbac.authorization.k8s.io/cockroachdb created
+    service/cockroachdb-public created
+    service/cockroachdb created
+    poddisruptionbudget.policy/cockroachdb-budget created
+    statefulset.apps/cockroachdb created
     ~~~
 
 2. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
@@ -69,11 +69,10 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        NAME                                                   AGE       REQUESTOR                               CONDITION
-        default.node.cockroachdb-0                             1m        system:serviceaccount:default:default   Pending
-        node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   4m        kubelet                                 Approved,Issued
-        node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   4m        kubelet                                 Approved,Issued
-        node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   5m        kubelet                                 Approved,Issued
+        NAME                         AGE       REQUESTOR                                   CONDITION
+        default.node.cockroachdb-0   24s       system:serviceaccount:default:cockroachdb   Pending
+        default.node.cockroachdb-1   23s       system:serviceaccount:default:cockroachdb   Pending
+        default.node.cockroachdb-2   23s       system:serviceaccount:default:cockroachdb   Pending
         ~~~
 
         If you do not see a `Pending` CSR, wait a minute and try again.
@@ -89,8 +88,8 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         Name:               default.node.cockroachdb-0
         Labels:             <none>
         Annotations:        <none>
-        CreationTimestamp:  Thu, 09 Nov 2017 13:39:37 -0500
-        Requesting User:    system:serviceaccount:default:default
+        CreationTimestamp:  Wed, 15 May 2019 17:11:34 -0400
+        Requesting User:    system:serviceaccount:default:cockroachdb
         Status:             Pending
         Subject:
           Common Name:    node
@@ -99,9 +98,10 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         Subject Alternative Names:
                  DNS Names:     localhost
                                 cockroachdb-0.cockroachdb.default.svc.cluster.local
+                                cockroachdb-0.cockroachdb
                                 cockroachdb-public
+                                cockroachdb-public.default.svc.cluster.local
                  IP Addresses:  127.0.0.1
-                                10.48.1.6
         Events:  <none>
         ~~~
 
@@ -113,7 +113,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        certificatesigningrequest "default.node.cockroachdb-0" approved
+        certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-0 approved
         ~~~
 
     4. Repeat steps 1-3 for the other 2 pods.
@@ -143,21 +143,22 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
-        pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
-        pvc-52fd3a39-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-1             27s
-        pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
+        NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                      STORAGECLASS   REASON    AGE
+        pvc-01ba3ca6-7756-11e9-b9fb-080027246063   100Gi      RWO            Delete           Bound     default/datadir-cockroachdb-0              standard                 13m
+        pvc-01ccc75a-7756-11e9-b9fb-080027246063   100Gi      RWO            Delete           Bound     default/datadir-cockroachdb-1              standard                 13m
+        pvc-01d111aa-7756-11e9-b9fb-080027246063   100Gi      RWO            Delete           Bound     default/datadir-cockroachdb-2              standard                 13m
         ~~~
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
+        $ kubectl create \
+        -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
         ~~~
 
         ~~~
-        job "cluster-init-secure" created
+        job.batch/cluster-init-secure created
         ~~~
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
@@ -168,7 +169,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        certificatesigningrequest "default.client.root" approved
+        certificatesigningrequest.certificates.k8s.io/default.client.root approved
         ~~~
 
     5. Confirm that cluster initialization has completed successfully. The job
@@ -191,10 +192,11 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        NAME            READY     STATUS    RESTARTS   AGE
-        cockroachdb-0   1/1       Running   0          3m
-        cockroachdb-1   1/1       Running   0          3m
-        cockroachdb-2   1/1       Running   0          3m
+        NAME                                READY     STATUS      RESTARTS   AGE
+        cluster-init-secure-fxdjl           0/1       Completed   0          53s
+        cockroachdb-0                       1/1       Running     0          15m
+        cockroachdb-1                       1/1       Running     0          15m
+        cockroachdb-2                       1/1       Running     0          15m
         ~~~
 
 {{site.data.alerts.callout_success}}
@@ -209,11 +211,12 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
     ~~~
 
     ~~~
-    pod "cockroachdb-client-secure" created
+    pod/cockroachdb-client-secure created
     ~~~
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
@@ -222,7 +225,10 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -230,12 +236,12 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     # All statements must be terminated by a semicolon.
     # To exit: CTRL + D.
     #
-    # Server version: CockroachDB CCL v1.1.2 (linux amd64, built 2017/11/02 19:32:03, go1.8.3) (same version as client)
-    # Cluster ID: 3292fe08-939f-4638-b8dd-848074611dba
+    # Server version: CockroachDB CCL v19.1.0 (x86_64-unknown-linux-gnu, built 2019/04/29 18:36:40, go1.11.6) (same version as client)
+    # Cluster ID: 7e1db24d-0f11-45d4-b472-bbd5f1fff858
     #
     # Enter \? for a brief introduction.
     #
-    root@cockroachdb-public:26257/>
+    root@cockroachdb-public:26257/defaultdb>
     ~~~
 
 3. Run some basic [CockroachDB SQL statements](../learn-cockroachdb-sql.html):
@@ -355,10 +361,37 @@ To see this in action:
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
 
-2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
+2. Get the name of the `Pending` CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get csr
+    ~~~
+
+    ~~~
+    NAME                         AGE       REQUESTOR                                   CONDITION
+    default.client.root          8m        system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-0   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-1   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-2   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
+    default.node.cockroachdb-3   2m        system:serviceaccount:default:cockroachdb   Pending
+    ~~~
+
+3. Approve the CSR for the new pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
+    ~~~
+
+4. Confirm that pod for the fourth node, `cockroachdb-3`, is `Running` successfully:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -366,12 +399,13 @@ To see this in action:
     ~~~
 
     ~~~
-    NAME                      READY     STATUS    RESTARTS   AGE
-    cockroachdb-0             1/1       Running   0          28m
-    cockroachdb-1             1/1       Running   0          27m
-    cockroachdb-2             1/1       Running   0          10m
-    cockroachdb-3             1/1       Running   0          5s
-    example-545f866f5-2gsrs   1/1       Running   0          25m
+    NAME                                READY     STATUS      RESTARTS   AGE
+    cluster-init-secure-fxdjl           0/1       Completed   0          13m
+    cockroachdb-0                       1/1       Running     1          28m
+    cockroachdb-1                       1/1       Running     1          28m
+    cockroachdb-2                       1/1       Running     0          8m
+    cockroachdb-3                       1/1       Running     0          7m
+    cockroachdb-client-secure           1/1       Running     0          12m
     ~~~
 
 ## Step 7. Remove nodes
@@ -386,16 +420,19 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node status \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
 
     ~~~
-      id |               address                                     | build  |            started_at            |            updated_at            | is_available | is_live
-    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
-       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
-       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
-       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
-       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v2.1.1 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+      id |                          address                          |  build  |            started_at            |            updated_at            | is_available | is_live
+    +----+-----------------------------------------------------------+---------+----------------------------------+----------------------------------+--------------+---------+
+       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v19.1.0 | 2019-05-15 21:37:09.875482+00:00 | 2019-05-15 21:40:41.467829+00:00 | true         | true
+       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v19.1.0 | 2019-05-15 21:31:50.21661+00:00  | 2019-05-15 21:40:41.308529+00:00 | true         | true
+       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v19.1.0 | 2019-05-15 21:37:09.746432+00:00 | 2019-05-15 21:40:41.336179+00:00 | true         | true
+       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v19.1.0 | 2019-05-15 21:37:34.962546+00:00 | 2019-05-15 21:40:44.08081+00:00  | true         | true
     (4 rows)
     ~~~
 
@@ -409,7 +446,10 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node decommission <node ID> --insecure --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node decommission <node ID> \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
 
     You'll then see the decommissioning status print to `stderr` as it changes:
@@ -440,7 +480,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
 
 ## Step 8. Clean up
@@ -449,12 +489,13 @@ In the next module, you'll start with a fresh, non-orchestrated cluster. Delete 
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+$ kubectl delete \
+-f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ kubectl delete job.batch/cluster-init
+$ kubectl delete job.batch/cluster-init-secure
 ~~~
 
 {% include copy-clipboard.html %}
