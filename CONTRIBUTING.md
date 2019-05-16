@@ -272,7 +272,7 @@ See [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md) for 
 
 Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
 
-1. From the root directory of your clone, :
+1. From the root directory of your clone:
 
     - To build the CockroachDB docs, run `make standard`.
 
