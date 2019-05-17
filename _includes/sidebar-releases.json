@@ -3,7 +3,13 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "v19.1.0",
+      "title": "v19.1.1",
+      "urls": [
+        "/releases/v19.1.1.html"
+      ]
+    },
+    {
+      "title": "v19.1",
       "urls": [
         "/releases/v19.1.0.html"
       ]
