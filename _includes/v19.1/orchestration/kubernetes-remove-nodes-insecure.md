@@ -56,7 +56,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](view-node-details.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
-    It's important to decommission the node with the highest number in its address because, when you reduce the `--replica` count, Kubernetes will remove the pod for that node.
+    It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
