@@ -222,7 +222,7 @@ Backups taken with the `BACKUP` statement are not encrypted even if Encryption a
 
 A workaround for the issue is to use a cloud storage provider that is configured to transparently encrypt your data (e.g., AWS S3 default encryption).
 
-### Encryption for touchpoints with other services:
+### Encryption for touchpoints with other services
 
 - S3 backup encryption
 - Encrypted comms with Kafka
