@@ -158,7 +158,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
     --background
     ~~~~
 
-## Step 1. Enable a trail enterprise license
+## Step 1. Enable a trial enterprise license
 
 The table partitioning feature requires an [enterprise license](https://www.cockroachlabs.com/get-cockroachdb/).
 
