@@ -114,7 +114,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 ### Store columns
 
-Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
+Storing a column improves the performance of queries that retrieve (but do not filter) its values.
 
 {% include copy-clipboard.html %}
 ~~~ sql
