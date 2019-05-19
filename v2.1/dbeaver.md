@@ -81,7 +81,7 @@ If you run into problems, please file an issue on the [DBeaver issue tracker](ht
 
 + [DBeaver documentation](https://dbeaver.io/docs/)
 + [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues)
-+ [Client connection paramters](connection-parameters.html)
++ [Client connection parameters](connection-parameters.html)
 + [Third-Party Database Tools](third-party-database-tools.html)
 + [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 
