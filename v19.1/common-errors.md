@@ -69,7 +69,7 @@ To understand how transactions work in CockroachDB, and why transaction retries 
 
 ### read within uncertainty interval
 
-Uncertainty errors can occur when two transactions which start on different gateway nodes attempt to operate on the same data at close to the same time. The uncertainty comes from the fact that we can't tell which one started first - the clocks on the two gateway nodes may not be perfectly in sync.
+Uncertainty errors can occur when two transactions which start on different gateway nodes attempt to operate on the same data at close to the same time. The uncertainty comes from the fact that we cannot tell which one started first - the clocks on the two gateway nodes may not be perfectly in sync.
 
 For example, if the clock on node A is ahead of the clock on node B, a transaction started on node A may be able to commit a write with a timestamp that is still in the "future" from the perspective of node B. A later transaction that starts on node B should be able to see the earlier write from node A, even if B's clock has not caught up to A. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node B's transaction retries, it will unambiguously occur after the transaction from node A.
 
