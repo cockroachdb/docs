@@ -4,22 +4,36 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 ## Setup
 
-1. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
+This section helps you set up the tools you'll need to write the docs and use CockroachDB.
 
-2. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations:
 
-3. CockroachDB uses [Jekyll](https://jekyllrb.com/docs/installation/) to transform Markdown and layout files into a complete, static HTML site. We also use [htmltest](https://github.com/cockroachdb/htmltest) to check the generated HTML for errors (broken internal and external links, missing images, etc.).
-
-    Install Jekyll, htmltest, and some other dependencies so you can view doc changes locally:
-
-    ``` shell
-    $ cd path/to/docs
-    $ make bootstrap
+    ```
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     ```
 
-3. Learn the essentials of our [Docs Structure](#docs-structure).
+2. Install Ruby, the language required by Jekyll, our website generator, and the latest version of Git, the source control tool we use:
 
-4. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
+    ```
+    brew update
+    ```
+
+    ```
+    brew install ruby git
+    ````
+
+3. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
+
+4. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork:
+
+5. Install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site:
+
+    ```
+    gem install jekyll bundler
+    ```
+6. Learn the essentials of our [Docs Structure](#docs-structure).
+
+7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
 
 ## Get Started
 
@@ -32,17 +46,37 @@ Once you're ready to contribute:
     $ git checkout -b "<your branch name>"
     ```
 
-3. Make your changes.
+2. Make your changes in the text editor of your choice (e.g., [Atom](https://atom.io/), [Sublime Text](https://www.sublimetext.com/)).
 
-    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v2.0 are in the `v2.0` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
+    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v19.1 are in the `v19.1` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
 
-4. [Build and test the docs locally](#build-and-test-the-docs-locally).
+3. Check the files you've changed:
 
-5. Commit your changes.
+    ```
+    git status
+    ```
 
-5. [Push your local branch to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
+4. Stage your changes for commit:
 
-6. Back in the CockroachDB docs repo, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
+    ```
+    git add <filename>
+    ```
+
+5. Commit your changes:
+
+    ```
+    git commit -m "<concise message describing changes>"
+    ```
+
+6. Use Jekyll to [build a version of the site locally](#build-and-test-the-docs-locally) so you can view your changes in a browser:
+
+    ```
+    make standard
+    ```
+
+7. [Push your local branch to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
+
+8. Back in your fork of the CockraochDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
 We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; do not worry about the Teamcity fail status.
 
@@ -64,6 +98,24 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
     ```
 
 3. Repeat the write, build, push, pull flow from the [Get Started](#get-started) section above.
+
+## Build and Test the Docs Locally
+
+Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
+
+1. From the root directory of your clone, :
+
+    - To build the CockroachDB docs, run `make standard`.
+
+    - To build the Managed CockroachDB docs, run `make managed`.
+
+2.  Point your browser to `http://127.0.0.1:4000/docs/` for CockroachDB docs or `http://127.0.0.1:40001` for Managed CockroachDB docs, and manually check your changes.
+
+    - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
+
+    - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser.
+
+    Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
 
 ## Docs Structure
 
@@ -267,23 +319,3 @@ This example shows some of the first section of the sidenav, `Get Started`:
 ## Style Guide
 
 See [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md) for more details.
-
-## Build and Test the Docs Locally
-
-Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
-
-1. From the root directory of your clone, :
-
-    - To build the CockroachDB docs, run `make standard`.
-
-    - To build the Managed CockroachDB docs, run `make managed`.
-
-2.  Point your browser to `http://127.0.0.1:4000/docs/` for CockroachDB docs or `http://127.0.0.1:40001` for Managed CockroachDB docs, and manually check your changes.
-
-    - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
-
-    - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser.
-
-    Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
-
-3.  To run automated tests against the Jekyll-generate HTML files to check for problems (broken links, missing alt texts for images, etc.), run `make test`.
