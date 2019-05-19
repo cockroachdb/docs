@@ -79,7 +79,7 @@ Punctuation rules:
 - Use periods at the end of list items if it is a sentence or completes a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 
-For more detail about how to format text, see [Componenets](#components).
+For more detail about how to format text, see [Components](#components).
 
 ## File conventions
 
