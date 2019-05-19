@@ -69,7 +69,7 @@ Start and initialize an insecure cluster like you did in previous modules.
     $ ./cockroach init --insecure --host=localhost:26257
     ~~~
 
-## Step 2. Perform a "Core" backup
+## Step 2. Perform a "core" backup
 
 1. Use the [`cockroach gen`](../generate-cockroachdb-resources.html) command to generate an example `startrek` database:
 
