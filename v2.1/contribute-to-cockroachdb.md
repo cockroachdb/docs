@@ -23,11 +23,11 @@ Below you’ll find steps for contributing to the codebase; we’ve broken these
 
 A project is likely to be **low complexity** if all the following conditions apply:
 
-- Users don’t need to change the way they use CockroachDB as a result.
-- Other CockroachDB contributors don’t need to change the way they work as a result.
+- Users do not need to change the way they use CockroachDB as a result.
+- Other CockroachDB contributors do not need to change the way they work as a result.
 - The architecture of the software or the project doesn’t change in a way that’s visible to more than a handful of developers.
 - The change doesn’t impact the cost model of CockroachDB (how much time and how much memory is used for common operations) in a way that's noticeable by users.
-- You can predict in advance that completing the change won’t cost you more than a week of work (provided this isn’t your very first contribution).
+- You can predict in advance that completing the change will not cost you more than a week of work (provided this isn’t your very first contribution).
 
 A project is likely **high complexity** if _any_ of the following conditions apply:
 
@@ -53,7 +53,7 @@ Before you start a project:
 
 ### Low-complexity projects
 
-These cover things like bug fixes and small enhancements that don’t involve any major architectural or design decisions. You should feel free to submit these for review as you come across them.
+These cover things like bug fixes and small enhancements that do not involve any major architectural or design decisions. You should feel free to submit these for review as you come across them.
 
 1. Find or create an issue.
 2. Write the fix, include the appropriate tests, and follow our [code review workflow](https://github.com/cockroachdb/cockroach/blob/master/CONTRIBUTING.md#code-review-workflow).
