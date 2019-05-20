@@ -46,7 +46,8 @@ standard-build: bootstrap
 
 .PHONY: standard
 standard: jekyll-action := serve --port 4000
-standard: standard-build
+standard: bootstrap
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml,$(extra-config)
 
 .PHONY: managed-build
 managed-build: bootstrap

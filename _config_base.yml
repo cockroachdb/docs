@@ -57,7 +57,11 @@ training:
   aws_secret_access_key: wVevB0LO5CDf5lxI9tpy%2FXuE0UZi%2Bmpahiwoa3YL
 
 include: ["_redirects"]
-exclude: ["ci", "vendor", "v1.1/training/unused", "v2.0/training/unused", "v2.1/training/unused", "v19.1/training/unused", "hackathon.md"]
+exclude:
+- "ci"
+- "scripts"
+- "vendor"
+- "hackathon.md"
 
 keep_files: [_internal]
 
