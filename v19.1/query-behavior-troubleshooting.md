@@ -62,7 +62,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 **Solution:**
 
--   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior.
+-   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to to distribute the table across multiple nodes.
 
 -   If the **SQL Connections** graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
@@ -70,7 +70,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 -   Check for [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
--   Use `UUID` instead of `SERIAL` to auto-generate unique IDs. See [UUID Best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
+-   If you have a monotonically increasing index column or Primary Key, then your index or Primary Key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 
 ## INSERT/UPDATE statements are slow
 
