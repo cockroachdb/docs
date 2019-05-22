@@ -37,6 +37,8 @@ if milestone == "19.2":
     milestone = 14
 if milestone == "19.1":
     milestone = 15
+if milestone == "19.1.x":
+    milestone = 16
 if milestone == "2.1.x":
     milestone = 12
 if milestone == "2.1":
