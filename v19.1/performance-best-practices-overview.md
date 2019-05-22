@@ -57,24 +57,121 @@ This happens because when data is interleaved, queries that work on the parent t
 
 ## Unique ID best practices
 
-A traditional approach for generating unique IDs is one of the following:
+The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
 
-- Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s.
-- Use the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs.
+1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
+2. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select.html)s, e.g. `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](change-data-capture.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB.
+The approaches described above are likely to create hotspots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance). Each approach has pros and cons, however:
 
-The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
+| Approach                                                                             | Pros                                             | Cons                                                                                    |
+|--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|
+| 1. [Use multi-column primary keys](#use-multi-column-primary-keys)                   | Potentially fastest, if done right               | Complex, requires up-front design and testing to ensure performance                     |
+| 2. [Use `UUID` to generate unique IDs](#use-uuid-to-generate-unique-ids)             | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries |
+| 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of transaction contention      |
 
-The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
+### Use multi-column primary keys
+
+A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-uuid-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
+
+- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hotspots.
+- A monotonically increasing column that is part of the primary key (and thus indexed) which is also useful in your queries.
+
+For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
+
+~~~ sql
+> CREATE TABLE posts (
+    username STRING,
+    post_timestamp TIMESTAMP,
+    post_id INT,
+    post_content STRING,
+    CONSTRAINT posts_pk PRIMARY KEY(username, post_timestamp)
+);
+~~~
+
+This would make the following query efficient.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM posts
+          WHERE username = 'alyssa'
+       ORDER BY post_timestamp DESC
+          LIMIT 10;
+~~~
+
+~~~
+  username |      post_timestamp       | post_id | post_content
++----------+---------------------------+---------+--------------+
+  alyssa   | 2019-07-31 18:01:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-30 10:22:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-30 09:12:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:48:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:47:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:46:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:43:00+00:00 |    ...  | ...
+  ...
+
+Time: 924µs
+~~~
+
+To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (VERBOSE)
+    SELECT * FROM posts
+            WHERE username = 'alyssa'
+         ORDER BY post_timestamp DESC
+            LIMIT 10;
+~~~
+
+~~~
+   tree   | field |          description          |          columns           |    ordering
++---------+-------+-------------------------------+----------------------------+-----------------+
+  revscan |       |                               | (username, post_timestamp) | -post_timestamp
+          | table | posts@posts_pk                |                            |
+          | spans | /"alyssa"-/"alyssa"/PrefixEnd |                            |
+          | limit | 10                            |                            |
+(4 rows)
+
+Time: 818µs
+~~~
+
+Note that the above query also follows the [indexing best practice](indexes.html#best-practices) of indexing all columns in the `WHERE` clause.
 
 ### Use `UUID` to generate unique IDs
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM t1;
+~~~
+
+~~~
++--------------------------------------+------+
+|                  id                  | name |
++--------------------------------------+------+
+| 60853a85-681d-4620-9677-946bbfdc8fbc | c    |
+| 77c9bc2e-76a5-4ebc-80c3-7ad3159466a1 | b    |
+| bd3a56e1-c75e-476c-b221-0da9d74d66eb | a    |
++--------------------------------------+------+
+(3 rows)
+~~~
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
-If something prevents you from using `UUID` to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) for improved performance.
+If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-uuid-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) as shown below for improved performance.
 
 #### Generate monotonically-increasing unique IDs
 
