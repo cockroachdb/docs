@@ -178,7 +178,7 @@ Implementing client-side retries requires using the following statements:
 For examples showing how to use these statements, see the following:
 
 - The [Syntax](#syntax) section of this page.
-- Many of our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials show code samples for issuing retries.  For an example showing how to implement the retry logic, see [the Java/JDBC tutorial](build-a-java-app-with-cockroachdb.html#transaction-example-with-retry-logic).
+- Many of our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials show code samples for issuing retries.  For an example showing how to implement the retry logic, see [the Java/JDBC tutorial](build-a-java-app-with-cockroachdb.html).
 
 ##### Client library support
 
@@ -270,5 +270,5 @@ For more information about the relationship between these levels, see [this pape
 - [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`SHOW`](show-vars.html)
-- [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html#transaction-example-with-retry-logic)
+- [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)

@@ -71,5 +71,5 @@ Applications using `SAVEPOINT` must also include functions to execute retries wi
 - [`ROLLBACK`](rollback-transaction.html)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
-- [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html#transaction-example-with-retry-logic)
+- [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
