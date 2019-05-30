@@ -72,7 +72,7 @@ All of the examples below assume you've already created a table `accounts`:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts(
-    id INT DEFAULT unique_rowid(),
+    id INT DEFAULT unique_rowid() PRIMARY KEY,
     balance DECIMAL
 );
 ~~~
@@ -90,11 +90,10 @@ All of the examples below assume you've already created a table `accounts`:
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 | 10000.5 |
-+----+---------+
+  id | balance
++----+----------+
+   1 | 10000.50
+(1 row)
 ~~~
 
 If you do not list column names, the statement will use the columns of the table in their declared order:
@@ -105,12 +104,10 @@ If you do not list column names, the statement will use the columns of the table
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| column_name | data_type | is_nullable | column_default | generation_expression | indices |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| id          | INT       |    true     | unique_rowid() |                       | {}      |
-| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | INT8      |    false    | unique_rowid() |                       | {primary} |   false
+  balance     | DECIMAL   |    true     | NULL           |                       | {}        |   false
 (2 rows)
 ~~~
 
@@ -125,17 +122,18 @@ If you do not list column names, the statement will use the columns of the table
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 20000.75 |
-+----+----------+
+   1 | 10000.50
+   2 | 20000.75
+(2 rows)
 ~~~
 
 ### Insert multiple rows into an existing table
 
-{{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching multiple rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). {{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -148,14 +146,13 @@ If you do not list column names, the statement will use the columns of the table
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 20000.75 |
-|  3 |  8100.73 |
-|  4 |  9400.10 |
-+----+----------+
+   1 | 10000.50
+   2 | 20000.75
+   3 |  8100.73
+   4 |  9400.10
+(4 rows)
 ~~~
 
 ### Insert multiple rows into a new table
@@ -166,22 +163,20 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMS FROM other_accounts;
-~~~
-
-~~~
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| column_name | data_type | is_nullable | column_default | generation_expression | indices |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| number      | INT       |    true     | NULL           |                       | {}      |
-| amount      | DECIMAL   |    true     | NULL           |                       | {}      |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-(2 rows)
+> CREATE TABLE other_accounts (
+    id INT DEFAULT unique_rowid() PRIMARY KEY,
+    balance DECIMAL
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+> INSERT INTO other_accounts (id, balance) VALUES (5, 350.10), (6, 150), (7, 200.10);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO accounts (id, balance) SELECT id, balance FROM other_accounts WHERE id > 4;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -190,17 +185,16 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 |  10000.5 |
-|  2 | 20000.75 |
-|  3 |  8100.73 |
-|  4 |   9400.1 |
-|  5 |    350.1 |
-|  6 |      150 |
-|  7 |    200.1 |
-+----+----------+
+   1 | 10000.50
+   2 | 20000.75
+   3 |  8100.73
+   4 |  9400.10
+   5 |   350.10
+   6 |      150
+   7 |   200.10
+(7 rows)
 ~~~
 
 ### Insert default values
@@ -221,12 +215,11 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 | NULL    |
-|  9 | NULL    |
-+----+---------+
+   8 | NULL
+   9 | NULL
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -240,20 +233,19 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ~~~
 
 ~~~
+          id         | balance
 +--------------------+----------+
-|         id         | balance  |
-+--------------------+----------+
-|                  1 |  10000.5 |
-|                  2 | 20000.75 |
-|                  3 |  8100.73 |
-|                  4 |   9400.1 |
-|                  5 |    350.1 |
-|                  6 |      150 |
-|                  7 |    200.1 |
-|                  8 | NULL     |
-|                  9 | NULL     |
-| 142933248649822209 | NULL     |
-+--------------------+----------+
+                   1 | 10000.50
+                   2 | 20000.75
+                   3 |  8100.73
+                   4 |  9400.10
+                   5 |   350.10
+                   6 |      150
+                   7 |   200.10
+                   8 | NULL
+                   9 | NULL
+  454320296521498625 | NULL
+(10 rows)
 ~~~
 
 ### Insert and return values
@@ -282,12 +274,10 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 ~~~
 
 ~~~
+          id
 +--------------------+
-|         id         |
-+--------------------+
-| 190018410823680001 |
-| 190018410823712769 |
-+--------------------+
+  454320445012049921
+  454320445012082689
 (2 rows)
 ~~~
 
@@ -529,13 +519,11 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 |  500.50 |
-+----+---------+
+   8 |  500.50
+(1 row)
 ~~~
-
 
 You can also update the row using an existing value:
 
@@ -553,11 +541,10 @@ You can also update the row using an existing value:
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 | 1001.00 |
-+----+---------+
+   8 | 1001.00
+(1 row)
 ~~~
 
 You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
@@ -577,11 +564,9 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 |     800 |
-+----+---------+
+   8 | 800.00
 (1 row)
 ~~~
 
@@ -595,11 +580,10 @@ In this example, we get an error from a uniqueness conflict:
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 |   500.5 |
-+----+---------+
+   8 | 1001.00
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -627,11 +611,10 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 |   500.5 |
-+----+---------+
+   8 | 1001.00
+(1 row)
 ~~~
 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
@@ -650,12 +633,11 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  8 |   500.5 |
-| 10 |     450 |
-+----+---------+
+   8 | 1001.00
+  10 |     450
+(2 rows)
 ~~~
 
 ### Import data containing duplicate rows using `ON CONFLICT` and `DISTINCT ON`
