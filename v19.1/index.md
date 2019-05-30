@@ -4,7 +4,7 @@ summary: CockroachDB user documentation.
 toc: true
 contribute: false
 build_for: [standard, managed]
-cta: true
+cta: false
 ---
 
 {% if site.managed %}
