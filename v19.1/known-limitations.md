@@ -6,12 +6,6 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
-## New limitations
-
-### Install on Mac via Homebrew
-
-{% include {{ page.version.version }}/known-limitations/homebrew.md %}
-
 ## Unresolved limitations
 
 ### Location-based time zone names on Windows
