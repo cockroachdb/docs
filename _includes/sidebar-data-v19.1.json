@@ -1928,6 +1928,12 @@
         ]
       },
       {
+        "title": "Licensing FAQs",
+        "urls": [
+          "/${VERSION}/licensing-faqs.html"
+        ]
+      },
+      {
         "title": "CockroachDB in Comparison",
         "urls": [
           "/${VERSION}/cockroachdb-in-comparison.html"
