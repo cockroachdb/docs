@@ -23,7 +23,7 @@ CockroachDB version | License | Converts to Apache 2.0
 
 ## How does the change to the BSL affect me as a CockroachDB user?
 
-It likely does not. As a CockroachDB user, you can freely use CockroachDB or embed it in your applications (irrespective of whether you ship those applications to customers or run them as a service). The only thing you cannot do is commercially offer CockroachDB as a service without buying a license.
+It likely does not. As a CockroachDB user, you can freely use CockroachDB or embed it in your applications (irrespective of whether you ship those applications to customers or run them as a service). The only thing you cannot do is offer CockroachDB as a service without buying a license.
 
 ## Is the date for conversion to Apache 2.0 license different for alphas, betas, and point releases compared to major releases?
 
@@ -77,4 +77,4 @@ You can fork any historical version of CockroachDB in your own project, as allow
 
 ## I work for a non-profit as a student or in academia and I would like to use CockroachDB. Do I need a license to access enterprise features?
 
-Cockroach Labs is willing to offer CockroachDB enterprise features free of charge to select non-profit organizations and non-commercial academic projects. To learn more, please contact us.
+Cockroach Labs is willing to offer CockroachDB enterprise features free of charge to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
