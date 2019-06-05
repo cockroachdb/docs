@@ -49,7 +49,7 @@ Yes, employees and contractors can use your internal CockroachDB instance as a s
 
 ## What constitutes hosting CockroachDB as a service?
 
-Hosting CockroachDB as a service means creating a commercial offering that allows third parties (other than your employees and contractors) to operate a database. Specifically, third parties cannot modify table schemas.
+Hosting CockroachDB as a service means creating an offering that allows third parties (other than your employees and contractors) to operate a database. Specifically, third parties cannot modify table schemas.
 
 ## What are the differences between the BSL for CockroachDB and MariaDB’s MaxScale?
 
@@ -62,3 +62,19 @@ MariaDB has not certified the BSL as complying to the [Open Source Definition](h
 ## Can Cockroach Labs change the license to prevent code under the BSL from becoming open source?
 
 No, once a release is published under the new license, all code under the BSL will become open source at the specified change date. A new release can have a new license, but published releases must adhere to the license terms.
+
+## I would like to reuse a single component from the CockroachDB project in my own software, which uses the AGPL or another open source license. Is this possible?
+
+The CockroachDB team is committed to support the open source community and willing to  consider extracting specific internal components that are generally useful as a separate project with its own license, for example APL. For more details, feel free to [contact us](https://support.cockroachlabs.com/hc/en-us).
+
+## Can I fork the CockroachDB project pre-BSL and create my own CockroachDB derivative with a different license?
+
+You can fork any historical version of CockroachDB in your own project, as allowed by the license available for that version, and modify it for your purpose. Note however that only the copyright holder (Cockroach Labs) can relicense the components that you forked from: your derivative will need to keep the original license at the time of the fork. Any component you copy from a BSL-licensed CockroachDB into your project will make the BSL apply to your project as well.
+
+## Are there additional dual-licensing options? Can Cockroach Labs issue a custom license for my use of CockroachDB?
+
+[Contact us](https://support.cockroachlabs.com/hc/en-us).
+
+## I work for a non-profit as a student or in academia and I would like to use CockroachDB. Do I need a license to access enterprise features?
+
+Cockroach Labs is willing to offer CockroachDB enterprise features free of charge to select non-profit organizations and non-commercial academic projects. To learn more, please contact us.
