@@ -28,7 +28,7 @@ Field | Description
 ------|------------
 `Build Tag` | The CockroachDB version.
 `Build Time` | The date and time when the binary was built.
-`Distribution` | The scope of the binary. If `CCL`, the binary contains open-source and enterprise functionality covered by the CockroachDB Community License. If `OSS`, the binary contains only open-source functionality.<br><br>To obtain a pure open-source binary, you must [build from source](install-cockroachdb.html) using the `make buildoss` command.
+`Distribution` | The scope of the binary. If `CCL`, the binary contains functionality covered by both the CockroachDB Community License (CCL) and the Business Source License (BSL). If `OSS`, the binary contains only functionality covered by the Apache 2.0 license. The v19.2 release converts to Apache 2.0 as of Oct 1, 2022, at which time you can use the `make buildoss` command to build a pure open-source binary. For more details about licensing, see the [Licensing FAQs](licensing-faqs.html).
 `Platform` | The platform that the binary can run on.
 `Go Version` | The version of Go in which the source code is written.
 `C Compiler` | The C compiler used to build the binary.

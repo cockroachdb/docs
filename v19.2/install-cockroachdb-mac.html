@@ -190,8 +190,6 @@ If you previously installed CockroachDB using a different method, you may need t
       {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make build</code></pre></div>
 
       <p>The build process can take 10+ minutes, so please be patient.</p>
-
-      {{site.data.alerts.callout_info}}The default binary contains core open-source functionality covered by the Apache License 2 (APL2) and enterprise functionality covered by the CockroachDB Community License (CCL). To build a pure open-source (APL2) version excluding enterprise functionality, use <code>make buildoss</code>. See this <a href="https://www.cockroachlabs.com/blog/how-were-building-a-business-to-last/">blog post</a> for more details.{{site.data.alerts.end}}
     </li>
     <li>
     <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html"><code>cockroach</code> commands</a> from any directory:</p>
