@@ -2,7 +2,7 @@
 <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
 <tbody>
 <tr><td><code>changefeed.experimental_poll_interval</code></td><td>duration</td><td><code>1s</code></td><td>polling interval for the prototype changefeed implementation (WARNING: may compromise cluster stability or correctness; do not edit without supervision)</td></tr>
-<tr><td><code>changefeed.push.enabled</code></td><td>boolean</td><td><code>true</code></td><td>if set, changed are pushed instead of pulled. This requires the kv.rangefeed.enabled setting. See https://www.cockroachlabs.com/docs/v19.1/change-data-capture.html#enable-rangefeeds-to-reduce-latency</td></tr>
+<tr><td><code>changefeed.push.enabled</code></td><td>boolean</td><td><code>true</code></td><td>if set, changed are pushed instead of pulled. This requires the kv.rangefeed.enabled setting. See https://www.cockroachlabs.com/docs/v19.2/change-data-capture.html#enable-rangefeeds-to-reduce-latency</td></tr>
 <tr><td><code>cloudstorage.gs.default.key</code></td><td>string</td><td><code></code></td><td>if set, JSON key to use during Google Cloud Storage operations</td></tr>
 <tr><td><code>cloudstorage.http.custom_ca</code></td><td>string</td><td><code></code></td><td>custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage</td></tr>
 <tr><td><code>cloudstorage.timeout</code></td><td>duration</td><td><code>10m0s</code></td><td>the timeout for import/export storage operations</td></tr>
@@ -25,13 +25,14 @@
 <tr><td><code>jobs.retention_time</code></td><td>duration</td><td><code>336h0m0s</code></td><td>the amount of time to retain records for completed jobs before</td></tr>
 <tr><td><code>kv.allocator.lease_rebalancing_aggressiveness</code></td><td>float</td><td><code>1</code></td><td>set greater than 1.0 to rebalance leases toward load more aggressively, or between 0 and 1.0 to be more conservative about rebalancing leases</td></tr>
 <tr><td><code>kv.allocator.load_based_lease_rebalancing.enabled</code></td><td>boolean</td><td><code>true</code></td><td>set to enable rebalancing of range leases based on load and latency</td></tr>
-<tr><td><code>kv.allocator.load_based_rebalancing</code></td><td>enumeration</td><td><code>2</code></td><td>whether to rebalance based on the distribution of QPS across stores [off = 0, leases = 1, leases and replicas = 2]</td></tr>
+<tr><td><code>kv.allocator.load_based_rebalancing</code></td><td>enumeration</td><td><code>leases and replicas</code></td><td>whether to rebalance based on the distribution of QPS across stores [off = 0, leases = 1, leases and replicas = 2]</td></tr>
 <tr><td><code>kv.allocator.qps_rebalance_threshold</code></td><td>float</td><td><code>0.25</code></td><td>minimum fraction away from the mean a store's QPS (such as queries per second) can be before it is considered overfull or underfull</td></tr>
 <tr><td><code>kv.allocator.range_rebalance_threshold</code></td><td>float</td><td><code>0.05</code></td><td>minimum fraction away from the mean a store's range count can be before it is considered overfull or underfull</td></tr>
+<tr><td><code>kv.bulk_io_write.addsstable_max_rate</code></td><td>float</td><td><code>1.7976931348623157E+308</code></td><td>maximum number of AddSSTable requests per second for a single store</td></tr>
 <tr><td><code>kv.bulk_io_write.concurrent_addsstable_requests</code></td><td>integer</td><td><code>1</code></td><td>number of AddSSTable requests a store will handle concurrently before queuing</td></tr>
 <tr><td><code>kv.bulk_io_write.concurrent_export_requests</code></td><td>integer</td><td><code>3</code></td><td>number of export requests a store will handle concurrently before queuing</td></tr>
 <tr><td><code>kv.bulk_io_write.concurrent_import_requests</code></td><td>integer</td><td><code>1</code></td><td>number of import requests a store will handle concurrently before queuing</td></tr>
-<tr><td><code>kv.bulk_io_write.max_rate</code></td><td>byte size</td><td><code>8.0 EiB</code></td><td>the rate limit (bytes/sec) to use for writes to disk on behalf of bulk io ops</td></tr>
+<tr><td><code>kv.bulk_io_write.max_rate</code></td><td>byte size</td><td><code>1.0 TiB</code></td><td>the rate limit (bytes/sec) to use for writes to disk on behalf of bulk io ops</td></tr>
 <tr><td><code>kv.bulk_sst.sync_size</code></td><td>byte size</td><td><code>2.0 MiB</code></td><td>threshold after which non-Rocks SST writes must fsync (0 disables)</td></tr>
 <tr><td><code>kv.closed_timestamp.close_fraction</code></td><td>float</td><td><code>0.2</code></td><td>fraction of closed timestamp target duration specifying how frequently the closed timestamp is advanced</td></tr>
 <tr><td><code>kv.closed_timestamp.follower_reads_enabled</code></td><td>boolean</td><td><code>true</code></td><td>allow (all) replicas to serve consistent historical reads based on closed timestamp information</td></tr>
@@ -42,6 +43,7 @@
 <tr><td><code>kv.raft_log.disable_synchronization_unsafe</code></td><td>boolean</td><td><code>false</code></td><td>set to true to disable synchronization on Raft log writes to persistent storage. Setting to true risks data loss or data corruption on server crashes. The setting is meant for internal testing only and SHOULD NOT be used in production.</td></tr>
 <tr><td><code>kv.range.backpressure_range_size_multiplier</code></td><td>float</td><td><code>2</code></td><td>multiple of range_max_bytes that a range is allowed to grow to without splitting before writes to that range are blocked, or 0 to disable</td></tr>
 <tr><td><code>kv.range_descriptor_cache.size</code></td><td>integer</td><td><code>1000000</code></td><td>maximum number of entries in the range descriptor and leaseholder caches</td></tr>
+<tr><td><code>kv.range_merge.manual_split.ttl</code></td><td>duration</td><td><code>0s</code></td><td>if nonzero, manual splits older than this duration will be considered for automatic range merging</td></tr>
 <tr><td><code>kv.range_merge.queue_enabled</code></td><td>boolean</td><td><code>true</code></td><td>whether the automatic merge queue is enabled</td></tr>
 <tr><td><code>kv.range_merge.queue_interval</code></td><td>duration</td><td><code>1s</code></td><td>how long the merge queue waits between processing replicas (WARNING: may compromise cluster stability or correctness; do not edit without supervision)</td></tr>
 <tr><td><code>kv.range_split.by_load_enabled</code></td><td>boolean</td><td><code>true</code></td><td>allow automatic splits of ranges based on where load is concentrated</td></tr>
@@ -52,14 +54,17 @@
 <tr><td><code>kv.snapshot_recovery.max_rate</code></td><td>byte size</td><td><code>8.0 MiB</code></td><td>the rate limit (bytes/sec) to use for recovery snapshots</td></tr>
 <tr><td><code>kv.transaction.max_intents_bytes</code></td><td>integer</td><td><code>262144</code></td><td>maximum number of bytes used to track write intents in transactions</td></tr>
 <tr><td><code>kv.transaction.max_refresh_spans_bytes</code></td><td>integer</td><td><code>256000</code></td><td>maximum number of bytes used to track refresh spans in serializable transactions</td></tr>
+<tr><td><code>kv.transaction.parallel_commits_enabled</code></td><td>boolean</td><td><code>true</code></td><td>if enabled, transactional commits will be parallelized with transactional writes</td></tr>
 <tr><td><code>kv.transaction.write_pipelining_enabled</code></td><td>boolean</td><td><code>true</code></td><td>if enabled, transactional writes are pipelined through Raft consensus</td></tr>
 <tr><td><code>kv.transaction.write_pipelining_max_batch_size</code></td><td>integer</td><td><code>128</code></td><td>if non-zero, defines that maximum size batch that will be pipelined through Raft consensus</td></tr>
 <tr><td><code>kv.transaction.write_pipelining_max_outstanding_size</code></td><td>byte size</td><td><code>256 KiB</code></td><td>maximum number of bytes used to track in-flight pipelined writes before disabling pipelining</td></tr>
+<tr><td><code>rocksdb.ingest_backpressure.l0_file_count_threshold</code></td><td>integer</td><td><code>20</code></td><td>number of L0 files after which to backpressure SST ingestions</td></tr>
+<tr><td><code>rocksdb.ingest_backpressure.max_delay</code></td><td>duration</td><td><code>5s</code></td><td>maximum amount of time to backpressure a single SST ingestion</td></tr>
+<tr><td><code>rocksdb.ingest_backpressure.pending_compaction_threshold</code></td><td>byte size</td><td><code>64 GiB</code></td><td>pending compaction estimate above which to backpressure SST ingestions</td></tr>
 <tr><td><code>rocksdb.min_wal_sync_interval</code></td><td>duration</td><td><code>0s</code></td><td>minimum duration between syncs of the RocksDB WAL</td></tr>
 <tr><td><code>schemachanger.backfiller.buffer_size</code></td><td>byte size</td><td><code>196 MiB</code></td><td>amount to buffer in memory during backfills</td></tr>
 <tr><td><code>schemachanger.backfiller.max_sst_size</code></td><td>byte size</td><td><code>16 MiB</code></td><td>target size for ingested files during backfills</td></tr>
-<tr><td><code>schemachanger.bulk_index_backfill.batch_size</code></td><td>integer</td><td><code>5000</code></td><td>number of rows to process at a time during bulk index backfill</td></tr>
-<tr><td><code>schemachanger.bulk_index_backfill.enabled</code></td><td>boolean</td><td><code>true</code></td><td>backfill indexes in bulk via addsstable</td></tr>
+<tr><td><code>schemachanger.bulk_index_backfill.batch_size</code></td><td>integer</td><td><code>50000</code></td><td>number of rows to process at a time during bulk index backfill</td></tr>
 <tr><td><code>schemachanger.lease.duration</code></td><td>duration</td><td><code>5m0s</code></td><td>the duration of a schema change lease</td></tr>
 <tr><td><code>schemachanger.lease.renew_fraction</code></td><td>float</td><td><code>0.5</code></td><td>the fraction of schemachanger.lease_duration remaining to trigger a renew of the lease</td></tr>
 <tr><td><code>server.clock.forward_jump_check_enabled</code></td><td>boolean</td><td><code>false</code></td><td>if enabled, forward clock jumps > max_offset/2 will cause a panic</td></tr>
@@ -71,7 +76,6 @@
 <tr><td><code>server.goroutine_dump.num_goroutines_threshold</code></td><td>integer</td><td><code>1000</code></td><td>a threshold beyond which if number of goroutines increases, then goroutine dump can be triggered</td></tr>
 <tr><td><code>server.goroutine_dump.total_dump_size_limit</code></td><td>byte size</td><td><code>500 MiB</code></td><td>total size of goroutine dumps to be kept. Dumps are GC'ed in the order of creation time. The latest dump is always kept even if its size exceeds the limit.</td></tr>
 <tr><td><code>server.heap_profile.max_profiles</code></td><td>integer</td><td><code>5</code></td><td>maximum number of profiles to be kept. Profiles with lower score are GC'ed, but latest profile is always kept.</td></tr>
-<tr><td><code>server.heap_profile.system_memory_threshold_fraction</code></td><td>float</td><td><code>0.85</code></td><td>fraction of system memory beyond which if Rss increases, then heap profile is triggered</td></tr>
 <tr><td><code>server.host_based_authentication.configuration</code></td><td>string</td><td><code></code></td><td>host-based authentication configuration to use during connection authentication</td></tr>
 <tr><td><code>server.rangelog.ttl</code></td><td>duration</td><td><code>720h0m0s</code></td><td>if nonzero, range log entries older than this duration are deleted every 10m0s. Should not be lowered below 24 hours.</td></tr>
 <tr><td><code>server.remote_debugging.mode</code></td><td>string</td><td><code>local</code></td><td>set to enable remote debugging, localhost-only or disable (any, local, off)</td></tr>
@@ -80,12 +84,12 @@
 <tr><td><code>server.time_until_store_dead</code></td><td>duration</td><td><code>5m0s</code></td><td>the time after which if there is no new gossiped information about a store, it is considered dead</td></tr>
 <tr><td><code>server.web_session_timeout</code></td><td>duration</td><td><code>168h0m0s</code></td><td>the duration that a newly created web session will be valid</td></tr>
 <tr><td><code>sql.defaults.default_int_size</code></td><td>integer</td><td><code>8</code></td><td>the size, in bytes, of an INT type</td></tr>
-<tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>1</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2]</td></tr>
-<tr><td><code>sql.defaults.experimental_vectorize</code></td><td>enumeration</td><td><code>0</code></td><td>default experimental_vectorize mode [off = 0, on = 1, always = 2]</td></tr>
-<tr><td><code>sql.defaults.optimizer</code></td><td>enumeration</td><td><code>1</code></td><td>default cost-based optimizer mode [off = 0, on = 1, local = 2]</td></tr>
+<tr><td><code>sql.defaults.distsql</code></td><td>enumeration</td><td><code>auto</code></td><td>default distributed SQL execution mode [off = 0, auto = 1, on = 2]</td></tr>
+<tr><td><code>sql.defaults.experimental_vectorize</code></td><td>enumeration</td><td><code>off</code></td><td>default experimental_vectorize mode [off = 0, on = 1, always = 2]</td></tr>
+<tr><td><code>sql.defaults.optimizer</code></td><td>enumeration</td><td><code>on</code></td><td>default cost-based optimizer mode [off = 0, on = 1, local = 2]</td></tr>
 <tr><td><code>sql.defaults.reorder_joins_limit</code></td><td>integer</td><td><code>4</code></td><td>default number of joins to reorder</td></tr>
 <tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can be overridden on an individual connection with the 'results_buffer_size' parameter. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
-<tr><td><code>sql.defaults.serial_normalization</code></td><td>enumeration</td><td><code>0</code></td><td>default handling of SERIAL in table definitions [rowid = 0, virtual_sequence = 1, sql_sequence = 2]</td></tr>
+<tr><td><code>sql.defaults.serial_normalization</code></td><td>enumeration</td><td><code>rowid</code></td><td>default handling of SERIAL in table definitions [rowid = 0, virtual_sequence = 1, sql_sequence = 2]</td></tr>
 <tr><td><code>sql.distsql.distribute_index_joins</code></td><td>boolean</td><td><code>true</code></td><td>if set, for index joins we instantiate a join reader on every node that has a stream; if not set, we use a single join reader</td></tr>
 <tr><td><code>sql.distsql.flow_stream_timeout</code></td><td>duration</td><td><code>10s</code></td><td>amount of time incoming streams wait for a flow to be set up before erroring out</td></tr>
 <tr><td><code>sql.distsql.interleaved_joins.enabled</code></td><td>boolean</td><td><code>true</code></td><td>if set we plan interleaved table joins instead of merge joins when possible</td></tr>
@@ -105,6 +109,7 @@
 <tr><td><code>sql.stats.automatic_collection.fraction_stale_rows</code></td><td>float</td><td><code>0.2</code></td><td>target fraction of stale rows per table that will trigger a statistics refresh</td></tr>
 <tr><td><code>sql.stats.automatic_collection.max_fraction_idle</code></td><td>float</td><td><code>0.9</code></td><td>maximum fraction of time that automatic statistics sampler processors are idle</td></tr>
 <tr><td><code>sql.stats.automatic_collection.min_stale_rows</code></td><td>integer</td><td><code>500</code></td><td>target minimum number of stale rows per table that will trigger a statistics refresh</td></tr>
+<tr><td><code>sql.stats.max_timestamp_age</code></td><td>duration</td><td><code>5m0s</code></td><td>maximum age of timestamp during table statistics collection</td></tr>
 <tr><td><code>sql.stats.post_events.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, an event is shown for every CREATE STATISTICS job</td></tr>
 <tr><td><code>sql.tablecache.lease.refresh_limit</code></td><td>integer</td><td><code>50</code></td><td>maximum number of tables to periodically refresh leases for</td></tr>
 <tr><td><code>sql.trace.log_statement_execute</code></td><td>boolean</td><td><code>false</code></td><td>set to true to enable logging of executed statements</td></tr>
@@ -116,6 +121,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>19.1</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>19.1-4</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
 </tbody>
 </table>
