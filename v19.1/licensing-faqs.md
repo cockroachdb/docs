@@ -75,6 +75,6 @@ You can fork any historical version of CockroachDB in your own project, as allow
 
 [Contact us](https://support.cockroachlabs.com/hc/en-us).
 
-## I work for a non-profit as a student or in academia and I would like to use CockroachDB. Do I need a license to access enterprise features?
+## I work for a non-profit, as a student, or in academia, and I would like to use CockroachDB. Do I need a license to access enterprise features?
 
 Cockroach Labs is willing to offer CockroachDB enterprise features free of charge to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
