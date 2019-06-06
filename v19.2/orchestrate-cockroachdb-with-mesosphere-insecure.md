@@ -313,7 +313,7 @@ To view logs for a given node:
 
 ### Backup and restore
 
-The `cockroachdb` DC/OS service provides an easy way use CockroachDB's open source [`cockroach dump`](sql-dump.html) command to back up data on a per-database basis to an S3 bucket and to restore data from such a backup. Note that using datastores other than S3 is not yet supported.
+The `cockroachdb` DC/OS service provides an easy way use CockroachDB's [`cockroach dump`](sql-dump.html) command to back up data on a per-database basis to an S3 bucket and to restore data from such a backup. Note that using datastores other than S3 is not yet supported.
 
 {{site.data.alerts.callout_success}}If you need to back up to/restore from datasources other than S3, or you have a very large database and need <a href="backup.html">faster backups</a>, <a href="backup.html#incremental-backups">incremental backups</a>, or a <a href="restore.html">faster, distributed restore process</a>, consider contacting Cockroach Labs about an <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a>.{{site.data.alerts.end}}
 

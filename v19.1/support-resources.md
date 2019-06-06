@@ -12,4 +12,4 @@ If you're having an issue with CockroachDB, you can reach out for support from C
 - [Gitter](https://gitter.im/cockroachdb/cockroach)
 - [File a GitHub issue](file-an-issue.html)
 
-Because CockroachDB is open source, we also rely on contributions from users like you. If you know how to help users who might be struggling with a problem, we hope you will!
+We also rely on contributions from users like you. If you know how to help users who might be struggling with a problem, we hope you will!

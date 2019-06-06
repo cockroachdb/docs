@@ -4,7 +4,7 @@ summary: Contribute to the improvement and expansion of CockroachDB documentatio
 toc: false
 ---
 
-The CockroachDB docs are open source just like the database itself. We welcome your contributions!
+The CockroachDB docs are open source. We welcome your contributions!
 
 ## Write docs
 
@@ -17,4 +17,3 @@ Find an issue with the [help-wanted](https://github.com/cockroachdb/docs/issues?
 See an error? Need additional details or clarification? Want a topic added to the docs?
 
 Select **Contribute > Report Doc Issue** or **Contribute > Suggest New Content** toward the top of the page, or [open an issue](https://github.com/cockroachdb/docs/issues/new?labels=community) directly.
-
