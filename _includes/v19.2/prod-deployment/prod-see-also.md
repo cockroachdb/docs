@@ -1,0 +1,8 @@
+- [Production Checklist](recommended-production-settings.html)
+- [Manual Deployment](manual-deployment.html)
+- [Orchestrated Deployment](orchestration.html)
+- [Monitoring and Alerting](monitoring-and-alerting.html)
+- [Performance Benchmarking](performance-benchmarking-with-tpc-c.html)
+- [Performance Tuning](performance-tuning.html)
+- [Test Deployment](deploy-a-test-cluster.html)
+- [Local Deployment](start-a-local-cluster.html)
