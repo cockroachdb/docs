@@ -125,6 +125,65 @@
         ]
       },
       {
+        "title": "Evaluate",
+        "items": [
+          {
+            "title": "Geo-Partitioning",
+            "urls": [
+              "/${VERSION}/demo-geo-partitioning.html"
+            ]
+          },
+          {
+            "title": "Data Replication",
+            "urls": [
+              "/${VERSION}/demo-data-replication.html"
+            ]
+          },
+          {
+            "title": "Fault Tolerance & Recovery",
+            "urls": [
+              "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+            ]
+          },
+          {
+            "title": "Automatic Rebalancing",
+            "urls": [
+              "/${VERSION}/demo-automatic-rebalancing.html"
+            ]
+          },
+          {
+            "title": "Serializable Transactions",
+            "urls": [
+              "/${VERSION}/demo-serializable.html"
+            ]
+          },
+          {
+            "title": "Cross-Cloud Migration",
+            "urls": [
+              "/${VERSION}/demo-automatic-cloud-migration.html"
+            ]
+          },
+          {
+            "title": "Follow-the-Workload",
+            "urls": [
+              "/${VERSION}/demo-follow-the-workload.html"
+            ]
+          },
+          {
+            "title": "Orchestration with Kubernetes",
+            "urls": [
+              "/${VERSION}/orchestration-with-kubernetes.html"
+            ]
+          },
+          {
+            "title": "JSON Support",
+            "urls": [
+              "/${VERSION}/demo-json-support.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Deploy",
         "items": [
           {
@@ -464,83 +523,6 @@
               "/${VERSION}/file-an-issue.html"
             ]
           }
-        ]
-      },
-      {
-        "title": "Contribute",
-        "items": [
-          {
-            "title": "Contribute to CockroachDB",
-            "urls": [
-              "/${VERSION}/contribute-to-cockroachdb.html"
-            ]
-          },
-          {
-            "title": "Improve the Docs",
-            "urls": [
-              "/${VERSION}/improve-the-docs.html"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Tutorials",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "Geo-Partitioning",
-        "urls": [
-          "/${VERSION}/demo-geo-partitioning.html"
-        ]
-      },
-      {
-        "title": "Data Replication",
-        "urls": [
-          "/${VERSION}/demo-data-replication.html"
-        ]
-      },
-      {
-        "title": "Fault Tolerance & Recovery",
-        "urls": [
-          "/${VERSION}/demo-fault-tolerance-and-recovery.html"
-        ]
-      },
-      {
-        "title": "Automatic Rebalancing",
-        "urls": [
-          "/${VERSION}/demo-automatic-rebalancing.html"
-        ]
-      },
-      {
-        "title": "Serializable Transactions",
-        "urls": [
-          "/${VERSION}/demo-serializable.html"
-        ]
-      },
-      {
-        "title": "Cross-Cloud Migration",
-        "urls": [
-          "/${VERSION}/demo-automatic-cloud-migration.html"
-        ]
-      },
-      {
-        "title": "Follow-the-Workload",
-        "urls": [
-          "/${VERSION}/demo-follow-the-workload.html"
-        ]
-      },
-      {
-        "title": "Orchestration with Kubernetes",
-        "urls": [
-          "/${VERSION}/orchestration-with-kubernetes.html"
-        ]
-      },
-      {
-        "title": "JSON Support",
-        "urls": [
-          "/${VERSION}/demo-json-support.html"
         ]
       }
     ]

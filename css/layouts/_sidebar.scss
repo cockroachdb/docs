@@ -15,6 +15,12 @@
   li {
     &.tier-1 {
       margin-top: 5px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    &.tier-1 > ul {
+      display: block !important;
     }
 
     &:not(.tier-1) {
@@ -35,7 +41,7 @@
     }
 
     .nav-expand {
-      content: url(../images/nav-expand.svg);
+      // content: url(../images/nav-expand.svg);
       float: right;
       height: 8px;
       margin-top: 8px;

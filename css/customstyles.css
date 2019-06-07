@@ -398,7 +398,11 @@ header {
       border-bottom: unset;
       background: transparent; } }
   #sidebar li.tier-1 {
-    margin-top: 5px; }
+    margin-top: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px; }
+  #sidebar li.tier-1 > ul {
+    display: block !important; }
   #sidebar li:not(.tier-1) {
     margin-top: 0;
     text-transform: none;
@@ -410,7 +414,6 @@ header {
   #sidebar li .arrow-down {
     margin-right: 10px; }
   #sidebar li .nav-expand {
-    content: url(../images/nav-expand.svg);
     float: right;
     height: 8px;
     margin-top: 8px;
