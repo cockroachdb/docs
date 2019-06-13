@@ -9,7 +9,7 @@ toc: true
 
 CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
 
-CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and it's completely [open source](https://github.com/cockroachdb/cockroach).
+CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and the [source code](https://github.com/cockroachdb/cockroach) is freely available.
 
 ## When is CockroachDB a good choice?
 
@@ -97,7 +97,7 @@ Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID sema
 
 ## Since CockroachDB is inspired by Spanner, does it require atomic clocks to synchronize time?
 
-No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s an open source database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
+No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s a database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
 For more details on how CockroachDB handles unsychronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
 

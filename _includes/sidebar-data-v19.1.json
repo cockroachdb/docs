@@ -1890,12 +1890,6 @@
             ]
           },
           {
-            "title": "Open Source",
-            "urls": [
-              "/${VERSION}/open-source.html"
-            ]
-          },
-          {
             "title": "Go Implementation",
             "urls": [
               "/${VERSION}/go-implementation.html"

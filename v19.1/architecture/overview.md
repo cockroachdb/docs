@@ -6,7 +6,7 @@ key: cockroachdb-architecture.html
 redirect_from: index.html
 ---
 
-CockroachDB was designed to create the open-source database our developers would want to use: one that is both scalable and consistent. Developers often have questions about how we've achieved this, and this guide sets out to detail the inner-workings of the `cockroach` process as a means of explanation.
+CockroachDB was designed to create the source-available database our developers would want to use: one that is both scalable and consistent. Developers often have questions about how we've achieved this, and this guide sets out to detail the inner-workings of the `cockroach` process as a means of explanation.
 
 However, you definitely do not need to understand the underlying architecture to use CockroachDB. These pages give serious users and database enthusiasts a high-level framework to explain what's happening under the hood.
 
