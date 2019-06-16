@@ -111,6 +111,29 @@
     ]
   },
   {
+    "title": "Tutorials",
+    "items": [
+      {
+        "title": "Build a Python App",
+        "urls": [
+          "/${VERSION}/managed-build-a-python-app.html"
+        ]
+      },
+      {
+        "title": "Dockerize your application",
+        "urls": [
+          "/${VERSION}/managed-dockerize-your-app.html"
+        ]
+      },
+      {
+        "title": "Orchestrate an application using Kubernetes",
+        "urls": [
+          "/${VERSION}/managed-orchestrate-an-app-using-kubernetes.html"
+        ]
+      }
+    ]
+  },
+  {
     "title": "FAQs",
     "urls": [
       "/${VERSION}/managed-frequently-asked-questions.html"
