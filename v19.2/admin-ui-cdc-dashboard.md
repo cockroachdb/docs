@@ -18,7 +18,7 @@ The **Changefeeds** dashboard displays the following time series graphs:
 - In the cluster view, the graph shows the maximum latency for resolved timestamps of any running changefeed across all nodes.
 
 {{site.data.alerts.callout_info}}
-The maximum latency for resolved timestamps is distinct and slower than the typical commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](change-data-capture.html#ordering-guarantees).
+The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](change-data-capture.html#ordering-guarantees).
 {{site.data.alerts.end}}
 
 ## Sink Byte Traffic

@@ -75,9 +75,7 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
 
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
-    {{site.data.alerts.callout_info}}
     Because CockroachDB supports transactions that can affect any part of the cluster, it is not possible to horizontally divide the transaction log into independent changefeeds.
-    {{site.data.alerts.end}}
 
 ## Avro schema changes
 
