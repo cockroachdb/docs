@@ -13,9 +13,13 @@ The **Changefeeds** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v19.1/admin_ui_max_changefeed.png' | relative_url }}" alt="CockroachDB Admin UI Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the maximum latency (in nanoseconds) of any running changefeed for the node.
+- In the node view, the graph shows the maximum latency for resolved timestamps of any running changefeed for the node.
 
-- In the cluster view, the graph shows the maximum latency (in nanoseconds) of any running changefeed across all nodes.
+- In the cluster view, the graph shows the maximum latency for resolved timestamps of any running changefeed across all nodes.
+
+{{site.data.alerts.callout_info}}
+The maximum latency for resolved timestamps is distinct and slower than the typical commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](change-data-capture.html#ordering-guarantees).
+{{site.data.alerts.end}}
 
 ## Sink Byte Traffic
 
