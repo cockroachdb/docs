@@ -713,8 +713,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~ shell
-    {"id":1}    {"id":1,"name":{"string":"Petee H"}}
-    {"id":2}    {"id":2,"name":{"string":"Carl"}}
+    {"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}
+    {"id":{"long":2}}	{"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     ~~~
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -729,7 +729,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    {"id":3}    {"id":3,"name":{"string":"Ernie"}}
+    {"id":{"long":3}}	{"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
 16. When you are done, exit the SQL shell (`\q`).
