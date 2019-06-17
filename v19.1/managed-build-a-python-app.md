@@ -51,7 +51,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 4. In the **Password** field, enter `Q7gc8rEdS`.
 5. Click **Create**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
 
 ## Step 3: Generate the CockroachDB client connection string
 
