@@ -67,10 +67,20 @@ The cost-based optimizer can often find more performant query plans if it has ac
 
 For best query performance, most users should leave automatic statistics enabled with the default settings. The information provided in this section is useful for troubleshooting or performance tuning by advanced users.
 
-To control how often the automatic statistics jobs run on your cluster, adjust the following [cluster settings](cluster-settings.html). They define the target number of rows in a table that should be stale before statistics on that table are refreshed.
+#### Controlling statistics refresh rate
 
-- `sql.stats.automatic_collection.fraction_stale_rows`
-- `sql.stats.automatic_collection.min_stale_rows`
+Statistics are refreshed in the following cases:
+
+1. When there are no statistics.
+2. When it's been a long time since the last refresh, where "long time" is defined according to a moving average of the time across the last several refreshes.
+3. After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown below as inputs. These settings define the target number of rows in a table that should be stale before statistics on that table are refreshed.
+
+| Setting                                              | Details                                                                              |
+|------------------------------------------------------+--------------------------------------------------------------------------------------|
+| `sql.stats.automatic_collection.fraction_stale_rows` | Target fraction of stale rows per table that will trigger a statistics refresh       |
+| `sql.stats.automatic_collection.min_stale_rows`      | Target minimum number of stale rows per table that will trigger a statistics refresh |
+
+#### Turning off statistics
 
 If you need to turn off automatic statistics collection, follow the steps below:
 
@@ -83,7 +93,12 @@ If you need to turn off automatic statistics collection, follow the steps below:
 
 2. Use the [`SHOW STATISTICS`](show-statistics.html) statement to view automatically generated statistics.
 
-3. Delete the automatically generated statistics using the instructions in [Delete statistics](create-statistics.html#delete-statistics).
+3. Delete the automatically generated statistics using the following statement:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > DELETE FROM system.table_statistics WHERE true;
+    ~~~
 
 4. Restart the nodes in your cluster to clear the statistics caches.
 
