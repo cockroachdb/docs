@@ -69,9 +69,13 @@ The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds
     {"__crdb__": {"updated": "1532379923319195777.0000000000"}, "id": 4, "name": "Lucky"}
     ~~~
 
-- With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures.
+- With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table.
 
-    Because CockroachDB supports transactions that can affect any part of the cluster, it is not possible to horizontally divide the transaction log into independent changefeeds.
+    To compare two different rows for [happens-before](https://en.wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
+
+    Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
+
+    The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
 ## Avro schema changes
 
@@ -707,8 +711,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~ shell
-    {"id":1}    {"id":1,"name":{"string":"Petee H"}}
-    {"id":2}    {"id":2,"name":{"string":"Carl"}}
+    {"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}
+    {"id":{"long":2}}	{"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     ~~~
 
     Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -723,7 +727,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    {"id":3}    {"id":3,"name":{"string":"Ernie"}}
+    {"id":{"long":3}}	{"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
 16. When you are done, exit the SQL shell (`\q`).
