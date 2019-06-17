@@ -14,7 +14,7 @@ build_for: [managed]
 
 ## Create a Docker image for the application
 
-1. In the `flask-python` folder you created while [building the python application](managed-build-a-python-app.html), create the file names `dockerfile` and copy the following code into the file:
+1. In the `flask-python` folder you created while [building the python application](managed-build-a-python-app.html), create the file names `Dockerfile` and copy the following code into the file:
 
     {% include copy-clipboard.html %}
     ~~~

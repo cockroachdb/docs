@@ -5,11 +5,11 @@ toc: true
 build_for: [managed]
 ---
 
-This tutorial shows you how build a [sample To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) application with Managed CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/).
+This tutorial shows you how build a [sample To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) application on your local workstation with Managed CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/).
 
 ## Step 1: Authorize your local workstation's network
 
-Before you connect to your Managed CockroachDB cluster, you need to authorize your network (i.e., whitelist the public IP address of the machine). Otherwise, connections from this machine will be rejected.
+Before you connect to your Managed CockroachDB cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
 
@@ -20,9 +20,9 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
-3. Enter the public IP address of the machine in the **Network** field.
+3. Enter the public IPv4 address of your local workstation in the **Network** field.
 
-    The IP address should be written in Classless Inter-Domain Routing (CIDR) notation. For example:
+    The IPv4 address should be written in Classless Inter-Domain Routing (CIDR) notation. For example:
 
     ~~~
     192.168.15.161/32
@@ -31,6 +31,10 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
     The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
     You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
+
+    {{site.data.alerts.callout_success}}
+    IPv6 addresses are currently not supported.
+    {{site.data.alerts.end}}
 
 4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
 
@@ -51,11 +55,9 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 4. In the **Password** field, enter `Q7gc8rEdS`.
 5. Click **Create**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
 
 ## Step 3: Generate the CockroachDB client connection string
-
-On the machine where you want to run your application:
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -75,7 +77,7 @@ On the machine where you want to run your application:
 
 ## Step 4: Create the Managed CockroachDB database
 
-On the machine where you want to run the CockroachDB SQL client:
+On your local workstation's terminal:
 
 1. [Download the CockroachDB binary](install-cockroachdb.html):
 
@@ -218,7 +220,7 @@ On the machine where you want to run the CockroachDB SQL client:
     $ python hello.py
     ~~~
 
-    The application should run at [http://localhost:80](http://localhost:80)
+    The application should run at [http://localhost:5000](http://localhost:5000)
 
   2. Enter a new to-do item.
 
