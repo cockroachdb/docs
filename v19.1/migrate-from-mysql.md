@@ -5,8 +5,6 @@ toc: true
 build_for: [standard, managed]
 ---
 
-{% include {{page.version.version}}/misc/beta-warning.md %}
-
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
 
 The examples below use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
