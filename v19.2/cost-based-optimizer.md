@@ -46,7 +46,7 @@ The cost-based optimizer supports most SQL statements. Specifically, the followi
 - All [`SELECT`](select.html) statements that do not include window functions
 - All `UNION` statements that do not include window functions
 - All `VALUES` statements that do not include window functions
-- Most correlated subqueries &emdash; for exceptions, see [Correlated subqueries](subqueries.html#correlated-subqueries).
+- Most correlated subqueries &mdash; for exceptions, see [Correlated subqueries](subqueries.html#correlated-subqueries).
 
 This is not meant to be an exhaustive list. To check whether a particular query will be run with the cost-based optimizer, follow the instructions in the [View query plan](#view-query-plan) section.
 
