@@ -553,7 +553,7 @@
         "title": "SQL",
         "items": [
           {
-            "title": "Supported Client Drivers",
+            "title": "Client Drivers",
             "urls": [
               "/${VERSION}/install-client-drivers.html"
             ]
