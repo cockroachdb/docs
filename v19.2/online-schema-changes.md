@@ -13,6 +13,10 @@ Benefits of online schema changes include:
 - Your application's queries can run normally, with no effect on read/write latency. The schema is cached for performance.
 - Your data is kept in a safe, [consistent][consistent] state throughout the entire schema change process.
 
+{{site.data.alerts.callout_danger}}
+Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
 {{site.data.alerts.end}}
