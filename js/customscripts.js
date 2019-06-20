@@ -31,7 +31,7 @@ $(function() {
       $footer = $('section.footer'),
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
       $versionSwitcher = $('#version-switcher'),
-      $tocRight = $('#toc-right');
+      $tocColContents = $('.toc-col-contents');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
@@ -119,7 +119,7 @@ $(function() {
     // however, the TOC is rendered *after* the 'ready' event on $(document) is fired, thus we cannot
     // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack
     // to get the 'true' height of the TOC once it has been rendered on the page.
-    var tempTocHeight = $tocRight.height()
+    var tempTocHeight = $tocColContents.height()
     if (tempTocHeight > tocHeight) {
       tocHeight = tempTocHeight;
     }
@@ -128,7 +128,7 @@ $(function() {
     var windowHeight = $(window).height();
     var footerOffset = $footer.offset().top;
     var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
-    var tocHeightInColumn = tocHeight + parseInt($tocRight.css('top')),
+    var tocHeightInColumn = tocHeight + parseInt($tocColContents.css('top')),
     _viewport_width = window.innerWidth;
 
     $sidebar.css('padding-top', '');
@@ -158,21 +158,21 @@ $(function() {
 
     // handle positoning of right-hand TOC when scrolling window
     if (_viewport_width >= 1072 && scrollTop >= 31) {
-      $tocRight.css({
+      $tocColContents.css({
         position: 'fixed',
         top: 140,
-        width: '265px'
+        width: '260px'
       });
 
       // if footer in view and TOC overruns top of footer, set bottom property to top of footer
       // otherwise, unset bottom property
       if (scrollTop + tocHeightInColumn >= footerOffset) {
-        $tocRight.css('bottom', viewportFooterDiff + 1 + 'px');
+        $tocColContents.css('bottom', viewportFooterDiff + 1 + 'px');
       } else {
-        $tocRight.css('bottom', '');
+        $tocColContents.css('bottom', '');
       }
     } else {
-      $tocRight.css({
+      $tocColContents.css({
         position: 'relative',
         top: '',
         width: ''
