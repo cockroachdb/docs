@@ -23,17 +23,19 @@
   }
 }
 
+.toc-col-contents {
+  height: 85vh;
+  overflow-y: auto;
+  padding-bottom: 5rem;
+  padding-right: 5px;
+}
+
 #toc-right {
-  max-height: 90vh;
+  max-height: 85vh;
   padding-right: 15px;
   background: #ffffff;
-  overflow-y: hidden;
-
-  &:hover,
-  &:active,
-  &:focus {
-    overflow-y: auto;
-  }
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
 }
 
 #toc,

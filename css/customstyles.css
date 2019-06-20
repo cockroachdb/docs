@@ -782,7 +782,9 @@ a:not([href]) {
 
 section.footer {
   background: #F7F7F7;
-  padding: 0 0 20px; }
+  padding: 0 0 20px;
+  z-index: 100;
+  position: relative; }
   @media screen and (min-width: 992px) {
     section.footer {
       border-top: 1px solid #DADADA;
@@ -1147,13 +1149,18 @@ section.footer {
     #toc {
       display: none; } }
 
+.toc-col-contents {
+  height: 85vh;
+  overflow-y: auto;
+  padding-bottom: 5rem;
+  padding-right: 5px; }
+
 #toc-right {
-  max-height: 90vh;
+  max-height: 85vh;
   padding-right: 15px;
   background: #ffffff;
-  overflow-y: hidden; }
-  #toc-right:hover, #toc-right:active, #toc-right:focus {
-    overflow-y: auto; }
+  overflow-y: auto;
+  margin-bottom: 1.5rem; }
 
 #toc > ul,
 #toc-right > ul {
