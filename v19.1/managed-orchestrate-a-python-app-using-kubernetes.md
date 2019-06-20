@@ -16,7 +16,7 @@ This tutorial shows you how build a [sample To-Do app](https://github.com/cockro
 
 ## Build a Python application with Managed CockroachDB
 
-### Step 1: Authorize your local workstation's network
+### Step 1. Authorize your local workstation's network
 
 Before you connect to your Managed CockroachDB cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
@@ -43,7 +43,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 5. Click **Save**.
 
-### Step 2: Create a SQL user
+### Step 2. Create a SQL user
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -58,7 +58,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
 
-### Step 3: Generate the CockroachDB client connection string
+### Step 3. Generate the CockroachDB client connection string
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -76,7 +76,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 7. Click the **Download ca.crt** button.
 8. Create a `certs` directory on your local workstation and move the `ca.crt` file to the `certs` directory.
 
-### Step 4: Create the Managed CockroachDB database
+### Step 4. Create the Managed CockroachDB database
 
 On your local workstation's terminal:
 
@@ -178,7 +178,7 @@ On your local workstation's terminal:
 
       You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively. Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
 
-### Step 6: Configure the sample Python app
+### Step 6. Configure the sample Python app
 
 1. In a new terminal tab, install SQLAlchemy:
 
@@ -216,29 +216,35 @@ On your local workstation's terminal:
     You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
-## Test the Python application locally
+### Step 7. Test the application locally:
 
-### Step 7. Run the Python application
+  1. Run the `hello.py` code:
 
-~~~ shell
-> python hello.py
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ python hello.py
+    ~~~
 
-The application should 
+    The application should run at [http://localhost:5000](http://localhost:5000)
 
+  2. Enter a new to-do item.
 
+  3. Verify if the user interface reflects the new to-do item added to the database.
 
+## Deploy the application to minikube
 
-### Step 7. Start a local Kubernetes cluster
+### Step 8. Start a local Kubernetes cluster
+
+On your local workstation's terminal:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ minikube start
 ~~~
 
-### Step 8. Dockerize your application
+### Step 9. Dockerize your application
 
-1. In the `flask-python` folder you created Step 6, create the file names `dockerfile` and copy the following code into the file:
+1. In the `flask-python` folder you created in [Step 6. Configure the sample Python app](#step-6-configure-the-sample-python-app), create a file named `Dockerfile` and copy the following code into the file:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -280,18 +286,40 @@ $ minikube start
     $ docker image ls
     ~~~
 
-### Step 9. Create a Kubernetes secret
+    Output:
 
-Create a Kubernetes secret to store the CA certificate you downloaded in Step 3:
+    ~~~
+    REPOSITORY         TAG             IMAGE ID            CREATED             SIZE
+    appdocker          latest          cfb155afed03        3 seconds ago       299MB
+    ~~~
+
+### Step 10. Create a Kubernetes secret
+
+Create a Kubernetes secret to store the CA certificate you downloaded in [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ kubectl create secret generic maxroach-secret --from-file <absolute path to the CA certificate>
 ~~~
 
-### Step 10. Create the deployment files
+Verify the Kubernetes secret was created:
 
-Create a file `app-deployment.yaml` and copy the following code into the file:
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl get secrets
+~~~
+
+Output:
+
+~~~ shell
+NAME                  TYPE                                  DATA   AGE
+default-token-875zk   kubernetes.io/service-account-token   3      75s
+maxroach-secret       Opaque                                1      10s
+~~~
+
+### Step 11. Create the deployment files
+
+In the `flask-alchemy` folder, create a file `app-deployment.yaml` and copy the following code into the file:
 
 {% include copy-clipboard.html %}
 ~~~
@@ -344,23 +372,36 @@ spec:
   type: LoadBalancer
 ~~~
 
-### Step 11. Create the deployment with `kubectl`
+### Step 12. Create the deployment with `kubectl`
+
+Run the following `kubectl` command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ kubectl apply -f app-deployment.yaml
 ~~~
 
-### Step 12. Verify the Kubernetes deployment
+Output:
 
-{% include copy-clipboard.html %}
 ~~~ shell
-$ kubectl get pods
+deployment.apps/appdeploy created
+service/appdeploy created
 ~~~
+
+### Step 13. Verify the Kubernetes deployment
+
+Run the following `kubectl` commands:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ kubectl get deployments
+~~~
+
+Output:
+
+~~~ shell
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+appdeploy      3/3     3            3           27s
 ~~~
 
 {% include copy-clipboard.html %}
@@ -368,7 +409,16 @@ $ kubectl get deployments
 $ kubectl get services
 ~~~
 
+Output:
+
+~~~ shell
+NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+appdeploy    LoadBalancer   10.96.154.104   <pending>     80:32349/TCP   42s
+~~~
+
 {% include copy-clipboard.html %}
 ~~~ shell
 $ minikube service appdeploy
 ~~~
+
+The application will open in the browser.
