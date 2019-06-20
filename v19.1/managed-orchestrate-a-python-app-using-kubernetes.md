@@ -5,7 +5,7 @@ toc: true
 build_for: [managed]
 ---
 
-This tutorial shows you how build a [sample To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) application on your local workstation with Managed CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/)and the [Kubernetes](http://kubernetes.io/) orchestration system.
+This tutorial shows you how build a [sample To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) application on your local workstation with Managed CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) and the [Kubernetes](http://kubernetes.io/) orchestration system.
 
 ## Before your begin
 
@@ -14,7 +14,9 @@ This tutorial shows you how build a [sample To-Do app](https://github.com/cockro
 
     {{site.data.alerts.callout_info}}Make sure you install <code>minikube</code> version 0.21.0 or later. Earlier versions do not include a Kubernetes server that supports the <code>maxUnavailability</code> field and <code>PodDisruptionBudget</code> resource type used in the CockroachDB StatefulSet configuration.{{site.data.alerts.end}}
 
-## Step 1: Authorize your local workstation's network
+## Build a Python application with Managed CockroachDB
+
+### Step 1: Authorize your local workstation's network
 
 Before you connect to your Managed CockroachDB cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
@@ -29,14 +31,6 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 3. Enter the public IPv4 address of your local workstation in the **Network** field.
 
-    The IPv4 address should be written in Classless Inter-Domain Routing (CIDR) notation. For example:
-
-    ~~~
-    192.168.15.161/32
-    ~~~
-
-    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
-
     You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
 
     {{site.data.alerts.callout_success}}
@@ -49,7 +43,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 5. Click **Save**.
 
-## Step 2: Create a SQL user
+### Step 2: Create a SQL user
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -64,7 +58,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
 
-## Step 3: Generate the CockroachDB client connection string
+### Step 3: Generate the CockroachDB client connection string
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -77,12 +71,12 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 5. From the **Database** dropdown, select `defaultdb`.
 6. On the **Connect from Shell** tab, click **Copy connection string**.
 
-    This is how you will access the built-in SQL client later. You will need to replace the `<certs_dir>` placeholders with the path to your `certs` directory.
+    Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
 
 7. Click the **Download ca.crt** button.
 8. Create a `certs` directory on your local workstation and move the `ca.crt` file to the `certs` directory.
 
-## Step 4: Create the Managed CockroachDB database
+### Step 4: Create the Managed CockroachDB database
 
 On your local workstation's terminal:
 
@@ -133,36 +127,43 @@ On your local workstation's terminal:
     $ cockroach sql --url 'postgres://maxroach@<region>.<cluster_name>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-2. Create a database `todos`:
+4. Enter the password you created for `maxroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    Q7gc8rEdS
+    ~~~
+
+5. Create a database `todos`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create database todos;
+    > CREATE DATABASE todos;
     ~~~
 
-3. Use database `todos`:
+6. Use database `todos`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > USE todos;
     ~~~
 
-3. Create a table `todos`:
+7. Create a table `todos`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE todos (
-  	todo_id INT8 NOT NULL DEFAULT unique_rowid(),
-  	title VARCHAR(60) NULL,
-  	text VARCHAR NULL,
-  	done BOOL NULL,
-  	pub_date TIMESTAMP NULL,
-  	CONSTRAINT "primary" PRIMARY KEY (todo_id ASC),
-  	FAMILY "primary" (todo_id, title, text, done, pub_date)
-    );
+    	todo_id INT8 NOT NULL DEFAULT unique_rowid(),
+    	title VARCHAR(60) NULL,
+    	text VARCHAR NULL,
+    	done BOOL NULL,
+    	pub_date TIMESTAMP NULL,
+    	CONSTRAINT "primary" PRIMARY KEY (todo_id ASC),
+    	FAMILY "primary" (todo_id, title, text, done, pub_date)
+      );
     ~~~
 
-## Step 5. Generate the application connection string
+### Step 5. Generate the application connection string
 
   1. In the top right corner of the Console, click the **Connect** button.
 
@@ -175,17 +176,17 @@ On your local workstation's terminal:
   4. From the **Database** dropdown, select `todos`.
   5. On the **Connect Your App** tab, click **Copy connection string**.
 
-      You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively.
+      You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively. Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
 
-## Step 6: Configure the sample Python app
+### Step 6: Configure the sample Python app
 
-1. In a new tab, install SQLAlchemy:
+1. In a new terminal tab, install SQLAlchemy:
 
-    To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
+    To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command in a new terminal window:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ pip install sqlalchemy cockroachdb
+    $ pip install flask sqlalchemy cockroachdb Flask-SQLAlchemy
     ~~~
 
     For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
@@ -204,7 +205,7 @@ On your local workstation's terminal:
     $ cd examples-python/flask-sqlalchemy
     ~~~
 
-4. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in Step 5.
+4. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string) and save the file.
 
     {% include copy-clipboard.html %}
     ~~~
@@ -215,14 +216,27 @@ On your local workstation's terminal:
     You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
-## Step 7: Start a local Kubernetes cluster
+## Test the Python application locally
+
+### Step 7. Run the Python application
+
+~~~ shell
+> python hello.py
+~~~
+
+The application should 
+
+
+
+
+### Step 7. Start a local Kubernetes cluster
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ minikube start
 ~~~
 
-## Step 8: Dockerize your application
+### Step 8. Dockerize your application
 
 1. In the `flask-python` folder you created Step 6, create the file names `dockerfile` and copy the following code into the file:
 
@@ -266,7 +280,7 @@ $ minikube start
     $ docker image ls
     ~~~
 
-## Step 9: Create a Kubernetes secret
+### Step 9. Create a Kubernetes secret
 
 Create a Kubernetes secret to store the CA certificate you downloaded in Step 3:
 
@@ -275,7 +289,7 @@ Create a Kubernetes secret to store the CA certificate you downloaded in Step 3:
 $ kubectl create secret generic maxroach-secret --from-file <absolute path to the CA certificate>
 ~~~
 
-## Step 10: Create the deployment files
+### Step 10. Create the deployment files
 
 Create a file `app-deployment.yaml` and copy the following code into the file:
 
@@ -330,14 +344,14 @@ spec:
   type: LoadBalancer
 ~~~
 
-## Step 11: Create the deployment with `kubectl`
+### Step 11. Create the deployment with `kubectl`
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ kubectl apply -f app-deployment.yaml
 ~~~
 
-## Step 12: Verify the Kubernetes deployment
+### Step 12. Verify the Kubernetes deployment
 
 {% include copy-clipboard.html %}
 ~~~ shell
