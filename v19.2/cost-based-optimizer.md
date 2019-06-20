@@ -291,6 +291,14 @@ ALTER INDEX postal_codes@idx_apac CONFIGURE ZONE USING constraints='["+region=ap
 
 To verify this feature is working as expected, we'll query the database from each of our local nodes as shown below. Each node has been configured to be in a different region, and it should now be using the index pinned to that region.
 
+{{site.data.alerts.callout_info}}
+In a geo-distributed scenario with a cluster that spans multiple datacenters, it may take time for the optimizer to fetch schemas from other nodes the first time a query is planned; thereafter, the schema should be cached locally.
+
+For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
+
+This behavior may also cause the [Statements page of the Web UI](admin-ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+{{site.data.alerts.end}}
+
 As expected, the node in the USA region uses the primary key index.
 
 {% include copy-clipboard.html %}
