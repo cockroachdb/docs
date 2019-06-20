@@ -68,6 +68,12 @@ and delete lots of rows will want to reduce the
 [time-to-live](configure-replication-zones.html) values to clean up
 deleted rows more frequently.
 
+## Delete performance on large data sets
+
+If you are deleting a large amount of data using iterative `DELETE ... LIMIT` statements, you are likely to see a drop in performance for each subsequent `DELETE` statement.
+
+For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time) from the FAQ.
+
 ## Examples
 
 ### Delete all rows

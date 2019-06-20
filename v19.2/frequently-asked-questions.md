@@ -160,10 +160,6 @@ Yes. The Managed CockroachDB offering is currently in Limited Availability and a
 
 For more details, see the [Managed CockroachDB](../managed/{{ page.version.version }}/) docs.
 
-## Can I use CockroachDB as a key-value store?
-
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
-
 ## Have questions that weren’t answered?
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.

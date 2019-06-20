@@ -70,7 +70,7 @@ The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is i
 - Partition Tolerance
 
 CockroachDB is a CP (consistent and partition tolerant) system. This means
-that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgements from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
+that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgments from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
 
 Separately, CockroachDB is also Highly Available, although "available" here means something different than the way it is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
 
@@ -99,7 +99,7 @@ Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID sema
 
 No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s a database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-For more details on how CockroachDB handles unsychronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
+For more details on how CockroachDB handles unsynchronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
 
 ## What languages can I use to work with CockroachDB?
 
@@ -159,10 +159,6 @@ Yes. The Managed CockroachDB offering is currently in Limited Availability and a
 - Monitoring to provide SLA-level support
 
 For more details, see the [Managed CockroachDB](../managed/v19.1/) docs.
-
-## Can I use CockroachDB as a key-value store?
-
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ## Have questions that weren’t answered?
 
