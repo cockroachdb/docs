@@ -10,7 +10,7 @@ This tutorial shows you how to run a [sample Python To-Do app](https://github.co
 ## Before you begin
 
 1. Install [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/).
-2. Install [minikube][documentation](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to managed Kubernetes from your local workstation.
+2. Install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to managed Kubernetes from your local workstation.
 
     {{site.data.alerts.callout_info}}Make sure you install <code>minikube</code> version 0.21.0 or later. Earlier versions do not include a Kubernetes server that supports the <code>maxUnavailability</code> field and <code>PodDisruptionBudget</code> resource type used in the CockroachDB StatefulSet configuration.{{site.data.alerts.end}}
 
@@ -246,6 +246,8 @@ On your local workstation's terminal:
 $ minikube start
 ~~~
 
+The startup procedure might take a few minutes.
+
 ### Step 9. Dockerize your application
 
 1. In the `flask-sqlalchemy` folder you created in [Step 6. Configure the sample Python app](#step-6-configure-the-sample-python-app), create a file named `Dockerfile` and copy the following code into the file:
@@ -416,3 +418,5 @@ maxroach-secret       Opaque                                1      10s
     ~~~
 
     The application will open in the browser.
+
+## Monitor your application
