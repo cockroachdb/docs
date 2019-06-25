@@ -67,7 +67,7 @@ You can define partitions and subpartitions over one or more columns of a table.
 
 To partition a table by list, use the [`PARTITION BY LIST`](partition-by.html) syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
 
-See [Partition by List](#partition-by-list) example below for more details.
+See [Partition by List](#define-table-partitions-by-list) example below for more details.
 
 #### Partition by range
 
@@ -79,7 +79,7 @@ To define a table partition by range, use the [`PARTITION BY RANGE`](partition-b
 
 Partition values can be any SQL expression, but it’s only evaluated once. If you create a partition with value `< (now() - '1d')` on 2017-01-30, it would be contain all values less than 2017-01-29. It would not update the next day, it would continue to contain values less than 2017-01-29.
 
-See [Partition by Range](#partition-by-range) example below for more details.
+See [Partition by Range](#define-table-partitions-by-range) example below for more details.
 
 #### Partition using primary key
 
