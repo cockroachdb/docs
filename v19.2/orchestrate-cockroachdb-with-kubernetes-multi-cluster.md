@@ -15,7 +15,7 @@ To deploy in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
 - [Kubernetes terminology](#kubernetes-terminology)
-- [UX differences from running in a single cluster](ux-differences-from-running-in-a-single-cluster)
+- [UX differences from running in a single cluster](#ux-differences-from-running-in-a-single-cluster)
 - [Limitations](#limitations)
 
 ### Kubernetes terminology
