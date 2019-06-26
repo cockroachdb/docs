@@ -1,6 +1,6 @@
 ---
 title: Orchestration with Kubernetes (Insecure)
-summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
+summary: Orchestrate the deployment and management of a local cluster using Kubernetes.
 toc: true
 ---
 

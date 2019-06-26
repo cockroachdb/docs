@@ -1,6 +1,6 @@
 ---
 title: Orchestrate a Local Cluster with Kubernetes
-summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
+summary: Orchestrate the deployment and management of a local cluster using Kubernetes.
 toc: true
 secure: true
 redirect_from: orchestration-with-kubernetes.html

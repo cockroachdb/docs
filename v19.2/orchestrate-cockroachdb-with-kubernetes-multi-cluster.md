@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB Across Multiple Kubernetes Clusters
 summary: How to use Kubernetes to orchestrate the deployment, management, and monitoring of an insecure CockroachDB cluster across multiple Kubernetes clusters in different regions.
 toc: true
+toc_not_nested: true
 redirect_from: orchetrate-cockroachdb-with-kubernetes-multi-region.html
 ---
 
@@ -12,6 +13,10 @@ To deploy in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster
 ## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
+
+- [Kubernetes terminology](#kubernetes-terminology)
+- [UX differences from running in a single cluster](ux-differences-from-running-in-a-single-cluster)
+- [Limitations](#limitations)
 
 ### Kubernetes terminology
 
@@ -410,6 +415,10 @@ To see this in action:
     ~~~
 
 ## Step 6. Maintain the cluster
+
+- [Scale the cluster](#scale-the-cluster)
+- [Upgrade the cluster](#upgrade-the-cluster)
+- [Stop the cluster](#stop-the-cluster)
 
 ### Scale the cluster
 
