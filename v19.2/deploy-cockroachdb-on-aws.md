@@ -16,7 +16,6 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-
 ## Requirements
 
 {% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
@@ -116,7 +115,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
-## Step 10. Set up monitoring and alerting
+## Step 10. Monitor the cluster
 
 {% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 

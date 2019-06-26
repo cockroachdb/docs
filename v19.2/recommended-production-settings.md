@@ -208,11 +208,11 @@ For guidance on load balancing, see the tutorial for your deployment environment
 
 Environment | Featured Approach
 ------------|---------------------
-[On-Premises](deploy-cockroachdb-on-premises.html#step-6-set-up-haproxy-load-balancers) | Use HAProxy.
+[On-Premises](deploy-cockroachdb-on-premises.html#step-6-set-up-load-balancing) | Use HAProxy.
 [AWS](deploy-cockroachdb-on-aws.html#step-4-set-up-load-balancing) | Use Amazon's managed load balancing service.
 [Azure](deploy-cockroachdb-on-microsoft-azure.html#step-4-set-up-load-balancing) | Use Azure's managed load balancing service.
 [Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
-[GCP](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-tcp-proxy-load-balancing) | Use GCP's managed TCP proxy load balancing service.
+[GCP](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-load-balancing) | Use GCP's managed TCP proxy load balancing service.
 
 ## Monitoring and alerting
 

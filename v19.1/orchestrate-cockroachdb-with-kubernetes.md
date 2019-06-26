@@ -2,6 +2,7 @@
 title: Orchestrate CockroachDB in a Single Kubernetes Cluster
 summary: How to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
+toc_not_nested: true
 secure: true
 ---
 
@@ -17,6 +18,9 @@ To deploy across multiple Kubernetes clusters in different geographic regions in
 ## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
+
+- [Kubernetes terminology](#kubernetes-terminology)
+- [Limitations](#limitations)
 
 ### Kubernetes terminology
 
@@ -66,11 +70,16 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
-## Step 6. Set up monitoring and alerting
+## Step 6. Monitor the cluster
 
 {% include {{ page.version.version }}/orchestration/kubernetes-prometheus-alertmanager.md %}
 
 ## Step 7. Maintain the cluster
+
+- [Add nodes](#add-nodes)
+- [Remove nodes](#remove-nodes)
+- [Upgrade the cluster](#upgrade-the-cluster)
+- [Stop the cluster](#stop-the-cluster)
 
 ### Add nodes
 

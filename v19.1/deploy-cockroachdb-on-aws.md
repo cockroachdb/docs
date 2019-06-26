@@ -116,7 +116,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 {% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
-## Step 10. Set up monitoring and alerting
+## Step 10. Monitor the cluster
 
 {% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 

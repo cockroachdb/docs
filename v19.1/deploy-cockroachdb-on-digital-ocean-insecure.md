@@ -15,7 +15,6 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-
 ## Requirements
 
 {% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
@@ -88,7 +87,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 {% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
-## Step 9. Set up monitoring and alerting
+## Step 9. Monitor the cluster
 
 {% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 

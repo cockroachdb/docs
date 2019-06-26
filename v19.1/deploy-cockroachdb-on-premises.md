@@ -44,7 +44,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
-## Step 6. Set up HAProxy load balancers
+## Step 6. Set up load balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
 
@@ -95,7 +95,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 {% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
-## Step 8. Set up monitoring and alerting
+## Step 8. Monitor the cluster
 
 {% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
