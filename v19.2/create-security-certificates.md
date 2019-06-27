@@ -50,7 +50,7 @@ The `create-*` subcommands generate the CA certificate and all node and client c
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate.
-`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
+`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
 `node.key`   | Key for server certificate.
 
 ### Client key and certificates
@@ -84,6 +84,7 @@ $ cockroach cert create-node \
  [node-hostname] \
  [node-other-hostname] \
  [node-yet-another-hostname] \
+ [hostname-in-wildcard-notation] \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
 
@@ -173,6 +174,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     $ cockroach cert create-node \
     node1.example.com \
     node1.another-example.com \
+    *.dev.another-example.com \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
