@@ -4,7 +4,7 @@ summary: Commit a transaction's changes once there are no retry errors with the 
 toc: true
 ---
 
-When using [client-side transaction retries](transactions.html#client-side-transaction-retries), the `RELEASE SAVEPOINT` statement commits the transaction.
+When using [client-side transaction retries](advanced-client-side-transaction-retries.html), the `RELEASE SAVEPOINT` statement commits the transaction.
 
 If statements in the transaction [generated any non-retry errors](transactions.html#error-handling), `RELEASE SAVEPOINT` is equivalent to [`ROLLBACK`](rollback-transaction.html), which aborts the transaction and discards all updates made by its statements.
 
