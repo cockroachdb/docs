@@ -12,9 +12,7 @@ This tutorial shows you how to run a [sample Python To-Do app](https://github.co
 1. Install [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/).
 2. Install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to managed Kubernetes from your local workstation.
 
-    {{site.data.alerts.callout_info}}Make sure you install <code>minikube</code> version 0.21.0 or later. Earlier versions do not include a Kubernetes server that supports the <code>maxUnavailability</code> field and <code>PodDisruptionBudget</code> resource type used in the CockroachDB StatefulSet configuration.{{site.data.alerts.end}}
-
-## Prepare your Managed CockroachDB cluster
+## Prepare your cluster
 
 ### Step 1. Authorize your local workstation's network
 
@@ -69,9 +67,9 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 3. From the **User** dropdown, select `maxroach`.
 4. Select a **Region** to connect to.
 5. From the **Database** dropdown, select `defaultdb`.
-6. Create a `certs` directory on your local workstation and move the `ca.crt` file to the `certs` directory.
+6. Create a `certs` directory on your local workstation.
 7. Click the **Download ca.crt** button.
-8. Move the downloaded ca.cert file to the certs directory.
+8. Move the downloaded `ca.crt` file to the `certs` directory.
 9. On the **Connect from Shell** tab, click **Copy connection string**.
 
     Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
@@ -169,45 +167,36 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'images/v19.1/managed/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
 
   2. From the **User** dropdown, select `maxroach`.
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
   5. On the **Connect Your App** tab, click **Copy connection string**.
 
-      You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively. Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
+      Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 
-## Build a Python application with Managed CockroachDB
+## Build the app
 
 ### Step 6. Configure the sample Python app
 
-1. In a new terminal, install SQLAlchemy:
+In a new terminal:
 
-    To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command in a new terminal window:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ pip install flask sqlalchemy cockroachdb Flask-SQLAlchemy
-    ~~~
-
-    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
-
-2. Clone the `examples-python` repository to your local machine:
+1. Clone the `examples-python` repository to your local machine:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ git clone https://github.com/cockroachdb/examples-python
     ~~~
 
-3. Navigate to the flask-alchemy folder:
+2. Navigate to the flask-alchemy folder:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cd examples-python/flask-sqlalchemy
     ~~~
 
-4. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string) and save the file.
+3. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string) and save the file.
 
     {% include copy-clipboard.html %}
     ~~~
@@ -218,24 +207,41 @@ On your local workstation's terminal:
     You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
-### Step 7. Test the application locally:
+     You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively. Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
 
-  1. Run the `hello.py` code:
+### Step 7. Test the application locally
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ python hello.py
-    ~~~
+  1. Install SQLAlchemy:
 
-    The application should run at [http://localhost:5000](http://localhost:5000)
+      To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command in a new terminal window:
 
-  2. Enter a new to-do item.
+      {% include copy-clipboard.html %}
+      ~~~ shell
+      $ pip install flask sqlalchemy cockroachdb Flask-SQLAlchemy
+      ~~~
 
-  3. Verify that the user interface reflects the new to-do item added to the database.
+      For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-  4. Use `Ctrl+C` to stop the application.
+  2. Run the `hello.py` code:
 
-## Deploy the application to minikube
+      {% include copy-clipboard.html %}
+      ~~~ shell
+      $ python hello.py
+      ~~~
+
+      The application should run at [http://localhost:5000](http://localhost:5000)
+
+  3. Enter a new to-do item.
+
+  4. Verify that the user interface reflects the new to-do item added to the database.
+
+  5. Use `Ctrl+C` to stop the application.
+
+## Deploy the app
+
+{{site.data.alerts.callout_info}}
+These steps focus on deploying your app locally. For production Kubernetes deployments, use a service like GKE.
+{{site.data.alerts.end}}
 
 ### Step 8. Start a local Kubernetes cluster
 
@@ -248,7 +254,42 @@ $ minikube start
 
 The startup procedure might take a few minutes.
 
-### Step 9. Dockerize your application
+### Step 9. Create a Kubernetes secret
+
+Create a Kubernetes secret to store the CA certificate you downloaded in [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl create secret generic maxroach-secret --from-file <absolute path to the CA certificate>
+~~~
+
+Verify the Kubernetes secret was created:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl get secrets
+~~~
+
+~~~ shell
+NAME                  TYPE                                  DATA   AGE
+default-token-875zk   kubernetes.io/service-account-token   3      75s
+maxroach-secret       Opaque                                1      10s
+~~~
+
+### Step 10. Change certificate directory path in configuration file
+
+In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the `certs` dir to `/data/certs` and save the file.
+
+    {% include copy-clipboard.html %}
+    ~~~
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+    {{site.data.alerts.end}}
+
+### Step 11. Dockerize your application
 
 1. In the `flask-sqlalchemy` folder you created in [Step 6. Configure the sample Python app](#step-6-configure-the-sample-python-app), create a file named `Dockerfile` and copy the following code into the file:
 
@@ -297,29 +338,7 @@ The startup procedure might take a few minutes.
     appdocker          latest          cfb155afed03        3 seconds ago       299MB
     ~~~
 
-### Step 10. Create a Kubernetes secret
-
-Create a Kubernetes secret to store the CA certificate you downloaded in [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl create secret generic maxroach-secret --from-file <absolute path to the CA certificate>
-~~~
-
-Verify the Kubernetes secret was created:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ kubectl get secrets
-~~~
-
-~~~ shell
-NAME                  TYPE                                  DATA   AGE
-default-token-875zk   kubernetes.io/service-account-token   3      75s
-maxroach-secret       Opaque                                1      10s
-~~~
-
-### Step 11. Create the deployment
+### Step 12. Deploy the application
 
 1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file:
 
@@ -374,9 +393,7 @@ maxroach-secret       Opaque                                1      10s
       type: LoadBalancer
     ~~~
 
-2. Create the deployment with `kubectl`
-
-    Run the following `kubectl` command:
+2. Create the deployment with `kubectl`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -388,9 +405,7 @@ maxroach-secret       Opaque                                1      10s
     service/appdeploy created
     ~~~
 
-3. Verify the Kubernetes deployment
-
-    Run the following `kubectl` commands:
+3. Verify that the deployment and server were created:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -412,11 +427,39 @@ maxroach-secret       Opaque                                1      10s
     appdeploy    LoadBalancer   10.96.154.104   <pending>     80:32349/TCP   42s
     ~~~
 
+4. Start the app:
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ minikube service appdeploy
     ~~~
 
-    The application will open in the browser.
+    The application will open in the browser. If you get a `refused to connect` message, use port-forwarding to reach the application:
+
+    1. Get the name of one of the pods:
+
+        ~~~ shell
+        $ kubectl get pods
+        ~~~
+
+        ~~~
+        NAME                         READY   STATUS              RESTARTS   AGE
+        appdeploy-577f66b4c8-46s5r   0/1     ErrImageNeverPull   0          23m
+        appdeploy-577f66b4c8-9chjx   0/1     ErrImageNeverPull   0          23m
+        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m  
+        ~~~
+
+    2. Port-forward from your local machine to one of the pods:
+
+        ~~~ shell
+        $ kubectl port-forward appdeploy-5f5868f6bf-2cjt5 5000:5000
+        ~~~
+
+        ~~~
+        Forwarding from 127.0.0.1:5000 -> 5000
+        Forwarding from [::1]:5000 -> 5000
+        ~~~
+
+    3. Go to `http://localhost:5000/` in your browser.
 
 ## Monitor your application
