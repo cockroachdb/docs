@@ -66,7 +66,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 2. Simulate the problem
 
-1. In the same terminal, reduce the amount of time the cluster waits before considering a node dead to just 1 minute:
+1. In the same terminal, reduce the amount of time the cluster waits before considering a node dead to just 1 minute and 15 seconds:
 
     {% include copy-clipboard.html %}
     ~~~ shell
