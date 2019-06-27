@@ -263,7 +263,7 @@ There are two levels of contention:
 Transaction contention can also increase the rate of transaction
 restarts, and thus make the proper implementation of [client-side
 transaction
-retries](transactions.html#client-side-transaction-retries) more
+retries](transactions.html#client-side-intervention) more
 critical.
 
 To avoid contention, multiple strategies can be applied:
