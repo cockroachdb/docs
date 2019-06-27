@@ -280,14 +280,14 @@ maxroach-secret       Opaque                                1      10s
 
 In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the `certs` dir to `/data/certs` and save the file.
 
-    {% include copy-clipboard.html %}
-    ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
-    ~~~
+{% include copy-clipboard.html %}
+~~~
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+~~~
 
-    {{site.data.alerts.callout_info}}
-    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
-    {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+{{site.data.alerts.end}}
 
 ### Step 11. Dockerize your application
 
