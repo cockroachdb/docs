@@ -14,22 +14,28 @@ For a detailed discussion of CockroachDB transaction semantics, see [How Cockroa
 
 Each of the following SQL statements control transactions in some way.
 
- Statement | Function
------------|----------
- [`BEGIN`](begin-transaction.html) | Initiate a transaction, as well as control its [priority](#transaction-priorities).
- [`SET TRANSACTION`](set-transaction.html) | Control a transaction's [priority](#transaction-priorities).
- [`SAVEPOINT`](savepoint.html) | Declare the transaction as [retryable](#client-side-transaction-retries). This lets you retry the transaction if it doesn't succeed because a higher priority transaction concurrently or recently accessed the same values.
- [`RELEASE SAVEPOINT`](release-savepoint.html) | Commit a [retryable transaction](#client-side-transaction-retries).
- [`COMMIT`](commit-transaction.html) | Commit a non-retryable transaction or clear the connection after committing a retryable transaction.
- [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Handle [retry errors](#error-handling) by rolling back a transaction's changes and increasing its priority.
- [`ROLLBACK`](rollback-transaction.html) | Abort a transaction and roll the database back to its state before the transaction began.
- [`SHOW`](show-vars.html) | Display the current transaction settings.
+| Statement                                            | Function                                                                                                                                                                                                      |
+|------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`BEGIN`](begin-transaction.html)                    | Initiate a transaction, as well as control its [priority](#transaction-priorities).                                                                                                                           |
+| [`SET TRANSACTION`](set-transaction.html)            | Control a transaction's [priority](#transaction-priorities).                                                                                                                                                  |
+| [`COMMIT`](commit-transaction.html)                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol](advanced-client-side-transaction-retries.html).                                      |
+| [`ROLLBACK`](rollback-transaction.html)              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                                                     |
+| [`SHOW`](show-vars.html)                             | Display the current transaction settings.                                                                                                                                                                     |
+| [`SAVEPOINT`](savepoint.html)                        | (**Advanced**) Used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), which can improve performance and avoid starvation when transactions are retried. |
+| [`RELEASE SAVEPOINT`](release-savepoint.html)        | (**Advanced**) Commit a [retryable transaction](advanced-client-side-transaction-retries.html).                                                                                                               |
+| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | (**Advanced**) Handle [retry errors](#error-handling) by rolling back a transaction's changes and increasing its priority.                                                                                    |
+
+{{site.data.alerts.callout_info}}
+The **Advanced** statements above are used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), and are mostly of use to driver and ORM authors.
+
+Application developers who are using a framework or library that does not have advanced retry logic built in should implement an application-level retry loop with exponential backoff as shown in [Client-side intervention](#client-side-intervention).
+{{site.data.alerts.end}}
 
 ## Syntax
 
 In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements.
 
-To use [client-side transaction retries](#client-side-transaction-retries), you should also include the [`SAVEPOINT`](savepoint.html), [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) and [`RELEASE SAVEPOINT`](release-savepoint.html) statements.
+To use [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), you should also include the [`SAVEPOINT`](savepoint.html), [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) and [`RELEASE SAVEPOINT`](release-savepoint.html) statements.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -54,15 +60,9 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
-**Ambiguous Errors** | Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. See [here](common-errors.html#result-is-ambiguous) for more about this kind of error.
-**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
-
-## Transaction contention
-
-Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be retried.
-
-For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client as described in [client-side intervention](#client-side-intervention).
+**Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
+**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`][commit] or [`ROLLBACK`][rollback] to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction retries
 
@@ -147,72 +147,42 @@ Your application should include client-side retry handling when the statements a
 
 To indicate that a transaction must be retried, CockroachDB signals an error with the code `40001` and an error message that begins with the string `"retry transaction"`.
 
-To handle these types of errors you have two options:
+To handle these types of errors you have the following options:
 
-1. *Strongly recommended*: Use the [`SAVEPOINT`](savepoint.html) statement to create retryable transactions. Retryable transactions can improve performance because their priority is increased each time they are retried, making them more likely to succeed the longer they're in your system.  For instructions showing how to do this, see the [Client-Side Transaction Retries](#client-side-transaction-retries) section.
+1. If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it. If you're building an application in the following languages, we have code to make client-side retries simpler:
+   - **Go** developers can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package, which handles retries automatically. For more information, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html#transaction-with-retry-logic).
+   - **Python** developers can use [SQLAlchemy](https://www.sqlalchemy.org) with the [`cockroachdb-python` adapter](https://github.com/cockroachdb/cockroachdb-python). For more information, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+   - **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can re-use the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
+2. **Most users, such as application authors**: Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. For an example, see the [Client-side intervention example](#client-side-intervention-example).
+3. **Advanced users, such as library authors**: Use the [`SAVEPOINT`](savepoint.html) statement to create retryable transactions. Retryable transactions can improve performance because their priority is increased each time they are retried, making them more likely to succeed the longer they're in your system. For instructions showing how to do this, see [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
 
-2. Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. This does *not* automatically increase the transaction's priority as with option #1, so it's possible in high-contention workloads for transactions to take an incredibly long time to succeed.
+#### Client-side intervention example
 
-#### Client-side transaction retries
+The Python-like pseudocode below shows how to implement an application-level retry loop; it does not require your driver or ORM to implement [advanced retry handling logic](advanced-client-side-transaction-retries.html), so it can be used from any programming language or environment. In particular, your retry loop must:
 
-+ [Overview](#overview)
-+ [Client library support](#client-library-support)
-+ [How transaction retries work](#how-transaction-retries-work)
-+ [Customizing the savepoint name](#customizing-the-savepoint-name)
+- Raise an error if the `max_retries` limit is reached
+- Only retry on `40001` error codes
+- [`COMMIT`](commit-transaction.html) at the end of the `try` block
 
-##### Overview
+~~~ python
+while true:
+    n++
+    if n == max_retries:
+        throw Error("did not succeed within N retries")
+    try:
+        # add logic here to run all your statements
+        conn.exec('COMMIT')
+    catch error:
+        if error.code != "40001":
+           throw error
+    sleep(...)
+~~~
 
-To improve the performance of transactions that fail due to contention, CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the following benefits:
+## Transaction contention
 
-- Transactions increase their priority each time they're retried, increasing the likelihood they will succeed.
-- Retried transactions are more likely to read the freshest data.  Because they are issued at a later timestamp, the transaction operates on a later snapshot of the database; therefore, the reads may return more recently updated data.
+Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
 
-Implementing client-side retries requires using the following statements:
-
-- [`SAVEPOINT`](savepoint.html) declares the client's intent to retry the transaction if there are contention errors. It must be executed after [`BEGIN`](begin-transaction.html) but before the first statement that manipulates a database.
-
-- [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#retry-a-transaction) is used when your application detects `40001` / `"retry transaction"` errors. It provides you a chance to "retry" the transaction by rolling the database's state back to the beginning of the transaction and increasing the transaction's priority.  After issuing a [`ROLLBACK`](rollback-transaction.html), you must issue any statements you want the transaction to contain. Typically, this means recalculating values and reissuing a similar set of statements to the previous attempt.
-
-- [`RELEASE SAVEPOINT`](release-savepoint.html) commits the transaction. At this point, CockroachDB checks to see if the transaction contends with others for access to the same values; the highest priority transaction succeeds, and the others return `40001` / `"retry transaction"` errors and must be retried.  Finally, you must execute [`COMMIT`](commit-transaction.html) after [`RELEASE SAVEPOINT`](release-savepoint.html) to clear the connection for the next transaction.
-
-For examples showing how to use these statements, see the following:
-
-- The [Syntax](#syntax) section of this page.
-- Many of our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials show code samples for issuing retries.  For an example showing how to implement the retry logic, see [the Java/JDBC tutorial](build-a-java-app-with-cockroachdb.html).
-
-##### Client library support
-
-If you're building an application in the following languages, we have packages to make client-side retries simpler:
-
-- **Go** developers can use the `crdb` package of the CockroachDB Go client. For more information, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html#transaction-with-retry-logic).
-
-- **Python** developers can use the `sqlalchemy` package. For more information, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
-
-- **Java** developers accessing the database with JDBC can re-use the example code implementing the retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
-
-##### How transaction retries work
-
-For greater detail, here's the process a retryable transaction goes through.
-
-1. The transaction starts with the [`BEGIN`](begin-transaction.html) statement.
-
-2. The [`SAVEPOINT`](savepoint.html) statement declares the intention to retry the transaction in the case of contention errors. Note that CockroachDB's savepoint implementation does not support all savepoint functionality, such as nested transactions.
-
-3. The statements in the transaction are executed.
-
-4. If a statement returns a retry error (identified via the `40001` error code or `"retry transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
-
-    You must now issue the statements in the transaction again.
-
-    In cases where you do not want the application to retry the transaction, you can simply issue [`ROLLBACK`](rollback-transaction.html) at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
-
-5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
-
-    In some cases, the [`RELEASE SAVEPOINT`](release-savepoint.html) statement itself can fail with a retry error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retry error is handled as described in step 4.
-
-##### Customizing the savepoint name
-
-{% include {{ page.version.version }}/misc/customizing-the-savepoint-name.md %}
+For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 ## Transaction priorities
 
@@ -272,3 +242,8 @@ For more information about the relationship between these levels, see [this pape
 - [`SHOW`](show-vars.html)
 - [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
+
+<!-- Reference Links -->
+
+[commit]: commit-transaction.html
+[rollback]: rollback-transaction.html
