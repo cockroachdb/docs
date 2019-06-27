@@ -4,9 +4,9 @@ summary: Commit a transaction with the COMMIT statement in CockroachDB.
 toc: true
 ---
 
-The `COMMIT` [statement](sql-statements.html) commits the current [transaction](transactions.html) or, when using [client-side transaction retries](transactions.html#client-side-transaction-retries), clears the connection to allow new transactions to begin.
+The `COMMIT` [statement](sql-statements.html) commits the current [transaction](transactions.html) or, when using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), clears the connection to allow new transactions to begin.
 
-When using [client-side transaction retries](transactions.html#client-side-transaction-retries), statements issued after [`SAVEPOINT`](savepoint.html) are committed when [`RELEASE SAVEPOINT`](release-savepoint.html) is issued instead of `COMMIT`. However, you must still issue a `COMMIT` statement to clear the connection for the next transaction.
+When using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), statements issued after [`SAVEPOINT`](savepoint.html) are committed when [`RELEASE SAVEPOINT`](release-savepoint.html) is issued instead of `COMMIT`. However, you must still issue a `COMMIT` statement to clear the connection for the next transaction.
 
 For non-retryable transactions, if statements in the transaction [generated any errors](transactions.html#error-handling), `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards *all* updates made by its statements.
 
@@ -31,7 +31,7 @@ How you commit transactions depends on how your application handles [transaction
 
 #### Client-side retryable transactions
 
-When using [client-side transaction retries](transactions.html#client-side-transaction-retries), statements are committed by [`RELEASE SAVEPOINT`](release-savepoint.html). `COMMIT` itself only clears the connection for the next transaction.
+When using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), statements are committed by [`RELEASE SAVEPOINT`](release-savepoint.html). `COMMIT` itself only clears the connection for the next transaction.
 
 {% include copy-clipboard.html %}
 ~~~ sql
