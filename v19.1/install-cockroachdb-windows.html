@@ -15,16 +15,16 @@ key: install-cockroachdb.html
 <p>See <a href="../releases/{{page.release_info.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
 <div id="download-the-binary-windows" class="install-option">
-  <h2>Download the Binary</h2>
+  <h2>Download the executable</h2>
 
-  {{site.data.alerts.callout_danger}}<strong>Native CockroachDB on Windows is experimental</strong>, and is largely untested by Cockroach Labs. This prebuilt binary is provided as a convenience for local development and experimentation; production deployments of CockroachDB on Windows are strongly discouraged. Windows 8 or higher is required.{{site.data.alerts.end}}
+  {{site.data.alerts.callout_danger}}The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.{{site.data.alerts.end}}
 
   <ol>
     <li>
       <p>Download and extract the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip" class="windows-binary-download" id="windows-binary-download-{{page.version.version}}" data-eventcategory="windows-binary-download">CockroachDB {{ page.release_info.version }} archive for Windows</a>.</p>
     </li>
     <li>
-      <p>Open PowerShell, navigate to the directory containing the binary, and make sure the CockroachDB executable works:</p>
+      <p>Open PowerShell, navigate to the directory containing the executable, and make sure it works:</p>
 
       <div class="copy-clipboard">
         <div class="copy-clipboard__text windows-binary-button" id="windows-binary-button-{{ page.version.version }}" data-eventcategory="windows-binary-button">copy</div>
