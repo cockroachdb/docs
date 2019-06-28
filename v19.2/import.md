@@ -16,7 +16,7 @@ This page has reference information about the `IMPORT` statement.  For instructi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-`IMPORT` only works for creating new tables. It does not support adding data to existing tables. Also, `IMPORT` cannot be used within a [transaction](transactions.html).
+`IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html). Also, `IMPORT` cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -95,7 +95,7 @@ Before using `IMPORT`, you should have:
 
 ### Import targets
 
-Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html).
+Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
 
 You can specify the target database in the table name in the `IMPORT` statement. If it's not specified there, the active database in the SQL session is used.
 
@@ -711,6 +711,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [Migrate from CSV][csv]
+- [`IMPORT INTO`](import-into.html)
 
 <!-- Reference Links -->
 
