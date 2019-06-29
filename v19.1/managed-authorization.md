@@ -21,11 +21,7 @@ While developing and testing your application, you may whitelist `0.0.0.0/0`, wh
 
 By default, a new SQL user created using the Console is assigned to the `admin` role. An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
-### Before you begin
-
-Make sure you have already [connected to the cluster](managed-connect-to-your-cluster.html) with your `admin` SQL user.
-
-#### Create a SQL user
+### Create a SQL user
 
 - [Use the Console](#use-the-console)
 - [Use the CockroachDB SQL client](#use-the-cockroachdb-sql-client)
@@ -48,6 +44,8 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
     Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
 
 #### Use the CockroachDB SQL client
+
+Make sure you have already [connected to the cluster](managed-connect-to-your-cluster.html) with your `admin` SQL user.
 
 Once you have [connected to the cluster's SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
