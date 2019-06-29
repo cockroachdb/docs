@@ -5,7 +5,7 @@ toc: true
 build_for: [managed]
 ---
 
-This tutorial shows you how to run a [sample Python To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) on a Managed CockroachDB cluster using the [Kubernetes](http://kubernetes.io/) orchestration system.
+This tutorial shows you how to run a [sample Python To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) on a Managed CockroachDB cluster using a local [Kubernetes](http://kubernetes.io/) cluster.
 
 ## Before you begin
 
@@ -462,4 +462,38 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
     3. Go to `http://localhost:5000/` in your browser.
 
-## Monitor your application
+## Monitor the app
+
+### Step 13. Access the Admin UI
+
+1. On the Console, navigate to the cluster's **Monitoring** page and click **Open Admin UI**.
+
+    You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+
+2. In the **Username** field, enter `maxroach`.
+3. In the **Password** field, enter `Q7gc8rEdS`.
+4. Click **Log In**.
+
+### Step 14. Monitor cluster health, metrics, and SQL statements
+
+On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/stable/admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+
+- Number of live, dead, and suspect nodes
+- Number of unavailable ranges
+- Queries per second
+- Service latency across the cluster.
+
+#### Monitor the hardware metrics
+
+1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
+2. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/stable/admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+
+#### Monitor runtime usage
+
+1. Click **Metrics** on the left, and then select **Dashboard > Runtime**.
+2. On the [**Runtime** dashboard](https://www.cockroachlabs.com/docs/stable/admin-ui-runtime-dashboard.html), view metrics about node count, CPU time, and memory usage.
+
+#### Identify frequently executed or high latency SQL statements
+
+1. Click **Statements** on the left.
+2. The [**Statements** page](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
