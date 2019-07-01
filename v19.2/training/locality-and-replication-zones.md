@@ -173,7 +173,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
     --background
     ~~~
 
-    You started nodes 7, 8, and 9 in the East region.
+    You started nodes 7, 8, and 9 in the West region.
 
 ## Step 4. Write data and verify data distribution
 
@@ -339,14 +339,14 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
     ~~~
 
 2. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
+    $ ./cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
     ~~~
 
 ## Step 8. Verify data distribution
