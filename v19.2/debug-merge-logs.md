@@ -12,9 +12,9 @@ The file produced by `cockroach debug merge-log` can contain highly sensitive, u
 
 ## Subcommands
 
-While the `cockroach debug` command has a few subcommands, users are expected to only use the [`encryption-active-key`](debug-encryption-active-key.html), [`zip`](debug-zip.html), and `debug-merge` subcommands.
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](debug-zip.html), [`encryption-active-key`](debug-encryption-active-key.html),  [`merge-logs`](debug-merge-logs.html), and [`ballast`](debug-ballast.html) subcommands.
 
-`debug`'s other subcommands are useful only to CockroachDB's developers and contributors.
+The other `debug` subcommands are useful only to CockroachDB's developers and contributors.
 
 ## Synopsis
 
