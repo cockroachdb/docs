@@ -11,6 +11,10 @@
 | NFS/Local&nbsp;[<sup>3</sup>](#considerations)              | `nodelocal` | Empty or `nodeID` [<sup>4</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A                                                                        |
 | S3-compatible services&nbsp;[<sup>5</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>6</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
+{{site.data.alerts.callout_danger}}
+NFS/Local (`nodelocal:///`) file locations do **not** work for multi-node clusters. Instead, use a cloud storage location.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 {{site.data.alerts.end}}
@@ -41,4 +45,4 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 | Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///employees.sql`, `nodelocal://2/employees.sql`                      |
+| NFS/Local    | `nodelocal:///employees.sql`, `nodelocal://2/employees.sql` <br><br>**Note:** NFS/Local (`nodelocal:///`) file locations do **not** work for multi-node clusters. Instead, use a cloud storage location.         |
