@@ -116,6 +116,7 @@
   releases:
     - date: Jul 1, 2019
       version: v19.2.0-alpha.20190701
+      no_windows: true
     - date: Jun 6, 2019
       version: v19.2.0-alpha.20190606
       no_windows: true
