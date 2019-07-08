@@ -22,9 +22,9 @@ void transferFunds(
   }
 
   // Perform the transfer.
-  tx->exec("UPDATE accounts SET balance = balance - "
+  tx->exec("UPDATE accounts SET balance = balance - " 
       + to_string(amount) + " WHERE id = " + to_string(from));
-  tx->exec("UPDATE accounts SET balance = balance + "
+  tx->exec("UPDATE accounts SET balance = balance + " 
       + to_string(amount) + " WHERE id = " + to_string(to));
 }
 
@@ -61,7 +61,7 @@ void executeTx(
 
 int main() {
   try {
-    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
+    pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
 
     executeTx(&c, [](pqxx::dbtransaction *tx) {
           transferFunds(tx, 1, 2, 100);
