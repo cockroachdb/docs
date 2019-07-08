@@ -479,19 +479,19 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/stable/admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
-- Number of unavailable ranges
+- Number of unavailable and under-replicated ranges
 - Queries per second
-- Service latency across the cluster.
+- Service latency across the cluster
 
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
 2. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/stable/admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
-#### Monitor runtime usage
+#### Monitor inter-node latencies
 
-1. Click **Metrics** on the left, and then select **Dashboard > Runtime**.
-2. On the [**Runtime** dashboard](https://www.cockroachlabs.com/docs/stable/admin-ui-runtime-dashboard.html), view metrics about node count, CPU time, and memory usage.
+1. Click the gear icon on the left-hand navigation bar.
+2. In the **Reports** section, click **Network Latency** to check latencies between all nodes in your cluster.
 
 #### Identify frequently executed or high latency SQL statements
 
