@@ -3,14 +3,8 @@
             [test.util :as util]))
 
 ;; Define the connection parameters to the cluster.
-(def db-spec {:dbtype "postgresql"
-              :dbname "bank"
-              :host "localhost"
-              :port "26257"
-              :ssl true
-              :sslmode "require"
-              :sslcert "certs/client.maxroach.crt"
-              :sslkey "certs/client.maxroach.key.pk8"
+(def db-spec {:subprotocol "postgresql"
+              :subname "//localhost:26257/bank"
               :user "maxroach"
               :password ""})
 
