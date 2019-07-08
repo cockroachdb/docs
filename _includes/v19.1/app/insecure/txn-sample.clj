@@ -7,10 +7,6 @@
               :dbname "bank"
               :host "localhost"
               :port "26257"
-              :ssl true
-              :sslmode "require"
-              :sslcert "certs/client.maxroach.crt"
-              :sslkey "certs/client.maxroach.key.pk8"
               :user "maxroach"})
 
 ;; The transaction we want to run.
