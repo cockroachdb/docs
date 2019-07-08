@@ -9,9 +9,10 @@ Once your Managed CockroachDB cluster is available and you've [set your password
 
 ## Step 1. Authorize your network
 
-Managed CockroachDB requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
+Managed CockroachDB requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
-You need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, else the connection from that network will be rejected.
+- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, else the connection from that network will be rejected.
+- In a production environment, you need to authorize your application server’s network.
 
 You can use the Console to authorize networks:
 
