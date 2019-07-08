@@ -20,7 +20,7 @@ You can use the Console to authorize networks:
 
     <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
-    The **Networking** page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster.
+    The **Networking** page displays a list of authorized networks (i.e., an IP network whitelist) that can access the cluster.
     Check if the current network has been authorized. If not, proceed with the following steps.
 
 2. Click the **Add Network** button in the top right corner.
