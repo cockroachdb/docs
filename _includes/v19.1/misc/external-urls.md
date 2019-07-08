@@ -12,7 +12,7 @@
 | S3-compatible services&nbsp;[<sup>5</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>6</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
 {{site.data.alerts.callout_danger}}
-If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes. Reading from `nodelocal` will fail unless all the files are available in the same place on all the nodes.
+If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes.  Therefore, unless the [`--external-io-dir`](start-a-node.html#general) is configured to point to an NFS mount or other network-backed, shared storage, using `nodelocal` in a multi-node cluster will likely not work as intended.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -45,4 +45,4 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 | Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///employees.sql`, `nodelocal://2/employees.sql` <br><br>**Note:** If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes. Reading from `nodelocal` will fail unless all the files are available in the same place on all the nodes.         |
+| NFS/Local    | `nodelocal:///employees.sql`, `nodelocal://2/employees.sql` <br><br>**Note:** If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes.  Therefore, unless the [`--external-io-dir`](start-a-node.html#general) is configured to point to an NFS mount or other network-backed, shared storage, using `nodelocal` in a multi-node cluster will likely not work as intended.         |
