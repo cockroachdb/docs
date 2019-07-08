@@ -37,3 +37,4 @@ The following anti-patterns are ineffective or risky:
 
 - Single-region deployments using 2 AZs, or multi-region deployments using 2 regions. In these cases, the cluster would be unable to survive the loss of a single AZ or a single region, respectively.
 - Broadly distributed multi-region deployments (e.g., `us-west`, `asia`, and `europe`) using only the default [Follow-the-Workload](topology-follow-the-workload.html) pattern. In this case, latency will likely be unacceptably high.
+- [Geo-partitioned tables](topology-geo-partitioned-replicas.html) with non-partitioned secondary indexes. In this case, writes will incur cross-region latency to achieve consensus on the non-partitioned indexes.

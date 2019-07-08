@@ -121,8 +121,6 @@ As you scale and add more cities, you can repeat steps 2 and 3 with the new comp
 
 ### Latency
 
-We should clarify that reads and writes that span multiple partitions are still possible and transactionally consistent, they just won't have local latencies.
-
 #### Reads
 
 Because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), reads that specify the local region key access the relevant leaseholder locally. This makes read latency very low, with the exception of reads that do not specify a region key or that refer to a partition in another region; such reads will be transactionally consistent but won't have local latencies.

@@ -26,7 +26,7 @@ For this pattern, you can either [run CockroachDB locally](start-a-local-cluster
 
 With the CockroachDB node in the same region as your client, and without the overhead of replication, both read and write latency are very low:
 
-<img src="{{ 'images/v19.1/topology-patterns/topology_development_latency.gif' | relative_url }}" alt="Development topology" style="max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/topology_development_latency.png' | relative_url }}" alt="Development topology" style="max-width:100%" />
 
 ### Resiliency
 

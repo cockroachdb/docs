@@ -57,7 +57,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v19.1/topology-patterns/topology_basic_production_reads.gif' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
+<img src="{{ 'images/v19.1/topology-patterns/topology_basic_production_reads.png' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
 
 #### Writes
 
@@ -83,7 +83,7 @@ Because each range is balanced across AZs, one AZ can fail without interrupting 
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_basic_production_resiliency1.png' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
 
-However, if an additional machine in a different AZ fails at the same time, and that machine holds a replica for a table or secondary index, that range becomes unavailable for reads and writes:
+However, if an additional AZ fails at the same time, the ranges that lose consensus become unavailable for reads and writes:
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_basic_production_resiliency2.png' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
 
@@ -95,13 +95,7 @@ CockroachDB stores important internal data in what are called system ranges. For
 - The "liveness" range contains authoritative information about which nodes are live at any given time.
 - Other system ranges contain information needed to allocate new table IDs and track the status of a cluster's nodes.
 
-For the cluster as a whole to remain available, these system ranges must retain a majority of their replicas, so CockroachDB comes with [pre-configured replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) for them with the replication factor increased to `5` by default when there are 5 or more nodes in the cluster. Based on the [cluster setup](#configuration) described above, with each node started with the `--locality` flag specifying its AZ, each system range's replicas are spread across 3 AZs. This means that one entire AZ can fail without causing any system range to lose consensus:
-
-<img src="{{ 'images/v19.1/topology-patterns/topology_single-region_cluster_resiliency1.png' | relative_url }}" alt="Single-region cluster resiliency" style="max-width:100%" />
-
-However, if a broader combination of failures causes one or more important system ranges to lose consensus, the entire cluster becomes unavailable:
-
-<img src="{{ 'images/v19.1/topology-patterns/topology_single-region_cluster_resiliency2.png' | relative_url }}" alt="Multi-region cluster resiliency" style="max-width:100%" />
+For the cluster as a whole to remain available, these system ranges must retain a majority of their replicas. Because these ranges are balanced across AZ just like the ranges for table data, system ranges can tolerate 1 AZ failure, but if 2 AZs fail at the same time, they lose consensus and the entire cluster becomes unavailable.
 
 ## See also
 
