@@ -42,6 +42,10 @@ You can use the Console to authorize networks:
 
     The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
+    {{site.data.alerts.callout_info}}
+    IPv6 addresses are currently not supported.
+    {{site.data.alerts.end}}
+
 4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
 
     The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).

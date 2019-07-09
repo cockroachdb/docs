@@ -5,7 +5,6 @@ toc: true
 toc_not_nested: true
 ---
 
-
 ## Why is my process hanging when I try to start it in the background?
 
 The first question that needs to be asked is whether or not you have previously
@@ -95,6 +94,14 @@ If you want all existing timeseries data to be deleted, change the `timeseries.s
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '0s';
 ~~~
+
+## What happens when a node runs out of disk space?
+
+When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as log files.
+
+{{site.data.alerts.callout_info}}
+In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).
+{{site.data.alerts.end}}
 
 ## Why would increasing the number of nodes not result in more operations per second?
 
