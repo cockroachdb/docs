@@ -16,7 +16,7 @@ Managed CockroachDB requires you to authorize the networks that can access the c
 
 You can use the Console to authorize networks:
 
-1. Navigate to your cluster's [Networking](managed-networking-page.html) page.
+1. Navigate to your cluster's **Networking** page.
 
     <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
