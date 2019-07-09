@@ -41,7 +41,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 4. Enter and confirm the **Password**.
 5. Click **Create**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
 
 #### Use the CockroachDB SQL client
 

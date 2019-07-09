@@ -94,6 +94,17 @@
     ]
   },
   {
+    "title": "Tutorials",
+    "items": [
+      {
+        "title": "Build a Python app with Kubernetes on Managed CockroachDB",
+        "urls": [
+          "/${VERSION}/managed-build-a-python-app-with-kubernetes.html"
+        ]
+      }
+    ]
+  },
+  {
     "title": "FAQs",
     "urls": [
       "/${VERSION}/managed-frequently-asked-questions.html"

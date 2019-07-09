@@ -1589,6 +1589,12 @@
             ]
           },
           {
+            "title": "<code>cockroach debug ballast</code>",
+            "urls": [
+              "/${VERSION}/debug-ballast.html"
+            ]
+          },
+          {
             "title": "<code>cockroach debug encryption-active-key</code>",
             "urls": [
               "/${VERSION}/debug-encryption-active-key.html"
