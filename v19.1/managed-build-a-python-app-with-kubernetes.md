@@ -189,7 +189,7 @@ In a new terminal:
     $ git clone https://github.com/cockroachdb/examples-python
     ~~~
 
-2. Navigate to the flask-alchemy folder:
+2. Navigate to the `flask-alchemy` folder:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -207,13 +207,11 @@ In a new terminal:
     You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
-     You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the absolute path to your `certs` directory, respectively. Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
+    Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
 
 ### Step 7. Test the application locally
 
-  1. Install SQLAlchemy:
-
-      To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command in a new terminal window:
+  1. Install SQLAlchemy, as well as a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL:
 
       {% include copy-clipboard.html %}
       ~~~ shell
@@ -256,7 +254,7 @@ The startup procedure might take a few minutes.
 
 ### Step 9. Create a Kubernetes secret
 
-Create a Kubernetes secret to store the CA certificate you downloaded in [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string):
+Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -291,7 +289,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 11. Dockerize your application
 
-1. In the `flask-sqlalchemy` folder you created in [Step 6. Configure the sample Python app](#step-6-configure-the-sample-python-app), create a file named `Dockerfile` and copy the following code into the file:
+1. In the `flask-sqlalchemy` folder, create a file named `Dockerfile` and copy the following code into the file:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -438,6 +436,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
     1. Get the name of one of the pods:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -451,6 +450,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
     2. Port-forward from your local machine to one of the pods:
 
+        {% include copy-clipboard.html %}
         ~~~ shell
         $ kubectl port-forward appdeploy-5f5868f6bf-2cjt5 5000:5000
         ~~~
