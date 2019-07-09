@@ -11,7 +11,7 @@ Once your Managed CockroachDB cluster is available and you've [set your password
 
 Managed CockroachDB requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
-- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, else the connection from that network will be rejected.
+- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
 
 You can use the Console to authorize networks:
@@ -21,6 +21,7 @@ You can use the Console to authorize networks:
     <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
     The **Networking** page displays a list of authorized networks (i.e., an IP network whitelist) that can access the cluster.
+
     Check if the current network has been authorized. If not, proceed with the following steps.
 
 2. Click the **Add Network** button in the top right corner.
@@ -39,7 +40,7 @@ You can use the Console to authorize networks:
 
     If you need to add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation.
 
-    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
 4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
 
@@ -63,7 +64,7 @@ You can use the Console to authorize networks:
 4. Enter and confirm the **Password**.
 5. Click **Create**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
+    Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
 
 ## Step 3. Generate the connection string
 
@@ -75,18 +76,19 @@ On the machine where you want to run your application:
 
     <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />    
 
-3. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user]().
-
-4. From the **Region** dropdown, select the region closest to where your client or application is running.
-5. From the **Database** dropdown, select the dabatase you want to connect to.
+2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
+3. From the **Region** dropdown, select the region closest to where your client or application is running.
+4. From the **Database** dropdown, select the dabatase you want to connect to.
 
     The default database is `defaultdb`. For more information, see [`Default databases`](show-databases.html#default-databases).
 
-6. Click **Continue**. The **Connect** tab is displayed.
+5. Click **Continue**.
+
+    The **Connect** tab is displayed.
 
     <img src="{{ 'images/v19.1/managed/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
-7. Select a connection option from:
+6. Select a connection option from:
 
    1. The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
 
@@ -98,11 +100,11 @@ On the machine where you want to run your application:
 
         You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
 
-8. Click the name of the **ca.crt** file to download the CA certificate.
+7. Click the name of the **ca.crt** file to download the CA certificate.
 
     Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
-9. When you are done, close the modal and [connect to the cluster](#connect-to-the-cluster).
+8. When you are done, close the modal and [connect to the cluster](#connect-to-the-cluster).
 
 ## Connect to the cluster
 
