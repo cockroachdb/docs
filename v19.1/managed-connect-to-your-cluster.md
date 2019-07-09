@@ -152,7 +152,7 @@ On the machine where you want to run the CockroachDB SQL client:
     ~~~
     </section>
 
-3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection string](#generate-the-connection-string) with the correct username, password, and path to the `ca.cert`:
+3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection string](#step-3-generate-the-connection-string) with the correct username, password, and path to the `ca.cert`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -199,7 +199,7 @@ On the machine where you want to run your application:
 
 2. Run code to execute basic SQL statements, creating a table, inserting some rows, and reading and printing the rows.
 
-    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#generate-the-connection-string) and the appropriate SQL user and password:
+    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#step-3-generate-the-connection-string) and the appropriate SQL user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
@@ -262,7 +262,7 @@ On the machine where you want to run your application:
 
 3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the [connection parameters](#generate-the-connection-string) and the appropriate SQL user and password:
+    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the [connection parameters](#step-3-generate-the-connection-string) and the appropriate SQL user and password:
 
         {{site.data.alerts.callout_info}}
         For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
@@ -387,7 +387,7 @@ On the machine where you want to run your application:
     The [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL. Using `postgres://` to connect to your cluster will not work.
     {{site.data.alerts.end}}
 
-    1. Create a `sqlalchemy-basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [application connection string](#generate-the-connection-string):
+    1. Create a `sqlalchemy-basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [application connection string](#step-3-generate-the-connection-string):
 
         {% include copy-clipboard.html %}
         ~~~ python
