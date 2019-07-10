@@ -1,3 +1,5 @@
+- Carefully review the [Production Checklist](recommended-production-settings.html) and recommended [Topology Patterns](topology-patterns.html).
+
 - You must have [CockroachDB installed](install-cockroachdb.html) locally. This is necessary for generating and managing your deployment's certificates.
 
 - You must have [SSH access]({{page.ssh-link}}) to each machine. This is necessary for distributing and starting CockroachDB binaries.

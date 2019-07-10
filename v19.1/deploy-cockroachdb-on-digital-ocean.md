@@ -29,11 +29,11 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 [Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate Droplet for that workload.
 
-- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
+- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
 - Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#cluster-topology).
+For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
 
 ## Step 2. Synchronize clocks
 

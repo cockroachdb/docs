@@ -68,7 +68,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 [Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
-- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#cluster-topology).
+- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
 - Use storage-optimized [Ls-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-storage) VMs with [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). For example, Cockroach Labs has used `Standard_L4s` VMs (4 vCPUs and 32 GiB of RAM per VM) for internal testing.
 
@@ -78,7 +78,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 - When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#cluster-topology).
+For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
 
 ## Step 3. Synchronize clocks
 

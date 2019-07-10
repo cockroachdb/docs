@@ -8,7 +8,7 @@ build_for: [standard, managed]
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html).
+For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html). For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
 ## Multi-row DML best practices

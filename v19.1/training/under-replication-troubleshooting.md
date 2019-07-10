@@ -66,14 +66,14 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 ## Step 2. Simulate the problem
 
-1. In the same terminal, reduce the amount of time the cluster waits before considering a node dead to just 1 minute:
+1. In the same terminal, reduce the amount of time the cluster waits before considering a node dead to just 1 minute and 15 seconds:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m0s';"
+    --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
 2. In the terminal where node 3 is running, press **CTRL-C** to stop the node.

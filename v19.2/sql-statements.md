@@ -19,6 +19,7 @@ Statement | Usage
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
+[`IMPORT INTO`](import-into.html) | <span class="version-tag">New in v19.2:</span> Incrementally import CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.

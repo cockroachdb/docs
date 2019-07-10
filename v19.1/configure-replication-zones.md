@@ -125,7 +125,7 @@ Constraint Scope | Description | Syntax
 
 ### Node/replica recommendations
 
-See [Cluster Topography](recommended-production-settings.html#cluster-topology) recommendations for production deployments.
+See [Cluster Topography](recommended-production-settings.html#topology) recommendations for production deployments.
 
 ## View replication zones
 

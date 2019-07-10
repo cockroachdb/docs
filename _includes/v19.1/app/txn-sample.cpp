@@ -1,5 +1,3 @@
-// Build with g++ -std=c++11 txn-sample.cpp -lpq -lpqxx
-
 #include <cassert>
 #include <functional>
 #include <iostream>
@@ -22,9 +20,9 @@ void transferFunds(
   }
 
   // Perform the transfer.
-  tx->exec("UPDATE accounts SET balance = balance - " 
+  tx->exec("UPDATE accounts SET balance = balance - "
       + to_string(amount) + " WHERE id = " + to_string(from));
-  tx->exec("UPDATE accounts SET balance = balance + " 
+  tx->exec("UPDATE accounts SET balance = balance + "
       + to_string(amount) + " WHERE id = " + to_string(to));
 }
 
@@ -50,7 +48,7 @@ void executeTx(
     } catch (const pqxx::pqxx_exception& e) {
       // Swallow "transaction restart" errors; the transaction will be retried.
       // Unfortunately libpqxx doesn't give us access to the error code, so we
-      // do string matching to identify retriable errors.
+      // do string matching to identify retryable errors.
       if (string(e.base().what()).find("restart transaction:") == string::npos) {
         throw;
       }
@@ -61,7 +59,7 @@ void executeTx(
 
 int main() {
   try {
-    pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
+    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
 
     executeTx(&c, [](pqxx::dbtransaction *tx) {
           transferFunds(tx, 1, 2, 100);

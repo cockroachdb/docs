@@ -12,6 +12,10 @@ The `debug encryption-active-key` [command](cockroach-commands.html) displays th
 $ cockroach debug encryption-active-key [path specified by the store flag]
 ~~~
 
+## Subcommands
+
+{% include {{ page.version.version }}/misc/debug-subcommands.md %}
+
 ## Example
 
 Start a node with encryption-at-rest enabled:

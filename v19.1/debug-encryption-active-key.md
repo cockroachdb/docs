@@ -6,6 +6,10 @@ toc: true
 
 The `debug encryption-active-key` [command](cockroach-commands.html) displays the encryption algorithm and store key for an encrypted store.
 
+## Subcommands
+
+{% include {{ page.version.version }}/misc/debug-subcommands.md %}
+
 ## Synopsis
 
 ~~~ shell
