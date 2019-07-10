@@ -62,9 +62,9 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
       <p class="landing-column-title">Deploy</p>
       <div class="landing-column-content">
         <p><a href="recommended-production-settings.html">Production Checklist</a></p>
+        <p><a href="topology-patterns.html">Topology Patterns</a></p>
         <p><a href="manual-deployment.html">Manual Deployment</a></p>
         <p><a href="orchestration.html">Orchestration</a></p>
-        <p><a href="security-overview.html">Security</a></p>
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
       </div>
     </div>

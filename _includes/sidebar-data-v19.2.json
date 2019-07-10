@@ -134,9 +134,56 @@
             ]
           },
           {
-            "title": "Cluster Topology Patterns",
-            "urls": [
-              "/${VERSION}/cluster-topology-patterns.html"
+            "title": "Topology Patterns",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/topology-patterns.html"
+                ]
+              },
+              {
+                "title": "Development",
+                "urls": [
+                  "/${VERSION}/topology-development.html"
+                ]
+              },
+              {
+                "title": "Basic Production",
+                "urls": [
+                  "/${VERSION}/topology-basic-production.html"
+                ]
+              },
+              {
+                "title": "Geo-Partitioned Replicas",
+                "urls": [
+                  "/${VERSION}/topology-geo-partitioned-replicas.html"
+                ]
+              },
+              {
+                "title": "Geo-Partitioned Leaseholders",
+                "urls": [
+                  "/${VERSION}/topology-geo-partitioned-leaseholders.html"
+                ]
+              },
+              {
+                "title": "Duplicate Indexes",
+                "urls": [
+                  "/${VERSION}/topology-duplicate-indexes.html"
+                ]
+              },
+              {
+                "title": "Follower Reads",
+                "urls": [
+                  "/${VERSION}/topology-follower-reads.html"
+                ]
+              },
+              {
+                "title": "Follow-the-Workload",
+                "urls": [
+                  "/${VERSION}/topology-follow-the-workload.html"
+                ]
+              }
             ]
           },
           {
