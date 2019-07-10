@@ -14,13 +14,13 @@ Managed CockroachDB requires you to authorize the networks that can access the c
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
 
-You can use the Console to authorize networks:
+Use the Console to authorize networks:
 
 1. Navigate to your cluster's **Networking** page.
 
-    <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
-
     The **Networking** page displays a list of authorized networks (i.e., an IP network whitelist) that can access the cluster.
+
+    <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
     Check if the current network has been authorized. If not, proceed with the following steps.
 
@@ -40,9 +40,9 @@ You can use the Console to authorize networks:
 
     If you need to add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation.
 
-    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. For the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets,and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
-4. Select what the network can connect to: the cluster's **UI**, **SQL** client, or both.
+4. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
     The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
 
@@ -68,7 +68,7 @@ You can use the Console to authorize networks:
 
 ## Step 3. Generate the connection string
 
-On the machine where you want to run your application:
+On the machine from which you want to connect to your cluster:
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -80,7 +80,7 @@ On the machine where you want to run your application:
 3. From the **Region** dropdown, select the region closest to where your client or application is running.
 4. From the **Database** dropdown, select the dabatase you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [`Default databases`](show-databases.html#default-databases).
+    The default database is `defaultdb`. For more information, see [Default databases](show-databases.html#default-databases).
 
 5. Click **Continue**.
 
@@ -88,25 +88,23 @@ On the machine where you want to run your application:
 
     <img src="{{ 'images/v19.1/managed/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
-6. Select a connection option from:
+6. Select a connection option:
 
-   1. The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
+   - The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
 
-   2. Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
+   - Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
 
         You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
 
-   3. Click **CockroachDB Client** to view the client connection string. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
+   - Click **CockroachDB Client** to view the client connection string. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
 
         You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
 
 7. Click the name of the **ca.crt** file to download the CA certificate.
 
-    Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
+8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
 
-8. When you are done, close the modal and [connect to the cluster](#connect-to-the-cluster).
-
-## Connect to the cluster
+## Step 4. Connect to the cluster
 
 ### Use the CockroachDB SQL client
 
