@@ -20,7 +20,8 @@ Before you connect to your Managed CockroachDB cluster, you need to authorize yo
 
 Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
 
-1. Navigate to your cluster's [Networking](managed-networking-page.html) page.
+
+1. Navigate to your cluster's **Networking** page.
 2. Click the **Add Network** button in the top right corner.
 
     The **Add Network** modal displays.

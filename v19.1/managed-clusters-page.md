@@ -16,7 +16,7 @@ For each cluster, the following details display:
 - The **Regions** the cluster is in
 - The date and time the cluster was **Created**
 
-To view and manage a specific cluster, click the name of the cluster. The [**Overview**](managed-cluster-overview.html) page will display.
+To view and manage a specific cluster, click the name of the cluster. The **Overview** page will display.
 
 ## Access tab
 
