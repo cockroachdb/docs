@@ -1,6 +1,6 @@
 ---
 title: Development Topology
-Guidance for a single-node cluster for local development.
+summary: Guidance for a single-node cluster for local development.
 toc: true
 ---
 
