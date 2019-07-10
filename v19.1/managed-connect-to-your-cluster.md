@@ -22,15 +22,15 @@ Use the Console to authorize networks:
 
     <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
-    Check if the current network has been authorized. If not, proceed with the following steps.
+2. Check if the current network has been authorized. If not, proceed with the following steps.
 
-2. Click the **Add Network** button in the top right corner.
+3. Click the **Add Network** button in the top right corner.
 
     The **Add Network** modal displays.
 
     <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
-3. Enter the public IPv4 address of the machine in the **Network** field.
+4. Enter the public IPv4 address of the machine in the **Network** field.
 
     You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
 
@@ -42,11 +42,11 @@ Use the Console to authorize networks:
 
     The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
-4. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
+5. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
     The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
 
-5. Click **Save**.
+6. Click **Save**.
 
 ## Step 2. Create a SQL user
 
