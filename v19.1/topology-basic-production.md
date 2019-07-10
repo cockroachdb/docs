@@ -1,6 +1,6 @@
 ---
 title: Basic Production Topology
-summary: Common cluster topology patterns with setup examples and performance considerations.
+summary: Guidance for a single-region production deployment.
 toc: true
 ---
 

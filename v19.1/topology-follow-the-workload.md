@@ -1,6 +1,6 @@
 ---
 title: Follow-the-Workload Topology
-summary: Common cluster topology patterns with setup examples and performance considerations.
+summary: Guidance on using the follow-the-workload topology in a multi-region deployment.
 toc: true
 ---
 

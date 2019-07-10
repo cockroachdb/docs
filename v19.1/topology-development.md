@@ -1,6 +1,6 @@
 ---
 title: Development Topology
-summary: Common cluster topology patterns with setup examples and performance considerations.
+Guidance for a single-node cluster for local development.
 toc: true
 ---
 

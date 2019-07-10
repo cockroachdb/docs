@@ -1,6 +1,6 @@
 ---
 title: Follower Reads Topology
-summary: Common cluster topology patterns with setup examples and performance considerations.
+summary: Guidance on using the follower reads topology in a multi-region deployment.
 toc: true
 ---
 

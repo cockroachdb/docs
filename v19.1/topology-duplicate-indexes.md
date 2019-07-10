@@ -1,6 +1,6 @@
 ---
 title: Duplicate Indexes Topology
-summary: Common cluster topology patterns with setup examples and performance considerations.
+summary: Guidance on using the duplicate indexes topology in a multi-region deployment.
 toc: true
 ---
 

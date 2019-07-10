@@ -1,6 +1,6 @@
 ---
 title: Geo-Partitioned Replicas Topology
-summary:
+Summary: Guidance on using the geo-partitioned replicas topology in a multi-region deployment.
 toc: true
 ---
 
