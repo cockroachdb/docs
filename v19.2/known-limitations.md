@@ -8,6 +8,21 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
+### Requests to restarted node in need of snapshots may hang
+
+When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
+
+To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rate` [cluster setting](cluster-settings.html) to temporarily relax the throughput rate limiting applied to snapshots. For example, changing the rate limiting from the default 8 MB/s, at which 1 GB of snapshots takes at least 2 minutes, to 64 MB/s can result in an 8x speedup in snapshot transfers and, therefore, a much shorter interruption of requests to an impacted node:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '64mb';
+~~~
+
+Before increasing this value, however, verify that you will not end up saturating your network interfaces, and once the problem has resolved, be sure to reset to the original value.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
+
 ### Location-based time zone names on Windows
 
 Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
