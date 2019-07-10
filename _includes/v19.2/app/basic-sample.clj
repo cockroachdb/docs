@@ -3,10 +3,15 @@
             [test.util :as util]))
 
 ;; Define the connection parameters to the cluster.
-(def db-spec {:subprotocol "postgresql"
-              :subname "//localhost:26257/bank"
-              :user "maxroach"
-              :password ""})
+(def db-spec {:dbtype "postgresql"
+              :dbname "bank"
+              :host "localhost"
+              :port "26257"
+              :ssl true
+              :sslmode "require"
+              :sslcert "certs/client.maxroach.crt"
+              :sslkey "certs/client.maxroach.key.pk8"
+              :user "maxroach"})
 
 (defn test-basic []
   ;; Connect to the cluster and run the code below with
@@ -23,7 +28,6 @@
          (map println)
          doall)
 
-    ;; The database connection is automatically closed by with-db-connection.
     ))
 
 

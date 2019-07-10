@@ -1,5 +1,3 @@
-// Build with g++ -std=c++11 basic-sample.cpp -lpq -lpqxx
-
 #include <cassert>
 #include <functional>
 #include <iostream>
@@ -12,7 +10,7 @@ using namespace std;
 int main() {
   try {
     // Connect to the "bank" database.
-    pqxx::connection c("postgresql://maxroach@localhost:26257/bank");
+    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
 
     pqxx::nontransaction w(c);
 
