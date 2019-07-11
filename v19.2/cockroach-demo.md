@@ -34,6 +34,7 @@ Workload | Description
 ---------|------------
 `bank` | A `bank` database, with one `bank` table containing account details.
 `intro` | An `intro` database, with one table, `mytable`, with a hidden message.
+`movr` | A `movr` database, with several tables of data for the [MovR example application](movr.html).
 `startrek` | A `startrek` database, with two tables, `episodes` and `quotes`.
 `tpcc` | A `tpcc` database, with a rich schema of multiple tables.
 

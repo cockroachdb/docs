@@ -1831,6 +1831,17 @@
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
         ]
+      },
+      {
+        "title": "Sample Applications",
+        "items": [
+          {
+            "title": "MovR",
+            "urls": [
+              "/${VERSION}/movr.html"
+            ]
+          }
+        ]
       }
     ]
   },

@@ -60,6 +60,8 @@ using the [scalar expressions](scalar-expressions.html) listed with `ON`. When t
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Choose columns
 
 #### Retrieve specific columns
@@ -68,19 +70,23 @@ Retrieve specific columns by naming them in a comma-separated list:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, balance
-FROM accounts;
+> SELECT id, city, name FROM users LIMIT 10;
 ~~~
 
 ~~~
-+----+-----------------------+---------+
-| id |         name          | balance |
-+----+-----------------------+---------+
-|  1 | Bjorn Fairclough      |    1200 |
-|  2 | Bjorn Fairclough      |    2500 |
-|  3 | Arturo Nevin          |     250 |
-[ truncated ]
-+----+-----------------------+---------+
+                   id                  |     city      |       name
++--------------------------------------+---------------+------------------+
+  7ae147ae-147a-4000-8000-000000000018 | los angeles   | Alfred Garcia
+  570a3d70-a3d7-4c00-8000-000000000011 | san francisco | Amy Cobb
+  428f5c28-f5c2-4000-8000-00000000000d | seattle       | Anita Atkinson
+  1eb851eb-851e-4800-8000-000000000006 | boston        | Brian Campbell
+  23d70a3d-70a3-4800-8000-000000000007 | boston        | Carl Mcguire
+  a8f5c28f-5c28-4800-8000-000000000021 | detroit       | Carl Russell
+  147ae147-ae14-4b00-8000-000000000004 | new york      | Catherine Nelson
+  99999999-9999-4800-8000-00000000001e | detroit       | Charles Montoya
+  e147ae14-7ae1-4800-8000-00000000002c | paris         | Cheyenne Smith
+  2e147ae1-47ae-4400-8000-000000000009 | washington dc | Cindy Medina
+(10 rows)
 ~~~
 
 #### Retrieve all columns
@@ -89,19 +95,23 @@ Retrieve all columns by using `*`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts;
+> SELECT * FROM users LIMIT 10;
 ~~~
 
 ~~~
-+----+-----------------------+---------+----------+--------------+
-| id |         name          | balance |   type   | state_opened |
-+----+-----------------------+---------+----------+--------------+
-|  1 | Bjorn Fairclough      |    1200 | checking | AL           |
-|  2 | Bjorn Fairclough      |    2500 | savings  | AL           |
-|  3 | Arturo Nevin          |     250 | checking | AK           |
-[ truncated ]
-+----+-----------------------+---------+----------+--------------+
+                   id                  |   city    |        name        |            address             | credit_card
++--------------------------------------+-----------+--------------------+--------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial             | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions          | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well            | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow            | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions        | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village             | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49      | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12   | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions           | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 6423 Jessica Underpass Apt. 87 | 9437219051
+(10 rows)
 ~~~
 
 ### Filter rows
@@ -112,19 +122,17 @@ Filter rows with expressions that use columns and return Boolean values in the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance
-FROM accounts
-WHERE balance < 300;
+> SELECT name, id FROM users WHERE city='seattle';
 ~~~
 
 ~~~
-+------------------+---------+
-|       name       | balance |
-+------------------+---------+
-| Arturo Nevin     |     250 |
-| Akbar Jinks      |     250 |
-| Andrea Maas      |     250 |
-+------------------+---------+
+        name       |                  id
++------------------+--------------------------------------+
+  Anita Atkinson   | 428f5c28-f5c2-4000-8000-00000000000d
+  Patricia Herrera | 47ae147a-e147-4000-8000-00000000000e
+  Holly Williams   | 4ccccccc-cccc-4c00-8000-00000000000f
+  Ryan Hickman     | 51eb851e-b851-4c00-8000-000000000010
+(4 rows)
 ~~~
 
 #### Filter on multiple conditions
@@ -133,55 +141,14 @@ To use multiple `WHERE` filters join them with `AND` or `OR`. You can also creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance > 2500 AND NOT type = 'checking';
+> SELECT * FROM vehicles WHERE city = 'seattle' AND status = 'available';
 ~~~
 
 ~~~
-+----+-------------------+---------+---------+--------------+
-| id |       name        | balance |  type   | state_opened |
-+----+-------------------+---------+---------+--------------+
-|  4 | Tullia Romijnders |    3000 | savings | AK           |
-| 62 | Ruarc Mathews     |    3000 | savings | OK           |
-+----+-------------------+---------+---------+--------------+
-~~~
-
-#### Select distinct rows
-
-Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened = 'VT';
-~~~
-
-~~~
-+----------------+
-|      name      |
-+----------------+
-| Sibylla Malone |
-| Sibylla Malone |
-+----------------+
-~~~
-
-Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT DISTINCT name
-FROM accounts
-WHERE state_opened = 'VT';
-~~~
-
-~~~
-+----------------+
-|      name      |
-+----------------+
-| Sibylla Malone |
-+----------------+
+                   id                  |  city   | type |               owner_id               |       creation_time       |  status   |    current_location    |                  ext
++--------------------------------------+---------+------+--------------------------------------+---------------------------+-----------+------------------------+----------------------------------------+
+  44444444-4444-4400-8000-000000000004 | seattle | bike | 428f5c28-f5c2-4000-8000-00000000000d | 2019-01-02 03:04:05+00:00 | available | 37754 Farmer Extension | {"brand": "Merida", "color": "yellow"}
+(1 row)
 ~~~
 
 #### Filter values with a list
@@ -190,21 +157,70 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance, state_opened
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA');
+> SELECT name, id FROM users WHERE city IN ('new york', 'chicago', 'seattle');
 ~~~
 
 ~~~
-+-----------------+---------+--------------+
-|      name       | balance | state_opened |
-+-----------------+---------+--------------+
-| Naseem Joossens |     300 | AZ           |
-| Aygün Sanna     |     900 | NY           |
-| Carola Dahl     |     800 | NY           |
-| Edna Barath     |     750 | WA           |
-| Edna Barath     |    2200 | WA           |
-+-----------------+---------+--------------+
+        name       |                  id
++------------------+--------------------------------------+
+  Matthew Clay     | 80000000-0000-4000-8000-000000000019
+  Samantha Coffey  | 851eb851-eb85-4000-8000-00000000001a
+  Jessica Martinez | 8a3d70a3-d70a-4000-8000-00000000001b
+  John Hines       | 8f5c28f5-c28f-4000-8000-00000000001c
+  Kenneth Barnes   | 947ae147-ae14-4800-8000-00000000001d
+  Robert Murphy    | 00000000-0000-4000-8000-000000000000
+  James Hamilton   | 051eb851-eb85-4ec0-8000-000000000001
+  Judy White       | 0a3d70a3-d70a-4d80-8000-000000000002
+  Devin Jordan     | 0f5c28f5-c28f-4c00-8000-000000000003
+  Catherine Nelson | 147ae147-ae14-4b00-8000-000000000004
+  Anita Atkinson   | 428f5c28-f5c2-4000-8000-00000000000d
+  Patricia Herrera | 47ae147a-e147-4000-8000-00000000000e
+  Holly Williams   | 4ccccccc-cccc-4c00-8000-00000000000f
+  Ryan Hickman     | 51eb851e-b851-4c00-8000-000000000010
+(14 rows)
+~~~
+
+#### Select distinct rows
+
+Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT name FROM users WHERE city in ('los angeles', 'washington dc');
+~~~
+
+~~~
+         name
++---------------------+
+  Ricky Beck
+  Michael Brown
+  William Wood
+  Alfred Garcia
+  Cindy Medina
+  Daniel Hernandez MD
+  Sarah Wang DDS
+  Michael Brown
+(8 rows)
+~~~
+
+Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT DISTINCT name FROM users WHERE city in ('los angeles', 'washington dc');
+~~~
+
+~~~
+         name
++---------------------+
+  Ricky Beck
+  Michael Brown
+  William Wood
+  Alfred Garcia
+  Cindy Medina
+  Daniel Hernandez MD
+  Sarah Wang DDS
+(7 rows)
 ~~~
 
 ### Rename columns in output
@@ -213,18 +229,15 @@ Instead of outputting a column's name in the retrieved table, you can change its
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name AS NY_accounts, balance
-FROM accounts
-WHERE state_opened = 'NY';
+> SELECT current_location AS ny_address, id, type, status FROM vehicles WHERE city = 'new york';
 ~~~
 
 ~~~
-+-------------+---------+
-| NY_accounts | balance |
-+-------------+---------+
-| Aygün Sanna |     900 |
-| Carola Dahl |     800 |
-+-------------+---------+
+        ny_address       |                  id                  |    type    | status
++------------------------+--------------------------------------+------------+--------+
+  64110 Richard Crescent | 00000000-0000-4000-8000-000000000000 | skateboard | in_use
+  86667 Edwards Valley   | 11111111-1111-4100-8000-000000000001 | scooter    | in_use
+(2 rows)
 ~~~
 
 This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`](rename-column.html).
@@ -240,18 +253,20 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, type
-FROM accounts
-WHERE name LIKE 'Anni%';
+> SELECT city, status, id FROM vehicles WHERE type LIKE 'scoot%';
 ~~~
 
 ~~~
-+----+----------------+----------+
-| id |      name      |   type   |
-+----+----------------+----------+
-| 58 | Annibale Karga | checking |
-| 59 | Annibale Karga | savings  |
-+----+----------------+----------+
+      city      |  status   |                  id
++---------------+-----------+--------------------------------------+
+  boston        | in_use    | 22222222-2222-4200-8000-000000000002
+  detroit       | in_use    | 99999999-9999-4800-8000-000000000009
+  minneapolis   | in_use    | aaaaaaaa-aaaa-4800-8000-00000000000a
+  minneapolis   | available | bbbbbbbb-bbbb-4800-8000-00000000000b
+  new york      | in_use    | 11111111-1111-4100-8000-000000000001
+  san francisco | available | 55555555-5555-4400-8000-000000000005
+  washington dc | in_use    | 33333333-3333-4400-8000-000000000003
+(7 rows)
 ~~~
 
 ### Aggregate functions
@@ -264,40 +279,41 @@ By using an aggregate function as a `target_elem`, you can perform the calculati
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT MIN(balance)
-FROM accounts;
+> SELECT MIN(revenue) FROM rides;
 ~~~
 
 ~~~
-+--------------+
-| MIN(balance) |
-+--------------+
-|          250 |
-+--------------+
+  min
++------+
+  0.00
+(1 row)
 ~~~
 
 You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name, balance
-FROM accounts
-WHERE balance = (
+> SELECT id, city, vehicle_id, rider_id
+FROM rides
+WHERE revenue = (
       SELECT
-      MIN(balance)
-      FROM accounts
+      MIN(revenue)
+      FROM rides
 );
 ~~~
 
 ~~~
-+----+------------------+---------+
-| id |       name       | balance |
-+----+------------------+---------+
-|  3 | Arturo Nevin     |     250 |
-| 10 | Henrik Brankovic |     250 |
-| 26 | Odalys Ziemniak  |     250 |
-| 35 | Vayu Soun        |     250 |
-+----+------------------+---------+
+                   id                  |    city     |              vehicle_id              |               rider_id
++--------------------------------------+-------------+--------------------------------------+--------------------------------------+
+  1f3b645a-1cac-4800-8000-00000000003d | boston      | 22222222-2222-4200-8000-000000000002 | 19999999-9999-4a00-8000-000000000005
+  23d70a3d-70a3-4800-8000-000000000046 | boston      | 22222222-2222-4200-8000-000000000002 | 19999999-9999-4a00-8000-000000000005
+  851eb851-eb85-4000-8000-000000000104 | chicago     | 88888888-8888-4800-8000-000000000008 | 851eb851-eb85-4000-8000-00000000001a
+  85a1cac0-8312-4000-8000-000000000105 | chicago     | 88888888-8888-4800-8000-000000000008 | 947ae147-ae14-4800-8000-00000000001d
+  722d0e56-0418-4400-8000-0000000000df | los angeles | 77777777-7777-4800-8000-000000000007 | 7ae147ae-147a-4000-8000-000000000018
+  ae147ae1-47ae-4800-8000-000000000154 | minneapolis | aaaaaaaa-aaaa-4800-8000-00000000000a | b851eb85-1eb8-4000-8000-000000000024
+  0dd2f1a9-fbe7-4c80-8000-00000000001b | new york    | 11111111-1111-4100-8000-000000000001 | 00000000-0000-4000-8000-000000000000
+  f4bc6a7e-f9db-4000-8000-0000000001de | rome        | eeeeeeee-eeee-4000-8000-00000000000e | f0a3d70a-3d70-4000-8000-00000000002f
+(8 rows)
 ~~~
 
 #### Perform aggregate function on retrieved rows
@@ -306,17 +322,14 @@ By filtering the statement, you can perform the calculation only on retrieved ro
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT SUM(balance)
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA');
+> SELECT SUM(revenue) FROM rides WHERE city IN ('new york', 'chicago');
 ~~~
 
 ~~~
-+--------------+
-| SUM(balance) |
-+--------------+
-|         4950 |
-+--------------+
+    sum
++---------+
+  4079.00
+(1 row)
 ~~~
 
 #### Filter columns fed into aggregate functions
@@ -325,15 +338,14 @@ You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered FROM accounts;
+> SELECT count(*) AS unfiltered, count(*) FILTER (WHERE revenue > 50) AS filtered FROM rides;
 ~~~
 
 ~~~
+  unfiltered | filtered
 +------------+----------+
-| unfiltered | filtered |
-+------------+----------+
-|         84 |       14 |
-+------------+----------+
+         500 |      252
+(1 row)
 ~~~
 
 #### Create aggregate groups
@@ -346,20 +358,17 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT state_opened AS state, SUM(balance) AS state_balance
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY', 'WA')
-GROUP BY state_opened;
+> SELECT city, SUM(revenue) AS city_revenue FROM rides
+WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
 ~~~
 
 ~~~
-+-------+---------------+
-| state | state_balance |
-+-------+---------------+
-| AZ    |           300 |
-| NY    |          1700 |
-| WA    |          2950 |
-+-------+---------------+
+    city   | city_revenue
++----------+--------------+
+  chicago  |      1990.00
+  new york |      2089.00
+  seattle  |      2029.00
+(3 rows)
 ~~~
 
 #### Filter aggregate groups
@@ -370,21 +379,19 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT state_opened, AVG(balance) as avg
-FROM accounts
-GROUP BY state_opened
-HAVING AVG(balance) BETWEEN 1700 AND 50000;
+> SELECT city, AVG(revenue) as avg FROM rides GROUP BY city
+HAVING AVG(revenue) BETWEEN 50 AND 60;
 ~~~
 
 ~~~
-+--------------+---------+
-| state_opened |   avg   |
-+--------------+---------+
-| AR           | 3700.00 |
-| UT           | 1750.00 |
-| OH           | 2500.00 |
-| AL           | 1850.00 |
-+--------------+---------+
+      city      |          avg
++---------------+-----------------------+
+  amsterdam     |                 52.50
+  boston        | 52.666666666666666667
+  los angeles   | 55.951219512195121951
+  minneapolis   | 55.146341463414634146
+  washington dc | 58.756097560975609756
+(5 rows)
 ~~~
 
 #### Use aggregate functions in having clause
@@ -395,19 +402,17 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, state_opened
-FROM accounts
-WHERE state_opened in ('LA', 'MO')
-GROUP BY name, state_opened
-HAVING COUNT(name) > 1;
+> SELECT vehicle_id, city FROM rides WHERE city IN ('new york', 'chicago', 'seattle')
+GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
 ~~~
 
 ~~~
-+----------------+--------------+
-|      name      | state_opened |
-+----------------+--------------+
-| Yehoshua Kleid | MO           |
-+----------------+--------------+
+               vehicle_id              |   city
++--------------------------------------+----------+
+  88888888-8888-4800-8000-000000000008 | chicago
+  11111111-1111-4100-8000-000000000001 | new york
+  44444444-4444-4400-8000-000000000004 | seattle
+(3 rows)
 ~~~
 
 ### Select from a specific index

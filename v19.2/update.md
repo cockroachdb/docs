@@ -40,141 +40,147 @@ Parameter | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Update a single column in a single row
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users LIMIT 10;
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   4000.0 | Julian   |
-|  3 |   8700.0 | Dario    |
-|  4 |   3400.0 | Nitin    |
-+----+----------+----------+
-(4 rows)
+                   id                  |   city    |        name        |            address             | credit_card
++--------------------------------------+-----------+--------------------+--------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial             | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions          | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well            | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow            | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions        | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village             | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49      | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12   | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions           | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 6423 Jessica Underpass Apt. 87 | 9437219051
+(10 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET balance = 5000.0 WHERE id = 2;
+> UPDATE users SET address = '201 E Randolph St' WHERE id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users LIMIT 10;
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   5000.0 | Julian   |
-|  3 |   8700.0 | Dario    |
-|  4 |   3400.0 | Nitin    |
-+----+----------+----------+
-(4 rows)
+                   id                  |   city    |        name        |           address            | credit_card
++--------------------------------------+-----------+--------------------+------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial           | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions        | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well          | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow          | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions      | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village           | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49    | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12 | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions         | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 201 E Randolph St            | 9437219051
+(10 rows)
 ~~~
 
 ### Update multiple columns in a single row
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET (balance, customer) = (9000.0, 'Kelly') WHERE id = 2;
+> UPDATE rides SET (end_address, revenue) = ('201 E Randolph St', 25.00) WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 |   8700.0 | Dario    |
-|  4 |   3400.0 | Nitin    |
-+----+----------+----------+
-(4 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> UPDATE accounts SET balance = 6300.0, customer = 'Stanley' WHERE id = 3;
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 76707 Timothy Square          | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   25.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 89245 Eric Orchard          | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   80.00
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> UPDATE rides SET end_address = '10000 W OHare Ave', revenue = 60.00 WHERE id = '94fdf3b6-45a1-4800-8000-000000000123';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 |   6300.0 | Stanley  |
-|  4 |   3400.0 | Nitin    |
-+----+----------+----------+
-(4 rows)
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 76707 Timothy Square          | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   25.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 10000 W OHare Ave           | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   60.00
+(5 rows)
 ~~~
 
 ### Update using `SELECT` statement
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET (balance, customer) =
-    (SELECT balance, customer FROM accounts WHERE id = 2)
-     WHERE id = 4;
+> UPDATE rides SET (revenue, start_address) =
+    (SELECT revenue, end_address FROM rides WHERE id = '94fdf3b6-45a1-4800-8000-000000000123')
+     WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 |   6300.0 | Stanley  |
-|  4 |   9000.0 | Kelly    |
-+----+----------+----------+
-(4 rows)
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 10000 W OHare Ave             | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   60.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 10000 W OHare Ave           | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   60.00
+(5 rows)
 ~~~
 
 ### Update with default values
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET balance = DEFAULT where customer = 'Stanley';
+> UPDATE users SET address = DEFAULT WHERE id = '19999999-9999-4a00-8000-000000000005';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users LIMIT 5;
 ~~~
 
 ~~~
-+----+----------+----------+
-| id | balance  | customer |
-+----+----------+----------+
-|  1 | 10000.50 | Ilya     |
-|  2 |   9000.0 | Kelly    |
-|  3 | NULL     | Stanley  |
-|  4 |   9000.0 | Kelly    |
-+----+----------+----------+
-(4 rows)
+                   id                  |   city    |        name        |        address        | credit_card
++--------------------------------------+-----------+--------------------+-----------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial    | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well   | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow   | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | NULL                  | 0303726947
+(5 rows)
 ~~~
 
 ### Update all rows
@@ -182,27 +188,45 @@ Parameter | Description
 {{site.data.alerts.callout_danger}}
 If you do not use the `WHERE` clause to specify the rows to be updated, the values for all rows will be updated.
 {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+If the [`sql_safe_updates`](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET balance = 5000.0;
+> UPDATE rides SET revenue = 7.00;
+~~~
+
+~~~
+pq: rejected: UPDATE without WHERE clause (sql_safe_updates = true)
+~~~
+
+You can use a [`SET`](set-vars.html) statement to set session variables.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET sql_safe_updates = false;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> UPDATE rides SET revenue = 7.00;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM rides LIMIT 5;
 ~~~
 
 ~~~
-+----+---------+----------+
-| id | balance | customer |
-+----+---------+----------+
-|  1 |  5000.0 | Ilya     |
-|  2 |  5000.0 | Kelly    |
-|  3 |  5000.0 | Stanley  |
-|  4 |  5000.0 | Kelly    |
-+----+---------+----------+
-(4 rows)
+                   id                  |   city    | vehicle_city |               rider_id               |              vehicle_id              |         start_address          |            end_address            |        start_time         |         end_time          | revenue
++--------------------------------------+-----------+--------------+--------------------------------------+--------------------------------------+--------------------------------+-----------------------------------+---------------------------+---------------------------+---------+
+  c0000000-0000-4000-8000-000000000177 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | cccccccc-cccc-4000-8000-00000000000c | 65738 Williams Summit          | 72424 Thomas Field Suite 82       | 2018-12-31 03:04:05+00:00 | 2019-01-01 03:04:05+00:00 |    7.00
+  c083126e-978d-4000-8000-000000000178 | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 53613 Johnson Terrace          | 12667 Monica Hollow               | 2018-12-16 03:04:05+00:00 | 2018-12-17 15:04:05+00:00 |    7.00
+  c10624dd-2f1a-4000-8000-000000000179 | amsterdam | amsterdam    | c7ae147a-e147-4000-8000-000000000027 | cccccccc-cccc-4000-8000-00000000000c | 61921 Brittany Orchard Apt. 85 | 81157 Stephanie Court Suite 96    | 2018-12-30 03:04:05+00:00 | 2019-01-01 07:04:05+00:00 |    7.00
+  c189374b-c6a7-4000-8000-00000000017a | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 75456 Gray View                | 69175 Christopher Shoals Suite 47 | 2018-12-23 03:04:05+00:00 | 2018-12-23 03:04:05+00:00 |    7.00
+  c20c49ba-5e35-4000-8000-00000000017b | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 38892 Joseph Summit Suite 86   | 89582 Melissa Streets             | 2018-12-27 03:04:05+00:00 | 2018-12-28 18:04:05+00:00 |    7.00
+(5 rows)
 ~~~
 
 ### Update and return values
@@ -226,16 +250,15 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id;
+> UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;
 ~~~
 
 ~~~
-+----+
-| id |
-+----+
-|  1 |
-+----+
-(1 row)
+                   id
++--------------------------------------+
+  00000000-0000-4000-8000-000000000000
+  11111111-1111-4100-8000-000000000001
+(2 rows)
 ~~~
 
 </section>
@@ -250,7 +273,7 @@ import psycopg2
 
 # Connect to the "bank" database.
 conn = psycopg2.connect(
-    database='bank',
+    database='movr',
     user='root',
     host='localhost',
     port=26257
@@ -262,15 +285,15 @@ conn.set_session(autocommit=True)
 # Open a cursor to perform database operations.
 cur = conn.cursor()
 
-# Update a row in the "accounts" table
+# Update a row in the "vehicles" table
 # and return the "id" value.
 cur.execute(
-    'UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id'
+    "UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;"
 )
 
 # Print out the returned value.
 rows = cur.fetchall()
-print('ID:')
+print('IDs:')
 for row in rows:
     print([str(cell) for cell in row])
 
@@ -282,8 +305,9 @@ conn.close()
 The printed value would look like:
 
 ~~~
-ID:
-['1']
+IDs:
+['00000000-0000-4000-8000-000000000000']
+['11111111-1111-4100-8000-000000000001']
 ~~~
 
 </section>
@@ -299,19 +323,19 @@ require 'pg'
 # Connect to the "bank" database.
 conn = PG.connect(
     user: 'root',
-    dbname: 'bank',
+    dbname: 'movr',
     host: 'localhost',
     port: 26257
 )
 
-# Update a row in the "accounts" table
+# Update a row in the "vehicles" table
 # and return the "id" value.
 conn.exec(
-    'UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id'
+    "UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;"
 ) do |res|
 
 # Print out the returned value.
-puts "ID:"
+puts "IDs:"
     res.each do |row|
         puts row
     end
@@ -324,8 +348,9 @@ conn.close()
 The printed value would look like:
 
 ~~~
-ID:
-{"id"=>"1"}
+IDs:
+{"id"=>"00000000-0000-4000-8000-000000000000"}
+{"id"=>"11111111-1111-4100-8000-000000000001"}
 ~~~
 
 </section>
@@ -338,50 +363,51 @@ ID:
 package main
 
 import (
-        "database/sql"
-        "fmt"
-        "log"
+	"database/sql"
+	"fmt"
+	"log"
 
-        _ "github.com/lib/pq"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-        //Connect to the "bank" database.
-        db, err := sql.Open(
-                "postgres",
-                "postgresql://root@localhost:26257/bank?sslmode=disable"
-        )
-        if err != nil {
-                log.Fatal("error connecting to the database: ", err)
-        }
+	//Connect to the "bank" database.
+	db, err := sql.Open(
+		"postgres",
+		"postgresql://root@localhost:26257/movr?sslmode=disable",
+	)
+	if err != nil {
+		log.Fatal("error connecting to the database: ", err)
+	}
 
-        // Update a row in the "accounts" table
-        // and return the "id" value.
-        rows, err := db.Query(
-                "UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id",
-        )
-        if err != nil {
-                log.Fatal(err)
-        }
+	// Update a row in the "vehicles" table
+	// and return the "id" value.
+	rows, err := db.Query(
+		"UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;",
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-        // Print out the returned value.
-        defer rows.Close()
-        fmt.Println("ID:")
-        for rows.Next() {
-                var id int
-                if err := rows.Scan(&id); err != nil {
-                        log.Fatal(err)
-                }
-                fmt.Printf("%d\n", id)
-        }
+	// Print out the returned value.
+	defer rows.Close()
+	fmt.Println("IDs:")
+	for rows.Next() {
+		var id string
+		if err := rows.Scan(&id); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s\n", id)
+	}
 }
 ~~~
 
 The printed value would look like:
 
 ~~~
-ID:
-1
+IDs:
+00000000-0000-4000-8000-000000000000
+11111111-1111-4100-8000-000000000001
 ~~~
 
 </section>
@@ -391,61 +417,61 @@ ID:
 
 {% include copy-clipboard.html %}
 ~~~ js
-var async = require('async');
+var async = require('async')
+var pg = require('pg')
 
-// Require the driver.
-var pg = require('pg');
-
-// Connect to the "bank" database.
+// Config to connect to the "movr" database.
 var config = {
-  user: 'root',
-  host: 'localhost',
-  database: 'bank',
-  port: 26257
-};
-
-pg.connect(config, function (err, client, done) {
-  // Closes communication with the database and exits.
-  var finish = function () {
-    done();
-    process.exit();
-  };
-
-  if (err) {
-    console.error('could not connect to cockroachdb', err);
-    finish();
+    user: 'root',
+    host: 'localhost',
+    database: 'movr',
+    port: 26257
   }
-  async.waterfall([
-    function (next) {
-      // Update a row in the "accounts" table
-      // and return the "id" value.
-      client.query(
-        `UPDATE accounts SET balance = DEFAULT WHERE id = 1 RETURNING id`,
-        next
-      );
-    }
-  ],
-  function (err, results) {
-    if (err) {
-      console.error('error updating and selecting from accounts', err);
-      finish();
-    }
-    // Print out the returned value.
-    console.log('ID:');
-    results.rows.forEach(function (row) {
-      console.log(row);
-    });
 
-    finish();
-  });
-});
+// Create pool
+var pool = new pg.Pool(config)
+
+pool.connect(function (err, client, done) {
+
+    // Close communication with the database and exit.
+    var finish = function () {
+        done()
+        process.exit()
+    }
+
+    if (err) {
+        console.error('could not connect to cockroachdb', err);
+        finish()
+    }
+    async.waterfall([function (next) {
+        client.query(
+            `UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;`,
+          next
+        )
+      }
+    ],
+    function (err, results) {
+      if (err) {
+        console.error('error updating and selecting from users', err);
+        finish()
+      }
+      // Print out the returned value.
+      console.log('IDs:')
+      results.rows.forEach(function (row) {
+        console.log(row)
+      })
+
+      finish()
+    })
+  })
 ~~~
 
 The printed value would like:
 
 ~~~
-ID:
-{ id: '1' }
+IDs:
+{ id: '00000000-0000-4000-8000-000000000000' }
+{ id: '11111111-1111-4100-8000-000000000001' }
 ~~~
 
 </section>
