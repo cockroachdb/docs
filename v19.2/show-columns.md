@@ -38,55 +38,26 @@ Field | Description
 
 ## Examples
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE orders (
-    id INT PRIMARY KEY DEFAULT unique_rowid(),
-    date TIMESTAMP NOT NULL,
-    priority INT DEFAULT 1,
-    customer_id INT UNIQUE,
-    status STRING DEFAULT 'open',
-    CHECK (priority BETWEEN 1 AND 5),
-    CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
-    FAMILY (id, date, priority, customer_id, status)
-);
-~~~
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM orders;
+> SHOW COLUMNS FROM vehicles;
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default  | generation_expression |               indices                | is_hidden
-+-------------+-----------+-------------+-----------------+-----------------------+--------------------------------------+-----------+
-  id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"} |   false
-  date        | TIMESTAMP |    false    | NULL            |                       | {}                                   |   false
-  priority    | INT       |    true     | 1:::INT         |                       | {}                                   |   false
-  customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}           |   false
-  status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
-(5 rows)
+    column_name    | data_type | is_nullable | column_default | generation_expression |                     indices                     | is_hidden
++------------------+-----------+-------------+----------------+-----------------------+-------------------------------------------------+-----------+
+  id               | UUID      |    false    | NULL           |                       | {primary,vehicles_auto_index_fk_city_ref_users} |   false
+  city             | STRING    |    false    | NULL           |                       | {primary,vehicles_auto_index_fk_city_ref_users} |   false
+  type             | STRING    |    true     | NULL           |                       | {}                                              |   false
+  owner_id         | UUID      |    true     | NULL           |                       | {vehicles_auto_index_fk_city_ref_users}         |   false
+  creation_time    | TIMESTAMP |    true     | NULL           |                       | {}                                              |   false
+  status           | STRING    |    true     | NULL           |                       | {}                                              |   false
+  current_location | STRING    |    true     | NULL           |                       | {}                                              |   false
+  ext              | JSONB     |    true     | NULL           |                       | {}                                              |   false
+(8 rows)
 ~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE foo (x INT);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM foo;
-~~~
-
-~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
-+-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
-  x           | INT       |    true     | NULL           |                       | {}          |   false
-  rowid       | INT       |    false    | unique_rowid() |                       | {"primary"} |   true
-(2 rows)
-~~~
-
-
 
 ## See also
 

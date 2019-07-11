@@ -48,6 +48,7 @@ Workload | Description
 `bank` | Models a set of accounts with currency balances.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 `intro` | Loads an `intro` database, with one table, `mytable`, with a hidden message.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 `kv` | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+`movr` | Loads a `movr` database, with several tables of data for the [MovR example application](movr.html).<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 `startrek` | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 `tpcc` | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 `ycsb` | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
@@ -86,6 +87,8 @@ These workloads generate data but do not offer the ability to run continuous loa
 Flag | Description
 -----|------------
 `--drop` | Drop the existing database, if it exists, before loading the dataset.
+`--pprofport` | The port for pprof endpoint.<br><br>**Default:** `33333`
+
 
 ### `kv` workload
 
@@ -110,6 +113,26 @@ Flag | Description
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--use-opt` | Use [cost-based optimizer](cost-based-optimizer.html).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--write-seq` | Initial write sequence value.<br><br>**Applicable commands:** `init` or `run`
+
+### `movr` workload
+
+{{site.data.alerts.callout_info}}
+This workload generates data but does not offer the ability to run continuous load. Thus, only the `init` subcommand is supported.
+{{site.data.alerts.end}}
+
+Flag | Description
+-----|------------
+`--concurrency` | The number of concurrent workers.<br><br>**Default:** `16`
+`--db` | The SQL database to use.<br><br>**Default:** `movr`
+`--drop` | Drop the existing database, if it exists.
+`--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Default:** `prepare`
+`--num-histories` | The initial number of ride location histories.<br><br>**Default:** `1000`
+`--num-promo-codes` | The initial number of promo codes.<br><br>**Default:** `1000`
+`--num-rides` | Initial number of rides.<br><br>**Default:** `500`
+`--num-users` | Initial number of users.<br><br>**Default:** `50`
+`--num-vehicles` | Initial number of vehicles.<br><br>**Default:** `15`
+`--pprofport` | The port for pprof endpoint.<br><br>**Default:** `33333`
+`--seed` | The random number generator seed.<br><br>**Default:** `1`
 
 ### `tpcc` workload
 
@@ -380,6 +403,56 @@ $ cockroach start \
       78 |      3 |  23 | All Our Yesterdays                |   5943.7
       79 |      3 |  24 | Turnabout Intruder                |   5928.5
     (14 rows)
+    ~~~
+
+### Load the `movr` dataset
+
+1. Load the dataset:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+2. Launch the built-in SQL client to view it:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW TABLES FROM movr;
+    ~~~
+
+    ~~~
+            table_name
++----------------------------+
+  promo_codes
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(6 rows)
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM movr.users WHERE city='new york';
+    ~~~
+
+    ~~~
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
     ~~~
 
 ### Run the `tpcc` workload

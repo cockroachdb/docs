@@ -47,14 +47,14 @@ you can check the scan direction with:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) SELECT * FROM kv@{FORCE_INDEX=primary,DESC};
+> EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
 ~~~
 
 ~~~
-                text
--------------------------------------
- scan kv,rev
-  └── flags: force-index=primary,rev
+                 text
++-------------------------------------+
+  scan users,rev
+   └── flags: force-index=primary,rev
 (2 rows)
 ~~~
 

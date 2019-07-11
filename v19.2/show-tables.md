@@ -32,7 +32,7 @@ When a `database_name` and `schema_name` are omitted, the tables of the [current
 
 ## Examples
 
-These example assumes that the `bank` database has been set as the current database for the session, either via the [`SET`](set-vars.html) statement or in the client's connection string.
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Show tables in the current database
 
@@ -42,58 +42,65 @@ These example assumes that the `bank` database has been set as the current datab
 ~~~
 
 ~~~
-+---------------+
-| table_name    |
-+---------------+
-| accounts      |
-| user_accounts |
-+---------------+
-(2 rows)
+          table_name
++----------------------------+
+  promo_codes
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(6 rows)
 ~~~
 
 This uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`.
 
 ### Show tables in a different schema
 
+You can show the tables in schemas other than the current schema. You can also show the schema by table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM movr.information_schema;
+~~~
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM bank.information_schema; -- also possible
-~~~
+Because `movr` is the current database, these statements return the same output:
 
 ~~~
+             table_name
 +-----------------------------------+
-|            table_name             |
-+-----------------------------------+
-| administrable_role_authorizations |
-| applicable_roles                  |
-| column_privileges                 |
-| columns                           |
-| constraint_column_usage           |
-| enabled_roles                     |
-| key_column_usage                  |
-| parameters                        |
-| referential_constraints           |
-| role_table_grants                 |
-| routines                          |
-| schema_privileges                 |
-| schemata                          |
-| sequences                         |
-| statistics                        |
-| table_constraints                 |
-| table_privileges                  |
-| tables                            |
-| user_privileges                   |
-| views                             |
-+-----------------------------------+
+  administrable_role_authorizations
+  applicable_roles
+  column_privileges
+  columns
+  constraint_column_usage
+  enabled_roles
+  key_column_usage
+  parameters
+  referential_constraints
+  role_table_grants
+  routines
+  schema_privileges
+  schemata
+  sequences
+  statistics
+  table_constraints
+  table_privileges
+  tables
+  user_privileges
+  views
 (20 rows)
 ~~~
 
+
 ### Show tables in a different database
+
+You can also show tables from a different database. In a separate terminal, run `cockroach workload init startrek` with the appropriate [connection string](connection-parameters.html) to initialize and populate the `startrek` database on your running cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -102,33 +109,43 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM startrek; -- also possible
+> SHOW TABLES FROM startrek;
 ~~~
 
+Because `public` is the current schema, these statements return the same output:
+
 ~~~
-+-------------------+
-| table_name        |
-+-------------------+
-| episodes          |
-| quotes            |
-| quotes_per_season |
-+-------------------+
-(3 rows)
+table_name
++------------+
+episodes
+quotes
+(2 rows)
 ~~~
 
 ### Show tables with comments
 
-You can use [`COMMENT ON`](comment-on.html) to add comments on a table. To view a table's comments:
+You can use [`COMMENT ON`](comment-on.html) to add comments on a table.
 
 ~~~ sql
-> SHOW TABLES FROM customers WITH COMMENT;
+> COMMENT ON TABLE users IS 'This is a sample comment';
+~~~
+
+To view a table's comments:
+
+~~~ sql
+> SHOW TABLES FROM movr WITH COMMENT;
 ~~~
 
 ~~~
-  table_name |         comment
-+------------+--------------------------+
-  dogs       | This is a sample comment
-(1 row)
+          table_name         |         comment
++----------------------------+--------------------------+
+  users                      | This is a sample comment
+  vehicles                   |
+  rides                      |
+  vehicle_location_histories |
+  promo_codes                |
+  user_promo_codes           |
+(6 rows)
 ~~~
 
 For more information, see [`COMMENT ON`](comment-on.html).

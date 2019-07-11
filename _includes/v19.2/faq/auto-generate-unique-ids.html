@@ -2,27 +2,33 @@ To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `ge
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
+> CREATE TABLE users (
+        id UUID NOT NULL DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c');
+> INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t1;
+> SELECT * FROM users;
 ~~~
 
 ~~~
-+--------------------------------------+------+
-|                  id                  | name |
-+--------------------------------------+------+
-| 60853a85-681d-4620-9677-946bbfdc8fbc | c    |
-| 77c9bc2e-76a5-4ebc-80c3-7ad3159466a1 | b    |
-| bd3a56e1-c75e-476c-b221-0da9d74d66eb | a    |
-+--------------------------------------+------+
+                   id                  |   city   | name  | address | credit_card
++--------------------------------------+----------+-------+---------+-------------+
+  cf8ee4e2-cd74-449a-b6e6-a0fb2017baa4 | new york | Petee | NULL    | NULL
+  2382564e-702f-42d9-a139-b6df535ae00a | seattle  | Eric  | NULL    | NULL
+  7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
 (3 rows)
 ~~~
 
@@ -30,27 +36,33 @@ Alternatively, you can use the [`BYTES`](bytes.html) column with the `uuid_v4()`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t2 (id BYTES PRIMARY KEY DEFAULT uuid_v4(), name STRING);
+> CREATE TABLE users2 (
+        id BYTES DEFAULT uuid_v4(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t2 (name) VALUES ('a'), ('b'), ('c');
+> INSERT INTO users2 (name, city) VALUES ('Anna', 'new york'), ('Jonah', 'seattle'), ('Terry', 'chicago');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t2;
+> SELECT * FROM users;
 ~~~
 
 ~~~
-+---------------------------------------------------+------+
-|                        id                         | name |
-+---------------------------------------------------+------+
-| "\x9b\x10\xdc\x11\x9a\x9cGB\xbd\x8d\t\x8c\xf6@vP" | a    |
-| "\xd9s\xd7\x13\n_L*\xb0\x87c\xb6d\xe1\xd8@"       | c    |
-| "\uac74\x1dd@B\x97\xac\x04N&\x9eBg\x86"           | b    |
-+---------------------------------------------------+------+
+                        id                       |   city   | name  | address | credit_card
++------------------------------------------------+----------+-------+---------+-------------+
+  4\244\277\323/\261M\007\213\275*\0060\346\025z | chicago  | Terry | NULL    | NULL
+  \273*t=u.F\010\274f/}\313\332\373a             | new york | Anna  | NULL    | NULL
+  \004\\\364nP\024L)\252\364\222r$\274O0         | seattle  | Jonah | NULL    | NULL
 (3 rows)
 ~~~
 
@@ -60,27 +72,33 @@ If it is important for generated IDs to be stored in the same key-value range, y
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t3 (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+> CREATE TABLE users3 (
+        id INT DEFAULT unique_rowid(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t3 (name) VALUES ('a'), ('b'), ('c');
+> INSERT INTO users3 (name, city) VALUES ('Blake', 'chicago'), ('Hannah', 'seattle'), ('Bobby', 'seattle');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t3;
+> SELECT * FROM users3;
 ~~~
 
 ~~~
-+--------------------+------+
-|         id         | name |
-+--------------------+------+
-| 293807573840855041 | a    |
-| 293807573840887809 | b    |
-| 293807573840920577 | c    |
-+--------------------+------+
+          id         |  city   |  name  | address | credit_card
++--------------------+---------+--------+---------+-------------+
+  469048192112197633 | chicago | Blake  | NULL    | NULL
+  469048192112263169 | seattle | Hannah | NULL    | NULL
+  469048192112295937 | seattle | Bobby  | NULL    | NULL
 (3 rows)
 ~~~
 

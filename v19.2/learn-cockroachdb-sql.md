@@ -1,6 +1,6 @@
 ---
-title: Learn CockroachDB SQL
-summary: Learn some of the most essential CockroachDB SQL statements.
+title: Learn CockroachDB SQL with a Running Cluster
+summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
 build_for: [standard, managed]
 ---
@@ -9,7 +9,7 @@ This page walks you through some of the most essential CockroachDB SQL statement
 
 {% unless site.managed %}
 {{site.data.alerts.callout_success}}
-Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
+Use the [`cockroach sql`](use-the-built-in-sql-client.html) command to open an interactive SQL shell to try out these statements.
 {{site.data.alerts.end}}
 {% endunless %}
 

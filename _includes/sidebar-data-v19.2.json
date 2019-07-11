@@ -43,7 +43,7 @@
           {
             "title": "Learn CockroachDB SQL",
             "urls": [
-              "/${VERSION}/learn-cockroachdb-sql.html"
+              "/${VERSION}/learn-cockroachdb-sql-movr.html"
             ]
           },
           {
@@ -118,6 +118,17 @@
                 "title": "Rust",
                 "urls": [
                   "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Examples",
+            "items": [
+              {
+                "title": "MovR: A Fictional Vehicle-sharing Company",
+                "urls": [
+                  "/${VERSION}/movr.html"
                 ]
               }
             ]
