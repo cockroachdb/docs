@@ -31,7 +31,7 @@ A few notes:
 
 ### Review the application
 
-For your application, you'll use our open-source, fictional, peer-to-peer ride-sharing app, [MovR](https://github.com/cockroachdb/movr). You'll run 3 instances of MovR, one in each US region, with each instance representing users in a specific city: New York, Chicago, or Seattle.
+For your application, you'll use our open-source, fictional, peer-to-peer vehicle-sharing app, [MovR](movr.html). You'll run 3 instances of MovR, one in each US region, with each instance representing users in a specific city: New York, Chicago, or Seattle.
 
 #### The schema
 
