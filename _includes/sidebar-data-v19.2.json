@@ -121,6 +121,17 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "Examples",
+            "items": [
+              {
+                "title": "MovR: A Fictional Vehicle-sharing Company",
+                "urls": [
+                  "/${VERSION}/movr.html"
+                ]
+              }
+            ]
           }
         ]
       },

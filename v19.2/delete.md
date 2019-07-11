@@ -83,16 +83,39 @@ For an explanation of why this happens, and for instructions showing how to iter
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Delete all rows
 
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
+{{site.data.alerts.callout_info}}
+If the [`sql_safe_updates`](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details;
+> DELETE FROM promo_codes;
 ~~~
+
 ~~~
-DELETE 7
+pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
+~~~
+
+You can use a [`SET`](set-vars.html) statement to set session variables.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET sql_safe_updates = false;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM promo_codes;
+~~~
+
+~~~
+DELETE 1000
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -107,19 +130,17 @@ When deleting specific rows from a table, the most important decision you make i
 
 Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
 
-In this example, `account_id` is our primary key and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
+In this example, `code` is our primary key and we want to delete the row where the code equals "about_stuff_city". Because we're positive no other rows have that value in the `code` column, there's no risk of accidentally removing another row.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details WHERE account_id = 1 RETURNING *;
+> DELETE FROM promo_codes WHERE code = 'about_stuff_city' RETURNING *;
 ~~~
 ~~~
- account_id | balance | account_type
-------------+---------+--------------
-          1 |   32000 | Savings
+        code       |                 description                 |       creation_time       |      expiration_time      |                    rules
++------------------+---------------------------------------------+---------------------------+---------------------------+----------------------------------------------+
+  about_stuff_city | Skill sing rich glass store whatever teach. | 2018-12-30 03:04:05+00:00 | 2019-01-23 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
 (1 row)
-
-DELETE 1
 ~~~
 
 #### Delete rows using non-unique columns
@@ -128,19 +149,19 @@ Deleting rows using non-unique columns removes _every_ row that returns `TRUE` f
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details WHERE balance = 30000 RETURNING *;
+> DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00' RETURNING *;
 ~~~
 ~~~
- account_id | balance | account_type
-------------+---------+--------------
-          2 |   30000 | Checking
-          3 |   30000 | Savings
-(2 rows)
+           code          |                                                                                                           description                                                                                                            |       creation_time       |      expiration_time      |                    rules
++------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------+---------------------------+----------------------------------------------+
+  box_investment_stuff   | Husband card choose lawyer deep. Wonder key piece by picture window. On up mouth game board coach visit. Official like may true. Through best baby manager remember opportunity carry.                                           | 2019-01-30 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  energy_newspaper_field | Answer break teacher recognize mission recognize. Half artist seem direction grow find. Central rock send movie give increase finally address. His civil last behind range feel he. Team reflect lay government security method. | 2019-01-30 03:04:05+00:00 | 2019-01-30 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  simple_guy_theory      | Month option determine officer down.                                                                                                                                                                                             | 2019-01-30 03:04:05+00:00 | 2019-01-30 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  tv_this_list           | Coach receive lay thousand and. Where everybody investment attorney fast. Myself door side career individual hand list. Sign direction before mission.                                                                           | 2019-01-31 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+(4 rows)
+~~~
 
-DELETE 2
-~~~
-
-The example statement deleted two rows, which might be unexpected.
+The example statement deleted four rows, which might be unexpected.
 
 ### Return deleted rows
 
@@ -150,34 +171,24 @@ To see which rows your statement deleted, include the `RETURNING` clause to retr
 
 By specifying `*`, you retrieve all columns of the delete rows.
 
-{% include copy-clipboard.html %}
-~~~ sql
-> DELETE FROM account_details WHERE balance < 23000 RETURNING *;
-~~~
-~~~
- account_id | balance | account_type
-------------+---------+--------------
-          4 |   22000 | Savings
-(1 row)
-
-DELETE 1
-~~~
-
 #### Use specific columns
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
+> DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
 ~~~
 ~~~
- account_id | account_type
-------------+--------------
-          5 | Checking
-(1 row)
+           code          |                    rules
++------------------------+----------------------------------------------+
+  box_investment_stuff   | {"type": "percent_discount", "value": "10%"}
+  energy_newspaper_field | {"type": "percent_discount", "value": "10%"}
+  simple_guy_theory      | {"type": "percent_discount", "value": "10%"}
+  study_piece_war        | {"type": "percent_discount", "value": "10%"}
+  tv_this_list           | {"type": "percent_discount", "value": "10%"}
+(5 rows)
 
-DELETE 1
 ~~~
 
 #### Change column labels
@@ -186,15 +197,14 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM account_details WHERE balance < 24500 RETURNING account_id, balance AS final_balance;
+> DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
 ~~~
 ~~~
- account_id | final_balance 
-------------+---------------
-          6 |         23500
-(1 row)
-
-DELETE 1
+         code         |                   discount
++---------------------+----------------------------------------------+
+  chair_company_state | {"type": "percent_discount", "value": "10%"}
+  view_reveal_radio   | {"type": "percent_discount", "value": "10%"}
+(2 rows)
 ~~~
 
 #### Sort and return deleted rows
@@ -203,17 +213,18 @@ To sort and return deleted rows, use a statement like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [DELETE FROM account_details RETURNING *] ORDER BY account_id;
+> SELECT * FROM [DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *] ORDER BY expiration_time;
 ~~~
 
 ~~~
- account_id | balance  | account_type
-------------+----------+--------------
-          7 | 79493.51 | Checking
-          8 | 40761.66 | Savings
-          9 |  2111.67 | Checking
-         10 | 59173.15 | Savings
-(4 rows)
+             code            |                                                                                                  description                                                                                                   |       creation_time       |      expiration_time      |                    rules
++----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------+---------------------------+----------------------------------------------+
+  often_thing_hair           | Society right wish face see if pull. Great generation social bar read budget wonder natural. Somebody dark field economic material. Nature nature paper law worry common. Serious activity hospital wide none. | 2019-01-27 03:04:05+00:00 | 2019-01-29 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  step_though_military       | Director middle summer most create any.                                                                                                                                                                        | 2019-01-27 03:04:05+00:00 | 2019-01-29 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  own_whose_economy          | Social participant order this. Guy toward nor indeed police player inside nor. Model education voice several college art on. Start listen their maybe.                                                         | 2019-01-27 03:04:05+00:00 | 2019-01-30 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  crime_experience_certainly | Prepare right teacher mouth student. Trouble condition weight during scene something stand.                                                                                                                    | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  policy_its_wife            | Player either she something good minute or. Nearly policy player receive. Somebody mean book store fire realize.                                                                                               | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+(5 rows)
 ~~~
 
 ## See also

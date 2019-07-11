@@ -67,67 +67,80 @@ key. Using `ON CONFLICT` is therefore more flexible.
 
 ## Examples
 
-All of the examples below assume you've already created a table `accounts`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE accounts(
-    id INT DEFAULT unique_rowid() PRIMARY KEY,
-    balance DECIMAL
-);
-~~~
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Insert a single row
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
+> INSERT INTO users VALUES
+    ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee', '101 5th Ave', '1234567890');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users WHERE city='new york';
 ~~~
 
 ~~~
-  id | balance
-+----+----------+
-   1 | 10000.50
-(1 row)
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+  c28f5c28-f5c2-4000-8000-000000000026 | new york | Petee            | 101 5th Ave                 | 1234567890
+(6 rows)
 ~~~
 
 If you do not list column names, the statement will use the columns of the table in their declared order:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM accounts;
+> SHOW COLUMNS FROM users;
 ~~~
 
 ~~~
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
-  id          | INT8      |    false    | unique_rowid() |                       | {primary} |   false
-  balance     | DECIMAL   |    true     | NULL           |                       | {}        |   false
-(2 rows)
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false
+  city        | STRING    |    false    | NULL           |                       | {primary} |   false
+  name        | STRING    |    true     | NULL           |                       | {}        |   false
+  address     | STRING    |    true     | NULL           |                       | {}        |   false
+  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts VALUES (2, 20000.75);
+> INSERT INTO users VALUES
+    ('1eb851eb-851e-4800-8000-000000000006', 'chicago', 'Adam Driver', '201 E Randolph St', '2468013579');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users WHERE city IN ('chicago', 'new york');
 ~~~
 
 ~~~
-  id | balance
-+----+----------+
-   1 | 10000.50
-   2 | 20000.75
-(2 rows)
+                   id                  |   city   |       name       |            address             | credit_card
++--------------------------------------+----------+------------------+--------------------------------+-------------+
+  1eb851eb-851e-4800-8000-000000000006 | chicago  | Adam Driver      | 201 E Randolph St              | 2468013579
+  80000000-0000-4000-8000-000000000019 | chicago  | Matthew Clay     | 49220 Lisa Junctions           | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago  | Samantha Coffey  | 6423 Jessica Underpass Apt. 87 | 9437219051
+  8a3d70a3-d70a-4000-8000-00000000001b | chicago  | Jessica Martinez | 96676 Jennifer Knolls Suite 91 | 1601930189
+  8f5c28f5-c28f-4000-8000-00000000001c | chicago  | John Hines       | 45229 Howard Manors Suite 22   | 7541086746
+  947ae147-ae14-4800-8000-00000000001d | chicago  | Kenneth Barnes   | 35627 Chelsey Tunnel Suite 94  | 2099932769
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills           | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57    | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61    | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8      | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley                 | 0792553487
+  c28f5c28-f5c2-4000-8000-000000000026 | new york | Petee            | 101 5th Ave                    | 1234567890
+(12 rows)
 ~~~
+
 
 ### Insert multiple rows into an existing table
 
@@ -137,22 +150,32 @@ Multi-row inserts are faster than multiple single-row `INSERT` statements. As a 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
+> INSERT INTO users (id, city, name, address, credit_card) VALUES
+    ('8a3d70a3-d70a-4000-8000-00000000001b', 'seattle', 'Eric', '400 Broad St', '0987654321'),
+    ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', '214 W 43rd St', '5678901234');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM users WHERE city IN ('seattle', 'new york');
 ~~~
 
 ~~~
-  id | balance
-+----+----------+
-   1 | 10000.50
-   2 | 20000.75
-   3 |  8100.73
-   4 |  9400.10
-(4 rows)
+                   id                  |   city   |       name       |            address            | credit_card
++--------------------------------------+----------+------------------+-------------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills          | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57   | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61   | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8     | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley                | 0792553487
+  9eb851eb-851e-4800-8000-00000000001f | new york | Harry Potter     | 214 W 43rd St                 | 5678901234
+  c28f5c28-f5c2-4000-8000-000000000026 | new york | Petee            | 101 5th Ave                   | 1234567890
+  428f5c28-f5c2-4000-8000-00000000000d | seattle  | Anita Atkinson   | 27684 Laura Villages Suite 80 | 9800065169
+  47ae147a-e147-4000-8000-00000000000e | seattle  | Patricia Herrera | 80588 Perez Camp              | 6812041796
+  4ccccccc-cccc-4c00-8000-00000000000f | seattle  | Holly Williams   | 95153 Harvey Street Suite 5   | 2165526885
+  51eb851e-b851-4c00-8000-000000000010 | seattle  | Ryan Hickman     | 21187 Dennis Village          | 1635328127
+  8a3d70a3-d70a-4000-8000-00000000001b | seattle  | Eric             | 400 Broad St                  | 0987654321
+(12 rows)
 ~~~
 
 ### Insert multiple rows into a new table
@@ -161,96 +184,105 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 ### Insert from a `SELECT` statement
 
+Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You can create a `drivers` table from a subset of the `users` table.
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE other_accounts (
-    id INT DEFAULT unique_rowid() PRIMARY KEY,
-    balance DECIMAL
+> CREATE TABLE drivers (
+    id UUID DEFAULT gen_random_uuid(),
+    city STRING,
+    name STRING,
+    dl STRING UNIQUE CHECK (LENGTH(dl) < 8),
+    address STRING,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO other_accounts (id, balance) VALUES (5, 350.10), (6, 150), (7, 200.10);
+> INSERT INTO drivers (id, city, name, address)
+    SELECT id, city, name, address FROM users
+    WHERE name IN ('Anita Atkinson', 'Devin Jordan');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) SELECT id, balance FROM other_accounts WHERE id > 4;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM accounts;
+> SELECT * FROM drivers;
 ~~~
 
 ~~~
-  id | balance
-+----+----------+
-   1 | 10000.50
-   2 | 20000.75
-   3 |  8100.73
-   4 |  9400.10
-   5 |   350.10
-   6 |      150
-   7 |   200.10
-(7 rows)
+                   id                  |   city   |      name      |  dl  |            address
++--------------------------------------+----------+----------------+------+-------------------------------+
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan   | NULL | 81127 Angela Ferry Apt. 8
+  428f5c28-f5c2-4000-8000-00000000000d | seattle  | Anita Atkinson | NULL | 27684 Laura Villages Suite 80
+(2 rows)
 ~~~
 
 ### Insert default values
 
+To check the [default values](default-value.html) for columns in a table, use the [`SHOW CREATE TABLE`](show-create.html) statement:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id) VALUES (8);
+> SHOW CREATE TABLE drivers;
+~~~
+
+~~~
+  table_name |                     create_statement
++------------+----------------------------------------------------------+
+  drivers    | CREATE TABLE drivers (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     name STRING NULL,
+             |     dl STRING NULL,
+             |     address STRING NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     UNIQUE INDEX drivers_dl_key (dl ASC),
+             |     FAMILY "primary" (id, city, name, dl, address),
+             |     CONSTRAINT check_dl CHECK (length(dl) < 8)
+             | )
+(1 row)
+~~~
+
+If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO drivers (city, name) VALUES ('seattle', 'Bobby');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
+> INSERT INTO drivers (city, name, id) VALUES ('chicago', 'Terry', DEFAULT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id in (8, 9);
+> SELECT * FROM drivers WHERE name in ('Bobby', 'Terry');
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | NULL
-   9 | NULL
+                   id                  |  city   | name  |  dl  | address
++--------------------------------------+---------+-------+------+---------+
+  c8d36f0e-9eb4-439f-b3d0-029af184d24b | chicago | Terry | NULL | NULL
+  af2e8122-bf87-4736-bde9-a42ad0857351 | seattle | Bobby | NULL | NULL
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO accounts DEFAULT VALUES;
-~~~
+To create a new row with only default values, use `INSERT INTO <table> DEFAULT VALUES`. Running this command on the `drivers` table results in an error because the `city` column in `drivers` cannot be *NULL*, and has no default value specified.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts;
+> INSERT INTO drivers DEFAULT VALUES;
 ~~~
 
 ~~~
-          id         | balance
-+--------------------+----------+
-                   1 | 10000.50
-                   2 | 20000.75
-                   3 |  8100.73
-                   4 |  9400.10
-                   5 |   350.10
-                   6 |      150
-                   7 |   200.10
-                   8 | NULL
-                   9 | NULL
-  454320296521498625 | NULL
-(10 rows)
+pq: null value in column "city" violates not-null constraint
 ~~~
 
 ### Insert and return values
 
-In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `unique_rowid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
+In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `gen_random_uuid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
@@ -268,16 +300,16 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-  VALUES (DEFAULT, 1000), (DEFAULT, 250)
+> INSERT INTO drivers (id, city)
+  VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago')
   RETURNING id;
 ~~~
 
 ~~~
-          id
-+--------------------+
-  454320445012049921
-  454320445012082689
+                   id
++--------------------------------------+
+  b7750a60-91f2-404e-9cd1-5a3c310c1c9d
+  c85e637e-2b03-4a52-bc54-1e1f6d7fd89b
 (2 rows)
 ~~~
 
@@ -290,9 +322,9 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 # Import the driver.
 import psycopg2
 
-# Connect to the "bank" database.
+# Connect to the "movr" database.
 conn = psycopg2.connect(
-    database='bank',
+    database='movr',
     user='root',
     host='localhost',
     port=26257
@@ -304,12 +336,12 @@ conn.set_session(autocommit=True)
 # Open a cursor to perform database operations.
 cur = conn.cursor()
 
-# Insert two rows into the "accounts" table
+# Insert two rows into the "drivers" table
 # and return the "id" values generated server-side.
 cur.execute(
-    'INSERT INTO accounts (id, balance) '
-    'VALUES (DEFAULT, 1000), (DEFAULT, 250) '
-    'RETURNING id'
+    "INSERT INTO drivers (id, city) "
+    "VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago') "
+    "RETURNING id"
 )
 
 # Print out the returned values.
@@ -327,8 +359,8 @@ The printed values would look like:
 
 ~~~
 IDs:
-['190019066706952193']
-['190019066706984961']
+['cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e']
+['4224b360-b1b0-4e4d-aba2-a35c64cdf404']
 ~~~
 
 </section>
@@ -340,20 +372,20 @@ IDs:
 # Import the driver.
 require 'pg'
 
-# Connect to the "bank" database.
+# Connect to the "movr" database.
 conn = PG.connect(
     user: 'root',
-    dbname: 'bank',
+    dbname: 'movr',
     host: 'localhost',
     port: 26257
 )
 
-# Insert two rows into the "accounts" table
+# Insert two rows into the "drivers" table
 # and return the "id" values generated server-side.
 conn.exec(
-    'INSERT INTO accounts (id, balance) '\
-    'VALUES (DEFAULT, 1000), (DEFAULT, 250) '\
-    'RETURNING id'
+    "INSERT INTO drivers (id, city) "\
+    "VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago') "\
+    "RETURNING id"
 ) do |res|
 
 # Print out the returned values.
@@ -371,8 +403,8 @@ The printed values would look like:
 
 ~~~
 IDs:
-{"id"=>"190019066706952193"}
-{"id"=>"190019066706984961"}
+{"id"=>"cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e"}
+{"id"=>"4224b360-b1b0-4e4d-aba2-a35c64cdf404"}
 ~~~
 
 </section>
@@ -384,44 +416,44 @@ IDs:
 package main
 
 import (
-        "database/sql"
-        "fmt"
-        "log"
+	"database/sql"
+	"fmt"
+	"log"
 
-        _ "github.com/lib/pq"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-        //Connect to the "bank" database.
-        db, err := sql.Open(
-                "postgres",
-                "postgresql://root@localhost:26257/bank?sslmode=disable"
-        )
-        if err != nil {
-                log.Fatal("error connecting to the database: ", err)
-        }
+	//Connect to the "movr" database.
+	db, err := sql.Open(
+		"postgres",
+		"postgresql://root@localhost:26257/movr?sslmode=disable",
+	)
+	if err != nil {
+		log.Fatal("error connecting to the database: ", err)
+	}
 
-        // Insert two rows into the "accounts" table
-        // and return the "id" values generated server-side.
-        rows, err := db.Query(
-                "INSERT INTO accounts (id, balance) " +
-                "VALUES (DEFAULT, 1000), (DEFAULT, 250) " +
-                "RETURNING id",
-        )
-        if err != nil {
-                log.Fatal(err)
-        }
+	// Insert two rows into the "drivers" table
+	// and return the "id" values generated server-side.
+	rows, err := db.Query(
+		"INSERT INTO drivers (id, city) " +
+			"VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago') " +
+			"RETURNING id",
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-        // Print out the returned values.
-        defer rows.Close()
-        fmt.Println("IDs:")
-        for rows.Next() {
-                var id int
-                if err := rows.Scan(&id); err != nil {
-                        log.Fatal(err)
-                }
-                fmt.Printf("%d\n", id)
-        }
+	// Print out the returned values.
+	defer rows.Close()
+	fmt.Println("IDs:")
+	for rows.Next() {
+		var id string
+		if err := rows.Scan(&id); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s\n", id)
+	}
 }
 ~~~
 
@@ -429,8 +461,8 @@ The printed values would look like:
 
 ~~~
 IDs:
-190019066706952193
-190019066706984961
+cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e
+4224b360-b1b0-4e4d-aba2-a35c64cdf404
 ~~~
 
 </section>
@@ -439,89 +471,91 @@ IDs:
 
 {% include copy-clipboard.html %}
 ~~~ js
-var async = require('async');
+var async = require('async')
+var pg = require('pg')
 
-// Require the driver.
-var pg = require('pg');
-
-// Connect to the "bank" database.
+// Config to connect to the "movr" database.
 var config = {
-  user: 'root',
-  host: 'localhost',
-  database: 'bank',
-  port: 26257
-};
-
-pg.connect(config, function (err, client, done) {
-  // Closes communication with the database and exits.
-  var finish = function () {
-    done();
-    process.exit();
-  };
-
-  if (err) {
-    console.error('could not connect to cockroachdb', err);
-    finish();
+    user: 'root',
+    host: 'localhost',
+    database: 'movr',
+    port: 26257
   }
+
+// Create pool
+var pool = new pg.Pool(config)
+
+pool.connect(function (err, client, done) {
+
+    // Close communication with the database and exit.
+    var finish = function () {
+        done()
+        process.exit()
+    }
+
+    if (err) {
+        console.error('could not connect to cockroachdb', err)
+        finish()
+    }
   async.waterfall([
     function (next) {
-      // Insert two rows into the "accounts" table
+      // Insert two rows into the "drivers" table
       // and return the "id" values generated server-side.
       client.query(
-        `INSERT INTO accounts (id, balance)
-         VALUES (DEFAULT, 1000), (DEFAULT, 250)
-         RETURNING id;`,
+        `INSERT INTO drivers (id, city)
+         VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago')
+         RETURNING id`,
         next
-      );
+      )
     }
   ],
   function (err, results) {
     if (err) {
-      console.error('error inserting into and selecting from accounts', err);
-      finish();
+      console.error('error inserting into and selecting from drivers', err)
+      finish()
     }
     // Print out the returned values.
-    console.log('IDs:');
+    console.log('IDs:')
     results.rows.forEach(function (row) {
-      console.log(row);
-    });
+      console.log(row)
+    })
 
-    finish();
-  });
-});
+    finish()
+  })
+})
 ~~~
 
 The printed values would look like:
 
 ~~~
 IDs:
-{ id: '190019066706952193' }
-{ id: '190019066706984961' }
+{ id: 'cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e' }
+{ id: '4224b360-b1b0-4e4d-aba2-a35c64cdf404' }
 ~~~
 
 </section>
 
 ### Update values `ON CONFLICT`
 
-When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict:
+When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance;
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 1)
+    ON CONFLICT (city, user_id, code)
+    DO UPDATE SET usage_count = excluded.usage_count;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 |  500.50
+    city   |               user_id                |    code    |            timestamp             | usage_count
++----------+--------------------------------------+------------+----------------------------------+-------------+
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | promo_code | 2019-07-30 20:20:43.231826+00:00 |           1
 (1 row)
 ~~~
 
@@ -529,21 +563,21 @@ You can also update the row using an existing value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = accounts.balance + excluded.balance;
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 1)
+    ON CONFLICT (city, user_id, code)
+    DO UPDATE SET ("timestamp", usage_count) = (now(), user_promo_codes.usage_count + excluded.usage_count);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | 1001.00
+    city   |               user_id                |    code    |            timestamp             | usage_count
++----------+--------------------------------------+------------+----------------------------------+-------------+
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | promo_code | 2019-07-30 20:23:07.108363+00:00 |           2
 (1 row)
 ~~~
 
@@ -551,69 +585,58 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 700)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance
-    WHERE excluded.balance > accounts.balance;
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 3)
+    ON CONFLICT (city, user_id, code)
+    DO UPDATE SET ("timestamp", usage_count) = (now(), user_promo_codes.usage_count + excluded.usage_count)
+    WHERE excluded.usage_count = 1;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | 800.00
+    city   |               user_id                |    code    |            timestamp             | usage_count
++----------+--------------------------------------+------------+----------------------------------+-------------+
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | promo_code | 2019-07-30 20:23:07.108363+00:00 |           2
 (1 row)
 ~~~
 
 ### Do not update values `ON CONFLICT`
 
-In this example, we get an error from a uniqueness conflict:
+In this example, we get an error from a uniqueness conflict.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id = 8;
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 1);
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | 1001.00
-(1 row)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO accounts (id, balance) VALUES (8, 125.50);
-~~~
-
-~~~
-pq: duplicate key value (id)=(8) violates unique constraint "primary"
+pq: duplicate key value (city,user_id,code)=('new york','c28f5c28-f5c2-4000-8000-000000000026','promo_code') violates unique constraint "primary"
 ~~~
 
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50)
-    ON CONFLICT (id)
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 1)
+    ON CONFLICT (city, user_id, code)
     DO NOTHING;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id = 8;
+> SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | 1001.00
+    city   |               user_id                |    code    |            timestamp             | usage_count
++----------+--------------------------------------+------------+----------------------------------+-------------+
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | promo_code | 2019-07-30 20:23:07.108363+00:00 |           2
 (1 row)
 ~~~
 
@@ -621,22 +644,22 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50), (10, 450)
-    ON CONFLICT (id)
+> INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'promo_code', now(), 1), ('new york', 'c28f5c28-f5c2-4000-8000-000000000026', 'new_promo', now(), 1)
+    ON CONFLICT (city, user_id, code)
     DO NOTHING;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id in (8, 10);
+> SELECT * FROM user_promo_codes WHERE code in ('promo_code', 'new_promo');
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   8 | 1001.00
-  10 |     450
+    city   |               user_id                |    code    |            timestamp             | usage_count
++----------+--------------------------------------+------------+----------------------------------+-------------+
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | new_promo  | 2019-07-31 15:02:53.810847+00:00 |           1
+  new york | c28f5c28-f5c2-4000-8000-000000000026 | promo_code | 2019-07-30 20:23:07.108363+00:00 |           2
 (2 rows)
 ~~~
 
@@ -651,13 +674,11 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH
-    -- the following data contains duplicates on the conflict column "id":
-    inputrows AS (VALUES (8, 130), (8, 140))
-
-  INSERT INTO accounts (id, balance)
-    (SELECT DISTINCT ON(id) id, balance FROM inputrows) -- de-duplicate the input rows
-    ON CONFLICT (id)
+> WITH inputrows (city, user_id, code, "timestamp", usage_count)
+    AS (VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026'::uuid, 'promo_code', now()::timestamp, 0), ('new york', 'c28f5c28-f5c2-4000-8000-000000000026'::uuid, 'new_promo', now()::timestamp, 2))
+    INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    (SELECT DISTINCT ON(city, user_id, code) * FROM inputrows)
+    ON CONFLICT (city, user_id, code)
     DO NOTHING;
 ~~~
 
@@ -667,15 +688,11 @@ considered. To force the selection of a particular duplicate, use an
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH
-    -- the following data contains duplicates on the conflict column "id":
-    inputrows AS (VALUES (8, 130), (8, 140))
-
-  INSERT INTO accounts (id, balance)
-    (SELECT DISTINCT ON(id) id, balance
-	 FROM inputrows
-     ORDER BY balance) -- pick the lowest balance as value to update in each account
-    ON CONFLICT (id)
+> WITH inputrows (city, user_id, code, "timestamp", usage_count)
+    AS (VALUES ('new york', 'c28f5c28-f5c2-4000-8000-000000000026'::uuid, 'promo_code', now()::timestamp, 0), ('new york', 'c28f5c28-f5c2-4000-8000-000000000026'::uuid, 'new_promo', now()::timestamp, 2))
+    INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    (SELECT DISTINCT ON(city, user_id, code) * FROM inputrows ORDER BY (city, user_id, code, usage_count))
+    ON CONFLICT (city, user_id, code)
     DO NOTHING;
 ~~~
 
