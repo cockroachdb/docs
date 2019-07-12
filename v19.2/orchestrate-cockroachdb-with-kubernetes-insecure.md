@@ -140,7 +140,7 @@ To shut down the CockroachDB cluster:
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=my-release-cockroachdb
+    $ helm delete my-release-cockroachdb
     ~~~
 
     ~~~
@@ -174,6 +174,12 @@ To shut down the CockroachDB cluster:
         ~~~ shell
         $ gcloud container clusters delete cockroachdb
         ~~~
+    - Hosted EKS:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ eksctl delete cluster --name cockroachdb
+        ~~~    
     - Manual GCE:
 
         {% include copy-clipboard.html %}
