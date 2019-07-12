@@ -2,6 +2,7 @@ The Kubernetes cluster contains 4 nodes, one master and 3 workers. Pods get plac
 
 1. Add a worker node:
     - On GKE, [resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster).
+    - On EKS, resize your [Worker Node Group](https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html).
     - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
     - On AWS, resize your [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
 

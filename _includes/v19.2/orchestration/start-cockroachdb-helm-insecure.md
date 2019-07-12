@@ -47,7 +47,14 @@
         $ helm init --service-account tiller
         ~~~
 
-3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart:
+3. Update your Helm chart repositories to ensure that you're using the latest CockroachDB chart:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm repo update
+    ~~~
+
+4. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart:
 
     {{site.data.alerts.callout_info}}
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
@@ -64,7 +71,7 @@
     You can customize your deployment by passing [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
     {{site.data.alerts.end}}
 
-4. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:
+5. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -79,7 +86,7 @@
     my-release-cockroachdb-init-k6jcr   0/1       Completed   0          1m
     ~~~
 
-5. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+6. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include copy-clipboard.html %}
     ~~~ shell
