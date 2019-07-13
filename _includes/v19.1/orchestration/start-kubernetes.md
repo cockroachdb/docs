@@ -1,6 +1,7 @@
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE)  service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 - [Hosted GKE](#hosted-gke)
+- [Hosted EKS](#hosted-eks)
 - [Manual GCE](#manual-gce)
 - [Manual AWS](#manual-aws)
 
@@ -54,6 +55,31 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     ~~~
     clusterrolebinding "cluster-admin-binding" created
     ~~~
+
+### Hosted EKS
+
+1. Complete the steps described in the [EKS Getting Started](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html) documentation.
+
+    This includes installing and configuring the AWS CLI and `eksctl`, which is the command-line tool used to create and delete Kubernetes clusters on EKS, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
+
+2. From your local workstation, start the Kubernetes cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ eksctl create cluster \
+    --name cockroachdb \
+    --version 1.13 \
+    --nodegroup-name standard-workers \
+    --node-type m5.xlarge \
+    --nodes 3 \
+    --nodes-min 1 \
+    --nodes-max 4 \
+    --node-ami auto
+    ~~~
+
+    This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
+
+    Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "cockroachdb" in "us-east-1" region is ready` and details about your cluster.
 
 ### Manual GCE
 
