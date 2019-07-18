@@ -752,7 +752,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 `CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature.** The interface and output are subject to change.
+
+There is an open correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. Note that you can set up changefeeds for any of [these cloud storage providers](create-changefeed.html#cloud-storage-sink).
 
