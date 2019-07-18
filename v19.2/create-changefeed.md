@@ -188,7 +188,11 @@ For more information on how to create a changefeed that emits an [Avro](https://
 
 ### Create a changefeed connected to a cloud storage sink
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature.** The interface and output are subject to change.
+
+There is a correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -6,3 +6,4 @@ The following are limitations in the v19.2 release and will be addressed in the 
 - Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](change-data-capture.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](change-data-capture.html#monitor-a-changefeed).
 - Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Additional target options will be added, including partitions and ranges of primary key rows.
+- There is a correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
