@@ -36,7 +36,7 @@ Table with a [sequence](create-sequence.html) | The sequence it uses; however, t
 
 ### Users and privileges
 
-Every backup you create includes `system.users`, which stores your users and their passwords. To restore your users, you must use [this procedure](restore.html#restoring-users-from-system-users-backup).
+The `system.users` table stores your users and their passwords. To restore your users, you must first backup the `system.users` table, and then use [this procedure](restore.html#restoring-users-from-system-users-backup).
 
 Restored tables inherit privilege grants from the target database; they do not preserve privilege grants from the backed up table because the restoring cluster may have different users.
 

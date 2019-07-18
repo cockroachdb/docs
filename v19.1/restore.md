@@ -210,7 +210,7 @@ WITH skip_missing_foreign_keys;
 
 ### Restoring users from `system.users` backup
 
-Every full backup contains the `system.users` table, which you can use to restore your cluster's usernames and their hashed passwords. However, to restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
+The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
