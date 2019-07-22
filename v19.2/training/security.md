@@ -38,7 +38,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-ca \
+    $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
@@ -47,7 +47,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-node \
+    $ cockroach cert create-node \
     localhost \
     $(hostname) \
     --certs-dir=certs \
@@ -60,7 +60,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-client \
+    $ cockroach cert create-client \
     root \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
@@ -68,7 +68,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-client \
+    $ cockroach cert create-client \
     spock \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
@@ -82,7 +82,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -95,7 +95,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -108,7 +108,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -121,7 +121,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --certs-dir=certs --host=localhost:26257
+    $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
 
 ## Step 3. Add data to your cluster
@@ -130,7 +130,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data startrek | ./cockroach sql \
+    $ cockroach gen example-data startrek | cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257
     ~~~
@@ -139,14 +139,14 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set spock --certs-dir=certs --host=localhost:26257
+    $ cockroach user set spock --certs-dir=certs --host=localhost:26257
     ~~~
 
 3. As the root user, grant `spock` the `SELECT` privilege on the `startrek.quotes` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --execute="GRANT SELECT ON TABLE startrek.quotes TO spock;"
@@ -158,7 +158,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --user=spock \
@@ -185,7 +185,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set kirk \
+    $ cockroach user set kirk \
     --certs-dir=certs \
     --host=localhost:26257 \
     --password
@@ -195,7 +195,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --user=root \
@@ -210,7 +210,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --user=kirk \

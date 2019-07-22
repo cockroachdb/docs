@@ -25,7 +25,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-east1,datacenter=us-east1-a \
     --store=node1 \
@@ -39,7 +39,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-east1,datacenter=us-east1-b \
     --store=node2 \
@@ -53,7 +53,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-east1,datacenter=us-east1-c \
     --store=node3 \
@@ -67,7 +67,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Expand into 2 more US regions
@@ -78,7 +78,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west1,datacenter=us-west1-a \
     --store=node4 \
@@ -92,7 +92,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west1,datacenter=us-west1-b \
     --store=node5 \
@@ -106,7 +106,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west1,datacenter=us-west1-c \
     --store=node6 \
@@ -120,7 +120,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west2,datacenter=us-west2-a \
     --store=node7 \
@@ -134,7 +134,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west2,datacenter=us-west2-b \
     --store=node8 \
@@ -148,7 +148,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us-west2,datacenter=us-west2-c \
     --store=node9 \
@@ -168,18 +168,18 @@ The table partitioning feature requires an [enterprise license](https://www.cock
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING cluster.organization = '<your organization>';"
+    --execute="SET CLUSTER SETTING cluster.organization = '<your org>';"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SET CLUSTER SETTING enterprise.license = '<your license key>';"
+    --execute="SET CLUSTER SETTING enterprise.license = '<key>';"
     ~~~
 
 ## Step 2. Import the Movr dataset
@@ -190,7 +190,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --insecure --host=localhost
+    $ cockroach sql --insecure --host=localhost
     ~~~
 
 2. Create the `movr` database and set it as the default:
