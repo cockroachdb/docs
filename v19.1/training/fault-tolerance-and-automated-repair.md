@@ -167,7 +167,7 @@ At this point, the cluster has recovered and is ready to handle another failure.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
-1. Iestart node 5, using the same command you used to start the node initially:
+1. Restart node 5, using the same command you used to start the node initially:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -215,7 +215,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 
-2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it still serving up reads
+2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it still serving reads
 
     {% include copy-clipboard.html %}
     ~~~ shell
