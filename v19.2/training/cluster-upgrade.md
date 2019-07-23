@@ -140,7 +140,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -173,7 +173,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -204,7 +204,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -218,7 +218,7 @@ Back in the Admin UI, you'll see that all 3 nodes now have the same, upgraded ve
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach node status \
+$ cockroach node status \
 --insecure
 ~~~
 

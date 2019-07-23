@@ -25,7 +25,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -37,7 +37,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -49,7 +49,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -61,7 +61,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Simulate the problem
@@ -70,7 +70,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
@@ -98,7 +98,7 @@ To bring the cluster back to a safe state, you need to either restart the down n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \

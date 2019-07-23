@@ -25,7 +25,7 @@ Run the `cockroach quit` command with the `--decommission` flag against node 3:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach quit \
+$ cockroach quit \
 --insecure \
 --decommission \
 --host=localhost:26259
@@ -51,7 +51,7 @@ In a new terminal, to make it possible for node 3 to decommission, add a fourth 
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --insecure \
 --store=node4 \
 --listen-addr=localhost:26260 \

@@ -25,7 +25,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -38,7 +38,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -51,7 +51,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -64,7 +64,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Prepare to simulate the problem
@@ -75,7 +75,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="CREATE DATABASE import_test;"
@@ -85,7 +85,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --database="import_test" \
@@ -125,7 +125,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -166,7 +166,7 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \

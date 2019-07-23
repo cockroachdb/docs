@@ -29,14 +29,14 @@ In this scenario, you try to connect a user without providing a client certifica
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach user set kirk --certs-dir=certs --host=localhost:26257
+    $ cockroach user set kirk --certs-dir=certs --host=localhost:26257
     ~~~
 
 2. As the `kirk` user, try to connect to the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --user=kirk \
@@ -66,7 +66,7 @@ To successfully connect the user, you must first either generate a client certif
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-client \
+    $ cockroach cert create-client \
     kirk \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
@@ -76,7 +76,7 @@ To successfully connect the user, you must first either generate a client certif
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
     --user=kirk \
@@ -101,7 +101,7 @@ Try to connect the `kirk` user:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach sql \
+$ cockroach sql \
 --certs-dir=certs \
 --host=localhost:26257 \
 --user=kirk \
@@ -127,7 +127,7 @@ To successfully connect the user, try again using a correct `--port`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach sql \
+$ cockroach sql \
 --certs-dir=certs \
 --host=localhost:26257 \
 --user=kirk \
