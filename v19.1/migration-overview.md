@@ -40,7 +40,7 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 
 ## Unsupported data types
 
-CockroachDB does not provide `ENUM` or `SET` data types.
+CockroachDB does not provide [`ENUM`](https://en.wikipedia.org/wiki/Enumerated_type) or `SET` data types.
 
 In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.html) as shown below.  For MySQL, we perform this conversion automatically during the import.
 
