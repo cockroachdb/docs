@@ -290,18 +290,26 @@ $ cockroach start \
 --background
 ~~~
 
-This time, the startup process succeeds, and the `status` tells you that the node joined the intended cluster:
+This time, the startup process succeeds, and the `status` (added to the logs because you used `--background`) tells you that the node joined the intended cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ grep -A 11 'CockroachDB node starting at' ./node6/logs/cockroach.log
+~~~
 
 ~~~
-CockroachDB node starting at 2018-02-08 16:51:24.23112 +0000 UTC (took 0.2s)
-build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
-admin:      https://localhost:8085
-sql:        postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
-logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
-store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
-status:     initialized new node, joined pre-existing cluster
-clusterID:  5007b180-9b08-4a08-a882-53915fb459a1
-nodeID:     6    
+CockroachDB node starting at 2019-07-23 04:21:33.130572 +0000 UTC (took 0.2s)
+build:               CCL {{page.release_info.version}} @ 2019/05/22 22:44:42 (go1.12.5)
+webui:               https://localhost:8085
+sql:                 postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+client flags:        cockroach <client cmd> --host=localhost:26262 --certs-dir=certs
+logs:                /Users/will/Downloads/temp-cockroach-cluster/node6/logs
+temp dir:            /Users/will/Downloads/temp-cockroach-cluster/node6/cockroach-temp509471222
+external I/O path:   /Users/will/Downloads/temp-cockroach-cluster/node6/extern
+store[0]:            path=/Users/will/Downloads/temp-cockroach-cluster/node6
+status:              initialized new node, joined pre-existing cluster
+clusterID:           e40f17e6-b4aa-4e69-bd7e-ecd6556194c3
+nodeID:              6
 ~~~
 
 ## What's next?
