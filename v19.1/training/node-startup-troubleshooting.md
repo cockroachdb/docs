@@ -31,17 +31,17 @@ In this scenario, you try to add a node to a secure cluster without providing th
 2. Create the CA certificate and key:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-ca \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 3. Create the certificate and key for the your nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach cert create-node \
+    $ cockroach cert create-node \
     localhost \
     $(hostname) \
     --certs-dir=certs \
@@ -51,20 +51,20 @@ In this scenario, you try to add a node to a secure cluster without providing th
 4. Create client certificates and keys for the `root` and `spock` users:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-client \
-  	root \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ./cockroach cert create-client \
-  	spock \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-client \
+    spock \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 ### Step 2. Start a secure 3-node cluster
 
@@ -72,7 +72,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -85,7 +85,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -98,7 +98,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -111,7 +111,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --certs-dir=certs --host=localhost:26257
+    $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
 
 ### Step 3. Simulate the problem
@@ -124,7 +124,7 @@ The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr`
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --store=node4 \
 --listen-addr=localhost:26260 \
 --http-addr=localhost:8083 \
@@ -162,12 +162,13 @@ To successfully join the node to the cluster, start the node again, but this tim
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --certs-dir=certs \
 --store=node4 \
 --listen-addr=localhost:26260 \
 --http-addr=localhost:8083 \
---join=localhost:26257,localhost:26258,localhost:26259
+--join=localhost:26257,localhost:26258,localhost:26259 \
+--background
 ~~~
 
 ## Problem 2: Wrong join address
@@ -176,11 +177,11 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 ### Step 1. Simulate the problem
 
-In a new terminal, try to add another node:
+Try to add another node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --certs-dir=certs \
 --store=node5 \
 --listen-addr=localhost:26261 \
@@ -200,18 +201,19 @@ These warnings tell you that the node cannot establish a connection with the add
 
 ### Step 2. Resolve the problem
 
-1. Press **CTRL-C** twice to stop the previous startup attempt.
+1. Press **CTRL-C** to stop the previous startup attempt.
 
 2. To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 ## Problem 3: Missing join address
@@ -224,7 +226,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node6 \
     --listen-addr=localhost:26262 \
@@ -251,7 +253,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --certs-dir=certs \
     --store=node6 \
     --listen-addr=localhost:26262 \
@@ -279,12 +281,13 @@ $ rm -rf node6
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --certs-dir=certs \
 --store=node6 \
 --listen-addr=localhost:26262 \
 --http-addr=localhost:8085 \
---join=localhost:26257,localhost:26258,localhost:26259
+--join=localhost:26257,localhost:26258,localhost:26259 \
+--background
 ~~~
 
 This time, the startup process succeeds, and the `status` tells you that the node joined the intended cluster:
