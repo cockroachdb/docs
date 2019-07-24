@@ -93,13 +93,22 @@ func transferFunds(db *gorm.DB, fromAccount Account, toAccount Account, amount i
 			return fmt.Errorf("hit max of %d retries, aborting", retries)
 		}
 
-		db.Exec("BEGIN")
-		if err := db.Exec(
+		txn := db.Begin()
+		// The statement below is used for forcing transaction retries
+		// for verifying the retry loop logic.  It is not necessary
+		// for production code.
+		// txn.Exec("SELECT now()")
+		if err := txn.Exec(
+			// The below statement is used for forcing transaction
+			// retries for verifying the retry loop logic.  It is not
+			// necessary for production code.
+			// `SELECT crdb_internal.force_retry('1s'::INTERVAL)`,
 			`UPSERT INTO accounts (id, balance) VALUES
-               (?, ((SELECT balance FROM accounts WHERE id = ?) - ?)),
-		       (?, ((SELECT balance FROM accounts WHERE id = ?) + ?))`,
+			   (?, ((SELECT balance FROM accounts WHERE id = ?) - ?)),
+			   (?, ((SELECT balance FROM accounts WHERE id = ?) + ?))`,
 			fromAccount.ID, fromAccount.ID, amount,
-			toAccount.ID, toAccount.ID, amount).Error; err != nil {
+			toAccount.ID, toAccount.ID, amount,
+		).Error; err != nil {
 
 			// We need to cast GORM's db.Error to *pq.Error so we can
 			// detect the Postgres transaction retry error code and
@@ -112,8 +121,9 @@ func transferFunds(db *gorm.DB, fromAccount Account, toAccount Account, amount i
 				// trying again.  Each time through the loop we sleep
 				// for a little longer than the last time
 				// (A.K.A. exponential backoff).
-				db.Exec("ROLLBACK")
+				txn.Rollback()
 				var sleepMs = math.Pow(2, float64(retries)) * 100 * (rand.Float64() + 0.5)
+				fmt.Printf("Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMs)
 				time.Sleep(time.Millisecond * time.Duration(sleepMs))
 			} else {
 				return err
@@ -121,7 +131,7 @@ func transferFunds(db *gorm.DB, fromAccount Account, toAccount Account, amount i
 		} else {
 			// Happy case.  All went well, so we commit and break out
 			// of the retry loop.
-			db.Exec("COMMIT")
+			txn.Commit()
 			break
 		}
 	}
