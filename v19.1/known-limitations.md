@@ -8,6 +8,21 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
+### Cold starts of large clusters may require manual intervention
+
+If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
+
+To exit this state, you should:
+  1. Stop all nodes.
+  2. Set the following environment variables: `COCKROACH_SCHEDULER_CONCURRENCY=100`, `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
+  3. Restart the cluster.
+
+Once restarted, you should monitor the Replica Quiescence graph on the Replication Dashboard. When >90% of the replicas have become Quiescent, you can conduct a rolling restart and remove the environment variables. Be sure to ensure that underreplicated ranges do not increase between restarts.
+
+Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [range_max_bytes](https://www.cockroachlabs.com/docs/stable/configure-zone.html#variables) to 134217728. We always recommend testing changes to max_range_bytes in a development environment before making changes on production.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117) 
+
 ### Requests to restarted node in need of snapshots may hang
 
 When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
