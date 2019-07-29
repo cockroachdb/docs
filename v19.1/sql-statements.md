@@ -144,7 +144,7 @@ Statement | Usage
 
 ## Job management statements
 
-Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
+Jobs in CockroachDB represent tasks that might not complete immediately, such as [schema](http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/7f1a0f0f194e362d024f8fff9c90a8b52ef72880/v19.1/sql-name-resolution.html#logical-schemas-and-namespaces) changes or enterprise backups or restores.
 
 Statement | Usage
 ----------|------------
