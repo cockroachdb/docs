@@ -169,7 +169,7 @@ Statement | Usage
 
 ## Changefeed statements (Enterprise)
 
-[Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into Apache Kafka for downstream processing.
+[Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into [Apache Kafka](https://kafka.apache.org/) for downstream processing.
 
 {{site.data.alerts.callout_info}}
 CDC is an enterprise feature. There will be a core version in a future release.
