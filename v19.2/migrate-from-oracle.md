@@ -206,7 +206,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a `CUSTOMERS` table
 (1 row)
 ~~~
 
-Then add the [computed columns](computed-columns.html), [constraints](add-constraints.html), and [function-based indexes](create-index.html). For example:
+Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
