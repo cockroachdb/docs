@@ -224,10 +224,10 @@ Repeat the above for each CSV file you want to import.
 The following options are available to [`IMPORT ... CSV`](import.html):
 
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
-- [Comment syntax](migrate-from-csv.html##comment-syntax)
-- [Skip header rows](migrate-from-csv.html##skip-header-rows)
-- [Null strings](migrate-from-csv.html##null-strings)
-- [File compression](migrate-from-csv.html##file-compression)
+- [Comment syntax](migrate-from-csv.html#comment-syntax)
+- [Skip header rows](migrate-from-csv.html#skip-header-rows)
+- [Null strings](migrate-from-csv.html#null-strings)
+- [File compression](migrate-from-csv.html#file-compression)
 
 For usage examples, see [Migrate from CSV - Configuration Options](migrate-from-csv.html#configuration-options).
 
