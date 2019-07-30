@@ -25,7 +25,7 @@ CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms
 
 ## How easy is it to install CockroachDB?
 
-It's as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
+It's as easy as downloading a binary on OS X ([Mac](https://en.wikipedia.org/wiki/MacOS)) and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
 
 For more details, see [Install CockroachDB](install-cockroachdb.html).
 
