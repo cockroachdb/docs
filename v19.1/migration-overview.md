@@ -8,7 +8,7 @@ build_for: [standard, managed]
 
 CockroachDB supports importing data from the following databases:
 
-- MySQL
+- [MySQL](https://www.mysql.com/)
 - Postgres
 
 and from the following data formats:
