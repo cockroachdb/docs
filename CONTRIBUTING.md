@@ -76,7 +76,7 @@ Once you're ready to contribute:
 
 7. [Push your local branch to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
 
-8. Back in your fork of the CockraochDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
+8. Back in your fork of the CockroachDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
 We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; do not worry about the Teamcity fail status.
 
