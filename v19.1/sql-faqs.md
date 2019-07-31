@@ -18,7 +18,7 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 {% include {{ page.version.version }}/faq/sequential-numbers.md %}
 
-## What are the differences between `UUID`, sequences, and `unique_rowid()`?
+## What are the differences between UUID, sequences, and unique_rowid()?
 
 {% include {{ page.version.version }}/faq/differences-between-numberings.md %}
 
@@ -50,7 +50,7 @@ For more information about contention, see [Understanding and Avoiding
 Transaction
 Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
-## Does CockroachDB support `JOIN`?
+## Does CockroachDB support JOIN?
 
 [CockroachDB supports SQL joins](joins.html).  We are working to improve their execution performance.
 
@@ -88,7 +88,7 @@ If you'd like to tell the query planner which index to use, you can do so via so
 
 Yes. For more details, see [`UUID`](uuid.html).
 
-## How does CockroachDB sort results when `ORDER BY` is not used?
+## How does CockroachDB sort results when ORDER BY is not used?
 
 When an [`ORDER BY`](query-order.html) clause is not used in a query, rows are processed or returned in a
 non-deterministic order. "Non-deterministic" means that the actual order
