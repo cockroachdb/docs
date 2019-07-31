@@ -6,7 +6,7 @@ toc: true
 
 If a SQL statement returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
-## `SELECT` statement performance issues
+## SELECT statement performance issues
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
@@ -90,7 +90,7 @@ If a cluster is not idle, it is useful to monitor the per-node queries per secon
 
 See [Why would increasing the number of nodes not result in more operations per second?](operational-faqs.html#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
 
-## `bad connection` & `closed` responses
+## Bad connection & Closed responses
 
 If you receive a response of `bad connection` or `closed`, this normally indicates that the node you connected to died. You can check this by connecting to another node in the cluster and running [`cockroach node status`](view-node-details.html#show-the-status-of-all-nodes).
 
