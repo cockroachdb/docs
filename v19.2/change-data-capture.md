@@ -612,7 +612,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     $ ./bin/kafka-topics \
     --create \
-    --zookeeper localhost:8081 \
+    --zookeeper localhost:2181 \
     --replication-factor 1 \
     --partitions 1 \
     --topic office_dogs
