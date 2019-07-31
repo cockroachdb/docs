@@ -120,10 +120,10 @@ Command | Usage
 `\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>As of v2.1, you can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\?`<br>`help` | View this help within the shell.
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
-  `\l` | List all databases in the CockroachDB cluster.
-  `\dt` | Show the tables of the current schema in the current database.
-  `\du` | List the users for all databases.
-  `\d <table>` | Show details about columns in the specified table.
+  `\l` | <span class="version-tag">New in v19.2:</span> List all databases in the CockroachDB cluster.
+  `\dt` | <span class="version-tag">New in v19.2:</span> Show the tables of the current schema in the current database.
+  `\du` | <span class="version-tag">New in v19.2:</span> List the users for all databases.
+  `\d <table>` | <span class="version-tag">New in v19.2:</span> Show details about columns in the specified table.
 
 ### Client-side options
 
