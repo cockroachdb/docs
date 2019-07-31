@@ -6,7 +6,7 @@ toc: true
 
 If a SQL statement returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
-## `SELECT` statement performance issues
+## SELECT statement performance issues
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
