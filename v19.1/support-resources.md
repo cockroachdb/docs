@@ -4,7 +4,7 @@ summary: Get help using CockroachDB
 toc: false
 ---
 
-If you're having an issue with CockroachDB, you can reach out for support from Cockroach Labs and our community:
+If you're having an issue with CockroachDB, you can reach out for [support](https://www.cockroachlabs.com/docs/stable/training/how-to-get-support.html) from Cockroach Labs and our community:
 
 - [Troubleshooting documentation](troubleshooting-overview.html)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
