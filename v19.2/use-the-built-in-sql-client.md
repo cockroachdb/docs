@@ -89,9 +89,10 @@ When a session is both interactive and outputs on a terminal, `cockroach sql` al
 When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
 
 ~~~ shell
-# Welcome to the cockroach SQL interface.
+# 
+# Welcome to the CockroachDB SQL shell.
 # All statements must be terminated by a semicolon.
-# To exit: CTRL + D.
+# To exit, type: \q.
 #
 # Server version: CCL {{page.release_info.version}} (darwin amd64, built 2017/07/13 11:43:06, go1.10.1) (same version as client)
 # Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
@@ -119,6 +120,10 @@ Command | Usage
 `\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>As of v2.1, you can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\?`<br>`help` | View this help within the shell.
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
+  `\l` | <span class="version-tag">New in v19.2:</span> List all databases in the CockroachDB cluster.
+  `\dt` | <span class="version-tag">New in v19.2:</span> Show the tables of the current schema in the current database.
+  `\du` | <span class="version-tag">New in v19.2:</span> List the users for all databases.
+  `\d <table>` | <span class="version-tag">New in v19.2:</span> Show details about columns in the specified table.
 
 ### Client-side options
 
