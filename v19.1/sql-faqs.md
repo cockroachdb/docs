@@ -32,6 +32,7 @@ There’s no function in CockroachDB for returning last inserted values, but you
 
 For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
 
@@ -70,12 +71,14 @@ Yes, as of v2.0, the [`JSONB`](jsonb.html) data type is supported.
 
 To see which indexes CockroachDB is using for a given query, you can use the [`EXPLAIN`](explain.html) statement, which will print out the query plan, including any indexes that are being used:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col1 FROM tbl1;
 ~~~
 
 If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](table-expressions.html#force-index-selection):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT col1 FROM tbl1@idx1;
 ~~~
