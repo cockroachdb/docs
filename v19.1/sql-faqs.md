@@ -32,6 +32,7 @@ There’s no function in CockroachDB for returning last inserted values, but you
 
 For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
 
