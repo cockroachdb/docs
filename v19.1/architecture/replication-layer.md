@@ -14,7 +14,7 @@ If you haven't already, we recommend reading the [Architecture Overview](overvie
 
 High availability requires that your database can tolerate nodes going offline without interrupting service to your application. This means replicating data between nodes to ensure the data remains accessible.
 
-Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB users a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as multi-active availability) requires 3 nodes.
+Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB uses a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as multi-active availability) requires 3 nodes.
 
 The number of failures that can be tolerated is equal to *(Replication factor - 1)/2*. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on. You can control the replication factor at the cluster, database, and table level using [replication zones](../configure-replication-zones.html).
 
