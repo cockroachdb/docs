@@ -233,7 +233,7 @@ allowed_hashes: [os-mac, os-linux, os-windows]
   ```
 #### Images
 
-For information about how we use images in our docs, see [Images](STYLE.html/images) in our [Style Guide](STYLE.html).
+For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/blob/master/STYLE.md#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
 
 #### Feedback Widget
 
