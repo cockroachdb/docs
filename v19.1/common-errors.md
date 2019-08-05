@@ -109,16 +109,19 @@ This message usually indicates that a node tried to connect to a cluster, but th
 
 - Choose a different directory to store the CockroachDB data:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --store=[new directory] --join=[cluster host]:26257
     ~~~
 
 - Remove the existing directory and start a node joining the cluster again:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --join=[cluster host]:26257
     ~~~
