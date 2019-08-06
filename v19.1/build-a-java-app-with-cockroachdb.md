@@ -49,7 +49,7 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 The code below uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
 1. `BasicExample`, which is where the application logic lives.
-2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class has logic to handle [transaction retries](transactions.html#transaction-retries) (see the `BasicExampleDAO.runSQL()` method).
+2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class has logic to handle [client-side transaction retries](transactions.html#client-side-intervention) (see the `BasicExampleDAO.runSQL()` method).
 
 It performs the following steps which roughly correspond to method calls in the `BasicExample` class.
 
