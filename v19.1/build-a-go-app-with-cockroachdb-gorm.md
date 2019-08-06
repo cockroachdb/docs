@@ -53,46 +53,37 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 
 ## Step 4. Run the Go code
 
-The following code uses the [GORM](http://gorm.io) ORM to map Go-specific objects to SQL operations. Specifically, `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model, `db.Create(&Account{})` inserts rows into the table, and `db.Find(&accounts)` selects from the table so that balances can be printed.
+The following code uses the [GORM](http://gorm.io) ORM to map Go-specific objects to SQL operations. Specifically:
+
+- `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model.
+- `db.Create(&Account{})` inserts rows into the table.
+- `db.Find(&accounts)` selects from the table so that balances can be printed.
+- The funds transfer occurs in `transferFunds()`. To ensure that we [handle retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another error, it sleeps again for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-basic-sample.go" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-sample.go" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include {{ page.version.version }}/app/gorm-basic-sample.go %}
+{% include {{ page.version.version }}/app/gorm-sample.go %}
 ~~~
 
 Then run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ go run gorm-basic-sample.go
+$ go run gorm-sample.go
 ~~~
 
-The output should be:
+The output should show the account balances before and after the funds transfer:
 
 ~~~ shell
-Initial balances:
+Balance at '2019-08-06 13:37:19.311423 -0400 EDT m=+0.034072606':
 1 1000
 2 250
-~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](use-the-built-in-sql-client.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
-(2 rows)
+Balance at '2019-08-06 13:37:19.325654 -0400 EDT m=+0.048303286':
+1 900
+2 350
 ~~~
 
 </section>
