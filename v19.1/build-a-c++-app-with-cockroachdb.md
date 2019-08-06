@@ -54,12 +54,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 To build the `basic-sample.cpp` source code to an executable file named `basic-sample`, run the following command from the directory that contains the code:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ g++ -std=c++11 basic-sample.cpp -lpq -lpqxx -o basic-sample
 ```
 
 Then run the `basic-sample` file from that directory:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ ./basic-sample
 ```
@@ -81,12 +83,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 To build the `txn-sample.cpp` source code to an executable file named `txn-sample`, run the following command from the  directory that contains the code:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ g++ -std=c++11 txn-sample.cpp -lpq -lpqxx -o txn-sample
 ```
 
 Then run the `txn-sample` file from that directory:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ ./txn-sample
 ```
@@ -132,12 +136,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 To build the `basic-sample.cpp` source code to an executable file named `basic-sample`, run the following command from the directory that contains the code:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ g++ -std=c++11 basic-sample.cpp -lpq -lpqxx -o basic-sample
 ```
 
 Then run the `basic-sample` file from that directory:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ ./basic-sample
 ```
@@ -159,12 +165,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 To build the `txn-sample.cpp` source code to an executable file named `txn-sample`, run the following command from the  directory that contains the code:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ g++ -std=c++11 txn-sample.cpp -lpq -lpqxx -o txn-sample
 ```
 
 Then run the `txn-sample` file from that directory:
 
+{% include copy-clipboard.html %}
 ``` shell
 $ ./txn-sample
 ```
