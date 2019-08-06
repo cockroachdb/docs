@@ -88,9 +88,15 @@
     ]
   },
   {
-    "title": "Manage Your Account",
+    "title": "Manage Your Cluster",
     "urls": [
       "/${VERSION}/managed-cluster-management.html"
+    ]
+  },
+  {
+    "title": "Manage Console Access",
+    "urls": [
+      "/${VERSION}/managed-account-management.html"
     ]
   },
   {
