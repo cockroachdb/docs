@@ -38,11 +38,11 @@ $ go get -u github.com/jinzhu/gorm
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-## Step 2. Create the `maxroach` user and `bank` database
+## Step 2. Create the maxroach user and bank database
 
 {% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
 
-## Step 3. Generate a certificate for the `maxroach` user
+## Step 3. Generate a certificate for the maxroach user
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
