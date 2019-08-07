@@ -13,10 +13,6 @@ Use an interactive SQL shell to try out these statements. If you have a cluster 
 {{site.data.alerts.end}}
 {% endunless %}
 
-{{site.data.alerts.callout_info}}
-CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
-{{site.data.alerts.end}}
-
 {% if site.managed %}
 ## Before you begin
 
