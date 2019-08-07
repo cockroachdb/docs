@@ -49,14 +49,11 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 
 Now that you have a database and a user, you'll run the code shown below to:
 
-- Create a table and insert some rows
-- Read and update values as an atomic [transaction](transactions.html)
+- Create an `accounts` table and insert some rows.
+- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that we [handle transaction retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
+- Finally, we delete the accounts from the table before exiting so we can re-run the example code.
 
-### Basic statements
-
-First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/basic-sample.py" download><code>basic-sample.py</code></a> file, or create the file yourself and copy the code into it.
+Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/basic-sample.py" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -70,64 +67,15 @@ Then run the code:
 $ python basic-sample.py
 ~~~
 
-The output should be:
+The output should show the account balances before and after the funds transfer:
 
 ~~~
-Initial balances:
+Balances at Wed Aug  7 12:11:23 2019
 ['1', '1000']
 ['2', '250']
-~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/txn-sample.py" download><code>txn-sample.py</code></a> file, or create the file yourself and copy the code into it.
-
-{{site.data.alerts.callout_info}}CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ python
-{% include {{page.version.version}}/app/txn-sample.py %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ python txn-sample.py
-~~~
-
-The output should be:
-
-~~~ 
-Balances after transfer:
+Balances at Wed Aug  7 12:11:23 2019
 ['1', '900']
 ['2', '350']
-~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](use-the-built-in-sql-client.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank
-~~~
-
-To check the account balances, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
 ~~~
 
 </section>
