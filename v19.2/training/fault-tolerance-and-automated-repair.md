@@ -31,7 +31,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
- If you're on a Mac and use Homebrew, run:
+    If you're on a Mac and use Homebrew, run:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
@@ -39,7 +39,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
- If you're using Linux and use apt-get, run:
+    If you're using Linux and use apt-get, run:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install haproxy
@@ -215,7 +215,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 
-2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it still serving reads
+2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it is still serving reads:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -232,7 +232,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     (1 row)
     ~~~
 
-    ... and writes:
+    And writes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -58,9 +58,11 @@ redirect_from: /training/cluster-startup-and-scaling.html
     ~~~
     </div>
 
-If you get a permissions error, prefix the command with `sudo`.
+    {{site.data.alerts.callout_info}}
+    If you get a permissions error, prefix the command with `sudo`.
+    {{site.data.alerts.end}}
 
-3. Clean up the directory where you unpacked the binary.
+3. Clean up the directory where you unpacked the binary:
 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
@@ -76,9 +78,9 @@ If you get a permissions error, prefix the command with `sudo`.
     ~~~
     </div>
 
-You can also execute the `cockroach` binary directly from its download
-location, but the rest of training documentation assumes you have the binary in
-your `PATH`.
+    You can also execute the `cockroach` binary directly from its download
+    location, but the rest of training documentation assumes you have the
+    binary in your `PATH`.
 
 ## Step 2. Start a node
 
@@ -135,7 +137,7 @@ You can run `cockroach start --help` to get help on this command directly in you
 
 Start two more nodes, using the same `cockroach start` command as earlier but with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node.
 
-1. In another terminal, start the second node:
+1. Start the second node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -148,7 +150,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     --background
     ~~~~
 
-2. In another terminal, start the third node:
+2. Start the third node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -205,7 +207,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     `build` | The version of CockroachDB you are running.
     `webui` | The URL for accessing the Admin UI.
     `sql` | The connection URL for your client.
-    `client flags` | The flags to use when connecting to the node via [`cockroach` client commands](.cockroach-commands.html).
+    `client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
     `logs` | The directory containing debug log data.
     `temp dir` | The temporary store directory of the node.
     `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](../backup.html) and [restore](../restore.html) operations using local node directories or NFS drives.
@@ -275,7 +277,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node. But this time, you do not have to follow-up with the `cockroach init` command or any other commands.
 
-1. In another terminal, start the fourth node:
+1. Start the fourth node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -288,7 +290,7 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
     --background
     ~~~~
 
-2. In another terminal, start the fifth node:
+2. Start the fifth node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
