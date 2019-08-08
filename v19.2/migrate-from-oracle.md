@@ -11,7 +11,7 @@ The general steps for migrating from Oracle into CockroachDB are as follows:
 
 - [Step 1. Export the Oracle schema](#step-1-export-the-oracle-schema)
 - [Step 2. Convert the Oracle schema to SQL](#step-2-convert-the-oracle-schema-to-sql)
-- [Step 3. Export table data](l#step-3-export-table-data)
+- [Step 3. Export table data](#step-3-export-table-data)
 - [Step 4. Configure and convert the table data to CSV](#step-4-configure-and-convert-the-table-data-to-csv)
 - [Step 5. Compress the CSV files](#step-5-compress-the-csv-files)
 - [Step 6. Host the files where the cluster can access them](#step-6-host-the-files-where-the-cluster-can-access-them)
@@ -327,13 +327,13 @@ The last phase of the migration process is to change the [transactional behavior
 
 Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues; however, this is not required by CockroachDB. As a developer, you will no longer require the `FOR UPDATE` clause and it should be removed.  
 
-Regarding locks, Cockroach utilizes a [lightweight latch](transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
+Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
 
 As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).  
 
 ### SQL dialect
 
-Cockroach is ANSI SQL compliant with a Postgres dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL Layer](sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
+Cockroach is ANSI SQL compliant with a Postgres dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL Layer](architecture/sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
 
 You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://en.wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](sql-grammar.html) and a [SQL comparison](detailed-sql-support.html), see below:
 
@@ -343,7 +343,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 
     Oracle requires use of the `DUAL` table, as Oracle requires a `SELECT ... FROM`. In CockroachDB, all reference to the `DUAL` table should be eliminated.
 
-- [Function call syntax](functions-and-operators.html#string-and-byte-function)
+- [Function call syntax](functions-and-operators.html#string-and-byte-functions)
 - [Hints](cost-based-optimizer.html#join-hints)
 
     See also: [Table Expressions - Force index selection](table-expressions.html#force-index-selection)
