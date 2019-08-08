@@ -27,13 +27,22 @@ $ cockroach debug ballast --help
 
 Flag | Description
 -----|-----------
-`--size`<br>`-z` | The amount of space to fill, or to leave available, in a node's storage directory via a ballast file. Positive values equal the size of the ballast file. Negative values equal the amount of space to leave after creating the ballast file. This can be a percentage (notated as a decimal or with %) or any bytes-based unit, for example:<br><br>`--size=1000000000 ----> 1000000000 bytes`<br>`--size=1GiB ----> 1073741824 bytes`<br>`--size=5% ----> 5% of available space`<br>`--size=0.05 ----> 5% of available space`<br>`--size=.05 ----> 5% of available space`
+`--size`<br>`-z` | The amount of space to fill, or to leave available, in a node's storage directory via a ballast file. Positive values equal the size of the ballast file. Negative values equal the amount of space to leave after creating the ballast file. This can be a percentage (notated as a decimal or with %) or any bytes-based unit, for example:<br><br>`--size=1000000000 ----> 1000000000 bytes`<br>`--size=1GiB ----> 1073741824 bytes`<br>`--size=5% ----> 5% of available space`<br>`--size=0.05 ----> 5% of available space`<br>`--size=.05 ----> 5% of available space`<br><br>**Default:** `1GB` <span class="version-tag">New in v19.2</span>
 
-## Example
+## Examples
+
+### Create a 1GB ballast file (default)
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach debug ballast cockroach-data/ballast.txt --size=1GiB
+$ cockroach debug ballast cockroach-data/ballast.txt
+~~~
+
+### Create a ballast file of a different size
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach debug ballast cockroach-data/ballast.txt --size=2GB
 ~~~
 
 ## See also
