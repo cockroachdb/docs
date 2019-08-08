@@ -100,3 +100,4 @@ Suppose we have an yet another existing table named `students` with the primary 
 - [`ALTER TABLE`](alter-table.html)
 - [Define Table Partitions](partitioning.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [`SHOW PARTITIONS`](show-partitions.html)
