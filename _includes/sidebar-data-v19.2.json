@@ -1142,6 +1142,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/show-partitions.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW QUERIES</code>",
                 "urls": [
                   "/${VERSION}/show-queries.html"
