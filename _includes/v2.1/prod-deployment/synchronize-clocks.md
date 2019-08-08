@@ -1,4 +1,4 @@
-CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency. For this reason, when a node detects that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), it spontaneously shuts down. This avoids the risk of consistency anomalies, but it's best to prevent clocks from drifting too far in the first place by running clock synchronization software on each node.
+CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), it spontaneously shuts down. This avoids the risk of consistency anomalies, but it's best to prevent clocks from drifting too far in the first place by running clock synchronization software on each node.
 
 {% if page.title contains "Digital Ocean" or page.title contains "On-Premises" %}
 
@@ -36,7 +36,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
     $ sudo service ntp stop
     ~~~
 
-5. Synch the machine's clock with Google's NTP service:
+5. Sync the machine's clock with Google's NTP service:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -133,7 +133,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
     $ sudo service ntp stop
     ~~~
 
-6. Synch the machine's clock with Google's NTP service:
+6. Sync the machine's clock with Google's NTP service:
 
     {% include copy-clipboard.html %}
     ~~~ shell
