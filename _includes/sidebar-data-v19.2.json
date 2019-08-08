@@ -1136,6 +1136,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW PARTITIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-partitions.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW QUERIES</code>",
                 "urls": [
                   "/${VERSION}/show-queries.html"
