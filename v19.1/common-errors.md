@@ -191,11 +191,14 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## split failed while applying backpressure
 
-In CockroachDB, a table row is stored on disk as a key-value pair. Whenever the row is updated, CockroachDB also stores a distinct version of the key-value pair to enable concurrent request processing while guaranteeing consistency (see [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc)). All versions of a key-value pair belong to a larger ["range"](architecture/overview.html#terms) of the total key space, and the historical versions remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed (25 hours by default). Once a range reaches a size threshold (64 MiB by default), CockroachDB splits the range into two ranges. However, this message indicates that a range cannot be split as intended.
+In CockroachDB, a table row is stored on disk as a key-value pair. Whenever the row is updated, CockroachDB also stores a distinct version of the key-value pair to enable concurrent request processing while guaranteeing consistency (see [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc)). All versions of a key-value pair belong to a larger ["range"](architecture/overview.html#terms) of the total key space, and the historical versions remain until the garbage collection period defined by the `gc.ttlseconds` variable in the applicable [zone configuration](configure-replication-zones.html#gc-ttlseconds) has passed (25 hours by default). Once a range reaches a size threshold (64 MiB by default), CockroachDB splits the range into two ranges. However, this message indicates that a range cannot be split as intended.
 
-One possible cause is that the range consists mainly of MVCC version data due to a row being repeatedly updated, and the range cannot be split because doing so would spread MVCC versions for a single row across multiple ranges.
+One possible cause is that the range consists only of MVCC version data due to a row being repeatedly updated, and the range cannot be split because doing so would spread MVCC versions for a single row across multiple ranges.
 
-To resolve this issue, make sure you are not repeatedly updating a single row. Otherwise, [contact support](https://support.cockroachlabs.com) for further guidance.
+To resolve this issue, make sure you are not repeatedly updating a single row. If frequent updates of a row are necessary, consider one of the following:
+
+- Reduce the `gc.ttlseconds` variable in the applicable [zone configuration](configure-replication-zones.html#gc-ttlseconds) to reduce the garbage collection period and prevent such a large build-up of historical values.
+- If a row contains large columns that are not being updated with other columns, put the large columns in separate [column families](column-families.html).
 
 ## context deadline exceeded
 
