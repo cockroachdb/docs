@@ -494,6 +494,12 @@
             ]
           },
           {
+            "title": "Use EXPLAIN to Troubleshoot SQL Performance",
+            "urls": [
+              "/${VERSION}/sql-tuning-with-explain.html"
+            ]
+          },
+          {
             "title": "Understand Debug Logs",
             "urls": [
               "/${VERSION}/debug-and-error-logs.html"
