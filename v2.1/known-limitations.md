@@ -14,6 +14,21 @@ Change data capture (CDC) provides efficient, distributed, row-level change feed
 
 {% include {{page.version.version}}/known-limitations/cdc.md %}
 
+### Cold starts of large clusters may require manual intervention
+
+If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
+
+To exit this state, you should:
+  1. Stop all nodes.
+  2. Set the following environment variables: `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
+  3. Restart the cluster.
+
+Once restarted, you should monitor the Replica Quiescence graph on the Replication Dashboard. When >90% of the replicas have become Quiescent, you can conduct a rolling restart and remove the environment variables. Be sure to ensure that underreplicated ranges do not increase between restarts.
+
+Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [range_max_bytes](https://www.cockroachlabs.com/docs/stable/configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to max_range_bytes in a development environment before making changes on production.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
+
 ### Admin UI may become inaccessible for secure clusters
 
 Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
