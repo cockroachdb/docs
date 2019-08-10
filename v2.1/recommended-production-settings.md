@@ -63,7 +63,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
 
-    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have NUMA implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
 
 - For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 vCPUs per node.
 

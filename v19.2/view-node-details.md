@@ -132,8 +132,8 @@ Field | Description
 `is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
 `is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive Admin UI), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
-`is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
-`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
+`is_decommissioning` | If `true`, the node is marked for [decommissioning](remove-nodes.html).<br><br>**Required flag:** `--decommission` or `--all`
+`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being [decommissioned](remove-nodes.html).<br><br>**Required flag:** `--decommission` or `--all`
 
 ### `node decommission`
 
@@ -142,8 +142,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
-`is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.
-`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.
+`is_decommissioning` | If `true`, the node is marked for [decommissioning](remove-nodes.html)
+`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being [decommissioned](remove-nodes.html).
 
 ### `node recommission`
 
@@ -152,8 +152,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
-`is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.
-`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.
+`is_decommissioning` | If `true`, the node is marked for [decommissioning](remove-nodes.html).
+`is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being [decommissioned](remove-nodes.html).
 
 ## Examples
 
