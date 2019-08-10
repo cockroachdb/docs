@@ -62,11 +62,25 @@ A traditional approach for generating unique IDs is one of the following:
 - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s.
 - Use the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs.
 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB.
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. It also causes all new records to be inserted onto the same node.
 
 The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
 
-The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
+There are two schema design patterns that can mitigate these issues.
+
+One pattern in CockroachDB is to generate unique IDs for the primary key using the `UUID` type, which generates random unique IDs in parallel, thus improving performance. This will distribute the insert load as well as any later queries of the table, but has the disadvantage of creating a primary key that may not be useful in a query directly, and will require a join with another table or a secondary index.
+
+An alternative pattern which requires careful planning at the schema design phase but which can yield even better performance would be to use a multi-column Primary Key that is unique, but which is also useful in a query. The trick is to ensure that any monotonically increasing field is located after the first column.
+
+For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a Primary Key might be `(username, post_timestamp)`. This would make the following query efficient:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM posts
+          WHERE username = 'alyssa'
+       ORDER BY post_timestamp DESC
+          LIMIT 10;
+~~~
 
 ### Use `UUID` to generate unique IDs
 
