@@ -84,7 +84,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST | chmod 755 workload.LATEST
+    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST ; chmod 755 workload.LATEST
     ~~~
 
 2. Rename and copy `workload` into the `PATH`:
@@ -245,7 +245,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST | chmod 755 workload.LATEST
+    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST ; chmod 755 workload.LATEST
     ~~~
 
 2. Rename and copy `workload` into the `PATH`:
