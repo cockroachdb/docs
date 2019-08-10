@@ -4,7 +4,7 @@ summary: Common cluster topology patterns with setup examples and performance co
 toc: true
 ---
 
-In a multi-region deployment, the geo-partitioned leaseholders topology is a good choice for tables with the following requirements:
+In a multi-region deployment, the geo-partitioned [leaseholders](architecture/replication-layer.html#leases) topology is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
 - Reads must be up-to-date for business reasons or because the table is reference by [foreign keys](foreign-key.html).
