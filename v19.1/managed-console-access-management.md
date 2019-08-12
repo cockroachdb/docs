@@ -24,7 +24,7 @@ To access a database, you need to ask a Console Admin for details of a SQL user.
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
 - [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-cockroachdb-cloud)
-- [Manage Cockroach Cloud Developers and other Admins](#manage-cockroach-cloud-developers-and-other-admins)
+- [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](managed-connect-to-your-cluster.html#step-2-create-a-sql-user)
 
 {{site.data.alerts.callout_info}}
@@ -33,9 +33,9 @@ A Console Admin is different from an `admin` SQL user.
 
 ## Administrative tasks
 
-### Invite Team Members to CockroachDB Cloud
+### Invite Team Members to Managed CockroachDB
 
-To invite Team Members to Cockroach Cloud:
+To invite Team Members to Managed CockroachDB:
 
 1. On the **Access** page, click **Add Team Member**.
 2. In the **Email Address** field, enter the email address of the team member you want to invite.
@@ -43,7 +43,7 @@ To invite Team Members to Cockroach Cloud:
 4. (Optionally) Click **Add another** to invite another team member.
 4. Click **Invite**.
 
-### Manage Cockroach Cloud Developers and other Admins
+### Manage Team Members
 
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
 
