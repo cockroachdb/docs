@@ -319,6 +319,7 @@ Then add the [computed columns](computed-columns.html), [constraints](add-constr
 
 Repeat the above for each CSV file you want to import.
 
+<!--
 ## Step 9. Refactor application SQL
 
 The last phase of the migration process is to change the [transactional behavior](#transactions-locking-and-concurrency-control) and [SQL dialect](#sql-dialect) of your application.
@@ -387,6 +388,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 
 - [Window functions](window-functions.html)
 
+-->
 ## See also
 
 - [`IMPORT`](import.html)
