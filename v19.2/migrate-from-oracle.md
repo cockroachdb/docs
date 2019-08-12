@@ -17,7 +17,6 @@ The general steps for migrating from Oracle into CockroachDB are as follows:
 - [Step 6. Host the files where the cluster can access them](#step-6-host-the-files-where-the-cluster-can-access-them)
 - [Step 7. Map Oracle to CockroachDB data types](#step-7-map-oracle-to-cockroachdb-data-types)
 - [Step 8. Import the CSV](#step-8-import-the-csv)
-- [Step 9. Refactor application SQL](#step-9-refactor-application-sql)
 
 To illustrate these steps, we use sample data to run an example migration. The example migration uses:
 
