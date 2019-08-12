@@ -14,25 +14,7 @@ redirect_from: /training/cluster-startup-and-scaling.html
   }
 </style>
 
-## Step 1. Create a training directory
-
-To make it easier to keep track of all the files for this training, create a new directory and `cd` into it:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ mkdir cockroachdb-training
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cd cockroachdb-training
-~~~
-
-{{site.data.alerts.callout_info}}
-From this point on, you'll start nodes and run all other commands from inside the `cockroachdb-training` directory.
-{{site.data.alerts.end}}
-
-## Step 2. Install CockroachDB
+## Step 1. Install CockroachDB
 
 1. Download the CockroachDB archive for your OS, and extract the binary:
 
@@ -58,36 +40,61 @@ From this point on, you'll start nodes and run all other commands from inside th
     ~~~
     </div>
 
-2. Move the binary into the parent `cockroachdb-training` directory:
+2. Move the binary into your `$PATH` so you can execute from any shell:
 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach . \
-    ; rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
+    $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach \
+    /usr/local/bin
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach . \
-    ; rm -rf cockroach-{{ page.release_info.version }}
+    $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach \
+    /usr/local/bin
     ~~~
     </div>
 
-## Step 3. Start a node
+    {{site.data.alerts.callout_info}}
+    If you get a permissions error, prefix the command with `sudo`.
+    {{site.data.alerts.end}}
+
+3. Clean up the directory where you unpacked the binary:
+
+    <div class="filter-content" markdown="1" data-scope="mac">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
+    ~~~
+    </div>
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf cockroach-{{ page.release_info.version }}.linux-amd64
+    ~~~
+    </div>
+
+    You can also execute the `cockroach` binary directly from its download
+    location, but the rest of training documentation assumes you have the
+    binary in your `PATH`.
+
+## Step 2. Start a node
 
 Use the [`cockroach start`](../start-a-node.html) command to start a node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach start \
+$ cockroach start \
 --insecure \
 --store=node1 \
 --listen-addr=localhost:26257 \
 --http-addr=localhost:8080 \
---join=localhost:26257,localhost:26258,localhost:26259
+--join=localhost:26257,localhost:26258,localhost:26259 \
+--background
 ~~~
 
 You'll see the following message:
@@ -110,9 +117,7 @@ You'll see the following message:
 *
 ~~~
 
-This output will expand in a few steps once the cluster has been initialized.
-
-## Step 4. Understand the flags you used
+## Step 3. Understand the flags you used
 
 Before moving on, take a moment to understand the flags you used with the `cockroach start` command:
 
@@ -122,46 +127,49 @@ Flag | Description
 `--store` | The location where the node stores its data and logs.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique storage location for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use the its default storage location (`cockroach-data`).
 `--listen-addr`<br>`--http-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients and for Admin UI HTTP request, respectively.<br><br>Again, since you'll be running all nodes on your computer, you need to specify unique ports for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use its default TPC port (`26257`) and HTTP port (`8080`).
 `--join` | The addresses and ports of all of your initial nodes.<br><br>You'll use this exact `--join` flag when starting all other nodes.
+`--background` | The node will run in the background.
 
 {{site.data.alerts.callout_success}}
-You can run `./cockroach start --help` to get help on this command directly in your terminal and `./cockroach --help` to get help on other commands.
+You can run `cockroach start --help` to get help on this command directly in your terminal and `cockroach --help` to get help on other commands.
 {{site.data.alerts.end}}
 
-## Step 5. Start two more nodes
+## Step 4. Start two more nodes
 
 Start two more nodes, using the same `cockroach start` command as earlier but with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node.
 
-1. In another terminal, start the second node:
+1. Start the second node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach start \
+    cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start the third node:
+2. Start the third node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach start \
+    cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-## Step 6. Initialize the cluster
+## Step 5. Initialize the cluster
 
 1. In another terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
     You'll see the following message:
@@ -170,14 +178,21 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     Cluster successfully initialized
     ~~~
 
-2. Go back to the terminal where you started one of the nodes and look at the additional details that were printed to `stdout`:
+2. Look at the startup details in the server log:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ grep 'node starting' node1/logs/cockroach.log -A 11
+    ~~~
+
+    The output will look something like this:
 
     ~~~
     CockroachDB node starting at 2018-09-13 20:06:52.743448917 +0000 UTC (took 51.0s)
     build:               CCL {{page.release_info.version}} @ 2018/09/10 19:49:42 (go1.10.3)
     webui:               http://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslmode=disable
-    client flags:        ./cockroach <client cmd> --host=localhost:26257 --insecure
+    client flags:        cockroach <client cmd> --host=localhost:26257 --insecure
     logs:                /Users/<username>/cockroachdb-training/node1/logs
     temp dir:            /Users/<username>/cockroachdb-training/node1/cockroach-temp462678173
     external I/O path:   /Users/<username>/cockroachdb-training/node1/extern
@@ -186,10 +201,6 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     clusterID:           fdc056a4-0cc0-4b29-b435-60e1db239f82
     nodeID:              1
     ~~~
-
-    {{site.data.alerts.callout_success}}
-    These details are also written to the <code>INFO</code> log in the `/logs` directory in case you need to refer to them at a later time.
-    {{site.data.alerts.end}}
 
     Field | Description
     ------|------------
@@ -205,13 +216,13 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     `clusterID` | The ID of the cluster.
     `nodeID` | The ID of the node.
 
-## Step 7. Verify that the cluster is live
+## Step 6. Verify that the cluster is live
 
 1. Use the [`cockroach node status`](../view-node-details.html) command to check that all 3 nodes are part of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach node status --insecure --host=localhost:26257
+    $ cockroach node status --insecure --host=localhost:26257
     ~~~
 
     ~~~
@@ -227,7 +238,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SHOW DATABASES;"
@@ -244,7 +255,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
     You just queried the node listening on `26257`, but every other node is a SQL gateway to the cluster as well. We'll learn more about CockroachDB SQL and the built-in SQL client in a later module.
 
-## Step 8. Look at the current state of replication
+## Step 7. Look at the current state of replication
 
 1. To understand replication in CockroachDB, it's important to review a few concepts from the architecture:
 
@@ -262,37 +273,39 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     - Each range has been replicated 3 times (according to the CockroachDB default).
     - For each range, each replica is stored on different nodes.
 
-## Step 9. Scale the cluster
+## Step 8. Scale the cluster
 
 Adding more nodes to your cluster is even easier than starting the cluster. Just like before, you use the `cockroach start` command with unique `--store`, `--listen-addr`, and `--http-addr` flags for each new node. But this time, you do not have to follow-up with the `cockroach init` command or any other commands.
 
-1. In another terminal, start the fourth node:
+1. Start the fourth node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach start \
+    cockroach start \
     --insecure \
     --store=node4 \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~~
 
-2. In another terminal, start the fifth node:
+2. Start the fifth node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./cockroach start \
+    cockroach start \
     --insecure \
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
     As soon as you run these commands, the nodes join the cluster. There's no need to run the `cockroach init` command or any other commands.
 
-## Step 10. Watch data rebalance across all 5 nodes
+## Step 9. Watch data rebalance across all 5 nodes
 
 Go back to the **Live Nodes** list in the Admin UI and watch how the **Replicas** are automatically rebalanced to utilize the additional capacity of the new nodes:
 

@@ -21,7 +21,7 @@ Use the [`cockroach sql`](../start-a-node.html) command to open the built-in SQL
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach sql --insecure --host=localhost:26257
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 ## Step 2. Create a database and table
@@ -341,7 +341,7 @@ Now try running two copies of the above transaction in parallel:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --insecure
+    $ cockroach sql --insecure
     ~~~
 
     {% include copy-clipboard.html %}

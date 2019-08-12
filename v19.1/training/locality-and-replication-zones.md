@@ -30,7 +30,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node1 \
@@ -44,7 +44,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node2 \
@@ -58,7 +58,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-east \
     --store=node3 \
@@ -72,7 +72,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Check data distribution
@@ -91,7 +91,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node4 \
@@ -105,7 +105,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node5 \
@@ -119,7 +119,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-central \
     --store=node6 \
@@ -135,7 +135,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node7 \
@@ -149,7 +149,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node8 \
@@ -163,7 +163,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=us,datacenter=us-west \
     --store=node9 \
@@ -185,7 +185,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data intro | ./cockroach sql \
+    $ cockroach gen example-data intro | cockroach sql \
     --insecure \
     --host=localhost:26257
     ~~~
@@ -194,7 +194,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT * FROM intro.mytable WHERE (l % 2) = 0;"
@@ -231,7 +231,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
@@ -254,7 +254,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node10 \
@@ -268,7 +268,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node11 \
@@ -282,7 +282,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --locality=region=eu,datacenter=eu-west \
     --store=node12 \
@@ -300,7 +300,7 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data startrek | ./cockroach sql \
+    $ cockroach gen example-data startrek | cockroach sql \
     --insecure \
     --host=localhost:26257
     ~~~
@@ -309,7 +309,7 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT * FROM startrek.episodes LIMIT 5;" \
@@ -339,14 +339,14 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
+    $ cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
     ~~~
 
 2. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
+    $ cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
     ~~~
 
 ## Step 8. Verify data distribution
@@ -357,13 +357,15 @@ Now verify that the data for the table in the `intro` database is located on US-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;" \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.episodes;" \
     --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE startrek.quotes;"    
     ~~~
+
+    Note: your result set will differ slightly from ours.
 
     ~~~
       start_key | end_key | range_id | replicas | lease_holder
@@ -408,7 +410,7 @@ Take a moment to clean things up.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12
+    $ rm -rf node{1,2,3,4,5,6,7,8,9,10,11,12}
     ~~~
 
 ## What's next?

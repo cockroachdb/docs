@@ -27,7 +27,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -40,7 +40,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -53,7 +53,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -66,7 +66,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Perform a "core" backup
@@ -75,14 +75,14 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen example-data startrek | ./cockroach sql --insecure
+    $ cockroach gen example-data startrek | cockroach sql --insecure
     ~~~
 
 2. Check the contents of the `startrek` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT * FROM startrek.episodes LIMIT 1;" \
@@ -104,7 +104,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach dump startrek \
+    $ cockroach dump startrek \
     --insecure \
     --host=localhost:26257 > startrek_backup.sql
     ~~~
@@ -151,7 +151,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="DROP TABLE startrek.episodes,startrek.quotes CASCADE;"
@@ -161,7 +161,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SHOW TABLES FROM startrek;"
@@ -177,7 +177,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --database=startrek < startrek_backup.sql
@@ -187,7 +187,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT * FROM startrek.episodes LIMIT 1;" \
@@ -213,7 +213,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SET CLUSTER SETTING cluster.organization = '<your organization>';"
@@ -221,7 +221,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SET CLUSTER SETTING enterprise.license = '<your license key>';"
@@ -231,7 +231,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="BACKUP DATABASE startrek TO 's3://cockroach-training/[name]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
@@ -252,7 +252,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="DROP TABLE startrek.episodes,startrek.quotes CASCADE;"
@@ -262,7 +262,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SHOW TABLES FROM startrek;"
@@ -278,7 +278,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="RESTORE startrek.* FROM 's3://cockroach-training/[name]-training?AWS_ACCESS_KEY_ID={{site.training.aws_access_key}}&AWS_SECRET_ACCESS_KEY={{site.training.aws_secret_access_key}}';"
@@ -295,7 +295,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT * FROM startrek.episodes LIMIT 1;" \

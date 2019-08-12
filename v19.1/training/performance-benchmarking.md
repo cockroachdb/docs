@@ -28,7 +28,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node1 \
     --listen-addr=localhost:26257 \
@@ -41,14 +41,14 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach init --insecure --host=localhost:26257
+    $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 3. Start node 2:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node2 \
     --listen-addr=localhost:26258 \
@@ -61,7 +61,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node3 \
     --listen-addr=localhost:26259 \
@@ -74,7 +74,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node4 \
     --listen-addr=localhost:26260 \
@@ -95,7 +95,7 @@ On the fourth node, use `cockroach workload` to load the initial schema and data
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach workload init tpcc \
+$ cockroach workload init tpcc \
 --warehouses=10 \
 'postgresql://root@localhost:26260?sslmode=disable'
 ~~~
@@ -112,7 +112,7 @@ Run the workload for ten "warehouses" of data for five minutes (300 seconds):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ./cockroach workload run tpcc \
+$ cockroach workload run tpcc \
 --warehouses=10 \
 --ramp=30s \
 --duration=300s \

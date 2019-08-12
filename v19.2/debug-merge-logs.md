@@ -64,7 +64,7 @@ You can also filter the merged logs for a regular expression:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-./cockroach debug merge-logs debug/nodes/*/logs/* --filter="RUNNING IN INSECURE MODE"
+cockroach debug merge-logs debug/nodes/*/logs/* --filter="RUNNING IN INSECURE MODE"
 ~~~
 
 ## See also

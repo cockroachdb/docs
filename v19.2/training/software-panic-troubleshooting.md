@@ -25,7 +25,7 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26259 \
     --execute="SELECT crdb_internal.force_panic('foo');"

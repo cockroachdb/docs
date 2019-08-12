@@ -6,6 +6,12 @@ toc: true
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
+The following types cannot be included in an index key, but can be stored (and used in a covered query) using the [`STORING` or `COVERING`](create-index.html#store-columns) clause:
+
+- [`JSONB`](jsonb.html)
+- [`ARRAY`](array.html)
+- The computed [`TUPLE`](scalar-expressions.html#tuple-constructor) type, even if it is constructed from indexed fields
+
 To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
 
 {{site.data.alerts.callout_info}}
@@ -132,7 +138,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 > CREATE INDEX ON products (price DESC, stock);
 ~~~
 
-How columns are sorted impacts the order of rows returned by queries using the index, which particularly affects queries using `LIMIT`.
+Note that how a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
 
 ### Query specific indexes
 

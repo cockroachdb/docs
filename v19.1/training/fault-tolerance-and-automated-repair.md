@@ -22,7 +22,7 @@ Make sure you have already completed [Cluster Startup and Scaling](cluster-start
 
 In this module, you'll run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to spread requests evenly across nodes. You'll use the open-source [HAProxy](http://www.haproxy.org/) load balancer to do that here.
 
-1. In a new terminal, install HAProxy. If you're on a Mac and use Homebrew, run:
+1. In a new terminal, install HAProxy.
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -31,6 +31,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+    If you're on a Mac and use Homebrew, run:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
@@ -38,6 +39,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+    If you're using Linux and use apt-get, run:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install haproxy
@@ -48,7 +50,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach gen haproxy \
+    $ cockroach gen haproxy \
     --insecure \
     --host=localhost \
     --port=26257
@@ -56,32 +58,11 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
     This command generates an `haproxy.cfg` file automatically configured to work with the nodes of your running cluster.
 
-3. Open `haproxy.cfg` and change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
+3. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
 
-    ~~~
-    global
-      maxconn 4096
-
-    defaults
-        mode                tcp
-        # Timeout values should be configured for your specific use.
-        # See: https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-timeout%20connect
-        timeout connect     10s
-        timeout client      1m
-        timeout server      1m
-        # TCP keep-alive on client side. Server already enables them.
-        option              clitcpka
-
-    listen psql
-        bind :26257
-        mode tcp
-        balance roundrobin
-        option httpchk GET /health?ready=1
-        server cockroach1 localhost:26257 check port 8080
-        server cockroach2 localhost:26258 check port 8081
-        server cockroach3 localhost:26259 check port 8082
-        server cockroach4 localhost:26260 check port 8083
-        server cockroach5 localhost:26261 check port 8084
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
     ~~~
 
 4. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
@@ -99,7 +80,7 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach workload init ycsb \
+    $ cockroach workload init ycsb \
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
@@ -107,7 +88,7 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach workload run ycsb \
+    $ cockroach workload run ycsb \
     --duration=20m \
     --concurrency=3 \
     --max-rate=1000 \
@@ -149,7 +130,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26000 \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
@@ -159,7 +140,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach quit \
+    $ cockroach quit \
     --insecure \
     --host=localhost:26261
     ~~~
@@ -186,23 +167,24 @@ At this point, the cluster has recovered and is ready to handle another failure.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
-1. In the terminal for node 5, restart the node, using the same command you used to start the node initially:
+1. Restart node 5, using the same command you used to start the node initially:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach start \
+    $ cockroach start \
     --insecure \
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
 2. In a new terminal, use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `.default` replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
+    $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
     ~~~
 
 3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
@@ -217,12 +199,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach quit --insecure --host=localhost:26260
+    $ cockroach quit --insecure --host=localhost:26260
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach quit --insecure --host=localhost:26261
+    $ cockroach quit --insecure --host=localhost:26261
     ~~~
 
 ## Step 9. Check load continuity and cluster health
@@ -233,11 +215,11 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 
-2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and see how the count is still increasing:
+2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it is still serving reads:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT count(*) FROM ycsb.usertable;"
@@ -246,13 +228,23 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
       count
     +-------+
-      12913
+      10000
     (1 row)
     ~~~
 
+    And writes:
+
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./cockroach sql \
+    $ cockroach sql \
+    --insecure \
+    --host=localhost:26257 \
+    --execute="INSERT INTO usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
     --execute="SELECT count(*) FROM ycsb.usertable;"
@@ -261,7 +253,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     ~~~
       count
     +-------+
-      13048
+      10001
     (1 row)
     ~~~
 
