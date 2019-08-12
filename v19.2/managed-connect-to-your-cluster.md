@@ -32,7 +32,7 @@ Use the Console to authorize networks:
 
 4. Enter the public IPv4 address of the machine in the **Network** field.
 
-    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
+    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; otherwise your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
     {{site.data.alerts.callout_info}}
     IPv6 addresses are currently not supported.

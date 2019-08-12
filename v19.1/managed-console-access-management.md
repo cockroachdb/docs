@@ -15,7 +15,7 @@ Every CockroachDB Cloud user is either a Developer or a Console Admin.
 
 ### Developer
 
-A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or access databases.
+A Developer is a limited-access role. A Developer can [authorize networks](managed-connect-to-your-cluster.html#step-1-authorize-your-network) but cannot invite Team Members to the Console or access databases.
 
 To access a database, you need to ask a Console Admin for details of a SQL user. To find out who's your Console Admin, check the Access page.
 
@@ -23,8 +23,8 @@ To access a database, you need to ask a Console Admin for details of a SQL user.
 
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
-- [Invite Team Members to CockroachDB Cloud]()
-- [Manage Cockroach Cloud Developers and other Admins]()
+- [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-cockroachdb-cloud)
+- [Manage Cockroach Cloud Developers and other Admins](#manage-cockroach-cloud-developers-and-other-admins)
 - [Create and manage SQL users](managed-connect-to-your-cluster.html#step-2-create-a-sql-user)
 
 {{site.data.alerts.callout_info}}
