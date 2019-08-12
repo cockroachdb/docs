@@ -26,7 +26,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
 3. Enter the public IPv4 address of your local workstation in the **Network** field.
 
@@ -51,7 +51,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
 
 3. In the **Username** field, enter `maxroach`.
 4. In the **Password** field, enter `Q7gc8rEdS`.
@@ -65,7 +65,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
 3. From the **User** dropdown, select `maxroach`.
 4. Select a **Region** to connect to.
@@ -448,7 +448,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
         NAME                         READY   STATUS              RESTARTS   AGE
         appdeploy-577f66b4c8-46s5r   0/1     ErrImageNeverPull   0          23m
         appdeploy-577f66b4c8-9chjx   0/1     ErrImageNeverPull   0          23m
-        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m  
+        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m
         ~~~
 
     2. Port-forward from your local machine to one of the pods:

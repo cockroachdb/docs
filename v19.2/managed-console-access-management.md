@@ -27,10 +27,6 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Manage Cockroach Cloud Developers and other Admins]()
 - [Create and manage SQL users](managed-connect-to-your-cluster.html#step-2-create-a-sql-user)
 
-{{site.data.alerts.callout_info}}
-A Console Admin is different from an `admin` SQL user.
-{{site.data.alerts.end}}
-
 ## Administrative tasks
 
 ### Invite Team Members to CockroachDB Cloud

@@ -50,6 +50,8 @@ Use the Console to authorize networks:
 
 ## Step 2. Create a SQL user
 
+{% include {{ page.version.version }}/managed-ask-admin.md %}
+
 1. Navigate to your cluster's **SQL Users** page.
 
     <img src="{{ 'images/v19.1/managed/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
