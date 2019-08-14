@@ -589,6 +589,12 @@
         "urls": [
           "/${VERSION}/demo-json-support.html"
         ]
+      },
+      {
+        "title": "SQL Tuning with `EXPLAIN`",
+        "urls": [
+          "/${VERSION}/sql-tuning-with-explain.html"
+        ]
       }
     ]
   },
