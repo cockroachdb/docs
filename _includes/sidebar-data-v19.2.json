@@ -1842,6 +1842,17 @@
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
         ]
+      },
+      {
+        "title": "Sample Applications",
+        "items": [
+          {
+            "title": "MovR: Vehicle-Sharing App",
+            "urls": [
+              "/${VERSION}/movr.html"
+            ]
+          }
+        ]
       }
     ]
   },

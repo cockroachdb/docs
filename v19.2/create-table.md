@@ -95,148 +95,92 @@ CockroachDB allows [enterprise users](enterprise-licensing.html) to [define tabl
 
 ## Examples
 
-### Create a table (no primary key defined)
+### Create a table
 
-In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
+In this example, we create the `users` table with a single [primary key](primary-key.html) column defined. In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE logon (
-    user_id INT,
-    logon_date DATE
+> CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM logon;
+> SHOW COLUMNS FROM users;
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| column_name | data_type | is_nullable | column_default | generation_expression | indices |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-| user_id     | INT       |    true     | NULL           |                       | {}      |
-| logon_date  | DATE      |    true     | NULL           |                       | {}      |
-+-------------+-----------+-------------+----------------+-----------------------+---------+
-(2 rows)
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false
+  city        | STRING    |    true     | NULL           |                       | {}        |   false
+  name        | STRING    |    true     | NULL           |                       | {}        |   false
+  address     | STRING    |    true     | NULL           |                       | {}        |   false
+  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
+  dl          | STRING    |    true     | NULL           |                       | {}        |   false
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM logon;
+> SHOW INDEX FROM users;
 ~~~
 
 ~~~
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| logon      | primary    |   false    |            1 | rowid       | ASC       |  false  |  false   |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | primary    |   false    |            1 | id          | ASC       |  false  |  false
 (1 row)
-~~~
-
-### Create a table (primary key defined)
-
-In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](primary-key.html), another is given the [`UNIQUE` constraint](unique.html), and the third has no constraints. The `PRIMARY KEY` and column with the `UNIQUE` constraint are automatically indexed.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE logoff (
-    user_id INT PRIMARY KEY,
-    user_email STRING UNIQUE,
-    logoff_date DATE
-);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM logoff;
-~~~
-
-~~~
-+-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
-| column_name | data_type | is_nullable | column_default | generation_expression |               indices               |
-+-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
-| user_id     | INT       |    false    | NULL           |                       | {"primary","logoff_user_email_key"} |
-| user_email  | STRING    |    true     | NULL           |                       | {"logoff_user_email_key"}           |
-| logoff_date | DATE      |    true     | NULL           |                       | {}                                  |
-+-------------+-----------+-------------+----------------+-----------------------+-------------------------------------+
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEX FROM logoff;
-~~~
-
-~~~
-+------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name |      index_name       | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
-| logoff     | primary               |   false    |            1 | user_id     | ASC       |  false  |  false   |
-| logoff     | logoff_user_email_key |   false    |            1 | user_email  | ASC       |  false  |  false   |
-| logoff     | logoff_user_email_key |   false    |            2 | user_id     | ASC       |  false  |   true   |
-+------------+-----------------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
 ~~~
 
 ### Create a table with secondary and inverted indexes
 
-In this example, we create two secondary indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
-
-[Inverted indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
-
-This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
+In this example, we create secondary and inverted indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [Inverted indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE product_information (
-    product_id           INT PRIMARY KEY NOT NULL,
-    product_name         STRING(50) UNIQUE NOT NULL,
-    product_description  STRING(2000),
-    category_id          STRING(1) NOT NULL CHECK (category_id IN ('A','B','C')),
-    weight_class         INT,
-    warranty_period      INT CONSTRAINT valid_warranty CHECK (warranty_period BETWEEN 0 AND 24),
-    supplier_id          INT,
-    product_status       STRING(20),
-    list_price           DECIMAL(8,2),
-    min_price            DECIMAL(8,2),
-    catalog_url          STRING(50) UNIQUE,
-    date_added           DATE DEFAULT CURRENT_DATE(),
-    misc                 JSONB,     
-    CONSTRAINT price_check CHECK (list_price >= min_price),
-    INDEX date_added_idx (date_added),
-    INDEX supp_id_prod_status_idx (supplier_id, product_status),
-    INVERTED INDEX details (misc)
+> CREATE TABLE vehicles (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+        INVERTED INDEX ix_vehicle_ext (ext),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
 );
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM product_information;
+> SHOW INDEX FROM vehicles;
 ~~~
 
 ~~~
-+---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
-|     table_name      |              index_name              | non_unique | seq_in_index |  column_name   | direction | storing | implicit |
-+---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
-| product_information | primary                              |   false    |            1 | product_id     | ASC       |  false  |  false   |
-| product_information | product_information_product_name_key |   false    |            1 | product_name   | ASC       |  false  |  false   |
-| product_information | product_information_product_name_key |   false    |            2 | product_id     | ASC       |  false  |   true   |
-| product_information | product_information_catalog_url_key  |   false    |            1 | catalog_url    | ASC       |  false  |  false   |
-| product_information | product_information_catalog_url_key  |   false    |            2 | product_id     | ASC       |  false  |   true   |
-| product_information | date_added_idx                       |    true    |            1 | date_added     | ASC       |  false  |  false   |
-| product_information | date_added_idx                       |    true    |            2 | product_id     | ASC       |  false  |   true   |
-| product_information | supp_id_prod_status_idx              |    true    |            1 | supplier_id    | ASC       |  false  |  false   |
-| product_information | supp_id_prod_status_idx              |    true    |            2 | product_status | ASC       |  false  |  false   |
-| product_information | supp_id_prod_status_idx              |    true    |            3 | product_id     | ASC       |  false  |   true   |
-| product_information | details                              |    true    |            1 | misc           | ASC       |  false  |  false   |
-| product_information | details                              |    true    |            2 | product_id     | ASC       |  false  |   true   |
-+---------------------+--------------------------------------+------------+--------------+----------------+-----------+---------+----------+
-(12 rows)
+  table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+---------------------------------------+------------+--------------+-------------+-----------+---------+----------+
+  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext                        |    true    |            1 | ext         | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext                        |    true    |            2 | city        | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext                        |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -250,13 +194,13 @@ We also have other resources on indexes:
 
 ### Create a table with a foreign key constraint
 
-[`FOREIGN KEY` constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+[Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
 There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
 
 - Foreign key columns must be [indexed](indexes.html) when creating the table using `INDEX`, `PRIMARY KEY`, or `UNIQUE`.
 
-- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraint.
+- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
 
 You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 
@@ -264,74 +208,156 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING
-  );
+> CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING UNIQUE CHECK (LENGTH(dl) < 8)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE orders (
-    id INT PRIMARY KEY,
-    customer_id INT REFERENCES customers(id) ON DELETE CASCADE
-  );
+> CREATE TABLE vehicles (
+        id UUID NOT NULL DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID REFERENCES users(id) ON DELETE CASCADE,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+        INVERTED INDEX ix_vehicle_ext (ext),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE orders;
+> SHOW CREATE TABLE vehicles;
 ~~~
 
 ~~~
-+------------+--------------------------------------------------------------------------+
-| table_name |                             create_statement                             |
-+------------+--------------------------------------------------------------------------+
-| orders     | CREATE TABLE orders (                                                    |
-|            |                                                                          |
-|            |     id INT NOT NULL,                                                     |
-|            |                                                                          |
-|            |     customer_id INT NULL,                                                |
-|            |                                                                          |
-|            |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                           |
-|            |                                                                          |
-|            |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id)    |
-|            | REFERENCES customers (id) ON DELETE CASCADE,                             |
-|            |                                                                          |
-|            |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id    |
-|            | ASC),                                                                    |
-|            |                                                                          |
-|            |     FAMILY "primary" (id, customer_id)                                   |
-|            |                                                                          |
-|            | )                                                                        |
-+------------+--------------------------------------------------------------------------+
+  table_name |                                          create_statement
++------------+-----------------------------------------------------------------------------------------------------+
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_owner_id_ref_users (owner_id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers VALUES (1, 'Lauren');
+> INSERT INTO users (name, dl) VALUES ('Annika', 'ABC-123');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders VALUES (1,1);
+> SELECT * FROM users;
+~~~
+
+~~~
+                   id                  | city |  name  | address | credit_card |   dl
++--------------------------------------+------+--------+---------+-------------+---------+
+  26da1fce-59e1-4290-a786-9068242dd195 | NULL | Annika | NULL    | NULL        | ABC-123
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM customers WHERE id = 1;
+> INSERT INTO vehicles (city, owner_id) VALUES ('seattle', '26da1fce-59e1-4290-a786-9068242dd195');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM orders;
+> SELECT * FROM vehicles;
+~~~
+
+~~~
+                   id                  |  city   | type |               owner_id               | creation_time | status | current_location | ext
++--------------------------------------+---------+------+--------------------------------------+---------------+--------+------------------+------+
+  fc6f7a8c-4ba9-42e1-9c37-7be3c906050c | seattle | NULL | 26da1fce-59e1-4290-a786-9068242dd195 | NULL          | NULL   | NULL             | NULL
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM users WHERE id = '26da1fce-59e1-4290-a786-9068242dd195';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM vehicles;
 ~~~
 ~~~
-+----+-------------+
-| id | customer_id |
-+----+-------------+
-+----+-------------+
+  id | city | type | owner_id | creation_time | status | current_location | ext
++----+------+------+----------+---------------+--------+------------------+-----+
+(0 rows)
+~~~
+
+
+### Create a table with a check constraint
+
+In this example, we create the `users` table, but with some column [constraints](constraints.html). One column is the [primary key](primary-key.html), and another column is given a [unique constraint](unique.html) and a [check constraint](check.html) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING UNIQUE CHECK (LENGTH(dl) < 8)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM users;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |        indices         | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+------------------------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary,users_dl_key} |   false
+  city        | STRING    |    true     | NULL           |                       | {}                     |   false
+  name        | STRING    |    true     | NULL           |                       | {}                     |   false
+  address     | STRING    |    true     | NULL           |                       | {}                     |   false
+  credit_card | STRING    |    true     | NULL           |                       | {}                     |   false
+  dl          | STRING    |    true     | NULL           |                       | {users_dl_key}         |   false
+(6 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEX FROM users;
+~~~
+
+~~~
+  table_name |  index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+--------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | primary      |   false    |            1 | id          | ASC       |  false  |  false
+  users      | users_dl_key |   false    |            1 | dl          | ASC       |  false  |  false
+  users      | users_dl_key |   false    |            2 | id          | ASC       |  false  |   true
+(3 rows)
 ~~~
 
 ### Create a table that mirrors key-value storage
@@ -340,39 +366,43 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 ### Create a table from a `SELECT` statement
 
-You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
+You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers WHERE state = 'NY';
+> SELECT * FROM users WHERE city = 'new york';
 ~~~
 
 ~~~
-+----+---------+-------+
-| id |  name   | state |
-+----+---------+-------+
-|  6 | Dorotea | NY    |
-| 15 | Thales  | NY    |
-+----+---------+-------+
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers_ny;
+> CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users_ny;
 ~~~
 
 ~~~
-+----+---------+-------+
-| id |  name   | state |
-+----+---------+-------+
-|  6 | Dorotea | NY    |
-| 15 | Thales  | NY    |
-+----+---------+-------+
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 ### Create a table with a computed column
@@ -391,17 +421,26 @@ In this example, we create a table and [define partitions by list](partitioning.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE students_by_list (
-    id INT DEFAULT unique_rowid(),
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,
-    PRIMARY KEY (country, id))
-    PARTITION BY LIST (country)
-      (PARTITION north_america VALUES IN ('CA','US'),
-      PARTITION australia VALUES IN ('AU','NZ'),
-      PARTITION DEFAULT VALUES IN (default));
+> CREATE TABLE TABLE rides (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        vehicle_city STRING,
+        rider_id UUID,
+        vehicle_id UUID,
+        start_address STRING,
+        end_address STRING,
+        start_time TIMESTAMP,
+        end_time TIMESTAMP,
+        revenue DECIMAL(10,2),
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
+        INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
+        FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
+        CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city))
+        PARTITION BY LIST (city)
+          (PARTITION new_york VALUES IN ('new york'),
+          PARTITION chicago VALUES IN ('chicago'),
+          PARTITION seattle VALUES IN ('seattle'));
 ~~~
 
 #### Create a table with partitions by range
@@ -410,16 +449,26 @@ In this example, we create a table and [define partitions by range](partitioning
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE students_by_range (
-   id INT DEFAULT unique_rowid(),
-   name STRING,
-   email STRING,                                                                                           
-   country STRING,
-   expected_graduation_date DATE,                                                                                      
-   PRIMARY KEY (expected_graduation_date, id))
-   PARTITION BY RANGE (expected_graduation_date)
-      (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE));
+> CREATE TABLE rides (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        vehicle_city STRING,
+        rider_id UUID,
+        vehicle_id UUID,
+        start_address STRING,
+        end_address STRING,
+        start_time TIMESTAMP,
+        end_time TIMESTAMP,
+        ride_length INTERVAL as (start_time - end_time) STORED,
+        revenue DECIMAL(10,2),
+        CONSTRAINT "primary" PRIMARY KEY (ride_length ASC, city ASC, id ASC),
+        INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
+        INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
+        FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
+        CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city))
+        PARTITION BY RANGE (ride_length)
+          (PARTITION short_rides VALUES FROM ('0 seconds') TO ('30 minutes'),
+          PARTITION long_rides VALUES FROM ('30 minutes') TO (MAXVALUE));
 ~~~
 
 ### Show the definition of a table
@@ -428,29 +477,33 @@ To show the definition of a table, use the [`SHOW CREATE`](show-create.html) sta
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE logoff;
+> SHOW CREATE rides;
 ~~~
 
 ~~~
-+------------+----------------------------------------------------------+
-| table_name |                     create_statement                     |
-+------------+----------------------------------------------------------+
-| logoff     | CREATE TABLE logoff (                                    |
-|            |                                                          |
-|            |     user_id INT NOT NULL,                                |
-|            |                                                          |
-|            |     user_email STRING NULL,                              |
-|            |                                                          |
-|            |     logoff_date DATE NULL,                               |
-|            |                                                          |
-|            |     CONSTRAINT "primary" PRIMARY KEY (user_id ASC),      |
-|            |                                                          |
-|            |     UNIQUE INDEX logoff_user_email_key (user_email ASC), |
-|            |                                                          |
-|            |     FAMILY "primary" (user_id, user_email, logoff_date)  |
-|            |                                                          |
-|            | )                                                        |
-+------------+----------------------------------------------------------+
+  table_name |                                                               create_statement
++------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+  rides      | CREATE TABLE rides (
+             |     id UUID NOT NULL,
+             |     city STRING NOT NULL,
+             |     vehicle_city STRING NULL,
+             |     rider_id UUID NULL,
+             |     vehicle_id UUID NULL,
+             |     start_address STRING NULL,
+             |     end_address STRING NULL,
+             |     start_time TIMESTAMP NULL,
+             |     end_time TIMESTAMP NULL,
+             |     ride_length INTERVAL NOT NULL AS (start_time - end_time) STORED,
+             |     revenue DECIMAL(10,2) NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (ride_length ASC, city ASC, id ASC),
+             |     INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
+             |     INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
+             |     FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue, ride_length),
+             |     CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
+             | ) PARTITION BY RANGE (ride_length) (
+             |     PARTITION short_rides VALUES FROM ('00:00:00') TO ('00:30:00'),
+             |     PARTITION long_rides VALUES FROM ('00:30:00') TO (MAXVALUE)
+             | )
 (1 row)
 ~~~
 

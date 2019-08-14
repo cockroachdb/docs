@@ -57,6 +57,8 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Create standard indexes
 
 To create the most efficient indexes, we recommend reviewing:
@@ -70,7 +72,7 @@ Single-column indexes sort the values of a single column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON products (price);
+> CREATE INDEX ON users (name);
 ~~~
 
 Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
@@ -81,7 +83,7 @@ Multiple-column indexes sort columns in the order you list them.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON products (price, stock);
+> CREATE INDEX ON users (name, city);
 ~~~
 
 To create the most useful multiple-column indexes, we recommend reviewing our [best practices](indexes.html#indexing-columns).
@@ -92,14 +94,14 @@ Unique indexes do not allow duplicate values among their columns.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE UNIQUE INDEX ON products (name, manufacturer_id);
+> CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
 This also applies the [`UNIQUE` constraint](unique.html) at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE products ADD CONSTRAINT products_name_manufacturer_id_key UNIQUE (name, manufacturer_id);
+> ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
 
 ### Create inverted indexes
@@ -108,14 +110,14 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INVERTED INDEX ON users (profile);
+> CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
 The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON users USING GIN (profile);
+> CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
 ### Store columns
@@ -124,10 +126,10 @@ Storing a column improves the performance of queries that retrieve (but do not f
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON products (price) STORING (name);
+> CREATE INDEX ON users (city) STORING (name);
 ~~~
 
-However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
+However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `city`.
 
 ### Change column sort order
 
@@ -135,7 +137,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON products (price DESC, stock);
+> CREATE INDEX ON users (city DESC, name);
 ~~~
 
 Note that how a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
@@ -146,23 +148,34 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM products;
+> SHOW INDEX FROM users;
 ~~~
 
 ~~~
-+------------+--------------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name |     index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+--------------------+------------+--------------+-------------+-----------+---------+----------+
-| products   | primary            |   false    |            1 | id          | ASC       |  false  |  false   |
-| products   | products_price_idx |    true    |            1 | price       | ASC       |  false  |  false   |
-| products   | products_price_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+--------------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+----------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false
+  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
+  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name FROM products@products_price_idx WHERE price > 10;
+> SELECT name FROM users@users_name_idx WHERE city='new york';
+~~~
+
+~~~
+        name
++------------------+
+  Catherine Nelson
+  Devin Jordan
+  James Hamilton
+  Judy White
+  Robert Murphy
+(5 rows)
 ~~~
 
 ## See also

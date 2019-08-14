@@ -31,29 +31,32 @@ Parameter | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Remove a table (no dependencies)
 
 In this example, other objects do not depend on the table being dropped.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM bank;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+--------------------+
-| table_name         |
-+--------------------+
-| accounts           |
-| branches           |
-| user_accounts_view |
-+--------------------+
-(3 rows)
+          table_name
++----------------------------+
+  promo_codes
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE bank.branches;
+> DROP TABLE promo_codes;
 ~~~
 
 ~~~
@@ -62,52 +65,82 @@ DROP TABLE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM bank;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+--------------------+
-| table_name         |
-+--------------------+
-| accounts           |
-| user_accounts_view |
-+--------------------+
-(2 rows)
+          table_name
++----------------------------+
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(5 rows)
 ~~~
 
 ### Remove a table and dependent objects with `CASCADE`
 
-In this example, a view depends on the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent view using `CASCADE`.
+In this example, a [foreign key](foreign-key.html) from a different table references the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent foreign key constraint using `CASCADE`.
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM bank;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+--------------------+
-| table_name         |
-+--------------------+
-| accounts           |
-| user_accounts_view |
-+--------------------+
-(2 rows)
+          table_name
++----------------------------+
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE bank.accounts;
+> DROP TABLE users;
 ~~~
 
 ~~~
-pq: cannot drop table "accounts" because view "user_accounts_view" depends on it
+pq: "users" is referenced by foreign key from table "vehicles"
 ~~~
+
+To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`](show-create.html) statement. `SHOW CREATE` shows how the columns in a table are created, including data types, default values, indexes, and constraints.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles;
+~~~
+
+~~~
+table_name |                                       create_statement
++------------+-----------------------------------------------------------------------------------------------+
+vehicles   | CREATE TABLE vehicles (
+           |     id UUID NOT NULL,
+           |     city STRING NOT NULL,
+           |     type STRING NULL,
+           |     owner_id UUID NULL,
+           |     creation_time TIMESTAMP NULL,
+           |     status STRING NULL,
+           |     current_location STRING NULL,
+           |     ext JSONB NULL,
+           |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+           |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
+           |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+           |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+           | )
+(1 row)
+~~~
+
 
 {% include copy-clipboard.html %}
 ~~~sql
-> DROP TABLE bank.accounts CASCADE;
+> DROP TABLE users CASCADE;
 ~~~
 
 ~~~
@@ -116,15 +149,43 @@ DROP TABLE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM bank;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-+------------+
-(0 rows)
+          table_name
++----------------------------+
+  rides
+  user_promo_codes
+  vehicle_location_histories
+  vehicles
+(4 rows)
+~~~
+
+Use a `SHOW CREATE TABLE` statement to verify that the foreign key constraint has been removed from `vehicles`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles;
+~~~
+
+~~~
+  table_name |                                       create_statement
++------------+-----------------------------------------------------------------------------------------------+
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL,
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
 ~~~
 
 ## See also

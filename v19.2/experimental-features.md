@@ -109,7 +109,7 @@ Example:
 Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more.  Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
 
 {{site.data.alerts.callout_info}}
-This example uses the `users` table from our open-source, fictional peer-to-peer ride-sharing application,[MovR](https://github.com/cockroachdb/movr).
+This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}

@@ -19,7 +19,7 @@ To reproduce the performance demonstrated in this tutorial:
 
 ### Schema
 
-Your schema and data will be based on our open-source, fictional peer-to-peer ride-sharing application,[MovR](https://github.com/cockroachdb/movr).
+Your schema and data will be based on our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
 
 <img src="{{ 'images/v19.2/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
 
