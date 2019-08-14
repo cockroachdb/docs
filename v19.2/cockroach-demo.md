@@ -4,7 +4,7 @@ summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, singl
 toc: true
 ---
 
-The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory, single-node CockroachDB cluster, optionally with a pre-loaded dataset, and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to the cluster.  
+The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster, optionally with a pre-loaded dataset, and opens an [interactive SQL shell](use-the-built-in-sql-client.html) to the cluster.  
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
@@ -46,9 +46,11 @@ The `demo` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](use-the-built-in-sql-client.html#commands).
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
+`--demo-locality` | Specify [locality](start-a-node.html#locality) information for each demo node. The input is a comma-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1`, node 2's region to `us-east2`, and node 3's region to `us-east3`: `--demo-locality=region=us-east1,region=us-east2,region=us-east3`
+`--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](use-the-built-in-sql-client.html#commands).
+`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](use-the-built-in-sql-client.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](use-the-built-in-sql-client.html#client-side-options) for use in interactive sessions.
+`--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](use-the-built-in-sql-client.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--set` | Set a [client-side option](use-the-built-in-sql-client.html#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
 
@@ -96,28 +98,31 @@ $ cockroach demo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
+> CREATE TABLE drivers (
+    id UUID DEFAULT gen_random_uuid(),
+    city STRING NOT NULL,
+    name STRING,
+    dl STRING UNIQUE,
+    address STRING,
+    CONSTRAINT primary_key PRIMARY KEY (city ASC, id ASC)
+);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t1 (name) VALUES ('Tom Thumb');
+> INSERT INTO drivers (city, name) VALUES ('new york', 'Catherine Nelson');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t1;
+> SELECT * FROM drivers;
 ~~~
 
 ~~~
-+--------------------------------------+-----------+
-|                  id                  |   name    |
-+--------------------------------------+-----------+
-| 5d2e6faa-a78f-4ef3-845f-6e174bbb41fa | Tom Thumb |
-+--------------------------------------+-----------+
+                   id                  |   city   |       name       |  dl  | address
++--------------------------------------+----------+------------------+------+---------+
+  df3dc272-b572-4ca4-88c8-e9974dbd381a | new york | Catherine Nelson | NULL | NULL
 (1 row)
-
-Time: 9.539973ms
 ~~~
 
 {% include copy-clipboard.html %}
@@ -129,37 +134,40 @@ Time: 9.539973ms
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo startrek
+$ cockroach demo movr --nodes=3 --demo-locality=region=us-east1,region=us-central1,region=us-west1
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM startrek;
+> SHOW TABLES;
+~~~
+
+~~~
+          table_name
++----------------------------+
+  promo_codes
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.episodes WHERE stardate > 5500;
+> SELECT * FROM users WHERE city = 'new york';
 ~~~
 
 ~~~
-  id | season | num |               title               | stardate
-+----+--------+-----+-----------------------------------+----------+
-  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
-  62 |      3 |   7 | Day of the Dove                   |   5630.3
-  64 |      3 |   9 | The Tholian Web                   |   5693.2
-  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
-  66 |      3 |  11 | Wink of an Eye                    |   5710.5
-  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
-  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
-  73 |      3 |  18 | The Lights of Zetar               |   5725.3
-  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
-  75 |      3 |  20 | The Way to Eden                   |   5832.3
-  76 |      3 |  21 | The Cloud Minders                 |   5818.4
-  77 |      3 |  22 | The Savage Curtain                |   5906.4
-  78 |      3 |  23 | All Our Yesterdays                |   5943.7
-  79 |      3 |  24 | Turnabout Intruder                |   5928.5
-(14 rows)
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -172,19 +180,24 @@ $ cockroach demo startrek
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo \
---execute="CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);" \
---execute="INSERT INTO t1 (name) VALUES ('Tom Thumb');" \
---execute="SELECT * FROM t1;"
+--execute="CREATE TABLE drivers (
+    id UUID DEFAULT gen_random_uuid(),
+    city STRING NOT NULL,
+    name STRING,
+    dl STRING UNIQUE,
+    address STRING,
+    CONSTRAINT primary_key PRIMARY KEY (city ASC, id ASC)
+);" \
+--execute="INSERT INTO drivers (city, name) VALUES ('new york', 'Catherine Nelson');" \
+--execute="SELECT * FROM drivers;"
 ~~~
 
 ~~~
 CREATE TABLE
 INSERT 1
-+--------------------------------------+-----------+
-|                  id                  |   name    |
-+--------------------------------------+-----------+
-| 53476f43-d737-4506-ad83-4469c977f77c | Tom Thumb |
-+--------------------------------------+-----------+
+                   id                  |   city   |       name       |  dl  | address
++--------------------------------------+----------+------------------+------+---------+
+  df3dc272-b572-4ca4-88c8-e9974dbd381a | new york | Catherine Nelson | NULL | NULL
 (1 row)
 ~~~
 
@@ -195,3 +208,4 @@ INSERT 1
 - [Other Cockroach Commands](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
+- [MovR: Vehicle-Sharing App](movr.html)
