@@ -1,6 +1,6 @@
 ---
 title: Troubleshoot SQL Performance
-summary: Using EXPLAIN to Troubleshoot SQL Performance
+summary: SQL Tuning with `EXPLAIN`
 toc: true
 ---
 
@@ -59,7 +59,7 @@ Time: 2.633ms
 ~~~
 -->
 
-The row with `scan users` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+The output shows you that without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 ### Solution: Filter by a secondary index
 
@@ -308,7 +308,7 @@ Time: 1.671ms
 ~~~
 -->
 
-Reading from bottom up, you can see that CockroachDB does a full table scan (`scan rides`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
+Reading from bottom up, you can see that CockroachDB does a full table scan first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
 
 Given the `WHERE` condition of the join, the full table scan of `rides` is particularly wasteful.
 
@@ -321,7 +321,7 @@ To speed up the query, you can create a secondary index on the `WHERE` condition
 > CREATE INDEX ON rides (start_time) STORING (rider_id);
 ~~~
 
-Adding the secondary index reduced the query time from 1573ms to 61.56ms:
+Adding the secondary index reduced the query time:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -363,7 +363,7 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
 (13 rows)
 ~~~
 
-<!--Output of EXPLAIN for reference
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                                                 text                                                 
 +---------------------------------------------------------------------------------------------------+
@@ -390,13 +390,32 @@ Notice that CockroachDB now starts by using `rides@rides_start_time_idx` seconda
 
 [Hash joins](joins.html#hash-joins) are more expensive and require more memory than [lookup joins](joins.html#lookup-joins). Hence the [cost-based optimizer](cost-based-optimizer.html) uses a lookup join whenever possible.
 
-For the following query, the cost-based optimizer can’t perform a lookup join because the query doesn’t have a prefix of the `rides` table’s primary key available and thus has to read the entire table and search for a match, resulting in a slow query.
+For the following query, the cost-based optimizer can’t perform a lookup join because the query doesn’t have a prefix of the `rides` table’s primary key available and thus has to read the entire table and search for a match, resulting in a slow query:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM VEHICLES JOIN rides on rides.vehicle_id = vehicles.id limit 1;
+> EXPLAIN SELECT * FROM VEHICLES JOIN rides on rides.vehicle_id = vehicles.id limit 1;
 ~~~
 
+~~~
+         tree         |  field   |     description      
++---------------------+----------+---------------------+
+  render              |          |                      
+   └── limit          |          |                      
+        │             | count    | 1                    
+        └── hash-join |          |                      
+             │        | type     | inner                
+             │        | equality | (vehicle_id) = (id)  
+             ├── scan |          |                      
+             │        | table    | rides@primary        
+             │        | spans    | ALL                  
+             └── scan |          |                      
+                      | table    | vehicles@primary     
+                      | spans    | ALL                  
+(12 rows)
+~~~
+
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                    text
 +-----------------------------------------+
@@ -411,14 +430,33 @@ For the following query, the cost-based optimizer can’t perform a lookup join 
 
 Time: 914µs
 ~~~
+-->
 
 ### Solution: Provide primary key to allow lookup join
 
+To speed up the query, you can provide the primary key to allow the cost-based optimizer to perform a lookup join instead of a hash join:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 1;
+> EXPLAIN SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 1;
 ~~~
 
+~~~
+        tree       | field |   description     
++------------------+-------+------------------+
+  limit            |       |                   
+   │               | count | 1                 
+   └── lookup-join |       |                   
+        │          | table | rides@primary     
+        │          | type  | inner             
+        │          | pred  | @13 = @1          
+        └── scan   |       |                   
+                   | table | vehicles@primary  
+                   | spans | ALL               
+(9 rows)
+~~~
+
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                    text
 +-----------------------------------------+
@@ -432,3 +470,9 @@ Time: 914µs
 
 Time: 993µs
 ~~~
+-->
+
+## See also
+
+- [SQL Best Practices](performance-best-practices-overview.html)
+- [SQL Troubleshooting](query-behavior-troubleshooting.html)

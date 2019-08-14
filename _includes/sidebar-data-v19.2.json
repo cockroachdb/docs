@@ -494,12 +494,6 @@
             ]
           },
           {
-            "title": "SQL Tuning with EXPLAIN",
-            "urls": [
-              "/${VERSION}/sql-tuning-with-explain.html"
-            ]
-          },
-          {
             "title": "Understand Debug Logs",
             "urls": [
               "/${VERSION}/debug-and-error-logs.html"
@@ -594,6 +588,12 @@
         "title": "JSON Support",
         "urls": [
           "/${VERSION}/demo-json-support.html"
+        ]
+      },
+      {
+        "title": "SQL Tuning with `EXPLAIN`",
+        "urls": [
+          "/${VERSION}/sql-tuning-with-explain.html"
         ]
       }
     ]
