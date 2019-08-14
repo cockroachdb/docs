@@ -68,6 +68,10 @@ SET FEEDBACK ON
 SET TERMOUT ON
 ~~~
 
+{{site.data.alerts.callout_info}}
+In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT`](import.html#delimiter).
+{{site.data.alerts.end}}
+
 To extract the data, we ran the script for each table in SQL*Plus:
 
 {% include copy-clipboard.html %}
