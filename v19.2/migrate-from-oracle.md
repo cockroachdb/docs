@@ -7,18 +7,7 @@ build_for: [standard, managed]
 
 <span class="version-tag">New in v19.2:</span> This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
 
-The general steps for migrating from Oracle into CockroachDB are as follows:
-
-- [Step 1. Export the Oracle schema](#step-1-export-the-oracle-schema)
-- [Step 2. Convert the Oracle schema to SQL](#step-2-convert-the-oracle-schema-to-sql)
-- [Step 3. Export table data](#step-3-export-table-data)
-- [Step 4. Configure and convert the table data to CSV](#step-4-configure-and-convert-the-table-data-to-csv)
-- [Step 5. Compress the CSV files](#step-5-compress-the-csv-files)
-- [Step 6. Host the files where the cluster can access them](#step-6-host-the-files-where-the-cluster-can-access-them)
-- [Step 7. Map Oracle to CockroachDB data types](#step-7-map-oracle-to-cockroachdb-data-types)
-- [Step 8. Import the CSV](#step-8-import-the-csv)
-
-To illustrate these steps, we use sample data to run an example migration. The example migration uses:
+To illustrate this process, we use the following sample data and tools:
 
 - [Swingbench OrderEntry data set](http://www.dominicgiles.com/swingbench.html), which is based on the `oe` schema that ships with Oracle Database 11g and Oracle Database 12c.
 - [Oracle Data Pump](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump.html), which enables the movement of data and metadata from one database to another, and comes with all Oracle installations.
@@ -26,7 +15,7 @@ To illustrate these steps, we use sample data to run an example migration. The e
 
 ## Step 1. Export the Oracle schema
 
-Using [Data Pump Export](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
+Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -37,7 +26,7 @@ The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
 
 ## Step 2. Convert the Oracle schema to SQL
 
-Using [Data Pump Import](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the DMP file you exported in [Step 1](#step-1-export-the-oracle-schema) and convert it to a SQL file:
+Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the exported DMP file to convert it to a SQL file:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -48,7 +37,7 @@ This SQL output will be used later, in [Step 7](#step-7-map-oracle-to-cockroachd
 
 ## Step 3. Export table data
 
-You need to extract each table's data into a data list file (`.lst`). We wrote a simple SQL script(`spool.sql`) to do this:
+You need to extract each table's data into a data list file (`.lst`). We wrote a simple SQL script (`spool.sql`) to do this:
 
 ~~~ shell
 $ cat spool.sql
@@ -318,7 +307,6 @@ Then add the [computed columns](computed-columns.html), [constraints](add-constr
 
 Repeat the above for each CSV file you want to import.
 
-<!--
 ## Step 9. Refactor application SQL
 
 The last phase of the migration process is to change the [transactional behavior](#transactions-locking-and-concurrency-control) and [SQL dialect](#sql-dialect) of your application.
@@ -387,7 +375,6 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 
 - [Window functions](window-functions.html)
 
--->
 ## See also
 
 - [`IMPORT`](import.html)
