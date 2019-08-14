@@ -32,7 +32,7 @@ Use the Console to authorize networks:
 
 4. Enter the public IPv4 address of the machine in the **Network** field.
 
-    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
+    To allow all networks, use `0.0.0.0/0`. However, use this caution, as your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
     {{site.data.alerts.callout_info}}
     IPv6 addresses are currently not supported.
@@ -49,6 +49,8 @@ Use the Console to authorize networks:
 6. Click **Save**.
 
 ## Step 2. Create a SQL user
+
+{% include {{ page.version.version }}/managed-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 

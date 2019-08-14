@@ -5,29 +5,12 @@
       "/${VERSION}/managed-sign-up-for-a-cluster.html"
     ]
   },
-  {
-    "title": "Connect to Your Cluster",
-    "items": [
-      {
-        "title": "Create a SQL User",
-        "urls": [
-          "/${VERSION}/managed-sql-users-page.html"
-        ]
-      },
-      {
-        "title": "Authorize a Network",
-        "urls": [
-          "/${VERSION}/managed-networking-page.html"
-        ]
-      },
-      {
-        "title": "Generate Connection String",
-        "urls": [
+    {
+      "title": "Connect to Your Cluster",
+      "urls": [
           "/${VERSION}/managed-connect-to-your-cluster.html"
-        ]
-      }
-    ]
-  },
+      ]
+    },
   {
     "title": "Learn CockroachDB SQL",
     "urls": [
@@ -105,9 +88,15 @@
     ]
   },
   {
-    "title": "Manage Your Account",
+    "title": "Manage Your Cluster",
     "urls": [
       "/${VERSION}/managed-cluster-management.html"
+    ]
+  },
+  {
+    "title": "Manage Console Access",
+    "urls": [
+      "/${VERSION}/managed-console-access-management.html"
     ]
   },
   {
