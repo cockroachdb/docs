@@ -1,6 +1,6 @@
 - title: Production Releases
   releases:
-    - date: Aug 12, 2019
+    - date: Aug 13, 2019
       version: v19.1.4
       latest: true
       no_windows: true
