@@ -4,13 +4,13 @@ summary: Using EXPLAIN to Troubleshoot SQL Performance
 toc: true
 ---
 
-This tutorial walks you through the common reasons for slow SQL statements and describes how to use [`EXPLAIN(OPT)`](explain.html#opt-option) to troubleshoot the issues.
+This tutorial walks you through the common reasons for slow SQL statements and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
 
 The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
-## Issue: Full table scans (Filtering by a non-indexed column)
+## Issue: Full table scans
 
-The most common reason for slow queries is sub-optimal `SELECT` statements which includes full table scans and incorrect use of indexes:
+The most common reason for slow queries is sub-optimal `SELECT` statements that include full table scans and incorrect use of indexes.
 
 You'll get generally poor performance when retrieving a single row based on a column that is not in the primary key or any secondary index:
 
@@ -28,14 +28,13 @@ You'll get generally poor performance when retrieving a single row based on a co
 Time: 4.059ms
 ~~~
 
-To understand why this query performs poorly, use [`EXPLAIN (OPT)`](explain.html) the query plan:
+To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM users WHERE name = 'Cheyenne Smith';
+> EXPLAIN SELECT * FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-<!--Output of EXPLAIN for reference
 ~~~
   tree | field |  description
 +------+-------+---------------+
@@ -44,8 +43,9 @@ To understand why this query performs poorly, use [`EXPLAIN (OPT)`](explain.html
        | spans | ALL
 (3 rows)
 ~~~
--->
 
+
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                 text                 
 +-----------------------------------+
@@ -57,6 +57,7 @@ To understand why this query performs poorly, use [`EXPLAIN (OPT)`](explain.html
 
 Time: 2.633ms
 ~~~
+-->
 
 The row with `scan users` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
@@ -85,14 +86,13 @@ The query will now return much faster:
 Time: 1.457ms
 ~~~
 
-To understand why performance improved from 4.059ms (without index) to 1.457ms (with index), use [`EXPLAIN (OPT)`](explain.html) to see the new query plan:
+To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM users WHERE name = 'Cheyenne Smith';
+> EXPLAIN SELECT * FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-<!--Output of EXPLAIN for reference
 ~~~
      tree    | field |                      description
 +------------+-------+-------------------------------------------------------+
@@ -104,8 +104,8 @@ To understand why performance improved from 4.059ms (without index) to 1.457ms (
              | table | users@primary
 (6 rows)
 ~~~
--->
 
+<!--Output of EXPLAIN for reference
 ~~~
                                   text                                   
 +-----------------------------------------------------------------------+
@@ -116,6 +116,7 @@ To understand why performance improved from 4.059ms (without index) to 1.457ms (
 
 Time: 2.054ms
 ~~~
+-->
 
 This shows you that CockroachDB starts with the secondary index (`users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`/'Cheyenne Smith' - /'Cheyenne Smith'`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
 
@@ -145,10 +146,10 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT name, credit_card FROM users WHERE name = 'Cheyenne Smith';
+> EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-<!--Output of EXPLAIN for reference
+
 ~~~
      tree    | field |                      description
 +------------+-------+-------------------------------------------------------+
@@ -160,8 +161,9 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
              | table | users@primary
 (6 rows)
 ~~~
--->
 
+
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                                   text                                   
 +-----------------------------------------------------------------------+
@@ -172,6 +174,7 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
 Time: 1.398ms
 ~~~
+-->
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
 
@@ -189,10 +192,9 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT name, credit_card FROM users WHERE name = 'Cheyenne Smith';
+> EXPLAIN SELECT name, credit_card FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-<!--Output of EXPLAIN for reference
 ~~~
   tree | field |                      description
 +------+-------+-------------------------------------------------------+
@@ -201,8 +203,8 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
        | spans | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
 (3 rows)
 ~~~
--->
 
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                                 text                                
 +------------------------------------------------------------------+
@@ -212,6 +214,7 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 
 Time: 4.093ms
 ~~~
+-->
 
 This results in even faster performance:
 
@@ -256,13 +259,33 @@ For example, let's say you want to count the number of users who started rides o
 Time: 3.625ms
 ~~~
 
-To understand what's happening, use [`EXPLAIN (OPT)`](explain.html) to see the query plan:
+To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';
+> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';
 ~~~
 
+~~~
+         tree         |    field    |     description
++---------------------+-------------+----------------------+
+  group               |             |
+   │                  | aggregate 0 | count(DISTINCT id)
+   │                  | scalar      |
+   └── render         |             |
+        └── join      |             |
+             │        | type        | inner
+             │        | equality    | (id) = (rider_id)
+             ├── scan |             |
+             │        | table       | users@users_name_idx
+             │        | spans       | ALL
+             └── scan |             |
+                      | table       | rides@primary
+                      | spans       | ALL
+(13 rows)
+~~~
+
+<!--Output of EXPLAIN (OPT) for reference
 ~~~
                                                        text                                                        
 +-----------------------------------------------------------------------------------------------------------------+
@@ -282,26 +305,6 @@ To understand what's happening, use [`EXPLAIN (OPT)`](explain.html) to see the q
 (13 rows)
 
 Time: 1.671ms
-~~~
-
-<!--Output of EXPLAIN for reference
-~~~
-         tree         |    field    |     description
-+---------------------+-------------+----------------------+
-  group               |             |
-   │                  | aggregate 0 | count(DISTINCT id)
-   │                  | scalar      |
-   └── render         |             |
-        └── join      |             |
-             │        | type        | inner
-             │        | equality    | (id) = (rider_id)
-             ├── scan |             |
-             │        | table       | users@users_name_idx
-             │        | spans       | ALL
-             └── scan |             |
-                      | table       | rides@primary
-                      | spans       | ALL
-(13 rows)
 ~~~
 -->
 
@@ -334,14 +337,13 @@ Adding the secondary index reduced the query time from 1573ms to 61.56ms:
 Time: 2.367ms
 ~~~
 
-To understand why performance improved, again use [`EXPLAIN (OPT)`](explain.html) to see the new query plan:
+To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-20 00:00:00' AND '2018-12-21 00:00:00';
+> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-20 00:00:00' AND '2018-12-21 00:00:00';
 ~~~
 
-<!--Output of EXPLAIN for reference
 ~~~
          tree         |    field    |                      description
 +---------------------+-------------+-------------------------------------------------------+
@@ -360,8 +362,8 @@ To understand why performance improved, again use [`EXPLAIN (OPT)`](explain.html
                       | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
 (13 rows)
 ~~~
--->
 
+<!--Output of EXPLAIN for reference
 ~~~
                                                 text                                                 
 +---------------------------------------------------------------------------------------------------+
@@ -380,6 +382,7 @@ To understand why performance improved, again use [`EXPLAIN (OPT)`](explain.html
 
 Time: 2.996ms
 ~~~
+-->
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
 

@@ -494,7 +494,7 @@
             ]
           },
           {
-            "title": "Use EXPLAIN to Troubleshoot SQL Performance",
+            "title": "SQL Tuning with EXPLAIN",
             "urls": [
               "/${VERSION}/sql-tuning-with-explain.html"
             ]
