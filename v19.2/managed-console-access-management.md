@@ -5,13 +5,13 @@ toc: true
 build_for: [managed]
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachDB Cloud cluster. To view the Access page, [sign in to the Console](managed-sign-up-for-a-cluster.html#sign-in) and on the **Cluster Overview** page, click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachDB Cloud cluster. To view the Access page, [sign in to the Console](managed-sign-up-for-a-cluster.html#sign-in) and click **Access**.
 
 <Screenshot here>
 
 ## Roles
 
-Every CockroachDB Cloud user is either a Developer or a Console Admin.
+Every Managed CockroachDB user is either a Developer or a Console Admin.
 
 ### Developer
 
