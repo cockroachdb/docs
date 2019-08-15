@@ -66,7 +66,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
+> SHOW RANGES FROM TABLE kv;
 ~~~
 
 ~~~
@@ -96,7 +96,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
+> SHOW RANGES FROM TABLE kv;
 ~~~
 
 ~~~
@@ -144,7 +144,7 @@ To see more information about the range splits, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW EXPERIMENTAL_RANGES FROM TABLE t;
+SHOW RANGES FROM TABLE t;
 ~~~
 
 ~~~
@@ -179,7 +179,7 @@ Conceptually, this means that the second range will include keys that start with
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW EXPERIMENTAL_RANGES FROM TABLE t;
+SHOW RANGES FROM TABLE t;
 ~~~
 
 ~~~
@@ -201,7 +201,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
+> SHOW RANGES FROM INDEX kv@secondary;
 ~~~
 
 ~~~
@@ -231,7 +231,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
+> SHOW RANGES FROM INDEX kv@secondary;
 ~~~
 
 ~~~

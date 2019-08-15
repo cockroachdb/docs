@@ -412,7 +412,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
+> SELECT * FROM [SHOW RANGES FROM TABLE roachlearn.students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 You should see the following output:
@@ -536,7 +536,7 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students_by_range;
+> SHOW RANGES FROM TABLE students_by_range;
 ~~~
 
 You should see the following output:
@@ -655,7 +655,7 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE students;
+> SHOW RANGES FROM TABLE students;
 ~~~
 
 You should see the following output:

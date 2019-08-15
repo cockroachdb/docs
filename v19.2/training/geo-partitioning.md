@@ -229,7 +229,7 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles;
+> SHOW RANGES FROM TABLE vehicles;
 ~~~
 
 ~~~
@@ -241,7 +241,7 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE users;
+> SHOW RANGES FROM TABLE users;
 ~~~
 
 ~~~
@@ -456,11 +456,11 @@ If you had created any secondary index partitions, it would be important to crea
 
 Over the next minutes, CockroachDB will rebalance all partitions based on the constraints you defined.
 
-To check this, run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` and `users` tables:
+To check this, run the `SHOW RANGES` statement on the `vehicles` and `users` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles]
+> SELECT * FROM [SHOW RANGES FROM TABLE vehicles] \
 WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 
@@ -494,7 +494,7 @@ The same data distribution is in place for the partitions of other tables as wel
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE users]
+> SELECT * FROM [SHOW RANGES FROM TABLE users] \
 WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
