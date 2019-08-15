@@ -1,11 +1,11 @@
 ---
-title: SHOW EXPERIMENTAL_RANGES
-summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
+title: SHOW RANGES
+summary: The SHOW RANGES statement shows information about the ranges that make up a specific table's data.
 toc: true
-redirect_from: show-testing-ranges.html
+redirect_from: [show-testing-ranges.html, show-experimental-ranges.html]
 ---
 
-The `SHOW EXPERIMENTAL_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:
+The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:
 
 - The start and end keys for the range(s)
 - The range ID(s)
@@ -16,8 +16,6 @@ This information is useful for verifying that:
 
 - The ["follow-the-workload"](demo-follow-the-workload.html) feature is operating as expected.
 - Range splits specified by the [`SPLIT AT`](split-at.html) statement were created as expected.
-
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 ## Synopsis
 
@@ -80,7 +78,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM TABLE credit_users;
+> SHOW RANGES FROM TABLE credit_users;
 ~~~
 
 ~~~
@@ -99,7 +97,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW EXPERIMENTAL_RANGES FROM INDEX credit_users@areaCode;
+> SHOW RANGES FROM INDEX credit_users@areaCode;
 ~~~
 
 ~~~
