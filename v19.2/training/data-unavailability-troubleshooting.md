@@ -176,14 +176,14 @@ In preparation, add a table and use a replication zone to force the table's data
     $ cockroach sql --execute="ALTER TABLE intro.mytable CONFIGURE ZONE USING constraints='[+datacenter=us-east-3]';" --insecure --host=localhost:26257
     ~~~
 
-3. Use the `SHOW EXPERIMENTAL_RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:
+3. Use the `SHOW RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="SHOW EXPERIMENTAL_RANGES FROM TABLE intro.mytable;"
+    --execute="SHOW RANGES FROM TABLE intro.mytable;"
     ~~~
 
     ~~~
@@ -193,7 +193,7 @@ In preparation, add a table and use a replication zone to force the table's data
     (1 row)
     ~~~
 
-4. The node IDs above may not match the order in which we started the nodes because node IDs only get allocated after `cockroach init` is run. You can verify that the nodes listed by `SHOW EXPERIMENTAL_RANGES` are all in the `datacenter=us-east-3` locality by opening the **Node Diagnostics** debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
+4. The node IDs above may not match the order in which we started the nodes because node IDs only get allocated after `cockroach init` is run. You can verify that the nodes listed by `SHOW RANGES` are all in the `datacenter=us-east-3` locality by opening the **Node Diagnostics** debug page at <a href="http://localhost:8080/#/reports/nodes" data-proofer-ignore>http://localhost:8080/#/reports/nodes</a> and checking the locality for each of the 3 node IDs.
 
     <img src="{{ 'images/v19.2/training-19.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

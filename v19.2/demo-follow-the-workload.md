@@ -166,7 +166,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW EXPERIMENTAL_RANGES FROM TABLE tpcc.customer;
+    > SHOW RANGES FROM TABLE tpcc.customer;
     ~~~
 
     ~~~
@@ -219,7 +219,7 @@ Verify that the range lease for the `customer` table moved to the node in the "U
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW EXPERIMENTAL_RANGES FROM TABLE test.kv;
+    > SHOW RANGES FROM TABLE test.kv;
     ~~~
 
     ~~~

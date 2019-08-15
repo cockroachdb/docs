@@ -506,16 +506,16 @@ To understand why SQL latency is so high, use the built-in SQL shell to check th
     $ cockroach sql --insecure --database=movr --host=<address of HAProxy in region>
     ~~~
 
-3. In the SQL shell, use the [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) statement to view the location of replicas for each of the 3 tables and their secondary indexes:
+3. In the SQL shell, use the [`SHOW RANGES`](show-ranges.html) statement to view the location of replicas for each of the 3 tables and their secondary indexes:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW EXPERIMENTAL_RANGES FROM TABLE users;
-      SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles;
-      SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users;
-      SHOW EXPERIMENTAL_RANGES FROM TABLE rides;
-      SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users;
-      SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicles;
+    > SHOW RANGES FROM TABLE users;
+      SHOW RANGES FROM TABLE vehicles;
+      SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users;
+      SHOW RANGES FROM TABLE rides;
+      SHOW RANGES FROM INDEX rides_auto_index_fk_city_ref_users;
+      SHOW RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicles;
     ~~~
 
     ~~~
@@ -729,21 +729,21 @@ Now that all tables and secondary indexes have been partitioned by city, for eac
 
 ## Step 13. Re-check replica distribution
 
-Still in the SQL shell on one of your client VMs, use the [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) statement to check replica placement after partitioning:
+Still in the SQL shell on one of your client VMs, use the [`SHOW RANGES`](show-ranges.html) statement to check replica placement after partitioning:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE users]
+> SELECT * FROM [SHOW RANGES FROM TABLE users]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE vehicles]
+  SELECT * FROM [SHOW RANGES FROM TABLE vehicles]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users]
+  SELECT * FROM [SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE rides]
+  SELECT * FROM [SHOW RANGES FROM TABLE rides]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_city_ref_users]
+  SELECT * FROM [SHOW RANGES FROM INDEX rides_auto_index_fk_city_ref_users]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicle]
+  SELECT * FROM [SHOW RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicle]
     WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 

@@ -602,7 +602,7 @@ Reading from bottom up, you can see that CockroachDB does a full table scan (`sp
 
 Given that the `rides` table is large, its data is split across several ranges. Each range is replicated and has a leaseholder. At least some of these leaseholders are likely located on different nodes. This means that the full table scan of `rides` involves several network hops to various leaseholders before finally going to the leaseholder for `users` to do a full table scan there.
 
-To track this specifically, let's use the [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) statement to find out where the relevant leaseholders reside for `rides` and `users`:
+To track this specifically, let's use the [`SHOW RANGES`](show-ranges.html) statement to find out where the relevant leaseholders reside for `rides` and `users`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -610,7 +610,7 @@ $ cockroach sql \
 {{page.certs}} \
 --host=<address of any node> \
 --database=movr \
---execute="SHOW EXPERIMENTAL_RANGES FROM TABLE rides;"
+--execute="SHOW RANGES FROM TABLE rides;"
 ~~~
 
 ~~~
@@ -632,7 +632,7 @@ $ cockroach sql \
 {{page.certs}} \
 --host=<address of any node> \
 --database=movr \
---execute="SHOW EXPERIMENTAL_RANGES FROM TABLE users;"
+--execute="SHOW RANGES FROM TABLE users;"
 ~~~
 
 ~~~
@@ -731,7 +731,7 @@ $ cockroach sql \
 {{page.certs}} \
 --host=<address of any node> \
 --database=movr \
---execute="SHOW EXPERIMENTAL_RANGES FROM INDEX rides@rides_start_time_idx;"
+--execute="SHOW RANGES FROM INDEX rides@rides_start_time_idx;"
 ~~~
 
 ~~~
@@ -742,7 +742,7 @@ $ cockroach sql \
 (2 rows)
 ~~~
 
-This tells us that the index is stored in 2 ranges, with the leaseholders for both of them on node 2. Based on the output of `SHOW EXPERIMENTAL_RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 2.
+This tells us that the index is stored in 2 ranges, with the leaseholders for both of them on node 2. Based on the output of `SHOW RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 2.
 
 #### Using `IN (list)` with a subquery
 
@@ -1137,14 +1137,14 @@ You created all instanced up front, so no need to add more now.
    - Run commands in Step 5 above.
 5. Check rebalancing:
    - SSH to instance 4, 8, or 12.
-   - Run `SHOW EXPERIMENTAL_RANGES` from Step 11 below.
+   - Run `SHOW RANGES` from Step 11 below.
 6. Test performance:
    - Run the SQL commands in Step 12 below. You'll need to SSH to instance 8 or 12 as suggested.
 7. Partition the data:
    - SSH to any node and run the SQL in Step 13 below.
 8. Check rebalancing after partitioning:
    - SSH to instance 4, 8, or 12.
-   - Run `SHOW EXPERIMENTAL_RANGES` from Step 14 below.
+   - Run `SHOW RANGES` from Step 14 below.
 8. Test performance after partitioning:
    - Run the SQL commands in Step 15 below. You'll need to SSH to instance 8 or 12 as suggested.
 -->
