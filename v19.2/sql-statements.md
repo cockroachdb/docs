@@ -70,6 +70,7 @@ Statement | Usage
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
+[`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
