@@ -315,28 +315,7 @@ Repeat the above for each CSV file you want to import.
 
 The last phase of the migration process is to change the [transactional behavior](#transactions-locking-and-concurrency-control) and [SQL dialect](#sql-dialect) of your application.
 
-<<<<<<< HEAD
-- [Column delimiter](migrate-from-csv.html#column-delimiter)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 037f0668... Fix links
-- [Comment syntax](migrate-from-csv.html#comment-syntax)
-- [Skip header rows](migrate-from-csv.html#skip-header-rows)
-- [Null strings](migrate-from-csv.html#null-strings)
-- [File compression](migrate-from-csv.html#file-compression)
-<<<<<<< HEAD
-=======
-- [Comment syntax](migrate-from-csv.html##comment-syntax)
-- [Skip header rows](migrate-from-csv.html##skip-header-rows)
-- [Null strings](migrate-from-csv.html##null-strings)
-- [File compression](migrate-from-csv.html##file-compression)
->>>>>>> b6f31324... Oracle Migration Guide
-=======
->>>>>>> 037f0668... Fix links
-=======
 ### Transactions, locking, and concurrency control
->>>>>>> e26f323c... Added info for mapping data types, refactoring app SQL
 
 Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues; however, this is not required by CockroachDB. As a developer, you will no longer require the `FOR UPDATE` clause and it should be removed.  
 
