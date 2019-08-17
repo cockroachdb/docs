@@ -4,15 +4,7 @@ url: "https://www.cockroachlabs.com"
 gems:
 - jekyll-sitemap
 
-highlighter: rouge
-markdown: redcarpet
-
-redcarpet:
-  extensions:
-  - disable_indented_code_blocks
-  - no_intra_emphasis
-  - tables
-  - with_toc_data
+markdown: Redcarpet
 
 release_info:
   v1.0:
