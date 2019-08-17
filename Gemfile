@@ -5,7 +5,7 @@ source "https://rubygems.org"
 # docs-builder Docker image to keep things speedy in CI. See ci/README.md for
 # instructions.
 
-gem "jekyll", "~> 3.4"
-gem "jekyll-redirect-from", "~> 0.12"
-gem "jekyll-sitemap", "~> 1.1.1"
+gem "jekyll", "~> 4.0.0.pre.beta1"
+gem "jekyll-redirect-from", "~> 0.15"
+gem "jekyll-sitemap", "~> 1.3.1"
 gem "redcarpet", "~> 3.4"
