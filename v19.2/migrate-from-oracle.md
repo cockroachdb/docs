@@ -243,7 +243,7 @@ Cockroach distributes a table by the [primary key](primary-key.html) or by a def
 
 For more information and examples, refer to the following:
 
-- [`CREATE TABLE` - Create a table (primary key defined)](create-table.html#create-a-table-primary-key-defined)
+- [`CREATE TABLE` - Create a table](create-table.html)
 - [Define Table Partitions](partitioning.html)
 - [Constraints - Supported constraints](constraints.html#supported-constraints)
 
