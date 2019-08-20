@@ -155,7 +155,6 @@ Flag | Description
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
 `--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `prepare`
-`--pprofport` | The port for pprof endpoint.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.<br>**Default:** `33333`
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--request-distribution` | Distribution for the random number generator (`zipfian`, `uniform`).<br><br>**Applicable commands:** `init` or `run`.<br>**Default:** `zipfian`
 `--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
