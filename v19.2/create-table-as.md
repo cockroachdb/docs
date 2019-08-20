@@ -32,8 +32,40 @@ mentions.
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Synopsis
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="basic">Basic</button>
+  <button style="width: 15%" class="filter-button" data-scope="expanded">Expanded</button>
+</div><p></p>
 
-<section> {% include {{ page.version.version }}/sql/diagrams/create_table_as.html %} </section>
+<div class="filter-content" markdown="1" data-scope="basic">
+{% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
+</div>
+
+<div class="filter-content" markdown="1" data-scope="expanded">
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
+</div>
+
+**create_as_col_qual_list ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/create_as_col_qual_list.html %}
+</div>
+
+**family_def ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/family_def.html %}
+</div>
+
+**create_as_constraint_def ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/create_as_constraint_def.html %}
+</div>
+
+</div>
 
 ## Parameters
 
@@ -47,123 +79,58 @@ table td:first-child {
 -----------|-------------
  `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
  `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
- `name` | The name of the column you want to use instead of the name of the column from `select_stmt`.
+ `column_name` | The name of the column you want to use instead of the name of the column from `select_stmt`.
+ `create_as_col_qual_list` | An optional column definition, which may include [primary key constraints](primary-key.html) and [column family assignments](column-families.html).
+ `family_def` | An optional [column family definition](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.
+ `create_as_constraint_def` | An optional [primary key constraint](primary-key.html).
  `select_stmt` | A [selection query](selection-queries.html) to provide the data.
 
 ## Limitations
 
-The [primary key](primary-key.html) of tables created with `CREATE
-TABLE ... AS` is not derived from the query results. Like for other
-tables, it is not possible to add or change the primary key after
-creation. Moreover, these tables are not
-[interleaved](interleave-in-parent.html) with other tables. The
-default rules for [column families](column-families.html) apply.
+Tables created with `CREATE TABLE ... AS` are not [interleaved](interleave-in-parent.html) with other tables.
+The default rules for [column families](column-families.html) apply.
 
-For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE logoff (
-    user_id INT PRIMARY KEY,
-    user_email STRING UNIQUE,
-    logoff_date DATE NOT NULL,
-);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE logoff_copy AS TABLE logoff;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE logoff_copy;
-~~~
-~~~
-+-------------+-----------------------------------------------------------------+
-|    Table    |                           CreateTable                           |
-+-------------+-----------------------------------------------------------------+
-| logoff_copy | CREATE TABLE logoff_copy (␤                                     |
-|             |     user_id INT NULL,␤                                          |
-|             |     user_email STRING NULL,␤                                    |
-|             |     logoff_date DATE NULL,␤                                     |
-|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)␤ |
-|             | )                                                               |
-+-------------+-----------------------------------------------------------------+
-(1 row)
-~~~
-
-The example illustrates that the primary key, unique, and "not null"
-constraints are not propagated to the copy.
-
-It is however possible to
-[create a secondary index](create-index.html) after `CREATE TABLE
-... AS`.
-
-For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX logoff_copy_id_idx ON logoff_copy(user_id);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE logoff_copy;
-~~~
-~~~
-+-------------+-----------------------------------------------------------------+
-|    Table    |                           CreateTable                           |
-+-------------+-----------------------------------------------------------------+
-| logoff_copy | CREATE TABLE logoff_copy (␤                                     |
-|             |     user_id INT NULL,␤                                          |
-|             |     user_email STRING NULL,␤                                    |
-|             |     logoff_date DATE NULL,␤                                     |
-|             |     INDEX logoff_copy_id_idx (user_id ASC),␤                    |
-|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)␤ |
-|             | )                                                               |
-+-------------+-----------------------------------------------------------------+
-(1 row)
-~~~
-
-For maximum data storage optimization, consider using separately
-[`CREATE`](create-table.html) followed by
-[`INSERT INTO ...`](insert.html) to populate the table using the query
-results.
+The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key) and [Specify a primary key for partitioning](create-table-as.html#specify-a-primary-key-for-partitioning). Like for other tables, it is not possible to add or change the primary key after table creation.
 
 ## Examples
+
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Create a table from a `SELECT` query
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers WHERE state = 'NY';
+> SELECT * FROM users WHERE city = 'new york';
 ~~~
 ~~~
-+----+---------+-------+
-| id |  name   | state |
-+----+---------+-------+
-|  6 | Dorotea | NY    |
-| 15 | Thales  | NY    |
-+----+---------+-------+
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers_ny;
+> CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users_ny;
 ~~~
 ~~~
-+----+---------+-------+
-| id |  name   | state |
-+----+---------+-------+
-|  6 | Dorotea | NY    |
-| 15 | Thales  | NY    |
-+----+---------+-------+
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 ### Change column names
@@ -172,42 +139,41 @@ This statement creates a copy of an existing table but with changed column names
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
+> CREATE TABLE users_ny_names (id, name) AS SELECT id, name FROM users WHERE city = 'new york';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers_ny;
+> SELECT * FROM users_ny_names;
 ~~~
 ~~~
-+----+------------+
-| id | first_name |
-+----+------------+
-|  6 | Dorotea    |
-| 15 | Thales     |
-+----+------------+
+                   id                  |       name
++--------------------------------------+------------------+
+  00000000-0000-4000-8000-000000000000 | Robert Murphy
+  051eb851-eb85-4ec0-8000-000000000001 | James Hamilton
+  0a3d70a3-d70a-4d80-8000-000000000002 | Judy White
+  0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan
+  147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson
+(5 rows)
 ~~~
 
 ### Create a table from a `VALUES` clause
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE tech_states AS VALUES ('CA'), ('NY'), ('WA');
+> CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM tech_states;
+> SELECT * FROM drivers;
 ~~~
 ~~~
-+---------+
-| column1 |
-+---------+
-| CA      |
-| NY      |
-| WA      |
-+---------+
-(3 rows)
+                   id                  |   city   |     name
++--------------------------------------+----------+---------------+
+  146eebc4-c913-4678-8ea3-c5797d2b7f83 | new york | Harry Potter
+  43cafd3b-2537-4fd8-a987-8138f88a22a4 | seattle  | Evelyn Martin
+(2 rows)
 ~~~
 
 
@@ -215,25 +181,160 @@ This statement creates a copy of an existing table but with changed column names
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny_copy AS TABLE customers_ny;
+> CREATE TABLE users_ny_copy AS TABLE users_ny;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers_ny_copy;
+> SELECT * FROM users_ny_copy;
 ~~~
 ~~~
-+----+------------+
-| id | first_name |
-+----+------------+
-|  6 | Dorotea    |
-| 15 | Thales     |
-+----+------------+
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
 ~~~
 
 When a table copy is created this way, the copy is not associated to
 any primary key, secondary index or constraint that was present on the
 original table.
+
+### Specify a primary key
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users_ny_pk (id, city, name PRIMARY KEY) AS SELECT id, city, name FROM users WHERE city = 'new york';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users_ny_pk;
+~~~
+~~~
+                   id                  |   city   |       name
++--------------------------------------+----------+------------------+
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users_ny_pk;
+~~~
+~~~
+    table_name   |                 create_statement
++----------------+--------------------------------------------------+
+  users_ny_extra | CREATE TABLE users_ny_extra (
+                 |     id UUID NULL,
+                 |     city VARCHAR NULL,
+                 |     name VARCHAR NOT NULL,
+                 |     CONSTRAINT "primary" PRIMARY KEY (name ASC),
+                 |     FAMILY "primary" (id, city, name)
+                 | )
+(1 row)
+~~~
+
+### Define column families
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users_ny_alt (id PRIMARY KEY FAMILY ids, name, city FAMILY locs, address, credit_card FAMILY payments) AS SELECT id, name, city, address, credit_card FROM users WHERE city = 'new york';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users_ny_alt;
+~~~
+~~~
+                   id                  |       name       |   city   |           address           | credit_card
++--------------------------------------+------------------+----------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | Robert Murphy    | new york | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | James Hamilton   | new york | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | Judy White       | new york | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan     | new york | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson | new york | 1149 Lee Alley              | 0792553487
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users_ny_alt;
+~~~
+~~~
+   table_name  |                create_statement
++--------------+------------------------------------------------+
+  users_ny_alt | CREATE TABLE users_ny_alt (
+               |     id UUID NOT NULL,
+               |     name VARCHAR NULL,
+               |     city VARCHAR NULL,
+               |     address VARCHAR NULL,
+               |     credit_card VARCHAR NULL,
+               |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+               |     FAMILY ids (id, name, address),
+               |     FAMILY locs (city),
+               |     FAMILY payments (credit_card)
+               | )
+(1 row)
+~~~
+
+### Specify a primary key for partitioning
+
+If you are [partitioning](partitioning.html) a table based on a primary key, you must correctly define the primary key at table creation. It is not possible to add or change primary keys after table creation. To work around this limitation, you can create a new table from an existing one, with the correct primary keys specified in your `CREATE TABLE ... AS` statement.
+
+Suppose that you want to [geo-partition](demo-geo-partitioning.html) the `drivers` table that you created with the following statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE drivers;
+~~~
+~~~
+  table_name |               create_statement
++------------+----------------------------------------------+
+  drivers    | CREATE TABLE drivers (
+             |     id UUID NULL,
+             |     city STRING NULL,
+             |     name STRING NULL,
+             |     FAMILY "primary" (id, city, name, rowid)
+             | )
+(1 row)
+~~~
+
+In order for this table to be properly geo-partitioned with the other tables in the `movr` dataset, the table must have a composite primary key defined that includes the unique row identifier (`id`, in this case) and the row locality identifier (`city`). Use the following statement to create a new table with the correct composite primary key:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE drivers_pk (id, city, name, PRIMARY KEY (id, city)) AS SELECT id, city, name FROM drivers;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE drivers_pk;
+~~~
+~~~
+  table_name |                     create_statement
++------------+----------------------------------------------------------+
+  drivers_pk | CREATE TABLE drivers_pk (
+             |     id UUID NOT NULL,
+             |     city STRING NOT NULL,
+             |     name STRING NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC, city ASC),
+             |     FAMILY "primary" (id, city, name)
+             | )
+(1 row)
+~~~
 
 ## See also
 
