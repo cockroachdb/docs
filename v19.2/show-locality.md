@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v19.2:</span> The `SHOW LOCALITY` [statement](sql-statements.html) returns the [locality](start-a-node.html#locality) of the current node.
 
-If you are running a single-node cluster with no locality specified, the statement returns an empty row.
+If locality was not specified on node startup, the statement returns an empty row.
 
 ## Required privileges
 
