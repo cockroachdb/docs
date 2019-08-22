@@ -1136,6 +1136,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/show-locality.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW QUERIES</code>",
                 "urls": [
                   "/${VERSION}/show-queries.html"
