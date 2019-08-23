@@ -51,7 +51,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 ~~~ sql
 > CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
-    code STRING,
+    code STRING
 );
 ~~~
 
@@ -62,7 +62,10 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE postal_codes
-        CONFIGURE ZONE USING lease_preferences = '[[+region=us-west]]';
+        CONFIGURE ZONE USING
+          num_replicas = 3,
+          constraints = '{"+region=us-west":1}',
+          lease_preferences = '[[+region=us-west]]';
     ~~~
 
 3. [Create secondary indexes](create-index.html) on the table for each of your other regions, including all of the columns you wish to read either in the key or in the key and a [`STORING`](create-index.html#store-columns) clause:
@@ -84,13 +87,17 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX postal_codes@idx_central
-        CONFIGURE ZONE USING lease_preferences = '[[+region=us-central]]';
+        CONFIGURE ZONE USING
+          constraints = '{"+region=us-central":1}',
+          lease_preferences = '[[+region=us-central]]';
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX postal_codes@idx_east
-        CONFIGURE ZONE USING lease_preferences = '[[+region=us-east]]';
+        CONFIGURE ZONE USING
+          constraints = '{"+region=us-east":1}',
+          lease_preferences = '[[+region=us-east]]';
     ~~~
 
 ## Characteristics
