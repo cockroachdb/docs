@@ -96,15 +96,15 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     ~~~ sql
     > ALTER PARTITION la OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-west":1}',
+          constraints = '{"+region=us-west":1}',
           lease_preferences = '[[+region=us-west]]';
       ALTER PARTITION chicago OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-central":1}',
+          constraints = '{"+region=us-central":1}',
           lease_preferences = '[[+region=us-central]]';
       ALTER PARTITION ny OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-east":1}',
+          constraints = '{"+region=us-east":1}',
           lease_preferences = '[[+region=us-east]]';
       ~~~
 
@@ -114,15 +114,15 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     ~~~ sql
     > ALTER PARTITION la_idx OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-west":1}',
+          constraints = '{"+region=us-west":1}',
           lease_preferences = '[[+region=us-west]]';
       ALTER PARTITION chicago_idx OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-central":1}',
+          constraints = '{"+region=us-central":1}',
           lease_preferences = '[[+region=us-central]]';
       ALTER PARTITION ny_idx OF TABLE users
         CONFIGURE ZONE USING
-          constraints = '{"+us-east":1}',
+          constraints = '{"+region=us-east":1}',
           lease_preferences = '[[+region=us-east]]';
     ~~~
 
