@@ -44,16 +44,16 @@ jekyll-action := build
 
 .PHONY: standard-build
 standard-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
 standard: jekyll-action := serve --port 4000
 standard: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: managed-build
 managed-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: managed
 managed: jekyll-action := serve --port 4001
