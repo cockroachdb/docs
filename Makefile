@@ -16,9 +16,11 @@
 # depend on gem being installed globally, but not bundler. (Go
 # developers sometimes manage to install
 # https://github.com/golang/tools/tree/master/cmd/bundle in a location
-# that conflicts with the ruby tool of the same name)
+# that conflicts with the ruby tool of the same name.)
+# Note that we also amend the path to include /usr/local/opt/ruby/bin, which
+# is where Homebrew will install a more up-to-date version of Ruby on macOS.
 export GEM_HOME := vendor
-export PATH := $(GEM_HOME)/bin:$(PATH)
+export PATH := $(GEM_HOME)/bin:/usr/local/opt/ruby/bin:$(PATH)
 
 # HACK: Make has a fast path and a slow path for command execution,
 # but the fast path uses the PATH variable from when make was started,
