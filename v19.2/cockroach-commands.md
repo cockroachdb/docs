@@ -19,7 +19,7 @@ Command | Usage
 [`cockroach quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
 [`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](use-the-query-formatter.html) | Reformat SQL queries for enhanced clarity.
-[`cockroach user`](create-and-manage-users.html) | Get, set, list, and remove users.
+`cockroach user` | **Deprecated.** To create and manage users and roles, use [`CREATE USER`](create-user.html), [`ALTER USER`](alter-user.html), [`DROP USER`](drop-user.html), [`SHOW USERS`](show-users.html), [`CREATE ROLE`](create-role.html), [`DROP ROLE`](drop-role.html), and [`SHOW ROLES`](show-roles.html).
 [`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory, single-node CockroachDB cluster, and open an interactive SQL shell to it.

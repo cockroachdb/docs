@@ -25,11 +25,14 @@ In this scenario, you try to connect a user without providing a client certifica
 
 ### Step 1. Simulate the problem
 
-1. In a new terminal, as the `root` user, create a new user called `kirk`:
+1. In a new terminal, as the `root` users, create a new user called `kirk`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set kirk --certs-dir=certs --host=localhost:26257
+    $ cockroach sql \
+    --certs-dir=certs \
+    --host=localhost:26257 \
+    --execute="CREATE USER kirk;"
     ~~~
 
 2. As the `kirk` user, try to connect to the cluster:

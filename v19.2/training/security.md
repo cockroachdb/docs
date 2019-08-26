@@ -135,21 +135,14 @@ Restart the nodes using the same commands you used to start them initially, but 
     --host=localhost:26257
     ~~~
 
-2. Create a new user, `spock`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach user set spock --certs-dir=certs --host=localhost:26257
-    ~~~
-
-3. As the root user, grant `spock` the `SELECT` privilege on the `startrek.quotes` table:
+2. Create a new user called `spock` and grant `spock` the `SELECT` privilege on the `startrek.quotes` table:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
     --host=localhost:26257 \
-    --execute="GRANT SELECT ON TABLE startrek.quotes TO spock;"
+    --execute="CREATE USER spock; GRANT SELECT ON TABLE startrek.quotes TO spock;"
     ~~~
 
 ## Step 4. Authenticate a user (via client cert)
@@ -181,17 +174,30 @@ Although we recommend always using TLS certificates to authenticate users, it's 
 For multiple users to access the Admin UI, the `root` user must [create users with passwords](../create-user.html#create-a-user-with-a-password).
 {{site.data.alerts.end}}
 
-1. As the `root` user, create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
+1. As the `root` user, open the built-in SQL shell:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set kirk \
+    $ cockroach sql \
     --certs-dir=certs \
-    --host=localhost:26257 \
-    --password
+    --host=localhost:26257
     ~~~
 
-2. As the `root` user, grant `kirk` the `SELECT` privilege on the tables in the `startrek` database:
+2. Create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER kirk WITH PASSWORD 'enterprise';
+    ~~~
+
+3. Exit the SQL shell:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+
+4. As the `root` user, grant `kirk` the `SELECT` privilege on the tables in the `startrek` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -202,7 +208,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
     --execute="GRANT SELECT ON startrek.* TO kirk;"
     ~~~
 
-3. As the `kirk` user, read from the `startrek.quotes` table:
+5. As the `kirk` user, read from the `startrek.quotes` table:
 
     {{site.data.alerts.callout_info}}
     It's necessary to include the `--certs-dir` flag even though you haven't created a cert for this user. When the cluster does not find a suitable client cert, it falls back on password authentication.

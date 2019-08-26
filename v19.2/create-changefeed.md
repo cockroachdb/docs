@@ -16,7 +16,7 @@ For more information, see [Change Data Capture](change-data-capture.html).
 
 ## Required privileges
 
-Changefeeds can only be created by superusers, i.e., [members of the `admin` role](create-and-manage-users.html). The admin role exists by default with `root` as the member.
+Changefeeds can only be created by superusers, i.e., [members of the `admin` role](authorization.html#create-and-manage-roles). The admin role exists by default with `root` as the member.
 
 ## Synopsis
 

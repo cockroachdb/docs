@@ -22,7 +22,7 @@ To get started, basic role terminology is outlined below:
 
 Term | Description
 -----|------------
-Role | A group containing any number of [users](create-and-manage-users.html) or other roles.<br><br>Note: All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
+Role | A group containing any number of [users](create-user.html) or other roles.<br><br>Note: All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 Superuser / Admin | A member of the `admin` role. Only superusers can [`CREATE ROLE`](create-role.html) or [`DROP ROLE`](drop-role.html). The `admin` role is created by default and cannot be dropped.
 `root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.
@@ -42,21 +42,21 @@ $ cockroach start \
 --listen-addr=localhost:26257
 ~~~
 
-1. As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach user set maxroach --insecure
-    ~~~
-
-2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+1. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-3. Create a database and set it as the default:
+2. [Create a user](create-user.html), `maxroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER maxroach;
+    ~~~
+
+3. [Create a database](create-database.html) and [set it as the default](set-database.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -249,6 +249,6 @@ $ cockroach start \
 - [`REVOKE <privileges>`](revoke.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](create-and-manage-users.html)
+- [Manage Users](authorization.html#create-and-manage-users)
 - [Privileges](authorization.html#assign-privileges)
 - [Other Cockroach Commands](cockroach-commands.html)

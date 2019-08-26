@@ -36,4 +36,4 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 ## See also
 
 - [`CREATE USER`](create-user.html)
-- [Manage Users](create-and-manage-users.html)
+- [Manage Users](authorization.html#create-and-manage-users)

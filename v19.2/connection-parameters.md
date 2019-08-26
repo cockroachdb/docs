@@ -45,7 +45,7 @@ postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 
  Component      | Description                                                                                                                                                                                               | Required
 ----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------
- `<username>`   | The [SQL user](create-and-manage-users.html) that will own the client session.                                                                                                                            | ✗
+ `<username>`   | The [SQL user](create-user.html) that will own the client session.                                                                                                                            | ✗
  `<password>`   | The user's password. It is not recommended to pass the password in the URL directly.<br><br>[Find more detail about how CockroachDB handles passwords](authentication.html#client-authentication). | ✗
  `<host>`       | The host name or address of a CockroachDB node or load balancer.                                                                                                                                          | Required by most client drivers.
  `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt.                                           | Required by most client drivers.
@@ -222,4 +222,4 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 - [`cockroach` commands](cockroach-commands.html)
 - [Create Security Certificates](create-security-certificates.html)
 - [Secure a Cluster](secure-a-cluster.html)
-- [Create and Manage Users](create-and-manage-users.html)
+- [Create and Manage Users](authorization.html#create-and-manage-users)
