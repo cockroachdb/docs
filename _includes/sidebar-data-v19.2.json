@@ -1112,12 +1112,6 @@
                 ]
               },
               {
-                "title": "<code>SHOW EXPERIMENTAL_RANGES</code>",
-                "urls": [
-                  "/${VERSION}/show-experimental-ranges.html"
-                ]
-              },
-              {
                 "title": "<code>SHOW GRANTS</code>",
                 "urls": [
                   "/${VERSION}/show-grants.html"
@@ -1151,6 +1145,12 @@
                 "title": "<code>SHOW QUERIES</code>",
                 "urls": [
                   "/${VERSION}/show-queries.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW RANGES</code>",
+                "urls": [
+                  "/${VERSION}/show-ranges.html"
                 ]
               },
               {
