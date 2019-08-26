@@ -34,7 +34,7 @@ Subcommand | Usage
 -----------|------
 `create-ca` | Create the self-signed certificate authority (CA), which you'll use to create and authenticate certificates for your entire cluster.
 `create-node` | Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
-`create-client` | Create a certificate and key for a [specific user](create-and-manage-users.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
+`create-client` | Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
 `list` | List certificates and keys found in the certificate directory.
 
 ## Certificate directory

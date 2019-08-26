@@ -6,10 +6,6 @@ toc: true
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 
-{{site.data.alerts.callout_success}}
-You can also use the [`cockroach user set`](create-and-manage-users.html) command to create and manage users.
-{{site.data.alerts.end}}
-
 ## Considerations
 
 - Usernames:
@@ -48,7 +44,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 - [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`cockroach user`](create-and-manage-users.html#update-a-users-password) command.
+- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
@@ -81,7 +77,7 @@ Password creation is supported only in secure clusters for non-`root` users. The
 
 ### Manage users
 
-After creating users, you can manage them using the [`cockroach user`](create-and-manage-users.html) command.
+After creating a user, you can use the [`ALTER USER`](alter-user.html) statement to add or change the user's password and the [`DROP USER`](drop-user.html) statement to the remove users.
 
 ### Authenticate as a specific user
 
@@ -127,7 +123,7 @@ $ cockroach sql --insecure --user=jpointsman
 ## See also
 
 - [Authorization](authorization.html)
-- [`cockroach user` command](create-and-manage-users.html)
+- [`ALTER USER`](alter-user.html)
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)

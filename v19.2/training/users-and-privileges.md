@@ -86,7 +86,10 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach user set spock --insecure --host=localhost:26257
+    $ cockroach sql \
+    --certs-dir=certs \
+    --host=localhost:26257 \
+    --execute="CREATE USER spock;"
     ~~~
 
 2. Try to read from a table in the `startrek` database as `spock`:

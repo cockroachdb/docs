@@ -2,16 +2,14 @@
 title: Authorization
 summary: Learn about the authorization features for secure CockroachDB clusters.
 toc: true
+redirect_from: create-and-manage-users.html
 ---
 
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#create-and-manage-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, if you have an [Enterprise license](get-started-with-enterprise-trial.html), you can use [role-based access management (RBAC)](#create-and-manage-roles) for simplified user management.
 
 ## Create and manage users
 
-You can use either of the following methods to create and manage users:
-
-- Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users.
-- Use the [`cockroach user` command](create-and-manage-users.html) with appropriate flags.
+Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password, and the [`SHOW USERS`](show-users.html) statement to list users.
 
 ## Create and manage roles
 
@@ -21,7 +19,7 @@ Roles are SQL groups that contain any number of users and roles as members.
 
 Term | Description
 -----|------------
-Role | A group containing any number of [users](create-and-manage-users.html) or other roles.<br><br>Note: All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
+Role | A group containing any number of [users](create-user.html) or other roles.<br><br>Note: All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 Role admin | A member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 Superuser / Admin | A member of the `admin` role. Only superusers can [`CREATE ROLE`](create-role.html) or [`DROP ROLE`](drop-role.html). The `admin` role is created by default and cannot be dropped.
 `root` | A user that exists by default as a member of the `admin` role. The `root` user must always be a member of the `admin` role.
@@ -42,7 +40,7 @@ To create and manage your cluster's roles, use the following statements:
 
 ## Assign privileges
 
-In CockroachDB, privileges are granted to [users](create-and-manage-users.html) and [roles](#create-and-manage-roles) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
+In CockroachDB, privileges are granted to [users](#create-and-manage-users) and [roles](#create-and-manage-roles) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 
 When a user connects to a database, either via the [built-in SQL client](use-the-built-in-sql-client.html) or a [client driver](install-client-drivers.html), CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
 
@@ -88,15 +86,11 @@ For the purpose of this example, you need an [enterprise license](enterprise-lic
 $ cockroach start \
 --insecure \
 --store=roles \
---listen-addr=localhost:26257
+--listen-addr=localhost:26257 \
+--background
 ~~~
 
-1. As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach user set maxroach --insecure
-    ~~~
+1. [Request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/). You should receive your trial license via email within a few minutes.
 
 2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
@@ -105,7 +99,26 @@ $ cockroach start \
     $ cockroach sql --insecure
     ~~~
 
-3. Create a database and set it as the default:
+3. Run the following commands in your SQL shell to enable enterprise features using your trial license:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING cluster.organization = '<your organization>';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING enterprise.license = '<your license key>';
+    ~~~
+
+2. [Create a user](create-user.html), `maxroach`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER maxroach;
+    ~~~
+
+3. [Create a database](create-database.html) and [set it as the default](set-database.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -130,15 +143,14 @@ $ cockroach start \
     ~~~
 
     ~~~
+      role_name
     +------------+
-    |  rolename  |
-    +------------+
-    | admin      |
-    | system_ops |
-    +------------+
+      admin
+      system_ops
+    (2 rows)
     ~~~
 
-5. Grant privileges to the `system_ops` role you created:
+5. [Grant privileges](grant.html) to the `system_ops` role you created:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -151,26 +163,25 @@ $ cockroach start \
     ~~~
 
     ~~~
-    +------------+--------------------+------------+------------+
-    |  Database  |       Schema       |    User    | Privileges |
-    +------------+--------------------+------------+------------+
-    | test_roles | crdb_internal      | admin      | ALL        |
-    | test_roles | crdb_internal      | root       | ALL        |
-    | test_roles | crdb_internal      | system_ops | CREATE     |
-    | test_roles | crdb_internal      | system_ops | SELECT     |
-    | test_roles | information_schema | admin      | ALL        |
-    | test_roles | information_schema | root       | ALL        |
-    | test_roles | information_schema | system_ops | CREATE     |
-    | test_roles | information_schema | system_ops | SELECT     |
-    | test_roles | pg_catalog         | admin      | ALL        |
-    | test_roles | pg_catalog         | root       | ALL        |
-    | test_roles | pg_catalog         | system_ops | CREATE     |
-    | test_roles | pg_catalog         | system_ops | SELECT     |
-    | test_roles | public             | admin      | ALL        |
-    | test_roles | public             | root       | ALL        |
-    | test_roles | public             | system_ops | CREATE     |
-    | test_roles | public             | system_ops | SELECT     |
-    +------------+--------------------+------------+------------+
+      database_name |    schema_name     |  grantee   | privilege_type
+    +---------------+--------------------+------------+----------------+
+      test_roles    | crdb_internal      | admin      | ALL
+      test_roles    | crdb_internal      | root       | ALL
+      test_roles    | crdb_internal      | system_ops | CREATE
+      test_roles    | crdb_internal      | system_ops | SELECT
+      test_roles    | information_schema | admin      | ALL
+      test_roles    | information_schema | root       | ALL
+      test_roles    | information_schema | system_ops | CREATE
+      test_roles    | information_schema | system_ops | SELECT
+      test_roles    | pg_catalog         | admin      | ALL
+      test_roles    | pg_catalog         | root       | ALL
+      test_roles    | pg_catalog         | system_ops | CREATE
+      test_roles    | pg_catalog         | system_ops | SELECT
+      test_roles    | public             | admin      | ALL
+      test_roles    | public             | root       | ALL
+      test_roles    | public             | system_ops | CREATE
+      test_roles    | public             | system_ops | SELECT
+    (16 rows)
     ~~~
 
 6. Add the `maxroach` user to the `system_ops` role:
@@ -220,14 +231,13 @@ $ cockroach start \
     ~~~
 
     ~~~
-    +------------+--------+-----------+------------+------------+
-    |  Database  | Schema |   Table   |    User    | Privileges |
-    +------------+--------+-----------+------------+------------+
-    | test_roles | public | employees | admin      | ALL        |
-    | test_roles | public | employees | root       | ALL        |
-    | test_roles | public | employees | system_ops | CREATE     |
-    | test_roles | public | employees | system_ops | SELECT     |
-    +------------+--------+-----------+------------+------------+
+      database_name | schema_name | table_name |  grantee   | privilege_type
+    +---------------+-------------+------------+------------+----------------+
+      test_roles    | public      | employees  | admin      | ALL
+      test_roles    | public      | employees  | root       | ALL
+      test_roles    | public      | employees  | system_ops | CREATE
+      test_roles    | public      | employees  | system_ops | SELECT
+    (4 rows)
     ~~~
 
 11. Now switch back to the `root` user to test more of the SQL statements related to roles. Use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `root` user:
@@ -249,18 +259,17 @@ $ cockroach start \
     > SHOW GRANTS ON DATABASE test_roles;
     ~~~
     ~~~
-    +------------+--------------------+-------+------------+
-    |  Database  |       Schema       | User  | Privileges |
-    +------------+--------------------+-------+------------+
-    | test_roles | crdb_internal      | admin | ALL        |
-    | test_roles | crdb_internal      | root  | ALL        |
-    | test_roles | information_schema | admin | ALL        |
-    | test_roles | information_schema | root  | ALL        |
-    | test_roles | pg_catalog         | admin | ALL        |
-    | test_roles | pg_catalog         | root  | ALL        |
-    | test_roles | public             | admin | ALL        |
-    | test_roles | public             | root  | ALL        |
-    +------------+--------------------+-------+------------+
+      database_name |    schema_name     | grantee | privilege_type
+    +---------------+--------------------+---------+----------------+
+      test_roles    | crdb_internal      | admin   | ALL
+      test_roles    | crdb_internal      | root    | ALL
+      test_roles    | information_schema | admin   | ALL
+      test_roles    | information_schema | root    | ALL
+      test_roles    | pg_catalog         | admin   | ALL
+      test_roles    | pg_catalog         | root    | ALL
+      test_roles    | public             | admin   | ALL
+      test_roles    | public             | root    | ALL
+    (8 rows)
     ~~~
 
     {% include copy-clipboard.html %}
@@ -273,12 +282,11 @@ $ cockroach start \
     > SHOW GRANTS ON TABLE test_roles.*;
     ~~~
     ~~~
-    +------------+--------+-----------+-------+------------+
-    |  Database  | Schema |   Table   | User  | Privileges |
-    +------------+--------+-----------+-------+------------+
-    | test_roles | public | employees | admin | ALL        |
-    | test_roles | public | employees | root  | ALL        |
-    +------------+--------+-----------+-------+------------+
+      database_name | schema_name | table_name | grantee | privilege_type
+    +---------------+-------------+------------+---------+----------------+
+      test_roles    | public      | employees  | admin   | ALL
+      test_roles    | public      | employees  | root    | ALL
+    (2 rows)
     ~~~
 
     {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
@@ -292,6 +300,10 @@ $ cockroach start \
 
 - [Client Connection Parameters](connection-parameters.html)
 - [SQL Statements](sql-statements.html)
+- [`CREATE USER`](create-user.html)
+- [`ALTER USER`](alter-user.html)
+- [`DROP USER`](drop-user.html)
+- [`SHOW USERS`](show-users.html)
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)

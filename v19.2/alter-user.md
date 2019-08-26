@@ -4,12 +4,7 @@ summary: The ALTER USER statement can be used to add or change a user's password
 toc: true
 ---
 
-The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-and-manage-users.html) password.
-
-{{site.data.alerts.callout_success}}
-You can also use the [`cockroach user`](create-and-manage-users.html#update-a-users-password) command to add or change a user's password.
-{{site.data.alerts.end}}
-
+The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-user.html) password.
 
 ## Considerations
 
@@ -75,7 +70,6 @@ To preserve case in a password specified using identifier syntax, use double quo
 
 ## See also
 
-- [`cockroach user` command](create-and-manage-users.html)
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT <privileges>`](grant.html)
