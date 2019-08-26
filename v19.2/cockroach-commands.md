@@ -20,13 +20,12 @@ Command | Usage
 [`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](use-the-query-formatter.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach user`](create-and-manage-users.html) | Get, set, list, and remove users.
-[`cockroach zone`](configure-replication-zones.html) | **Deprecated** To configure the number and location of replicas for specific sets of data, use [`ALTER ... CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 [`cockroach node`](view-node-details.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach dump`](sql-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory, single-node CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach gen`](generate-cockroachdb-resources.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](view-version-details.html) | Output CockroachDB version details.
-[`cockroach debug ballast`](debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space. 
+[`cockroach debug ballast`](debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 [`cockroach debug encryption-active-key`](debug-encryption-active-key.html) | View the encryption algorithm and store key.
 [`cockroach debug zip`](debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug merge-logs`](debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
