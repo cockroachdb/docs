@@ -12,5 +12,6 @@ run() {
 
 # Tell the Makefile we've already installed dependencies.
 touch "$root/../bootstrap"
+touch "$root/../vendor"
 
 run make standard-build managed-build

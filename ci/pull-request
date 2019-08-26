@@ -12,6 +12,7 @@ baseurl=$BUILD_VCS_NUMBER
 
 # Tell the Makefile we've already installed dependencies.
 touch bootstrap
+touch vendor
 
 # Step 1. Build the standard docs.
 cat > _config_prod.yml <<EOF
@@ -39,7 +40,7 @@ COMMENT_BODY=$(
 git diff --name-status $(git merge-base HEAD origin/master) | \
 awk -v "base_url=http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com/$BUILD_VCS_NUMBER/" '
 BEGIN {
-  print "Online preview: " base_url 
+  print "Online preview: " base_url
 }
 
 /^[AM]\s+[^_].*\.(md|html)/ {

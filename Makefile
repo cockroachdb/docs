@@ -64,7 +64,9 @@ test: bootstrap
 	go get -u github.com/cockroachdb/htmltest
 	htmltest
 
-bootstrap: Gemfile.lock
+vendor:
 	gem install bundler
+
+bootstrap: Gemfile Gemfile.lock vendor
 	bundle install
 	touch $@
