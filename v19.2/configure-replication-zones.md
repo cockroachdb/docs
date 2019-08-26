@@ -131,6 +131,8 @@ See [Cluster Topography](recommended-production-settings.html#topology) recommen
 
 Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
 
+You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions.
+
 ## Basic examples
 
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
@@ -636,5 +638,6 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 - [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
+- [`SHOW PARTITIONS`](show-partitions.html)
 - [SQL Statements](sql-statements.html)
 - [Table Partitioning](partitioning.html)

@@ -301,7 +301,7 @@ See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --host=localhost:26157
+    $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 2. Create the database and set it as current:
@@ -345,7 +345,7 @@ See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-
         email STRING,
         country STRING,
         expected_graduation_date DATE,   
-        PRIMARY KEY (country, id))
+        PRIMARY KEY (country, id));
     ~~~
 
     {% include copy-clipboard.html %}
@@ -367,7 +367,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION north_america OF TABLE roachlearn.students \
+    > ALTER PARTITION north_america OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=us]';
     ~~~
 
@@ -375,7 +375,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION europe OF TABLE roachlearn.students \
+    > ALTER PARTITION europe OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=de]';
     ~~~
 
@@ -383,7 +383,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION australia OF TABLE roachlearn.students \
+    > ALTER PARTITION australia OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=aus]';
     ~~~
 
@@ -391,27 +391,28 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE roachlearn.students;
+    > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE students;
     ~~~
 
     ~~~
-                  zone_name             |                                           config_sql
-    +-----------------------------------+------------------------------------------------------------------------------------------------+
-      roachlearn.students.north_america | ALTER PARTITION north_america OF INDEX roachlearn.public.students@primary CONFIGURE ZONE USING
-                                        |     range_min_bytes = 16777216,
-                                        |     range_max_bytes = 67108864,
-                                        |     gc.ttlseconds = 90000,
-                                        |     num_replicas = 3,
-                                        |     constraints = '[+region=us]',
-                                        |     lease_preferences = '[]'
+              zone_name             |                                  config_sql
++-----------------------------------+------------------------------------------------------------------------------+
+  roachlearn.students.north_america | ALTER PARTITION north_america OF INDEX students@primary CONFIGURE ZONE USING
+                                    |     range_min_bytes = 16777216,
+                                    |     range_max_bytes = 67108864,
+                                    |     gc.ttlseconds = 90000,
+                                    |     num_replicas = 3,
+                                    |     constraints = '[+region=us]',
+                                    |     lease_preferences = '[]'
+(1 row)
     ~~~
 
 
-#### Step 6. Verify table partitions
+#### Step 6. Check replica distribution
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE roachlearn.students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
+> SELECT * FROM [SHOW EXPERIMENTAL_RANGES FROM TABLE students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 You should see the following output:
@@ -419,12 +420,12 @@ You should see the following output:
 ~~~
   start_key |     end_key     | range_id | replicas | lease_holder
 +-----------+-----------------+----------+----------+--------------+
-  /"AU"     | /"AU"/PrefixEnd |       26 | {7,8,9}  |            8
-  /"CA"     | /"CA"/PrefixEnd |       22 | {1,2,3}  |            1
-  /"CH"     | /"CH"/PrefixEnd |       41 | {4,5,6}  |            5
-  /"DE"     | /"DE"/PrefixEnd |       43 | {4,5,6}  |            5
-  /"NZ"     | /"NZ"/PrefixEnd |       45 | {7,8,9}  |            7
-  /"US"     | /"US"/PrefixEnd |       24 | {1,2,3}  |            1
+  /"AU"     | /"AU"/PrefixEnd |       35 | {7,8,9}  |            8
+  /"CA"     | /"CA"/PrefixEnd |       31 | {1,2,3}  |            1
+  /"CH"     | /"CH"/PrefixEnd |       51 | {4,5,6}  |            5
+  /"DE"     | /"DE"/PrefixEnd |       53 | {4,5,6}  |            5
+  /"NZ"     | /"NZ"/PrefixEnd |       55 | {7,8,9}  |            8
+  /"US"     | /"US"/PrefixEnd |       33 | {1,2,3}  |            1
 (6 rows)
 ~~~
 
@@ -437,6 +438,27 @@ Node IDs | Zone
 7-9 | `australia`
 
 We can see that, after partitioning, the replicas for `US` and `CA`-based students are located on nodes 1-3 in `north_america`, the replicas for `DE` and `CH`-based students are located on nodes 4-6 in `europe`, and the replicas for `AU` and `NZ`-based students are located on nodes 7-9 in `australia`.
+
+### Show partitions and zone constraints
+
+To retrieve table partitions, you can use the [`SHOW PARTITIONS`](show-partitions.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW PARTITIONS FROM TABLE students;
+~~~
+
+~~~
+  database_name | table_name | partition_name | parent_partition | column_names |    index_name    | partition_value | zone_constraints
++---------------+------------+----------------+------------------+--------------+------------------+-----------------+------------------+
+  roachlearn    | students   | north_america  | NULL             | country      | students@primary | ('CA'), ('US')  | [+region=us]
+  roachlearn    | students   | europe         | NULL             | country      | students@primary | ('DE'), ('CH')  | [+region=de]
+  roachlearn    | students   | australia      | NULL             | country      | students@primary | ('AU'), ('NZ')  | [+region=aus]
+  roachlearn    | students   | default        | NULL             | country      | students@primary | (DEFAULT)       | NULL
+(4 rows)
+~~~
+
+You can also view partitions by [database](show-partitions.html#show-partitions-by-database) and [index](show-partitions.html#show-partitions-by-index).
 
 ### Define table partitions by range
 
@@ -463,7 +485,7 @@ $ cockroach start --insecure \
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Start the first node:
+# Start the second node:
 $ cockroach start --insecure \
 --store=path=/mnt/2,attrs=hdd \
 --advertise-addr=<node2 hostname> \
@@ -500,17 +522,17 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION current OF TABLE roachlearn.students_by_range \
+> ALTER PARTITION current OF TABLE students_by_range
     CONFIGURE ZONE USING constraints='[+ssd]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION graduated OF TABLE roachlearn.students_by_range \
+> ALTER PARTITION graduated OF TABLE students_by_range
     CONFIGURE ZONE USING constraints='[+hdd]';
 ~~~
 
-#### Step 6. Verify table partitions
+#### Step 6. Check replica distribution
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -520,15 +542,11 @@ To create zone configurations and apply them to corresponding partitions, use th
 You should see the following output:
 
 ~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | /17393  |      244 | {1,2,3}  |            1 |
-| /17393    | NULL    |      242 | {1,2,3}  |            1 |
-+-----------+---------+----------+----------+--------------+
+  start_key | end_key | range_id | replicas | lease_holder | locality
++-----------+---------+----------+----------+--------------+-----------+
+  NULL      | /17393  |       52 | {2,5,8}  |            5 | region=de
+  /17393    | NULL    |       53 | {6,7,10} |            6 | region=de
 (2 rows)
-
-Time: 5.850903ms
 ~~~
 
 ### Define subpartitions on a Table
@@ -611,26 +629,26 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION current_us OF TABLE roachlearn.students \
+> ALTER PARTITION current_us OF TABLE students
     CONFIGURE ZONE USING constraints='[+ssd,+datacenter=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION graduated_us OF TABLE roachlearn.students CONFIGURE ZONE \
+> ALTER PARTITION graduated_us OF TABLE students CONFIGURE ZONE
     USING constraints='[+hdd,+datacenter=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION current_au OF TABLE roachlearn.students \
-    CONFIGURE ZONE USING constraints='[+ssd,+datacenter=au1]';
+> ALTER PARTITION current_au OF TABLE students
+    CONFIGURE ZONE USING constraints='[+ssd,+datacenter=aus1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION graduated_au OF TABLE roachlearn.students CONFIGURE ZONE \
-    USING constraints='[+hdd,+datacenter=au1]';
+> ALTER PARTITION graduated_au OF TABLE students CONFIGURE ZONE
+    USING constraints='[+hdd,+datacenter=aus1]';
 ~~~
 
 #### Step 6. Verify table partitions

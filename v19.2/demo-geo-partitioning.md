@@ -651,6 +651,39 @@ The most effective way to prevent the high SQL latency resulting from cross-regi
       );
     ~~~
 
+Use [`SHOW PARTITIONS`](show-partitions.html) to check your partitions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW PARTITIONS FROM DATABASE movr;
+~~~
+
+~~~
+  database_name | table_name | partition_name | parent_partition | column_names |                     index_name                      | partition_value | zone_constraints
++---------------+------------+----------------+------------------+--------------+-----------------------------------------------------+-----------------+------------------+
+  movr          | rides      | chicago        | NULL             | city         | rides@primary                                       | ('chicago')     | NULL
+  movr          | rides      | chicago_idx1   | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('chicago')     | NULL
+  movr          | rides      | chicago_idx2   | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('chicago')     | NULL
+  movr          | rides      | new_york       | NULL             | city         | rides@primary                                       | ('new york')    | NULL
+  movr          | rides      | new_york_idx1  | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('new york')    | NULL
+  movr          | rides      | new_york_idx2  | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('new york')    | NULL
+  movr          | rides      | seattle        | NULL             | city         | rides@primary                                       | ('seattle')     | NULL
+  movr          | rides      | seattle_idx1   | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('seattle')     | NULL
+  movr          | rides      | seattle_idx2   | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('seattle')     | NULL
+  movr          | users      | chicago        | NULL             | city         | users@primary                                       | ('chicago')     | NULL
+  movr          | users      | new_york       | NULL             | city         | users@primary                                       | ('new york')    | NULL
+  movr          | users      | seattle        | NULL             | city         | users@primary                                       | ('seattle')     | NULL
+  movr          | vehicles   | chicago        | NULL             | city         | vehicles@primary                                    | ('chicago')     | NULL
+  movr          | vehicles   | chicago_idx    | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('chicago')     | NULL
+  movr          | vehicles   | new_york       | NULL             | city         | vehicles@primary                                    | ('new york')    | NULL
+  movr          | vehicles   | new_york_idx   | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('new york')    | NULL
+  movr          | vehicles   | seattle        | NULL             | city         | vehicles@primary                                    | ('seattle')     | NULL
+  movr          | vehicles   | seattle_idx    | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('seattle')     | NULL
+(18 rows)
+~~~
+
+Note that in all rows, the `zone constraints` column is `NULL`. This is because no replication zones have been applied to partitions.
+
 ## Step 12. Pin partitions to regions
 
 Now that all tables and secondary indexes have been partitioned by city, for each partition, you can create a replication zone that pins the partition's replicas to nodes in a specific region, using the localities specified when nodes were started.
