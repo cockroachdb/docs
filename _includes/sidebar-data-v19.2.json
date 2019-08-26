@@ -597,7 +597,7 @@
         ]
       },
       {
-        "title": "SQL Tuning with `EXPLAIN`",
+        "title": "SQL Tuning with <code>EXPLAIN</code>",
         "urls": [
           "/${VERSION}/sql-tuning-with-explain.html"
         ]
