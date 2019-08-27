@@ -72,10 +72,10 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
       <p class="landing-column-title">Migrate</p>
       <div class="landing-column-content">
         <p><a href="migration-overview.html">Overview</a></p>
+        <p><a href="migrate-from-oracle.html">Migrate from Oracle</a></p>
         <p><a href="migrate-from-postgres.html">Migrate from Postgres</a></p>
         <p><a href="migrate-from-mysql.html">Migrate from MySQL</a></p>
         <p><a href="migrate-from-csv.html">Migrate from CSV</a></p>
-        <p><a href="performance-best-practices-overview.html#multi-row-dml-best-practices">Insert Best Practices</a></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">

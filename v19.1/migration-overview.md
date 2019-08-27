@@ -9,6 +9,7 @@ build_for: [standard, managed]
 CockroachDB supports importing data from the following databases:
 
 - MySQL
+- Oracle (using CSV)
 - Postgres
 
 and from the following data formats:
@@ -19,6 +20,7 @@ This page lists general considerations to be aware of as you plan your migration
 
 In addition to the information listed below, see the following pages for specific instructions and considerations that apply to the database (or data format) you're migrating from:
 
+- [Migrate from Oracle][oracle]
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
@@ -61,6 +63,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 - [`IMPORT`][import]
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
+- [Migrate from Oracle][oracle]
 - [Migrate from Postgres][postgres]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [Porting from PostgreSQL](porting-postgres.html)
@@ -71,6 +74,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 
 <!-- Links -->
 
+[oracle]: migrate-from-oracle.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [csv]: migrate-from-csv.html
