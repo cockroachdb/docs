@@ -6,9 +6,6 @@ toc: true
 
 The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
-{{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user rm</code></a> command to remove users.{{site.data.alerts.end}}
-
-
 ## Required privileges
 
 The user must have the `DELETE` [privilege](authorization.html#assign-privileges) on the `system.users` table.
@@ -57,8 +54,8 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 
 ## See also
 
-- [`cockroach user` command](create-and-manage-users.html)
 - [`CREATE USER`](create-user.html)
+- [`ALTER USER`](alter-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)

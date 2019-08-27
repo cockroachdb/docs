@@ -254,6 +254,6 @@ SHOW GRANTS ON ROLE FOR carl;
 - [`REVOKE <privileges>`](revoke.html)
 - [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](create-and-manage-users.html)
+- [Manage Users](authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

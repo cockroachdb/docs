@@ -6,6 +6,12 @@ fn main() {
     let conn = Connection::connect("postgresql://maxroach@localhost:26257/bank", TlsMode::None)
         .unwrap();
 
+    // Create the "accounts" table.
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)",
+        &[],
+    ).unwrap();
+
     // Insert two rows into the "accounts" table.
     conn.execute(
         "INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)",

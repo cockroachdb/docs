@@ -41,21 +41,19 @@ $ cockroach start \
 
 ## Step 3. Create a user
 
-In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach user set maxroach --insecure --host=localhost:26257
-~~~
-
-## Step 4. Create a database and grant privileges
-
-As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+In a new terminal, open the [built-in SQL client](use-the-built-in-sql-client.html) as the `root` user and create a new user, `maxroach`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost:26257
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER maxroach
+~~~
+
+## Step 4. Create a database and grant privileges
 
 Next, create a database called `jsonb_test`:
 
