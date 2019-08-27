@@ -175,6 +175,10 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 ### Importing an interleaved table from a `cockroach dump` output
 
+{{site.data.alerts.callout_info}}
+Resolved as of 19.2.0-beta.20190902.
+{{site.data.alerts.end}}
+
 {% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
 ### Silent validation error with `DECIMAL` values
@@ -336,9 +340,3 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
-
-### `cockroach dump` does not support cyclic foreign key references
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
-
-{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}
