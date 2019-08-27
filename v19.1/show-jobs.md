@@ -112,6 +112,21 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 (1 row)
 ~~~
 
+### Show schema changes
+
+You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the `job_type` value with the `WHERE` clause:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
+~~~
+
+~~~
+     job_id     | job_type        |              description                           |...
++---------------+-----------------+----------------------------------------------------+...
+ 27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
+~~~
+
 ## See also
 
 - [`PAUSE JOB`](pause-job.html)
