@@ -46,6 +46,12 @@ For examples showing how to use aggregate functions, see [the `SELECT` clause do
 
 {% include {{ page.version.version }}/sql/aggregates.md %}
 
+<a name="non-commutative"></a>
+
+{{site.data.alerts.callout_info}}
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause](select-clause.html#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`](query-order.html) clause within the function argument list. For examples, see the [`SELECT` clause](select-clause.html#order-aggregate-function-input-rows-by-column) documentation.
+{{site.data.alerts.end}}
+
 ## Window functions
 
 {% include {{ page.version.version }}/sql/window_functions.md %}

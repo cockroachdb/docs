@@ -415,6 +415,51 @@ GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
 (3 rows)
 ~~~
 
+#### Order aggregate function input rows by column
+
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`](query-order.html) clause within the function argument list.
+
+For example, suppose you want to create an array of `name` values, ordered alphabetically, and grouped by `city`. You can use the following statement to do so:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT city, array_agg(name ORDER BY name) AS users FROM users WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
+~~~
+
+~~~
+    city   |                                        users
++----------+-------------------------------------------------------------------------------------+
+  new york | {"Catherine Nelson","Devin Jordan","James Hamilton","Judy White","Robert Murphy"}
+  seattle  | {"Anita Atkinson","Holly Williams","Patricia Herrera","Ryan Hickman"}
+  chicago  | {"Jessica Martinez","John Hines","Kenneth Barnes","Matthew Clay","Samantha Coffey"}
+(3 rows)
+~~~
+
+You can also order input rows using a column different than the input row column. The following statement returns an array of `revenue` values from high-revenue rides, ordered by ride `end_time`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT city, array_agg(revenue ORDER BY end_time) as revenues FROM rides WHERE revenue > 80 GROUP BY city;
+~~~
+
+~~~
+      city      |                                    revenues
++---------------+---------------------------------------------------------------------------------+
+  amsterdam     | {87.00,95.00,87.00,85.00,87.00,85.00,88.00,95.00,86.00,97.00,98.00,87.00,82.00}
+  boston        | {92.00,92.00,86.00,87.00,94.00}
+  detroit       | {89.00,96.00,94.00,92.00,84.00}
+  minneapolis   | {84.00,98.00,86.00,92.00,81.00,99.00,87.00,86.00,88.00,81.00}
+  new york      | {83.00,94.00,86.00,95.00,81.00,91.00,94.00,81.00,81.00,90.00}
+  san francisco | {96.00,85.00,96.00,84.00,94.00,87.00,93.00}
+  chicago       | {82.00,98.00,84.00,99.00,91.00,90.00,83.00,82.00,91.00}
+  los angeles   | {92.00,98.00,92.00,99.00,93.00,87.00,98.00,91.00,89.00,81.00,87.00}
+  paris         | {87.00,94.00,98.00,98.00,95.00,81.00,99.00,94.00,95.00,82.00}
+  rome          | {83.00,96.00,90.00,98.00,95.00,87.00,86.00,97.00}
+  seattle       | {88.00,88.00,82.00,86.00,91.00,81.00,99.00}
+  washington dc | {96.00,94.00,97.00,96.00,88.00,97.00,93.00}
+(12 rows)
+~~~
+
 ### Select from a specific index
 
 {% include {{page.version.version}}/misc/force-index-selection.md %}
