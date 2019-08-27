@@ -16,9 +16,11 @@
 # depend on gem being installed globally, but not bundler. (Go
 # developers sometimes manage to install
 # https://github.com/golang/tools/tree/master/cmd/bundle in a location
-# that conflicts with the ruby tool of the same name)
+# that conflicts with the ruby tool of the same name.)
+# Note that we also amend the path to include /usr/local/opt/ruby/bin, which
+# is where Homebrew will install a more up-to-date version of Ruby on macOS.
 export GEM_HOME := vendor
-export PATH := $(GEM_HOME)/bin:$(PATH)
+export PATH := $(GEM_HOME)/bin:/usr/local/opt/ruby/bin:$(PATH)
 
 # HACK: Make has a fast path and a slow path for command execution,
 # but the fast path uses the PATH variable from when make was started,
@@ -42,16 +44,16 @@ jekyll-action := build
 
 .PHONY: standard-build
 standard-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
 standard: jekyll-action := serve --port 4000
 standard: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml,$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: managed-build
 managed-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: managed
 managed: jekyll-action := serve --port 4001
@@ -62,7 +64,9 @@ test: bootstrap
 	go get -u github.com/cockroachdb/htmltest
 	htmltest
 
-bootstrap: Gemfile.lock
+vendor:
 	gem install bundler
+
+bootstrap: Gemfile Gemfile.lock vendor
 	bundle install
 	touch $@

@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.10
 
 COPY Gemfile Gemfile.lock /tmp/bundler/
 
@@ -17,6 +17,7 @@ RUN apk add --update \
     py-pip \
     python \
     ruby \
+    ruby-bigdecimal \
     ruby-bundler \
     ruby-dev \
     ruby-json \
@@ -37,3 +38,5 @@ RUN apk add --update \
   && rm -rf ~/.cache ~/.bundle /var/cache/apk $(go env GOPATH)
 
 WORKDIR /docs
+
+ENV BUNDLE_PATH=/usr/lib/ruby/gems/2.5.0
