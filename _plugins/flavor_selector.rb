@@ -8,6 +8,10 @@ require 'addressable/uri'
 # open in a new window.
 module FlavorSelector
   class Generator < Jekyll::Generator
+    # Ensure we run after JekyllRedirectFrom, so that if managed links to
+    # a page that *redirects* to the standard docs, we rewrite that link.
+    priority :lowest
+
     def initialize(config)
       @config = config
       return unless config['managed']
