@@ -22,7 +22,7 @@ Pattern | Latency | Resiliency | Configuration
 When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose the right topology for each of your tables. Not doing so can result in unexpected latency and resiliency.
 
 {{site.data.alerts.callout_info}}
-Multi-region patterns are almost always table-specific. For example, you might use the [Geo-Partitioning](topology-geo-partitioned-replicas.html) pattern for frequently updated tables that are geographically specific and the [Duplicate Indexes](topology-duplicate-indexes.html) pattern for infrequently updated tables (e.g., reference tables) that are not tied to geography.
+Multi-region patterns are almost always table-specific. For example, you might use the [Geo-Partitioning Replicas](topology-geo-partitioned-replicas.html) pattern for frequently updated tables that are geographically specific and the [Duplicate Indexes](topology-duplicate-indexes.html) pattern for reference tables that are not tied to geography and that are read frequently but updated infrequently.
 {{site.data.alerts.end}}
 
 Pattern | Latency | Resiliency | Configuration
