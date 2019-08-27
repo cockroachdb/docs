@@ -53,9 +53,9 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
       <div class="landing-column-content">
         <p><a href="install-client-drivers.html">Client Drivers</a></p>
         <p><a href="connection-parameters.html">Connection Parameters</a></p>
-        <p><a href="sql-statements.html">SQL Statements</a></p>
-        <p><a href="data-types.html">Data Types</a></p>
         <p><a href="performance-best-practices-overview.html">SQL Best Practices</a></p>
+        <p><a href="sql-statements.html">SQL Statements</a></p>
+        <p><a href="data-types.html">SQL Data Types</a></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
@@ -72,10 +72,10 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
       <p class="landing-column-title">Migrate</p>
       <div class="landing-column-content">
         <p><a href="migration-overview.html">Overview</a></p>
+        <p><a href="migrate-from-oracle.html">Migrate from Oracle</a></p>
         <p><a href="migrate-from-postgres.html">Migrate from Postgres</a></p>
         <p><a href="migrate-from-mysql.html">Migrate from MySQL</a></p>
         <p><a href="migrate-from-csv.html">Migrate from CSV</a></p>
-        <p><a href="performance-best-practices-overview.html#multi-row-dml-best-practices">Insert Best Practices</a></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
