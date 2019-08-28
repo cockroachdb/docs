@@ -421,7 +421,7 @@ In this example, we create a table and [define partitions by list](partitioning.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE TABLE rides (
+> CREATE TABLE rides (
         id UUID NOT NULL,
         city STRING NOT NULL,
         vehicle_city STRING,
