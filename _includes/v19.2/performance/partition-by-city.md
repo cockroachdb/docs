@@ -68,12 +68,12 @@ For this service, the most effective technique for improving read and write late
     --host=<address of any node> \
     --execute="ALTER INDEX vehicles_auto_index_fk_city_ref_users \
     PARTITION BY LIST (city) ( \
-        PARTITION new_york_idx VALUES IN ('new york'), \
-        PARTITION boston_idx VALUES IN ('boston'), \
-        PARTITION washington_dc_idx VALUES IN ('washington dc'), \
-        PARTITION seattle_idx VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx VALUES IN ('los angeles') \
+        PARTITION new_york VALUES IN ('new york'), \
+        PARTITION boston VALUES IN ('boston'), \
+        PARTITION washington_dc VALUES IN ('washington dc'), \
+        PARTITION seattle VALUES IN ('seattle'), \
+        PARTITION san_francisco VALUES IN ('san francisco'), \
+        PARTITION los_angeles VALUES IN ('los angeles') \
     );"
     ~~~
 
@@ -104,12 +104,12 @@ For this service, the most effective technique for improving read and write late
     --host=<address of any node> \
     --execute="ALTER INDEX rides_auto_index_fk_city_ref_users \
     PARTITION BY LIST (city) ( \
-        PARTITION new_york_idx1 VALUES IN ('new york'), \
-        PARTITION boston_idx1 VALUES IN ('boston'), \
-        PARTITION washington_dc_idx1 VALUES IN ('washington dc'), \
-        PARTITION seattle_idx1 VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx1 VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx1 VALUES IN ('los angeles') \
+        PARTITION new_york VALUES IN ('new york'), \
+        PARTITION boston VALUES IN ('boston'), \
+        PARTITION washington_dc VALUES IN ('washington dc'), \
+        PARTITION seattle VALUES IN ('seattle'), \
+        PARTITION san_francisco VALUES IN ('san francisco'), \
+        PARTITION los_angeles VALUES IN ('los angeles') \
     );"
     ~~~
 
@@ -121,12 +121,12 @@ For this service, the most effective technique for improving read and write late
     --host=<address of any node> \
     --execute="ALTER INDEX rides_auto_index_fk_vehicle_city_ref_vehicles \
     PARTITION BY LIST (vehicle_city) ( \
-        PARTITION new_york_idx2 VALUES IN ('new york'), \
-        PARTITION boston_idx2 VALUES IN ('boston'), \
-        PARTITION washington_dc_idx2 VALUES IN ('washington dc'), \
-        PARTITION seattle_idx2 VALUES IN ('seattle'), \
-        PARTITION san_francisco_idx2 VALUES IN ('san francisco'), \
-        PARTITION los_angeles_idx2 VALUES IN ('los angeles') \
+        PARTITION new_york VALUES IN ('new york'), \
+        PARTITION boston VALUES IN ('boston'), \
+        PARTITION washington_dc VALUES IN ('washington dc'), \
+        PARTITION seattle VALUES IN ('seattle'), \
+        PARTITION san_francisco VALUES IN ('san francisco'), \
+        PARTITION los_angeles VALUES IN ('los angeles') \
     );"
     ~~~
 
@@ -154,7 +154,7 @@ For this service, the most effective technique for improving read and write late
     Washington DC | `zone=us-east1-b`
     Seattle | `zone=us-west1-a`
     San Francisco | `zone=us-west2-a`
-    Los Angelese | `zone=us-west2-a`
+    Los Angeles | `zone=us-west2-a`
 
     {{site.data.alerts.callout_info}}
     Since our nodes are located in 3 specific GCE zones, we're only going to use the `zone=` portion of node locality. If we were using multiple zones per regions, we would likely use the `region=` portion of the node locality instead.
@@ -215,7 +215,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -229,7 +229,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -243,7 +243,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -257,7 +257,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -271,7 +271,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -285,7 +285,7 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -301,14 +301,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION new_york_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -322,14 +322,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION boston_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION boston OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -343,14 +343,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION washington_dc_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
+    $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -364,14 +364,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION seattle_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -385,14 +385,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION san_francisco_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
@@ -406,14 +406,14 @@ For this service, the most effective technique for improving read and write late
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx1 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --execute="ALTER PARTITION los_angeles_idx2 OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
+    $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~

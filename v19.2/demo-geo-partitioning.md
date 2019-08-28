@@ -519,48 +519,49 @@ To understand why SQL latency is so high, use the built-in SQL shell to check th
     ~~~
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       21 | {3,6,9}  |            6
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       21 | {3,4,9}  |            3 | region=us-east1,zone=us-east1-d
     (1 row)
 
-    Time: 4.205387878s
+    Time: 9.211ms
 
-       start_key  |   end_key   | range_id | replicas | lease_holder
-    +-------------+-------------+----------+----------+--------------+
-      NULL        | /"new york" |       23 | {1,4,7}  |            1
-      /"new york" | /"seattle"  |       51 | {2,5,9}  |            2
-      /"seattle"  | NULL        |       32 | {1,5,9}  |            5
-    (3 rows)
-
-    Time: 64.121µs
-
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       32 | {1,5,9}  |            5
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       22 | {2,5,7}  |            2 | region=us-east1,zone=us-east1-c
     (1 row)
 
-    Time: 37.14µs
+    Time: 10.3ms
 
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       31 | {3,5,7}  |            7
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       22 | {2,5,7}  |            2 | region=us-east1,zone=us-east1-c
     (1 row)
 
-    Time: 28.988µs
+    Time: 24.649ms
 
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       31 | {3,5,7}  |            7
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       23 | {3,5,8}  |            3 | region=us-east1,zone=us-east1-d
     (1 row)
 
-    Time: 25.707µs
+    Time: 6.375ms
 
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       31 | {3,5,7}  |            7
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       23 | {3,5,8}  |            3 | region=us-east1,zone=us-east1-d
     (1 row)
+
+    Time: 15.86ms
+
+      start_key | end_key | range_id | replicas | lease_holder |            locality
+    +-----------+---------+----------+----------+--------------+---------------------------------+
+      NULL      | NULL    |       23 | {3,5,8}  |            3 | region=us-east1,zone=us-east1-d
+    (1 row)
+
+    Time: 13.644ms
     ~~~
+
 
     Here's a node/region mapping:
 
@@ -570,7 +571,7 @@ To understand why SQL latency is so high, use the built-in SQL shell to check th
     4 - 6 | `us-central1`
     7 - 9 | `us-west1`
 
-    You'll see that most tables and indexes map to a single range. The one exception is the `vehicles` table, which maps to 3 ranges. In all cases, each range has 3 `replicas`, with each replica on a node in a distinct region. For each range, one of the replicas is the `lease_holder`.
+    You'll see that each table and index maps to a single range, and each range has 3 `replicas`, with each replica on a node in a distinct region. For each range, one of the replicas is the `lease_holder`.
 
     Thinking back to [how reads and writes work in CockroachDB](architecture/reads-and-writes-overview.html), this tells you that many reads are leaving their region to reach the relevant leaseholder replica, and all writes are spanning regions to achieve Raft consensus. This explains the currently high latencies.
 
@@ -615,9 +616,9 @@ The most effective way to prevent the high SQL latency resulting from cross-regi
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX vehicles_auto_index_fk_city_ref_users PARTITION BY LIST (city) (
-        PARTITION new_york_idx VALUES IN ('new york'),
-        PARTITION chicago_idx VALUES IN ('chicago'),
-        PARTITION seattle_idx VALUES IN ('seattle')
+        PARTITION new_york VALUES IN ('new york'),
+        PARTITION chicago VALUES IN ('chicago'),
+        PARTITION seattle VALUES IN ('seattle')
       );
     ~~~
 
@@ -636,18 +637,18 @@ The most effective way to prevent the high SQL latency resulting from cross-regi
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX rides_auto_index_fk_city_ref_users PARTITION BY LIST (city) (
-        PARTITION new_york_idx1 VALUES IN ('new york'),
-        PARTITION chicago_idx1 VALUES IN ('chicago'),
-        PARTITION seattle_idx1 VALUES IN ('seattle')
+        PARTITION new_york VALUES IN ('new york'),
+        PARTITION chicago VALUES IN ('chicago'),
+        PARTITION seattle VALUES IN ('seattle')
       );
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX rides_auto_index_fk_vehicle_city_ref_vehicles PARTITION BY LIST (vehicle_city) (
-        PARTITION new_york_idx2 VALUES IN ('new york'),
-        PARTITION chicago_idx2 VALUES IN ('chicago'),
-        PARTITION seattle_idx2 VALUES IN ('seattle')
+        PARTITION new_york VALUES IN ('new york'),
+        PARTITION chicago VALUES IN ('chicago'),
+        PARTITION seattle VALUES IN ('seattle')
       );
     ~~~
 
@@ -661,24 +662,24 @@ Use [`SHOW PARTITIONS`](show-partitions.html) to check your partitions:
 ~~~
   database_name | table_name | partition_name | parent_partition | column_names |                     index_name                      | partition_value | zone_constraints
 +---------------+------------+----------------+------------------+--------------+-----------------------------------------------------+-----------------+------------------+
+  movr          | rides      | chicago        | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('chicago')     | NULL
+  movr          | rides      | chicago        | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('chicago')     | NULL
   movr          | rides      | chicago        | NULL             | city         | rides@primary                                       | ('chicago')     | NULL
-  movr          | rides      | chicago_idx1   | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('chicago')     | NULL
-  movr          | rides      | chicago_idx2   | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('chicago')     | NULL
   movr          | rides      | new_york       | NULL             | city         | rides@primary                                       | ('new york')    | NULL
-  movr          | rides      | new_york_idx1  | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('new york')    | NULL
-  movr          | rides      | new_york_idx2  | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('new york')    | NULL
+  movr          | rides      | new_york       | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('new york')    | NULL
+  movr          | rides      | new_york       | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('new york')    | NULL
+  movr          | rides      | seattle        | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('seattle')     | NULL
   movr          | rides      | seattle        | NULL             | city         | rides@primary                                       | ('seattle')     | NULL
-  movr          | rides      | seattle_idx1   | NULL             | city         | rides@rides_auto_index_fk_city_ref_users            | ('seattle')     | NULL
-  movr          | rides      | seattle_idx2   | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('seattle')     | NULL
+  movr          | rides      | seattle        | NULL             | vehicle_city | rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ('seattle')     | NULL
   movr          | users      | chicago        | NULL             | city         | users@primary                                       | ('chicago')     | NULL
   movr          | users      | new_york       | NULL             | city         | users@primary                                       | ('new york')    | NULL
   movr          | users      | seattle        | NULL             | city         | users@primary                                       | ('seattle')     | NULL
   movr          | vehicles   | chicago        | NULL             | city         | vehicles@primary                                    | ('chicago')     | NULL
-  movr          | vehicles   | chicago_idx    | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('chicago')     | NULL
+  movr          | vehicles   | chicago        | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('chicago')     | NULL
   movr          | vehicles   | new_york       | NULL             | city         | vehicles@primary                                    | ('new york')    | NULL
-  movr          | vehicles   | new_york_idx   | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('new york')    | NULL
+  movr          | vehicles   | new_york       | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('new york')    | NULL
   movr          | vehicles   | seattle        | NULL             | city         | vehicles@primary                                    | ('seattle')     | NULL
-  movr          | vehicles   | seattle_idx    | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('seattle')     | NULL
+  movr          | vehicles   | seattle        | NULL             | city         | vehicles@vehicles_auto_index_fk_city_ref_users      | ('seattle')     | NULL
 (18 rows)
 ~~~
 
@@ -716,11 +717,11 @@ Now that all tables and secondary indexes have been partitioned by city, for eac
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx OF TABLE movr.vehicles
+    > ALTER PARTITION new_york OF INDEX movr.vehicles@vehicles_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
-      ALTER PARTITION chicago_idx OF TABLE movr.vehicles
+      ALTER PARTITION chicago OF INDEX movr.vehicles@vehicles_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-central1]';
-      ALTER PARTITION seattle_idx OF TABLE movr.vehicles
+      ALTER PARTITION seattle OF INDEX movr.vehicles@vehicles_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
@@ -740,11 +741,11 @@ Now that all tables and secondary indexes have been partitioned by city, for eac
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx1 OF TABLE movr.rides
+    > ALTER PARTITION new_york OF INDEX movr.rides@rides_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
-      ALTER PARTITION chicago_idx1 OF TABLE movr.rides
+      ALTER PARTITION chicago OF INDEX movr.rides@rides_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-central1]';
-      ALTER PARTITION seattle_idx1 OF TABLE movr.rides
+      ALTER PARTITION seattle OF INDEX movr.rides@rides_auto_index_fk_city_ref_users
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
@@ -752,11 +753,11 @@ Now that all tables and secondary indexes have been partitioned by city, for eac
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION new_york_idx2 OF TABLE movr.rides
+    > ALTER PARTITION new_york OF INDEX movr.rides@rides_auto_index_fk_vehicle_city_ref_vehicles
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
-      ALTER PARTITION chicago_idx2 OF TABLE movr.rides
+      ALTER PARTITION chicago OF INDEX movr.rides@rides_auto_index_fk_vehicle_city_ref_vehicles
         CONFIGURE ZONE USING constraints='[+region=us-central1]';
-      ALTER PARTITION seattle_idx2 OF TABLE movr.rides
+      ALTER PARTITION seattle OF INDEX movr.rides@rides_auto_index_fk_vehicle_city_ref_vehicles
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
@@ -776,46 +777,64 @@ Still in the SQL shell on one of your client VMs, use the [`SHOW RANGES`](show-r
     WHERE "start_key" NOT LIKE '%Prefix%';
   SELECT * FROM [SHOW RANGES FROM INDEX rides_auto_index_fk_city_ref_users]
     WHERE "start_key" NOT LIKE '%Prefix%';
-  SELECT * FROM [SHOW RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicle]
+  SELECT * FROM [SHOW RANGES FROM INDEX rides_auto_index_fk_vehicle_city_ref_vehicles]
     WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 ~~~
-   start_key  |        end_key        | range_id | replicas | lease_holder
-+-------------+-----------------------+----------+----------+--------------+
-  /"chicago"  | /"chicago"/PrefixEnd  |       62 | {4,5,6}  |            6
-  /"new york" | /"new york"/PrefixEnd |       66 | {1,2,3}  |            2
-  /"seattle"  | /"seattle"/PrefixEnd  |       64 | {7,8,9}  |            8
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       41 | {1,2,3}  |            1 | region=us-east1,zone=us-east1-b
+  /"chicago"  | /"chicago"/PrefixEnd  |       43 | {4,5,6}  |            4 | region=us-central1,zone=us-central1-a
+  /"seattle"  | /"seattle"/PrefixEnd  |       27 | {7,8,9}  |            7 | region=us-west1,zone=us-west1-a
 (3 rows)
 
-Time: 2.858236902s
+Time: 9.512ms
 
-   start_key  |        end_key        | range_id | replicas | lease_holder
-+-------------+-----------------------+----------+----------+--------------+
-  /"chicago"  | /"chicago"/PrefixEnd  |       52 | {4,5,6}  |            5
-  /"new york" | /"new york"/PrefixEnd |       51 | {1,2,3}  |            3
-  /"seattle"  | /"seattle"/PrefixEnd  |       32 | {7,8,9}  |            7
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       61 | {1,2,3}  |            2 | region=us-east1,zone=us-east1-c
+  /"chicago"  | /"chicago"/PrefixEnd  |       63 | {4,5,6}  |            5 | region=us-central1,zone=us-central1-b
+  /"seattle"  | /"seattle"/PrefixEnd  |       65 | {7,8,9}  |            7 | region=us-west1,zone=us-west1-a
 (3 rows)
 
-Time: 74.36µs
+Time: 69.439ms
 
-   start_key  |        end_key        | range_id | replicas | lease_holder
-+-------------+-----------------------+----------+----------+--------------+
-  /"chicago"  | /"chicago"/PrefixEnd  |       37 | {4,5,6}  |            4
-  /"new york" | /"new york"/PrefixEnd |       35 | {1,2,3}  |            3
-  /"seattle"  | /"seattle"/PrefixEnd  |       39 | {7,8,9}  |            8
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       69 | {1,2,3}  |            3 | region=us-east1,zone=us-east1-d
+  /"chicago"  | /"chicago"/PrefixEnd  |       67 | {4,5,6}  |            5 | region=us-central1,zone=us-central1-b
+  /"seattle"  | /"seattle"/PrefixEnd  |       71 | {7,8,9}  |            8 | region=us-west1,zone=us-west1-b
 (3 rows)
 
-Time: 72.98µs
+Time: 16.212ms
 
-   start_key  |        end_key        | range_id | replicas | lease_holder
-+-------------+-----------------------+----------+----------+--------------+
-  /"chicago"  | /"chicago"/PrefixEnd  |      113 | {4,5,6}  |            4
-  /"new york" | /"new york"/PrefixEnd |      111 | {1,2,3}  |            3
-  /"seattle"  | /"seattle"/PrefixEnd  |      115 | {7,8,9}  |            9
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       47 | {1,2,3}  |            3 | region=us-east1,zone=us-east1-d
+  /"chicago"  | /"chicago"/PrefixEnd  |       49 | {4,5,6}  |            4 | region=us-central1,zone=us-central1-a
+  /"seattle"  | /"seattle"/PrefixEnd  |       51 | {7,8,9}  |            8 | region=us-west1,zone=us-west1-b
 (3 rows)
 
-Time: 71.446µs
+Time: 8.787ms
+
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       55 | {1,2,3}  |            1 | region=us-east1,zone=us-east1-b
+  /"chicago"  | /"chicago"/PrefixEnd  |       53 | {4,5,6}  |            5 | region=us-central1,zone=us-central1-b
+  /"seattle"  | /"seattle"/PrefixEnd  |       57 | {7,8,9}  |            8 | region=us-west1,zone=us-west1-b
+(3 rows)
+
+Time: 13.887ms
+
+   start_key  |        end_key        | range_id | replicas | lease_holder |               locality
++-------------+-----------------------+----------+----------+--------------+---------------------------------------+
+  /"new york" | /"new york"/PrefixEnd |       81 | {1,2,3}  |            3 | region=us-east1,zone=us-east1-d
+  /"chicago"  | /"chicago"/PrefixEnd  |       59 | {4,5,6}  |            5 | region=us-central1,zone=us-central1-b
+  /"seattle"  | /"seattle"/PrefixEnd  |       83 | {7,8,9}  |            7 | region=us-west1,zone=us-west1-a
+(3 rows)
+
+Time: 242.857ms
 ~~~
 
 You'll see that the replicas for each partition are now located on nodes in the relevant region:
