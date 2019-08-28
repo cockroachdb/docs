@@ -40,23 +40,47 @@ Field | Description
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
+### Show columns in a table
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM vehicles;
+> SHOW COLUMNS FROM users;
 ~~~
 
 ~~~
-    column_name    | data_type | is_nullable | column_default | generation_expression |                     indices                     | is_hidden
-+------------------+-----------+-------------+----------------+-----------------------+-------------------------------------------------+-----------+
-  id               | UUID      |    false    | NULL           |                       | {primary,vehicles_auto_index_fk_city_ref_users} |   false
-  city             | STRING    |    false    | NULL           |                       | {primary,vehicles_auto_index_fk_city_ref_users} |   false
-  type             | STRING    |    true     | NULL           |                       | {}                                              |   false
-  owner_id         | UUID      |    true     | NULL           |                       | {vehicles_auto_index_fk_city_ref_users}         |   false
-  creation_time    | TIMESTAMP |    true     | NULL           |                       | {}                                              |   false
-  status           | STRING    |    true     | NULL           |                       | {}                                              |   false
-  current_location | STRING    |    true     | NULL           |                       | {}                                              |   false
-  ext              | JSONB     |    true     | NULL           |                       | {}                                              |   false
-(8 rows)
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false
+(5 rows)
+~~~
+
+### Show columns with comments
+
+You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM users WITH COMMENT;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden |                    comment
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+------------------------------------------------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false   | NULL
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false   | NULL
+  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
+  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
+  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false   | This column contains user payment information.
+(5 rows)
 ~~~
 
 ## See also
@@ -64,3 +88,4 @@ Field | Description
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
+- [`COMMENT ON`](comment-on.html)

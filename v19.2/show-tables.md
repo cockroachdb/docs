@@ -141,7 +141,7 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> COMMENT ON TABLE users IS 'This is a sample comment';
+> COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
 To view a table's comments:
@@ -152,9 +152,9 @@ To view a table's comments:
 ~~~
 
 ~~~
-          table_name         |         comment
-+----------------------------+--------------------------+
-  users                      | This is a sample comment
+          table_name         |                   comment
++----------------------------+----------------------------------------------+
+  users                      | This table contains information about users.
   vehicles                   |
   rides                      |
   vehicle_location_histories |

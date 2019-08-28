@@ -19,29 +19,64 @@ No [privileges](authorization.html#assign-privileges) are required to list the d
 
 ## Example
 
+### Show databases
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
 
 ~~~
+  database_name
 +---------------+
-| database_name |
-+---------------+
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
-(3 rows)
+  defaultdb
+  movr
+  postgres
+  startrek
+  system
+(5 rows)
 ~~~
 
-## Default databases
+### Show databases with comments
+
+You can use [`COMMENT ON`](comment-on.html) to add comments on a database.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
+~~~
+
+To view a database's comments:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES WITH COMMENT;
+~~~
+
+~~~
+  database_name |                              comment
++---------------+-------------------------------------------------------------------+
+  defaultdb     | NULL
+  movr          | This database holds information about users, vehicles, and rides.
+  postgres      | NULL
+  startrek      | NULL
+  system        | NULL
+(5 rows)
+~~~
+
+For more information, see [`COMMENT ON`](comment-on.html).
+
+## Preloaded databases
 
 New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to v2.1 or later will include three auto-generated databases, with the following purposes:
 
 - The empty `defaultdb` database is used if a client does not specify a database in the [connection parameters](connection-parameters.html).
 
+- The `movr` database contains data about users, vehicles, and rides for the vehicle-sharing app [MovR](movr.html).
+
 - An empty database called `postgres` is provided for compatibility with Postgres client applications that require it.
+
+- The `startrek` database contains quotes from episodes.
 
 - The `system` database contains CockroachDB metadata and is read-only.
 
@@ -49,6 +84,7 @@ The `postgres` and `defaultdb` databases can be [deleted](drop-database.html) if
 
 ## See also
 
+- [`COMMENT ON`](comment-on.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
