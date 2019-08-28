@@ -56,6 +56,12 @@
         ]
       },
       {
+        "title": "Migrate from Oracle",
+        "urls": [
+          "/${VERSION}/migrate-from-oracle.html"
+        ]
+      },
+      {
         "title": "Migrate from Postgres",
         "urls": [
           "/${VERSION}/migrate-from-postgres.html"
