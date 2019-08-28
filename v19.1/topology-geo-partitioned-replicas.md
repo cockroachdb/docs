@@ -32,7 +32,7 @@ Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/
 
 ### Summary
 
-Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., region/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to pin each partition (all of its replicas) to the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). This means that reads and writes in each region will always have access to the relevant replicas and, therefore, will have low, intra-region latencies.
+Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., city/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to pin each partition (all of its replicas) to the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). This means that reads and writes in each region will always have access to the relevant replicas and, therefore, will have low, intra-region latencies.
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_geo-partitioning1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
@@ -67,7 +67,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE users PARTITION BY LIST (region) (
+    > ALTER TABLE users PARTITION BY LIST (city) (
         PARTITION la VALUES IN ('los angeles'),
         PARTITION chicago VALUES IN ('chicago'),
         PARTITION ny VALUES IN ('new york')
@@ -80,7 +80,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER INDEX users_last_name_index PARTITION BY LIST (region) (
+    > ALTER INDEX users_last_name_index PARTITION BY LIST (city) (
         PARTITION la_idx VALUES IN ('los angeles'),
         PARTITION chicago_idx VALUES IN ('chicago'),
         PARTITION ny_idx VALUES IN ('new york')

@@ -37,7 +37,7 @@ Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/
 
 ### Summary
 
-Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., region/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to put the leaseholder for each partition in the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). The other replicas of a partition remain balanced across the other regions. This means that reads in each region will access local leaseholders and, therefore, will have low, intra-region latencies. Writes, however, will leave the region to get consensus and, therefore, will have higher, cross-region latencies.
+Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., city/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to put the leaseholder for each partition in the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). The other replicas of a partition remain balanced across the other regions. This means that reads in each region will access local leaseholders and, therefore, will have low, intra-region latencies. Writes, however, will leave the region to get consensus and, therefore, will have higher, cross-region latencies.
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_geo-partitioned_leaseholders1.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
@@ -125,7 +125,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
           constraints = '{"+region=us-east":1}',
           lease_preferences = '[[+region=us-east]]';
     ~~~
-    
+
 {{site.data.alerts.callout_success}}
 As you scale and add more cities, you can repeat steps 2 and 3 with the new complete list of cities to re-partition the table and its secondary indexes, and then repeat steps 4 and 5 to create replication zones for the new partitions.
 {{site.data.alerts.end}}
