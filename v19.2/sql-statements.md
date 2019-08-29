@@ -78,6 +78,7 @@ Statement | Usage
 [`SHOW RANGES`](show-ranges.html) | Show range information about a specific table or index.
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
+[`UNSPLIT AT`](unsplit-at.html) | <span class="version-tag">New in v19.2:</span> Remove a key-value layer range split enforcement at a specified row in the table or index.
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column.
 
 ## Transaction management statements
