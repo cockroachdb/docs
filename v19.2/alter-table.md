@@ -35,6 +35,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
 [`RENAME TABLE`](rename-table.html) | Change the names of tables. | No
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table. | No
+[`UNSPLIT AT`](unsplit-at.html) | <span class="version-tag">New in v19.2:</span> Remove a key-value layer range split enforcement at a specified row in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes
 
 ## Viewing schema changes

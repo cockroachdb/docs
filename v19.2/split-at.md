@@ -252,3 +252,4 @@ SHOW RANGES FROM TABLE t;
 - [Distribution Layer](architecture/distribution-layer.html)
 - [Replication Layer](architecture/replication-layer.html)
 - [`SHOW JOBS`](show-jobs.html)
+- <span class="version-tag">New in v19.2:</span> [`UNSPLIT AT`](unsplit-at.html)
