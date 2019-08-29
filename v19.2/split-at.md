@@ -1,10 +1,10 @@
 ---
 title: SPLIT AT
-summary: The SPLIT AT statement forces a key-value layer range split at the specified row in a table or index.
+summary: The SPLIT AT statement forces a range split at the specified row in a table or index.
 toc: true
 ---
 
-The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
+The `SPLIT AT` [statement](sql-statements.html) forces a range split at the specified row in a table or index.
 
 ## Synopsis
 
@@ -27,14 +27,9 @@ The user must have the `INSERT` [privilege](authorization.html#assign-privileges
  `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split.
  `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index.
 
-## Viewing schema changes
-
-{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
-
 ## Why manually split a range?
 
-The key-value layer of CockroachDB is broken into sections of contiguous
-key-space known as ranges. By default, CockroachDB attempts to keep ranges below
+CockroachDB breaks data into ranges. By default, CockroachDB attempts to keep ranges below
 a size of 64MiB. To do this, the system will automatically [split](architecture/distribution-layer.html#range-splits)
 a range if it grows larger than this limit. For most use cases, this automatic
 range splitting is sufficient, and you should never need to worry about
@@ -252,3 +247,4 @@ SHOW RANGES FROM TABLE t;
 - [Distribution Layer](architecture/distribution-layer.html)
 - [Replication Layer](architecture/replication-layer.html)
 - [`SHOW JOBS`](show-jobs.html)
+- <span class="version-tag">New in v19.2:</span> [`UNSPLIT AT`](unsplit-at.html)

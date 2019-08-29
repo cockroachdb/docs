@@ -17,3 +17,4 @@ Subcommand | Description
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for an index.
 [`RENAME`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the index.
+[`UNSPLIT AT`](unsplit-at.html) | <span class="version-tag">New in v19.2:</span> Remove a key-value layer range split enforcement at a specified row in the index.
