@@ -41,7 +41,7 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
  `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
- `DISTSQL`          | Generate a link to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).
+ `DISTSQL`          | Generate a URL to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
  `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
 
 {{site.data.alerts.callout_danger}}
@@ -336,9 +336,11 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 
 ### `DISTSQL` option
 
-The  `DISTSQL` option generates a physical query plan for a query. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+The `DISTSQL` option generates a URL for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer). For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
-`EXPLAIN (DISTSQL)` generates a physical query plan that provides high level information about how a query will be executed:
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql

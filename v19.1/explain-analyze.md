@@ -4,7 +4,11 @@ summary: The EXPLAIN ANALYZE statement executes a query and generates a physical
 toc: true
 ---
 
-The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a URL for a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -28,7 +32,7 @@ Successful `EXPLAIN ANALYZE` statements return a table with the following column
  Column | Description
 --------|------------
 **automatic** | If `true`, the query is distributed. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
-**url** | The URL generated for a physical query plan that provides high level information about how a query will be executed. For more details about the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).
+**url** | The URL generated for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
 
 #### DistSQL Plan Viewer
 
@@ -59,7 +63,7 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE` will execute the query and generate a physical query plan with execution statistics:
+`EXPLAIN ANALYZE` executes a query and generate a link to a physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
