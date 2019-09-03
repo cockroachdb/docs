@@ -184,11 +184,10 @@ $(function() {
   $(window).scroll();
 
   // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
-  terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp
+  terminalMarkers = document.getElementsByClassName("nv");  // Rogue syntax highlighter styles all terminal markers with class gp
 
   for(var i = 0; i < terminalMarkers.length; i++){
     terminalMarkers[i].innerText="";    // Remove the existing on-page terminal marker
-    terminalMarkers[i].className += " noselect shellterminal"; // Add shellterminal class, which then displays the terminal marker as a ::before element
   }
 
   // Section makes SQL terminal prompt markers (>) totally unselectable in syntax-highlighted code samples
@@ -197,7 +196,6 @@ $(function() {
     if(sqlMarkers[i].innerText===">" && (!sqlMarkers[i].previousSibling || sqlMarkers[i].previousSibling.textContent==="\n"|| sqlMarkers[i].previousSibling.textContent==="\n\n")){
       sqlMarkers[i].innerText="";    // Remove the existing on-page SQL marker
       sqlMarkers[i].nextSibling.textContent="";
-      sqlMarkers[i].className += " noselect sqlterminal"; // Add sqlterminal class, which then displays the terminal marker as a ::before element
     }
   }
 
