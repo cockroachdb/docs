@@ -1,8 +1,8 @@
-- Run [`cockroach demo movr`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset pre-loaded:
+- Run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset preloaded:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach demo movr
+    $ cockroach demo
     ~~~
 
 - Load the `movr` dataset into a persistent local cluster and open an interactive SQL shell:
