@@ -43,11 +43,11 @@ You can use the [`SPLIT AT`](split-at.html) statement to manually split table ra
 
 #### Setup
 
-To follow along with the example statements, run [`cockroach demo movr`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset pre-loaded:
+To follow along with the example statements, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset pre-loaded:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo movr
+$ cockroach demo
 ~~~
 
 Split the `users` table ranges based on primary key values:
@@ -153,13 +153,13 @@ A `NULL` in the *End Key* column means "end of table".
 
 #### Setup
 
-To follow along with the partitioning examples below, open a new terminal and run [`cockroach demo movr`](cockroach-demo.html) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+To follow along with the partitioning examples below, open a new terminal and run [`cockroach demo`](cockroach-demo.html) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo movr \
+$ cockroach demo \
 --nodes=9 \
---demo-locality=region=us-east1,region=us-east1,region=us-east1,region=us-central1,region=us-central1,region=us-central1,region=us-west1,region=us-west1,region=us-west1
+--demo-locality=region=us-east1,region=us-east1:region=us-east1:region=us-central1:region=us-central1:region=us-central1:region=us-west1:region=us-west1:region=us-west1
 ~~~
 
 {% include {{page.version.version}}/sql/partitioning-enterprise.md %}
