@@ -5,7 +5,7 @@ toc: true
 build_for: [standard, managed]
 ---
 
-<span class="version-tag">New in v19.2:</span> This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables.
+This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables.
 
 To illustrate this process, we use the following sample data and tools:
 
