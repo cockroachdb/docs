@@ -4,7 +4,7 @@ summary: Use the SHOW PARTITIONS statement to list details about existing partit
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span> Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html).
+<span class="version-tag">New in v19.2:</span> Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html). `SHOW PARTITIONS` does not show inherited [constraints](constraints.html).
 
 {{site.data.alerts.callout_info}}
 [Defining table partitions](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature.
