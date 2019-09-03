@@ -123,8 +123,8 @@
       no_windows: true
 - title: Testing Releases
   releases:
-    - date: Aug 26, 2019
-      version: v19.2.0-beta.20190826
+    - date: Sep 3, 2019
+      version: v19.2.0-beta.20190903
       no_windows: true
     - date: Aug 5, 2019
       version: v19.2.0-alpha.20190805
