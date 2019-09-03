@@ -2,5 +2,5 @@ Run [`cockroach demo movr`](cockroach-demo.html) with the `--nodes` and `--demo-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1,region=us-central1,region=us-west1
+    $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-central1:region=us-west1
     ~~~

@@ -46,7 +46,7 @@ The `demo` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--demo-locality` | Specify [locality](start-a-node.html#locality) information for each demo node. The input is a comma-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1`, node 2's region to `us-east2`, and node 3's region to `us-east3`: `--demo-locality=region=us-east1,region=us-east2,region=us-east3`
+`--demo-locality` | Specify [locality](start-a-node.html#locality) information for each demo node. The input is a colon-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1` and availability zone to `1`, node 2's region to `us-east2` and availability zone to `2`, and node 3's region to `us-east3` and availability zone to `3`: `--demo-locality=region=us-east1,az=1:region=us-east1,az=2:region=us-east1,az=3`. You can also include 
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](use-the-built-in-sql-client.html#commands).
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](use-the-built-in-sql-client.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](use-the-built-in-sql-client.html#client-side-options) for use in interactive sessions.
@@ -134,7 +134,7 @@ $ cockroach demo
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo movr --nodes=3 --demo-locality=region=us-east1,region=us-central1,region=us-west1
+$ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-central1:region=us-west1
 ~~~
 
 {% include copy-clipboard.html %}

@@ -159,7 +159,7 @@ To follow along with the partitioning examples below, open a new terminal and ru
 ~~~ shell
 $ cockroach demo movr \
 --nodes=9 \
---demo-locality=region=us-east1,region=us-east1,region=us-east1,region=us-central1,region=us-central1,region=us-central1,region=us-west1,region=us-west1,region=us-west1
+--demo-locality=region=us-east1,region=us-east1:region=us-east1:region=us-central1:region=us-central1:region=us-central1:region=us-west1:region=us-west1:region=us-west1
 ~~~
 
 {% include {{page.version.version}}/sql/partitioning-enterprise.md %}
