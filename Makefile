@@ -67,6 +67,6 @@ test: bootstrap
 vendor:
 	gem install bundler
 
-bootstrap: Gemfile Gemfile.lock vendor
+bootstrap: Gemfile Gemfile.lock | vendor
 	bundle install
 	touch $@
