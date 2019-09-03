@@ -81,9 +81,9 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX users_last_name_index PARTITION BY LIST (city) (
-        PARTITION la_idx VALUES IN ('los angeles'),
-        PARTITION chicago_idx VALUES IN ('chicago'),
-        PARTITION ny_idx VALUES IN ('new york')
+        PARTITION la VALUES IN ('los angeles'),
+        PARTITION chicago VALUES IN ('chicago'),
+        PARTITION ny VALUES IN ('new york')
     );
     ~~~
 
@@ -105,11 +105,11 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION la_idx OF TABLE users
+    > ALTER PARTITION la OF INDEX users_last_name_index
         CONFIGURE ZONE USING constraints = '[+region=us-west]';
-      ALTER PARTITION chicago_idx OF TABLE users
+      ALTER PARTITION chicago OF INDEX users_last_name_index
         CONFIGURE ZONE USING constraints = '[+region=us-central]';
-      ALTER PARTITION ny_idx OF TABLE users
+      ALTER PARTITION ny OF INDEX users_last_name_index
         CONFIGURE ZONE USING constraints = '[+region=us-east]';
     ~~~
 
@@ -123,7 +123,7 @@ As you scale and add more cities, you can repeat steps 2 and 3 with the new comp
 
 #### Reads
 
-Because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), reads that specify the local region key access the relevant leaseholder locally. This makes read latency very low, with the exception of reads that do not specify a region key or that refer to a partition in another region; such reads will be transactionally consistent but won't have local latencies.
+Because each partition is constrained to the relevant region (e.g., the `la` partitions are located in the `us-west` region), reads that specify the local region key access the relevant leaseholder locally. This makes read latency very low, with the exception of reads that do not specify a region key or that refer to a partition in another region; such reads will be transactionally consistent but won't have local latencies.
 
 For example, in the animation below:
 
@@ -137,7 +137,7 @@ For example, in the animation below:
 
 #### Writes
 
-Just like for reads, because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), writes that specify the local region key access the relevant replicas without leaving the region. This makes write latency very low, with the exception of writes that do not specify a region key or that refer to a partition in another region; such writes will be transactionally consistent but won't have local latencies.
+Just like for reads, because each partition is constrained to the relevant region (e.g., the `la` partitions are located in the `us-west` region), writes that specify the local region key access the relevant replicas without leaving the region. This makes write latency very low, with the exception of writes that do not specify a region key or that refer to a partition in another region; such writes will be transactionally consistent but won't have local latencies.
 
 For example, in the animation below:
 

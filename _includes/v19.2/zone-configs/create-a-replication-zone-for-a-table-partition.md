@@ -30,7 +30,3 @@ CONFIGURE ZONE 1
                                |     lease_preferences = '[]'
 (1 row)
 ~~~
-
-{{site.data.alerts.callout_success}}
-Since the syntax is the same for defining a replication zone for a table or index partition (e.g., `database.table.partition`), give partitions names that communicate what they are partitioning, e.g., `north_america_table` vs `north_america_idx1`.
-{{site.data.alerts.end}}

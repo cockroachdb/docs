@@ -112,25 +112,7 @@ The primary key discussed above has two drawbacks:
 
 To ensure uniqueness or fast lookups, create a unique, unpartitioned secondary index on the identifier.
 
-Indexes can also be partitioned, but are not required to be. Each partition is required to have a name that is unique among all partitions on that table and its indexes. For example, the following `CREATE INDEX` scenario will fail because it reuses the name of a partition of the primary key:
-
-{% include copy-clipboard.html %}
-~~~ sql
-CREATE TABLE foo (a STRING PRIMARY KEY, b STRING) PARTITION BY LIST (a) (
-    bar VALUES IN ('bar'),
-    default VALUES IN (DEFAULT)
-);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
-    baz VALUES IN ('baz'),
-    default VALUES IN (DEFAULT)
-);
-~~~
-
-Consider using a naming scheme that uses the index name to avoid conflicts. For example, the partitions above could be named `primary_idx_bar`, `primary_idx_default`, `b_idx_baz`, `b_idx_default`.
+Indexes can also be partitioned, but are not required to be.
 
 #### Define partitions on interleaved tables
 
