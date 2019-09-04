@@ -1,22 +1,22 @@
 ---
-title: Information Schema
-summary: The information_schema database contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+title: information_schema
+summary: The information_schema virtual schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
 ---
 
-CockroachDB provides a virtual schema called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+CockroachDB provides a [virtual schema](virtual-schemas.html) called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
-The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema `crdb_internal`, which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
+The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema [`crdb_internal`](crdb-internal.html), which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
 
 {{site.data.alerts.callout_info}}
 The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the `root` user.
 {{site.data.alerts.end}}
 
-## Data exposed by information_schema
+## Data exposed by `information_schema`
 
 To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements.
 
-Object | Information Schema Table | Corresponding `SHOW` Statement
+Object | `information_schema` Table | Corresponding `SHOW` Statement
 -------|--------------|--------
 Columns | [`columns`](#columns) | [`SHOW COLUMNS`](show-columns.html)
 Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
@@ -28,7 +28,7 @@ Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-seq
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`](show-create.html)
 
-## Tables in information_schema
+## Tables in `information_schema`
 
 The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
 
@@ -318,7 +318,7 @@ Column | Description
 
 ## Examples
 
-### Retrieve all columns from an information schema table
+### Retrieve all columns from an `information_schema` table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -332,7 +332,7 @@ Column | Description
 +--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
 ~~~
 
-### Retrieve specific columns from an information schema table
+### Retrieve specific columns from an `information_schema` table
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -355,4 +355,7 @@ Column | Description
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)
+- [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW TABLES`](show-tables.html)
+- [Logical Schemas and Namespaces](sql-name-resolution.html#logical-schemas-and-namespaces)
+- [Virtual Schemas](virtual-schemas.html)
