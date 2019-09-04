@@ -1571,9 +1571,21 @@
             ]
           },
           {
-            "title": "Information Schema",
-            "urls": [
-              "/${VERSION}/information-schema.html"
+            "title": "Virtual Schemas",
+            "items":
+            [
+              {
+                "title": "<code>crdb_internal</code>",
+                "urls": [
+                  "/${VERSION}/crdb-internal.html"
+                ]
+              },
+              {
+                "title": "<code>information_schema</code>",
+                "urls": [
+                  "/${VERSION}/information-schema.html"
+                ]
+              }
             ]
           },
           {
