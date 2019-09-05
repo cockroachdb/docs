@@ -40,11 +40,14 @@ functions but have special evaluation rules:
 
 ## Aggregate functions
 
-{{site.data.alerts.callout_success}}
 For examples showing how to use aggregate functions, see [the `SELECT` clause documentation](select-clause.html#aggregate-functions).
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2</span>: Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause](select-clause.html#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`](query-order.html) clause within the function argument list. For examples, see the [`SELECT` clause](select-clause.html#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/aggregates.md %}
+
 
 ## Window functions
 
