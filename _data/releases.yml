@@ -16,6 +16,9 @@
     - date: Apr 30, 2019
       version: v19.1.0
       no_windows: true
+    - date: September 10, 2019
+      version: v2.1.9
+      no_windows: true
     - date: July 15, 2019
       version: v2.1.8
       no_windows: true
