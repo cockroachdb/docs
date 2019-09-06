@@ -68,7 +68,7 @@ Flag | Description
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
 `--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
-`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
 `--payload-bytes` | The size of the payload field in each initial row.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `100`
@@ -99,7 +99,7 @@ Flag | Description
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`
 `--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
-`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--max-block-bytes` | The maximum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `2`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
@@ -142,7 +142,7 @@ Flag | Description
 `--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
-`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
@@ -170,7 +170,7 @@ Flag | Description
 `--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
-`--init` | Automatically run the `init` command.<br><br>**Applicable command:** `run`
+`--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--initial-rows` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
 `--json` | Use JSONB rather than relational data.<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
