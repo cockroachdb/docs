@@ -183,19 +183,29 @@ $(function() {
   // Fire scroll event on load
   $(window).scroll();
 
-  // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
-  terminalMarkers = document.getElementsByClassName("nv");  // Rogue syntax highlighter styles all terminal markers with class gp
 
-  for(var i = 0; i < terminalMarkers.length; i++){
-    terminalMarkers[i].innerText="";    // Remove the existing on-page terminal marker
+  function isPromptMarker(el, ch) {
+    return el.innerText.trim() === ch && (!el.previousSibling || el.previousSibling.textContent.trim() === "");
   }
 
-  // Section makes SQL terminal prompt markers (>) totally unselectable in syntax-highlighted code samples
-  sqlMarkers = document.getElementsByClassName("o");
-  for(var i = 0; i < sqlMarkers.length; i++){
-    if(sqlMarkers[i].innerText===">" && (!sqlMarkers[i].previousSibling || sqlMarkers[i].previousSibling.textContent==="\n"|| sqlMarkers[i].previousSibling.textContent==="\n\n")){
-      sqlMarkers[i].innerText="";    // Remove the existing on-page SQL marker
-      sqlMarkers[i].nextSibling.textContent="";
+  // This section makes shell terminal prompt markers ($) totally unselectable
+  // in syntax-highlighted code samples. The sybtax highlighter styles all
+  // terminal markers with this class.
+  var terminalMarkers = document.getElementsByClassName("nv");
+  for (var i = 0; i < terminalMarkers.length; i++) {
+    if (isPromptMarker(terminalMarkers[i], "$")) {
+      // Remove the existing on-page terminal marker.
+      terminalMarkers[i].innerText = "";
+    }
+  }
+
+  // This section does the same for SQL terminal prompt markers (>).
+  var sqlMarkers = document.getElementsByClassName("o");
+  for (var i = 0; i < sqlMarkers.length; i++) {
+    if (isPromptMarker(sqlMarkers[i], ">")) {
+      // Remove the existing on-page SQL marker.
+      sqlMarkers[i].innerText = "";
+      sqlMarkers[i].nextSibling.textContent = "";
     }
   }
 
