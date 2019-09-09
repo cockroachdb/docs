@@ -13,11 +13,14 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
+To block `SHOW JOBS` until the provided job ID reaches a terminal state, use `SHOW JOBS WHEN COMPLETE`. The statement will return the job state when the job is completed.
+
 ## Considerations
 
 - The `SHOW JOBS` statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the [SQL Audit Logging (Experimental)](sql-audit-logging.html) feature.
 - For jobs older than 12 hours, query the `crdb_internal.jobs` table.
 - Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
+- `SHOW JOBS WHEN COMPLETE` will time out after 24 hours.
 
 ## Required privileges
 
@@ -28,6 +31,14 @@ By default, only the `root` user can execute `SHOW JOBS`.
 <div>
 {% include {{ page.version.version }}/sql/diagrams/show_jobs.html %}
 </div>
+
+
+## Parameters
+
+ Parameter | Description
+-----------|-------------
+`select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to view.
+`job_id` | The ID of the job you want to view.
 
 ## Response
 
@@ -41,6 +52,7 @@ Field | Description
 `job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is [`AUTO CREATE STATS`](cost-based-optimizer.html#table-statistics).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
+`user_name` | The name of the [user](authorization.html#create-and-manage-users) who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
@@ -125,6 +137,20 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
      job_id     | job_type        |              description                           |...
 +---------------+-----------------+----------------------------------------------------+...
  27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
+~~~
+
+### Show jobs when complete
+
+To block `SHOW JOBS` until the provided job ID reaches a terminal state, use `SHOW JOBS WHEN COMPLETE`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW JOBS WHEN COMPLETE 27536791415282;
+~~~
+~~~
+     job_id     | job_type  |               description                 |...
++---------------+-----------+-------------------------------------------+...
+ 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
 
 ## See also
