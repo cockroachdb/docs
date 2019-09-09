@@ -26,7 +26,7 @@ Because CockroachDB enables transactions that can span your entire cluster (incl
 
 When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates two things that help it mediate a distributed transaction:
 
-- A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `COMMITTED`, or `ABORTED`).
+- A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `COMMITTED`, or `ABORTED`). In versions 19.2 and later, a new status `STAGED` is added which is semantically identical to `COMMITTED` that enables the [Parallel Commits](#parallel-commits) performance optimization. It can be ignored for the purposes of understanding transaction semantics.
 
 - **Write intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the transaction record stored on the cluster.
 
@@ -124,6 +124,7 @@ Given this mechanism, the transaction record uses the following states:
 
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
 - `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
+- `STAGED`: This status is semantically identical to `COMMITTED`, is used to enable the [Parallel Commits](#parallel-commits) performance optimization. It can be ignored for the purposes of understanding transaction semantics.
 - `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
 - _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the transaction liveness threshold, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
 
@@ -233,6 +234,27 @@ At a high level, transaction pipelining works as follows:
 3. When attempting to commit, the transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers. When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
 
 In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write, which was the prior behavior. This changes the cost of multiple writes from `O(n)` in the number of SQL DML statements to `O(1)`.
+
+### Parallel commits
+
+<span class="version-tag">New in v19.2</span>: *Parallel commits* are a performance optimization of the transaction protocol that cuts the commit latency for the final batch of a transaction in half, from two rounds of consensus down to one. This brings the latency incurred by common OLTP transactions to near the theoretical minimum: the sum of all read latencies plus one round of consensus latency. This contrasts with versions of CockroachDB prior to 19.2, in which SQL transactions incurred a consensus latency on every write (except those that could use [`RETURNING NOTHING`](../sql-grammar.html#returning_clause)).
+
+The optimization is achieved by introducing a new [transaction record](#transaction-records) state `STAGED`, which is semantically identical to `COMMITTED`, but which allows  the `TxnCoordSender` to return to the client eagerly when it knows that the writes in the transaction have succeeded. The `TxnCoordSender` can then send the actual commit operation asynchronously, which also resolves the write intents on the transaction as a side effect. It is able to do this because it populates the transaction record with enough information to prove that all writes in the transaction are present.
+
+As a result of the above, there are now 2 states in which a transactions can be considered to be committed:
+
+1. When the transaction record has the status `COMMITTED`. Transactions in this state are considered *explicitly committed*.
+
+2. The transaction record has the status `STAGED`, and all of the intents written in the last batch of that transaction are present. Transactions in this state are considered *implicitly committed*.
+
+Implicitly committed transactions require the work of another process to check and resolve their write intents so they can become explicitly committed transactions. This process is called the *status resolution process*, and it works while preserving correctness due to the following:
+
+- Transaction records with status `STAGED` carry enough information to check the commit condition, and to verify that the transaction's writes did in fact succeed.
+- The set of intent spans for the writes in the last batch of the transaction (also known as *promised writes*) is included in the asynchronously transmitted command to end the transaction. As noted above, this command finalizes the transaction record, and as a side effect resolves the intents.
+
+Users who are interested in exploring this optimization in more technical detail are encouraged to read the [Parallel Commits RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20180324_parallel_commit.md).
+
+Note that the latency until intents are resolved is unchanged by this optimization: two rounds of consensus are still required to resolve intents. This means that [contended workloads](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) are expected to profit less from this feature.
 
 ## Technical interactions with other layers
 
