@@ -27,7 +27,7 @@ Parameter | Description
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `index_name` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Results from a function](#results-from-a-function).
-`preparable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of a [preparable statement](sql-grammar.html#preparable_stmt).
+`row_source_extension_stmt` | [Result rows](#using-the-output-of-other-statements) from a supported [explainable statement](sql-grammar.html#row_source_extension_stmt).
 `select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
 `joined_table` | A [join expression](joins.html).
 
@@ -85,7 +85,7 @@ For example:
 
 #### Force index selection
 
-{% include {{page.version.version}}/misc/force-index-selection.md %} 
+{% include {{page.version.version}}/misc/force-index-selection.md %}
 
 ### Access a common table expression
 
@@ -329,12 +329,18 @@ Syntax:
 [ <statement> ]
 ~~~
 
-An [explainable statement](sql-grammar.html#preparable_stmt)
-between square brackets in a table expression context designates the
-output of executing said statement.
+An [explainable statement](sql-grammar.html#row_source_extension_stmt) between square brackets in a table expression context designates the output of executing the statement as a row source. The following explainable statements are supported as row sources for table expressions:
+
+- [`DELETE`](delete.html)
+- [`EXPLAIN`](explain.html)
+- [`INSERT`](insert.html)
+- [`SELECT`](select.html)
+- [`SHOW`](sql-statements.html#data-definition-statements)
+- [`UPDATE`](update.html)
+- [`UPSERT`](upsert.html)
 
 {{site.data.alerts.callout_info}}
-This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable use of any [explainable statement](sql-grammar.html#preparable_stmt) as subquery, including `SHOW` and other non-query statements.
+This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable the use of a subset of [explainable statements](sql-grammar.html#row_source_extension_stmt) as subqueries.
 {{site.data.alerts.end}}
 
 For example:
