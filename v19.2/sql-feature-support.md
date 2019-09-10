@@ -160,7 +160,6 @@ table tr td:nth-child(2) {
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
- Parallel Statement Execution | ✓ | CockroachDB Extension | [Parallel Statement Execution documentation](parallel-statement-execution.html)
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
  Views | ✓ | Standard | [Views documentation](views.html)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
