@@ -127,7 +127,7 @@
 - title: Testing Releases
   releases:
     - date: Sep 12, 2019
-      version: v19.2.0-beta.20190912
+      version: v19.2.0-beta.20190913
       no_windows: true
     - date: Aug 5, 2019
       version: v19.2.0-alpha.20190805

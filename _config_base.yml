@@ -38,8 +38,8 @@ release_info:
     build_time: 2019/08/12 14:48:26 (go1.11.6)
     start_time: 2018-08-12 15:10:52.34274101 +0000 UTC
   v19.2:
-    name: v19.2.0-beta.20190912
-    version: v19.2.0-beta.20190912
+    name: v19.2.0-beta.20190913
+    version: v19.2.0-beta.20190913
     docker_image: cockroachdb/cockroach-unstable
     build_time: 2019/09/12 11:00:26 (go1.12.5)
     start_time: 2019-09-12 11:01:26.34274101 +0000 UTC
