@@ -212,7 +212,7 @@ INSERT 1
 $ cockroach demo --with-load
 ~~~
 
-This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [Admin UI](admin-ui-overview-dashboard#sql-queries).
+This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [Admin UI](admin-ui-overview-dashboard.html#sql-queries).
 
 ## See also
 
