@@ -1563,12 +1563,6 @@
                 ]
               },
               {
-                "title": "Parallel Statement Execution",
-                "urls": [
-                  "/${VERSION}/parallel-statement-execution.html"
-                ]
-              },
-              {
                 "title": "Cost-Based Optimizer",
                 "urls": [
                   "/${VERSION}/cost-based-optimizer.html"
