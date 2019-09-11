@@ -1,14 +1,12 @@
 ---
-title: SQL Tuning with EXPLAIN
-summary: How to use EXPLAIN to identify and resolve SQL performance issues
+title: SQL Tuning with `EXPLAIN`
+summary: How to use `EXPLAIN` to identify and resolve SQL performance issues
 toc: true
 ---
 
 This tutorial walks you through the common reasons for slow SQL statements and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
 
-## Setup
-
-This tutorial uses [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
 ## Issue: Full table scans
 
@@ -61,7 +59,7 @@ Time: 2.633ms
 ~~~
 -->
 
-The output shows you that without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+The row with `table | users@primary` indicates the index used (`primary`) to scan the table (`users`). The row with `spans | ALL` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 ### Solution: Filter by a secondary index
 
