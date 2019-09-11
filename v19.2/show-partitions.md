@@ -47,7 +47,7 @@ Field | Description
 
 {% include {{page.version.version}}/sql/movr-statements-nodes.md %}
 
-Partitioning is an enterprise-only feature. To continue, you must set a trial or enterprise key in your cluster settings. For instructions, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+{% include {{page.version.version}}/sql/partitioning-enterprise.md %}
 
 Use [ALTER TABLE](alter-table.html) and [PARTITION BY](partition-by.html) to partition the `users` table by city.
 
