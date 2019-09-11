@@ -136,6 +136,13 @@ You can include the following options as key-value pairs in the `kv_option_list`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_sequences`
 
+#### `skip_missing_views`
+
+- **Description**: <span class="version-tag">New in v19.2</span> If you want to restore a table with a [view](views.html) but do not want to restore the view's dependencies, you can drop the view and then have the table restored.
+- **Key**: `skip_missing_views`
+- **Value**: *No value*
+- **Example**: `WITH skip_missing_views`
+
 ## Examples
 
 ### Restore a single table
