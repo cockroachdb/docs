@@ -50,7 +50,7 @@
 3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart and setting the `Secure.Enabled` parameter to `true`:
 
     {{site.data.alerts.callout_info}}
-    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
+    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
