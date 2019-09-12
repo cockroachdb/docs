@@ -70,7 +70,7 @@ Statement | Usage
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW PARTITIONS`](show-partitions.html) | <span class="version-tag">New in v19.2:</span> List table partitions in a database.
-[`SHOW INDEX`](show-index.html) | View index information for a table.
+[`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | <span class="version-tag">New in v19.2:</span> View the locality of the current node.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.

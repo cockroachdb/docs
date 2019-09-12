@@ -1,15 +1,15 @@
 ---
 title: SHOW INDEX
-summary: The SHOW INDEX statement returns index information for a table.
+summary: The SHOW INDEX statement returns index information for a table or database.
 toc: true
 ---
 
-The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table.
+The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table or database.
 
 
 ## Required privileges
 
-The user must have any [privilege](authorization.html#assign-privileges) on the target table.
+The user must have any [privilege](authorization.html#assign-privileges) on the target table or database.
 
 ## Aliases
 
@@ -21,7 +21,7 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_index.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_indexes.html %}
 </div>
 
 ## Parameters
@@ -29,6 +29,7 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table for which you want to show indexes.
+`database_name` | The name of the database for which you want to show indexes.
 
 ## Response
 
@@ -49,6 +50,8 @@ Field | Description
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
+### Show indexes for a table
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
@@ -68,6 +71,42 @@ Field | Description
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
 (5 rows)
+~~~
+
+### Show indexes for a database
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES FROM DATABASE movr;
+~~~
+
+~~~
+          table_name         |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
++----------------------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+----------+
+  users                      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
+  users                      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
+  vehicles                   | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
+  vehicles                   | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            1 | city         | ASC       |  false  |  false
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            2 | owner_id     | ASC       |  false  |  false
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            3 | id           | ASC       |  false  |   true
+  rides                      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
+  rides                      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
+  rides                      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city         | ASC       |  false  |  false
+  rides                      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id     | ASC       |  false  |  false
+  rides                      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id           | ASC       |  false  |   true
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            1 | vehicle_city | ASC       |  false  |  false
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id   | ASC       |  false  |  false
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | city         | ASC       |  false  |   true
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | id           | ASC       |  false  |   true
+  vehicle_location_histories | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
+  vehicle_location_histories | primary                                       |   false    |            2 | ride_id      | ASC       |  false  |  false
+  vehicle_location_histories | primary                                       |   false    |            3 | timestamp    | ASC       |  false  |  false
+  promo_codes                | primary                                       |   false    |            1 | code         | ASC       |  false  |  false
+  user_promo_codes           | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
+  user_promo_codes           | primary                                       |   false    |            2 | user_id      | ASC       |  false  |  false
+  user_promo_codes           | primary                                       |   false    |            3 | code         | ASC       |  false  |  false
+(23 rows)
 ~~~
 
 ## See also
