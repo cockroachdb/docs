@@ -28,12 +28,12 @@ key: install-cockroachdb.html
         <svg data-eventcategory="linux-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
         <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
       </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step1"><span class="gp linux-binary-step1" id="linux-binary-step1-{{ page.version.version }}" data-eventcategory="linux-binary-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz | tar  xvz</code></pre></div>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-binary-step1"><span class="nv language-shell linux-binary-step1" id="linux-binary-step1-{{ page.version.version }}" data-eventcategory="linux-binary-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz | tar  xvz</code></pre></div>
     </li>
     <li>
       <p>Copy the binary into your <code>PATH</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <li>
@@ -83,7 +83,7 @@ key: install-cockroachdb.html
         <svg data-eventcategory="linux-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
         <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
       </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="gp linux-docker-step2" id="linux-docker-step2-{{ page.version.version }}" data-eventcategory="linux-docker-step2">$ </span>docker version</code></pre></div>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="nv language-shell linux-docker-step2" id="linux-docker-step2-{{ page.version.version }}" data-eventcategory="linux-docker-step2">$ </span>docker version</code></pre></div>
       <p>If you do not see the server listed, start the <strong>Docker</strong> daemon.</p>
 
       {{site.data.alerts.callout_info}}On Linux, Docker needs sudo privileges.{{site.data.alerts.end}}
@@ -96,7 +96,7 @@ key: install-cockroachdb.html
         <svg data-eventcategory="linux-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
         <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
       </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="gp linux-docker-step3" id="linux-docker-step3-{{ page.version.version }}" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}</code></pre>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="nv language-shell linux-docker-step3" id="linux-docker-step3-{{ page.version.version }}" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}</code></pre>
       </div>
     </li>
     <li>
@@ -155,13 +155,13 @@ key: install-cockroachdb.html
         <svg data-eventcategory="linux-source-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
         <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
       </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="gp linux-source-step1" id="linux-source-step1-{{ page.version.version }}" data-eventcategory="linux-source-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.src.tgz | tar  xvz</code></pre></div>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="nv language-shell linux-source-step1" id="linux-source-step1-{{ page.version.version }}" data-eventcategory="linux-source-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.src.tgz | tar  xvz</code></pre></div>
     </li>
     <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make build</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
 
       <p>The build process can take 10+ minutes, so please be patient.</p>
 
@@ -171,7 +171,7 @@ key: install-cockroachdb.html
 
     <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin</code> so it's easy to execute <a href="cockroach-commands.html">cockroach commands</a> from any directory:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="gp noselect shellterminal"></span>make install</code></pre></div>
+    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
     <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
     <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
