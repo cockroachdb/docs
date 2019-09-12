@@ -5,15 +5,7 @@ toc: true
 redirect_from: [show-testing-ranges.html, show-experimental-ranges.html]
 ---
 
-The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database, including:
-
-- The start and end keys for the range(s)
-- The range ID(s)
-- Which nodes contain the range [replicas](architecture/overview.html#glossary)
-- Which node contains the range that is the [leaseholder](architecture/overview.html#glossary)
-- Which [locality](start-a-node.html#locality) the leaseholder is in
-
-This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located.
+The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located.
 
 ## Synopsis
 
@@ -33,245 +25,88 @@ Parameter | Description
 [`table_index_name`](sql-grammar.html#table_index_name) | The name of the index you want range information about.
 [`database_name`](sql-grammar.html#database_name) | The name of the database you want range information about.
 
+## Response
+
+The following fields are returned for each partition:
+
+Field | Description
+------|------------
+`table_name` | The name of the table.
+`start_key` | The start key for the range.
+`end_key` | The end key for the range.
+`range_id` | The range ID.
+`range_size_mb` | The size of the range.
+`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
+`lease_holder_locality` | The [locality](start-a-node.html#locality) of the leaseholder.
+`replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
+`replica_localities` | The [locality](start-a-node.html#locality) of the range.
+
 ## Examples
 
-The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-### Show manually-split ranges
-
-You can use the [`SPLIT AT`](split-at.html) statement to manually split table ranges based on primary and secondary index values.
-
-#### Setup
-
-To follow along with the example statements, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset preloaded:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach demo
-~~~
-
-Split the `users` table ranges based on primary key values:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
-~~~
-~~~
-              key              |         pretty         |       split_enforced_until
-+------------------------------+------------------------+----------------------------------+
-  \275\211\022chicago\000\001  | /Table/53/1/"chicago"  | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022new york\000\001 | /Table/53/1/"new york" | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022seattle\000\001  | /Table/53/1/"seattle"  | 2262-04-11 23:47:16.854776+00:00
-(3 rows)
-~~~
-
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then split the table ranges by secondary index values:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX revenue_idx ON rides(revenue);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
-~~~
-~~~
-         key        |      pretty      |       split_enforced_until
-+-------------------+------------------+----------------------------------+
-  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
-  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
-(3 rows)
-~~~
-
-{{site.data.alerts.callout_info}}
-In the example output below, a `NULL` in the *Start Key* column means "beginning of table".  
-A `NULL` in the *End Key* column means "end of table".
-{{site.data.alerts.end}}
-
-#### Show ranges for a table (primary index)
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW RANGES FROM TABLE users;
-~~~
-~~~
-   start_key  |   end_key   | range_id | replicas | lease_holder | locality
-+-------------+-------------+----------+----------+--------------+----------+
-  NULL        | /"chicago"  |       21 | {1}      |            1 |
-  /"chicago"  | /"new york" |       27 | {1}      |            1 |
-  /"new york" | /"seattle"  |       28 | {1}      |            1 |
-  /"seattle"  | NULL        |       29 | {1}      |            1 |
-(4 rows)
-~~~
-
-#### Show ranges for an index
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW RANGES FROM INDEX rides@revenue_idx;
-~~~
-~~~
-  start_key | end_key | range_id | replicas | lease_holder | locality
-+-----------+---------+----------+----------+--------------+----------+
-  NULL      | /25     |       30 | {1}      |            1 |
-  /25       | /5E+1   |       31 | {1}      |            1 |
-  /5E+1     | /75     |       32 | {1}      |            1 |
-  /75       | NULL    |       33 | {1}      |            1 |
-(4 rows)
-~~~
-
-#### Show ranges for a database
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW RANGES FROM database movr;
-~~~
-~~~
-          table_name         |  start_key  |   end_key   | range_id | replicas | lease_holder | locality
-+----------------------------+-------------+-------------+----------+----------+--------------+----------+
-  promo_codes                | NULL        | NULL        |       25 | {1}      |            1 |
-  rides                      | NULL        | NULL        |       23 | {1}      |            1 |
-  rides                      | NULL        | /25         |       30 | {1}      |            1 |
-  rides                      | /25         | /5E+1       |       31 | {1}      |            1 |
-  rides                      | /5E+1       | /75         |       32 | {1}      |            1 |
-  rides                      | /75         | NULL        |       33 | {1}      |            1 |
-  user_promo_codes           | NULL        | NULL        |       26 | {1}      |            1 |
-  users                      | NULL        | /"chicago"  |       21 | {1}      |            1 |
-  users                      | /"chicago"  | /"new york" |       27 | {1}      |            1 |
-  users                      | /"new york" | /"seattle"  |       28 | {1}      |            1 |
-  users                      | /"seattle"  | NULL        |       29 | {1}      |            1 |
-  vehicle_location_histories | NULL        | NULL        |       24 | {1}      |            1 |
-  vehicles                   | NULL        | NULL        |       22 | {1}      |            1 |
-(13 rows)
-~~~
-
-### Show ranges across partitions
-
-[Partitioning tables](partitioning.html) creates a distinct set of ranges for each partition.
-
-#### Setup
-
-To follow along with the partitioning examples below, open a new terminal and run [`cockroach demo`](cockroach-demo.html) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach demo \
---nodes=9 \
---demo-locality=region=us-east1:region=us-east1:region=us-east1:region=us-central1:region=us-central1:region=us-central1:region=us-west1:region=us-west1:region=us-west1
-~~~
-
-{% include {{page.version.version}}/sql/partitioning-enterprise.md %}
-
-Use [`PARTITION BY`](partition-by.html) to partition the `users` table by city.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users PARTITION BY LIST (city) (
-    PARTITION new_york VALUES IN ('new york'),
-    PARTITION chicago VALUES IN ('chicago'),
-    PARTITION seattle VALUES IN ('seattle')
-  );
-~~~
-
-Partition the `vehicles` table and its secondary index by city:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE vehicles PARTITION BY LIST (city) (
-    PARTITION new_york VALUES IN ('new york'),
-    PARTITION chicago VALUES IN ('chicago'),
-    PARTITION seattle VALUES IN ('seattle')
-  );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX vehicles_auto_index_fk_city_ref_users PARTITION BY LIST (city) (
-    PARTITION new_york VALUES IN ('new york'),
-    PARTITION chicago VALUES IN ('chicago'),
-    PARTITION seattle VALUES IN ('seattle')
-  );
-~~~
-
-Use [`CONFIGURE ZONE`](configure-zone.html) to create [replication zone](configure-replication-zones.html) constraints on the `users` and `vehicles` tables and the `vehicles_auto_index_fk_city_ref_users` index. Replication zones pin the partition replicas to nodes in a specific regions, using the [localities](start-a-node.html#locality) specified when nodes were started.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER PARTITION new_york OF TABLE users CONFIGURE ZONE USING constraints='[+region=us-east1]';
-  ALTER PARTITION chicago OF TABLE users CONFIGURE ZONE USING constraints='[+region=us-central1]';
-  ALTER PARTITION seattle OF TABLE users CONFIGURE ZONE USING constraints='[+region=us-west1]';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER PARTITION new_york OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-east1]';
-  ALTER PARTITION chicago OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-central1]';
-  ALTER PARTITION seattle OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-west1]';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER PARTITION new_york OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-east1]';
-  ALTER PARTITION chicago OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-central1]';
-  ALTER PARTITION seattle OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-west1]';
-~~~
-
-{{site.data.alerts.callout_info}}
-In the example output below, a `NULL` in the *Start Key* column means "beginning of table".  
-A `NULL` in the *End Key* column means "end of table".
-{{site.data.alerts.end}}
-
-#### Show ranges for a table (primary index)
+### Show ranges for a table (primary index)
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM TABLE vehicles] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
-   start_key  |        end_key        | range_id | replicas | lease_holder |      locality
-+-------------+-----------------------+----------+----------+--------------+--------------------+
-  /"new york" | /"new york"/PrefixEnd |       61 | {1,2,3}  |            2 | region=us-east1
-  /"chicago"  | /"chicago"/PrefixEnd  |       64 | {4,5,6}  |            5 | region=us-central1
-  /"seattle"  | /"seattle"/PrefixEnd  |       69 | {7,8,9}  |            9 | region=us-west1
-(3 rows)
+     start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
++------------------+----------------------------+----------+---------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+
+  /"new york"      | /"new york"/PrefixEnd      |       58 |      0.000304 |            2 | region=us-east1,az=c     | {1,2,5}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-west1,az=b"}
+  /"washington dc" | /"washington dc"/PrefixEnd |      102 |      0.000173 |            2 | region=us-east1,az=c     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"boston"        | /"boston"/PrefixEnd        |       63 |      0.000288 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"seattle"       | /"seattle"/PrefixEnd       |       97 |      0.000295 |            4 | region=us-west1,az=a     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"los angeles"   | /"los angeles"/PrefixEnd   |       55 |      0.000156 |            5 | region=us-west1,az=b     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"san francisco" | /"san francisco"/PrefixEnd |       71 |      0.000309 |            6 | region=us-west1,az=c     | {1,5,6}  | {"region=us-east1,az=b","region=us-west1,az=b","region=us-west1,az=c"}
+  /"amsterdam"     | /"amsterdam"/PrefixEnd     |       59 |      0.000305 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"paris"         | /"paris"/PrefixEnd         |       62 |      0.000299 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"rome"          | /"rome"/PrefixEnd          |       67 |      0.000168 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+(9 rows)
 ~~~
 
-#### Show ranges for an index
+### Show ranges for an index
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
-   start_key  |        end_key        | range_id | replicas | lease_holder |      locality
-+-------------+-----------------------+----------+----------+--------------+--------------------+
-  /"new york" | /"new york"/PrefixEnd |       63 | {1,2,3}  |            3 | region=us-east1
-  /"chicago"  | /"chicago"/PrefixEnd  |       66 | {4,5,6}  |            4 | region=us-central1
-  /"seattle"  | /"seattle"/PrefixEnd  |       70 | {7,8,9}  |            9 | region=us-west1
-(3 rows)
+     start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
++------------------+----------------------------+----------+---------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+
+  /"washington dc" | /"washington dc"/PrefixEnd |      188 |      0.000089 |            2 | region=us-east1,az=c     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"boston"        | /"boston"/PrefixEnd        |      141 |      0.000164 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"new york"      | /"new york"/PrefixEnd      |      168 |      0.000174 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"los angeles"   | /"los angeles"/PrefixEnd   |      165 |      0.000087 |            6 | region=us-west1,az=c     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"san francisco" | /"san francisco"/PrefixEnd |      174 |      0.000183 |            6 | region=us-west1,az=c     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"seattle"       | /"seattle"/PrefixEnd       |      186 |      0.000166 |            6 | region=us-west1,az=c     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"amsterdam"     | /"amsterdam"/PrefixEnd     |      137 |       0.00017 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"paris"         | /"paris"/PrefixEnd         |      170 |      0.000162 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"rome"          | /"rome"/PrefixEnd          |      172 |       0.00008 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+(9 rows)
 ~~~
 
-#### Show ranges for a database
+### Show ranges for a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM database movr] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
-  table_name |  start_key  |        end_key        | range_id | replicas | lease_holder |      locality
-+------------+-------------+-----------------------+----------+----------+--------------+--------------------+
-  users      | /"new york" | /"new york"/PrefixEnd |       41 | {1,2,3}  |            2 | region=us-east1
-  vehicles   | /"new york" | /"new york"/PrefixEnd |       61 | {1,2,3}  |            2 | region=us-east1
-  vehicles   | /"new york" | /"new york"/PrefixEnd |       63 | {1,2,3}  |            3 | region=us-east1
-  users      | /"chicago"  | /"chicago"/PrefixEnd  |       43 | {4,5,6}  |            4 | region=us-central1
-  vehicles   | /"chicago"  | /"chicago"/PrefixEnd  |       66 | {4,5,6}  |            4 | region=us-central1
-  vehicles   | /"chicago"  | /"chicago"/PrefixEnd  |       64 | {4,5,6}  |            5 | region=us-central1
-  users      | /"seattle"  | /"seattle"/PrefixEnd  |       45 | {7,8,9}  |            8 | region=us-west1
-  vehicles   | /"seattle"  | /"seattle"/PrefixEnd  |       69 | {7,8,9}  |            9 | region=us-west1
-  vehicles   | /"seattle"  | /"seattle"/PrefixEnd  |       70 | {7,8,9}  |            9 | region=us-west1
-(9 rows)
+          table_name         |    start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
++----------------------------+------------------+----------------------------+----------+---------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+
+  users                      | /"amsterdam"     | /"amsterdam"/PrefixEnd     |       47 |      0.000562 |            7 | region=europe-west1,az=b | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  users                      | /"boston"        | /"boston"/PrefixEnd        |       51 |      0.000665 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  users                      | /"chicago"       | /"los angeles"             |       83 |             0 |            4 | region=us-west1,az=a     | {2,4,8}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=c"}
+  users                      | /"los angeles"   | /"los angeles"/PrefixEnd   |       45 |      0.000697 |            4 | region=us-west1,az=a     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  users                      | /"new york"      | /"new york"/PrefixEnd      |       48 |      0.000664 |            1 | region=us-east1,az=b     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  users                      | /"paris"         | /"paris"/PrefixEnd         |       52 |      0.000628 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+
+  ...
+
+  user_promo_codes           | /"washington dc" | /"washington dc"/PrefixEnd |      144 |             0 |            2 | region=us-east1,az=c     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+(73 rows)
 ~~~
 
 ## See also

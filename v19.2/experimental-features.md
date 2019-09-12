@@ -74,14 +74,6 @@ Example:
 (1 row)
 ~~~
 
-### Show a table's ranges
-
-Show the ranges that make up a table or index.  For more information, see [`SHOW RANGES`](show-ranges.html).
-
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW RANGES FROM TABLE t;
-~~~
 
 ### Turn on KV event tracing
 
@@ -160,5 +152,4 @@ The vectorized execution engine has the following limitations:
 - [`SHOW` (session)](show-vars.html)
 - [Functions and Operators](functions-and-operators.html)
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
-- [`SHOW RANGES`](show-ranges.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)

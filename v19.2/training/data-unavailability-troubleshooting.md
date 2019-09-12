@@ -187,9 +187,9 @@ In preparation, add a table and use a replication zone to force the table's data
     ~~~
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    | 16       | {3,6,9}  |            9
+      start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                        replica_localities
+    +-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------------------+
+      NULL      | NULL    |       25 |      0.003054 |            9 | datacenter=us-east-3  | {7,8,9}  | {datacenter=us-east-3,datacenter=us-east-3,datacenter=us-east-3}
     (1 row)
     ~~~
 

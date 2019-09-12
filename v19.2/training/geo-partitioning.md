@@ -192,7 +192,7 @@ Now you'll import data representing users, vehicles, and rides for the fictional
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init movr --num-users=20000 --num-rides=1000000 --num-vehicles=2000
+    $ cockroach workload init movr --num-users=5000 --num-rides=50000 --num-vehicles=500
     ~~~
 
     This command creates the `movr` database with six tables: `users`, `vehicles`, `rides`, `promo_codes`, `vehicle_location_histories`, and `user_promo_codes`. The [`--num`](../cockroach-workload.html#movr-workload) flags specify a larger quantity of data to generate for the `users`, `rides`, and `vehicles` tables.
@@ -233,9 +233,9 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 ~~~
 
 ~~~
-  start_key | end_key | range_id | replicas | lease_holder
-+-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       92 | {1,2,7}  |            1
+  start_key | end_key | range_id | range_size_mb | lease_holder |         lease_holder_locality         | replicas |                                                    replica_localities
++-----------+---------+----------+---------------+--------------+---------------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------+
+  NULL      | NULL    |       26 |      0.123054 |            2 | region=us-east1,datacenter=us-east1-b | {2,5,7}  | {"region=us-east1,datacenter=us-east1-b","region=us-west1,datacenter=us-west1-b","region=us-west2,datacenter=us-west2-a"}
 (1 row)
 ~~~    
 
@@ -245,9 +245,9 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 ~~~
 
 ~~~
-  start_key | end_key | range_id | replicas | lease_holder
-+-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       94 | {1,4,7}  |            4
+  start_key | end_key | range_id | range_size_mb | lease_holder |         lease_holder_locality         | replicas |                                                    replica_localities
++-----------+---------+----------+---------------+--------------+---------------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------+
+  NULL      | NULL    |       25 |      0.554324 |            3 | region=us-east1,datacenter=us-east1-c | {3,6,9}  | {"region=us-east1,datacenter=us-east1-c","region=us-west1,datacenter=us-west1-c","region=us-west2,datacenter=us-west2-c"}
 (1 row)
 ~~~
 
@@ -265,7 +265,7 @@ Node ID | Region | Datacenter
 8 | `us-west2` | `us-west2-b`
 9 | `us-west2` | `us-west2-c`
 
-In this case, for the single range containing `vehicles` data, replicas are in the `us-east1` and `us-west2` regions, and the leaseholder is in the `us-east1` region. For the single range containing `users` data, replicas are in all three regions, and the leaseholder is in the `us-west1` region.
+In this case, for the single range containing `vehicles` data, replicas are in all three regions, and the leaseholder is in the `us-east1` region. For the single range containing `users` data, replicas are in all three regions, and the leaseholder is in the `us-east1` region.
 
 ## Step 6. Consider performance before partitioning
 
@@ -460,19 +460,19 @@ To check this, run the `SHOW RANGES` statement on the `vehicles` and `users` tab
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM TABLE vehicles] \
+> SELECT * FROM [SHOW RANGES FROM TABLE vehicles]
 WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 ~~~
-     start_key     |          end_key           | range_id | replicas | lease_holder
-+------------------+----------------------------+----------+----------+--------------+
-  /"boston"        | /"boston"/PrefixEnd        |       68 | {1,8,9}  |            1
-  /"new york"      | /"new york"/PrefixEnd      |       66 | {1,8,9}  |            1
-  /"seattle"       | /"seattle"/PrefixEnd       |      143 | {2,3,4}  |            4
-  /"los angeles"   | /"los angeles"/PrefixEnd   |       70 | {5,6,7}  |            5
-  /"san francisco" | /"san francisco"/PrefixEnd |      145 | {5,6,7}  |            6
-  /"washington dc" | /"washington dc"/PrefixEnd |      141 | {1,8,9}  |            8
+     start_key     |          end_key           | range_id | range_size_mb | lease_holder |         lease_holder_locality         | replicas |                                                    replica_localities
++------------------+----------------------------+----------+---------------+--------------+---------------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------+
+  /"boston"        | /"boston"/PrefixEnd        |       67 |      0.000144 |            1 | region=us-east1,datacenter=us-east1-a | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"washington dc" | /"washington dc"/PrefixEnd |       69 |      0.000151 |            1 | region=us-east1,datacenter=us-east1-a | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"new york"      | /"new york"/PrefixEnd      |       65 |      0.000304 |            2 | region=us-east1,datacenter=us-east1-b | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"seattle"       | /"seattle"/PrefixEnd       |       71 |      0.000167 |            5 | region=us-west1,datacenter=us-west1-b | {4,5,6}  | {"region=us-west1,datacenter=us-west1-a","region=us-west1,datacenter=us-west1-b","region=us-west1,datacenter=us-west1-c"}
+  /"los angeles"   | /"los angeles"/PrefixEnd   |       75 |      0.000158 |            8 | region=us-west2,datacenter=us-west2-b | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
+  /"san francisco" | /"san francisco"/PrefixEnd |       73 |      0.000307 |            8 | region=us-west2,datacenter=us-west2-b | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
 (6 rows)
 ~~~    
 
@@ -494,19 +494,19 @@ The same data distribution is in place for the partitions of other tables as wel
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM TABLE users] \
+> SELECT * FROM [SHOW RANGES FROM TABLE users]
 WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 ~~~
-     start_key     |          end_key           | range_id | replicas | lease_holder
-+------------------+----------------------------+----------+----------+--------------+
-  /"boston"        | /"boston"/PrefixEnd        |       97 | {1,8,9}  |            1
-  /"washington dc" | /"washington dc"/PrefixEnd |       99 | {1,8,9}  |            1
-  /"seattle"       | /"seattle"/PrefixEnd       |      101 | {2,3,4}  |            3
-  /"los angeles"   | /"los angeles"/PrefixEnd   |      105 | {5,6,7}  |            6
-  /"san francisco" | /"san francisco"/PrefixEnd |      103 | {5,6,7}  |            6
-  /"new york"      | /"new york"/PrefixEnd      |       95 | {1,8,9}  |            8
+     start_key     |          end_key           | range_id | range_size_mb | lease_holder |         lease_holder_locality         | replicas |                                                    replica_localities
++------------------+----------------------------+----------+---------------+--------------+---------------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------+
+  /"washington dc" | /"washington dc"/PrefixEnd |       49 |      0.000468 |            2 | region=us-east1,datacenter=us-east1-b | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"boston"        | /"boston"/PrefixEnd        |       47 |      0.000438 |            3 | region=us-east1,datacenter=us-east1-c | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"new york"      | /"new york"/PrefixEnd      |       45 |      0.000553 |            3 | region=us-east1,datacenter=us-east1-c | {1,2,3}  | {"region=us-east1,datacenter=us-east1-a","region=us-east1,datacenter=us-east1-b","region=us-east1,datacenter=us-east1-c"}
+  /"seattle"       | /"seattle"/PrefixEnd       |       51 |       0.00044 |            4 | region=us-west1,datacenter=us-west1-a | {4,5,6}  | {"region=us-west1,datacenter=us-west1-a","region=us-west1,datacenter=us-west1-b","region=us-west1,datacenter=us-west1-c"}
+  /"los angeles"   | /"los angeles"/PrefixEnd   |       55 |      0.000457 |            7 | region=us-west2,datacenter=us-west2-a | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
+  /"san francisco" | /"san francisco"/PrefixEnd |       53 |      0.000437 |            7 | region=us-west2,datacenter=us-west2-a | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
 (6 rows)
 ~~~
 
