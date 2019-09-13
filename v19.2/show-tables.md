@@ -7,7 +7,9 @@ toc: true
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](views.html) in a schema or database.
 
-{{site.data.alerts.callout_info}}While a table or view is being <a href="drop-table.html">dropped</a>, <code>SHOW TABLES</code> will list the object with a <code>(dropped)</code> suffix.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will list the object with a `(dropped)` suffix.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -36,6 +38,8 @@ When a `database_name` and `schema_name` are omitted, the tables of the [current
 
 ### Show tables in the current database
 
+`SHOW TABLES` uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
@@ -53,7 +57,24 @@ When a `database_name` and `schema_name` are omitted, the tables of the [current
 (6 rows)
 ~~~
 
-This uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`.
+<span class="version-tag">New in v19.2:</span> Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \dt
+~~~
+
+~~~
+          table_name
++----------------------------+
+  promo_codes
+  rides
+  user_promo_codes
+  users
+  vehicle_location_histories
+  vehicles
+(6 rows)
+~~~
 
 ### Show tables in a different schema
 

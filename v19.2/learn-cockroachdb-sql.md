@@ -21,7 +21,7 @@ Do one of the following:
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -39,7 +39,6 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
   vehicles
 (6 rows)
 ~~~
-
 
 ## Create a table
 
@@ -73,7 +72,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.html) followed by the table name:
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -385,7 +384,7 @@ When you no longer need a database, use [`DROP DATABASE`](drop-database.html) fo
 
 ## Show databases
 
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement or the `\l` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -449,7 +448,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.html) followed by the table name:
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -473,7 +472,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql

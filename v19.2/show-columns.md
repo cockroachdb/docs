@@ -58,6 +58,24 @@ Field | Description
 (5 rows)
 ~~~
 
+<span class="version-tag">New in v19.2:</span> Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \d users
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false
+(5 rows)
+~~~
+
 ### Show columns with comments
 
 You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
