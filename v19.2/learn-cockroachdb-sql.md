@@ -385,7 +385,7 @@ When you no longer need a database, use [`DROP DATABASE`](drop-database.html) fo
 
 ## Show databases
 
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement or the `\l` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -473,7 +473,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement:
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
