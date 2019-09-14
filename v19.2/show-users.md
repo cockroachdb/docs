@@ -24,13 +24,28 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 ~~~
 
 ~~~
-+-------------+
-|  user_name  |
-+-------------+
-| jpointsman  |
-| maxroach    |
-| root        |
-+-------------+
+  user_name
++------------+
+  jpointsman
+  maxroach
+  root
+(3 rows)
+~~~
+
+<span class="version-tag">New in v19.2:</span> Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](use-the-built-in-sql-client.html#commands):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \du
+~~~
+
+~~~
+  user_name
++------------+
+  jpointsman
+  maxroach
+  root
+(3 rows)
 ~~~
 
 ## See also
