@@ -49,7 +49,7 @@ The `crdb_internal.ranges` table contains information about ranges in your Cockr
 (1 row)
 ~~~
 
-Now split the `users` table ranges based on primary key values:
+Now [split](split-at.html) the `users` table ranges based on primary key values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -109,11 +109,11 @@ Now unsplit the table to remove the split enforcements:
 (4 rows)
 ~~~
 
-The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can merge the data in the table as needed.
+The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.
 
 ### Unsplit an index
 
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then split the table ranges by secondary index values:
+Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then [split](split-at.html) the table ranges by secondary index values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -178,7 +178,7 @@ Now unsplit the index to remove the split enforcements:
 (5 rows)
 ~~~
 
-The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can merge the data in the table as needed.
+The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.
 
 ## See also
 

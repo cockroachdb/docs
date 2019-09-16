@@ -26,6 +26,7 @@ The user must have the `INSERT` [privilege](authorization.html#assign-privileges
 -----------|-------------
  `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split.
  `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index.
+ `a_expr` | The expiration of the split enforcement on the table or index. This can be a [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), or [`TIMESTAMPZ`](timestamp.html).
 
 ## Why manually split a range?
 
@@ -57,189 +58,202 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 
 ## Examples
 
+### Setup
+
+{% include {{page.version.version}}/sql/movr-statements-partitioning.md %}
+
 ### Split a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW RANGES FROM TABLE kv;
+> SHOW RANGES FROM TABLE users;
 ~~~
 
 ~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | NULL    |       72 | {1}      |            1 |
-+-----------+---------+----------+----------+--------------+
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL      | NULL    |       25 |      0.005563 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE kv SPLIT AT VALUES (10), (20), (30);
+> ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
 ~~~
 
 ~~~
-+------------+----------------+
-|    key     |     pretty     |
-+------------+----------------+
-| \u0209\x92 | /Table/64/1/10 |
-| \u0209\x9c | /Table/64/1/20 |
-| \u0209\xa6 | /Table/64/1/30 |
-+------------+----------------+
+              key              |         pretty         |       split_enforced_until
++------------------------------+------------------------+----------------------------------+
+  \275\211\022chicago\000\001  | /Table/53/1/"chicago"  | 2262-04-11 23:47:16.854776+00:00
+  \275\211\022new york\000\001 | /Table/53/1/"new york" | 2262-04-11 23:47:16.854776+00:00
+  \275\211\022seattle\000\001  | /Table/53/1/"seattle"  | 2262-04-11 23:47:16.854776+00:00
 (3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW RANGES FROM TABLE kv;
+> SHOW RANGES FROM TABLE users;
 ~~~
 
 ~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | /10     |       72 | {1}      |            1 |
-| /10       | /20     |       73 | {1}      |            1 |
-| /20       | /30     |       74 | {1}      |            1 |
-| /30       | NULL    |       75 | {1}      |            1 |
-+-----------+---------+----------+----------+--------------+
+   start_key  |   end_key   | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-------------+-------------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL        | /"chicago"  |       25 |      0.000872 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"chicago"  | /"new york" |       45 |      0.001943 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"new york" | /"seattle"  |       46 |       0.00184 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"seattle"  | NULL        |       47 |      0.000908 |            7 | region=us-west1       | {1,4,7}  | {region=us-east1,region=us-central1,region=us-west1}
 (4 rows)
 ~~~
 
-### Split a table with a composite primary key
+### Split a table with a compound primary key
 
-You may want to split a table with a composite primary key (e.g., when working with [partitions](partitioning.html#partition-using-primary-key)).
+You may want to split a table with a compound primary key.
 
-Given the table
-
-{% include copy-clipboard.html %}
-~~~ sql
-CREATE TABLE t (k1 INT, k2 INT, v INT, w INT, PRIMARY KEY (k1, k2));
-~~~
-
-we can split it at its primary key like so:
+Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. Some users need to sign up to be drivers, so you need a `drivers` table to store driver information.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE t SPLIT AT VALUES (5,1), (5,2), (5,3);
+> CREATE TABLE drivers (
+    id UUID DEFAULT gen_random_uuid(),
+    city STRING,
+    name STRING,
+    dl STRING DEFAULT left(md5(random()::text),8) UNIQUE CHECK (LENGTH(dl) < 9),
+    address STRING,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, dl ASC)
+);
 ~~~
 
-~~~
-+------------+-----------------+
-|    key     |     pretty      |
-+------------+-----------------+
-| \xbc898d89 | /Table/52/1/5/1 |
-| \xbc898d8a | /Table/52/1/5/2 |
-| \xbc898d8b | /Table/52/1/5/3 |
-+------------+-----------------+
-(3 rows)
-~~~
+The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` [using supported SQL functions](https://www.cockroachlabs.com/docs/v19.2/functions-and-operators.html), if they are not provided.
 
-To see more information about the range splits, run:
+Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW RANGES FROM TABLE t;
+> INSERT INTO drivers (id, city, name, address)
+    SELECT id, city, name, address FROM users;
 ~~~
-
-~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | /5/1    |      151 | {2,3,5}  |            5 |
-| /5/1      | /5/2    |      152 | {2,3,5}  |            5 |
-| /5/2      | /5/3    |      153 | {2,3,5}  |            5 |
-| /5/3      | NULL    |      154 | {2,3,5}  |            5 |
-+-----------+---------+----------+----------+--------------+
-(4 rows)
-~~~
-
-Alternatively, you could split at a prefix of the primary key columns. For example, to add a split before all keys that start with `3`, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE t SPLIT AT VALUES (3);
+> SHOW RANGES FROM TABLE drivers;
 ~~~
 
 ~~~
-+----------+---------------+
-|   key    |    pretty     |
-+----------+---------------+
-| \xcd898b | /Table/69/1/3 |
-+----------+---------------+
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL      | NULL    |       45 |      0.007222 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
 (1 row)
 ~~~
 
-Conceptually, this means that the second range will include keys that start with `3` through `∞`:
+Now you can split the table based on the compound primary key. Note that you don't have to specify the entire value for the primary key, just the prefix.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW RANGES FROM TABLE t;
+> ALTER TABLE drivers SPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
 
 ~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | /3      |      155 | {2,3,5}  |            5 |
-| /3        | NULL    |      165 | {2,3,5}  |            5 |
-+-----------+---------+----------+----------+--------------+
-(2 rows)
+                     key                    |           pretty           |       split_enforced_until
++-------------------------------------------+----------------------------+----------------------------------+
+  \303\211\022new york\000\001\0223\000\001 | /Table/59/1/"new york"/"3" | 2262-04-11 23:47:16.854776+00:00
+  \303\211\022new york\000\001\0227\000\001 | /Table/59/1/"new york"/"7" | 2262-04-11 23:47:16.854776+00:00
+  \303\211\022chicago\000\001\0223\000\001  | /Table/59/1/"chicago"/"3"  | 2262-04-11 23:47:16.854776+00:00
+  \303\211\022chicago\000\001\0227\000\001  | /Table/59/1/"chicago"/"7"  | 2262-04-11 23:47:16.854776+00:00
+  \303\211\022seattle\000\001\0223\000\001  | /Table/59/1/"seattle"/"3"  | 2262-04-11 23:47:16.854776+00:00
+  \303\211\022seattle\000\001\0227\000\001  | /Table/59/1/"seattle"/"7"  | 2262-04-11 23:47:16.854776+00:00
+(6 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW RANGES FROM TABLE drivers;
+~~~
+
+~~~
+     start_key    |     end_key     | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                   replica_localities
++-----------------+-----------------+----------+---------------+--------------+-----------------------+----------+---------------------------------------------------------+
+  NULL            | /"chicago"/"3"  |       45 |      0.000792 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"chicago"/"3"  | /"chicago"/"7"  |       48 |      0.000316 |            1 | region=us-east1       | {1,5,6}  | {region=us-east1,region=us-central1,region=us-central1}
+  /"chicago"/"7"  | /"new york"/"3" |       49 |      0.001452 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"new york"/"3" | /"new york"/"7" |       46 |      0.000094 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"new york"/"7" | /"seattle"/"3"  |       47 |      0.001865 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"seattle"/"3"  | /"seattle"/"7"  |       50 |      0.000106 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"seattle"/"7"  | NULL            |       51 |      0.002597 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+(7 rows)
 ~~~
 
 ### Split an index
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX secondary ON kv (v);
-~~~
+Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW RANGES FROM INDEX kv@secondary;
+> CREATE INDEX revenue_idx ON rides(revenue);
 ~~~
 
-~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | NULL    |       75 | {1}      |            1 |
-+-----------+---------+----------+----------+--------------+
-(1 row)
-~~~
+Then split the table ranges by secondary index values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER INDEX kv@secondary SPLIT AT (SELECT v FROM kv LIMIT 3);
+> ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
-
 ~~~
-+---------------------+-----------------+
-|         key         |     pretty      |
-+---------------------+-----------------+
-| \u020b\x12a\x00\x01 | /Table/64/3/"a" |
-| \u020b\x12b\x00\x01 | /Table/64/3/"b" |
-| \u020b\x12c\x00\x01 | /Table/64/3/"c" |
-+---------------------+-----------------+
+         key        |      pretty      |       split_enforced_until
++-------------------+------------------+----------------------------------+
+  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
+  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
+  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
 (3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW RANGES FROM INDEX kv@secondary;
+> SHOW RANGES FROM INDEX rides@revenue_idx;
+~~~
+~~~
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL      | /25     |       55 |      0.007446 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /25       | /5E+1   |       56 |      0.008951 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /5E+1     | /75     |       57 |      0.008205 |            2 | region=us-east1       | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  /75       | NULL    |       60 |      0.009322 |            6 | region=us-central1    | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+(4 rows)
+~~~
+
+### Set the expiration on a split enforcement
+
+You can specify the time at which a split enforcement expires by adding a `WITH EXPIRATION` clause to your `SPLIT` statement. Supported expiration values include [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), and [`TIMESTAMPZ`](timestamp.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2020-01-10 23:30:00+00:00';
+~~~
+~~~
+              key              |         pretty         |   split_enforced_until
++------------------------------+------------------------+---------------------------+
+  \276\211\022chicago\000\001  | /Table/54/1/"chicago"  | 2020-01-10 23:30:00+00:00
+  \276\211\022new york\000\001 | /Table/54/1/"new york" | 2020-01-10 23:30:00+00:00
+  \276\211\022seattle\000\001  | /Table/54/1/"seattle"  | 2020-01-10 23:30:00+00:00
+(3 rows)
+~~~
+
+You can see the split's expiration date in the `split_enforced_until` column. The `crdb_internal.ranges` table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='vehicles';
 ~~~
 
 ~~~
-+-----------+---------+----------+----------+--------------+
-| start_key | end_key | range_id | replicas | lease_holder |
-+-----------+---------+----------+----------+--------------+
-| NULL      | /"a"    |       75 | {1}      |            1 |
-| /"a"      | /"b"    |       76 | {1}      |            1 |
-| /"b"      | /"c"    |       77 | {1}      |            1 |
-| /"c"      | NULL    |       78 | {1}      |            1 |
-+-----------+---------+----------+----------+--------------+
+  range_id |      start_pretty      |       end_pretty       |   split_enforced_until
++----------+------------------------+------------------------+---------------------------+
+        26 | /Table/54              | /Table/54/1/"chicago"  | NULL
+        75 | /Table/54/1/"chicago"  | /Table/54/1/"new york" | 2020-01-10 23:30:00+00:00
+        76 | /Table/54/1/"new york" | /Table/54/1/"seattle"  | 2020-01-10 23:30:00+00:00
+        78 | /Table/54/1/"seattle"  | /Table/55              | 2020-01-10 23:30:00+00:00
 (4 rows)
 ~~~
+
 
 ## See also
 
