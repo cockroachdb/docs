@@ -26,7 +26,7 @@ For more information, see:
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
 
-The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
+The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows. For smaller tables (with less than 1000 rows), however, using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
 
 ## Bulk insert best practices
 
