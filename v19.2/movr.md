@@ -41,61 +41,61 @@ $ cockroach demo movr
 
 [`cockroach workload`](cockroach-workload.html) loads sample datasets and workloads into running clusters. To load the `movr` database and some sample data into a running cluster, do the following:
 
-  1. Start a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
-  1. Use `cockroach workload` to load the `movr` dataset:
+1. Start a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
+1. Use `cockroach workload` to load the `movr` dataset:
 
-      <div class="filters filters-big clearfix">
-        <button class="filter-button" data-scope="secure">Secure</button>
-        <button class="filter-button" data-scope="insecure">Insecure</button>
-      </div>
+    <div class="filters filters-big clearfix">
+      <button class="filter-button" data-scope="secure">Secure</button>
+      <button class="filter-button" data-scope="insecure">Insecure</button>
+    </div>
 
-      <section class="filter-content" markdown="1" data-scope="secure">
+    <section class="filter-content" markdown="1" data-scope="secure">
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
+    ~~~
 
-      </section>
+    </section>
 
-      <section class="filter-content" markdown="1" data-scope="insecure">
+    <section class="filter-content" markdown="1" data-scope="insecure">
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
 
-      </section>
+    </section>
 
-  1. Use [`cockroach sql`](use-the-built-in-sql-client.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
+1. Use [`cockroach sql`](use-the-built-in-sql-client.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
 
-      <section class="filter-content" markdown="1" data-scope="secure">
+    <section class="filter-content" markdown="1" data-scope="secure">
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ cockroach sql --certs-dir=certs --host=localhost:26257
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --host=localhost:26257
+    ~~~
 
-      {% include copy-clipboard.html %}
-      ~~~ sql
-      > USE movr;
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > USE movr;
+    ~~~
 
-      </section>
+    </section>
 
-      <section class="filter-content" markdown="1" data-scope="insecure">
+    <section class="filter-content" markdown="1" data-scope="insecure">
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ cockroach sql --insecure --host=localhost:26257
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure --host=localhost:26257
+    ~~~
 
-      {% include copy-clipboard.html %}
-      ~~~ sql
-      > USE movr;
-      ~~~        
-      
-      </section>
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > USE movr;
+    ~~~        
+
+    </section>
 
 ## How the MovR application works
 
