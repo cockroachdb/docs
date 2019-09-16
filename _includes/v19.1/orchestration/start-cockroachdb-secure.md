@@ -36,6 +36,10 @@
         $ kubectl create -f cockroachdb-statefulset-secure.yaml
         ~~~
 
+    {{site.data.alerts.callout_success}}
+    If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names). 
+    {{site.data.alerts.end}}
+
 2. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
     1. Get the name of the `Pending` CSR for the first pod:
