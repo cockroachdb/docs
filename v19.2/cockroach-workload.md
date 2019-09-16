@@ -4,7 +4,7 @@ summary: Use cockroach workload to run a load generator against a CockroachDB cl
 toc: true
 ---
 
-CockroachDB comes with built-in load generators for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command](cockroach-commands.html) as described below.
+CockroachDB comes with built-in load generators for simulating different types of client workloads, printing per-operation statistics and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command](cockroach-commands.html) as described below.
 
 {{site.data.alerts.callout_danger}}
 The `cockroach workload` command is experimental. The interface and output are subject to change.
@@ -65,8 +65,10 @@ Flag | Description
 -----|------------
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** 2 * number of CPUs
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `bank`
+`--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
+`--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
-`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
@@ -96,8 +98,10 @@ Flag | Description
 `--batch` | The number of blocks to insert in a single SQL statement.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`  `--cycle-length`| The number of keys repeatedly accessed by each writer.**Applicable commands:** `init` or `run`<br>**Default:** `9223372036854775807`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `kv`
+`--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
+`--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`
-`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--max-block-bytes` | The maximum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `2`
@@ -123,6 +127,8 @@ Flag | Description
 -----|------------
 `--concurrency` | The number of concurrent workers.<br><br>**Default:** `16`
 `--db` | The SQL database to use.<br><br>**Default:** `movr`
+`--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
+`--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.
 `--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Default:** `prepare`
 `--num-histories` | The initial number of ride location histories.<br><br>**Default:** `1000`
@@ -138,8 +144,10 @@ Flag | Description
 -----|------------
 `--active-warehouses` | Run the load generator against a specific number of warehouses.<br><br>**Applicable commands:** `init` or `run`<br>**Defaults:** Value of `--warehouses`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `tpcc`
+`--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
+`--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
-`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
@@ -166,8 +174,10 @@ Flag | Description
 -----|------------
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `ycsb`
+`--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
+`--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
-`--duration` | The duration to run, with a required time unit suffix. Valid time units are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
@@ -537,6 +547,41 @@ $ cockroach start \
     _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
       600.0s        0        4728286         7880.2      1.0      0.9      2.2      5.2    268.4
     ~~~  
+
+### Customize the frequency and format of per-operation statistics
+
+To customize the frequency of per-operation statistics, use the `--display-every` flag, with `ns`, `us`, `ms`, `s`, `m`, and `h` as valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)). To customize the format of per-operation statistics, use the `--display-format` flag, with `incremental-json` or `simple` (default) as options.
+
+1. Load the initial schema and data:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init ycsb \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+2. Run the workload for 1 minute, printing the output every 5 seconds as JSON:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run ycsb \
+    --duration=1m \
+    --display-every=5s \
+    --display-format=incremental-json \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    ~~~
+    {"time":"2019-09-13T03:25:03.950621Z","errs":0,"avgt":8434.5,"avgl":8471.0,"p50l":0.8,"p95l":1.6,"p99l":3.1,"maxl":19.9,"type":"read"}
+    {"time":"2019-09-13T03:25:03.950621Z","errs":0,"avgt":438.1,"avgl":440.0,"p50l":1.5,"p95l":2.8,"p99l":4.5,"maxl":14.7,"type":"update"}
+    {"time":"2019-09-13T03:25:08.95061Z","errs":0,"avgt":7610.6,"avgl":8040.8,"p50l":0.8,"p95l":2.0,"p99l":4.2,"maxl":65.0,"type":"read"}
+    {"time":"2019-09-13T03:25:08.95061Z","errs":0,"avgt":391.8,"avgl":415.9,"p50l":1.6,"p95l":3.5,"p99l":5.8,"maxl":21.0,"type":"update"}
+    {"time":"2019-09-13T03:25:13.950727Z","errs":0,"avgt":7242.0,"avgl":7774.5,"p50l":0.8,"p95l":2.2,"p99l":4.7,"maxl":75.5,"type":"read"}
+    {"time":"2019-09-13T03:25:13.950727Z","errs":0,"avgt":382.0,"avgl":404.6,"p50l":1.6,"p95l":4.7,"p99l":10.5,"maxl":24.1,"type":"update"}
+    ...
+    ~~~
+
+    When using `incremental-json`, note that totals are not printed at the end of the workload's duration.
 
 ## See also
 
