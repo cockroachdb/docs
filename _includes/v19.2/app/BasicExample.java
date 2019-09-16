@@ -117,10 +117,7 @@ class BasicExampleDAO {
 
     /**
        Used to test the retry logic in 'runSQL'.  It is not necessary
-       in production code.  Note that this calls an internal
-       CockroachDB function that can only be run by the 'root' user,
-       and will fail with an insufficient privileges error if you try
-       to run it as user 'maxroach'.
+       in production code.
     */
     void testRetryHandling() {
         if (this.FORCE_RETRY) {
