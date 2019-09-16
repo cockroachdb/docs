@@ -1,6 +1,6 @@
 ---
-title: SQL Tuning with `EXPLAIN`
-summary: How to use `EXPLAIN` to identify and resolve SQL performance issues
+title: SQL Tuning with EXPLAIN
+summary: How to use `EXPLAIN to identify and resolve SQL performance issues
 toc: true
 ---
 
