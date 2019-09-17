@@ -129,10 +129,10 @@ Command | Usage
 ### Client-side options
 
 - To view option descriptions and how they are currently set, use `\set` without any options.
-- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. As of v2.1, you can also use the form `<option>=<value>`.
+- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. You can also use the form `<option>=<value>`.
 - If an option accepts a boolean value:
     - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
-    - As of v2.1, `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
+    - `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
 
 Client Options | Description
 ---------------|------------
