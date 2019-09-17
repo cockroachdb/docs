@@ -121,18 +121,18 @@ Command | Usage
 `\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>You can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\show` | During a multi-line statement or transaction, show the SQL entered so far.
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
-`\l` | <span class="version-tag">New in v19.2:</span> List all databases in the CockroachDB cluster.
-`\dt` | <span class="version-tag">New in v19.2:</span> Show the tables of the current schema in the current database.
-`\du` | <span class="version-tag">New in v19.2:</span> List the users for all databases.
-`\d <table>` | <span class="version-tag">New in v19.2:</span> Show details about columns in the specified table.
+`\l` | <span class="version-tag">New in v19.2:</span> List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
+`\dt`<br>`d` | <span class="version-tag">New in v19.2:</span> Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
+`\du` | <span class="version-tag">New in v19.2:</span> List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
+`\d <table>` | <span class="version-tag">New in v19.2:</span> Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
 
 ### Client-side options
 
 - To view option descriptions and how they are currently set, use `\set` without any options.
-- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. As of v2.1, you can also use the form `<option>=<value>`.
+- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. You can also use the form `<option>=<value>`.
 - If an option accepts a boolean value:
     - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
-    - As of v2.1, `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
+    - `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
 
 Client Options | Description
 ---------------|------------

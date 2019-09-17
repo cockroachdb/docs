@@ -145,7 +145,7 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 ## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html) (both of which are in **beta** as of v2.1).  Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB.  Check those pages for details.
+Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
 
 We also fully support [importing your data via CSV](migrate-from-csv.html).
 

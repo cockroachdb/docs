@@ -15,7 +15,7 @@ CockroachDB [enterprise license](https://www.cockroachlabs.com/pricing/) users c
 When `cockroach dump` is executed:
 
 - Table, sequence, and view schemas and table data are dumped as they appeared at the time that the command is started. Any changes after the command starts will not be included in the dump.
-- Table and view schemas are dumped in the order in which they can successfully be recreated. As of v2.0, this is true of sequences as well.
+- Table and view schemas are dumped in the order in which they can successfully be recreated. This is true of sequences as well.
 - If the dump takes longer than the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default), the dump may fail.
 - Reads, writes, and schema changes can happen while the dump is in progress, but will not affect the output of the dump.
 

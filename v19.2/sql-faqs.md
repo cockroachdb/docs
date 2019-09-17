@@ -68,7 +68,7 @@ At this time `LATERAL` joins are not yet supported.  For details, see [this Gith
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
-Yes, as of v2.0, the [`JSONB`](jsonb.html) data type is supported.
+Yes, the [`JSONB`](jsonb.html) data type is supported.
 
 ## How do I know which index CockroachDB will select for a query?
 
