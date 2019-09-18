@@ -55,7 +55,7 @@ default database for the current session:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET database = bank;
+> SET database = movr;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -64,11 +64,9 @@ default database for the current session:
 ~~~
 
 ~~~
+  database
 +----------+
-| database |
-+----------+
-| bank     |
-+----------+
+  movr
 (1 row)
 ~~~
 
@@ -87,11 +85,9 @@ The following demonstrates how to use quoting to use values containing spaces:
 ~~~
 
 ~~~
-+---------------------------+
-|         database          |
-+---------------------------+
-| database name with spaces |
-+---------------------------+
+  database
++----------+
+  database name with spaces
 (1 row)
 ~~~
 
@@ -110,11 +106,9 @@ The following demonstrates how to assign a list of values:
 ~~~
 
 ~~~
-+---------------------------+
-|        search_path        |
-+---------------------------+
-| pg_catalog, public        |
-+---------------------------+
+     search_path
++--------------------+
+  pg_catalog, public
 (1 row)
 ~~~
 
@@ -128,11 +122,9 @@ The following demonstrates how to assign a list of values:
 ~~~
 
 ~~~
+  search_path
 +-------------+
-| search_path |
-+-------------+
-| public      |
-+-------------+
+  public
 (1 row)
 ~~~
 
@@ -147,11 +139,9 @@ The following demonstrates how to assign a list of values:
 ~~~
 
 ~~~
+  search_path
 +-------------+
-| search_path |
-+-------------+
-| app         |
-+-------------+
+  app
 (1 row)
 ~~~
 
@@ -166,11 +156,9 @@ The following demonstrates how to assign a list of values:
 ~~~
 
 ~~~
+  search_path
 +-------------+
-| search_path |
-+-------------+
-| public      |
-+-------------+
+  public
 (1 row)
 ~~~
 
@@ -204,11 +192,9 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ~~~
 
 ~~~
-+-----------+
-| time zone |
-+-----------+
-| EST       |
-+-----------+
+  timezone
++----------+
+  EST
 (1 row)
 ~~~
 
@@ -223,11 +209,9 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ~~~
 
 ~~~
-+-----------+
-| time zone |
-+-----------+
-| UTC       |
-+-----------+
+  timezone
++----------+
+  UTC
 (1 row)
 ~~~
 
