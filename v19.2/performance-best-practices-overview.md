@@ -30,9 +30,9 @@ The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropp
 
 ## Bulk insert best practices
 
-### Use multi-row `INSERT` statements for bulk inserts into existing tables
+### Use `IMPORT INTO` instead of `INSERT` for bulk inserts into existing tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+<span class="version-tag">New in v19.2:</span> To bulk-insert data into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
 
 ### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
