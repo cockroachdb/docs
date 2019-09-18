@@ -909,6 +909,10 @@ This approach reduced the query time from 2489.85ms (query with subquery) to 220
 
 #### Bulk inserting into an existing table
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2:</span> To import bulk data from one or more CSV files into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
+{{site.data.alerts.end}}
+
 Moving on to writes, let's imagine that you have a batch of 100 new users to insert into the `users` table. The most obvious approach is to insert each row using 100 separate [`INSERT`](insert.html) statements:  
 
 {{site.data.alerts.callout_info}}
