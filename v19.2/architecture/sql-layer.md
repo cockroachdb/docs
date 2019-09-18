@@ -78,6 +78,10 @@ Components of the physical plan are sent to one or more nodes for execution. On 
 
 Each processor uses an encoded form for the scalar values manipulated by the query. This is a binary form which is different from that used in SQL. So the values listed in the SQL query must be encoded, and the data communicated between logical processors, and read from disk, must be decoded before it is sent back to the SQL client.
 
+<span class="version-tag">New in v19.2:</span> CockroachDB supports column-oriented ("vectorized") query execution on all [supported SQL operations](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html). Column-oriented execution models contrast with row-oriented execution models, which can offer good performance for [Online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [Online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing).
+
+For more information about CockroachDB's vectorized execution engine, see [Vectorized Query Execution](../vectorized-execution.html).
+
 ### Encoding
 
 Though SQL queries are written in parsable strings, lower layers of CockroachDB deal primarily in bytes. This means at the SQL layer, in query execution, CockroachDB must convert row data from their SQL representation as strings into bytes, and convert bytes returned from lower layers into SQL data that can be passed back to the client.
