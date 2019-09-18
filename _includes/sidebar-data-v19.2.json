@@ -1605,6 +1605,12 @@
                 "urls": [
                   "/${VERSION}/cost-based-optimizer.html"
                 ]
+              },
+              {
+                "title": "Vectorized Execution",
+                "urls": [
+                  "/${VERSION}/vectorized-execution.html"
+                ]
               }
             ]
           },

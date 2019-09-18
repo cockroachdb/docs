@@ -78,6 +78,16 @@ Components of the physical plan are sent to one or more nodes for execution. On 
 
 Each processor uses an encoded form for the scalar values manipulated by the query. This is a binary form which is different from that used in SQL. So the values listed in the SQL query must be encoded, and the data communicated between logical processors, and read from disk, must be decoded before it is sent back to the SQL client.
 
+#### Vectorized query execution
+
+<span class="version-tag">New in v19.2:</span> If [vectorized execution](../vectorized-execution.html) is enabled, the physical plan is sent to nodes to be processed by the vectorized execution engine.
+
+Upon receiving the physical plan, the vectorized engine reads batches of table data [from disk](storage-layer.html) and converts the data from row format to columnar format. These batches of column data are stored in memory so the engine can access them quickly during execution.
+
+The vectorized engine uses specialized, precompiled functions that quickly iterate over the type-specific arrays of column data. The columnar output from the functions is stored in memory as the engine processes each column of data.
+
+After processing all columns of data in the input buffer, the engine converts the columnar output back to row format, and then returns the processed rows to the SQL interface. After a batch of table data has been fully processed, the engine reads the following batch of table data for processing, until the query has been executed.
+
 ### Encoding
 
 Though SQL queries are written in parsable strings, lower layers of CockroachDB deal primarily in bytes. This means at the SQL layer, in query execution, CockroachDB must convert row data from their SQL representation as strings into bytes, and convert bytes returned from lower layers into SQL data that can be passed back to the client.
