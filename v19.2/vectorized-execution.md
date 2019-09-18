@@ -65,7 +65,7 @@ In all [`vectorize` modes](#configuring-vectorized-execution), queries on tables
 
 ### Queries with constant `NULL` arguments
 
-The vectorized execution engine does not support queries that contain constant a `NULL` argument. This includes `NOT NULL` permutations in generic [selection query](selection-queries.html) comparisons and [`CASE`](scalar-expressions.html#simple-case-expressions) expressions, in addition to other projection operators on constant `NULL` values.
+The vectorized execution engine does not support queries that contain a constant `NULL` argument. This includes `NOT NULL` permutations in generic [selection query](selection-queries.html) comparisons and [`CASE`](scalar-expressions.html#simple-case-expressions) expressions, in addition to other projection operators on constant `NULL` values.
 
 For example, the following statements return an `unable to vectorize execution plan` error:
 
@@ -81,7 +81,7 @@ Support for vectorized execution is experimental for the following memory-intens
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](start-a-node.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](start-a-node.html#general) sets the maximum on-disk storage capacity.
+You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](start-a-node.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](start-a-node.html#general) sets the maximum on-disk storage capacity. 
 
 ## See also
 
