@@ -52,11 +52,9 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
+  database
 +----------+
-| database |
-+----------+
-| test     |
-+----------+
+  movr
 (1 row)
 ~~~
 
@@ -68,41 +66,55 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
-+--------------------------------+----------------+
-|            variable            |     value      |
-+--------------------------------+----------------+
-| application_name               | cockroach demo |
-| bytea_output                   | hex            |
-| client_encoding                | UTF8           |
-| client_min_messages            | notice         |
-| database                       | defaultdb      |
-| datestyle                      | ISO            |
-| default_transaction_isolation  | serializable   |
-| default_transaction_read_only  | off            |
-| distsql                        | auto           |
-| experimental_enable_zigzag_join | off           |
-| experimental_opt               | on             |
-| extra_float_digits             | 0              |
-| integer_datetimes              | on             |
-| intervalstyle                  | postgres       |
-| max_index_keys                 | 32             |
-| node_id                        | 1              |
-| search_path                    | public         |
-| server_encoding                | UTF8           |
-| server_version                 | 9.5.0          |
-| server_version_num             | 90500          |
-| session_user                   | root           |
-| sql_safe_updates               | true           |
-| standard_conforming_strings    | on             |
-| statement_timeout              | 0s             |
-| timezone                       | UTC            |
-| tracing                        | off            |
-| transaction_isolation          | serializable   |
-| transaction_priority           | normal         |
-| transaction_read_only          | off            |
-| transaction_status             | NoTxn          |
-+--------------------------------+----------------+
-(31 rows)
+               variable               |                                                          value
++-------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
+  application_name                    | $ cockroach demo
+  bytea_output                        | hex
+  client_encoding                     | UTF8
+  client_min_messages                 | notice
+  crdb_version                        | CockroachDB OSS v19.2.0
+  database                            | movr
+  datestyle                           | ISO, MDY
+  default_int_size                    | 8
+  default_tablespace                  |
+  default_transaction_isolation       | serializable
+  default_transaction_read_only       | off
+  distsql                             | auto
+  enable_zigzag_join                  | on
+  experimental_force_split_at         | off
+  experimental_serial_normalization   | rowid
+  extra_float_digits                  | 2
+  force_savepoint_restart             | off
+  idle_in_transaction_session_timeout | 0
+  integer_datetimes                   | on
+  intervalstyle                       | postgres
+  locality                            | region=us-east1,az=b
+  lock_timeout                        | 0
+  max_index_keys                      | 32
+  node_id                             | 1
+  optimizer                           | on
+  optimizer_foreign_keys              | off
+  reorder_joins_limit                 | 4
+  results_buffer_size                 | 16384
+  row_security                        | off
+  search_path                         | public
+  server_encoding                     | UTF8
+  server_version                      | 9.5.0
+  server_version_num                  | 90500
+  session_user                        | root
+  sql_safe_updates                    | on
+  standard_conforming_strings         | on
+  statement_timeout                   | 0
+  synchronize_seqscans                | on
+  timezone                            | UTC
+  tracing                             | off
+  transaction_isolation               | serializable
+  transaction_priority                | normal
+  transaction_read_only               | off
+  transaction_status                  | NoTxn
+  vectorize                           | auto
+  vectorize_row_count_threshold       | 1000
+(46 rows)
 ~~~
 
 ## See also
