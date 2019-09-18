@@ -1,47 +1,41 @@
 ---
 title: IMPORT INTO
-summary: Incrementally import CSV data into an existing CockroachDB table.
+summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span>The `IMPORT INTO` [statement](sql-statements.html) incrementally imports CSV data into an existing CockroachDB table. To create a table, use [`CREATE TABLE`](create-table.html).
+<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an existing table. To create a table, use [`CREATE TABLE`](create-table.html).
 
 {{site.data.alerts.callout_success}}
 `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature and should not be used in production due to correctness issues.** See [Known limitations](#known-limitations) below for more information.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
+Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
-~~~
-> IMPORT INTO table_name (column_name [, ...])
-         CSV DATA ('file_location' [, ...])
-         [ WITH <option> [= <value>] [, ...] ];
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/import_into.html %}
+</div>
 
 {{site.data.alerts.callout_info}}
-The table will be taken offline during the incremental import.
+While importing into an existing table, the table is taken offline.
 {{site.data.alerts.end}}
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table you want to incrementally import into.
+`table_name` | The name of the table you want to import into.
 `column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
-`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import a table from multiple CSV files](#import-a-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [these options](#import-options).
 
 ### Import file URLs
 
-URLs for the files you want to import must use the format shown below.  For examples, see [Example file URLs](#example-file-urls).
+URLs for the files you want to import must use the format shown below. For examples, see [Example file URLs](#example-file-urls).
 
 {% include {{ page.version.version }}/misc/external-urls.md %}
 
@@ -67,7 +61,7 @@ For instructions and working examples showing how to migrate data from other dat
 
 Before using `IMPORT INTO`, you should have:
 
-- An existing table to incrementally import into (use [`CREATE TABLE`](create-table.html)).
+- An existing table to import into (use [`CREATE TABLE`](create-table.html)).
 - The CSV data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster. For more information, see the [Import file location](#import-file-location) section below.
 
 ### Available storage
@@ -97,17 +91,17 @@ All nodes are used during the import job, which means all nodes' CPU and RAM wil
 
 ## Viewing and controlling import jobs
 
-After CockroachDB successfully initiates an incremental import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates an import into an existing table, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 {{site.data.alerts.callout_danger}}
-Pausing and then resuming an `IMPORT` job will cause it to restart from the beginning.
+Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
 {{site.data.alerts.end}}
 
 ## Examples
 
-### Import a table from a CSV file
+### Import into an existing table from a CSV file
 
 Amazon S3:
 
@@ -139,7 +133,7 @@ Google Cloud:
     );
 ~~~
 
-### Import a table from multiple CSV files
+### Import into an existing table from multiple CSV files
 
 Amazon S3:
 
@@ -183,24 +177,16 @@ Google Cloud:
 
 ## Known limitations
 
-- Only CSV data importing into a single table is supported.
-- `IMPORT INTO` **cannot**:
-    - Be used within a [transaction](transactions.html).
-    - Replace a row.
-    - Add a row that conflicts with a `UNIQUE` [index](indexes.html).
-- Currently, `IMPORT INTO` does not work on indexed tables.
-- `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+- While importing into an existing table, the table is taken offline.
+- After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
+- Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
+- `IMPORT INTO` works for only a single existing table, and the table must not be [interleaved](interleave-in-parent.html).
+- `IMPORT INTO` cannot be used within a [transaction](transactions.html).
+- `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~
-- Any constraints will be un-validated and need to be re-validated after an incremental import.
-- The table will be taken offline during the incremental import.
-
-Known issues that will be addressed in upcoming alpha releases:
-
-- On failure, partially imported data remains in the table.
-- Specified target columns constraints are not enforced.
 
 ## See also
 

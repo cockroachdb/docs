@@ -10,7 +10,11 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 ## Performance best practices
 
 - To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
-- To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
+
+    {{site.data.alerts.callout_info}}
+    <span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+    {{site.data.alerts.end}}
+- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required privileges
@@ -144,9 +148,7 @@ If you do not list column names, the statement will use the columns of the table
 
 ### Insert multiple rows into an existing table
 
-{{site.data.alerts.callout_success}}
 Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
-{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -177,6 +179,10 @@ Multi-row inserts are faster than multiple single-row `INSERT` statements. As a 
   8a3d70a3-d70a-4000-8000-00000000001b | seattle  | Eric             | 400 Broad St                  | 0987654321
 (12 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+{{site.data.alerts.end}}
 
 ### Insert multiple rows into a new table
 
