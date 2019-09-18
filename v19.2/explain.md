@@ -18,6 +18,8 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
+- <span class="version-tag">New in v19.2:</span> By default, `vectorize=auto`, meaning the column-oriented vectorized SQL execution engine is enabled for all streaming operations. If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
+
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
 - Indexes the query uses; shown as the **Description** value of rows with the **Field** value of `table`
@@ -43,6 +45,7 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
  `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
  `DISTSQL`          | Generate a URL to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
  `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
+ `VEC`             | Show detailed information for [vectorized](vectorized-execution.html) execution plans.
 
 {{site.data.alerts.callout_danger}}
 `EXPLAIN` also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.
@@ -62,6 +65,8 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
 ## Examples
 
+The following examples use the [`startrek` example dataset](cockroach-demo.html#datasets). To follow along, you can use `cockroach demo startrek` to start a temporary, in-memory cluster with the `startrek` dataset preloaded.
+
 ### Default query plans
 
 By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query:
@@ -72,15 +77,17 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 ~~~
 
 ~~~
-    tree    | field  |   description
-+-----------+--------+------------------+
-  sort      |        |
-   │        | order  | +season
-   └── scan |        |
-            | table  | episodes@primary
-            | spans  | ALL
-            | filter | season > 3
-(6 rows)
+    tree    |    field    |   description
++-----------+-------------+------------------+
+            | distributed | true
+            | vectorized  | false
+  sort      |             |
+   │        | order       | +season
+   └── scan |             |
+            | table       | episodes@primary
+            | spans       | ALL
+            | filter      | season > 3
+(8 rows)
 ~~~
 
 The first column shows the tree structure of the query plan; a set of properties is displayed for each node in the tree. Most importantly, for scans, you can see the index that is scanned (`primary` in this case) and what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
@@ -94,29 +101,43 @@ The `VERBOSE` option:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VERBOSE) SELECT * FROM quotes AS q \
-JOIN episodes AS e ON q.episode = e.id \
-WHERE e.season = '1' \
+> EXPLAIN (VERBOSE) SELECT * FROM quotes AS q
+JOIN episodes AS e ON q.episode = e.id
+WHERE e.season = '1'
 ORDER BY e.stardate ASC;
 ~~~
 
 ~~~
-       tree      |       field        |   description    |                                 columns                                  | ordering
-+----------------+--------------------+------------------+--------------------------------------------------------------------------+-----------+
-  sort           |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) | +stardate
-   │             | order              | +stardate        |                                                                          |
-   └── hash-join |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) |
-        │        | type               | inner            |                                                                          |
-        │        | equality           | (episode) = (id) |                                                                          |
-        │        | right cols are key |                  |                                                                          |
-        ├── scan |                    |                  | (quote, characters, stardate, episode)                                   |
-        │        | table              | quotes@primary   |                                                                          |
-        │        | spans              | ALL              |                                                                          |
-        └── scan |                    |                  | (id, season, num, title, stardate)                                       |
-                 | table              | episodes@primary |                                                                          |
-                 | spans              | ALL              |                                                                          |
-                 | filter             | season = 1       |                                                                          |
-(13 rows)
+            tree           |         field         |        description        |                                         columns                                         | ordering
++--------------------------+-----------------------+---------------------------+-----------------------------------------------------------------------------------------+-----------+
+                           | distributed           | true                      |                                                                                         |
+                           | vectorized            | false                     |                                                                                         |
+  render                   |                       |                           | (quote, characters, stardate, episode, id, season, num, title, stardate)                | +stardate
+   │                       | render 0              | quote                     |                                                                                         |
+   │                       | render 1              | characters                |                                                                                         |
+   │                       | render 2              | stardate                  |                                                                                         |
+   │                       | render 3              | episode                   |                                                                                         |
+   │                       | render 4              | id                        |                                                                                         |
+   │                       | render 5              | season                    |                                                                                         |
+   │                       | render 6              | num                       |                                                                                         |
+   │                       | render 7              | title                     |                                                                                         |
+   │                       | render 8              | stardate                  |                                                                                         |
+   └── lookup-join         |                       |                           | (id, season, num, title, stardate, episode, rowid[hidden], quote, characters, stardate) | +stardate
+        │                  | table                 | quotes@primary            |                                                                                         |
+        │                  | type                  | inner                     |                                                                                         |
+        │                  | equality              | (rowid) = (rowid)         |                                                                                         |
+        │                  | equality cols are key |                           |                                                                                         |
+        └── lookup-join    |                       |                           | (id, season, num, title, stardate, episode, rowid[hidden])                              | +stardate
+             │             | table                 | quotes@quotes_episode_idx |                                                                                         |
+             │             | type                  | inner                     |                                                                                         |
+             │             | equality              | (id) = (episode)          |                                                                                         |
+             └── sort      |                       |                           | (id, season, num, title, stardate)                                                      | +stardate
+                  │        | order                 | +stardate                 |                                                                                         |
+                  └── scan |                       |                           | (id, season, num, title, stardate)                                                      |
+                           | table                 | episodes@primary          |                                                                                         |
+                           | spans                 | ALL                       |                                                                                         |
+                           | filter                | season = 1                |                                                                                         |
+(27 rows)
 ~~~
 
 ### `TYPES` option
@@ -129,15 +150,17 @@ The `TYPES` mode includes the types of the values used in the query plan. It als
 ~~~
 
 ~~~
-    tree    | field  |           description            |                            columns                            | ordering
-+-----------+--------+----------------------------------+---------------------------------------------------------------+----------+
-  sort      |        |                                  | (id int, season int, num int, title string, stardate decimal) | +season
-   │        | order  | +season                          |                                                               |
-   └── scan |        |                                  | (id int, season int, num int, title string, stardate decimal) |
-            | table  | episodes@primary                 |                                                               |
-            | spans  | ALL                              |                                                               |
-            | filter | ((season)[int] > (3)[int])[bool] |                                                               |
-(6 rows)
+    tree    |    field    |           description            |                            columns                            | ordering
++-----------+-------------+----------------------------------+---------------------------------------------------------------+----------+
+            | distributed | true                             |                                                               |
+            | vectorized  | false                            |                                                               |
+  sort      |             |                                  | (id int, season int, num int, title string, stardate decimal) | +season
+   │        | order       | +season                          |                                                               |
+   └── scan |             |                                  | (id int, season int, num int, title string, stardate decimal) |
+            | table       | episodes@primary                 |                                                               |
+            | spans       | ALL                              |                                                               |
+            | filter      | ((season)[int] > (3)[int])[bool] |                                                               |
+(8 rows)
 ~~~
 
 ### `OPT` option
@@ -172,33 +195,38 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
 ~~~
 
 ~~~
-                                                    text
-+----------------------------------------------------------------------------------------------------------+
+              text
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   sort
    ├── columns: id:1 season:2 num:3 title:4 stardate:5
-   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
-   ├── cost: 90.7319109
+   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+   ├── cost: 98.6419109
    ├── key: (1)
    ├── fd: (1)-->(2-5)
    ├── ordering: +2
    ├── prune: (1,3-5)
+   ├── interesting orderings: (+1)
    └── select
         ├── columns: id:1 season:2 num:3 title:4 stardate:5
-        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
-        ├── cost: 87.71
+        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+        ├── cost: 95.62
         ├── key: (1)
         ├── fd: (1)-->(2-5)
         ├── prune: (1,3-5)
+        ├── interesting orderings: (+1)
         ├── scan episodes
         │    ├── columns: id:1 season:2 num:3 title:4 stardate:5
         │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
-        │    ├── cost: 86.91
+        │    │   histogram(1)=  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1
+        │    │                <--- 1 --- 2 --- 3 --- 4 --- 5 --- 6 --- 7 --- 8 --- 9 --- 10 --- 11 --- 12 --- 13 --- 14 --- 15 --- 16 --- 17 --- 18 --- 19 --- 20 --- 21 --- 22 --- 23 --- 24 --- 25 --- 26 --- 27 --- 28 --- 29 --- 30 --- 31 --- 32 --- 33 --- 34 --- 35 --- 36 --- 37 --- 38 --- 39 --- 40 --- 41 --- 42 --- 43 --- 44 --- 45 --- 46 --- 47 --- 48 --- 49 --- 50 --- 51 --- 52 --- 53 --- 54 --- 55 --- 56 --- 57 --- 58 --- 59 --- 60 --- 61 --- 62 --- 63 --- 64 --- 65 --- 66 --- 67 --- 68 --- 69 --- 70 --- 71 --- 72 --- 73 --- 74 --- 75 --- 76 --- 77 --- 78 --- 79
+        │    ├── cost: 94.82
         │    ├── key: (1)
         │    ├── fd: (1)-->(2-5)
-        │    └── prune: (1-5)
+        │    ├── prune: (1-5)
+        │    └── interesting orderings: (+1)
         └── filters
              └── season > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
-(24 rows)
+(29 rows)
 ~~~
 
 <a name="opt-types-option"></a>
@@ -211,35 +239,40 @@ To include cost and type details, use `OPT, TYPES`:
 ~~~
 
 ~~~
-                                                    text
-+----------------------------------------------------------------------------------------------------------+
+                                                                                  text
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   sort
    ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
-   ├── cost: 90.7319109
+   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+   ├── cost: 98.6419109
    ├── key: (1)
    ├── fd: (1)-->(2-5)
    ├── ordering: +2
    ├── prune: (1,3-5)
+   ├── interesting orderings: (+1)
    └── select
         ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=2.99993081, null(2)=0]
-        ├── cost: 87.71
+        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+        ├── cost: 95.62
         ├── key: (1)
         ├── fd: (1)-->(2-5)
         ├── prune: (1,3-5)
+        ├── interesting orderings: (+1)
         ├── scan episodes
         │    ├── columns: id:1(int!null) season:2(int) num:3(int) title:4(string) stardate:5(decimal)
         │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
-        │    ├── cost: 86.91
+        │    │   histogram(1)=  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1
+        │    │                <--- 1 --- 2 --- 3 --- 4 --- 5 --- 6 --- 7 --- 8 --- 9 --- 10 --- 11 --- 12 --- 13 --- 14 --- 15 --- 16 --- 17 --- 18 --- 19 --- 20 --- 21 --- 22 --- 23 --- 24 --- 25 --- 26 --- 27 --- 28 --- 29 --- 30 --- 31 --- 32 --- 33 --- 34 --- 35 --- 36 --- 37 --- 38 --- 39 --- 40 --- 41 --- 42 --- 43 --- 44 --- 45 --- 46 --- 47 --- 48 --- 49 --- 50 --- 51 --- 52 --- 53 --- 54 --- 55 --- 56 --- 57 --- 58 --- 59 --- 60 --- 61 --- 62 --- 63 --- 64 --- 65 --- 66 --- 67 --- 68 --- 69 --- 70 --- 71 --- 72 --- 73 --- 74 --- 75 --- 76 --- 77 --- 78 --- 79
+        │    ├── cost: 94.82
         │    ├── key: (1)
         │    ├── fd: (1)-->(2-5)
-        │    └── prune: (1-5)
+        │    ├── prune: (1-5)
+        │    └── interesting orderings: (+1)
         └── filters
              └── gt [type=bool, outer=(2), constraints=(/2: [/4 - ]; tight)]
                   ├── variable: season [type=int]
                   └── const: 3 [type=int]
-(26 rows)
+(31 rows)
 ~~~
 
 <a name="opt-env-option"></a>
@@ -252,87 +285,106 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 ~~~
 
 ~~~
-                                                              text
-+-------------------------------------------------------------------------------------------------------------------------------+
-  Version: CockroachDB CCL v19.1.0-beta.20190318-377-gc45b9a400f (x86_64-apple-darwin17.7.0, built 2019/03/26 19:46:42, go1.11)
+Version: CockroachDB CCL v19.2.0
 
-  CREATE TABLE episodes (
-      id INT8 NOT NULL,
-      season INT8 NULL,
-      num INT8 NULL,
-      title STRING NULL,
-      stardate DECIMAL NULL,
-      CONSTRAINT "primary" PRIMARY KEY (id ASC),
-      FAMILY "primary" (id, season, num, title, stardate)
-  );
+CREATE TABLE episodes (
+	id INT8 NOT NULL,
+	season INT8 NULL,
+	num INT8 NULL,
+	title STRING NULL,
+	stardate DECIMAL NULL,
+	CONSTRAINT "primary" PRIMARY KEY (id ASC),
+	FAMILY "primary" (id, season, num, title, stardate)
+);
 
-  ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
-      {
-          "columns": [
-              "id"
-          ],
-          "created_at": "2019-03-26 19:49:53.18699+00:00",
-          "distinct_count": 79,
-          "histo_col_type": "",
-          "name": "__auto__",
-          "null_count": 0,
-          "row_count": 79
-      },
-      {
-          "columns": [
-              "season"
-          ],
-          "created_at": "2019-03-26 19:49:53.18699+00:00",
-          "distinct_count": 3,
-          "histo_col_type": "",
-          "name": "__auto__",
-          "null_count": 0,
-          "row_count": 79
-      },
-      {
-          "columns": [
-              "num"
-          ],
-          "created_at": "2019-03-26 19:49:53.18699+00:00",
-          "distinct_count": 29,
-          "histo_col_type": "",
-          "name": "__auto__",
-          "null_count": 0,
-          "row_count": 79
-      },
-      {
-          "columns": [
-              "title"
-          ],
-          "created_at": "2019-03-26 19:49:53.18699+00:00",
-          "distinct_count": 79,
-          "histo_col_type": "",
-          "name": "__auto__",
-          "null_count": 0,
-          "row_count": 79
-      },
-      {
-          "columns": [
-              "stardate"
-          ],
-          "created_at": "2019-03-26 19:49:53.18699+00:00",
-          "distinct_count": 75,
-          "histo_col_type": "",
-          "name": "__auto__",
-          "null_count": 4,
-          "row_count": 79
-      }
-  ]';
+ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
+    {
+        "columns": [
+            "id"
+        ],
+        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "distinct_count": 79,
+        "histo_col_type": "INT8",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 79
+    },
+    {
+        "columns": [
+            "season"
+        ],
+        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "distinct_count": 3,
+        "histo_col_type": "",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 79
+    },
+    {
+        "columns": [
+            "num"
+        ],
+        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "distinct_count": 29,
+        "histo_col_type": "",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 79
+    },
+    {
+        "columns": [
+            "title"
+        ],
+        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "distinct_count": 79,
+        "histo_col_type": "",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 79
+    },
+    {
+        "columns": [
+            "stardate"
+        ],
+        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "distinct_count": 76,
+        "histo_col_type": "",
+        "name": "__auto__",
+        "null_count": 4,
+        "row_count": 79
+    }
+]';
 
-  EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
-  ----
-  sort
-   └── select
-        ├── scan episodes
-        └── filters
-             └── season > 3
-(77 rows)
+EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+----
+sort
+ └── select
+      ├── scan episodes
+      └── filters
+           └── season > 3
 ~~~
+
+### `VEC` option
+
+The `VEC` option shows details about the [vectorized execution plan](vectorized-execution.html#how-vectorized-execution-works) for the query.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (VEC) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+~~~
+
+~~~
+                  text
++---------------------------------------+
+  │
+  └ Node 1
+    └ *colexec.sortOp
+      └ *colexec.selGTInt64Int64ConstOp
+        └ *colexec.colBatchScan
+(5 rows)
+~~~
+
+The output shows the different functions that will be used to process each batch of column-oriented data.
 
 ### `DISTSQL` option
 
@@ -374,13 +426,15 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 ~~~
 
 ~~~
-  tree | field  |      description
-+------+--------+-----------------------+
-  scan |        |
-       | table  | kv@primary
-       | spans  | ALL
-       | filter | (v >= 4) AND (v <= 5)
-(4 rows)
+  tree |    field    |      description
++------+-------------+-----------------------+
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | kv@primary
+       | spans       | ALL
+       | filter      | (v >= 4) AND (v <= 5)
+(6 rows)
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
@@ -396,12 +450,14 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 ~~~
 
 ~~~
- tree | field | description
-------+-------+-------------
- scan |       |
-      | table | kv@v
-      | spans | /4-/6
-(3 rows)
+  tree |    field    | description
++------+-------------+-------------+
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | kv@v
+       | spans       | /4-/6
+(5 rows)
 ~~~
 
 Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6.
