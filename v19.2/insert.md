@@ -9,7 +9,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Performance best practices
 
-- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+- <span class="version-tag">New in v19.2:</span> To bulk-insert data into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
 - To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
@@ -144,39 +144,7 @@ If you do not list column names, the statement will use the columns of the table
 
 ### Insert multiple rows into an existing table
 
-{{site.data.alerts.callout_success}}
-Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
-{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO users (id, city, name, address, credit_card) VALUES
-    ('8a3d70a3-d70a-4000-8000-00000000001b', 'seattle', 'Eric', '400 Broad St', '0987654321'),
-    ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', '214 W 43rd St', '5678901234');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM users WHERE city IN ('seattle', 'new york');
-~~~
-
-~~~
-                   id                  |   city   |       name       |            address            | credit_card
-+--------------------------------------+----------+------------------+-------------------------------+-------------+
-  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills          | 8885705228
-  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57   | 8340905892
-  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61   | 2597958636
-  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8     | 5614075234
-  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley                | 0792553487
-  9eb851eb-851e-4800-8000-00000000001f | new york | Harry Potter     | 214 W 43rd St                 | 5678901234
-  c28f5c28-f5c2-4000-8000-000000000026 | new york | Petee            | 101 5th Ave                   | 1234567890
-  428f5c28-f5c2-4000-8000-00000000000d | seattle  | Anita Atkinson   | 27684 Laura Villages Suite 80 | 9800065169
-  47ae147a-e147-4000-8000-00000000000e | seattle  | Patricia Herrera | 80588 Perez Camp              | 6812041796
-  4ccccccc-cccc-4c00-8000-00000000000f | seattle  | Holly Williams   | 95153 Harvey Street Suite 5   | 2165526885
-  51eb851e-b851-4c00-8000-000000000010 | seattle  | Ryan Hickman     | 21187 Dennis Village          | 1635328127
-  8a3d70a3-d70a-4000-8000-00000000001b | seattle  | Eric             | 400 Broad St                  | 0987654321
-(12 rows)
-~~~
+<span class="version-tag">New in v19.2:</span> To bulk-insert data into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
 
 ### Insert multiple rows into a new table
 

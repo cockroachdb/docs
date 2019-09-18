@@ -4,7 +4,7 @@ summary: Incrementally import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span>The `IMPORT INTO` [statement](sql-statements.html) incrementally imports CSV data into an existing CockroachDB table. To create a table, use [`CREATE TABLE`](create-table.html).
+<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) incrementally imports CSV data into an existing CockroachDB table. To create a table, use [`CREATE TABLE`](create-table.html).
 
 {{site.data.alerts.callout_success}}
 `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
