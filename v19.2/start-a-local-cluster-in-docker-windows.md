@@ -1,10 +1,33 @@
+---
+title: Start a Cluster in Docker (Insecure)
+summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
+toc: true
+asciicast: true
+---
+
+<div id="os-tabs" class="clearfix">
+  <a href="start-a-local-cluster-in-docker-mac.html"><button id="mac" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button></a>
+  <a href="start-a-local-cluster-in-docker-linux.html"><button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button></a>
+  <button id="windows" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
+</div>
+
+Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
+
+{{site.data.alerts.callout_danger}}
+Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
+{{site.data.alerts.end}}
+
+## Before you begin
+
+- Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
+- For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
+
 ## Step 1. Create a bridge network
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ docker network create -d bridge roachnet
+~~~ powershell
+PS C:\Users\username> docker network create -d bridge roachnet
 ~~~
 
 We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
@@ -13,16 +36,17 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 1. Start the first node:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker run -d \
-    --name=roach1 \
-    --hostname=roach1 \
-    --net=roachnet \
-    -p 26257:26257 -p 8080:8080  \
-    -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  \
-    {{page.release_info.docker_image}}:{{page.release_info.version}} start \
-    --insecure \
+    {{site.data.alerts.callout_info}}Be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
+
+    ~~~ powershell
+    PS C:\Users\username> docker run -d `
+    --name=roach1 `
+    --hostname=roach1 `
+    --net=roachnet `
+    -p 26257:26257 -p 8080:8080  `
+    -v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data"  `
+    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
+    --insecure `
     --join=roach1,roach2,roach3
     ~~~
 
@@ -33,40 +57,41 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     - `--hostname`: The hostname for the container. You will use this to join other containers/nodes to the cluster.
     - `--net`: The bridge network for the container to join. See step 1 for more details.
     - `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port for HTTP requests to the Admin UI (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the Admin UI from a browser.
-    - `-v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `${PWD}/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/admin/volumes/bind-mounts/">Bind Mounts</a> topic.
+    - `-v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `Users/<username>/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/admin/volumes/bind-mounts/">Bind Mounts</a> topic.
     - `{{page.release_info.docker_image}}:{{page.release_info.version}} start --insecure --join`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode. The `--join` flag specifies the `hostname` of each node that will initially comprise your cluster. Otherwise, all [`cockroach start`](start-a-node.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
 3. Start two more nodes:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker run -d \
-    --name=roach2 \
-    --hostname=roach2 \
-    --net=roachnet \
-    -v "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data" \
-    {{page.release_info.docker_image}}:{{page.release_info.version}} start \
-    --insecure \
+    {{site.data.alerts.callout_info}}Again, be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
+
+    ~~~ powershell
+    PS C:\Users\username> docker run -d `
+    --name=roach2 `
+    --hostname=roach2 `
+    --net=roachnet `
+    -p 26257:26257 -p 8080:8080  `
+    -v "//c/Users/<username>/cockroach-data/roach2:/cockroach/cockroach-data"  `
+    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
+    --insecure `
     --join=roach1,roach2,roach3
     ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker run -d \
-    --name=roach3 \
-    --hostname=roach3 \
-    --net=roachnet \
-    -v "${PWD}/cockroach-data/roach3:/cockroach/cockroach-data" \
-    {{page.release_info.docker_image}}:{{page.release_info.version}} start \
-    --insecure \
+    ~~~ powershell
+    PS C:\Users\username> docker run -d `
+    --name=roach3 `
+    --hostname=roach3 `
+    --net=roachnet `
+    -p 26257:26257 -p 8080:8080  `
+    -v "//c/Users/<username>/cockroach-data/roach3:/cockroach/cockroach-data"  `
+    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
+    --insecure `
     --join=roach1,roach2,roach3
     ~~~
 
 4. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker exec -it roach1 ./cockroach init --insecure
+    ~~~ powershell
+    PS C:\Users\username> docker exec -it roach1 ./cockroach init --insecure
     ~~~
 
     You'll see the following message:
@@ -75,39 +100,14 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details](start-a-node.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ grep 'node starting' cockroach-data/roach1/logs/cockroach.log -A 11
-    ~~~
-
-    The output will look something like this:
-
-    ~~~
-    CockroachDB node starting at {{page.release_info.start_time}}
-    build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
-    webui:               http://roach1:8080
-    sql:                 postgresql://root@roach1:26257?sslmode=disable
-    client flags:        /cockroach/cockroach <client cmd> --host=roach1:26257 --insecure
-    logs:                /cockroach/cockroach-data/logs
-    temp dir:            /cockroach/cockroach-data/cockroach-temp273641911
-    external I/O path:   /cockroach/cockroach-data/extern
-    store[0]:            path=/cockroach/cockroach-data
-    status:              initialized new cluster
-    clusterID:           1a705c26-e337-4b09-95a6-6e5a819f9eec
-    nodeID:              1
-    ~~~
-
 ## Step 3. Use the built-in SQL client
 
 Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell](use-the-built-in-sql-client.html) in the first container.
 
 1. Start the SQL shell in the first container:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker exec -it roach1 ./cockroach sql --insecure
+    ~~~ powershell
+    PS C:\Users\username> docker exec -it roach1 ./cockroach sql --insecure
     ~~~
 
 2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -146,9 +146,8 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     > \q
     ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker exec -it roach2 ./cockroach sql --insecure
+    ~~~ powershell
+    PS C:\Users\username> docker exec -it roach2 ./cockroach sql --insecure
     ~~~
 
 4. Run the same `SELECT` query as before:
@@ -180,17 +179,15 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 1. Load the initial dataset:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker exec -it roach1 ./cockroach workload init movr \
+    ~~~ powershell
+    PS C:\Users\username> docker exec -it roach1 ./cockroach workload init movr \
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
 2. Run the workload for 5 minutes:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ docker exec -it roach1 ./cockroach workload run movr \
+    ~~~ powershell
+    PS C:\Users\username> docker exec -it roach1 ./cockroach workload run movr \
     --duration=5m \
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
@@ -221,19 +218,23 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ docker stop roach1 roach2 roach3
+~~~ powershell
+PS C:\Users\username> docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ docker rm roach1 roach2 roach3
+~~~ powershell
+PS C:\Users\username> docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ rm -rf cockroach-data
+~~~ powershell
+PS C:\Users\username> rm -rf cockroach-data
 ~~~
+
+## What's next?
+
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language
+- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
