@@ -35,7 +35,9 @@
               {
                 "title": "In Docker",
                 "urls": [
-                  "/${VERSION}/start-a-local-cluster-in-docker.html"
+                  "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
                 ]
               }
             ]
