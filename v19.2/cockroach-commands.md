@@ -13,8 +13,9 @@ You can run `cockroach help` in your shell to get similar guidance.
 
 Command | Usage
 --------|----
-[`cockroach start`](start-a-node.html) | Start a node.
-[`cockroach init`](initialize-a-cluster.html) | Initialize a cluster.
+[`cockroach start`](start-a-node.html) | Start a node as part of a multi-node cluster.
+[`cockroach init`](initialize-a-cluster.html) | Initialize a multi-node cluster.
+[`cockroach start-single-node`](cockroach-start-single-node.html) | <span class="version-tag">New in v19.2:</span> Start a single-node cluster. 
 [`cockroach cert`](create-security-certificates.html) | Create CA, node, and client certificates.
 [`cockroach quit`](stop-a-node.html) | Temporarily stop a node or permanently remove a node.
 [`cockroach sql`](use-the-built-in-sql-client.html) | Use the built-in SQL client.
