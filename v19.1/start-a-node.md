@@ -21,7 +21,7 @@ $ cockroach start <flags, excluding --join>
 Start a multi-node cluster:
 
 ~~~ shell
-$ cockroach start <flags, including --join> &
+$ cockroach start <flags, including --join>
 ~~~
 ~~~ shell
 $ cockroach init <flags>
