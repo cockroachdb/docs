@@ -1,41 +1,50 @@
 ---
 title: Start a Node
-summary: To start a new CockroachDB cluster, or add a node to an existing cluster, run the cockroach start command.
+summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
 ---
 
-This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.
+
+{{site.data.alerts.callout_success}}
+If you need a simple single-node backend for app development, use [`cockroach start-single-node`](cockroach-start-single-node.html) instead. For quick SQL testing, consider using [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with immediate access to an interactive SQL shell.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Node-level settings are defined by flags passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
+Node-level settings are defined by [flags](#flags) passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
 {{site.data.alerts.end}}
 
 ## Synopsis
 
+Start a node to be part of a new multi-node cluster:
+
 ~~~ shell
-# Start a single-node cluster:
-$ cockroach start <flags, excluding --join>
-
-# Start a multi-node cluster:
-$ cockroach start <flags, including --join> &
-$ cockroach init <flags>
-
-# Add a node to a cluster:
 $ cockroach start <flags, including --join>
+~~~
 
-# View help:
+Initialize a new multi-node cluster:
+
+~~~ shell
+$ cockroach init <flags>
+~~~
+
+Add a node to an existing cluster:
+
+~~~ shell
+$ cockroach start <flags, including --join>
+~~~
+
+View help:
+
+~~~ shell
 $ cockroach start --help
 ~~~
 
 ## Flags
 
-The `start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags. All flags must be specified each time the
-node is started, as they will not be remembered, with the exception of the `--join` flag. Nevertheless, we recommend specifying _all_ flags every time, including the `--join` flag, as that will
-allow restarted nodes to join the cluster even if their data directory was destroyed.
+The `cockroach start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags.
 
-{{site.data.alerts.callout_success}}
-When adding a node to an existing cluster, include the `--join` flag.
-{{site.data.alerts.end}}
+Many flags have useful defaults that can be overridden by specifying the flags explicitly. If you specify flags explicitly, however, be sure to do so each time the node is restarted, as they will not be remembered. The one exception is the `--join` flag, which is stored in a node's data directory, but even for `--join`, it's best practices to specify the flag every time, as that will allow restarted nodes to join the cluster even if their data directory was destroyed.
 
 ### General
 
@@ -62,7 +71,7 @@ Flag | Description
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
-`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details. <br><br>When starting a singe-node cluster, leave this flag out. This will cause the node to initialize a new single-node cluster without needing to run the `cockroach init` command. See the [example](#start-a-single-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.
+`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.<br><br><span class="version-tag">Changed in v19.2:</span> Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
 `--host` | **Deprecated.** Use `--listen-addr` instead.
 `--port`<br>`-p` | **Deprecated.** Specify port in `--advertise-addr` and/or `--listen-addr` instead.
@@ -138,23 +147,21 @@ When you run `cockroach start`, some helpful details are printed to the standard
 
 ~~~ shell
 CockroachDB node starting at {{page.release_info.start_time}}
-build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
+build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
-client flags:        cockroach <client cmd> --listen-addr=localhost:26257 --insecure
-logs:                /cockroach-data/logs
-temp dir:            /cockroach-data/cockroach-temp430873933
-external I/O path:   /cockroach-data/extern
-attrs:               ram:64gb
-locality:            datacenter=us-east1
-store[0]:            path=cockroach-data,attrs=ssd
+RPC client flags:    cockroach <client cmd> --host=localhost:26257 --insecure
+logs:                /Users/<username>/node1/logs
+temp dir:            /Users/<username>/node1/cockroach-temp242232154
+external I/O path:   /Users/<username>/node1/extern
+store[0]:            path=/Users/<username>/node1
 status:              initialized new cluster
-clusterID:           7b9329d0-580d-4035-8319-53ba8b74b213
+clusterID:           8a681a16-9623-4fc1-a537-77e9255daafd
 nodeID:              1
 ~~~
 
 {{site.data.alerts.callout_success}}
-These details are also written to the `INFO` log in the `/logs` directory in case you need to refer to them at a later time.
+These details are also written to the `INFO` log in the `/logs` directory. You can retrieve them with a command like `grep 'node starting' node1/logs/cockroach.log -A 11`.
 {{site.data.alerts.end}}
 
 Field | Description
@@ -162,7 +169,7 @@ Field | Description
 `build` | The version of CockroachDB you are running.
 `webui` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
-`client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
+`RPC client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
 `logs` | The directory containing debug log data.
 `temp dir` | The temporary store directory of the node.
 `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.
@@ -174,37 +181,6 @@ Field | Description
 `nodeID` | The ID of the node.
 
 ## Examples
-
-### Start a single-node cluster
-
-<div class="filters clearfix">
-  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
-  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
-</div>
-
-To start a single-node cluster, run the `cockroach start` command without the `--join` flag:
-
-<div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start \
---certs-dir=certs \
---advertise-addr=<node1 address> \
---cache=.25 \
---max-sql-memory=.25
-~~~
-</div>
-
-<div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start \
---insecure \
---advertise-addr=<node1 address> \
---cache=.25 \
---max-sql-memory=.25
-~~~
-</div>
 
 ### Start a multi-node cluster
 

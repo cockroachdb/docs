@@ -7,7 +7,7 @@ toc: true
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start nodes as a new cluster or add nodes to an existing cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}
-Node-level settings are defined by flags passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
+Node-level settings are defined by [flags](#flags) passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](cluster-settings.html).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -18,16 +18,19 @@ Start a single-node cluster:
 $ cockroach start <flags, excluding --join>
 ~~~
 
-Start a multi-node cluster:
+Start a node to be part of a new multi-node cluster:
 
 ~~~ shell
-$ cockroach start <flags, including --join> &
+$ cockroach start <flags, including --join>
 ~~~
+
+Initialize a new multi-node cluster:
+
 ~~~ shell
 $ cockroach init <flags>
 ~~~
 
-Add a node to a cluster:
+Add a node to an existing cluster:
 
 ~~~ shell
 $ cockroach start <flags, including --join>
@@ -41,9 +44,9 @@ $ cockroach start --help
 
 ## Flags
 
-The `start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags. All flags must be specified each time the
-node is started, as they will not be remembered, with the exception of the `--join` flag. Nevertheless, we recommend specifying _all_ flags every time, including the `--join` flag, as that will
-allow restarted nodes to join the cluster even if their data directory was destroyed.
+The `start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags.
+
+Many flags have useful defaults that can be overridden by specifying the flags explicitly. If you specify flags explicitly, however, be sure to do so each time the node is restarted, as they will not be remembered. The one exception is the `--join` flag, which is stored in a node's data directory, but even for `--join`, it's best practices to specify the flag every time, as that will allow restarted nodes to join the cluster even if their data directory was destroyed.
 
 {{site.data.alerts.callout_success}}
 When adding a node to an existing cluster, include the `--join` flag.

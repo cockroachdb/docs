@@ -1625,6 +1625,12 @@
             ]
           },
           {
+            "title": "<code>cockroach start-single-node</code>",
+            "urls": [
+              "/${VERSION}/cockroach-start-single-node.html"
+            ]
+          },
+          {
             "title": "<code>cockroach cert</code>",
             "urls": [
               "/${VERSION}/create-security-certificates.html"
