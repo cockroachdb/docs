@@ -33,7 +33,7 @@ Field | Description
 `start_time` | The time at which the backup was started. For a full backup, this will be empty.
 `end_time` | The time at which the backup was completed.
 `size_bytes` | The size of the backup, in bytes.
-`create_statement` | The `CREATE` statement used to create [table(s)](create-tables.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
+`create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 
 ## Example
 
