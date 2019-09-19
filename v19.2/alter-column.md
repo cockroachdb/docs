@@ -4,7 +4,9 @@ summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAU
 toc: true
 ---
 
-The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and sets, changes, or drops a column's [`DEFAULT` constraint](default-value.html) or drops the [`NOT NULL` constraint](not-null.html).
+The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and can be used to:
+- Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
+- Set or drop a column's [`NOT NULL` constraint](not-null.html)
 
 {{site.data.alerts.callout_info}}
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
@@ -54,6 +56,15 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
+~~~
+
+### Set `NOT NULL` constraint
+
+Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE subscriptions ALTER COLUMN newsletter SET NOT NULL;
 ~~~
 
 ### Remove `NOT NULL` constraint

@@ -34,7 +34,7 @@ Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
-[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or [`NOT NULL` constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER RANGE`](alter-range.html) | Change an existing system range.
