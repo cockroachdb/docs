@@ -20,40 +20,67 @@ Subcommand | Usage
 
 ## Synopsis
 
+List the IDs of active and inactive nodes:
+
 ~~~ shell
-# List the IDs of active and inactive nodes:
 $ cockroach node ls <flags>
+~~~
 
-# Show status details for active and inactive nodes:
+Show status details for active and inactive nodes:
+
+~~~ shell
 $ cockroach node status <flags>
+~~~
 
-# Show status and range/replica details for active and inactive nodes:
+Show status and range/replica details for active and inactive nodes:
+
+~~~ shell
 $ cockroach node status --ranges <flags>
+~~~
 
-# Show status and disk usage details for active and inactive nodes:
+Show status and disk usage details for active and inactive nodes:
+
+~~~ shell
 $ cockroach node status --stats <flags>
+~~~
 
-# Show status and decommissioning details for active and inactive nodes:
+Show status and decommissioning details for active and inactive nodes:
+
+~~~ shell
 $ cockroach node status --decommission <flags>
+~~~
 
-# Show complete status details for active and inactive nodes:
+Show complete status details for active and inactive nodes:
+
+~~~ shell
 $ cockroach node status --all <flags>
+~~~
 
-# Show status details for a specific node:
+Show status details for a specific node:
+
+~~~ shell
 $ cockroach node status <node ID> <flags>
+~~~
 
-# Decommission nodes:
+Decommission nodes:
+
+~~~ shell
 $ cockroach node decommission <node IDs> <flags>
+~~~
 
-# Recommission nodes:
+Recommission nodes:
+
+~~~ shell
 $ cockroach node recommission <node IDs> <flags>
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach node --help
-$ cockroach node ls --help
-$ cockroach node status --help
-$ cockroach node decommission --help
-$ cockroach node recommission --help
+~~~
+~~~ shell
+$ cockroach node <subcommand> --help
 ~~~
 
 ## Flags

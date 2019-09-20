@@ -29,29 +29,51 @@ The user must have the `SELECT` privilege on the target table(s).
 
 ## Synopsis
 
+Dump the schemas and data of specific tables to stdout:
+
 ~~~ shell
-# Dump the schemas and data of specific tables to stdout:
 $ cockroach dump <database> <table> <table...> <flags>
+~~~
 
-# Dump just the data of specific tables to stdout:
+Dump just the data of specific tables to stdout:
+
+~~~ shell
 $ cockroach dump <database> <table> <table...> --dump-mode=data <other flags>
+~~~
 
-# Dump just the schemas of specific tables to stdout:
+Dump just the schemas of specific tables to stdout:
+
+~~~ shell
 $ cockroach dump <database> <table> <table...> --dump-mode=schema <other flags>
+~~~
 
-# Dump the schemas and data of all tables in a database to stdout:
+Dump the schemas and data of all tables in a database to stdout:
+
+~~~ shell
 $ cockroach dump <database> <flags>
+~~~
 
-# Dump just the schemas of all tables in a database to stdout:
+Dump just the schemas of all tables in a database to stdout:
+
+~~~ shell
 $ cockroach dump <database> --dump-mode=schema <other flags>
+~~~
 
-# Dump just the data of all tables in a database to stdout:
+Dump just the data of all tables in a database to stdout:
+
+~~~ shell
 $ cockroach dump <database> --dump-mode=data <other flags>
+~~~
 
-# Dump to a file:
+Dump to a file:
+
+~~~ shell
 $ cockroach dump <database> <table> <flags> > dump-file.sql
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach dump --help
 ~~~
 

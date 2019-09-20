@@ -35,11 +35,15 @@ Basic terms:
 
 ## Synopsis
 
-~~~ shell
-# Temporarily stop a node:
-$ cockroach quit <flags>
+Temporarily stop a node:
 
-# View help:
+~~~ shell
+$ cockroach quit <flags>
+~~~
+
+View help:
+
+~~~ shell
 $ cockroach quit --help
 ~~~
 
