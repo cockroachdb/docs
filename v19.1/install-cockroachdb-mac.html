@@ -14,6 +14,43 @@ key: install-cockroachdb.html
 
 <p>See <a href="../releases/{{page.release_info.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
+<div id="use-homebrew" class="install-option">
+  <h2>Use Homebrew</h2>
+  <ol>
+    <li>
+      <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
+    </li>
+    <li>
+      <p>Instruct Homebrew to install CockroachDB:</p>
+
+      <div class="copy-clipboard">
+        <div class="copy-clipboard__text mac-homebrew-button" id="mac-homebrew-button-{{ page.version.version }}" data-eventcategory="mac-homebrew-button">copy</div>
+        <svg data-eventcategory="mac-homebrew-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
+        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
+      </div>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="nv language-shell mac-homebrew-step2" id="mac-homebrew-step2-{{ page.version.version }}" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/tap/cockroach</code></pre></div>
+    </li>
+    <li>
+      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
+      <div class="hubspot-install-form install-form-2 clearfix">
+        <script>
+          hbspt.forms.create({
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 2,
+            target: '.install-form-2'
+          });
+        </script>
+      </div>
+    </li>
+  </ol>
+{{site.data.alerts.callout_info}}
+If you previously installed CockroachDB using a different method, you may need to remove the binary before you can run <code>brew install cockroach</code> or <code>brew upgrade cockroach</code>.
+{{site.data.alerts.end}}
+</div>
+
 <div id="download-the-binary" class="install-option">
   <h2>Download the binary</h2>
   <ol>
@@ -49,44 +86,6 @@ key: install-cockroachdb.html
       </div>
     </li>
   </ol>
-</div>
-
-<div id="use-homebrew" class="install-option">
-  <h2>Use Homebrew</h2>
-  <p>Homebrew installs a pure open-source version of CockroachDB covered by the Apache License 2.0 (APL) and, thus, does not include any functionality covered by the CockroachDB Community License (CCL), such as <code>IMPORT</code> and enterprise <code>BACKUP</code> and <code>RESTORE</code>.</p>
-  <ol>
-    <li>
-      <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
-    </li>
-    <li>
-      <p>Instruct Homebrew to install CockroachDB:</p>
-
-      <div class="copy-clipboard">
-        <div class="copy-clipboard__text mac-homebrew-button" id="mac-homebrew-button-{{ page.version.version }}" data-eventcategory="mac-homebrew-button">copy</div>
-        <svg data-eventcategory="mac-homebrew-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="nv language-shell mac-homebrew-step2" id="mac-homebrew-step2-{{ page.version.version }}" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroach</code></pre></div>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-      <div class="hubspot-install-form install-form-2 clearfix">
-        <script>
-          hbspt.forms.create({
-            css: '',
-            cssClass: 'install-form',
-            portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 2,
-            target: '.install-form-2'
-          });
-        </script>
-      </div>
-    </li>
-  </ol>
-{{site.data.alerts.callout_info}}
-If you previously installed CockroachDB using a different method, you may need to remove the binary before you can run <code>brew install cockroach</code> or <code>brew upgrade cockroach</code>.
-{{site.data.alerts.end}}
 </div>
 
 <div id="use-kubernetes" class="install-option">
