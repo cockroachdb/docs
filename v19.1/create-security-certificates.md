@@ -73,13 +73,17 @@ Note the following:
 
 ## Synopsis
 
+Create the CA certificate and key:
+
 ~~~ shell
-# Create the CA certificate and key:
 $ cockroach cert create-ca \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
+~~~
 
-# Create a node certificate and key:
+Create a node certificate and key:
+
+~~~ shell
 $ cockroach cert create-node \
  [node-hostname] \
  [node-other-hostname] \
@@ -87,23 +91,31 @@ $ cockroach cert create-node \
  [hostname-in-wildcard-notation] \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
+~~~
 
-# Create a client certificate and key:
+Create a client certificate and key:
+
+~~~ shell
 $ cockroach cert create-client \
  [username] \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
+~~~
 
-# List certificates and keys:
+List certificates and keys:
+
+~~~ shell
 $ cockroach cert list \
  --certs-dir=[path-to-certs-directory]
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach cert --help
-$ cockroach cert create-ca --help
-$ cockroach cert create-node --help
-$ cockroach cert create-client --help
-$ cockroach cert list --help
+~~~
+~~~ shell
+$ cockroach cert <subcommand> --help
 ~~~
 
 ## Flags

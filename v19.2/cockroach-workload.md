@@ -12,18 +12,33 @@ The `cockroach workload` command is experimental. The interface and output are s
 
 ## Synopsis
 
+Create the schema for a workload:
+
 ~~~ shell
-# Create the schema for a workload:
 $ cockroach workload init <workload> <flags> '<connection string>'
+~~~
 
-# Run a workload:
+Run a workload:
+
+~~~ shell
 $ cockroach workload run <workload> <flags> '<connection string>'
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach workload --help
+~~~
+~~~ shell
 $ cockroach workload init --help
+~~~
+~~~ shell
 $ cockroach workload init <workload> --help
+~~~
+~~~ shell
 $ cockroach workload run --help
+~~~
+~~~ shell
 $ cockroach workload run <workload> --help
 ~~~
 

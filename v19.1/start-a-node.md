@@ -12,18 +12,30 @@ Node-level settings are defined by flags passed to the `cockroach start` command
 
 ## Synopsis
 
+Start a single-node cluster:
+
 ~~~ shell
-# Start a single-node cluster:
 $ cockroach start <flags, excluding --join>
+~~~
 
-# Start a multi-node cluster:
+Start a multi-node cluster:
+
+~~~ shell
 $ cockroach start <flags, including --join> &
+~~~
+~~~ shell
 $ cockroach init <flags>
+~~~
 
-# Add a node to a cluster:
+Add a node to a cluster:
+
+~~~ shell
 $ cockroach start <flags, including --join>
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach start --help
 ~~~
 

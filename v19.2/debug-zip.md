@@ -55,7 +55,6 @@ You can locate logs in the unarchived file's `debug/nodes/[node dir]/logs` direc
 ## Synopsis
 
 ~~~ shell
-# Generate a debug zip:
 $ cockroach debug zip [ZIP file destination] [flags]
 ~~~
 

@@ -15,18 +15,23 @@ A [web interface to this feature](https://sqlfum.pt/) is also available.
 
 ## Synopsis
 
+Use the query formatter interactively:
+
 ~~~ shell
-# Use the query formatter interactively:
 $ cockroach sqlfmt <flags>
-
 <sql stmt>
-
 CTRL+D
+~~~
 
-# Reformat a SQL query given on the command line:
+Reformat a SQL query given on the command line:
+
+~~~ shell
 $ cockroach sqlfmt <flags> -e "<sql stmt>"
+~~~
 
-# Reformat a SQL query already stored in a file:
+Reformat a SQL query already stored in a file:
+
+~~~ shell
 $ cat query.sql | cockroach sqlfmt <flags>
 ~~~
 

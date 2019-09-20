@@ -15,11 +15,15 @@ The `debug ballast` [command](cockroach-commands.html) creates a large, unused f
 
 ## Synopsis
 
-~~~ shell
-# Create a ballast file:
-$ cockroach debug ballast [path to ballast file] [flags]
+Create a ballast file:
 
-# View help:
+~~~ shell
+$ cockroach debug ballast [path to ballast file] [flags]
+~~~
+
+View help:
+
+~~~ shell
 $ cockroach debug ballast --help
 ~~~
 

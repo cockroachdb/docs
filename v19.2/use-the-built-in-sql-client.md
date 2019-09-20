@@ -14,22 +14,42 @@ If you want to experiment with CockroachDB SQL but do not have a cluster already
 
 ## Synopsis
 
+Start the interactive SQL shell:
+
 ~~~ shell
-# Start the interactive SQL shell:
 $ cockroach sql <flags>
+~~~
 
-# Execute SQL from the command line:
+Execute SQL from the command line:
+
+~~~ shell
 $ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+~~~
+~~~ shell
 $ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
+~~~
+~~~ shell
 $ cockroach sql <flags> < file-containing-statements.sql
+~~~
 
-# Exit the interactive SQL shell:
+Exit the interactive SQL shell:
+
+~~~ shell
 $ \q
+~~~
+~~~ shell
 $ quit
+~~~
+~~~ shell
 $ exit
+~~~
+~~~ shell
 ctrl-d
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach sql --help
 ~~~
 

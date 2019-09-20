@@ -8,7 +8,6 @@ To create, manage, and remove your cluster's users (which lets you control SQL-l
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-user.html"><code>CREATE USER</code></a> and <a href="drop-user.html"><code>DROP USER</code></a> statements to create and remove users.{{site.data.alerts.end}}
 
-
 ## Considerations
 
 - Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
@@ -28,22 +27,31 @@ Subcommand | Usage
 
 ## Synopsis
 
+Create a user:
+
 ~~~ shell
-# Create a user:
 $ cockroach user set <username> <flags>
+~~~
 
-# List all users:
+List all users:
+
+~~~ shell
 $ cockroach user ls <flags>
+~~~
 
-# Display a specific user:
+Display a specific user:
+
+~~~ shell
 $ cockroach user get <username> <flags>
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach user --help
-$ cockroach user get --help
-$ cockroach user ls --help
-$ cockroach user rm --help
-$ cockroach user set --help
+~~~
+~~~ shell
+$ cockroach user <subcommand> --help
 ~~~
 
 ## Flags

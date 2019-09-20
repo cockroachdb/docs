@@ -25,6 +25,7 @@ $ cockroach gen man
 ~~~
 
 Generate bash autocompletion script:
+
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen autocomplete

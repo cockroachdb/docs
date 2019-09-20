@@ -10,21 +10,34 @@ The in-memory cluster persists only as long as the SQL shell is open. As soon as
 
 ## Synopsis
 
+Start an interactive SQL shell:
+
 ~~~ shell
-# Start an interactive SQL shell:
 $ cockroach demo <flags>
+~~~
 
-# Load a sample dataset and start an interactive SQL shell:
+Load a sample dataset and start an interactive SQL shell:
+
+~~~ shell
 $ cockroach demo <dataset> <flags>
+~~~
 
-# Execute SQL from the command line:
+Execute SQL from the command line:
+
+~~~ shell
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+~~~
 
-# Exit the interactive SQL shell:
+Exit the interactive SQL shell:
+
+~~~ shell
 $ \q
 ctrl-d
+~~~
 
-# View help:
+View help:
+
+~~~ shell
 $ cockroach demo --help
 ~~~
 
