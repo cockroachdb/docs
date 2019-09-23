@@ -4,8 +4,7 @@ summary: The NOT NULL constraint specifies the column may not contain NULL value
 toc: true
 ---
 
-The `NOT NULL` [constraint](constraints.html) specifies a column may not contain *NULL* values.
-
+The `NOT NULL` [constraint](constraints.html) specifies a column may not contain `NULL` values.
 
 ## Details
 
@@ -19,10 +18,7 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 
   CockroachDB tries to write a `NULL` value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
 
-- You can only define the `NOT NULL` constraint when [creating a table](#syntax); you cannot add it to an existing table. However, you can [migrate data](constraints.html#table-migrations-to-add-or-change-immutable-constraints) from your current table to a new table with the constraint you want to use.
-  {{site.data.alerts.callout_info}}
-  In the future we plan to support adding the `NOT NULL` constraint to existing tables.
-  {{site.data.alerts.end}}
+- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](alter-column.html#set-not-null-constraint) statement.
 
 - For more information about `NULL`, see [Null Handling](null-handling.html).
 
