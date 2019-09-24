@@ -25,7 +25,7 @@ Also keep in mind some basic topology recommendations:
 
 - When deploying across multiple availability zones:
     - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region and set `--locality` on each node to spread data evenly across regions and AZs. In this case, if 1 AZ goes offline, the 2 remaining AZs retain a majority of replicas.
-    - To be able to tolerate the failure of 1 entire region, use at least 3 regions. 
+    - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
 
 ## Hardware
 
@@ -39,19 +39,19 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 #### CPU and memory
 
-- At a bare minimum, each node should have **2 GB of RAM and 2 vCPUs**.
-
-    More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of vCPUs and additional memory to match the requirements of the workload.
+- At a bare minimum, each node should have **2 vCPUs and 2 GB of RAM**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
 
     {{site.data.alerts.callout_danger}}
     Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
     {{site.data.alerts.end}}
 
-- The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
+- To optimize for throughput, use larger nodes, up to 16 vCPUs and 64 GB of RAM. Based on internal testing results, 16 vCPUs is the sweet spot for OLTP workloads.
 
-    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications.
 
-- For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 vCPUs per node.
+- To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
+
+- In all cases, make sure nodes are uniform to ensure consistent SQL performance.
 
 #### Storage
 
