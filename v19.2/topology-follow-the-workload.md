@@ -11,10 +11,6 @@ In a multi-region deployment, follow-the-workload is the default pattern for tab
 - In non-active regions, both read and write latency can be higher.
 - Table data must remain available during a region failure.
 
-{{site.data.alerts.callout_info}}
-Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider the [Duplicate Indexes](topology-duplicate-indexes.html) or [Follower Reads](topology-follower-reads.html) pattern.
 {{site.data.alerts.end}}
