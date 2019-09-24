@@ -6,7 +6,6 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
 
-
 ## Step 1. Install prerequisites
 
 <div class="filters filters-big clearfix">
@@ -28,20 +27,21 @@ This page walks you through a simple demonstration of how CockroachDB can store 
 
 ## Step 2. Start a single-node cluster
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode:
+For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start \
+$ cockroach start-single-node \
 --insecure \
 --store=json-test \
 --listen-addr=localhost:26257 \
---http-addr=localhost:8080
+--http-addr=localhost:8080 \
+--background
 ~~~
 
 ## Step 3. Create a user
 
-In a new terminal, open the [built-in SQL client](use-the-built-in-sql-client.html) as the `root` user and create a new user, `maxroach`:
+Open the [built-in SQL shell](use-the-built-in-sql-client.html) as the `root` user and create a new user, `maxroach`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -50,7 +50,7 @@ $ cockroach sql --insecure --host=localhost:26257
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER maxroach
+> CREATE USER maxroach;
 ~~~
 
 ## Step 4. Create a database and grant privileges
@@ -90,19 +90,19 @@ Still in the SQL shell, create a table called `programming`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE programming;
+> SHOW CREATE TABLE programming;
 ~~~
+
 ~~~
-+--------------+-------------------------------------------------+
-|    Table     |                   CreateTable                   |
-+--------------+-------------------------------------------------+
-| programming  | CREATE TABLE programming (                      |
-|              |     id UUID NOT NULL DEFAULT uuid_v4()::UUID,   |
-|              |     posts JSON NULL,                            |
-|              |     CONSTRAINT "primary" PRIMARY KEY (id ASC),  |
-|              |     FAMILY "primary" (id, posts)                |
-|              | )                                               |
-+--------------+-------------------------------------------------+
+  table_name  |                create_statement
++-------------+------------------------------------------------+
+  programming | CREATE TABLE programming (
+              |     id UUID NOT NULL DEFAULT uuid_v4()::UUID,
+              |     posts JSONB NULL,
+              |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+              |     FAMILY "primary" (id, posts)
+              | )
+(1 row)
 ~~~
 
 ## Step 6. Run the code
@@ -169,24 +169,24 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
+
 ~~~
+  count
 +-------+
-| count |
-+-------+
-|  1120 |
-+-------+
+    675
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
+
 ~~~
+  count
 +-------+
-| count |
-+-------+
-|  2400 |
-+-------+
+    825
+(1 row)
 ~~~
 
 Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
@@ -196,36 +196,33 @@ Now, retrieve all the current entries where the link is pointing to somewhere on
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
 ~~~
-~~~
-+--------------------------------------+
-|                  id                  |
-+--------------------------------------+
-| 0036d489-3fe3-46ec-8219-2eaee151af4b |
-| 00538c2f-592f-436a-866f-d69b58e842b6 |
-| 00aff68c-3867-4dfe-82b3-2a27262d5059 |
-| 00cc3d4d-a8dd-4c9a-a732-00ed40e542b0 |
-| 00ecd1dd-4d22-4af6-ac1c-1f07f3eba42b |
-| 012de443-c7bf-461a-b563-925d34d1f996 |
-| 014c0ac8-4b4e-4283-9722-1dd6c780f7a6 |
-| 017bfb8b-008e-4df2-90e4-61573e3a3f62 |
-| 0271741e-3f2a-4311-b57f-a75e5cc49b61 |
-| 02f31c61-66a7-41ba-854e-1ece0736f06b |
-| 035f31a1-b695-46be-8b22-469e8e755a50 |
-| 03bd9793-7b1b-4f55-8cdd-99d18d6cb3ea |
-| 03e0b1b4-42c3-4121-bda9-65bcb22dcf72 |
-| 0453bc77-4349-4136-9b02-3a6353ea155e |
-...
-+--------------------------------------+
-(334 rows)
 
-Time: 105.877736ms
+~~~
+                   id
++--------------------------------------+
+  05348629-d8f1-4c90-99cc-11e8ab313edb
+  059a1562-0054-49ff-adc7-aec82c6f74fb
+  1b5ea86d-c892-43ba-b40a-c63761aff3ea
+  25ac5bfe-44e2-4c6a-892c-959f859ee4e7
+  2ab49796-3e55-4a33-8a83-9decef9fbccc
+  2df2e3ac-757b-4689-844d-935876df75e9
+  4506e0b8-a572-499c-a9c1-2a5075a021f8
+  5209ce99-2253-4490-bceb-fd881ff6d962
+  56cf90cd-43a9-49e9-a078-3e28c115232f
+  57f287a3-d396-460a-a649-9fa41c4315e4
+  ...
+(90 rows)
+
+Time: 103.748ms
 ~~~
 
-{{site.data.alerts.callout_info}}Since you are querying live data, your results for this and the following steps may vary from the results documented in this tutorial.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Since you are querying live data, your results for this and the following steps may vary from the results documented in this tutorial.
+{{site.data.alerts.end}}
 
 ## Step 8. Create an inverted index to optimize performance
 
-The query in the previous step took 105.877736ms. To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](inverted-indexes.html) on the column:
+The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](inverted-indexes.html) on the column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -242,12 +239,28 @@ Now that there is an inverted index, the same query will run much faster:
 WHERE posts @> '{"data": {"domain": "github.com"}}';
 ~~~
 ~~~
-(334 rows)
+(109 rows)
 
-Time: 28.646769ms
+Time: 6.862ms
 ~~~
 
-Instead of 105.877736ms, the query now takes 28.646769ms.
+Instead of 103.748ms, the query now takes 6.862ms.
+
+## Step 10. Clean up
+
+If the program is still running, press CTRL + c to stop it and then use [`cockroach quit`](stop-a-node.html) to stop the single-node CockroachDB cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --insecure --host=localhost:26257
+~~~
+
+If you do not plan to restart the cluster, remove the node's data store:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ rm -rf json-test
+~~~
 
 ## What's next?
 
