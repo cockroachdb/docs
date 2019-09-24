@@ -25,7 +25,7 @@ Also keep in mind some basic topology recommendations:
 
 - When deploying across multiple availability zones:
     - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region and set `--locality` on each node to spread data evenly across regions and AZs. In this case, if 1 AZ goes offline, the 2 remaining AZs retain a majority of replicas.
-    - To be able to tolerate the failure of 1 entire region, use at least 3 regions. 
+    - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
 
 ## Hardware
 
@@ -39,19 +39,19 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 #### CPU and memory
 
-- At a bare minimum, each node should have **2 GB of RAM and 2 vCPUs**.
-
-    More data, complex workloads, higher concurrency, and faster performance require additional resources; as a general rule of thumb, increase the number of vCPUs and additional memory to match the requirements of the workload.
+- At a bare minimum, each node should have **2 vCPUs and 2 GB of RAM**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
 
     {{site.data.alerts.callout_danger}}
     Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
     {{site.data.alerts.end}}
 
-- The ideal configuration is 4-16 vCPUs, 8-64 GB memory nodes (2-4 GB of memory per vCPU).
+- To optimize for throughput, use larger nodes, up to 32 vCPUs. Based on internal testing results, 32 vCPUs is the sweet spot for OLTP workloads. For RAM, aim for a ratio of 2 GB per vCPU.
 
-    To add more processing power (up to 16 vCPUs), adding more vCPUs is better than adding more RAM. Otherwise, add more nodes rather than using higher vCPUs per node; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications. Our internal testing results indicate this is the sweet spot for OLTP workloads. It is a best practice to use uniform nodes so SQL performance is consistent.
+    To increase throughput further, add more nodes to the cluster instead of increasing node size.
 
-- For more resilient clusters, use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes. We recommend using 4 vCPUs per node.
+- To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
+
+- In all cases, make sure nodes are uniform to ensure consistent SQL performance.
 
 #### Storage
 
@@ -81,7 +81,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
 
-    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, NVMe SSD) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
+    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.
@@ -90,8 +90,6 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 - Use `c5` instances with EBS as a primary AWS configuration. To simulate bare-metal deployments, use `c5d` with [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html).
 
     [Provisioned IOPS SSD-backed (`io1`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) need to have IOPS provisioned, which can be very expensive. Cheaper `gp2` volumes can be used instead, if your performance needs are less demanding. Allocating more disk space than you will use can improve performance of `gp2` volumes.
-
-- We recommend using 16 vCPUs, 32-64 GiB memory each.
 
 #### Azure
 
@@ -113,7 +111,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
 
-    For example, Cockroach Labs has used `n1-standard-16` for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
 
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
