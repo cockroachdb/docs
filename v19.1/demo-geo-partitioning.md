@@ -7,9 +7,15 @@ toc_not_nested: true
 
 CockroachDB's [geo-partitioning](partitioning.html) feature gives you low-latency reads and writes in a broadly distributed cluster. This tutorial walks you through the process in a 9-node deployment across 3 US regions on GCE. If you follow along, you'll see dramatic improvements in latency, with the majority of reads and writes executing in 2 milliseconds or less.
 
-## Watch a demo
+## See it in action
+
+### Watch a demo
 
 <iframe width="640" height="385" src="https://www.youtube.com/embed/TgnQwOOk9Js" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Read a case study
+
+Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/case-studies/european-electronic-lock-manufacturer-modernizes-iam-system-with-managed-cockroachdb/) and [multi-national bank](https://www.cockroachlabs.com/case-studies/top-five-multinational-bank-modernizes-its-european-core-banking-services-migrating-from-oracle-to-cockroachdb/) are using the Geo-Partitioned Replicas topology in production for improved performance and regulatory compliance.
 
 ## Before you begin
 

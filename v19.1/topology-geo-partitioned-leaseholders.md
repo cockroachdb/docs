@@ -11,12 +11,8 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 - Rows in the table, and all latency-sensitive queries, can be tied to specific geographies, e.g., city, state, region.
 - Table data must remain available during a region failure.
 
-{{site.data.alerts.callout_info}}
-Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
-If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern. If rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies, consider the [Duplicate Indexes](topology-duplicate-indexes.html) pattern.
+**See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers accross the United States is using the Geo-Partitioned Leaseholders topology in production for strong resiliency and performance.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -173,6 +169,11 @@ Because this pattern balances the replicas for each partition across regions, on
 <!-- However, if an additional machine fails at the same time as the region failure, the partitions that lose consensus become unavailable for reads and writes:
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_geo-partitioned_leaseholders_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" /> -->
+
+## Alternatives
+
+- If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
+- If rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies, consider the [Duplicate Indexes](topology-duplicate-indexes.html) pattern.
 
 ## See also
 

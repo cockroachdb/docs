@@ -10,8 +10,8 @@ In a multi-region deployment, the geo-partitioned replicas topology is a good ch
 - Rows in the table, and all latency-sensitive queries, can be tied to specific geographies, e.g., city, state, region.
 - Regional data must remain available during an AZ failure, but it's OK for regional data to become unavailable during a region-wide failure.
 
-{{site.data.alerts.callout_info}}
-Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
+{{site.data.alerts.callout_success}}
+**See It In Action** - Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/case-studies/european-electronic-lock-manufacturer-modernizes-iam-system-with-managed-cockroachdb/) and [multi-national bank](https://www.cockroachlabs.com/case-studies/top-five-multinational-bank-modernizes-its-european-core-banking-services-migrating-from-oracle-to-cockroachdb/) are using the Geo-Partitioned Replicas topology in production for improved performance and regulatory compliance.
 {{site.data.alerts.end}}
 
 ## Prerequisites

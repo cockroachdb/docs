@@ -13,12 +13,8 @@ In a multi-region deployment, the duplicate indexes pattern is a good choice for
 
 In general, this pattern is suited well for immutable/reference tables that are rarely or never updated.
 
-{{site.data.alerts.callout_info}}
-Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
-If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern. If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern. Both patterns avoid extra secondary indexes, which increase data replication and, therefore, higher throughput and less storage.
+**See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/case-studies/top-u-s-financial-software-company-turns-to-cockroachdb-to-improve-its-application-login-experience/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -143,6 +139,11 @@ Because this pattern balances the replicas for the table and its secondary index
 <!-- However, if an additional machine holding a replica for the table or any of its secondary indexes fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_pinned_index_leaseholders3.png' | relative_url }}" alt="Pinned Secondary Indexes topology" style="max-width:100%" /> -->
+
+## Alternatives
+
+- If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
+- If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern. Both patterns avoid extra secondary indexes, which increase data replication and, therefore, higher throughput and less storage.
 
 ## See also
 

@@ -11,10 +11,6 @@ In a multi-region deployment, the follower reads pattern is a good choice for ta
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies (e.g., a reference table).
 - Table data must remain available during a region failure.
 
-{{site.data.alerts.callout_info}}
-Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 This pattern is compatible with all of the other multi-region patterns except [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html). However, if reads from a table must be exactly up-to-date, use the [Duplicate Indexes](topology-duplicate-indexes.html) or [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 {{site.data.alerts.end}}
