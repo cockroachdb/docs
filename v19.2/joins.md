@@ -104,7 +104,7 @@ CockroachDB supports the following algorithms for performing a join:
 
 ### Merge joins
 
-By default, CockroachDB uses [merge joins](https://en.wikipedia.org/wiki/Sort-merge_join) whenever possible because they are more performant than [hash joins](#hash-joins), computationally and in terms of memory. A merge join requires both tables to be indexed on the equality columns and the indexes must have the same ordering. When these conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
+To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two tables, both tables must be indexed on the equality columns, and any indexes must have the same ordering. Merge joins offer better computational performance and more efficient memory usage than [hash joins](#hash-joins). When tables and indexes are ordered for a merge, CockroachDB chooses to use merge joins over hash joins, by default. When merge conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 Merge joins are performed on the indexed columns of two tables as follows:
 
