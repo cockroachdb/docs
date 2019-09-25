@@ -200,12 +200,6 @@ Most client drivers and frameworks use the text format to pass placeholder value
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-### Referring to a CTE by name more than once
-
-{% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31095)
-
 ### Assigning latitude/longitude for the Node Map
 
 {% include {{ page.version.version }}/known-limitations/node-map.md %}
