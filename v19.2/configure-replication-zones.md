@@ -216,30 +216,40 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 **Approach:**
 
-Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
+1. Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
-~~~ shell
-# Start the two nodes in datacenter 1:
-$ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-$ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-1 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    Datacenter 1:
 
-# Start the two nodes in datacenter 2:
-$ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-2 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-$ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-2 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ~~~ shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-1 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ~~~
 
-# Start the two nodes in datacenter 3:
-$ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-3 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-$ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-3 \
---join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    Datacenter 2:
 
-# Initialize the cluster:
-$ cockroach init --insecure --host=<any node hostname>
-~~~
+    ~~~ shell
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-2 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-2 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ~~~
+
+    Datacenter 3:
+
+    ~~~ shell
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-3 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-3 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ~~~
+
+2. Initialize the cluster:
+
+    ~~~ shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ~~~
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
 
@@ -254,8 +264,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with its region and datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
+    Start the five nodes:
+
     ~~~ shell
-    # Start the four nodes:
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=region=us-west1,datacenter=us-west1-a \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=region=us-west1,datacenter=us-west1-b \
@@ -266,8 +277,11 @@ There's no need to make zone configuration changes; by default, the cluster is c
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
     $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=region=us-east1,datacenter=us-east1-b \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    ~~~
 
-    # Initialize the cluster:
+    Initialize the cluster:
+
+    ~~~ shell
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
@@ -334,24 +348,31 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
 
+    Datacenter 1:
+
     ~~~ shell
-    # Start the three nodes in datacenter 1:
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    ~~~
 
-    # Start the three nodes in datacenter 2:
+    Datacenter 2:
+
+    ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    ~~~
 
-    # Initialize the cluster:
+    Initialize the cluster:
+
+    ~~~ shell
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
@@ -450,8 +471,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Start each node with `ssd` or `hdd` specified as store attributes:
 
+    5 nodes with SSD storage:
+
     ~~~ shell
-    # Start the 5 nodes with SSD storage:
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --store=path=node1,attrs=ssd \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --store=path=node2,attrs=ssd \
@@ -462,14 +484,20 @@ There's no need to make zone configuration changes; by default, the cluster is c
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node5 hostname> --store=path=node5,attrs=ssd \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ~~~
 
-    # Start the 2 nodes with HDD storage:
+    2 nodes with HDD storage:
+
+    ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node6 hostname> --store=path=node6,attrs=hdd \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node7 hostname> --store=path=node7,attrs=hdd \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ~~~
 
-    # Initialize the cluster:
+    Initialize the cluster:
+
+    ~~~ shell
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
@@ -535,7 +563,6 @@ There's no need to make zone configuration changes; by default, the cluster is c
 1. Start each node with a different [locality](start-a-node.html#locality) attribute:
 
     ~~~ shell
-    # Start the nodes:
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>   
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-2 \
@@ -550,8 +577,11 @@ There's no need to make zone configuration changes; by default, the cluster is c
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node7 hostname> --locality=datacenter=us-7 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ~~~
 
-    # Initialize the cluster:
+    Initialize the cluster:
+
+    ~~~ shell
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 

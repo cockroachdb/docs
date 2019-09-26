@@ -89,7 +89,7 @@ Note the following:
     You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~
     # OpenSSL CA configuration file
     [ ca ]
     default_ca = CA_default
@@ -181,7 +181,7 @@ In the following steps, replace the placeholder text in the code with the actual
 1. Create the `node.cnf` file for the first node and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~
     # OpenSSL node configuration file
     [ req ]
     prompt=no
@@ -214,7 +214,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create Node certificate signing request.
     $ openssl req \
     -new \
     -config node.cnf \
@@ -229,7 +228,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Sign the CSR using the CA key.
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
@@ -247,13 +245,11 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
     certs/node.crt \
     certs/node.key \
@@ -280,7 +276,7 @@ In the following steps, replace the placeholder text in the code with the actual
 1. Create the `client.cnf` file for the first client and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~
     # OpenSSL client configuration file
     [ req ]
     prompt=no
@@ -308,7 +304,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create client certificate signing request
     $ openssl req \
     -new \
     -config client.cnf \
