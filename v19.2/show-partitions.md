@@ -45,7 +45,7 @@ Field | Description
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
+{% include {{page.version.version}}/sql/movr-statements-partitioning.md %}
 
 {% include {{page.version.version}}/sql/partitioning-enterprise.md %}
 
@@ -91,16 +91,16 @@ Use [`CONFIGURE ZONE`](configure-zone.html) to create [replication zone](configu
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION new_york OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-east1]';
-  ALTER PARTITION chicago OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-central1]';
-  ALTER PARTITION seattle OF TABLE vehicles CONFIGURE ZONE USING constraints='[+region=us-west1]';
+> ALTER PARTITION new_york OF INDEX vehicles@primary CONFIGURE ZONE USING constraints='[+region=us-east1]';
+  ALTER PARTITION chicago OF INDEX vehicles@primary CONFIGURE ZONE USING constraints='[+region=us-central1]';
+  ALTER PARTITION seattle OF INDEX vehicles@primary CONFIGURE ZONE USING constraints='[+region=us-west1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION new_york OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-east1]';
-  ALTER PARTITION chicago OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-central1]';
-  ALTER PARTITION seattle OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-west1]';
+> ALTER PARTITION new_york OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-east1]';
+  ALTER PARTITION chicago OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-central1]';
+  ALTER PARTITION seattle OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+region=us-west1]';
 ~~~
 
 ### Show table partitions
@@ -118,6 +118,73 @@ Use [`CONFIGURE ZONE`](configure-zone.html) to create [replication zone](configu
   movr          | users      | seattle        | NULL             | city         | users@primary | ('seattle')     | [+region=us-west1]
 (3 rows)
 ~~~
+
+You can also use [`SHOW CREATE TABLE`](show-create.html) to view partitions on a table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                                 create_statement
++------------+----------------------------------------------------------------------------------+
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | ) PARTITION BY LIST (city) (
+             |     PARTITION new_york VALUES IN (('new york')),
+             |     PARTITION chicago VALUES IN (('chicago')),
+             |     PARTITION seattle VALUES IN (('seattle'))
+             | );
+             | ALTER PARTITION chicago OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             |     constraints = '[+region=us-central1]';
+             | ALTER PARTITION new_york OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             |     constraints = '[+region=us-east1]';
+             | ALTER PARTITION seattle OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             |     constraints = '[+region=us-west1]'
+(1 row)
+~~~
+
+If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output includes a warning.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER PARTITION chicago OF TABLE users CONFIGURE ZONE DISCARD;
+  ALTER PARTITION new_york OF TABLE users CONFIGURE ZONE DISCARD;
+  ALTER PARTITION seattle OF TABLE users CONFIGURE ZONE DISCARD;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                      create_statement
++------------+-------------------------------------------------------------+
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | ) PARTITION BY LIST (city) (
+             |     PARTITION new_york VALUES IN (('new york')),
+             |     PARTITION chicago VALUES IN (('chicago')),
+             |     PARTITION seattle VALUES IN (('seattle'))
+             | )
+             | -- Warning: Partitioned table with no zone configurations.
+(1 row)
+~~~
+
 
 ### Show partitions by index
 

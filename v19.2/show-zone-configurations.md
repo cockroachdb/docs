@@ -44,6 +44,8 @@ Parameter | Description
 
 {% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-table.md %}
 
+You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
+
 ### View the replication zone for an index
 
 {% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}

@@ -131,7 +131,7 @@ See [Cluster Topography](recommended-production-settings.html#topology) recommen
 
 Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
 
-You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions.
+You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table.
 
 ## Basic examples
 
