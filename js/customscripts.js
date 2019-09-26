@@ -185,11 +185,11 @@ $(function() {
 
 
   function isPromptMarker(el, ch) {
-    return el.innerText.trim() === ch && (!el.previousSibling || el.previousSibling.textContent.trim() === "");
+    return el.innerText.trim() === ch && (!el.previousSibling || el.previousSibling.textContent.endsWith('\n'));
   }
 
   // This section makes shell terminal prompt markers ($) totally unselectable
-  // in syntax-highlighted code samples. The sybtax highlighter styles all
+  // in syntax-highlighted code samples. The syntax highlighter styles all
   // terminal markers with this class.
   var terminalMarkers = document.getElementsByClassName("nv");
   for (var i = 0; i < terminalMarkers.length; i++) {
