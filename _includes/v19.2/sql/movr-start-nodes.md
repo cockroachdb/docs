@@ -1,4 +1,4 @@
-Run [`cockroach demo`](cockroach-demo.html) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+Run [`cockroach demo`](cockroach-demo.html) with the [`--nodes`](cockroach-demo.html#general) and [`--demo-locality`](cockroach-demo.html#general) flags This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
     {% include copy-clipboard.html %}
     ~~~ shell
