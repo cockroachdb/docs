@@ -50,15 +50,13 @@ Workload | Description
 ---------|------------
 `bank` | A `bank` database, with one `bank` table containing account details.
 `intro` | An `intro` database, with one table, `mytable`, with a hidden message.
-`movr` | A `movr` database, with several tables of data for the [MovR example application](movr.html).<br><br><span class="version-tag">New in v19.2:</span> By default, `cockroach demo` loads the `movr` database as the [current database](sql-name-resolution.html#current-database), with sample region (`region`) and availability zone (`az`) replica localities for each node specified with the [`--nodes` flag](cockroach-demo.html#general).
+`movr` | A `movr` database, with several tables of data for the [MovR example application](movr.html).<br><br><span class="version-tag">New in v19.2:</span> By default, `cockroach demo` loads the `movr` database as the [current database](sql-name-resolution.html#current-database), with sample region (`region`) and availability zone (`az`) replica localities for each node specified with the [`--nodes` flag](cockroach-demo.html#flags).
 `startrek` | A `startrek` database, with two tables, `episodes` and `quotes`.
 `tpcc` | A `tpcc` database, with a rich schema of multiple tables.
 
 ## Flags
 
-The `demo` command supports the following [general-use](#general) and [logging](#logging) flags.
-
-### General
+The `demo` command supports the following general-use flags.
 
 Flag | Description
 -----|------------
@@ -71,7 +69,7 @@ Flag | Description
 `--set` | Set a [client-side option](use-the-built-in-sql-client.html#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
 `--with-load` |  <span class="version-tag">New in v19.2:</span> Run a demo [`movr`](movr.html) workload against the preloaded `movr` database.
 
-### Logging
+## Logging
 
 By default, the `demo` command logs errors to `stderr`.
 
@@ -101,6 +99,10 @@ When the SQL shell connects to the in-memory cluster, it prints a welcome text w
 #
 root@127.0.0.1:60104/defaultdb>
 ~~~
+
+## Telemetry
+
+By default, `cockroach demo` shares anonymous usage details with Cockroach Labs. To opt out, set the [`diagnostics.reporting.enabled`](diagnostics-reporting.html#after-cluster-initialization) [cluster setting](cluster-settings.html) to `false`. You can also opt out by setting the [`COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING`](diagnostics-reporting.html#at-cluster-initialization) environment variable to `false` before running `cockroach demo`.
 
 ## Example
 
