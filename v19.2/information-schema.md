@@ -19,7 +19,7 @@ To perform introspection on objects, you can either read from the related `infor
 Object | Information Schema Table | Corresponding `SHOW` Statement
 -------|--------------|--------
 Columns | [`columns`](#columns) | [`SHOW COLUMNS`](show-columns.html)
-Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
+Constraints | [`check_constraints`](#check_constraints), [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
@@ -62,6 +62,17 @@ Column | Description
 `grantee` | Name of the user to which this role membership was granted (always the current user).
 `role_name` | Name of a role.
 `is_grantable` | `YES` if the grantee has the admin option on the role; `NO` if not.
+
+### check_constraints
+
+`check_constraints` contains information about the [`CHECK`](check.html) constraints applied to columns in a database.
+
+Column | Description
+-------|-----------
+`constraint_catalog` | Name of the database containing the constraint.
+`constraint_schema` | Name of the schema containing the constraint.
+`constraint_name` | Name of the constraint.
+`check_clause` | Definition of the `CHECK` constraint.
 
 ### columns
 
@@ -318,32 +329,54 @@ Column | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Retrieve all columns from an information schema table
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM db_name.information_schema.table_constraints;
+> SELECT * FROM movr.information_schema.table_constraints;
 ~~~
 ~~~
-+--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
-| constraint_catalog | constraint_schema | constraint_name | table_catalog | table_schema | table_name  | constraint_type | is_deferrable | initially_deferred |
-+--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
-| jsonb_test         | public            | primary         | jsonb_test    | public       | programming | PRIMARY KEY     | NO            | NO                 |
-+--------------------+-------------------+-----------------+---------------+--------------+-------------+-----------------+---------------+--------------------+
+  constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
++--------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+--------------------+
+  movr               | public            | primary                      | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
+  movr               | public            | fk_city_ref_users            | movr          | public       | vehicles                   | FOREIGN KEY     | NO            | NO
+  movr               | public            | primary                      | movr          | public       | rides                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | fk_city_ref_users            | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
+  movr               | public            | fk_vehicle_city_ref_vehicles | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
+  movr               | public            | check_vehicle_city_city      | movr          | public       | rides                      | CHECK           | NO            | NO
+  movr               | public            | primary                      | movr          | public       | vehicle_location_histories | PRIMARY KEY     | NO            | NO
+  movr               | public            | fk_city_ref_rides            | movr          | public       | vehicle_location_histories | FOREIGN KEY     | NO            | NO
+  movr               | public            | primary                      | movr          | public       | promo_codes                | PRIMARY KEY     | NO            | NO
+  movr               | public            | fk_city_ref_users            | movr          | public       | user_promo_codes           | FOREIGN KEY     | NO            | NO
+  movr               | public            | primary                      | movr          | public       | user_promo_codes           | PRIMARY KEY     | NO            | NO
+(12 rows)
 ~~~
 
 ### Retrieve specific columns from an information schema table
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT table_name, constraint_name FROM db_name.information_schema.table_constraints;
+> SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~
 ~~~
-+-------------+-----------------+
-| table_name  | constraint_name |
-+-------------+-----------------+
-| programming | primary         |
-+-------------+-----------------+
+          table_name         |       constraint_name
++----------------------------+------------------------------+
+  users                      | primary
+  vehicles                   | primary
+  vehicles                   | fk_city_ref_users
+  rides                      | primary
+  rides                      | fk_city_ref_users
+  rides                      | fk_vehicle_city_ref_vehicles
+  rides                      | check_vehicle_city_city
+  vehicle_location_histories | primary
+  vehicle_location_histories | fk_city_ref_rides
+  promo_codes                | primary
+  user_promo_codes           | primary
+  user_promo_codes           | fk_city_ref_users
+(12 rows)
 ~~~
 
 ## See also
