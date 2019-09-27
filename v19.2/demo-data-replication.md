@@ -4,7 +4,7 @@ summary: Use a local cluster to explore how CockroachDB replicates and distribut
 toc: true
 ---
 
-This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
+This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
 
 ## Before you begin
 
