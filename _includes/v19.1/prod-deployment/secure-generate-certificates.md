@@ -51,17 +51,15 @@ Locally, you'll need to [create the following certificates and keys](create-secu
   	--ca-key=my-safe-directory/ca.key
   	~~~
 
-5. Upload certificates to the first node:
+5. Upload the CA certificate and node certificate and key to the first node:
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	# Create the certs directory:
   	$ ssh <username>@<node1 address> "mkdir certs"
   	~~~
 
   	{% include copy-clipboard.html %}
   	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
   	$ scp certs/ca.crt \
   	certs/node.crt \
   	certs/node.key \
@@ -95,11 +93,10 @@ Locally, you'll need to [create the following certificates and keys](create-secu
   	--ca-key=my-safe-directory/ca.key
   	~~~
 
-8. Upload certificates to the second node:
+8. Upload the CA certificate and node certificate and key to the second node:
 
     {% include copy-clipboard.html %}
   	~~~ shell
-  	# Create the certs directory:
   	$ ssh <username>@<node2 address> "mkdir certs"
   	~~~
 
@@ -124,17 +121,15 @@ Locally, you'll need to [create the following certificates and keys](create-secu
   	--ca-key=my-safe-directory/ca.key
   	~~~
 
-11. Upload certificates to the machine where you will run a sample workload:
+11. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Create the certs directory:
     $ ssh <username>@<workload address> "mkdir certs"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Upload the CA certificate and client certificate and key:
     $ scp certs/ca.crt \
     certs/client.root.crt \
     certs/client.root.key \

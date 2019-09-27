@@ -159,26 +159,26 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # runtime dashboard: node status, including uptime, memory, and cpu.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/runtime.json
+    # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # storage dashboard: storage availability.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/storage.json
+    # storage dashboard: storage availability.
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # sql dashboard: sql queries/transactions.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/sql.json
+    # sql dashboard: sql queries/transactions.
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # replicas dashboard: replica information and operations.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/replicas.json
+    # replicas dashboard: replica information and operations.
     ~~~
 
 5. [Add the dashboards to Grafana](http://docs.grafana.org/reference/export_import/#importing-a-dashboard).
