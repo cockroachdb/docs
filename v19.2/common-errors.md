@@ -127,21 +127,6 @@ This message usually indicates that a node tried to connect to a cluster, but th
     $ cockroach start [flags] --join=[cluster host]:26257
     ~~~
 
-This message can also occur in the following scenario:
-
-1. The first node of a cluster is started without the `--join` flag.
-2. Subsequent nodes are started with the `--join` flag pointing to the first node.
-3. The first node is stopped and restarted after the node's data directory is deleted or using a new directory. This causes the first node to initialize a new cluster.
-4. The other nodes, still communicating with the first node, notice that their cluster ID and the first node's cluster ID do not match.
-
-To avoid this scenario, update your scripts to use the new, recommended approach to initializing a cluster:
-
-1. Start each initial node of the cluster with the `--join` flag set to addresses of 3 to 5 of the initial nodes.
-2. Run the `cockroach init` command against any node to perform a one-time cluster initialization.
-3. When adding more nodes, start them with the same `--join` flag as used for the initial nodes.
-
-For more guidance, see this [example](start-a-node.html#start-a-multi-node-cluster).
-
 ## clock synchronization error: this node is more than 500ms away from at least half of the known nodes
 
 This error indicates that a node has spontaneously shut down because it detected that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.

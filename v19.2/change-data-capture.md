@@ -234,11 +234,11 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 In this example, you'll set up a core changefeed for a single-node cluster.
 
-1. In a terminal window, start `cockroach`:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
@@ -312,11 +312,11 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 In this example, you'll set up a core changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
-1. In a terminal window, start `cockroach`:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 2. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/).
@@ -420,11 +420,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
-2. In a terminal window, start `cockroach`:
+2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 3. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -588,11 +588,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
-2. In a terminal window, start `cockroach`:
+2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 3. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -762,11 +762,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
-2. In a terminal window, start `cockroach`:
+2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 3. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):

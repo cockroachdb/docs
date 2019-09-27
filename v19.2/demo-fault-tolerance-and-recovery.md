@@ -14,38 +14,41 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 1:
-$ cockroach start \
---insecure \
---store=fault-node1 \
---listen-addr=localhost:26257 \
---http-addr=localhost:8080 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+1. In a new terminal, start node 1:
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 2:
-$ cockroach start \
---insecure \
---store=fault-node2 \
---listen-addr=localhost:26258 \
---http-addr=localhost:8081 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node1 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 3:
-$ cockroach start \
---insecure \
---store=fault-node3 \
---listen-addr=localhost:26259 \
---http-addr=localhost:8082 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+2. In a new terminal, start node 2:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node2 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+3. In a new terminal, start node 3:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node3 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
 
 ## Step 2. Initialize the cluster
 
