@@ -545,15 +545,9 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Geo-Partitioning",
+        "title": "Replication & Rebalancing",
         "urls": [
-          "/${VERSION}/demo-geo-partitioning.html"
-        ]
-      },
-      {
-        "title": "Data Replication",
-        "urls": [
-          "/${VERSION}/demo-data-replication.html"
+          "/${VERSION}/demo-replication-and-rebalancing.html"
         ]
       },
       {
@@ -563,9 +557,9 @@
         ]
       },
       {
-        "title": "Automatic Rebalancing",
+        "title": "Geo-Partitioning",
         "urls": [
-          "/${VERSION}/demo-automatic-rebalancing.html"
+          "/${VERSION}/demo-geo-partitioning.html"
         ]
       },
       {

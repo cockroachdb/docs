@@ -326,7 +326,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     <img src="{{ 'images/v19.2/admin_ui_cluster_overview_5_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-automatic-rebalancing.html) to utilize the additional capacity of the new nodes.
+    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-replication-and-rebalancing.html) to utilize the additional capacity of the new nodes.
 
 ## Step 7. Stop the cluster
 
