@@ -456,31 +456,34 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 
 #### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Start the first node:
-$ cockroach start --insecure \
---store=path=/mnt/1,attrs=ssd \
---advertise-addr=<node1 hostname> \
---join=<node1 hostname>,<node2 hostname>
-~~~
+1. Start the first node:
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Start the second node:
-$ cockroach start --insecure \
---store=path=/mnt/2,attrs=hdd \
---advertise-addr=<node2 hostname> \
---join=<node1 hostname>,<node2 hostname>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure \
+    --store=path=/mnt/1,attrs=ssd \
+    --advertise-addr=<node1 hostname> \
+    --join=<node1 hostname>,<node2 hostname>
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Initialize the cluster:
-$ cockroach init \
---insecure \
---host=<address of any node>
-~~~
+2. Start the second node:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start --insecure \
+    --store=path=/mnt/2,attrs=hdd \
+    --advertise-addr=<node2 hostname> \
+    --join=<node1 hostname>,<node2 hostname>
+    ~~~
+
+3. Initialize the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init \
+    --insecure \
+    --host=<address of any node>
+    ~~~
 
 #### Step 4. Create a table with the appropriate partitions
 

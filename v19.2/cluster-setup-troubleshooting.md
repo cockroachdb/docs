@@ -17,7 +17,7 @@ Try running:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure --logtostderr
+$ cockroach start-single-node --insecure --logtostderr
 ~~~
 
 If the process exits prematurely, check for the following:
@@ -31,7 +31,7 @@ When starting a node, the directory you choose to store the data in also contain
 -   Choose a different directory to store the CockroachDB data:  
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --store=<new directory> --insecure
+    $ cockroach start-single-node --store=<new directory> --insecure
     ~~~
 -   Remove the existing directory and start the node again:
     {% include copy-clipboard.html %}
@@ -40,7 +40,7 @@ When starting a node, the directory you choose to store the data in also contain
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --logtostderr
+    $ cockroach start-single-node --insecure --logtostderr
     ~~~
 
 ### Toolchain incompatibility

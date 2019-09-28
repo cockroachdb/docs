@@ -4,346 +4,395 @@ summary: Use a local cluster to explore how CockroachDB remains available during
 toc: true
 ---
 
-This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
+This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 6-node local cluster with the default 3-way replication, you'll run a sample workload, stop a node to simulate failure, and see how the cluster continues uninterrupted. You'll then leave that node offline for long enough to watch the cluster repair itself by re-replicating missing data to other nodes. You'll then prepare the cluster for 2 simultaneous node failures by increasing to 5-way replication, then take two nodes offline at the same time, and again see how the cluster continues uninterrupted.
 
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
-## Step 1. Start a 3-node cluster
+## Step 1. Start a 6-node cluster
 
-Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
+1. Use the [`cockroach start`](start-a-node.html) command to start 6 nodes:
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 1:
-$ cockroach start \
---insecure \
---store=fault-node1 \
---listen-addr=localhost:26257 \
---http-addr=localhost:8080 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node1 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 2:
-$ cockroach start \
---insecure \
---store=fault-node2 \
---listen-addr=localhost:26258 \
---http-addr=localhost:8081 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node2 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-# In a new terminal, start node 3:
-$ cockroach start \
---insecure \
---store=fault-node3 \
---listen-addr=localhost:26259 \
---http-addr=localhost:8082 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node3 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-## Step 2. Initialize the cluster
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node4 \
+    --listen-addr=localhost:26260 \
+    --http-addr=localhost:8083 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node5 \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init \
---insecure \
---host=localhost:26257
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node6 \
+    --listen-addr=localhost:26262 \
+    --http-addr=localhost:8085 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
 
-## Step 3. Verify that the cluster is live
+2. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-In a new terminal, use the [`cockroach sql`](use-the-built-in-sql-client.html) command to connect the built-in SQL shell to any node:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init \
+    --insecure \
+    --host=localhost:26257
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost:26257
-~~~
+## Step 2. Set up load balancing
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
+In this module, you'll run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes](recommended-production-settings.html#load-balancing). You'll use the open-source [HAProxy](http://www.haproxy.org/) load balancer to do that here.
 
-~~~
-  database_name
-+---------------+
-  defaultdb
-  postgres
-  system
-(3 rows)
-~~~
+1. Install HAProxy.
 
-Exit the SQL shell:
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+    </div>
+    <p></p>
 
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
+    <div class="filter-content" markdown="1" data-scope="mac">
+    If you're on a Mac and use Homebrew, run:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ brew install haproxy
+    ~~~
+    </div>
 
-## Step 4. Remove a node temporarily
+    <div class="filter-content" markdown="1" data-scope="linux">
+    If you're using Linux and use apt-get, run:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ sudo apt-get install haproxy
+    ~~~
+    </div>
 
-In the terminal running node 2, press **CTRL-C** to stop the node.
+2. Run the [`cockroach gen haproxy`](../generate-cockroachdb-resources.html) command, specifying the port of any node:
 
-Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach gen haproxy \
+    --insecure \
+    --host=localhost \
+    --port=26257
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach quit --insecure --host=localhost:26258
-~~~
+    This command generates an `haproxy.cfg` file automatically configured to work with the nodes of your running cluster.
 
-~~~
-initiating graceful shutdown of server
-ok
-~~~
+3. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
 
-## Step 5. Verify that the cluster remains available
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
+    ~~~
 
-Switch to the terminal for the built-in SQL shell and reconnect the shell to node 1 (port `26257`) or node 3 (port `26259`):
+4. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost:26259
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ haproxy -f haproxy.cfg &
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
+## Step 3. Run a sample workload
 
-~~~
-  database_name
-+---------------+
-  defaultdb
-  postgres
-  system
-(3 rows)
-~~~
+Now that you have a load balancer running in front of your cluster, use the [`cockroach workload`](cockroach-workload.html) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
 
-As you see, despite one node being offline, the cluster continues uninterrupted because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one node live, the cluster would be unresponsive until another node was brought back online.
+1. Load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
-Exit the SQL shell:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init ycsb --splits=50 \
+    'postgresql://root@localhost:26000?sslmode=disable'
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
+    The `--splits` flag tells the workload to manually split ranges a number of times. This is not something you'd normally do, but for the purpose of this tutorial, it makes it easier to visualize the movement of data in the cluster.
 
-## Step 6. Write data while the node is offline
+2. Run the `ycsb` workload, pointing it at HAProxy's port:
 
-In the same terminal, use the [`cockroach workload`](cockroach-workload.html) command to generate an example `startrek` database:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run ycsb \
+    --duration=20m \
+    --concurrency=3 \
+    --max-rate=1000 \
+    --tolerate-errors \
+    'postgresql://root@localhost:26000?sslmode=disable'
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach workload init startrek \
-'postgresql://root@localhost:26257?sslmode=disable'
-~~~
+    This command initiates 3 concurrent client workloads for 20 minutes, but limits the total load to 1000 operations per second (since you're running everything on a single machine).
 
-Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
+    You'll see per-operation statistics print to standard output every second:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost:26259
-~~~
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+        1.0s        0          902.8          930.9      1.1      2.1      4.1     62.9 read
+        1.0s        0           46.5           48.0      3.4      4.7      6.0      6.0 update
+        2.0s        0          923.3          926.9      1.0      2.9      5.5      8.9 read
+        2.0s        0           38.0           43.0      3.0      6.0      7.6      7.6 update
+        3.0s        0          901.1          918.3      1.1      2.5      5.0      6.6 read
+        3.0s        0           55.0           47.0      3.4      7.9      9.4     11.5 update
+        4.0s        0          948.9          926.0      1.0      1.6      2.6      5.0 read
+        4.0s        0           46.0           46.7      3.1      5.2     16.8     16.8 update
+        5.0s        0          932.0          927.2      1.1      1.8      2.9     13.6 read
+        5.0s        0           56.0           48.6      3.0      4.2      5.2      5.5 update
+    ...
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
+    After the specified duration (20 minutes in this case), the workload will stop and you'll see totals printed to standard output.
 
-~~~
-  database_name
-+---------------+
-  defaultdb
-  postgres
-  startrek
-  system
-(4 rows)
-~~~
+## Step 4. Check the workload
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM startrek;
-~~~
+Initially, the workload creates a new database called `ycsb`, creates a `usertable` table in that database, and inserts a bunch of rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
 
-~~~
-  table_name
-+------------+
-  episodes
-  quotes
-~~~
+1. Go to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM startrek.episodes WHERE stardate > 5500;
-~~~
+2. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Queries** graph at the top:
 
-~~~
-  id | season | num |               title               | stardate
-+----+--------+-----+-----------------------------------+----------+
-  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
-  62 |      3 |   7 | Day of the Dove                   |   5630.3
-  64 |      3 |   9 | The Tholian Web                   |   5693.2
-  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
-  66 |      3 |  11 | Wink of an Eye                    |   5710.5
-  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
-  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
-  73 |      3 |  18 | The Lights of Zetar               |   5725.3
-  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
-  75 |      3 |  20 | The Way to Eden                   |   5832.3
-  76 |      3 |  21 | The Cloud Minders                 |   5818.4
-  77 |      3 |  22 | The Savage Curtain                |   5906.4
-  78 |      3 |  23 | All Our Yesterdays                |   5943.7
-  79 |      3 |  24 | Turnabout Intruder                |   5928.5
-(14 rows)
-~~~
+    <img src="{{ 'images/v19.2/fault-tolerance-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-Exit the SQL shell:
+3. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **SQL Connections** graph:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
+    <img src="{{ 'images/v19.2/fault-tolerance-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Rejoin the node to the cluster
+    You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
-Switch to the terminal for node 2, and rejoin the node to the cluster, using the same command that you used in step 1:
+4. To see more details about the `ycsb` database and `usertable` table, click **Databases** in the upper left and then scroll down until you see **ycsb**:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --insecure \
---store=fault-node2 \
---listen-addr=localhost:26258 \
---http-addr=localhost:8081 \
---join=localhost:26257
-~~~
+    <img src="{{ 'images/v19.2/fault-tolerance-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-~~~
-CockroachDB node starting at {{page.release_info.start_time}}
-build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:      http://localhost:8081
-sql:        postgresql://root@localhost:26258?sslmode=disable
-logs:       node2/logs
-store[0]:   path=fault-node2
-status:     restarted pre-existing node
-clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
-nodeID:     2
-~~~
+    You can also view the schema of the `usertable` by clicking the table name:
 
-## Step 8. Verify that the rejoined node has caught up
+    <img src="{{ 'images/v19.2/fault-tolerance-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />    
 
-Switch to the terminal for the built-in SQL shell, connect the shell to the rejoined node 2 (port `26258`), and check for the `startrek` data that was added while the node was offline:
+5. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost:26258
-~~~
+    <img src="{{ 'images/v19.2/fault-tolerance-6.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM startrek.episodes WHERE stardate > 5500;
-~~~
+## Step 5. Simulate a single node failure
 
-~~~
-  id | season | num |               title               | stardate
-+----+--------+-----+-----------------------------------+----------+
-  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
-  62 |      3 |   7 | Day of the Dove                   |   5630.3
-  64 |      3 |   9 | The Tholian Web                   |   5693.2
-  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
-  66 |      3 |  11 | Wink of an Eye                    |   5710.5
-  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
-  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
-  73 |      3 |  18 | The Lights of Zetar               |   5725.3
-  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
-  75 |      3 |  20 | The Way to Eden                   |   5832.3
-  76 |      3 |  21 | The Cloud Minders                 |   5818.4
-  77 |      3 |  22 | The Savage Curtain                |   5906.4
-  78 |      3 |  23 | All Our Yesterdays                |   5943.7
-  79 |      3 |  24 | Turnabout Intruder                |   5928.5
-(14 rows)
-~~~
+When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
 
-At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
+1. In a new terminal, [edit the default replication zone](configure-replication-zones.html) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
 
-Soon enough, node 2 catches up entirely. To verify, open the Admin UI at `http://localhost:8080` to see that all three nodes are listed, and the replica count is identical for each. This means that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --insecure \
+    --host=localhost:26000 \
+    --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
+    ~~~
 
-{{site.data.alerts.callout_success}}CockroachDB replicates data 3 times by default. You can customize the number and location of replicas for the entire cluster or for specific sets of data using <a href="configure-replication-zones.html">replication zones</a>.{{site.data.alerts.end}}
+2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop a node:
 
-<img src="{{ 'images/v19.2/recovery1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit \
+    --insecure \
+    --host=localhost:26261
+    ~~~
 
-## Step 9. Add another node
+## Step 6. Check load continuity and cluster health
 
-Now, to prepare the cluster for a permanent node failure, open a new terminal and add a fourth node:
+Go back to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start \
---insecure \
---store=fault-node4 \
---listen-addr=localhost:26260 \
---http-addr=localhost:8083 \
---join=localhost:26257,localhost:26258,localhost:26259
-~~~
+<img src="{{ 'images/v19.2/fault-tolerance-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-~~~
-CockroachDB node starting at {{page.release_info.start_time}}
-build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:      http://localhost:8083
-sql:        postgresql://root@localhost:26260?sslmode=disable
-logs:       node4/logs
-store[0]:   path=fault-node4
-status:     initialized new node, joined pre-existing cluster
-clusterID:  {5638ba53-fb77-4424-ada9-8a23fbce0ae9}
-nodeID:     4
-~~~
+This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
-## Step 10. Remove a node permanently
+## Step 7. Watch the cluster repair itself
 
-Again, switch to the terminal running node 2 and press **CTRL-C** to stop it.
+Click **Overview** on the left:
 
-Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a-node.html) command against port `26258`:
+<img src="{{ 'images/v19.2/fault-tolerance-5.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, the cluster will consider the down node "dead", and you'll see the replica count on the remaining nodes increase and the number of under-replicated ranges decrease to 0. This shows the cluster repairing itself by re-replicating missing replicas.
+
+## Step 8. Prepare for two simultaneous node failures
+
+At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting](cluster-settings.html) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
+
+To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
+
+1. Restart the dead node, using the same command you used to start the node initially:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start \
+    --insecure \
+    --store=fault-node5 \
+    --listen-addr=localhost:26261 \
+    --http-addr=localhost:8084 \
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
+    ~~~
+
+2. Use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `.default` replication factor to 5:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
+    ~~~
+
+3. Back in the Admin UI **Overview** dashboard, watch the replica count increases and even out across all 6 nodes:
+
+    <img src="{{ 'images/v19.2/fault-tolerance-8.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+    This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
+
+## Step 9. Simulate two simultaneous node failures
+
+Use the [`cockroach quit`](../stop-a-node.html) command to stop two nodes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --host=localhost:26258
+$ cockroach quit --insecure --host=localhost:26260
 ~~~
-
-~~~
-initiating graceful shutdown of server
-ok
-server drained and shutdown completed
-~~~
-
-## Step 11. Verify that the cluster re-replicates missing replicas
-
-Back in the Admin UI, you'll see 4 nodes listed. After about 1 minute, the dot next to node 2 will turn yellow, indicating that the node is not responding.
-
-<img src="{{ 'images/v19.2/recovery2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicating that the node is not expected to come back. At this point, in the **Live Nodes** section, you should also see that the **Replicas** count for node 4 matches the count for node 1 and 3, the other live nodes. This indicates that all missing replicas (those that were on node 2) have been re-replicated to node 4.
-
-<img src="{{ 'images/v19.2/recovery3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-## Step 12.  Stop the cluster
-
-Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
-
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
-
-If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5
+$ cockroach quit --insecure --host=localhost:26261
 ~~~
+
+## Step 10. Check load continuity and cluster health
+
+1. Like before, go to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite 2 nodes being offline:
+
+    <img src="{{ 'images/v19.2/fault-tolerance-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+    This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
+
+2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it is still serving reads:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --insecure \
+    --host=localhost:26257 \
+    --execute="SELECT count(*) FROM ycsb.usertable;"
+    ~~~
+
+    ~~~
+      count
+    +-------+
+      10000
+    (1 row)
+    ~~~
+
+    And writes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --insecure \
+    --host=localhost:26257 \
+    --execute="INSERT INTO ycsb.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --insecure \
+    --host=localhost:26257 \
+    --execute="SELECT count(*) FROM ycsb.usertable;"
+    ~~~
+
+    ~~~
+      count
+    +-------+
+      10001
+    (1 row)
+    ~~~
+
+## Step 11. Clean up
+
+1. In the terminal where the YCSB workload is running, press CTRL + c.
+
+2. Stop HAProxy:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pkill haproxy
+    ~~~
+
+3. Use the [`cockroach quit`](stop-a-node.html) command to shut down the remaining 4 nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26257
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    For the final 2 nodes, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
+    {{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26258
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26259
+    ~~~
+
+4. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+
+    If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config files:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5 fault-node6 haproxy.cfg haproxy.cfg.saved
+    ~~~
 
 ## What's next?
 
