@@ -326,7 +326,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     <img src="{{ 'images/v19.2/admin_ui_cluster_overview_5_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-automatic-rebalancing.html) to utilize the additional capacity of the new nodes.
+    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-replication-and-rebalancing.html) to utilize the additional capacity of the new nodes.
 
 ## Step 7. Stop the cluster
 
@@ -375,4 +375,4 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
-- Further explore CockroachDB capabilities like [geo-partitioning](demo-geo-partitioning.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)
+- Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), geo-partitioning](demo-geo-partitioning.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

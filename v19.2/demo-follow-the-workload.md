@@ -6,17 +6,21 @@ toc: true
 
 "Follow-the-workload" refers to CockroachDB's ability to dynamically optimize read latency for the location from which most of the workload is originating. This page explains how "follow-the-workload" works and walks you through a simple demonstration using a local cluster.
 
-## Overview
+{{site.data.alerts.callout_info}}
+In practice, follow-the-workload is somes useful when a CockroachDB cluster is running across multiple regions, with high latency between them, but other patterns are often preferable. For more details, see [Multi-Region Topology Patterns](topology-patterns.html#multi-region-patterns).  
+{{site.data.alerts.end}}
 
-### Basic terms
+## Before you begin
 
-To understand how "follow-the-workload" works, it's important to start with some basic terms:
+### Basic concepts
 
-Term | Description
------|------------
-**Range** | CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
-**Range Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-**Range Lease** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+To understand how "follow-the-workload" works, it's important to start with some basic concepts:
+
+Concept | Description
+--------|------------
+**Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+**Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
+**Leaseholder** | For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.<br><br>Unlike writes, read requests access the leaseholder and send the results to the client without needing to coordinate with any of the other range replicas. This reduces the network round trips involved and is possible because the leaseholder is guaranteed to be up-to-date due to the fact that all write requests also go to the leaseholder.
 
 ### How it works
 
@@ -26,7 +30,9 @@ This increases the speed of reads, but it doesn't guarantee that the range lease
 
 However, you can cause the cluster to actively move range leases for even better read performance by starting each node with the [`--locality`](start-a-node.html#locality) flag. With this flag specified, the cluster knows about the location of each node, so when there's high latency between nodes, the cluster will move active range leases to a node closer to the origin of the majority of the workload. This is especially helpful for applications with workloads that move around throughout the day (e.g., most of the traffic is in the US East in the morning and in the US West in the evening).
 
-{{site.data.alerts.callout_success}}To enable "follow-the-workload", you just need to start each node of the cluster with the <code>--locality</code> flag, as shown in the tutorial below. No additional user action is required.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+To enable "follow-the-workload", you just need to start each node of the cluster with the `--locality` flag, as shown in the tutorial below. No additional user action is required.
+{{site.data.alerts.end}}
 
 ### Example
 
@@ -38,9 +44,7 @@ However, if the nodes were started with the [`--locality`](start-a-node.html#loc
 
 <img src="{{ 'images/v19.2/follow-workload-2.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
-## Tutorial
-
-### Step 1. Install prerequisites
+## Step 1. Install prerequisites
 
 In this tutorial, you'll use CockroachDB, the `comcast` network tool to simulate network latency on your local workstation, and the `tpcc` workload built into CockroachDB to simulate client workloads. Before you begin, make sure these applications are installed:
 
@@ -50,26 +54,11 @@ In this tutorial, you'll use CockroachDB, the `comcast` network tool to simulate
 
 Also, to keep track of the data files and logs for your cluster, you may want to create a new directory (e.g., `mkdir follow-workload`) and start all your nodes in that directory.
 
-### Step 2. Start simulating network latency
-
-"Follow-the-workload" only kicks in when there's high latency between the nodes of the CockroachDB cluster. In this tutorial, you'll run 3 nodes on your local workstation, with each node pretending to be in a different region of the US. To simulate latency between the nodes, use the `comcast` tool that you installed earlier.
-
-In a new terminal, start `comcast` as follows:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ comcast --device lo0 --latency 100
-~~~
-
-For the `--device` flag, use `lo0` if you're on Mac or `lo` if you're on Linux. If neither works, run the `ifconfig` command and find the interface responsible for `127.0.0.1` in the output.
-
-This command causes a 100 millisecond delay for all requests on the loopback interface of your local workstation. It will only affect connections from the machine to itself, not to/from the Internet.
-
-### Step 3. Start the cluster
+## Step 2. Start the cluster
 
 Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your local workstation, using the [`--locality`](start-a-node.html#locality) flag to pretend that each node is in a different region of the US.
 
-1. In a new terminal, start a node in the "US West":
+1. Start a node in the "US West":
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -79,10 +68,11 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     --store=follow1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-2. In a new terminal, start a node in the "US Midwest":
+2. Start a node in the "US Midwest":
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -92,10 +82,11 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     --store=follow2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-3. In a new terminal, start a node in the "US East":
+3. Start a node in the "US East":
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -105,25 +96,43 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     --store=follow3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259
+    --join=localhost:26257,localhost:26258,localhost:26259 \
+    --background
     ~~~
 
-### Step 4. Initialize the cluster
+4. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init \
+    --insecure \
+    --host=localhost:26257
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init \
---insecure \
---host=localhost:26257
-~~~
+## Step 3. Simulate network latency
 
-### Step 5. Simulate traffic in the US East
+"Follow-the-workload" only kicks in when there's high latency between the nodes of the CockroachDB cluster. In this tutorial, you'll run 3 nodes on your local workstation, with each node pretending to be in a different region of the US. To simulate latency between the nodes, use the `comcast` tool that you installed earlier.
 
-Now that the cluster is live, use the `tpcc` workload to simulate multiple client connections to the node in the "US East".
+1. Start `comcast` as follows:
 
-1. In the same terminal, run the [`cockroach workload init tpcc`](cockroach-workload.html) command to load the initial schema and data, pointing it at port `26259`, which is the port of the node with the `us-east` locality:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ comcast --device lo0 --latency 100
+    ~~~
+
+    For the `--device` flag, use `lo0` if you're on Mac or `lo` if you're on Linux. If neither works, run the `ifconfig` command and find the interface responsible for `127.0.0.1` in the output.
+
+    This command causes a 100 millisecond delay for all requests on the loopback interface of your local workstation. It will only affect connections from the machine to itself, not to/from the Internet.
+
+2. To verify the delay between nodes, check the **Network Latency** page of the Admin UI:
+
+    <img src="{{ 'images/v19.2/follow-workload-network-latency.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+## Step 4. Simulate traffic in the US East
+
+Now that the cluster is live, use CockroachDB's [built-in version the `tpcc` benchmark](cockroach-workload.html) to simulate multiple client connections to the node in the "US East".
+
+1. Load the initial schema and data, pointing it at port `26259`, which is the port of the node with the `us-east` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -133,11 +142,11 @@ Now that the cluster is live, use the `tpcc` workload to simulate multiple clien
 
 2. Let the workload run to completion.
 
-### Step 6. Check the location of the range lease
+## Step 5. Check the location of the range lease
 
 The load generator created a `tpcc` database with several tables that map to underlying key-value ranges. Verify that the range lease for the `customer` table moved to the node in the "US East" as follows.
 
-1. In the same terminal, run the [`cockroach node status`](view-node-details.html) command against any node:
+1. Run the [`cockroach node status`](view-node-details.html) command against any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -145,17 +154,17 @@ The load generator created a `tpcc` database with several tables that map to und
     ~~~
 
     ~~~
-      id |     address     |                 build                  |            started_at            |            updated_at            | is_available | is_live
-    +----+-----------------+----------------------------------------+----------------------------------+----------------------------------+--------------+---------+
-       1 | localhost:26257 | v2.2.0-alpha.00000000-2397-geb8345b19c | 2018-11-21 03:12:17.572557+00:00 | 2018-11-21 03:16:11.917193+00:00 | true         | true
-       2 | localhost:26259 | v2.2.0-alpha.00000000-2397-geb8345b19c | 2018-11-21 03:12:18.935464+00:00 | 2018-11-21 03:16:13.510253+00:00 | true         | true
-       3 | localhost:26258 | v2.2.0-alpha.00000000-2397-geb8345b19c | 2018-11-21 03:12:19.11294+00:00  | 2018-11-21 03:16:13.571382+00:00 | true         | true
+      id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |     locality      | is_available | is_live
+    +----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+-------------------+--------------+---------+
+       1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2491-gfe735c9a97 | 2019-09-28 03:14:20.566372+00:00 | 2019-09-28 03:18:41.866604+00:00 | region=us-west    | true         | true
+       2 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2491-gfe735c9a97 | 2019-09-28 03:14:21.353188+00:00 | 2019-09-28 03:18:38.165272+00:00 | region=us-east    | true         | true
+       3 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2491-gfe735c9a97 | 2019-09-28 03:14:21.862969+00:00 | 2019-09-28 03:18:38.577831+00:00 | region=us-midwest | true         | true
     (3 rows)
     ~~~
 
 2. In the response, note the ID of the node running on port `26259` (in this case, node 2).
 
-3. In the same terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
+3. Connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -170,13 +179,13 @@ The load generator created a `tpcc` database with several tables that map to und
     ~~~
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       33 | {1,2,3}  |            2
+      start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                replica_localities
+    +-----------+---------+----------+---------------+--------------+-----------------------+----------+---------------------------------------------------+
+      NULL      | NULL    |       28 |     19.194141 |            2 | region=us-east        | {1,2,3}  | {region=us-west,region=us-east,region=us-midwest}
     (1 row)
     ~~~
 
-    `replicas` and `lease_holder` indicate the node IDs. As you can see, the lease for the range holding the `customer` table's data is on node 2, which is the same ID as the node on port `26259`.
+    `lease_holder` and `replicas` indicate the node IDs. As you can see, the lease for the range holding the `customer` table's data is on node 2, which is the same ID as the node on port `26259`.
 
 5. Exit the SQL shell:
 
@@ -185,9 +194,9 @@ The load generator created a `tpcc` database with several tables that map to und
     > \q
     ~~~
 
-### Step 7. Simulate traffic in the US West
+## Step 6. Simulate traffic in the US West
 
-1. In the same terminal, run the [`cockroach workload run tpcc`](cockroach-workload.html) command to generate more load, this time pointing it at port `26257`, which is the port of the node with the `us-west` locality:
+1. Run the [`cockroach workload run tpcc`](cockroach-workload.html) command to generate more load, this time pointing it at port `26257`, which is the port of the node with the `us-west` locality:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -204,7 +213,7 @@ The load generator created a `tpcc` database with several tables that map to und
     The latency numbers printed by the workload will be over 200 milliseconds because the 100 millisecond delay in each direction (200ms round-trip) caused by the `comcast` tool also applies to the traffic going from the `tpcc` process to the `cockroach` process. If you were to set up more advanced rules that excluded the `tpcc` process's traffic or to run this on a real network with real network delay, these numbers would be down in the single-digit milliseconds.
     {{site.data.alerts.end}}
 
-### Step 8. Check the location of the range lease
+## Step 7. Check the location of the range lease
 
 Verify that the range lease for the `customer` table moved to the node in the "US West" as follows.
 
@@ -215,45 +224,60 @@ Verify that the range lease for the `customer` table moved to the node in the "U
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-2. Check where the range lease is for the `kv` table:
+2. Check where the range lease is for the `tpcc.customer` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW RANGES FROM TABLE test.kv;
+    > SHOW RANGES FROM TABLE tpcc.customer;
     ~~~
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       33 | {1,2,3}  |            1
+      start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                replica_localities
+    +-----------+---------+----------+---------------+--------------+-----------------------+----------+---------------------------------------------------+
+      NULL      | NULL    |       28 |     19.194141 |            1 | region=us-west        | {1,2,3}  | {region=us-west,region=us-east,region=us-midwest}
     (1 row)
     ~~~
 
     As you can see, the lease for the range holding the `customer` table's data is now on node 1, which is the same ID as the node on port `26257`.
 
-### Step 9. Stop the cluster
+## Step 8. Clean up
 
-Once you're done with your cluster, press **CTRL-C** in each node's terminal.
+1. Once you're done with this tutorial, you will not want a 100 millisecond delay for all requests on your local workstation, so stop the `comcast` tool:
 
-{{site.data.alerts.callout_success}}
-For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press **CTRL-C** a second time.
-{{site.data.alerts.end}}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ comcast --device lo0 --stop
+    ~~~
 
-If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
+2. Use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ rm -rf follow1 follow2 follow3
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26257
+    ~~~
 
-### Step 10. Stop simulating network latency
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26258
+    ~~~
 
-Once you're done with this tutorial, you will not want a 100 millisecond delay for all requests on your local workstation, so stop the `comcast` tool:
+    {{site.data.alerts.callout_info}}
+    For the last node, the shutdown process will take longer (about a minute each) and will eventually force the node to stop. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
+    {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ comcast --device lo0 --stop
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost:26259
+    ~~~
+
+3. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+
+    If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf follow1 follow2 follow3
+    ~~~
 
 ## What's next?
 

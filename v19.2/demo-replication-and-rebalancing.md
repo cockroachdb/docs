@@ -1,10 +1,13 @@
 ---
-title: Data Replication
-summary: Use a local cluster to explore how CockroachDB replicates and distributes data.
+title: Replication and Rebalancing
+summary: Use a local cluster to explore how CockroachDB replicates and rebalances data.
 toc: true
+redirect_from:
+- demo-automatic-rebalancing.html
+- demo-data-replication.html
 ---
 
-This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
+This page walks you through a simple demonstration of how CockroachDB replicates, distributes, and rebalances data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
 ## Before you begin
 
@@ -12,7 +15,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Start a 3-node cluster
 
-1. Use the [`cockroach start`](start-a-node.html) command to start 6 nodes:
+1. Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -58,7 +61,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Write data
 
-1. Use [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database:
+1. Use the [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -141,22 +144,24 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 3. Verify replication
 
-By default, CockroachDB replicates all data 3 times and balances it across all nodes. To verify this, go to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>:
+1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/overview.html):
 
-<img src="{{ 'images/v19.2/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-Note that the replica count is identical across all three nodes, indicating that all data in the cluster has been replicated 3 times; there's a copy of every piece of data on each node.
+    Concept | Description
+    --------|------------
+    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches 64 MiB in size, it splits into two ranges. This process continues for these new ranges as the table and its indexes continue growing.
+    **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 
-## Step 4. Increase the replication factor
+2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and view the **Node List**:
 
-Now use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) statement to change the cluster's `.default` replication factor to 5:
+    <img src="{{ 'images/v19.2/replication1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26257
-~~~
+    Note that the **Replicas** count is the same on all three nodes. This indicates:
+    - There are this many "ranges" of data in the cluster. These are mostly internal "system" ranges since you haven't added much table data.
+    - Each range has been replicated 3 times (according to the CockroachDB default).
+    - For each range, each replica is stored on different nodes.
 
-## Step 5. Add two more nodes
+## Step 4. Add two more nodes
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -180,13 +185,15 @@ $ cockroach start \
 --background
 ~~~
 
-## Step 6. Watch data replicate to the new nodes
+## Step 5. Watch data rebalance
 
-Back in the Admin UI, you'll see that there are now 5 nodes listed. At first, the replica count will be lower for nodes 4 and 5. But because you changed the default replication factor to 5, very soon, the replica count will be identical across all 5 nodes, indicating that all data in the cluster has been replicated 5 times.
+Back in the Admin UI, you'll see that there are now 5 nodes listed:
 
 <img src="{{ 'images/v19.2/replication2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Stop the cluster
+At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being automatically rebalanced to utilize the additional capacity of the new nodes.
+
+## Step 6. Stop the cluster
 
 1. When you're done with your test cluster, use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node.
 
