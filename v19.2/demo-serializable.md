@@ -285,11 +285,11 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. If you haven't already, [install CockroachDB](install-cockroachdb.html) locally.
 
-2. Start a one-node CockroachDB cluster in insecure mode:
+2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a one-node CockroachDB cluster in insecure mode:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ cockroach start-single-node \
     --insecure \
     --store=serializable-demo \
     --listen-addr=localhost \
@@ -479,7 +479,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     Since CockroachDB uses `SERIALIZABLE` isolation, the database detects that the previous check (the `SELECT` query) is no longer true due to a concurrent transaction. It therefore prevents the transaction from committing, returning a retry error that indicates that the transaction must be attempted again:
 
     ~~~
-    pq: restart transaction: HandledRetryableTxnError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE): "sql txn" id=57dd0454 key=/Table/53/1/17809/1/0 rw=true pri=0.00710012 iso=SERIALIZABLE stat=PENDING epo=0 ts=1539116499.676097000,2 orig=1539115078.961557000,0 max=1539115078.961557000,0 wto=false rop=false seq=4
+    pq: restart transaction: TransactionRetryWithProtoRefreshError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE): id=373bbefe key=/Table/53/1/17809/1/0 rw=true pri=0.03885012 stat=PENDING epo=0 ts=1569638527.268184000,1 orig=1569638507.593587000,0 min=1569638507.593587000,0 max=1569638507.593587000,0 wto=false seq=2
     ~~~
 
     {{site.data.alerts.callout_success}}
@@ -497,34 +497,41 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
 
 ### Step 7. Check data correctness
 
-In either terminal, confirm that one doctor is still on call for 10/5/18:
+1. In either terminal, confirm that one doctor is still on call for 10/5/18:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM schedules WHERE day = '2018-10-05';
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM schedules WHERE day = '2018-10-05';
+    ~~~
 
-~~~
-             day            | doctor_id | on_call
-+---------------------------+-----------+---------+
-  2018-10-05 00:00:00+00:00 |         1 |  true
-  2018-10-05 00:00:00+00:00 |         2 |  false
-(2 rows)
-~~~
+    ~~~
+                 day            | doctor_id | on_call
+    +---------------------------+-----------+---------+
+      2018-10-05 00:00:00+00:00 |         1 |  true
+      2018-10-05 00:00:00+00:00 |         2 |  false
+    (2 rows)
+    ~~~
 
-Again, the write skew anomaly was prevented by CockroachDB using the `SERIALIZABLE` isolation level:
+2. Again, the write skew anomaly was prevented by CockroachDB using the `SERIALIZABLE` isolation level:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TRANSACTION_ISOLATION;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW TRANSACTION_ISOLATION;
+    ~~~
 
-~~~
-  transaction_isolation
-+-----------------------+
-  serializable
-(1 row)
-~~~
+    ~~~
+      transaction_isolation
+    +-----------------------+
+      serializable
+    (1 row)
+    ~~~
+
+3. Exit the SQL shell in each terminal:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
 
 ### Step 8. Stop CockroachDB
 

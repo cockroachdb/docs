@@ -61,7 +61,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Write data
 
-1. Use [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database:
+1. Use the [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
