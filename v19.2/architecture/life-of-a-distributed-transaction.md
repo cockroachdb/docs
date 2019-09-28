@@ -111,7 +111,7 @@ This works by giving each write operation a latch on a row. Any reads or writes 
 
 ### Batch Evaluation
 
-The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed to uncontested access to the range (i.e., there is no contention with other write operations).
+The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed to have uncontested access to the range (i.e., there is no contention with other write operations).
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 
@@ -128,6 +128,7 @@ What we detail below is a simplified version of the CockroachDB transaction mode
 If an operation encounters a write intent for a key, it attempts to "resolve" the write intent by checking the state of the write intent's transaction. If the write's intent's transaction record is...
 
 - `COMMITTED`, this operation converts the write intent to a regular key-value pair, and then proceeds as if it had read that value instead of a write intent.
+- `STAGING`: Used to enable the [Parallel Commits](transaction-layer.html#parallel-commits) feature.  Depending on the state of the write intents referenced by this record, the transaction may or may not be in a committed state.
 - `ABORTED`, this operation discards the write intent and reads the next-most-recent value from RocksDB.
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e., ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
 
@@ -170,20 +171,23 @@ Once the command achieves consensus (i.e., a majority of nodes including itself 
 
 Once the leader commits the Raft log entry, it’s considered committed. At this point the value is considered written, and if another operation comes in and performs a read on RocksDB for this key, they’ll encounter this value.
 
-Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node sets the transaction record's status to `COMMITTED`.
+Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node sets the transaction record's status to one of the following states:
+
+- `COMMITTED`, which indicates that write intents can be treated as committed values.
+- `STAGING`, which is used to enable the [Parallel Commits](#parallel-commits) feature.  Depending on the state of the write intents referenced by this record, the transaction may or may not be in a committed state.
 
 ## On the way back up
 
 Now that we have followed an operation all the way down from the SQL client to RocksDB, we can pretty quickly cover what happens on the way back up (i.e., when generating a response to the client).
 
 1. Once the leaseholder applies a write to its Raft log,
- it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
+ it sends a commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
 1. Once all operations have successfully completed (i.e., reads have returned values and write intents have been committed), the `DistSender` tries to record the transaction's success in the transaction record (which provides a durable mechanism of tracking the transaction's state), which can cause a few situations to arise:
     - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh](transaction-layer.html#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
 	- If the transaction is in an `ABORTED` state, the `DistSender` sends a response indicating as much, which ends up back at the SQL interface.
 
-	Upon passing these checks the transaction record is either written for the first time with the `COMMITTED` state, or if it was in a `PENDING` state, it is moved to `COMMITTED`. Only at this point is the transaction considered committed.
+	Upon passing these checks the transaction record is either written for the first time with the `STAGING` state, or if it was in a `PENDING` or `STAGING` state, it is moved to `COMMITTED`. Only at this point is the transaction considered committed.
 1. The `DistSender` propagates any values that should be returned to the client (e.g., reads or the number of affected rows) to the `TxnCoordSender`, which in turn responds to the SQL interface with the value.
   The `TxnCoordSender` also begins asynchronous intent cleanup by sending a request to the `DistSender` to convert all write intents it created for the transaction to fully committed values. However, this process is largely an optimization; if any operation encounters a write intent, it checks the write intent's transaction record. If the transaction record is `COMMITTED`, the operation can perform the same cleanup and convert the write intent to a fully committed value.
 1. The SQL interface then responds to the client, and is now prepared to continue accepting new connections.
