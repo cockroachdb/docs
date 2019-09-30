@@ -1,11 +1,12 @@
 ---
-title: Build a Python app with Kubernetes on Managed CockroachDB
-summary: Learn how to build a Python application with Managed CockroachDB and orchestrate it using Kubernetes.
+title: Build a Python app with Kubernetes on CockroachCloud
+summary: Learn how to build a Python application with CockroachCloud and orchestrate it using Kubernetes.
 toc: true
 build_for: [managed]
+redirect-from: managed-build-a-python-app-with-kubernetes.html
 ---
 
-This tutorial shows you how to run a [sample Python To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) on a Managed CockroachDB cluster using a local [Kubernetes](http://kubernetes.io/) cluster.
+This tutorial shows you how to run a [sample Python To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) on a CockroachCloud cluster using a local [Kubernetes](http://kubernetes.io/) cluster.
 
 ## Before you begin
 
@@ -16,9 +17,9 @@ This tutorial shows you how to run a [sample Python To-Do app](https://github.co
 
 ### Step 1. Authorize your local workstation's network
 
-Before you connect to your Managed CockroachDB cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
+Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
+Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
 
 
 1. Navigate to your cluster's **Networking** page.
@@ -44,7 +45,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 ### Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/managed-ask-admin.md %}
+{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -57,7 +58,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 4. In the **Password** field, enter `Q7gc8rEdS`.
 5. Click **Create**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 
@@ -77,7 +78,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
 
-### Step 4. Create the Managed CockroachDB database
+### Step 4. Create the CockroachCloud database
 
 On your local workstation's terminal:
 

@@ -8,7 +8,7 @@ cta: false
 ---
 
 {% if site.managed %}
-Managed CockroachDB is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
+CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 
 {{site.data.alerts.callout_info}}
 These docs are a work in progress. Please reach out to [support.cockroachlabs.com](https://support.cockroachlabs.com) if you have questions not yet answered here.

@@ -1,17 +1,18 @@
 ---
 title: Authorization
-summary: Learn about the authorization features for Managed CockroachDB clusters.
+summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
 toc: true
 build_for: [managed]
+redirect-from: cockroachcloud-authorization.html
 ---
 
-Managed CockroachDB supports network authorization and user authorization.
+CockroachCloud supports network authorization and user authorization.
 
 ## Network authorization
 
-Managed CockroachDB requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
+CockroachCloud requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
 
-Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](managed-connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 {{site.data.alerts.callout_info}}
 While developing and testing your application, you may whitelist `0.0.0.0/0`, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network since it allows anybody who uses your password to reach the CockroachDB nodes.
@@ -19,11 +20,11 @@ While developing and testing your application, you may whitelist `0.0.0.0/0`, wh
 
 ## User authorization
 
-By default, a new SQL user created using a [Console Admin](managed-console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created using a [Console Admin](cockroachcloud-console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ### Before you begin
 
-Make sure you have already [connected to the cluster](managed-connect-to-your-cluster.html) with your `admin` SQL user.
+Make sure you have already [connected to the cluster](cockroachcloud-connect-to-your-cluster.html) with your `admin` SQL user.
 
 #### Create a SQL user
 
@@ -32,9 +33,9 @@ Make sure you have already [connected to the cluster](managed-connect-to-your-cl
 
 #### Use the Console
 
-{% include {{ page.version.version }}/managed-ask-admin.md %}
+{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
 
-Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
+Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -51,7 +52,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 #### Use the CockroachDB SQL client
 
-Once you have [connected to the cluster's SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster's SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html) statement:
 
@@ -129,7 +130,7 @@ For more details, see [Privileges](authorization.html#assign-privileges) and [`G
 
 ### Using roles
 
-Role-based access control is an Enterprise feature available to all managed clusters that lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
+Role-based access control is an Enterprise feature available to all CockroachCloud clusters that lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
 - To create a role, use the [`CREATE ROLE`](create-role.html) statement:
 
@@ -187,4 +188,4 @@ Role-based access control is an Enterprise feature available to all managed clus
 ## See also
 
 - [Client Connection Parameters](connection-parameters.html)
-- [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html)
+- [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html)

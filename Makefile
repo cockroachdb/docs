@@ -53,7 +53,7 @@ standard: bootstrap
 
 .PHONY: managed-build
 managed-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_managed.yml$(extra-config) $(JEKYLLFLAGS)
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachcloud.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: managed
 managed: jekyll-action := serve --port 4001

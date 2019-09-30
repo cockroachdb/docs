@@ -3,19 +3,20 @@ title: Console Access Management
 summary: Manage your account roles and permissions.
 toc: true
 build_for: [managed]
+redirect-from: managed-console-access-management.html
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachDB Cloud cluster. To view the Access page, [sign in to the Console](managed-sign-up-for-a-cluster.html#sign-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud cluster. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
 
 <Screenshot here>
 
 ## Roles
 
-Every Managed CockroachDB user is either a Developer or a Console Admin.
+Every CockroachCloud user is either a Developer or a Console Admin.
 
 ### Developer
 
-A Developer is a limited-access role. A Developer can [authorize networks](managed-connect-to-your-cluster.html#step-1-authorize-your-network) but cannot invite Team Members to the Console or access databases.
+A Developer is a limited-access role. A Developer can [authorize networks](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network) but cannot invite Team Members to the Console or access databases.
 
 To access a database, you need to ask a Console Admin for details of a SQL user. To find out who's your Console Admin, check the **Access** page.
 
@@ -23,9 +24,9 @@ To access a database, you need to ask a Console Admin for details of a SQL user.
 
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
-- [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-managed-cockroachdb)
+- [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-cockroachcloud)
 - [Manage Team Members](#manage-team-members)
-- [Create and manage SQL users](managed-connect-to-your-cluster.html#step-2-create-a-sql-user)
+- [Create and manage SQL users](cockroachcloud-connect-to-your-cluster.html#step-2-create-a-sql-user)
 
 {{site.data.alerts.callout_info}}
 A Console Admin is different from an `admin` SQL user.
@@ -33,9 +34,9 @@ A Console Admin is different from an `admin` SQL user.
 
 ## Administrative tasks
 
-### Invite Team Members to Managed CockroachDB
+### Invite Team Members to CockroachCloud
 
-To invite Team Members to Managed CockroachDB:
+To invite Team Members to CockroachCloud:
 
 1. On the **Access** page, click **Add Team Member**.
 2. In the **Email Address** field, enter the email address of the team member you want to invite.

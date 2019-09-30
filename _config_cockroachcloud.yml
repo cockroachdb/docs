@@ -1,0 +1,10 @@
+homepage_title: CockroachCloud Docs
+
+baseurl: "/docs/cockroachcloud"
+destination: _site/cockroachcloud
+
+versions:
+  stable: v19.1
+  dev: v19.2
+
+managed: true

@@ -1,11 +1,12 @@
 ---
 title: Sign Up for a Managed Cluster
-summary: Learn how to sign up for a Managed CockroachDB cluster.
+summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
 build_for: [managed]
+redirect-from: managed-sign-up-for-a-cluster.html
 ---
 
-The Managed CockroachDB offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
+The CockroachCloud offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
 
 - No provisioning or deployment efforts for you
 - Daily full backups and hourly incremental backups of your data
@@ -14,11 +15,11 @@ The Managed CockroachDB offering provides a running CockroachDB cluster suitable
 
 ## Application process
 
-To apply for Managed CockroacDB:
+To apply for CockroachCloud:
 
 1. [Sign up for an Enterprise Trial license](https://www.cockroachlabs.com/get-cockroachdb/).
 
-2. During sign up, check **I am interested in Managed CockroachDB**. You'll be asked to provide some basic details about your company and deployment requirements.
+2. During sign up, check **I am interested in CockroachCloud**. You'll be asked to provide some basic details about your company and deployment requirements.
 
     {% comment %}- The type of app you want to run against CockroachDB (e.g., point-in-time retail transactions)
     - The cloud and regions where you want CockroachDB running
@@ -34,7 +35,7 @@ To apply for Managed CockroacDB:
 
 ## Set your password
 
-Once your Managed CockroachDB cluster is available, you'll receive an email prompting you to set a password and sign in:
+Once your CockroachCloud cluster is available, you'll receive an email prompting you to set a password and sign in:
 
 1. In the confirmation email, click **Set password**.
 
@@ -46,7 +47,7 @@ Once your Managed CockroachDB cluster is available, you'll receive an email prom
 3. Enter and confirm your password.
 4. Click **Submit**.
 
-    The [**Clusters**](managed-clusters-page.html) page displays.
+    The [**Clusters**](cockroachcloud-clusters-page.html) page displays.
 
 ## Sign in
 
