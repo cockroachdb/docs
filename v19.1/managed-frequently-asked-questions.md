@@ -1,8 +1,9 @@
 ---
 title: Frequently Asked Questions
-summary: Managed CockroachDB FAQs
+summary: CockroachCloud FAQs
 toc: true
 build_for: [managed]
+redirect-from: managed-frequently-asked-questions.html
 ---
 
 ## Cluster basics
@@ -17,11 +18,11 @@ We use separate certificate authorities for each cluster, and all connections to
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-Managed CockroachDB is a single-tenant offering and resources are not shared between clusters.
+CockroachCloud is a single-tenant offering and resources are not shared between clusters.
 
 ### How do I connect to my cluster?
 
-You can generate a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html).
+You can generate a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
 
 ### What machines do you run your cluster on?
 
@@ -45,13 +46,13 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 ### Who is responsible for backup?
 
-Cockroach Labs will run daily full backups and hourly incremental backups for all of your managed clusters.
+Cockroach Labs will run daily full backups and hourly incremental backups for all of your CockroachCloud clusters.
 
 ## Product features
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, managed clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ## Cluster troubleshooting
 
@@ -67,7 +68,7 @@ Today, we do not support cloud credits you may have in your account, as we run t
 
 ### Can you run my CockroachDB cluster on-premise?
 
-Today, we do not have an offering that manages running CockroachDB on customer premises. In the future, we expect to have a private cloud offering that will allow you to run multiple CockroachDB clusters on your premises using the same tools that we use internally for our managed offering.
+Today, we do not have an offering that manages running CockroachDB on customer premises. In the future, we expect to have a private cloud offering that will allow you to run multiple CockroachDB clusters on your premises using the same tools that we use internally for our CockroachCloud offering.
 
 ### Do you have a private cloud offering?
 
@@ -75,8 +76,8 @@ Today, we do not have an offering that manages running CockroachDB on customer p
 
 ### Can I see a demo?
 
-Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happy to show you a demo of our managed CockroachDB offering.
+Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happy to show you a demo of our CockroachCloud offering.
 
 ### Do you have a UI? How can I see details?
 
-All customers of our managed service can view their clusters in the [Console](https://cockroachlabs.cloud/).
+All customers of our CockroachCloud service can view their clusters in the [Console](https://cockroachlabs.cloud/).

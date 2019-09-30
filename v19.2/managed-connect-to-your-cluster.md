@@ -1,15 +1,16 @@
 ---
-title: Connect to Your Managed Cluster
+title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 build_for: [managed]
+redirect-from: managed-connect-to-your-cluster.html
 ---
 
-Once your Managed CockroachDB cluster is available and you've [set your password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
+Once your CockroachCloud cluster is available and you've [set your password](cockroachcloud-sign-up-for-a-cluster.html#set-your-password) and [signed in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
 
 ## Step 1. Authorize your network
 
-Managed CockroachDB requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
+CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
@@ -50,7 +51,7 @@ Use the Console to authorize networks:
 
 ## Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/managed-ask-admin.md %}
+{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 
@@ -66,7 +67,7 @@ Use the Console to authorize networks:
 4. Enter and confirm the **Password**.
 5. Click **Create**.
 
-    Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](managed-authorization.html#granting-privileges) and [Using roles](managed-authorization.html#using-roles).
+    Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
 ## Step 3. Generate the connection string
 
@@ -179,7 +180,7 @@ For more details about the built-in SQL client, and many examples of how to use 
 
 ### Use a Postgres driver or ORM
 
-These steps show you how to connect simple Python test applications to your Managed CockroachDB cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
+These steps show you how to connect simple Python test applications to your CockroachCloud cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
 
 Start by choosing the Python driver or ORM:
 

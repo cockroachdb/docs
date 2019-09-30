@@ -16,11 +16,11 @@ Use an interactive SQL shell to try out these statements. If you have a cluster 
 {% if site.managed %}
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+Make sure you have already [connected the CockroachDB SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
 
 ## Create a database
 
-Your Managed CockroachDB cluster comes with a `defaultdb` for testing and some internal databases.
+Your CockroachCloud cluster comes with a `defaultdb` for testing and some internal databases.
 
 To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
