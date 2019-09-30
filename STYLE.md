@@ -338,7 +338,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
 - **[Code blocks](#code-blocks)** should be used to provide executable code samples.
 
-    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
+    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the Key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
 
     ~~~
     > CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
