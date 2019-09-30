@@ -3,6 +3,7 @@ title: Clusters Page
 summary: The Clusters page of the Console provides a high-level view of your clusters.
 toc: true
 build_for: [managed]
+redirect-from: managed-clusters-page.html
 ---
 
 The **Clusters** page of the Console provides a high-level view of your clusters.

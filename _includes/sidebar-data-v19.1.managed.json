@@ -2,13 +2,13 @@
   {
     "title": "Sign Up for a Cluster",
     "urls": [
-      "/${VERSION}/managed-sign-up-for-a-cluster.html"
+      "/${VERSION}/cockroachcloud-sign-up-for-a-cluster.html"
     ]
   },
   {
     "title": "Connect to Your Cluster",
     "urls": [
-        "/${VERSION}/managed-connect-to-your-cluster.html"
+        "/${VERSION}/cockroachcloud-connect-to-your-cluster.html"
     ]
   },
   {
@@ -23,25 +23,25 @@
       {
         "title": "Security Overview",
         "urls": [
-          "/${VERSION}/managed-security-overview.html"
+          "/${VERSION}/cockroachcloud-security-overview.html"
         ]
       },
       {
         "title": "Authentication",
         "urls": [
-          "/${VERSION}/managed-authentication.html"
+          "/${VERSION}/cockroachcloud-authentication.html"
         ]
       },
       {
         "title": "Authorization",
         "urls": [
-          "/${VERSION}/managed-authorization.html"
+          "/${VERSION}/cockroachcloud-authorization.html"
         ]
       },
       {
         "title": "SQL Audit Logging",
         "urls": [
-          "/${VERSION}/managed-sql-audit-logging.html"
+          "/${VERSION}/cockroachcloud-sql-audit-logging.html"
         ]
       }
     ]
@@ -90,28 +90,28 @@
   {
     "title": "Monitor Your Cluster",
     "urls": [
-      "/${VERSION}/managed-monitoring-page.html"
+      "/${VERSION}/cockroachcloud-monitoring-page.html"
     ]
   },
   {
     "title": "Manage Your Cluster",
     "urls": [
-      "/${VERSION}/managed-cluster-management.html"
+      "/${VERSION}/cockroachcloud-cluster-management.html"
     ]
   },
   {
     "title": "Manage Console Access",
     "urls": [
-      "/${VERSION}/managed-console-access-management.html"
+      "/${VERSION}/cockroachcloud-console-access-management.html"
     ]
   },
   {
     "title": "Tutorials",
     "items": [
       {
-        "title": "Build a Python app with Kubernetes on Managed CockroachDB",
+        "title": "Build a Python app with Kubernetes on CockroachCloud",
         "urls": [
-          "/${VERSION}/managed-build-a-python-app-with-kubernetes.html"
+          "/${VERSION}/cockroachcloud-build-a-python-app-with-kubernetes.html"
         ]
       }
     ]
@@ -119,7 +119,7 @@
   {
     "title": "FAQs",
     "urls": [
-      "/${VERSION}/managed-frequently-asked-questions.html"
+      "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
     ]
   }
 ]
