@@ -270,7 +270,7 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; rm -rf cockroach-data</span></code></pre></div>
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code>Remove-Item C:\Users\username&gt; cockroach-data -recurse</code></pre></div>
 
 </div>
 
