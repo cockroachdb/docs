@@ -446,7 +446,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 2.  Edit `/etc/security/limits.conf` and append the following lines to the file:
 
-    ~~~ shell
+    ~~~
     *              soft     nofile          35000
     *              hard     nofile          35000
     ~~~
