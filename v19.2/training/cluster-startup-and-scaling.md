@@ -188,8 +188,8 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     The output will look something like this:
 
     ~~~
-    CockroachDB node starting at 2018-09-13 20:06:52.743448917 +0000 UTC (took 51.0s)
-    build:               CCL {{page.release_info.version}} @ 2018/09/10 19:49:42 (go1.10.3)
+    CockroachDB node starting at 2019-10-01 20:14:55.358954 +0000 UTC (took 27.9s)
+    build:               CCL {{page.release_info.version}} @ 2019/09/25 15:18:08 (go1.12.6)
     webui:               http://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslmode=disable
     client flags:        cockroach <client cmd> --host=localhost:26257 --insecure
@@ -226,11 +226,11 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     ~~~
 
     ~~~
-    id |    address      |        build         |            started_at            |            updated_at            | is_available | is_live  
-    +--+-----------------+----------------------+----------------------------------+----------------------------------+--------------+---------+
-     1 | localhost:26257 | v2.1.0-beta.20180910 | 2018-09-13 20:06:52.621228+00:00 | 2018-09-13 20:13:28.640675+00:00 | true         | true     
-     2 | localhost:26259 | v2.1.0-beta.20180910 | 2018-09-13 20:06:53.145611+00:00 | 2018-09-13 20:13:29.196639+00:00 | true         | true     
-     3 | localhost:26258 | v2.1.0-beta.20180910 | 2018-09-13 20:06:53.513492+00:00 | 2018-09-13 20:13:29.578478+00:00 | true         | true
+    id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            | locality | is_available | is_live
+    +----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+----------+--------------+---------+
+       1 | localhost:26257 | localhost:26257 | v19.2.0 | 2019-10-01 20:14:55.249457+00:00 | 2019-10-01 20:16:07.283866+00:00 |          | true         | true
+       2 | localhost:26258 | localhost:26258 | v19.2.0 | 2019-10-01 20:14:55.445079+00:00 | 2019-10-01 20:16:02.972943+00:00 |          | true         | true
+       3 | localhost:26259 | localhost:26259 | v19.2.0 | 2019-10-01 20:14:55.857631+00:00 | 2019-10-01 20:16:03.389338+00:00 |          | true         | true
     (3 rows)
     ~~~
 
