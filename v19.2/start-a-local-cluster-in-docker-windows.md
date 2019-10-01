@@ -229,7 +229,7 @@ PS C:\Users\username> docker rm roach1 roach2 roach3
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ powershell
-PS C:\Users\username> rm -rf cockroach-data
+Remove-Item C:\Users\username> cockroach-data -recurse
 ~~~
 
 ## What's next?
