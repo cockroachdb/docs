@@ -37,8 +37,7 @@ var forceRetryLoop txnFunc = func(db *gorm.DB) error {
 	if err := db.Exec("SELECT now()").Error; err != nil {
 		return err
 	}
-	// Used to force a transaction retry.  Can only be run as the
-	// 'root' user.
+	// Used to force a transaction retry.
 	if err := db.Exec("SELECT crdb_internal.force_retry('1s'::INTERVAL)").Error; err != nil {
 		return err
 	}
