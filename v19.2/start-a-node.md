@@ -354,6 +354,88 @@ $ cockroach start \
 ~~~
 </div>
 
+### Create a table with node locality information
+
+Start a three-node cluster with locality information specified in the `cockroach start` commands:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --insecure --port=26257 --http-port=26258 --store=cockroach-data/1 --cache=256MiB --locality=region=eu-west-1,cloud=aws,zone=eu-west-1a
+$ cockroach start --insecure --port=26259 --http-port=26260 --store=cockroach-data/2 --cache=256MiB --join=localhost:26257 --locality=region=eu-west-1,cloud=aws,zone=eu-west-1b
+$ cockroach start --insecure --port=26261 --http-port=26262 --store=cockroach-data/3 --cache=256MiB --join=localhost:26257 --locality=region=eu-west-1,cloud=aws,zone=eu-west-1c
+~~~
+
+You can use the [`crdb_internal.locality_value`](functions-and-operators.html#system-info-functions) built-in function to return the current node's locality information from inside a SQL shell. The example below uses the output of `crdb_internal.locality_value('zone')` as the `DEFAULT` value to use for the `zone` column of new rows. Other available locality keys for the running three-node cluster include `region` and `cloud`.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE charges (
+  zone STRING NOT NULL DEFAULT crdb_internal.locality_value('zone'),
+  id INT PRIMARY KEY NOT NULL
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO charges (id) VALUES (1);
+> SELECT * FROM charges WHERE id = 1;
+~~~
+
+~~~
+     zone    | id
++------------+----+
+  eu-west-1a |  1
+(1 row)
+~~~
+
+The `zone ` column has the zone of the node on which the row was created.
+
+In a separate terminal window, open a SQL shell to a different node on the cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --port 26259
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO charges (id) VALUES (2);
+> SELECT * FROM charges WHERE id = 2;
+~~~
+
+~~~
+     zone    | id
++------------+----+
+  eu-west-1b |  2
+(1 row)
+~~~
+
+In a separate terminal window, open a SQL shell to the third node:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --port 26261
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO charges (id) VALUES (3);
+> SELECT * FROM charges WHERE id = 3;
+~~~
+
+~~~
+     zone    | id
++------------+----+
+  eu-west-1c |  3
+(1 row)
+~~~
+
+
 ## See also
 
 - [Initialize a Cluster](initialize-a-cluster.html)
