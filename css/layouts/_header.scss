@@ -314,8 +314,12 @@ header {
 			}
 
 			&__item-link {
-				margin: 0 15px;
+				margin: 0 5px;
 				text-decoration: none;
+
+				@media (min-width: 1024px) {
+					margin: 0 10px;
+				}
 			}
 
 			&__dropdown-container {
