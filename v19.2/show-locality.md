@@ -28,7 +28,7 @@ To follow along, run [`cockroach demo movr`](cockroach-demo.html) with the `--no
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-central1:region=us-west1
+$ cockroach demo movr --nodes=3 --demo-locality=region=us-east,az=a:region=us-central,az=b:region=us-west1,az=c
 ~~~
 
 ### Show locality
@@ -39,11 +39,41 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-centra
 ~~~
 
 ~~~
-     locality
-+-----------------+
-  region=us-west1
+       locality
++---------------------+
+  region=us-east,az=a
 (1 row)
 ~~~
+
+### Show locality with a built-in function
+
+If you know the locality key, you can use the [`crdb_internal.locality_value`](functions-and-operators.html#system-info-functions) built-in function to return the locality value for the current node:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM crdb_internal.locality_value('region');
+~~~
+
+~~~
+  crdb_internal.locality_value
++------------------------------+
+  us-east
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM crdb_internal.locality_value('az');
+~~~
+
+~~~
+  crdb_internal.locality_value
++------------------------------+
+  a
+(1 row)
+~~~
+
+For a more extensive example, see [Create a table with node locality information](start-a-node.html#create-a-table-with-node-locality-information).
 
 
 ## See also
