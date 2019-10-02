@@ -74,6 +74,7 @@ Flag | Description
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options).
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#session-and-output-types); `false` otherwise<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.  
+`--watch` | Repeat the SQL commands specified with `--execute` or `-e` until a SQL error occurs or the process is terminated. You must also specify an interval at which to repeat the statement. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`. See the [example](#repeat-a-sql-statement) below.<br /><br /> Note that this flag is intended for simple monitoring scenarios during development and testing.
 
 ### Client connection
 
@@ -738,6 +739,63 @@ Time: 2.426534ms
 
 > SHOW TRANSACTION STATUS
 > SHOW DATABASE
+~~~
+
+### Repeat a SQL statement
+
+Use the `--execute` flag to create a table from the command line:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure \
+--execute="CREATE TABLE t1 (id UUID DEFAULT gen_random_uuid(), name STRING)"
+~~~
+
+With the `--watch` flag, you can repeat the statements specified with the `--execute` flag periodically, until a SQL error occurs or the process is terminated:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure \
+--execute="INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c')" \
+--watch 3s
+~~~
+
+In this example we kill the process with Ctrl+C.
+
+~~~
+INSERT 3
+INSERT 3
+INSERT 3
+INSERT 3
+INSERT 3
+^C
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure \
+--execute="SELECT * FROM t1"
+~~~
+
+~~~
+                   id                  | name
++--------------------------------------+------+
+  971660b9-891a-47e2-8129-52ccd54e862d | a
+  c947b465-196c-4468-b36a-fa11b4f8d677 | b
+  c81a7e6a-83b9-4ba6-9452-ca49ebff2091 | c
+  244c4f7f-e15f-45c7-9892-c4947df29a0f | a
+  ce054642-715d-41ae-b3a0-5d471b1baa66 | b
+  08bb732c-3e5e-42ac-b6dd-f758ed199dd2 | c
+  f4ec85b4-b1d6-4cb4-bcbb-fb2267f36df1 | a
+  f1f8425b-b836-40c8-8150-a133f983d1eb | b
+  55069dd9-d09b-4eb1-843b-486a8912e174 | c
+  0d6cbbf6-1ccc-4278-a6e8-a79781e4fdba | a
+  7019f10e-8aa9-4136-86b8-19daa53a4525 | b
+  43952637-4276-45ec-9c92-7283ecba18cc | c
+  23b738b5-e597-4514-91cd-56bb5069d857 | a
+  0e765670-8a69-4c21-8f5c-cef0a0ef400e | b
+  747fd09e-a2fa-4cd7-94eb-8344f4b1d498 | c
+(15 rows)
 ~~~
 
 ## See also
