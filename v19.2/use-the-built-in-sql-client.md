@@ -74,6 +74,7 @@ Flag | Description
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options).
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#session-and-output-types); `false` otherwise<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.  
+`--watch` | Repeat the SQL commands specified with `--execute` or `-e` until a SQL error occurs or the process is terminated. `--watch` applies to all `--execute` or `-e` flags in use.<br />You must also specify an interval at which to repeat the statement, followed by a time unit. For example, to specify an interval of 5 seconds, use `5s`.<br /><br /> Note that this flag is intended for simple monitoring scenarios during development and testing. See the [example](#repeat-a-sql-statement) below.
 
 ### Client connection
 
@@ -739,6 +740,33 @@ Time: 2.426534ms
 > SHOW TRANSACTION STATUS
 > SHOW DATABASE
 ~~~
+
+### Repeat a SQL statement
+
+Repeating SQL queries on a table can be useful for monitoring purposes. With the `--watch` flag, you can repeat the statements specified with a `--execute` or `-e` flag periodically, until a SQL error occurs or the process is terminated.
+
+For example, if you want to monitor the number of queries running on the current node, you can use `cockroach sql` with the `--watch` flag to query the node's `crdb_internal.node_statement_statistics` table for the query count:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure \
+--execute="SELECT SUM(count) FROM crdb_internal.node_statement_statistics" \
+--watch 1m
+~~~
+
+~~~
+  sum
++-----+
+  926
+(1 row)
+  sum
++------+
+  4227
+(1 row)
+^C
+~~~
+
+In this example, the statement is executed every minute. We let the process run for a couple minutes before killing it with Ctrl+C.
 
 ## See also
 
