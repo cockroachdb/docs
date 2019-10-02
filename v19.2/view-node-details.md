@@ -143,6 +143,7 @@ Field | Description
 `id` | The ID of the node.<br><br>**Required flag:** None
 `address` | The address of the node.<br><br>**Required flag:** None
 `build` | The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br><br>**Required flag:** None
+`locality` | The [locality](start-a-node.html#locality) information specified for the node.<br><br>**Required flag:** None
 `updated_at` | The date and time when the node last recorded the information displayed in this command's output. When healthy, a new status should be recorded every 10 seconds or so, but when unhealthy this command's stats may be much older.<br><br>**Required flag:** None
 `started_at` | The date and time when the node was started.<br><br>**Required flag:** None
 `replicas_leaders` | The number of range replicas on the node that are the Raft leader for their range. See `replicas_leaseholders` below for more details.<br><br>**Required flag:** `--ranges` or `--all`
@@ -183,38 +184,37 @@ Field | Description
 
 ## Examples
 
+### Setup
+
+To follow along with the examples, start [an insecure cluster](start-a-local-cluster.html), with [localities](start-a-node.html#locality) defined.
+
 ### List node IDs
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node ls --host=165.227.60.76 --certs-dir=certs
+$ cockroach node ls --insecure
 ~~~
 
 ~~~
+  id
 +----+
-| id |
-+----+
-|  1 |
-|  2 |
-|  3 |
-|  4 |
-|  5 |
-+----+
+   1
+   2
+   3
+(3 rows)
 ~~~
 
 ### Show the status of a single node
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status 1 --host=165.227.60.76 --certs-dir=certs
+$ cockroach node status 1 --host=localhost:26257 --insecure
 ~~~
 
 ~~~
-+----+-----------------------+---------+---------------------+---------------------+---------+
-| id |        address        |  build  |     updated_at      |     started_at      | is_live |
-+----+-----------------------+---------+---------------------+---------------------+---------+
-|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 | true    |
-+----+-----------------------+---------+---------------------+---------------------+---------+
+  id |     address     |   sql_address   |                  build                  |            started_at            |           updated_at            |      locality       | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+---------------------------------+---------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:05:43.85563+00:00 | region=us-east,az=1 | true         | true
 (1 row)
 ~~~
 
@@ -222,15 +222,15 @@ $ cockroach node status 1 --host=165.227.60.76 --certs-dir=certs
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --host=165.227.60.76 --certs-dir=certs
+$ cockroach node status --host=localhost:26257 --insecure
 ~~~
 
 ~~~
-  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
-   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:25:20.351483+00:00 | true         | true     
-   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:23.984197+00:00 | true         | true     
-   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:25:20.535474+00:00 | true         | true
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:06:15.356886+00:00 | region=us-east,az=1    | true         | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:06:15.583967+00:00 | region=us-central,az=2 | true         | true
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:06:16.204549+00:00 | region=us-west,az=3    | true         | true
 (3 rows)
 ~~~
 
@@ -240,20 +240,20 @@ The `is_live` and `is_available` fields are marked as `true` as long as a majori
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --host=192.241.239.201 --certs-dir=certs
+$ cockroach quit --host=localhost:26258 --insecure
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --host=165.227.60.76 --certs-dir=certs
+$ cockroach node status --host=localhost:26257 --insecure
 ~~~
 
 ~~~
-   id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+-----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
-    1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:54:21.894586+00:00 | true         | true     
-    2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:17.839323+00:00 | 2018-09-18 17:52:06.172624+00:00 | false        | false    
-    3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:10.961166+00:00 | 2018-09-18 17:54:24.925007+00:00 | true         | true     
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:07:04.857339+00:00 | region=us-east,az=1    | true         | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:06:48.555863+00:00 | region=us-central,az=2 | false        | false
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:07:01.207697+00:00 | region=us-west,az=3    | true         | true
 (3 rows)
 ~~~
 
@@ -261,20 +261,20 @@ If a majority of nodes are down and a quorum cannot be reached, the `is_live` fi
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --host=67.207.91.36 --certs-dir=certs
+$ cockroach quit --host=localhost:26259 --insecure
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --host=165.227.60.76 --certs-dir=certs
+$ cockroach node status --host=localhost:26257 --insecure
 ~~~
 
 ~~~
-  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
-+----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
-   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:30:48.860329+00:00 | false        | true     
-   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:31.137222+00:00 | false        | false    
-   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:30:49.943822+00:00 | false        | false    
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:07:37.464249+00:00 | region=us-east,az=1    | false        | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:07:37.464259+00:00 | region=us-central,az=2 | false        | false
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:07:37.464265+00:00 | region=us-west,az=3    | false        | false
 (3 rows)
 ~~~
 
