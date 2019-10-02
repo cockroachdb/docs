@@ -41,7 +41,7 @@ Field | Description
 `column_names` | The names of the columns in the partition definition expression.
 `index_name` | The name of the index for the partition.
 `partition_value` | The value that defines the partition.
-`zone_constraints` | The [zone constraints](configure-replication-zones.html), if replication zones are configured for the partition. `SHOW PARTITIONS` does not show inherited zone constraints.
+`zone_constraints` | The [zone constraints](configure-replication-zones.html), if replication zones are configured for the partition.
 
 ## Examples
 
