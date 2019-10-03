@@ -50,6 +50,8 @@
 	line-height: 13px;
 	background-color: $cl_green;
 	border-color: $cl_green;
+	border-width: 1px;
+	border-radius: 0px;
 	padding: 8.25px 16px;
 	color: #FFFFFF;
 	margin-right: 15px;
@@ -65,14 +67,34 @@
 	@include at-query($min, $screen-md) {
 		height: 40px;
 		font-size: 12px;
-		line-height: 12px;
-		margin-left: 10px;
-		padding: 13px 20px;
+		line-height: 40px;
+		margin-left: 5px;
+		padding: 0 17px;
 
 		&:hover {
 			background-color: #FFFFFF;
 			color: $cl_green;
-			border: 2px solid $cl_green;
+			border: 1px solid $cl_green;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		margin-left: 10px;
+	}
+
+	&--alt {
+		background-color: #FFFFFF;
+		color: $cl_green;
+
+		&:focus, &:hover {
+			color: $cl_green;
+		}
+
+		@include at-query($min, $screen-md) {
+			&:hover {
+				background-color: $cl_green;
+				color: #FFFFFF;
+			}
 		}
 	}
 }
