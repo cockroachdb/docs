@@ -449,12 +449,6 @@
             ]
           },
           {
-            "title": "Import Data",
-            "urls": [
-              "/${VERSION}/import-data.html"
-            ]
-          },
-          {
             "title": "Back up and Restore Data",
             "urls": [
               "/${VERSION}/backup-and-restore.html"
@@ -517,23 +511,6 @@
             "title": "File an Issue",
             "urls": [
               "/${VERSION}/file-an-issue.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Contribute",
-        "items": [
-          {
-            "title": "Contribute to CockroachDB",
-            "urls": [
-              "/${VERSION}/contribute-to-cockroachdb.html"
-            ]
-          },
-          {
-            "title": "Improve the Docs",
-            "urls": [
-              "/${VERSION}/improve-the-docs.html"
             ]
           }
         ]
@@ -604,6 +581,59 @@
     "title": "Reference",
     "is_top_level": true,
     "items": [
+      {
+        "title": "Architecture",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
+          {
+            "title": "SQL Layer",
+            "urls": [
+              "/${VERSION}/architecture/sql-layer.html"
+            ]
+          },
+          {
+            "title": "Transaction Layer",
+            "urls": [
+              "/${VERSION}/architecture/transaction-layer.html"
+            ]
+          },
+          {
+            "title": "Distribution Layer",
+            "urls": [
+              "/${VERSION}/architecture/distribution-layer.html"
+            ]
+          },
+          {
+            "title": "Replication Layer",
+            "urls": [
+              "/${VERSION}/architecture/replication-layer.html"
+            ]
+          },
+          {
+            "title": "Storage Layer",
+            "urls": [
+              "/${VERSION}/architecture/storage-layer.html"
+            ]
+          },
+          {
+            "title": "Life of a Distributed Transaction",
+            "urls": [
+              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+            ]
+          },
+          {
+            "title": "Reads and Writes Overview",
+            "urls": [
+              "/${VERSION}/architecture/reads-and-writes-overview.html"
+            ]
+          }
+        ]
+      },
       {
         "title": "SQL",
         "items": [
@@ -1883,124 +1913,6 @@
     ]
   },
   {
-    "title": "Concepts",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "Architecture",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/architecture/overview.html"
-            ]
-          },
-          {
-            "title": "SQL Layer",
-            "urls": [
-              "/${VERSION}/architecture/sql-layer.html"
-            ]
-          },
-          {
-            "title": "Transaction Layer",
-            "urls": [
-              "/${VERSION}/architecture/transaction-layer.html"
-            ]
-          },
-          {
-            "title": "Distribution Layer",
-            "urls": [
-              "/${VERSION}/architecture/distribution-layer.html"
-            ]
-          },
-          {
-            "title": "Replication Layer",
-            "urls": [
-              "/${VERSION}/architecture/replication-layer.html"
-            ]
-          },
-          {
-            "title": "Storage Layer",
-            "urls": [
-              "/${VERSION}/architecture/storage-layer.html"
-            ]
-          },
-          {
-            "title": "Life of a Distributed Transaction",
-            "urls": [
-              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
-            ]
-          },
-          {
-            "title": "Reads and Writes Overview",
-            "urls": [
-              "/${VERSION}/architecture/reads-and-writes-overview.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Features",
-        "items": [
-          {
-            "title": "Multi-Active Availability",
-            "urls": [
-              "/${VERSION}/multi-active-availability.html"
-            ]
-          },
-          {
-            "title": "Simplified Deployment",
-            "urls": [
-              "/${VERSION}/simplified-deployment.html"
-            ]
-          },
-          {
-            "title": "Strong Consistency",
-            "urls": [
-              "/${VERSION}/strong-consistency.html"
-            ]
-          },
-          {
-            "title": "SQL",
-            "urls": [
-              "/${VERSION}/sql.html"
-            ]
-          },
-          {
-            "title": "Distributed Transactions",
-            "urls": [
-              "/${VERSION}/distributed-transactions.html"
-            ]
-          },
-          {
-            "title": "Online Schema Changes",
-            "urls": [
-              "/${VERSION}/online-schema-changes.html"
-            ]
-          },
-          {
-            "title": "Automated Scaling & Repair",
-            "urls": [
-              "/${VERSION}/automated-scaling-and-repair.html"
-            ]
-          },
-          {
-            "title": "High Availability",
-            "urls": [
-              "/${VERSION}/high-availability.html"
-            ]
-          },
-          {
-            "title": "Go Implementation",
-            "urls": [
-              "/${VERSION}/go-implementation.html"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
     "title": "FAQs",
     "is_top_level": true,
     "items": [
@@ -2026,6 +1938,12 @@
         "title": "CockroachDB in Comparison",
         "urls": [
           "/${VERSION}/cockroachdb-in-comparison.html"
+        ]
+      },
+      {
+        "title": "Contribute to CockroachDB",
+        "urls": [
+          "/${VERSION}/contribute-to-cockroachdb.html"
         ]
       }
     ]
