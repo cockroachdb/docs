@@ -1879,6 +1879,35 @@
             ]
           }
         ]
+      },
+      {
+          "title": "Programming Interfaces",
+          "items": [
+			  {
+				  "title": "Overview",
+				  "urls": [
+					  "/${VERSION}/overview-of-apis-and-interfaces.html"
+				  ]
+			  },
+			  {
+				  "title": "Interface types",
+				  "urls": [
+					  "/${VERSION}/interface-types.html"
+				  ]
+			  },
+			  {
+				  "title": "Stability Guarantees",
+				  "urls": [
+					  "/${VERSION}/compatibility-and-programmability-guarantees.html"
+				  ]
+			  },
+			  {
+			  	  "title": "Feature lifecycle",
+			  	  "urls": [
+			  		  "/${VERSION}/experimental-feature-lifecycle.html"
+			  	  ]
+			  }
+		   ]
       }
     ]
   },
