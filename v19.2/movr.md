@@ -15,18 +15,7 @@ The MovR example consists of the following:
 
 ## The `movr` database
 
-Six tables in the `movr` database store user, vehicle, and ride data for MovR:
-
-Table   |         Description          
---------|----------------------------
-`users` | People registered for the service.       
-`vehicles` | The pool of vehicles available for the service.
-`rides` | When and where users have rented a vehicle.       
-`promo_codes` | Promotional codes for users.
-`user_promo_codes` | Promotional codes in use by users.      
-`vehicle_location_histories` | Vehicle location history.
-
-<!-- <img src="{{ 'images/v19.2/geo-partitioning-schema.png' | relative_url }}" alt="Geo-partitioning schema" style="max-width:100%" /> -->
+{% include {{ page.version.version }}/misc/movr-schema.md %}
 
 ## Generating schemas and data for MovR
 
@@ -99,51 +88,11 @@ $ cockroach demo movr
 
 ## How the MovR application works
 
-The following steps summarize how the MovR application works:
-
-1. A user loads the app and sees the 25 closest vehicles. Behind the scenes, this is a `SELECT` from the `vehicles` table:
-
-    ~~~ sql
-    > SELECT id, city, status, ... FROM vehicles WHERE city = <user location>
-    ~~~
-
-2. The user signs up for the service, which is an `INSERT` of a row into the `users` table:
-
-    ~~~ sql
-    > INSERT INTO users (id, name, address, ...) VALUES ...
-    ~~~
-
-3. In some cases, the user adds their own vehicle to share, which is an `INSERT` of a row into the `vehicles` table:
-
-    ~~~ sql
-    > INSERT INTO vehicles (id, city, type, ...) VALUES ...
-    ~~~
-
-4. More often, the user reserves a vehicle and starts a ride, which is an `UPDATE` of a row in the `vehicles` table and an `INSERT` of a row into the `rides` table:
-
-    ~~~ sql
-    > UPDATE vehicles SET status = 'in_use' WHERE ...
-    ~~~
-
-    ~~~ sql
-    > INSERT INTO rides (id, city, start_addr, ...) VALUES ...
-    ~~~
-
-5. The user ends the ride and releases the vehicle, which is an `UPDATE` of a row in the `vehicles` table and an `UPDATE` of a row in the `rides` table:
-
-    ~~~ sql
-    > UPDATE vehicles SET status = 'available' WHERE ...
-    ~~~
-
-    ~~~ sql
-    > UPDATE rides SET end_address = <value> ...
-    ~~~
+{% include {{ page.version.version }}/misc/movr-workflow.md %}
 
 ## Extended examples
 
-MovR scales as a geo-partitioned application and database that you can deploy using Docker images across a multi-region cluster deployment.
-
-For a tutorial about geo-partitioning for fast reads and writes, see [Geo-Partitioning for Fast Reads and Writes in a Multi-Region Cluster](demo-geo-partitioning.html).
+For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies](topology-patterns.html) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment](demo-low-latency-multi-region-deployment.html).
 
 For a tutorial about performance tuning in CockroachDB, see [Performance Tuning](performance-tuning.html).
 

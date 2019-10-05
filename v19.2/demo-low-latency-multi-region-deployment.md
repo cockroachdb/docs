@@ -60,74 +60,15 @@ For your application, you'll use our open-source, fictional, peer-to-peer vehicl
 
 #### The schema
 
-<img src="{{ 'images/v19.2/movr-schema.png' | relative_url }}" alt="Geo-partitioning schema" style="max-width:100%" />
-
-The six tables in the `movr` database store user, vehicle, and ride data for MovR:
-
-Table   |         Description          
---------|----------------------------
-`users` | People registered for the service.       
-`vehicles` | The pool of vehicles available for the service.
-`rides` | When and where users have rented a vehicle.       
-`promo_codes` | Promotional codes for users.
-`user_promo_codes` | Promotional codes in use by users.      
-`vehicle_location_histories` | Vehicle location history.
+{% include {{ page.version.version }}/misc/movr-schema.md %}
 
 All of the tables except `promo_codes` have a multi-column primary key of `city` and `id`, with `city` being the first in the key. As such, the rows in these tables are geographically specific and ordered by geography. These tables are read and updated very frequently, and so to keep read and write latency low, you'll use the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology for these tables.
 
-In contrast, the data in the `promo_codes` table is not tied to geography, and the data is read frequently but rarely updated. In this case, you'll use the [Duplicate Indexes](topology-duplicate-indexes.html) topology to keep just read latency very low, since that's primary.
+In contrast, the data in the `promo_codes` table is not tied to geography, and the data is read frequently but rarely updated. This type of table is often referred to as a "reference table" or "lookup table". In this case, you'll use the [Duplicate Indexes](topology-duplicate-indexes.html) topology to keep just read latency very low, since that's primary.
 
 #### The workflow
 
-The workflow for MovR is as follows (with approximations of the corresponding SQL for each step):
-
-1. A user loads the app and sees the 25 closest vehicles:
-
-    ~~~ sql
-    > SELECT id, city, status, ... FROM vehicles WHERE city = <user location>
-    ~~~
-
-2. The user signs up for the service:
-
-    ~~~ sql
-    > INSERT INTO users (id, name, address, ...) VALUES ...
-    ~~~
-
-3. In some cases, the user adds their own vehicle to share:
-
-    ~~~ sql
-    > INSERT INTO vehicles (id, city, type, ...) VALUES ...
-    ~~~
-
-4. More often, the user reserves a vehicle and starts a ride, applying a promo code, if available and valid:
-
-    ~~~ sql
-    > SELECT code FROM user_promo_codes WHERE user_id = ...
-    ~~~
-
-    ~~~ sql
-    > UPDATE vehicles SET status = 'in_use' WHERE ...
-    ~~~
-
-    ~~~ sql
-    > INSERT INTO rides (id, city, start_addr, ...) VALUES ...
-    ~~~
-
-5. During the ride, MovR tracks the location of the vehicle:   
-
-    ~~~ sql
-    > INSERT INTO vehicle_location_histories (city, ride_id, timestamp, lat, long) VALUES ...
-    ~~~
-
-6. The user ends the ride and releases the vehicle:
-
-    ~~~ sql
-    > UPDATE vehicles SET status = 'available' WHERE ...
-    ~~~
-
-    ~~~ sql
-    > UPDATE rides SET end_address = <value> ...
-    ~~~
+{% include {{ page.version.version }}/misc/movr-workflow.md %}
 
 ## Step 1. Set up the environment
 
