@@ -33,6 +33,7 @@ $ cockroach sql <flags> < file-containing-statements.sql
 ~~~
 
 Exit the interactive SQL shell:
+
 ~~~ shell
 $ \q
 ~~~
