@@ -14,11 +14,10 @@ Each [multi-region topology pattern](topology-patterns.html#multi-region-pattern
 
 #### Cluster
 
-Each node is started with the [`--locality`](start-a-node.html#locality) flag specifying its region and AZ combination, e.g.:
+Each node is started with the [`--locality`](start-a-node.html#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the west1 AZ of the us-west region:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Example start command for node in the west1 AZ of the us-west region:
 $ cockroach start \
 --locality=region=us-west,zone=west1 \
 --certs-dir=certs \

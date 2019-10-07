@@ -24,11 +24,10 @@ If you haven't already, [review the full range of topology patterns](topology-pa
     - App and load balancer in same region as VMs for CockroachDB
         - The load balancer redirects to CockroachDB nodes in the region
 
-2. Start each node on a separate VM, setting the [`--locality`](start-a-node.html#locality) flag to the node's region and AZ combination, e.g.:
+2. Start each node on a separate VM, setting the [`--locality`](start-a-node.html#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 AZ of the us-east region:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Example start command for node in the east1 AZ of the us-east region:
     $ cockroach start \
     --locality=region=us-east,zone=east1 \
     --certs-dir=certs \
