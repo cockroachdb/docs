@@ -6,7 +6,7 @@ toc: true
 
 {{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`][backup] stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -238,7 +238,79 @@ WITH into_db = 'newdb';
 > DROP TABLE newdb.users;
 ~~~
 
+### Restore from a partitioned backup based on node locality
+
+<span class="version-tag">New in v19.2:</span> You can create locality aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+A partitioned backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a URL-encoded locality query string parameter such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. Given a list of URIs that together contain the locations of all of the files for a single partitioned backup, [`RESTORE`][restore] can read in that backup.
+
+Note that the list of URIs passed to [`RESTORE`][restore] may be different from the URIs originally passed to [`BACKUP`][backup]. This is because it's possible to move the contents of one of the parts of a partitioned backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a partitioned backup into a single location.
+
+{{site.data.alerts.callout_info}}
+[`RESTORE`][restore] is not truly locality aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen because [`BACKUP`][backup] does not back up [zone configurations](configure-replication-zones.html), so [`RESTORE`][restore] has no way of knowing how to take node localities into account when restoring data from a backup.
+{{site.data.alerts.end}}
+
+#### Example - Restore from a partitioned backup
+
+For example, a backup created with
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=default', 's3://us-west-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=region%3Dus-west');
+~~~
+
+can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE
+DATABASE
+	bank
+FROM
+	('s3://us-east-bucket', 's3://us-west-bucket');
+~~~
+
+Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
+
+#### Example - Restore from an incremental partitioned backup
+
+A partitioned backup URI can also be used in place of any incremental backup URI in [`RESTORE`][restore].
+
+For example, an incremental partitioned backup created with
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket/database-bank-2019-10-08-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-08-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=region%3Dus-west')
+INCREMENTAL FROM
+	's3://us-east-bucket/database-bank-2019-10-07-weekly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE
+DATABASE
+	bank
+FROM
+	('s3://us-east-bucket/database-bank-2019-10-07-weekly', 's3://us-west-bucket/database-bank-2019-10-07-weekly'),
+	('s3://us-east-bucket/database-bank-2019-10-08-nightly', 's3://us-west-bucket/database-bank-2019-10-08-nightly');
+~~~
 ## See also
 
-- [`BACKUP`](backup.html)
+- [`BACKUP`][backup]
+- [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
+
+<!-- Reference links -->
+
+[backup]:  backup.html
+[restore]: restore.html
