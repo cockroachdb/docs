@@ -81,6 +81,32 @@ If you are deleting a large amount of data using iterative `DELETE ... LIMIT` st
 
 For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
 
+## Force index selection for deletes
+
+<span class="version-tag">New in v19.2:</span> By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for deleting rows of a named table.
+
+{{site.data.alerts.callout_info}}
+Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
+{{site.data.alerts.end}}
+
+The syntax to force a specific index for a delete is:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM table@my_idx;
+~~~
+
+This is equivalent to the longer expression:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM table@{FORCE_INDEX=my_idx};
+~~~
+
+To view how the index hint modifies the [query plan](cost-based-optimizer.html#view-query-plan) that CockroachQB follows for deleting rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+
+For examples of index hinting for deletes, see the [Delete on a specific index](#delete-on-a-specific-index) example.
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -216,6 +242,72 @@ To sort and return deleted rows, use a statement like the following:
   crime_experience_certainly | Prepare right teacher mouth student. Trouble condition weight during scene something stand.                                                                                                                    | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
   policy_its_wife            | Player either she something good minute or. Nearly policy player receive. Somebody mean book store fire realize.                                                                                               | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
 (5 rows)
+~~~
+
+### Delete on a specific index
+
+Suppose you create a multi-column index on the `users` table with the `name` and `city` columns.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON users (name, city);
+~~~
+
+Now suppose you want to delete the two users named "Michael Brown". You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the delete:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) DELETE FROM users WHERE name='Michael Brown';
+~~~
+
+~~~
+                                 text
++---------------------------------------------------------------------+
+  delete users
+   └── scan users@users_name_city_idx
+        └── constraint: /8/7/6: [/'Michael Brown' - /'Michael Brown']
+(3 rows)
+~~~
+
+The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the delete. This makes sense, as you are performing a delete based on the `name` column.
+
+Now suppose that instead you want to perform a delete, but using the `id` column instead.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+~~~
+
+~~~
+                                                  text
++-------------------------------------------------------------------------------------------------------+
+  delete users
+   └── select
+        ├── scan users@users_name_city_idx
+        └── filters
+             └── id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+(5 rows)
+~~~
+
+The optimizer still scans the newly-created `users_name_city_idx` index when performing the delete. Although scanning the table on this index could still be the most efficient, you could want to assess the performance difference between using `users_name_city_idx` and an index on the `id` column, as you are performing a delete with a filter on the `id` column.
+
+If you provide an index hint (i.e. force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (OPT) DELETE FROM users@primary WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+~~~
+
+~~~
+                                                  text
++-------------------------------------------------------------------------------------------------------+
+  delete users
+   └── select
+        ├── scan users
+        │    └── flags: force-index=primary
+        └── filters
+             └── id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+(6 rows)
 ~~~
 
 ## See also
