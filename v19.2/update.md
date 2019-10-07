@@ -38,6 +38,32 @@ Parameter | Description
 `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
 `RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
+## Force index selection for updates
+
+<span class="version-tag">New in v19.2:</span> By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for updating rows of a named table.
+
+{{site.data.alerts.callout_info}}
+Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
+{{site.data.alerts.end}}
+
+The syntax to force an update for a specific index is:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE table@my_idx SET ...
+~~~
+
+This is equivalent to the longer expression:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE table@{FORCE_INDEX=my_idx} SET ...
+~~~
+
+To view how the index hint modifies the [query plan](cost-based-optimizer.html#view-query-plan) that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+
+For examples of index hinting for updates, see the [Update on a specific index](#update-on-a-specific-index) example.
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -475,6 +501,59 @@ IDs:
 ~~~
 
 </section>
+
+### Update on a specific index
+
+Suppose that you create a multi-column index on the `users` table with the `name` and `city` columns.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON users (name, city);
+~~~
+
+Now suppose you want to update a couple rows in the table, based on their contents. You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the `UPDATE` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (opt) UPDATE users SET name='Michael Brown (there are two)' WHERE name='Michael Brown';
+~~~
+
+~~~
+                                      text
++-------------------------------------------------------------------------------+
+  update users
+   └── project
+        ├── index-join users
+        │    └── scan users@users_name_city_idx
+        │         └── constraint: /8/7/6: [/'Michael Brown' - /'Michael Brown']
+        └── projections
+             └── const: 'Michael Brown (there are two)'
+(7 rows)
+~~~
+
+The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the update. This makes sense, as you are performing an update based on the `name` column. If you want to perform the update using the primary index instead, to compare plans and tune performance, you can provide an index hint (i.e. force the index selection) to use a different index of the `users` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (opt) UPDATE users@primary SET name='Michael Brown (there are two)' WHERE name='Michael Brown';
+~~~
+
+~~~
+                          text
++-------------------------------------------------------+
+  update users
+   └── project
+        ├── select
+        │    ├── scan users
+        │    │    └── flags: force-index=primary
+        │    └── filters
+        │         └── name = 'Michael Brown'
+        └── projections
+             └── const: 'Michael Brown (there are two)'
+(9 rows)
+~~~
+
+As you can see from the output of the `EXPLAIN` statement, the plan changed quite a bit when you forced the index selection.
 
 ## See also
 
