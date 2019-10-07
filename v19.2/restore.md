@@ -238,7 +238,55 @@ WITH into_db = 'newdb';
 > DROP TABLE newdb.users;
 ~~~
 
+### Restore from a partitioned backup
+
+<span class="version-tag">New in v19.2:</span> You can create locality-aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+Given a list of URIs that together contain the locations of all of the files for a single partitioned backup, [`RESTORE`][restore] can read in that backup. Note that the list of URIs passed to [`RESTORE`][restore] may be different from the URIs originally passed to [`BACKUP`][backup].
+
+For example, a backup created with
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE foo TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-east')
+~~~
+
+can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE foo FROM ('s3://us-east-bucket', 's3://us-west-bucket')
+~~~
+
+A partitioned backup URI can also be used in place of any [incremental backup](#restore-from-incremental-backups) URI in [`RESTORE`][restore]. For example, if the original backup was an incremental backup, it can be restored using:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE foo FROM 's3://other-full-backup-uri', ('s3://us-east-bucket', 's3://us-west-bucket')
+~~~
+
+Further examples of supported syntax for restoring from partitioned backups include:
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE foo FROM ($1, $2);
+RESTORE DATABASE foo FROM ($1, $2), $3;
+RESTORE DATABASE foo FROM $1, ($2, $3);
+RESTORE DATABASE foo FROM ($1, $2), ($3, $4);
+RESTORE DATABASE foo FROM ($1, $2), ($3, $4) AS OF SYSTEM TIME '1';
+RESTORE DATABASE foo FROM ($1);
+RESTORE DATABASE foo FROM ($1), ($2);
+RESTORE DATABASE foo FROM $1, $2;
+RESTORE DATABASE foo FROM ($1), ($2, $3);
+RESTORE DATABASE foo FROM $1, ($2, $3);
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that [`RESTORE`][restore] is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen because [`BACKUP`][backup] does not back up [zone configurations](configure-replication-zones.html), so [`RESTORE`][restore] has no way of knowing how to take node localities into account when restoring data from a backup.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`BACKUP`](backup.html)
+- [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)

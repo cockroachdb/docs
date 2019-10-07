@@ -193,7 +193,44 @@ AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
+### Create partitioned backups based on node locality
+
+<span class="version-tag">New in v19.2:</span> You can create locality-aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+A partitioned backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose value is either `default` or a URL-encoded locality query string parameters such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`.
+
+Nodes will write files to the backup storage location whose locality value matches their own node localities, with a preference for more specific values in the locality hierarchy, and fall back to `default` if there is no match. 
+
+{{site.data.alerts.callout_info}}
+Note that the locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) as shown below.
+{{site.data.alerts.end}}
+
+To create a partitioned backup, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE foo TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-east')
+~~~
+
+The backup created above can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE foo FROM ('s3://us-east-bucket', 's3://us-west-bucket')
+~~~
+
+Further examples of supported syntax for making partitioned backups include:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE foo TO ($1, $2);
+BACKUP DATABASE foo TO ($1, $2) INCREMENTAL FROM 'baz';
+BACKUP DATABASE foo TO ($1);
+BACKUP DATABASE foo TO $1`;
+~~~
+
 ## See also
 
 - [`RESTORE`](restore.html)
+- [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
