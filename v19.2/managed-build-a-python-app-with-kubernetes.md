@@ -10,7 +10,7 @@ This tutorial shows you how to run a [sample Python To-Do app](https://github.co
 ## Before you begin
 
 1. Install [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/).
-2. Install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to managed Kubernetes from your local workstation.
+2. Install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
 ## Prepare your cluster
 
