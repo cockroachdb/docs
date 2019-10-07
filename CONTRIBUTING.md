@@ -126,7 +126,7 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
 We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v2.0 are in the `v2.0` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory.
 
-Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown. File names should be lowercase with a dash between words, and should brief but descriptive.
+Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown. File names should be lowercase with a dash between words, and should be brief but descriptive.
 
 Example:
 
