@@ -193,7 +193,102 @@ AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
+### Create partitioned backups based on node locality
+
+<span class="version-tag">New in v19.2:</span> You can create locality aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+A partitioned backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`.
+
+Backup file placement is determined by leaseholder placement, as each node is responsible for backing up the ranges for which it is the leaseholder.  Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy.  If there is no match, the `default` locality is used.
+
+{{site.data.alerts.callout_info}}
+Note that the locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) as shown below.
+{{site.data.alerts.end}}
+
+#### Example - Create a partitioned backup
+
+For example, to create a partitioned backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+~~~
+
+The backup created above can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE bank FROM ('s3://us-east-bucket', 's3://us-west-bucket');
+~~~
+
+#### Example - Create an incremental partitioned backup
+
+To make an incremental partitioned backup from a full partitioned backup, the syntax is just like for [regular partitioned backups](#create-incremental-backups):
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE foo TO (${uri_1}, ${uri_2}, ...) INCREMENTAL FROM ${full_backup_uri} ...;
+~~~
+
+For example, to create an incremental partitioned backup from a previous full partitioned backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=region%3Dus-west')
+INCREMENTAL FROM
+	's3://us-east-bucket/database-bank-2019-10-07-weekly';
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that only the backup URIs you set as the `default` when you created the previous backup(s) are needed in the `INCREMENTAL FROM` clause of your incremental `BACKUP` statement (as shown in the example). This is because the `default` destination for a partitioned backup contains a manifest file that contains all the metadata required to create additional incremental backups based on it.
+{{site.data.alerts.end}}
+
+#### Example - Create an incremental partitioned backup from a previous partitioned backup
+
+To make an incremental partitioned backup from another partitioned backup, the syntax is
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE foo TO ({uri_1}, {uri_2}, ...) INCREMENTAL FROM {full_backup}, {incr_backup_1}, {incr_backup_2}, ...;
+~~~
+
+For example, let's say you normally run a full backup every Monday, followed by incremental backups on the remaining days of the week.
+
+By default, all nodes send their backups to your `s3://us-east-bucket`, except for nodes in `region=us-west`, which will send their backups to `s3://us-west-bucket`.
+
+If today is Thursday, October 10th, 2019, your `BACKUP` statement will list the following backup URIs:
+
+- The full partitioned backup URI from Monday, e.g.,
+  - `s3://us-east-bucket/database-bank-2019-10-07-weekly`
+- The incremental backup URIs from Tuesday and Wednesday, e.g.,
+  - `s3://us-east-bucket/database-bank-2019-10-08-nightly`
+  - `s3://us-east-bucket/database-bank-2019-10-09-nightly`
+
+Given the above, to take the incremental partitioned backup scheduled for today (Thursday), you will run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket/database-bank-2019-10-10-nightly?COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-10-nightly?COCKROACH_LOCALITY=region%3Dus-west')
+INCREMENTAL FROM
+	's3://us-east-bucket/database-bank-2019-10-07-weekly',
+	's3://us-east-bucket/database-bank-2019-10-08-nightly',
+	's3://us-east-bucket/database-bank-2019-10-09-nightly';
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that only the backup URIs you set as the `default` when you created the previous backup(s) are needed in the `INCREMENTAL FROM` clause of your incremental `BACKUP` statement (as shown in the example). This is because the `default` destination for a partitioned backup contains a manifest file that contains all the metadata required to create additional incremental backups based on it.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`RESTORE`](restore.html)
+- [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
