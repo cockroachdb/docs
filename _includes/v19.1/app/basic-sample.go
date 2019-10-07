@@ -11,7 +11,7 @@ import (
 func main() {
 	// Connect to the "bank" database.
 	db, err := sql.Open("postgres",
-		"postgresql://maxroach@localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key&sslcert=certs/client.maxroach.crt")
+		"postgresql://maxroach@localhost:26257/bank?ssl=true&sslmode=verify-full&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key&sslcert=certs/client.maxroach.crt")
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}

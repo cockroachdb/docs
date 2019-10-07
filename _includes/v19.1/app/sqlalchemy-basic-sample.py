@@ -26,7 +26,7 @@ connect_args = {}
 
 if secure_cluster:
     connect_args = {
-        'sslmode': 'require',
+        'sslmode': 'verify-full',
         'sslrootcert': 'certs/ca.crt',
         'sslkey': 'certs/client.maxroach.key',
         'sslcert': 'certs/client.maxroach.crt'

@@ -20,7 +20,7 @@ public class BasicSample {
         // Connect to the "bank" database.
         Properties props = new Properties();
         props.setProperty("user", "maxroach");
-        props.setProperty("sslmode", "require");
+        props.setProperty("sslmode", "verify-full");
         props.setProperty("sslrootcert", "certs/ca.crt");
         props.setProperty("sslkey", "certs/client.maxroach.key.pk8");
         props.setProperty("sslcert", "certs/client.maxroach.crt");

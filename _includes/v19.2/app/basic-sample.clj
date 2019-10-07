@@ -8,7 +8,7 @@
               :host "localhost"
               :port "26257"
               :ssl true
-              :sslmode "require"
+              :sslmode "verify-full"
               :sslcert "certs/client.maxroach.crt"
               :sslkey "certs/client.maxroach.key.pk8"
               :user "maxroach"})

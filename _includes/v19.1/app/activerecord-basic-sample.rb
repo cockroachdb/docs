@@ -10,7 +10,7 @@ ActiveRecord::Base.establish_connection(
   database:    'bank',
   host:        'localhost',
   port:        26257,
-  sslmode:     'require',
+  sslmode:     'verify-full',
   sslrootcert: 'certs/ca.crt',
   sslkey:      'certs/client.maxroach.key',
   sslcert:     'certs/client.maxroach.crt'

@@ -13,7 +13,7 @@ namespace Cockroach
       var connStringBuilder = new NpgsqlConnectionStringBuilder();
       connStringBuilder.Host = "localhost";
       connStringBuilder.Port = 26257;
-      connStringBuilder.SslMode = SslMode.Require;
+      connStringBuilder.SslMode = SslMode.Verify-full;
       connStringBuilder.Username = "maxroach";
       connStringBuilder.Database = "bank";
       Simple(connStringBuilder.ConnectionString);

@@ -105,7 +105,7 @@ def main():
     conn = psycopg2.connect(
         database='bank',
         user='maxroach',
-        sslmode='require',
+        sslmode='verify-full',
         sslrootcert='certs/ca.crt',
         sslkey='certs/client.maxroach.key',
         sslcert='certs/client.maxroach.crt',

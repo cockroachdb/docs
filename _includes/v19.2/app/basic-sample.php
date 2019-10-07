@@ -1,6 +1,6 @@
 <?php
 try {
-    $dbh = new PDO('pgsql:host=localhost;port=26257;dbname=bank;sslmode=require;sslrootcert=certs/ca.crt;sslkey=certs/client.maxroach.key;sslcert=certs/client.maxroach.crt',
+    $dbh = new PDO('pgsql:host=localhost;port=26257;dbname=bank;sslmode=verify-full;sslrootcert=certs/ca.crt;sslkey=certs/client.maxroach.key;sslcert=certs/client.maxroach.crt',
     'maxroach', null, array(
       PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_EMULATE_PREPARES => true,

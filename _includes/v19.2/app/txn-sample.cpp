@@ -59,7 +59,7 @@ void executeTx(
 
 int main() {
   try {
-    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
+    pqxx::connection c("dbname=bank user=maxroach sslmode=verify-full sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
 
     executeTx(&c, [](pqxx::dbtransaction *tx) {
           transferFunds(tx, 1, 2, 100);
