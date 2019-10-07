@@ -13,18 +13,18 @@ Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachD
 
 ## Perform Enterprise backup and restore
 
-If you have an [Enterprise license](enterprise-licensing.html), you can use the [`BACKUP`](backup.html) statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`](restore.html) statement to efficiently restore schema and data as necessary.
+If you have an [Enterprise license](enterprise-licensing.html), you can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
 
 ### Manual full backups
 
-In most cases, it's recommended to use the [`BACKUP`](backup.html) command to take full nightly backups of each database in your cluster:
+In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of each database in your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO '<full_backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`](restore.html) command to restore a database:
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -35,7 +35,7 @@ If it's ever necessary, you can then use the [`RESTORE`](restore.html) command t
 
 If a database increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger databases.
 
-Periodically run the [`BACKUP`](backup.html) command to take a full backup of your database:
+Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -50,7 +50,7 @@ Then create nightly incremental backups based off of the full backups you've alr
 INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`](restore.html) command to restore a database:
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -144,6 +144,69 @@ In the sample script, configure the day of the week for which you want to create
 If you miss an incremental backup, delete the `recent_backups.txt` file and run the script. It'll take a full backup for that day and incremental backups for subsequent days.
 {{site.data.alerts.end}}
 
+### Locality aware backup and restore
+
+<span class="version-tag">New in v19.2:</span> You can create locality aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+This is useful for:
+
+- Reducing cloud storage data transfer costs by keeping data within cloud regions.
+- Helping you comply with data domiciling requirements.
+
+#### How it works
+
+A partitioned backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. Given a list of URIs that together contain the locations of all of the files for a single partitioned backup, [`RESTORE`][restore] can read in that backup.
+
+During partitioned backups, each node is responsible for backing up the ranges that it's the leaseholder for; therefore, backup file placement is determined by leaseholder placement. Nodes will write files to the backup storage location whose locality value matches their own node localities, with a preference for more specific values in the locality hierarchy, and will fall back to writing files to the `default` location if there is no match.
+
+{{site.data.alerts.callout_info}}
+The list of URIs passed to [`RESTORE`][restore] may be different from the URIs originally passed to [`BACKUP`][backup]. This is because the files of a partitioned backup can be moved to different locations, or even consolidated into the same location. The only restriction is that all the files originally written to the same location must remain together. In order for [`RESTORE`][restore] to succeed, all of the files originally written during [`BACKUP`][backup] must be accounted for in the list of location URIs provided.
+{{site.data.alerts.end}}
+
+#### Usage
+
+For example, to create a partitioned backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	foo
+TO
+	('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+~~~
+
+To restore the backup created above, run the statement below. Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE
+DATABASE
+	foo
+FROM
+	('s3://us-east-bucket', 's3://us-west-bucket');
+~~~
+
+A list of multiple URIs (surrounded by parentheses) specifying a partitioned backup can also be used in place of any incremental backup URI in [`RESTORE`][restore]. If the original backup was an incremental backup, it can be restored using:
+
+{% include copy-clipboard.html %}
+~~~ sql
+RESTORE
+DATABASE
+	foo
+FROM
+	's3://other-full-backup-uri',
+	('s3://us-east-bucket', 's3://us-west-bucket');
+~~~
+
+For more detailed examples, see [Create partitioned backups based on node locality](backup.html#create-partitioned-backups-based-on-node-locality) and [Restore from a partitioned backup based on node locality](restore.html#restore-from-a-partitioned-backup-based-on-node-locality).
+
+{{site.data.alerts.callout_info}}
+The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) as shown below.
+
+[`RESTORE`][restore] is not truly locality aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen because [`BACKUP`][backup] does not back up [zone configurations](configure-replication-zones.html), so [`RESTORE`][restore] has no way of knowing how to take node localities into account when restoring data from a backup.
+{{site.data.alerts.end}}
+
 ## Perform Core backup and restore
 
 In case you do not have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
@@ -166,9 +229,14 @@ If you created a backup from another database and want to import it into Cockroa
 
 ## See also
 
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
+- [`BACKUP`][backup]
+- [`RESTORE`][restore]
 - [`SQL DUMP`](sql-dump.html)
 - [`IMPORT`](import-data.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
+
+<!-- Reference links -->
+
+[backup]:  backup.html
+[restore]: restore.html
