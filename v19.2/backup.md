@@ -193,7 +193,104 @@ AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
+### Create partitioned backups based on node locality
+
+<span class="version-tag">New in v19.2:</span> You can create locality aware, partitioned backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+
+A partitioned backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose value is either `default` or a URL-encoded locality query string parameter such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`.
+
+Each node is responsible for backing up the ranges that it's the leaseholder for, so backup file placement is determined by leaseholder placement. Nodes will write files to the backup storage location whose locality value matches their own node localities, with a preference for more specific values in the locality hierarchy, and fall back to `default` if there is no match.
+
+{{site.data.alerts.callout_info}}
+Note that the locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) as shown below.
+{{site.data.alerts.end}}
+
+#### Example - Create a partitioned backup
+
+For example, to create a partitioned backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE foo TO ('s3://us-east-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=default', 's3://us-west-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=region%3Dus-west);
+~~~
+
+The backup created above can be restored by running:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE foo FROM ('s3://us-east-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456', 's3://us-west-bucket?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456');
+~~~
+
+#### Example - Create an incremental partitioned backup
+
+To make an incremental partitioned backup from a full partitioned backup, the syntax is just like for [regular partitioned backups](#create-incremental-backups):
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE foo TO ({uri_1}, {uri_2}, ...) INCREMENTAL FROM {full_backup} ...;
+~~~
+
+For example, to create an incremental partitioned backup from a previous full partitioned backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+For example, to create an incremental partitioned backup from a full partitioned backup, run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket/database-bank-2019-10-08-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-08-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=region%3Dus-west')
+INCREMENTAL FROM
+	's3://us-east-bucket/database-bank-2019-10-07-weekly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that only the backup URIs you set as the `default` when you created the previous backup(s) are needed in the `INCREMENTAL FROM` clause of your incremental `BACKUP` statement (as shown in the example). This is because the `default` URI for a partitioned backup contains a manifest file that lists the non-`default` backup URIs so they can be properly managed by `BACKUP` and `RESTORE`.
+{{site.data.alerts.end}}
+
+#### Example - Create an incremental partitioned backup from a previous partitioned backup
+
+To make an incremental partitioned backup from another partitioned backup, the syntax is
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE foo TO ({uri_1}, {uri_2}, ...) INCREMENTAL FROM {full_backup}, {incr_backup_1}, {incr_backup_2}, ...;
+~~~
+
+For example, let's say you normally run a full backup every Monday, followed by incremental backups on the remaining days of the week.
+
+By default, all nodes send their backups to your `s3://us-east-bucket`, except for nodes in `region=us-west`, which will send their backups to `s3://us-west-bucket`.
+
+If today is Thursday, October 10th, 2019, your `BACKUP` statement will list the following backup URIs:
+
+- The full partitioned backup URI from Monday, e.g.,
+  - `s3://us-east-bucket/database-bank-2019-10-07-weekly`
+- The incremental backup URIs from Tuesday and Wednesday, e.g.,
+  - `s3://us-east-bucket/database-bank-2019-10-08-nightly`
+  - `s3://us-east-bucket/database-bank-2019-10-09-nightly`
+
+Given the above, to take the incremental partitioned backup scheduled for today (Thursday), you will run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+BACKUP
+DATABASE
+	bank
+TO
+	('s3://us-east-bucket/database-bank-2019-10-10-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-10-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456&COCKROACH_LOCALITY=region%3Dus-west')
+INCREMENTAL FROM
+	's3://us-east-bucket/database-bank-2019-10-07-weekly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
+	's3://us-east-bucket/database-bank-2019-10-08-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456',
+	's3://us-east-bucket/database-bank-2019-10-09-nightly?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that only the  backup URIs you set as the `default` when you created the previous backup(s) are needed in the `INCREMENTAL FROM` clause of your incremental `BACKUP` statement (as shown in the example). This is because the `default` URI for a partitioned backup contains a manifest file that lists the non-`default` backup URIs so they can be properly managed by `BACKUP` and `RESTORE`.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`RESTORE`](restore.html)
+- [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
