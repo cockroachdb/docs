@@ -15,9 +15,8 @@ If you haven't already, we recommend reading the [Architecture Overview](overvie
 
 Each CockroachDB node contains at least one `store`, specified when the node starts, which is where the `cockroach` process reads and writes its data on disk.
 
-This data is stored as key-value pairs on disk using RocksDB, which is treated primarily as a black-box API. Internally, each store contains three instances of RocksDB:
+This data is stored as key-value pairs on disk using RocksDB, which is treated primarily as a black-box API. Internally, each store contains two instances of RocksDB:
 
-- One for the Raft log
 - One for storing temporary distributed SQL data
 - One for all other data on the node
 
