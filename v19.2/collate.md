@@ -71,13 +71,12 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
 > SELECT * FROM de_names ORDER BY name;
 ~~~
 ~~~
+    name
 +----------+
-|   name   |
-+----------+
-| Backhaus |
-| Bär      |
-| Baz      |
-+----------+
+  Backhaus
+  Bär
+  Baz
+(3 rows)
 ~~~
 
 ### Order by non-default collation
@@ -91,13 +90,12 @@ For example, you receive different results if you order results by German (`de`)
 > SELECT * FROM de_names ORDER BY name COLLATE sv;
 ~~~
 ~~~
+    name
 +----------+
-|   name   |
-+----------+
-| Backhaus |
-| Baz      |
-| Bär      |
-+----------+
+  Backhaus
+  Baz
+  Bär
+(3 rows)
 ~~~
 
 ### Ad-hoc collation casting
@@ -109,14 +107,17 @@ You can cast any string into a collation on the fly.
 > SELECT 'A' COLLATE de < 'Ä' COLLATE de;
 ~~~
 ~~~
-true
+  ?column?
++----------+
+    true
+(1 row)
 ~~~
 
 However, you cannot compare values with different collations:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 'Ä' COLLATE sv < 'Ä' COLLATE de;
+> SELECT 'Ä' COLLATE sv < 'Ä' COLLATE de;
 ~~~
 ~~~
 pq: unsupported comparison operator: <collatedstring{sv}> < <collatedstring{de}>
@@ -128,6 +129,47 @@ You can also use casting to remove collations from values.
 ~~~ sql
 > SELECT CAST(name AS STRING) FROM de_names ORDER BY name;
 ~~~
+~~~
+    name
++----------+
+  Backhaus
+  Baz
+  Bär
+(3 rows)
+~~~
+
+### Show collation for strings
+
+<span class="version-tag">New in v19.2:</span> You can use the `pg_collation_for` [built-in function](functions-and-operators.html#string-and-byte-functions), or its alternative [syntax form](functions-and-operators.html#special-syntax-forms) `COLLATION FOR`, to return the locale name of a collated string.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT pg_collation_for('Bär' COLLATE de);
+~~~
+
+~~~
+  pg_collation_for
++------------------+
+  de
+(1 row)
+~~~
+
+This is equivalent to:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT COLLATION FOR ('Bär' COLLATE de);
+~~~
+
+~~~
+  pg_collation_for
++------------------+
+  de
+(1 row)
+~~~
+
 
 ## See also
 
