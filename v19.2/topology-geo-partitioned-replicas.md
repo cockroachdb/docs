@@ -92,7 +92,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 4. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
 
     {{site.data.alerts.callout_success}}
-    <span class="version-tag">New in v19.2:</span> The `<table>@*` syntax lets you create zone configurations for all identically name partitions of a table, saving you multiple steps.
+    <span class="version-tag">New in v19.2:</span> The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}

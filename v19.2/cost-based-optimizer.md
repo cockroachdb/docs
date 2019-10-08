@@ -192,7 +192,7 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
 
 {{site.data.alerts.callout_info}}
-This feature is only available to users with an [enterprise license](enterprise-licensing.html). For insight into how to use this feature get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
+This feature is only available to users with an [enterprise license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
 {{site.data.alerts.end}}
 
 This feature enables scenarios such as:

@@ -494,13 +494,13 @@ Now that you've deployed and configured your cluster, take a look at it in the A
 
 ## Step 5. Check latency
 
-Use the Admin UI to check the SQL latency before applying data topologies to see the affect of network latency when requests must move back and forth across the US.
+Use the Admin UI to see the affect of network latency before applying multi-region data topologies.
 
 1. Still in the Admin UI, click **Metrics** on the left and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
 
     <img src="{{ 'images/v19.2/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
-    For each node, you'll see that the max latency of 99% of queries is in the 100s of milliseconds. To understand why SQL latency is so high, it's important to first look at how long it takes requests to physically travel between the VMs in your cluster.
+    For each node, you'll see that the max latency of 99% of queries is in the 100s of milliseconds. To understand why SQL latency is so high, it's important to first look at how long it takes requests to physically travel between the nodes in your cluster.
 
 2. Click the gear icon in the lower left of the Admin UI and then click **Network Latency**:
 
@@ -628,7 +628,7 @@ With network latency in mind, now use the built-in SQL shell to check the distri
 
 ### Partition geo-specific tables
 
-As mentioned earlier, all of the tables except `promo_codes` are geographically specific and ordered by `city`, and these tables are read and updated very frequently. For these tables, the most effective way to prevent the high latency resulting from cross-region operations is to apply the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) data topology. In practice, you will tell CockroachDB to partition these tables and their secondary indexes by `city`, each partition becoming its own range of 3 replicas. You will then tell CockroachDB to pin each partition (all of its replicas) to the relevant region. This means that reads and writes on these tables will always have access to the relevant replicas in each region and, therefore, will have low, intra-region latencies.
+As mentioned earlier, all of the tables except `promo_codes` are geographically specific, ordered by `city`, and read and updated very frequently. For these tables, the most effective way to prevent the high latency resulting from cross-region operations is to apply the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) data topology. In practice, you will tell CockroachDB to partition these tables and their secondary indexes by `city`, each partition becoming its own range of 3 replicas. You will then tell CockroachDB to pin each partition (all of its replicas) to the relevant region. This means that reads and writes on these tables will always have access to the relevant replicas in each region and, therefore, will have low, intra-region latencies.
 
 1. Back in the SQL shell on one of your client VMs, use [`ALTER TABLE/INDEX ... PARTITION BY`](partition-by.html) statements to define partitions by `city` for the geo-specific tables and their secondary indexes:
 
@@ -747,7 +747,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
 3. Use [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statements to create replication zones that pin each partition to nodes in the relevant region, using the localities specified when nodes were started:
 
     {{site.data.alerts.callout_success}}
-    <span class="version-tag">New in v19.2:</span> The `<table>@*` syntax lets you create zone configurations for all identically name partitions of a table, saving you multiple steps.
+    <span class="version-tag">New in v19.2:</span> The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}

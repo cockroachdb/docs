@@ -7,7 +7,7 @@ toc: true
 To reduce latency for read queries, you can use the follower reads feature, which lets the closest replica serve the read request at the expense of only not guaranteeing that data is up to date.
 
 {{site.data.alerts.callout_info}}
-The follower reads feature is an [enterprise-only](enterprise-licensing.html) feature. For insight into how to use this feature get low latency, historical reads in multi-region deployments, see the [Follower Reads](topology-follower-reads.html) topology pattern.
+The follower reads feature is an [enterprise-only](enterprise-licensing.html) feature. For insight into how to use this feature to get low latency, historical reads in multi-region deployments, see the [Follower Reads](topology-follower-reads.html) topology pattern.
 {{site.data.alerts.end}}
 
 ## What are Follower reads?
