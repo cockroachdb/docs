@@ -89,32 +89,84 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     This creates distinct ranges for each partition of the secondary index.
 
-4. For each partition of the table, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
+4. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
+
+    {{site.data.alerts.callout_success}}
+    <span class="version-tag">New in v19.2:</span> The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION la OF TABLE users
+    > ALTER PARTITION la OF INDEX users@*
         CONFIGURE ZONE USING constraints = '[+region=us-west]';
-      ALTER PARTITION chicago OF TABLE users
+      ALTER PARTITION chicago OF INDEX users@*
         CONFIGURE ZONE USING constraints = '[+region=us-central]';
-      ALTER PARTITION ny OF TABLE users
+      ALTER PARTITION ny OF INDEX users@*
         CONFIGURE ZONE USING constraints = '[+region=us-east]';
       ~~~
 
-5. For each partition of the secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
+5. <span class="version-tag">New in v19.2:</span> To confirm that partitions are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html) or [`SHOW PARTITIONS`](show-partitions.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER PARTITION la OF INDEX users_last_name_index
-        CONFIGURE ZONE USING constraints = '[+region=us-west]';
-      ALTER PARTITION chicago OF INDEX users_last_name_index
-        CONFIGURE ZONE USING constraints = '[+region=us-central]';
-      ALTER PARTITION ny OF INDEX users_last_name_index
-        CONFIGURE ZONE USING constraints = '[+region=us-east]';
+    > SHOW CREATE TABLE users;
+    ~~~
+
+    ~~~
+      table_name |                                          create_statement
+    +------------+----------------------------------------------------------------------------------------------------+
+      users      | CREATE TABLE users (
+                 |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                 |     city STRING NOT NULL,
+                 |     first_name STRING NOT NULL,
+                 |     last_name STRING NOT NULL,
+                 |     address STRING NOT NULL,
+                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+                 |     INDEX users_last_name_index (city ASC, last_name ASC) PARTITION BY LIST (city) (
+                 |         PARTITION la VALUES IN (('los angeles')),
+                 |         PARTITION chicago VALUES IN (('chicago')),
+                 |         PARTITION ny VALUES IN (('new york'))
+                 |     ),
+                 |     FAMILY "primary" (id, city, first_name, last_name, address)
+                 | ) PARTITION BY LIST (city) (
+                 |     PARTITION la VALUES IN (('los angeles')),
+                 |     PARTITION chicago VALUES IN (('chicago')),
+                 |     PARTITION ny VALUES IN (('new york'))
+                 | );
+                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-central]';
+                 | ALTER PARTITION la OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-west]';
+                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-east]';
+                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@users_last_name_index CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-central]';
+                 | ALTER PARTITION la OF INDEX defaultdb.public.users@users_last_name_index CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-west]';
+                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@users_last_name_index CONFIGURE ZONE USING
+                 |     constraints = '[+region=us-east]'
+    (1 row)
+    ~~~    
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW PARTITIONS FROM TABLE users;
+    ~~~
+
+    ~~~
+      database_name | table_name | partition_name | parent_partition | column_names |         index_name          | partition_value |              zone_config
+    +---------------+------------+----------------+------------------+--------------+-----------------------------+-----------------+---------------------------------------+
+      defaultdb     | users      | la             | NULL             | city         | users@primary               | ('los angeles') | constraints = '[+region=us-west]'
+      defaultdb     | users      | chicago        | NULL             | city         | users@primary               | ('chicago')     | constraints = '[+region=us-central]'
+      defaultdb     | users      | ny             | NULL             | city         | users@primary               | ('new york')    | constraints = '[+region=us-east]'
+      defaultdb     | users      | la             | NULL             | city         | users@users_last_name_index | ('los angeles') | constraints = '[+region=us-west]'
+      defaultdb     | users      | chicago        | NULL             | city         | users@users_last_name_index | ('chicago')     | constraints = '[+region=us-central]'
+      defaultdb     | users      | ny             | NULL             | city         | users@users_last_name_index | ('new york')    | constraints = '[+region=us-east]'
+    (6 rows)
     ~~~
 
 {{site.data.alerts.callout_success}}
-As you scale and add more cities, you can repeat steps 2 and 3 with the new complete list of cities to re-partition the table and its secondary indexes, and then repeat steps 4 and 5 to create replication zones for the new partitions.
+As you scale and add more cities, you can repeat steps 2 and 3 with the new complete list of cities to re-partition the table and its secondary indexes, and then repeat step 4 to create replication zones for the new partitions.
 {{site.data.alerts.end}}
 
 ## Characteristics
@@ -163,7 +215,7 @@ However, if an entire region fails, the partitions in that region become unavail
 
 ## Tutorial
 
-For a step-by-step demonstration of how this pattern gets you low-latency reads and writes in a broadly distributed cluster, see the [Geo-Partitioning tutorial](demo-geo-partitioning.html).  
+For a step-by-step demonstration of how this pattern gets you low-latency reads and writes in a broadly distributed cluster, see the [Low Latency Multi-Region Deployment](demo-low-latency-multi-region-deployment.html) tutorial.  
 
 ## See also
 

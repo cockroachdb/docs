@@ -534,9 +534,9 @@
         ]
       },
       {
-        "title": "Geo-Partitioning",
+        "title": "Low Latency Multi-Region Deployment",
         "urls": [
-          "/${VERSION}/demo-geo-partitioning.html"
+          "/${VERSION}/demo-low-latency-multi-region-deployment.html"
         ]
       },
       {

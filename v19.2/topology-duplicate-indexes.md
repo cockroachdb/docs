@@ -84,6 +84,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     ~~~ sql
     > ALTER INDEX postal_codes@idx_central
         CONFIGURE ZONE USING
+          num_replicas = 3,
           constraints = '{"+region=us-central":1}',
           lease_preferences = '[[+region=us-central]]';
     ~~~
@@ -92,8 +93,42 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     ~~~ sql
     > ALTER INDEX postal_codes@idx_east
         CONFIGURE ZONE USING
+          num_replicas = 3,
           constraints = '{"+region=us-east":1}',
           lease_preferences = '[[+region=us-east]]';
+    ~~~
+
+5. <span class="version-tag">New in v19.2:</span> To confirm that replication zones are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CREATE TABLE postal_codes;
+    ~~~
+
+    ~~~
+       table_name  |                              create_statement
+    +--------------+----------------------------------------------------------------------------+
+      postal_codes | CREATE TABLE postal_codes (
+                   |     id INT8 NOT NULL,
+                   |     code STRING NULL,
+                   |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                   |     INDEX idx_central (id ASC) STORING (code),
+                   |     INDEX idx_east (id ASC) STORING (code),
+                   |     FAMILY "primary" (id, code)
+                   | );
+                   | ALTER TABLE defaultdb.public.postal_codes CONFIGURE ZONE USING
+                   |     num_replicas = 3,
+                   |     constraints = '{+region=us-west: 1}',
+                   |     lease_preferences = '[[+region=us-west]]';
+                   | ALTER INDEX defaultdb.public.postal_codes@idx_central CONFIGURE ZONE USING
+                   |     num_replicas = 3,
+                   |     constraints = '{+region=us-central: 1}',
+                   |     lease_preferences = '[[+region=us-central]]';
+                   | ALTER INDEX defaultdb.public.postal_codes@idx_east CONFIGURE ZONE USING
+                   |     num_replicas = 3,
+                   |     constraints = '{+region=us-east: 1}',
+                   |     lease_preferences = '[[+region=us-east]]'
+    (1 row)
     ~~~
 
 ## Characteristics
@@ -144,6 +179,10 @@ Because this pattern balances the replicas for the table and its secondary index
 
 - If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
 - If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern. Both patterns avoid extra secondary indexes, which increase data replication and, therefore, higher throughput and less storage.
+
+## Tutorial
+
+For a step-by-step demonstration of how this pattern gets you low-latency reads in a broadly distributed cluster, see the [Low Latency Multi-Region Deployment](demo-low-latency-multi-region-deployment.html) tutorial.  
 
 ## See also
 
