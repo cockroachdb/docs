@@ -18,7 +18,7 @@ To provide consistency, CockroachDB implements full support for ACID transaction
 
 For code samples of using transactions in CockroachDB, see our documentation on [transactions](../transactions.html#sql-statements).
 
-Because CockroachDB enables transactions that can span your entire cluster (including cross-range and cross-table transactions), it optimizes correctness through a two-phase commit process.
+Because CockroachDB enables transactions that can span your entire cluster (including cross-range and cross-table transactions), it achieves correctness using a distributed, atomic commit protocol called [Parallel Commits](#parallel-commits).
 
 ### Writes and reads (phase 1)
 
@@ -26,9 +26,9 @@ Because CockroachDB enables transactions that can span your entire cluster (incl
 
 When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates two things that help it mediate a distributed transaction:
 
-- A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `COMMITTED`, or `ABORTED`).
-
 - **Write intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the transaction record stored on the cluster.
+
+- A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
 As write intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing write intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
 
@@ -42,13 +42,18 @@ If the transaction has not been aborted, the transaction layer begins executing 
 
 CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it restarts the transaction.
 
-If the transaction passes these checks, it's moved to `COMMITTED` and responds with the transaction's success to the client. At this point, the client is free to begin sending more requests to the cluster.
+In the common case, it sets the transaction record's state to `STAGING`, and checks the transaction's pending write intents to see if they have succeeded (i.e., been replicated across the cluster).
+
+If the transaction passes these checks, CockroachDB responds with the transaction's success to the client, and moves on to the cleanup phase. At this point, the transaction is committed, and the client is free to begin sending more requests to the cluster.
+
+For a more detailed walkthrough of the commit protocol, see [Parallel Commits](#parallel-commits).
 
 ### Cleanup (asynchronous phase 3)
 
-After the transaction has been resolved, all of the write intents should resolved. To do this, the coordinating node––which kept a track of all of the keys it wrote––reaches out to the values and either:
+After the transaction has been committed, it should be marked as such, and all of the write intents should be resolved. To do this, the coordinating node––which kept a track of all of the keys it wrote––reaches out and:
 
-- Resolves their write intents to MVCC values by removing the element that points it to the transaction record.
+- Moves the state of the transaction record from `STAGING` to `COMMITTED`.
+- Resolves the transaction's write intents to MVCC values by removing the element that points it to the transaction record.
 - Deletes the write intents.
 
 This is simply an optimization, though. If operations in the future encounter write intents, they always check their transaction records––any operation can resolve or remove write intents by checking the transaction record's status.
@@ -124,6 +129,7 @@ Given this mechanism, the transaction record uses the following states:
 
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
 - `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
+- `STAGING`: Used to enable the [Parallel Commits](#parallel-commits) feature.  Depending on the state of the write intents referenced by this record, the transaction may or may not be in a committed state.
 - `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
 - _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the transaction liveness threshold, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
 
@@ -142,6 +148,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `COMMITTED`: The operation reads the write intent and converts it to an MVCC value by removing the write intent's pointer to the transaction record.
 - `ABORTED`: The write intent is ignored and deleted.
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
+- `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction’s record. If the coordinator is still heartbeating the record, the operation should wait.  For more information, see [Parallel Commits](#parallel-commits).
 - _Record does not exist_: If the write intent was created within the transaction liveness threshold, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
 
 ### Isolation levels
@@ -210,17 +217,13 @@ Transactional writes are pipelined when being replicated and when being written 
 ~~~ sql
 -- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
 > BEGIN;
-  SAVEPOINT cockroach_restart;
-  INSERT into kv (key, value) VALUES ('apple', 'red');
-  INSERT into kv (key, value) VALUES ('banana', 'yellow');
-  INSERT into kv (key, value) VALUES ('orange', 'orange');
-  RELEASE SAVEPOINT cockroach_restart;
-  COMMIT;
+INSERT into kv (key, value) VALUES ('apple', 'red');
+INSERT into kv (key, value) VALUES ('banana', 'yellow');
+INSERT into kv (key, value) VALUES ('orange', 'orange');
+COMMIT;
 ~~~
 
-In versions prior to 2.1, for each `INSERT` statement above, the transaction gateway node would have to wait for write intents to propagate to each leaseholder, resulting in higher cumulative latency.
-
-In versions 2.1 and later, write intents are propagated to leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
+With transaction pipelining, write intents are replicated from leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
 
 At a high level, transaction pipelining works as follows:
 
@@ -232,7 +235,75 @@ At a high level, transaction pipelining works as follows:
 
 3. When attempting to commit, the transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers. When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
 
-In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write, which was the prior behavior. This changes the cost of multiple writes from `O(n)` in the number of SQL DML statements to `O(1)`.
+In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write. This means that the cost of multiple writes is not `O(n)` in the number of SQL DML statements; instead, it's `O(1)`.
+
+### Parallel Commits
+
+<span class="version-tag">New in v19.2</span>: The *Parallel Commits* feature introduces a new, optimized atomic commit protocol that cuts the commit latency of a transaction in half, from two rounds of consensus down to one. Combined with [Transaction pipelining](#transaction-pipelining), this brings the latency incurred by common OLTP transactions to near the theoretical minimum: the sum of all read latencies plus one round of consensus latency.
+
+Under the new atomic commit protocol, the transaction coordinator can return to the client eagerly when it knows that the writes in the transaction have succeeded. Once this occurs, the transaction coordinator can sets the transaction record's state to `COMMITTED` and resolve the transaction's write intents asynchronously.
+
+The transaction coordinator is able to do this while maintaining correctness guarantees because it populates the transaction record with enough information (via a new `STAGING` state, and an array of in-flight writes) for other transactions to determine whether all writes in the transaction are present, and thus prove whether or not the transaction is committed.
+
+For an example showing how the Parallel Commits feature works in more detail, see [Parallel Commits - step by step](#parallel-commits-step-by-step).
+
+{{site.data.alerts.callout_info}}
+The latency until intents are resolved is unchanged by the introduction of Parallel Commits: two rounds of consensus are still required to resolve intents. This means that [contended workloads](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) are expected to profit less from this feature.
+{{site.data.alerts.end}}
+
+#### Parallel Commits - step by step
+
+This section contains a step by step example of a transaction that writes its data using the Parallel Commits atomic commit protocol and does not encounter any errors or conflicts.
+
+##### Step 1
+
+The client starts the transaction.  A transaction coordinator is created to manage the state of that transaction.
+
+![parallel-commits-00.png](../../images/{{page.version.version}}/parallel-commits-00.png "Parallel Commits Diagram #1")
+
+##### Step 2
+
+The client issues a write to the "Apple" key.  The transaction coordinator begins the process of laying down a write intent on the key where the data will be written. The write intent has a timestamp and a pointer to an as-yet nonexistent transaction record.  Additionally, each write intent in the transaction is assigned a unique sequence number which is used to uniquely identify it.
+
+The coordinator avoids creating the record for as long as possible in the transaction's lifecycle as an optimization.  The fact that the transaction record does not yet exist is denoted in the diagram by its dotted lines.
+
+{{site.data.alerts.callout_info}}
+The coordinator does not need to wait for write intents to replicate from leaseholders before moving on to the next statement from the client, since that is handled in parallel by [Transaction Pipelining](#transaction-pipelining).
+{{site.data.alerts.end}}
+
+![parallel-commits-01.png](../../images/{{page.version.version}}/parallel-commits-01.png "Parallel Commits Diagram #2")
+
+##### Step 3
+
+The client issues a write to the "Berry" key.  The transaction coordinator lays down a write intent on the key where the data will be written.  This write intent has a pointer to the same transaction record as the intent created in [Step 2](#step-2), since these write intents are part of the same transaction.
+
+As before, the coordinator does not need to wait for write intents to replicate from leaseholders before moving on to the next statement from the client.
+
+![parallel-commits-02.png](../../images/{{page.version.version}}/parallel-commits-02.png "Parallel Commits Diagram #3")
+
+##### Step 4
+
+The client issues a request to commit the transaction's writes. The transaction coordinator creates the transaction record and immediately sets the record's state to `STAGING`, and records the keys of each write that the transaction has in flight.
+
+It does this without waiting to see whether the writes from Steps [2](#step-2) and [3](#step-3) have succeeded.
+
+![parallel-commits-03.png](../../images/{{page.version.version}}/parallel-commits-03.png "Parallel Commits Diagram #4")
+
+##### Step 5
+
+The transaction coordinator, having received the client's `COMMIT` request, waits for the pending writes to succeed (i.e., be replicated across the cluster). Once all of the pending writes have succeeded, the coordinator returns a message to the client, letting it know that its transaction has committed successfully.
+
+![parallel-commits-04.png](../../images/{{page.version.version}}/parallel-commits-04.png "Parallel Commits Diagram #4")
+
+The transaction is now considered atomically committed, even though the state of its transaction record is still `STAGING`. The reason this is still considered an atomic commit condition is that a transaction is considered committed if it is one of the following logically equivalent states:
+
+1. The transaction record's state is `STAGING`, and its list of pending writes have all succeeded (i.e., the `InFlightWrites` have achieved consensus across the cluster). Any observer of this transaction can verify that its writes have replicated. Transactions in this state are *implicitly committed*.
+
+2. The transaction record's state is `COMMITTED`. Transactions in this state are *explicitly committed*.
+
+Despite their logical equivalence, the transaction coordinator now works as quickly as possible to move the transaction record from the `STAGING` to the `COMMITTED` state so that other transactions do not encounter a possibly conflicting transaction in the `STAGING` state and then have to do the work of verifying that the staging transaction's list of pending writes has succeeded. Doing that verification (also known as the "transaction status recovery process") would be slow.
+
+Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the final result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
 
 ## Technical interactions with other layers
 
