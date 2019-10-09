@@ -79,7 +79,7 @@ This `BatchRequest` is also what's used to send requests between nodes using gRP
 
 ### DistSender
 
-The gateway/coordinating node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` is then responsible for breaking up `BatchRequests` and routing a new set of `BatchRequests` to the nodes it identifies contain the data using its `meta2` ranges.  It will use the cache to send the request to the leaseholder, but it's also prepared to try the other replicas, in order of "proximity." The replica that the cache says is the leaseholder is simply moved to the front of the list of replicas to be tried and then an RPC is sent to all of them, in order.
+The gateway/coordinating node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` is then responsible for breaking up `BatchRequests` and routing a new set of `BatchRequests` to the nodes it identifies contain the data using its `meta2` ranges. It will use the cache to send the request to the leaseholder, but it's also prepared to try the other replicas, in order of "proximity." The replica that the cache says is the leaseholder is simply moved to the front of the list of replicas to be tried and then an RPC is sent to all of them, in order.
 
 Requests received by a non-leaseholder fail with an error pointing at the replica's last known leaseholder. These requests are retried transparently with the updated lease by the gateway node and never reach the client.
 

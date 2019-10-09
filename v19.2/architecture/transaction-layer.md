@@ -129,7 +129,7 @@ Given this mechanism, the transaction record uses the following states:
 
 - `PENDING`: Indicates that the write intent's transaction is still in progress.
 - `COMMITTED`: Once a transaction has completed, this status indicates that write intents can be treated as committed values.
-- `STAGING`: Used to enable the [Parallel Commits](#parallel-commits) feature.  Depending on the state of the write intents referenced by this record, the transaction may or may not be in a committed state.
+- `STAGING`: Used to enable the [Parallel Commits](#parallel-commits) feature. Depending on the state of the write intents referenced by this record, the transaction may or may not be in a committed state.
 - `ABORTED`: Indicates that the transaction was aborted and its values should be discarded.
 - _Record does not exist_: If a transaction encounters a write intent whose transaction record doesn't exist, it uses the write intent's timestamp to determine how to proceed. If the write intent's timestamp is within the transaction liveness threshold, the write intent's transaction is treated as if it is `PENDING`, otherwise it's treated as if the transaction is `ABORTED`.
 
@@ -148,7 +148,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `COMMITTED`: The operation reads the write intent and converts it to an MVCC value by removing the write intent's pointer to the transaction record.
 - `ABORTED`: The write intent is ignored and deleted.
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
-- `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction’s record. If the coordinator is still heartbeating the record, the operation should wait.  For more information, see [Parallel Commits](#parallel-commits).
+- `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction’s record. If the coordinator is still heartbeating the record, the operation should wait. For more information, see [Parallel Commits](#parallel-commits).
 - _Record does not exist_: If the write intent was created within the transaction liveness threshold, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
 
 ### Isolation levels
@@ -257,15 +257,15 @@ This section contains a step by step example of a transaction that writes its da
 
 ##### Step 1
 
-The client starts the transaction.  A transaction coordinator is created to manage the state of that transaction.
+The client starts the transaction. A transaction coordinator is created to manage the state of that transaction.
 
 ![parallel-commits-00.png](../../images/{{page.version.version}}/parallel-commits-00.png "Parallel Commits Diagram #1")
 
 ##### Step 2
 
-The client issues a write to the "Apple" key.  The transaction coordinator begins the process of laying down a write intent on the key where the data will be written. The write intent has a timestamp and a pointer to an as-yet nonexistent transaction record.  Additionally, each write intent in the transaction is assigned a unique sequence number which is used to uniquely identify it.
+The client issues a write to the "Apple" key. The transaction coordinator begins the process of laying down a write intent on the key where the data will be written. The write intent has a timestamp and a pointer to an as-yet nonexistent transaction record. Additionally, each write intent in the transaction is assigned a unique sequence number which is used to uniquely identify it.
 
-The coordinator avoids creating the record for as long as possible in the transaction's lifecycle as an optimization.  The fact that the transaction record does not yet exist is denoted in the diagram by its dotted lines.
+The coordinator avoids creating the record for as long as possible in the transaction's lifecycle as an optimization. The fact that the transaction record does not yet exist is denoted in the diagram by its dotted lines.
 
 {{site.data.alerts.callout_info}}
 The coordinator does not need to wait for write intents to replicate from leaseholders before moving on to the next statement from the client, since that is handled in parallel by [Transaction Pipelining](#transaction-pipelining).
@@ -275,7 +275,7 @@ The coordinator does not need to wait for write intents to replicate from leaseh
 
 ##### Step 3
 
-The client issues a write to the "Berry" key.  The transaction coordinator lays down a write intent on the key where the data will be written.  This write intent has a pointer to the same transaction record as the intent created in [Step 2](#step-2), since these write intents are part of the same transaction.
+The client issues a write to the "Berry" key. The transaction coordinator lays down a write intent on the key where the data will be written. This write intent has a pointer to the same transaction record as the intent created in [Step 2](#step-2), since these write intents are part of the same transaction.
 
 As before, the coordinator does not need to wait for write intents to replicate from leaseholders before moving on to the next statement from the client.
 
