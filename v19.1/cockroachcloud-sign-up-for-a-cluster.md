@@ -1,5 +1,5 @@
 ---
-title: Sign Up for a Managed Cluster
+title: Sign Up for a CockroachCloud Cluster
 summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
 build_for: [managed]

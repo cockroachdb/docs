@@ -64,7 +64,7 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](managed-sign-up-for-a-cluster.
+It's best to set the default database directly in your [connection string](cockroachcloud-connect-to-your-cluster.html#step-3-generate-the-connection-string).
 
 {% include copy-clipboard.html %}
 ~~~ sql
