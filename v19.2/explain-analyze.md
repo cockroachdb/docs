@@ -10,6 +10,12 @@ The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** 
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
 
+## Aliases
+
+In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
+
+- `EXPLAIN ANALYSE`
+
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
