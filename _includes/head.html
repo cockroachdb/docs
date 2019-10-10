@@ -10,10 +10,10 @@
 <meta name="robots" content="nocache">
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
-<!-- TODO: All managed pages are excluded from search indexes for now. Eventually,
-for managed-only pages, we'll need to NOT do this replacement. -->
-{% if site.managed %}
-<link rel="canonical" href="{{ page.canonical | absolute_url | replace: "/managed", "" }}">
+<!-- TODO: All CockroachCloud pages are excluded from search indexes for now. Eventually,
+for Cloud-only pages, we'll need to NOT do this replacement. -->
+{% if site.cockroachcloud %}
+<link rel="canonical" href="{{ page.canonical | absolute_url | replace: "/cockroachcloud", "" }}">
 {% else %}
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 {% endif %}

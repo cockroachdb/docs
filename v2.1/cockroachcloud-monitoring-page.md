@@ -17,10 +17,10 @@ To access the Admin UI:
 
     You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 
-2. Log in with your [SQL username](managed-user-management.html) and password.
+2. Log in with your [SQL username](cockroachcloud-user-management.html) and password.
 
 {{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](managed-user-management.html).
+For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](cockroachcloud-user-management.html).
 {{site.data.alerts.end}}
 
 ## Explore the Admin UI

@@ -16,4 +16,4 @@ For each network, the following displays:
 - If the network can connect to the cluster's **UI**, **SQL** client, or both (with ports for each listed in the table heading)
 - A list of **Actions** (**Edit** or **Delete**) you can take on the network
 
-From the **Networking** page, you can add a network to your IP whitelist by clicking **Add Network** in the top right corner. For more information, see [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html#authorize-your-network).
+From the **Networking** page, you can add a network to your IP whitelist by clicking **Add Network** in the top right corner. For more information, see [Connect to Your Managed Cluster](cockroachcloud-connect-to-your-cluster.html#authorize-your-network).

@@ -46,7 +46,7 @@ Once your Managed CockroachDB cluster is available, you'll receive an email prom
 3. Enter and confirm your password.
 4. Click **Submit**.
 
-    The [**Clusters**](managed-clusters-page.html) page displays.
+    The [**Clusters**](cockroachcloud-clusters-page.html) page displays.
 
 ## Sign in
 

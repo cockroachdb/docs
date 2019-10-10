@@ -1,6 +1,6 @@
 module JekyllVersions
   class Config
-    attr_reader :versions, :release_info, :managed
+    attr_reader :versions, :release_info, :cockroachcloud
 
     def initialize(config)
       ['versions', 'release_info'].each do |key|
@@ -12,7 +12,7 @@ module JekyllVersions
       end
       @versions = config['versions']
       @release_info = config['release_info']
-      @managed = !!config['managed']
+      @cockroachcloud = !!config['cockroachcloud']
     end
 
     def stable_version

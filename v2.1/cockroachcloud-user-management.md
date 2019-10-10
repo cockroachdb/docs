@@ -9,7 +9,7 @@ An `admin` SQL user has full [privileges](authorization.html#assign-privileges) 
 
 ## Before you begin
 
-Make sure you have already [connected to the cluster](managed-connect-to-your-cluster.html) with your `admin` SQL user.
+Make sure you have already [connected to the cluster](cockroachcloud-connect-to-your-cluster.html) with your `admin` SQL user.
 
 ## Create a SQL user
 
@@ -20,7 +20,7 @@ To create a SQL user, you can either:
 
 ### Use the Console
 
-Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
+Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -37,7 +37,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
 ### Use the CockroachDB SQL client
 
-Once you have [connected to the cluster's SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster's SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html) statement:
 

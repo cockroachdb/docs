@@ -21,7 +21,7 @@ Managed CockroachDB is a single-tenant offering and resources are not shared bet
 
 ### How do I connect to my cluster?
 
-You can generate a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html).
+You can generate a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your Managed Cluster](cockroachcloud-connect-to-your-cluster.html).
 
 ### What machines do you run your cluster on?
 
