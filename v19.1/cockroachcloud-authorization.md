@@ -38,7 +38,7 @@ Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
 
 3. Enter a **Username**.
 4. Enter and confirm the **Password**.

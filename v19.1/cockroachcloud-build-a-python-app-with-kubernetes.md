@@ -27,7 +27,7 @@ Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
 3. Enter the public IPv4 address of your local workstation in the **Network** field.
 
@@ -52,7 +52,7 @@ Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
 
 3. In the **Username** field, enter `maxroach`.
 4. In the **Password** field, enter `Q7gc8rEdS`.
@@ -66,7 +66,7 @@ Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
 3. From the **User** dropdown, select `maxroach`.
 4. Select a **Region** to connect to.
@@ -171,7 +171,7 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v19.1/managed/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'images/v19.1/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
 
   2. From the **User** dropdown, select `maxroach`.
   3. Select a **Region** to connect to.

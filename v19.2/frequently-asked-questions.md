@@ -158,7 +158,7 @@ Yes. The CockroachCloud offering is currently in Limited Availability and accept
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-For more details, see the [CockroachCloud](../managed/{{ page.version.version }}/) docs.
+For more details, see the [CockroachCloud](../cockroachcloud/{{ page.version.version }}/) docs.
 
 ## Have questions that weren’t answered?
 
