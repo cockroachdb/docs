@@ -18,24 +18,28 @@ Node-level settings are defined by [flags](#flags) passed to the `cockroach star
 
 Start a node to be part of a new multi-node cluster:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start <flags, including --join>
 ~~~
 
 Initialize a new multi-node cluster:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach init <flags>
 ~~~
 
 Add a node to an existing cluster:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start <flags, including --join>
 ~~~
 
 View help:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --help
 ~~~
