@@ -8,7 +8,7 @@ redirect-from: managed-clusters-page.html
 
 The **Clusters** page of the Console provides a high-level view of your clusters.
 
-<img src="{{ 'images/v19.1/managed/all-clusters-page.png' | relative_url }}" alt="All Clusters" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/cockroachcloud/all-clusters-page.png' | relative_url }}" alt="All Clusters" style="border:1px solid #eee;max-width:100%" />
 
 For each cluster, the following details display:
 
@@ -23,7 +23,7 @@ To view and manage a specific cluster, click the name of the cluster. The **Over
 
 On the **Clusters > Access** tab, Console administrators can manage Console access settings for the organization.
 
-<img src="{{ 'images/v19.1/managed/access-tab.png' | relative_url }}" alt="Access tab" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v19.1/cockroachcloud/access-tab.png' | relative_url }}" alt="Access tab" style="border:1px solid #eee;max-width:100%" />
 
 ### Add Console users
 
@@ -33,7 +33,7 @@ To add Console users:
 
     The **Invite Team Members** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/invite-team-members-modal.png' | relative_url }}" alt="Invite team members" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/invite-team-members-modal.png' | relative_url }}" alt="Invite team members" style="border:1px solid #eee;max-width:100%" />
 
 2. Enter the user's **Email**.
 3. To add multiple users, click **Add another** and repeat steps 3 and 4.

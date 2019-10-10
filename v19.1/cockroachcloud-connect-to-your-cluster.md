@@ -21,7 +21,7 @@ Use the Console to authorize networks:
 
     The **Networking** page displays a list of authorized networks (i.e., an IP network whitelist) that can access the cluster.
 
-    <img src="{{ 'images/v19.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
 2. Check if the current network has been authorized. If not, proceed with the following steps.
 
@@ -29,7 +29,7 @@ Use the Console to authorize networks:
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
 4. Enter the public IPv4 address of the machine in the **Network** field.
 
@@ -53,13 +53,13 @@ Use the Console to authorize networks:
 
 1. Navigate to your cluster's **SQL Users** page.
 
-    <img src="{{ 'images/v19.1/managed/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
 
 2. Click the **Add User** button in the top right corner.
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
 
 3. Enter a **Username**.
 4. Enter and confirm the **Password**.
@@ -75,7 +75,7 @@ On the machine from which you want to connect to your cluster:
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v19.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />    
+    <img src="{{ 'images/v19.1/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />    
 
 2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 3. From the **Region** dropdown, select the region closest to where your client or application is running.
@@ -87,7 +87,7 @@ On the machine from which you want to connect to your cluster:
 
     The **Connect** tab is displayed.
 
-    <img src="{{ 'images/v19.1/managed/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
 6. Select a connection option:
 

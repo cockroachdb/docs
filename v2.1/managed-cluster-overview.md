@@ -7,7 +7,7 @@ build_for: [cockroachcloud]
 
 The **Overview** page displays a list of the cluster's nodes.
 
-<img src="{{ 'images/v2.1/managed/cluster-details-page.png' | relative_url }}" alt="Cluster Details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/cockroachcloud/cluster-details-page.png' | relative_url }}" alt="Cluster Details" style="border:1px solid #eee;max-width:100%" />
 
 For each node, the following displays:
 

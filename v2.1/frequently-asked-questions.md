@@ -158,7 +158,7 @@ Yes. The Managed CockroachDB offering is currently in Limited Availability and a
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-For more details, see the [Managed CockroachDB](../managed/v2.1/) docs.
+For more details, see the [Managed CockroachDB](../cockroachcloud/v2.1/) docs.
 
 ## Have questions that weren’t answered?
 
