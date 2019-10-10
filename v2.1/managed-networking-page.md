@@ -8,7 +8,7 @@ build_for: [cockroachcloud]
 
 The **Networking** page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster.
 
-<img src="{{ 'images/v2.1/managed/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/cockroachcloud/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 
 For each network, the following displays:
 

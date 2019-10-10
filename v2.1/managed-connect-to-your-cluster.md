@@ -28,7 +28,7 @@ Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can us
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v2.1/managed/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
 3. Enter the public IP address of the machine in the **Network** field.
 
@@ -58,7 +58,7 @@ On the machine where you want to run your application:
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v2.1/managed/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v2.1/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
 
 3. Select you **User** from the dropdown to log into the cluster.
 
