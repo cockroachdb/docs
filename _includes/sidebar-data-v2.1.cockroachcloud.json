@@ -6,13 +6,13 @@
       {
         "title": "Sign Up for the Service",
         "urls": [
-          "/${VERSION}/managed-sign-up-for-a-cluster.html"
+          "/${VERSION}/cockroachcloud-sign-up-for-a-cluster.html"
         ]
       },
       {
         "title": "Connect to Your Cluster",
         "urls": [
-          "/${VERSION}/managed-connect-to-your-cluster.html"
+          "/${VERSION}/cockroachcloud-connect-to-your-cluster.html"
         ]
       },
       {
@@ -27,31 +27,31 @@
           {
             "title": "Clusters Page",
             "urls": [
-              "/${VERSION}/managed-clusters-page.html"
+              "/${VERSION}/cockroachcloud-clusters-page.html"
             ]
           },
           {
             "title": "Overview Page",
             "urls": [
-              "/${VERSION}/managed-cluster-overview.html"
+              "/${VERSION}/cockroachcloud-cluster-overview.html"
             ]
           },
           {
             "title": "SQL Users Page",
             "urls": [
-              "/${VERSION}/managed-sql-users-page.html"
+              "/${VERSION}/cockroachcloud-sql-users-page.html"
             ]
           },
           {
             "title": "Networking Page",
             "urls": [
-              "/${VERSION}/managed-networking-page.html"
+              "/${VERSION}/cockroachcloud-networking-page.html"
             ]
           },
           {
             "title": "Monitoring Page",
             "urls": [
-              "/${VERSION}/managed-monitoring-page.html"
+              "/${VERSION}/cockroachcloud-monitoring-page.html"
             ]
           }
         ]
@@ -59,7 +59,7 @@
       {
         "title": "FAQs",
         "urls": [
-          "/${VERSION}/managed-frequently-asked-questions.html"
+          "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
         ]
       }
     ]
@@ -112,13 +112,13 @@
       {
         "title": "User Management",
         "urls": [
-          "/${VERSION}/managed-user-management.html"
+          "/${VERSION}/cockroachcloud-user-management.html"
         ]
       },
       {
         "title": "Cluster Management",
         "urls": [
-          "/${VERSION}/managed-cluster-management.html"
+          "/${VERSION}/cockroachcloud-cluster-management.html"
         ]
       }
     ]

@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachdb, cockroachcloud]
 ---
 
-{% unless site.managed %}
+{% unless site.cockroachcloud %}
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements, using the `movr` dataset.
 
@@ -349,7 +349,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
 {% endunless %}
 
-{% if site.managed %}
+{% if site.cockroachcloud %}
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 

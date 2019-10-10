@@ -7,13 +7,13 @@ build_for: [cockroachdb, cockroachcloud]
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{% unless site.managed %}
+{% unless site.cockroachcloud %}
 {{site.data.alerts.callout_success}}
 Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 {% endunless %}
 
-{% if site.managed %}
+{% if site.cockroachcloud %}
 ## Before you begin
 
 Make sure you have already [connected the CockroachDB SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
@@ -370,7 +370,7 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
-{% unless site.managed %}
+{% unless site.cockroachcloud %}
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)

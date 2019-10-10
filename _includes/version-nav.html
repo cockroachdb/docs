@@ -1,8 +1,8 @@
 <div class="version-nav-wrapper">
   <div class="version-nav">
     <a
-      class="version-nav__link version-nav__link--crdb {% unless site.managed %}version-nav__link--active{% endunless %}"
-      href="{% if site.managed %}{{ "/../stable/" | relative_url }}{% else %}{{ "/stable/" | relative_url }}{% endif %}"
+      class="version-nav__link version-nav__link--crdb {% unless site.cockroachcloud %}version-nav__link--active{% endunless %}"
+      href="{% if site.cockroachcloud %}{{ "/../stable/" | relative_url }}{% else %}{{ "/stable/" | relative_url }}{% endif %}"
     >
       <img
         class="version-nav__link-icon version-nav__link-icon--crdb version-nav__link-icon--standard"
@@ -17,8 +17,8 @@
     </a>
 
     <a
-      class="version-nav__link version-nav__link--managed {% if site.managed %}version-nav__link--active{% endif %}"
-      href="{% if site.managed %}{{ "/stable/" | relative_url }}{% else %}{{ "/cockroachcloud/stable/" | relative_url }}{% endif %}"
+      class="version-nav__link version-nav__link--managed {% if site.cockroachcloud %}version-nav__link--active{% endif %}"
+      href="{% if site.cockroachcloud %}{{ "/stable/" | relative_url }}{% else %}{{ "/cockroachcloud/stable/" | relative_url }}{% endif %}"
       data-proofer-ignore
     >
       <img

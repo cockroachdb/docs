@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-Once your Managed CockroachDB cluster is available and you've [set your  SQL username password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
+Once your Managed CockroachDB cluster is available and you've [set your  SQL username password](cockroachcloud-sign-up-for-a-cluster.html#set-your-password) and [signed in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
 
 ## Before you begin
 
@@ -15,15 +15,15 @@ Once your Managed CockroachDB cluster is available and you've [set your  SQL use
 
 2. Make sure you have a SQL user and password to use in your connection string.
 
-    For details on creating additional users, see [User Management](managed-user-management.html).
+    For details on creating additional users, see [User Management](cockroachcloud-user-management.html).
 
 ## Authorize your network
 
 Before you connect to your cluster, you need to authorize your network (i.e., whitelist the public IP address of the machine). Otherwise, connections from this machine will be rejected.
 
-Once you are [logged in](managed-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
+Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
 
-1. Navigate to your cluster's [Networking](managed-networking-page.html) page.
+1. Navigate to your cluster's [Networking](cockroachcloud-networking-page.html) page.
 2. Click the **Add Network** button in the top right corner.
 
     The **Add Network** modal displays.

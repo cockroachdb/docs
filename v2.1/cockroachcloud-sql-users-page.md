@@ -11,4 +11,4 @@ The **SQL Users** page displays a list of SQL users who can access the cluster. 
 
 <img src="{{ 'images/v2.1/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
 
-From the **SQL Users** page, you can add a user by clicking **+ Add User** in the top right corner. For more information, see [User Management](managed-user-management.html).
+From the **SQL Users** page, you can add a user by clicking **+ Add User** in the top right corner. For more information, see [User Management](cockroachcloud-user-management.html).
