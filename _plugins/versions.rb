@@ -1,15 +1,15 @@
 # This plugin manages docs versioning based on the following conventions. Docs
 # for each non-patch release of CockroachDB--that is, each release of
 # CockroachDB that has its own release branch in the cockroachdb/cockroach
-# repository--are expected to be stored in in a top-level directory named after
-# that version. For example, docs for CockroachDB v1.1 are expected to be stored
-# in a directory named `v1.1`. Docs which do not logically belong to one
+# repository--are expected to be stored in a top-level directory named after
+# that version. For example, docs for CockroachDB v19.1 are expected to be stored
+# in a directory named `v19.1`. Docs which do not logically belong to one
 # version, like release notes, are instead stored at the root of the repository.
 #
 # The name mappings under the `version` key in config.yml are used to build
-# additional aliased versions. (At the time of writing, we named a `stable` and
-# `edge` version.) These are implemented as directory symlinks. For example, if
-# `stable: v1.0` is specified, a symlink `stable -> v1.0` will be written to the
+# additional aliased versions (currently a `stable` and `dev` version).
+# These are implemented as directory symlinks. For example, if `stable: v19.1`
+# is specified, a symlink `stable -> v19.1` will be written to the
 # build directory. The `stable` mapping is special and must exist, as
 # `docs/FOO.html` will be automatically redirected to `docs/stable/FOO.html` for
 # every FOO.md in the stable directory. Other name mappings are optional and can
@@ -23,8 +23,8 @@
 #     `release_info` — a hash with information about the latest release
 #     `versions` — a list of versions in which this page exists
 #         This list powers the version switcher. Each entry in the list has a
-#         human-friendly `name`, like "v1.0 (Stable)", a raw `version`, like
-#         "v1.0", and a `url` to the page in that version.
+#         human-friendly `name`, like "v19.1 (Stable)", a raw `version`, like
+#         "v19.1", and a `url` to the page in that version.
 #     `sidebar_data` — the name of the file containing the page's sidebar data
 #         Non-versioned pages use the `STABLE_VERSION`'s sidebar data.
 #     `canonical` — the relative URL of the stable version of the page, if any

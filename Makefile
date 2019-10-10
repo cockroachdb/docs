@@ -42,22 +42,25 @@ extra-config := $(if $(JEKYLLCONFIG),$(comma)$(JEKYLLCONFIG))
 
 jekyll-action := build
 
-.PHONY: standard-build
-standard-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml$(extra-config) $(JEKYLLFLAGS)
+.PHONY: cockroachdb-build
+cockroachdb-build: bootstrap
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
+
+.PHONY: cockroachdb
+cockroachdb: jekyll-action := serve --port 4000
+cockroachdb: bootstrap
+	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
-standard: jekyll-action := serve --port 4000
-standard: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_standard.yml,_config_standard_local.yml$(extra-config) $(JEKYLLFLAGS)
+standard: cockroachdb
 
-.PHONY: managed-build
-managed-build: bootstrap
+.PHONY: cockroachcloud-build
+cockroachcloud-build: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachcloud.yml$(extra-config) $(JEKYLLFLAGS)
 
-.PHONY: managed
-managed: jekyll-action := serve --port 4001
-managed: managed-build
+.PHONY: cockroachcloud
+cockroachcloud: jekyll-action := serve --port 4001
+cockroachcloud: cockroachcloud-build
 
 .PHONY: test
 test: bootstrap
