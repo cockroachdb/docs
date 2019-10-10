@@ -2,7 +2,7 @@
 title: Console Access Management
 summary: Manage your account roles and permissions.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-console-access-management.html
 ---
 

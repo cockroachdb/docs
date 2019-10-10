@@ -2,7 +2,7 @@
 title: Networking Page
 summary: The Networking page displays a list of authorized networks (i.e., an IP address whitelist) that can access the cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 
