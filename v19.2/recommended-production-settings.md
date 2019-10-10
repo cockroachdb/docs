@@ -440,6 +440,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 1.  Make sure the following line is present in both `/etc/pam.d/common-session` and `/etc/pam.d/common-session-noninteractive`:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     session    required   pam_limits.so
     ~~~
@@ -459,6 +460,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 6.  Verify the new limits:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ ulimit -a
     ~~~
@@ -475,6 +477,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
 
 2.  Reload Systemd for the new limit to take effect:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ systemctl daemon-reload
     ~~~
@@ -485,12 +488,14 @@ You should also confirm that the file descriptors limit for the entire Linux sys
 
 1. Check the system-wide limit:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ cat /proc/sys/fs/file-max
     ~~~
 
 2. If necessary, increase the system-wide limit in the `proc` file system:
 
+{% include copy-clipboard.html %}
     ~~~ shell
     $ echo 150000 > /proc/sys/fs/file-max
     ~~~
