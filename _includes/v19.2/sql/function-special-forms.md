@@ -1,6 +1,7 @@
 | Special form                                              | Equivalent to                               |
 |-----------------------------------------------------------|---------------------------------------------|
 | `CURRENT_CATALOG`                                         | `current_catalog()`                         |
+| `COLLATION FOR`                                           | `pg_collation_for()`                        |
 | `CURRENT_DATE`                                            | `current_date()`                            |
 | `CURRENT_ROLE`                                            | `current_user()`                            |
 | `CURRENT_SCHEMA`                                          | `current_schema()`                          |
