@@ -2,7 +2,7 @@
 title: SQL Audit Logging
 summary: Learn about the SQL Audit Logging feature for CockroachCloud clusters.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-sql-audit-logging.html
 ---
 

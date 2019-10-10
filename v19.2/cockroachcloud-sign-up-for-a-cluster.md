@@ -2,7 +2,7 @@
 title: Sign Up for a CockroachCloud Cluster
 summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-sign-up-for-a-cluster.html
 ---
 

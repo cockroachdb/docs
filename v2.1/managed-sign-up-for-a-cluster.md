@@ -2,7 +2,7 @@
 title: Sign Up for a Managed Cluster
 summary: Learn how to sign up for a Managed CockroachDB cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 The Managed CockroachDB offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:

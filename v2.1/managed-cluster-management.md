@@ -2,7 +2,7 @@
 title: Cluster Management
 summary: Manage your cluster's schema, data, and users.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 While you manage your [schema](learn-cockroachdb-sql.html), [data](migration-overview.html), and [users](managed-user-management.html) yourself, for any of the following cluster management tasks, please reach out to Cockroach Labs at [support.cockroachlabs.com](https://support.cockroachlabs.com) and a member of our team will assist you:

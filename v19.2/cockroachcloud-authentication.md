@@ -2,7 +2,7 @@
 title: Authentication
 summary: Learn about the authentication features for CockroachCloud clusters.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-authentication.html
 ---
 

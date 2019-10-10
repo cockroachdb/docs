@@ -2,7 +2,7 @@
 title: Connect to Your Managed Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 Once your Managed CockroachDB cluster is available and you've [set your  SQL username password](managed-sign-up-for-a-cluster.html#set-your-password) and [signed in](managed-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.

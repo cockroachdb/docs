@@ -2,7 +2,7 @@
 title: Overview Page
 summary: The Overview page displays a list of the cluster's nodes.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-cluster-overview.html
 ---
 

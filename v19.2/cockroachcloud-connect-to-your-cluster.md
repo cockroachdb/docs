@@ -2,7 +2,7 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-connect-to-your-cluster.html
 ---
 

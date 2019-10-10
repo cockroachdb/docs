@@ -2,7 +2,7 @@
 title: Build a Python app with Kubernetes on CockroachCloud
 summary: Learn how to build a Python application with CockroachCloud and orchestrate it using Kubernetes.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 redirect-from: managed-build-a-python-app-with-kubernetes.html
 ---
 
