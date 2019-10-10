@@ -7,7 +7,7 @@ module SidebarHTMLTest
       @site = site
 
       Dir[File.join(site.config['includes_dir'], 'sidebar-data-v*.json')].each do |f|
-        next unless !!site.config['managed'] == f.include?('managed')
+        next unless !!site.config['cockroachcloud'] == f.include?('cockroachcloud')
         partial = site.liquid_renderer.file(f).parse(File.read(f))
         json = partial.render!(site.site_payload, {registers: {site: site}})
         version = f.match(/sidebar-data-(v\d+\.\d+)/)[1]

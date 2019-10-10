@@ -38,7 +38,7 @@ module JekyllVersions
     def sidebar_data
       s = "sidebar-data-"
       s << demand_version
-      s << ".managed" if @config.managed
+      s << ".cockroachcloud" if @config.cockroachcloud
       s << ".json"
     end
 

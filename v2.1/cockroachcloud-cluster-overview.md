@@ -13,4 +13,4 @@ For each node, the following displays:
 
 - The node's **Name**, nested under its region
 
-From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your Managed Cluster](managed-connect-to-your-cluster.html).
+From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your Managed Cluster](cockroachcloud-connect-to-your-cluster.html).
