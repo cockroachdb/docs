@@ -467,16 +467,15 @@ $ cockroach sql \
 ~~~
 
 ~~~
-                                  start_key                                  |                                  end_key                                   | range_id | replicas | lease_holder
-+----------------------------------------------------------------------------+----------------------------------------------------------------------------+----------+----------+--------------+
-  NULL                                                                       | /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd                |       34 | {1,2,3}  |            2
-  /"boston"/"\xfe\xdd?\xbb4\xabOV\x84\x00M\x89#-a6"/PrefixEnd                | /"los angeles"/"<\x12\xe4\xce&\xfdH\u070f?)\xc7\xf92\a\x03"                |       35 | {1,2,3}  |            2
-  /"los angeles"/"<\x12\xe4\xce&\xfdH\u070f?)\xc7\xf92\a\x03"                | /"new york"/"0\xa6p\x96\tmOԗ#\xaa\xb7\x90\x12\xe67"/PrefixEnd              |       39 | {1,2,3}  |            2
-  /"new york"/"0\xa6p\x96\tmOԗ#\xaa\xb7\x90\x12\xe67"/PrefixEnd              | /"san francisco"/"(m*OM\x15J\xbc\xb6n\xaass\x10\xc4\xff"/PrefixEnd         |       37 | {1,2,3}  |            1
-  /"san francisco"/"(m*OM\x15J\xbc\xb6n\xaass\x10\xc4\xff"/PrefixEnd         | /"seattle"/"\x17\xd24\a\xb5\xbdN\x9d\xa1\xd2Dθ^\xe1M"/PrefixEnd            |       40 | {1,2,3}  |            2
-  /"seattle"/"\x17\xd24\a\xb5\xbdN\x9d\xa1\xd2Dθ^\xe1M"/PrefixEnd            | /"washington dc"/"\x135\xe5e\x15\xefNۊ\x10)\xba\x19\x04\xff\xdc"/PrefixEnd |       44 | {1,2,3}  |            2
-  /"washington dc"/"\x135\xe5e\x15\xefNۊ\x10)\xba\x19\x04\xff\xdc"/PrefixEnd | NULL                                                                       |       46 | {1,2,3}  |            2
-(7 rows)
+                           start_key                           |                           end_key                            | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++--------------------------------------------------------------+--------------------------------------------------------------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL                                                         | /"boston"/"\x00\x00\a\xef\xfa\x0fJn\xa0\x89\xcet\xaa\x8d\"v" |       33 |             0 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"boston"/"\x00\x00\a\xef\xfa\x0fJn\xa0\x89\xcet\xaa\x8d\"v" | /"boston"/"\x99\xf4ff\xbb1K\xf9\xab\x92\x83\x003(o\x8a"      |       41 |     21.520739 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"boston"/"\x99\xf4ff\xbb1K\xf9\xab\x92\x83\x003(o\x8a"      | /"los angeles"/"3\ncK{?Oħ\x9e\xf0k\x96\xba\xad\xf2"          |       37 |     21.850083 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"los angeles"/"3\ncK{?Oħ\x9e\xf0k\x96\xba\xad\xf2"          | /"new york"/"\xb3\xb4:#\x1f\x8aDݘ\xc9SC\a5*\xd4"             |       39 |     55.677376 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"new york"/"\xb3\xb4:#\x1f\x8aDݘ\xc9SC\a5*\xd4"             | /"seattle"/"x\x15\xaa\x84\xc73Im\xa2\xbf\n\x81$\xcf\xf6\xda" |       55 |     66.072353 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /"seattle"/"x\x15\xaa\x84\xc73Im\xa2\xbf\n\x81$\xcf\xf6\xda" | NULL                                                         |       38 |     57.403476 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -489,18 +488,18 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  start_key | end_key | range_id | replicas | lease_holder
-+-----------+---------+----------+----------+--------------+
-  NULL      | NULL    |       49 | {1,2,3}  |            2
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL      | NULL    |       26 |      0.267026 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
 (1 row)
 ~~~
 
 The results above tell us:
 
-- The `rides` table is split across 7 ranges, with six leaseholders on node 2 and one leaseholder on node 1.
-- The `users` table is just a single range with its leaseholder on node 2.
+- The `rides` table is split across 6 ranges, with leaseholders on nodes 2 and 3.
+- The `users` table is stored in just a single range with its leaseholder on node 3.
 
-Now, given the `WHERE` condition of the join, the full table scan of `rides`, across all of its 7 ranges, is particularly wasteful. To speed up the query, you can create a secondary index on the `WHERE` condition (`rides.start_time`) storing the join key (`rides.rider_id`):
+Now, given the `WHERE` condition of the join, the full table scan of `rides`, across all of its 6 ranges, is particularly wasteful. To speed up the query, you can create a secondary index on the `WHERE` condition (`rides.start_time`) storing the join key (`rides.rider_id`):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -510,10 +509,6 @@ $ cockroach sql \
 --database=movr \
 --execute="CREATE INDEX ON rides (start_time) STORING (rider_id);"
 ~~~
-
-{{site.data.alerts.callout_info}}
-The `rides` table contains 1 million rows, so adding this index will take a few minutes.
-{{site.data.alerts.end}}
 
 Adding the secondary index reduced the query time from 1573ms to 61.56ms:
 
@@ -588,14 +583,16 @@ $ cockroach sql \
 ~~~
 
 ~~~
-                                         start_key                                         |                                         end_key                                          | range_id | replicas | lease_holder
-+------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+----------+----------+--------------+
-  NULL                                                                                     | /2018-07-11T01:37:36.138325Z/"new york"/"\xd4\xe3\u007f\xbc2\xc0Mv\x81B\xd6\xc7٘\x9f\xe6" |       45 | {1,2,3}  |            2
-  /2018-07-11T01:37:36.138325Z/"new york"/"\xd4\xe3\u007f\xbc2\xc0Mv\x81B\xd6\xc7٘\x9f\xe6" | NULL                                                                                     |       50 | {1,2,3}  |            2
-(2 rows)
+                                          start_key                                         |                                          end_key                                          | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
++-------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
+  NULL                                                                                      | /2018-07-03T01:30:40.141401Z/"new york"/"4v\xc5HJ\xf0Bս\xcb\x1f\xab\xe4\xd9y\x02"         |       43 |             0 |            1 | region=us-east1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /2018-07-03T01:30:40.141401Z/"new york"/"4v\xc5HJ\xf0Bս\xcb\x1f\xab\xe4\xd9y\x02"         | /2018-07-03T01:41:59.820666Z/"boston"/"\x8fX\xce\x02c\xb5O\x95\x81\x9d\xee\xa9D<\xb6\x03" |       45 |      0.431928 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /2018-07-03T01:41:59.820666Z/"boston"/"\x8fX\xce\x02c\xb5O\x95\x81\x9d\xee\xa9D<\xb6\x03" | /2018-07-16T01:33:31.787252Z/"new york"/"\xb1\xbb\xc0\x98\xe1\xee@\"\xbayd\x0f\x02i\x18l" |       44 |     33.554432 |            1 | region=us-east1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+  /2018-07-16T01:33:31.787252Z/"new york"/"\xb1\xbb\xc0\x98\xe1\xee@\"\xbayd\x0f\x02i\x18l" | NULL                                                                                      |       46 |     46.717599 |            1 | region=us-east1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
+(4 rows)
 ~~~
 
-This tells us that the index is stored in 2 ranges, with the leaseholders for both of them on node 2. Based on the output of `SHOW RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 2.
+This tells us that the index is stored in 4 ranges, with the leaseholders on nodes 1 and 2. Based on the output of `SHOW RANGES FROM TABLE users` that we saw earlier, we already know that the leaseholder for the `users` table is on node 3.
 
 #### Using `IN (list)` with a subquery
 

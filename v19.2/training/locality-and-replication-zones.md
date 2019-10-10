@@ -81,8 +81,6 @@ By default, CockroachDB tries to balance data evenly across specified "localitie
 
 To check this, open the Web UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, view **Node List**, and check the replica count is the same on all nodes.
 
-<img src="{{ 'images/v19.2/training-1.png' | relative_url }}" alt="CockroachDB Web UI" style="border:1px solid #eee;max-width:100%" />
-
 ## Step 3. Expand into 2 more US regions
 
 Add 6 more nodes, this time using the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that 3 nodes are in the Central region and 3 nodes are in the Western region of the US.
@@ -238,13 +236,11 @@ To check this, let's create a table, which initially maps to a single underlying
     ~~~
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       24 | {1,6,9}  |            9
-    (1 row)
+  start_key | end_key | range_id | range_size_mb | lease_holder |    lease_holder_locality     | replicas |                                        replica_localities
++-----------+---------+----------+---------------+--------------+------------------------------+----------+---------------------------------------------------------------------------------------------------+
+  NULL      | NULL    |       45 |      0.003054 |            9 | region=us,datacenter=us-west | {2,4,9}  | {"region=us,datacenter=us-east","region=us,datacenter=us-central","region=us,datacenter=us-west"}
+(1 row)
     ~~~
-
-    In this case, one replica is on node 1 in `us-east`, one is on node 6 in `us-central`, and one is on node 7 in `us-west`.
 
 ## Step 5. Expand into Europe
 
@@ -359,7 +355,7 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~ shell
     $ cockroach sql \
     --insecure \
-    --host=localhost:26257 \
+    --host=127.0.0.1:54942 \
     --execute="SHOW RANGES FROM TABLE intro.mytable;" \
     --execute="SHOW RANGES FROM TABLE startrek.episodes;" \
     --execute="SHOW RANGES FROM TABLE startrek.quotes;"    
@@ -368,26 +364,19 @@ Now verify that the data for the table in the `intro` database is located on US-
     Note: your result set will differ slightly from ours.
 
     ~~~
-      start_key | end_key | range_id | replicas | lease_holder
-    +-----------+---------+----------+----------+--------------+
-      NULL      | NULL    |       24 | {1,5,9}  |            9
+      start_key | end_key | range_id | range_size_mb | lease_holder |      lease_holder_locality      | replicas |                                        replica_localities
+    +-----------+---------+----------+---------------+--------------+---------------------------------+----------+---------------------------------------------------------------------------------------------------+
+      NULL      | NULL    |       45 |      0.003054 |            5 | region=us,datacenter=us-central | {3,5,8}  | {"region=us,datacenter=us-east","region=us,datacenter=us-central","region=us,datacenter=us-west"}
     (1 row)
-      start_key | end_key | range_id |  replicas  | lease_holder
-    +-----------+---------+----------+------------+--------------+
-      NULL      | NULL    |       42 | {10,11,12} |           10
+      start_key | end_key | range_id | range_size_mb | lease_holder |    lease_holder_locality     | replicas |                                        replica_localities
+    +-----------+---------+----------+---------------+--------------+------------------------------+----------+---------------------------------------------------------------------------------------------------+
+      NULL      | NULL    |       46 |      0.004276 |            8 | region=us,datacenter=us-west | {3,5,8}  | {"region=us,datacenter=us-east","region=us,datacenter=us-central","region=us,datacenter=us-west"}
     (1 row)
-      start_key | end_key | range_id |  replicas  | lease_holder
-    +-----------+---------+----------+------------+--------------+
-      NULL      | NULL    |       43 | {10,11,12} |           11
+      start_key | end_key | range_id | range_size_mb | lease_holder |      lease_holder_locality      | replicas |                                        replica_localities
+    +-----------+---------+----------+---------------+--------------+---------------------------------+----------+---------------------------------------------------------------------------------------------------+
+      NULL      | NULL    |       47 |       0.03247 |            5 | region=us,datacenter=us-central | {3,5,8}  | {"region=us,datacenter=us-east","region=us,datacenter=us-central","region=us,datacenter=us-west"}
     (1 row)
     ~~~
-
-2. For each table, check the node IDs (in the `Replicas` column) against the following key to verify that replicas are in the correct region:
-
-    Node IDs | Region
-    --------|-------
-    1 - 9 | US
-    10 - 12 | EU
 
 {{site.data.alerts.callout_info}}
 You can also use the Web UI's <a href="http://localhost:8080/#/data-distribution" data-proofer-ignore>Data Distribution matrix</a> to view the distribution of data across nodes.
