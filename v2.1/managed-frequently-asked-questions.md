@@ -2,7 +2,7 @@
 title: Frequently Asked Questions
 summary: Managed CockroachDB FAQs
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 ## Cluster basics

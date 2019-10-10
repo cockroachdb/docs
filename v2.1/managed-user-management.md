@@ -2,7 +2,7 @@
 title: User Management
 summary: Learn how to create SQL users.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.

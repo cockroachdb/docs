@@ -3,7 +3,7 @@ title: CockroachDB Docs
 summary: CockroachDB user documentation.
 toc: true
 contribute: false
-build_for: [standard, managed]
+build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
 

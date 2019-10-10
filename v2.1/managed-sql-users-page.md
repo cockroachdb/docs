@@ -2,7 +2,7 @@
 title: SQL Users Page
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
-build_for: [managed]
+build_for: [cockroachcloud]
 ---
 
 The **SQL Users** page displays a list of SQL users who can access the cluster. For each user, the following displays:
