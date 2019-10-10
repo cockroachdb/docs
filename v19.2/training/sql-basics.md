@@ -277,16 +277,22 @@ Suppose Carl wants to withdraw $250 from his checking account. First, check that
 
 Here's how that would look (do not run this example yet):
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
+~~~
 
+~~~ sql
   balance >= 250
 +----------------+
        true      
 (1 row)
 
 -- If false, quit. Otherwise, continue.
+~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
 > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
 ~~~
 
