@@ -239,7 +239,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     $ cockroach sql \
     --insecure \
     --host=localhost:26257 \
-    --execute="INSERT INTO usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
+    --execute="INSERT INTO ycsb.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
     ~~~
 
     {% include copy-clipboard.html %}
