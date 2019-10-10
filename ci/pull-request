@@ -14,21 +14,21 @@ baseurl=$BUILD_VCS_NUMBER
 touch bootstrap
 touch vendor
 
-# Step 1. Build the standard docs.
-cat > _config_prod.yml <<EOF
+# Step 1. Build the CockroachDB docs.
+cat > _config_prod_cockroachdb.yml <<EOF
 url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
 baseurl: /$baseurl
 destination: _site/$baseurl
 EOF
-run make standard-build JEKYLLCONFIG=_config_prod.yml
+run make cockroachdb-build JEKYLLCONFIG=_config_prod_cockroachdb.yml
 
-# Step 2. Build the managed service docs.
-cat > _config_prod_managed.yml <<EOF
+# Step 2. Build the CockroachCloud docs.
+cat > _config_prod_cockroachcloud.yml <<EOF
 url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
-baseurl: /$baseurl/managed
-destination: _site/$baseurl/managed
+baseurl: /$baseurl/cockroachcloud
+destination: _site/$baseurl/cockroachcloud
 EOF
-run make managed-build JEKYLLCONFIG=_config_prod_managed.yml
+run make cockroachcloud-build JEKYLLCONFIG=_config_prod_cockroachcloud.yml
 
 # Step 3. Upload the docs to S3.
 run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review
@@ -78,7 +78,7 @@ curl \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
 # Step 5. Run vale, but don't fail the build if it reports errors.
-run vale --no-wrap v2.1 || true
+run vale --no-wrap v19.2 || true
 
 # Step 6. Run htmltest, but skip checking external links to speed things up.
 run htmltest --skip-external
