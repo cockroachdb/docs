@@ -42,10 +42,7 @@ Then verify your organization in response to the following query:
 
 Your cluster now has access to all of CockroachDB's enterprise features for the length of the trial:
 
-- [`BACKUP`](backup.html) & [`RESTORE`](restore.html), which leverage your entirely cluster to create and consume consistent backups.
-- [Geo-partitioning](partitioning.html) to control the physical location of your data with row-level granularity.
-- [Node Maps](enable-node-map.html), which provides enhanced visuals of your cluster's nodes.
-- [Use role-based access management (RBAC)](create-role.html) for simplified user management.
+{% include {{ page.version.version }}/misc/enterprise-features.md %}
 
 ## Getting help
 
