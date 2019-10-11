@@ -6,6 +6,7 @@ toc: true
 redirect_from:
 - simplified-deployment.html
 - strong-consistency.html
+- sql.html
 ---
 
 ## What is CockroachDB?
