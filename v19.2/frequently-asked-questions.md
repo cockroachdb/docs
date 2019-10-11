@@ -8,6 +8,7 @@ redirect_from:
 - strong-consistency.html
 - sql.html
 - distributed-transactions.html
+- automated-scaling-and-repair.html
 ---
 
 ## What is CockroachDB?
