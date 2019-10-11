@@ -7,6 +7,7 @@ redirect_from:
 - simplified-deployment.html
 - strong-consistency.html
 - sql.html
+- distributed-transactions.html
 ---
 
 ## What is CockroachDB?
