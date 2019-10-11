@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function build {
+	bundle exec jekyll build --config _config_base.yml,$1
+}
+
+gem install bundler
+bundle install
+build _config_standard.yml
+build _config_managed.yml
+mv _site/managed _site/docs/managed
+
+cp _site/docs/managed/_redirects _site/_redirects
+cat _site/docs/_redirects >> _site/_redirects
