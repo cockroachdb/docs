@@ -435,6 +435,12 @@
             ]
           },
           {
+            "title": "Online Schema Changes",
+            "urls": [
+              "/${VERSION}/online-schema-changes.html"
+            ]
+          },
+          {
             "title": "Manage Long-Running Queries",
             "urls": [
               "/${VERSION}/manage-long-running-queries.html"
@@ -1903,6 +1909,12 @@
           "/${VERSION}/operational-faqs.html"
         ]
       },
+      {
+        "title": "Availability FAQs",
+        "urls": [
+          "/${VERSION}/multi-active-availability.html"
+        ]
+      },      
       {
         "title": "Licensing FAQs",
         "urls": [
