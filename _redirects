@@ -11,4 +11,5 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/releases/ /docs/releases/index.html 200!
 /docs /docs/stable/ 301
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301
+/ /docs/ 301
 /docs/managed/* /docs/cockroachcloud/:splat 301
