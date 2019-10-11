@@ -5,6 +5,7 @@ tags: postgres, cassandra, google cloud spanner
 toc: true
 redirect_from:
 - simplified-deployment.html
+- strong-consistency.html
 ---
 
 ## What is CockroachDB?
@@ -59,9 +60,15 @@ For short-term failures, such as a server restart, CockroachDB uses Raft to cont
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB guarantees the SQL isolation level "serializable", the highest defined by the SQL standard.
-It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
-See our description of [strong consistency](strong-consistency.html) for more details.
+CockroachDB guarantees [serializable SQL transactions](demo-serializable-transactions.html), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
+
+- Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started](architecture/transaction-layer.html#time-and-hybrid-logical-clocks).
+
+- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
+
+  To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache](architecture/transaction-layer.html#timestamp-cache) which remembers when data was last read by ongoing transactions.
+
+  This ensures that clients always observe serializable consistency with regards to other concurrent transactions.
 
 ## How is CockroachDB both highly available and strongly consistent?
 

@@ -225,7 +225,7 @@ ROLLBACK
 
 [alter-table]: alter-table.html
 [blog]: https://cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/
-[consistent]: strong-consistency.html
+[consistent]: frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent
 [create-index]: create-index.html
 [drop-index]: drop-index.html
 [create-table]: create-table.html
