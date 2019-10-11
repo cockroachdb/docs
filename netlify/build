@@ -10,5 +10,5 @@ build _config_cockroachdb.yml
 build _config_cockroachcloud.yml
 mv _site/cockroachcloud _site/docs/cockroachcloud
 
-cp _site/docs/cockroachcloud/_redirects _site/_redirects
-cat _site/docs/_redirects >> _site/_redirects
+cp _site/docs/_redirects _site/_redirects
+cat _site/docs/cockroachcloud/_redirects >> _site/_redirects
