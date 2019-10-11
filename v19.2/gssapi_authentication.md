@@ -68,7 +68,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-trial-or-enterprise-license-key).
+6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-license).
     {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you don't need to enable an enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:
