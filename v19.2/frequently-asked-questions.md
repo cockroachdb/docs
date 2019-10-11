@@ -3,6 +3,15 @@ title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
 toc: true
+redirect_from:
+- simplified-deployment.html
+- strong-consistency.html
+- sql.html
+- distributed-transactions.html
+- automated-scaling-and-repair.html
+- high-availability.html
+- go-implementation.html
+- open-source.html
 ---
 
 ## What is CockroachDB?
@@ -25,7 +34,7 @@ CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms
 
 ## How easy is it to install CockroachDB?
 
-It's as easy as downloading a binary on OS X and Linux or running our official Docker image on Windows. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
+It's as easy as downloading a binary or running our official Kubernetes configurations or Docker image. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
 
 For more details, see [Install CockroachDB](install-cockroachdb.html).
 
@@ -49,7 +58,7 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
 - Different servers in different datacenters to tolerate large scale network or power outages
 
-When replicating across datacenters, be aware that the round-trip latency between datacenters will have a direct effect on your database's performance. Latency in cross-continent clusters will be noticeably worse than in clusters where all nodes are geographically close together.
+In a CockroachDB cluster spread across multiple geographic regions, the round-trip latency between regions will have a direct effect on your database's performance. In such cases, it is important to think about the latency requirements of each table and then use the appropriate [data topologies](topology-patterns.html) to locate data for optimal performance and resiliency. For a step-by-step demonstration, see [Low Latency Multi-Region Deployment](demo-low-latency-multi-region-deployment.html).
 
 **Automated Repair**
 
@@ -57,9 +66,15 @@ For short-term failures, such as a server restart, CockroachDB uses Raft to cont
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB guarantees the SQL isolation level "serializable", the highest defined by the SQL standard.
-It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
-See our description of [strong consistency](strong-consistency.html) for more details.
+CockroachDB guarantees [serializable SQL transactions](demo-serializable.html), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
+
+- Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started](architecture/transaction-layer.html#time-and-hybrid-logical-clocks).
+
+- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
+
+  To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache](architecture/transaction-layer.html#timestamp-cache) which remembers when data was last read by ongoing transactions.
+
+  This ensures that clients always observe serializable consistency with regards to other concurrent transactions.
 
 ## How is CockroachDB both highly available and strongly consistent?
 

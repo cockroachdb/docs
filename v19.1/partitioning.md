@@ -293,7 +293,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 #### Step 3. Request and set a trial enterprise license
 
-See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-a-license).
 
 #### Step 4. Create the `roachlearn` database and `students` table
 
@@ -448,7 +448,7 @@ We want to archival-partition the table to keep newer data on faster devices and
 
 #### Step 2. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-a-license).
 
 #### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
@@ -584,7 +584,7 @@ $ cockroach init --insecure --host=<address of any node>
 
 #### Step 3. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-the-trial-or-enterprise-license-key).
+To set the enterprise license, see [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-a-license).
 
 #### Step 4. Create a table with the appropriate partitions
 

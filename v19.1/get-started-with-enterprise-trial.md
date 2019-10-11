@@ -5,7 +5,7 @@ toc: true
 license: true
 ---
 
-Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](high-availability.html) and [`SERIALIZABLE` isolation](strong-consistency.html), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [geo-partitioning](partitioning.html), and [cluster visualization](enable-node-map.html).
+Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [geo-partitioning](partitioning.html), and [cluster visualization](enable-node-map.html).
 
 ## Install CockroachDB
 
@@ -13,7 +13,7 @@ If you haven't already, you'll need to [locally install](install-cockroachdb.htm
 
 ## Enable Enterprise features
 
-As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. 
+As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -42,10 +42,7 @@ Then verify your organization in response to the following query:
 
 Your cluster now has access to all of CockroachDB's enterprise features for the length of the trial:
 
-- [`BACKUP`](backup.html) & [`RESTORE`](restore.html), which leverage your entirely cluster to create and consume consistent backups.
-- [Geo-partitioning](partitioning.html) to control the physical location of your data with row-level granularity.
-- [Node Maps](enable-node-map.html), which provides enhanced visuals of your cluster's nodes.
-- [Use role-based access management (RBAC)](create-role.html) for simplified user management.
+{% include {{ page.version.version }}/misc/enterprise-features.md %}
 
 ## Getting help
 
