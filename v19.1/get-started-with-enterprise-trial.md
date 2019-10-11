@@ -5,7 +5,7 @@ toc: true
 license: true
 ---
 
-Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](high-availability.html) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [geo-partitioning](partitioning.html), and [cluster visualization](enable-node-map.html).
+Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [geo-partitioning](partitioning.html), and [cluster visualization](enable-node-map.html).
 
 ## Install CockroachDB
 
