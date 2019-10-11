@@ -10,6 +10,8 @@ redirect_from:
 - distributed-transactions.html
 - automated-scaling-and-repair.html
 - high-availability.html
+- go-implementation.html
+- open-source.html
 ---
 
 ## What is CockroachDB?
