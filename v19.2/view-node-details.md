@@ -21,63 +21,74 @@ Subcommand | Usage
 
 List the IDs of active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node ls <flags>
 ~~~
 
 Show status details for active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status <flags>
 ~~~
 
 Show status and range/replica details for active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --ranges <flags>
 ~~~
 
 Show status and disk usage details for active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --stats <flags>
 ~~~
 
 Show status and decommissioning details for active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission <flags>
 ~~~
 
 Show complete status details for active and inactive nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --all <flags>
 ~~~
 
 Show status details for a specific node:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status <node ID> <flags>
 ~~~
 
 Decommission nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission <node IDs> <flags>
 ~~~
 
 Recommission nodes:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node recommission <node IDs> <flags>
 ~~~
 
 View help:
 
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node --help
 ~~~
+{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach node <subcommand> --help
 ~~~
