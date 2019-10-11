@@ -2,7 +2,7 @@ For this service, the most effective technique for improving read and write late
 
 1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/).
 
-2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](enterprise-licensing.html#set-the-trial-or-enterprise-license-key):
+2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](enterprise-licensing.html#set-a-license):
 
     {% include copy-clipboard.html %}
     ~~~ shell

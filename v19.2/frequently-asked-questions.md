@@ -66,7 +66,7 @@ For short-term failures, such as a server restart, CockroachDB uses Raft to cont
 
 ## How is CockroachDB strongly-consistent?
 
-CockroachDB guarantees [serializable SQL transactions](demo-serializable-transactions.html), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
+CockroachDB guarantees [serializable SQL transactions](demo-serializable.html), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
 
 - Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started](architecture/transaction-layer.html#time-and-hybrid-logical-clocks).
 
