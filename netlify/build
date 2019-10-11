@@ -6,9 +6,9 @@ function build {
 
 gem install bundler
 bundle install
-build _config_standard.yml
-build _config_managed.yml
-mv _site/managed _site/docs/managed
+build _config_cockroachdb.yml
+build _config_cockroachcloud.yml
+mv _site/cockroachcloud _site/docs/cockroachcloud
 
-cp _site/docs/managed/_redirects _site/_redirects
+cp _site/docs/cockroachcloud/_redirects _site/_redirects
 cat _site/docs/_redirects >> _site/_redirects
