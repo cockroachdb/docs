@@ -1186,6 +1186,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW RANGE FOR ROW</code>",
+                "urls": [
+                  "/${VERSION}/show-range-for-row.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW ROLES</code>",
                 "urls": [
                   "/${VERSION}/show-roles.html"

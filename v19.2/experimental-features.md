@@ -123,6 +123,10 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 (8 rows)
 ~~~
 
+### Show range information for a specific row
+
+The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+
 ## Functions and Operators
 
 The table below lists the experimental SQL functions and operators available in CockroachDB 2.1.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
@@ -153,3 +157,4 @@ The vectorized execution engine has the following limitations:
 - [Functions and Operators](functions-and-operators.html)
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
+- [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
