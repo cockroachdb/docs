@@ -1,5 +1,6 @@
 | Special form                                              | Equivalent to                               |
 |-----------------------------------------------------------|---------------------------------------------|
+| `AT TIME ZONE`                                            | `timezone()`                                |
 | `CURRENT_CATALOG`                                         | `current_catalog()`                         |
 | `COLLATION FOR`                                           | `pg_collation_for()`                        |
 | `CURRENT_DATE`                                            | `current_date()`                            |

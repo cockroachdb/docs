@@ -21,6 +21,8 @@ The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC,
 
 The difference between these two variants is that `TIMESTAMPTZ` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMPTZ` values.
 
+<span class="version-tag">New in v19.2:</span> You can use the [`timezone()`](functions-and-operators.html#date-and-time-functions) and [`AT TIME ZONE`](functions-and-operators.html#special-syntax-forms) functions to convert a `TIMESTAMPTZ` into a `TIMESTAMP` at a specified timezone, or to convert a `TIMESTAMP` into a `TIMESTAMPTZ` at a specified timezone.
+
 ## Best practices
 
 We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid setting a session time for your database.
