@@ -7,6 +7,8 @@ redirect_from: [show-testing-ranges.html, show-experimental-ranges.html]
 
 The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located.
 
+To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement.
+
 ## Synopsis
 
 <div>
@@ -111,6 +113,7 @@ Field | Description
 
 ## See also
 
+- [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
 - [`SPLIT AT`](split-at.html)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE INDEX`](create-index.html)
