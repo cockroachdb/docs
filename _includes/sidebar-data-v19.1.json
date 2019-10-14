@@ -1914,7 +1914,7 @@
         "urls": [
           "/${VERSION}/multi-active-availability.html"
         ]
-      },      
+      },
       {
         "title": "Licensing FAQs",
         "urls": [
@@ -1925,12 +1925,6 @@
         "title": "CockroachDB in Comparison",
         "urls": [
           "/${VERSION}/cockroachdb-in-comparison.html"
-        ]
-      },
-      {
-        "title": "Contribute to CockroachDB",
-        "urls": [
-          "/${VERSION}/contribute-to-cockroachdb.html"
         ]
       }
     ]

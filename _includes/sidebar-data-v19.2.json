@@ -1951,12 +1951,6 @@
         "urls": [
           "/${VERSION}/cockroachdb-in-comparison.html"
         ]
-      },
-      {
-        "title": "Contribute to CockroachDB",
-        "urls": [
-          "/${VERSION}/contribute-to-cockroachdb.html"
-        ]
       }
     ]
   },

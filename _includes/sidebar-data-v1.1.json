@@ -1288,12 +1288,6 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Contribute to CockroachDB",
-        "urls": [
-          "/${VERSION}/contribute-to-cockroachdb.html"
-        ]
-      },
-      {
         "title": "Improve the Docs",
         "urls": [
           "/${VERSION}/improve-the-docs.html"
