@@ -108,6 +108,9 @@ The node-level and store-level descriptive attributes mentioned above can be use
 
 - When locality is the only consideration for replication, it's recommended to set locality on nodes without specifying any constraints in zone configurations. In the absence of constraints, CockroachDB attempts to spread replicas evenly across the cluster based on locality.
 - Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country or on a specific type of machine.
+- Avoid conflicting constraints. CockroachDB returns an error if you:
+    - Redefine a required constraint key within the same `constraints` definition on all replicas. For example, `constraints = '[+region=west, +region=east]'` will result in an error.
+    - Define a required and prohibited definition for the same key-value pair. For example, `constraints = '[-region=west, +region=west]'` will result in an error.
 
 Constraint Type | Description | Syntax
 ----------------|-------------|-------
