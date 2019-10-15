@@ -1,0 +1,126 @@
+[
+  {
+    "title": "Get Started",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Sign Up for the Service",
+        "urls": [
+          "/${VERSION}/cockroachcloud-sign-up-for-a-cluster.html"
+        ]
+      },
+      {
+        "title": "Connect to Your Cluster",
+        "urls": [
+          "/${VERSION}/cockroachcloud-connect-to-your-cluster.html"
+        ]
+      },
+      {
+        "title": "Learn CockroachDB SQL",
+        "urls": [
+          "/${VERSION}/learn-cockroachdb-sql.html"
+        ]
+      },
+      {
+        "title": "Use the Console",
+        "items": [
+          {
+            "title": "Clusters Page",
+            "urls": [
+              "/${VERSION}/cockroachcloud-clusters-page.html"
+            ]
+          },
+          {
+            "title": "Overview Page",
+            "urls": [
+              "/${VERSION}/cockroachcloud-cluster-overview.html"
+            ]
+          },
+          {
+            "title": "SQL Users Page",
+            "urls": [
+              "/${VERSION}/cockroachcloud-sql-users-page.html"
+            ]
+          },
+          {
+            "title": "Networking Page",
+            "urls": [
+              "/${VERSION}/cockroachcloud-networking-page.html"
+            ]
+          },
+          {
+            "title": "Monitoring Page",
+            "urls": [
+              "/${VERSION}/cockroachcloud-monitoring-page.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "FAQs",
+        "urls": [
+          "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Use Your Cluster",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Migrate Data",
+        "items": [
+          {
+            "title": "Migration Overview",
+            "urls": [
+              "/${VERSION}/migration-overview.html"
+            ]
+          },
+          {
+            "title": "Migrate from Postgres",
+            "urls": [
+              "/${VERSION}/migrate-from-postgres.html"
+            ]
+          },
+          {
+            "title": "Migrate from MySQL",
+            "urls": [
+              "/${VERSION}/migrate-from-mysql.html"
+            ]
+          },
+          {
+            "title": "Migrate from CSV",
+            "urls": [
+              "/${VERSION}/migrate-from-csv.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Tune Performance",
+        "urls": [
+          "/${VERSION}/performance-best-practices-overview.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Manage Your Account",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "User Management",
+        "urls": [
+          "/${VERSION}/cockroachcloud-user-management.html"
+        ]
+      },
+      {
+        "title": "Cluster Management",
+        "urls": [
+          "/${VERSION}/cockroachcloud-cluster-management.html"
+        ]
+      }
+    ]
+  }
+]

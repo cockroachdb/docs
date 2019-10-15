@@ -14,4 +14,4 @@ run() {
 touch "$root/../bootstrap"
 touch "$root/../vendor"
 
-run make standard-build managed-build
+run make cockroachdb-build cockroachcloud-build

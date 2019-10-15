@@ -2,10 +2,10 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
-build_for: [standard, managed]
+build_for: [cockroachdb, cockroachcloud]
 ---
 
-{% unless site.managed %}
+{% unless site.cockroachcloud %}
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements, using the `movr` dataset.
 
@@ -349,17 +349,17 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
 {% endunless %}
 
-{% if site.managed %}
+{% if site.cockroachcloud %}
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](managed-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+Make sure you have already [connected the CockroachDB SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
 
 ## Create a database
 
-Your Managed CockroachDB cluster comes with a `defaultdb` for testing and some internal databases.
+Your CockroachCloud cluster comes with a `defaultdb` for testing and some internal databases.
 
 To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
@@ -403,7 +403,7 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement 
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](managed-sign-up-for-a-cluster.
+It's best to set the default database directly in your [connection string](cockroachcloud-sign-up-for-a-cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql
