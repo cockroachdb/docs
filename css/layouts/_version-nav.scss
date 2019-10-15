@@ -67,7 +67,7 @@
           content: 'Managed CRDB';
 
           @include at-query($min, $screen-sm) {
-            content: 'Managed CockroachDB';
+            content: 'Cockroach Cloud';
           }
         }
       }
