@@ -77,7 +77,8 @@ Metric | Description
 -------|------------
 Generated | The number of snapshots created per second.
 Applied (Raft-initiated) | The number of snapshots applied to nodes per second that were initiated within Raft.
-Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).
+Applied (Learner) | <span class="version-tag">New in v19.2:</span> The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).  This metric replaces the `Applied (Preemptive)` metric in 19.2 and onwards.
+Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future releases.
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
 
 ### Other graphs
