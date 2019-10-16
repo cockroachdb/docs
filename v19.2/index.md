@@ -1,6 +1,6 @@
 ---
-title: CockroachCloud Docs
-summary: CockroachCloud user documentation.
+title: CockroachDB Docs
+summary: CockroachDB user documentation.
 toc: true
 contribute: false
 build_for: [cockroachdb, cockroachcloud]
