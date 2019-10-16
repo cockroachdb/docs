@@ -134,7 +134,17 @@ The table below lists the experimental SQL functions and operators available in 
 
 ## Vectorized execution on non-streaming operations
 
-[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for non-streaming operations, including global sorts, hash joins, merge joins on non-unique columns, and window functions. By default, CockroachDB uses vectorized execution on streaming operations. You can turn vectorized execution on for all operations by setting the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) or the `vectorize` [session variable](set-vars.html) to `experimental_on`.
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [non-streaming operations](vectorized-execution.html#non-streaming-operations):
+
+- Global [sorts](query-order.html).
+- [Window functions](window-functions.html).
+- [Hash joins](joins.html#hash-joins).
+- [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", are considered streaming operations.
+
+To turn vectorized execution on for non-streaming operations, do one of the following:
+
+- Set the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) to `experimental_on`.
+- Set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
 
 ## See Also
 

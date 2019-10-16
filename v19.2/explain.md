@@ -18,7 +18,7 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
-- <span class="version-tag">New in v19.2:</span> By default, `vectorize=auto`, meaning the column-oriented vectorized SQL execution engine is enabled for all streaming operations. If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
+- <span class="version-tag">New in v19.2:</span> By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#non-streaming-operations) and [data types](vectorized-execution.html#supported-data-types). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
@@ -43,9 +43,9 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
  `VERBOSE`          | Show as much information as possible about the query plan.
  `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
  `OPT`              | Display a query plan tree if the query will be run with the [cost-based optimizer](cost-based-optimizer.html). If it returns an "unsupported statement" error, the query will not be run with the cost-based optimizer and will be run with the heuristic planner.<br><br>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
+ `VEC`              | Show detailed information about the [vectorized execution](vectorized-execution.html) plan for a query. If the table queried includes [unsupported data types](vectorized-execution.html#supported-data-types), an unhandled data type error is returned.
+ `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
  `DISTSQL`          | Generate a URL to a [distributed SQL physical query plan tree](explain-analyze.html#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
- `preparable_stmt` | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
- `VEC`             | Show detailed information for [vectorized](vectorized-execution.html) execution plans.
 
 {{site.data.alerts.callout_danger}}
 `EXPLAIN` also includes other modes besides query plans that are useful only to CockroachDB developers, which are not documented here.
@@ -57,9 +57,9 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
  Column | Description
 -----------|-------------
-**Tree** | A tree representation showing the hierarchy of the query plan.
-**Field** | The name of a parameter relevant to the query plan node immediately above.
-**Description** | Additional information for the parameter in  **Field**.
+**Tree** | A tree representation of the hierarchy of the query plan.
+**Field** | The name of a property for the query plan.<br><br>The `distributed` and `vectorized` properties apply to the entire query plan. All other properties apply to the query plan node in the **Tree** column.
+**Description** | Additional information about the parameter in  **Field**.
 **Columns** | The columns provided to the processes at lower levels of the hierarchy. Included in `TYPES` and `VERBOSE` output.
 **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. Included in `TYPES` and `VERBOSE` output.
 
@@ -90,7 +90,9 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 (8 rows)
 ~~~
 
-The first column shows the tree structure of the query plan; a set of properties is displayed for each node in the tree. Most importantly, for scans, you can see the index that is scanned (`primary` in this case) and what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+The `tree` column shows the tree structure of the query plan. In the `field` and `description` columns, a set of properties is shown for each node in the tree. Most importantly, for scans, the `table` property shows you which index is scanned (`primary` in this case) and the `spans` property shows you what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+
+With the `distributed` property, the output also shows you that the query plan will be distributed to multiple nodes on the cluster. The `vectorized` property shows that the plan will be executed with the row-oriented execution engine, and not the vectorized engine.
 
 ### `VERBOSE` option
 
@@ -384,7 +386,7 @@ The `VEC` option shows details about the [vectorized execution plan](vectorized-
 (5 rows)
 ~~~
 
-The output shows the different functions that will be used to process each batch of column-oriented data.
+The output shows the different internal functions that will be used to process each batch of column-oriented data.
 
 ### `DISTSQL` option
 
@@ -460,7 +462,7 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 (5 rows)
 ~~~
 
-Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6.
+Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6. Also note that this query plan is not distributed across nodes on the cluster.
 
 ## See also
 
