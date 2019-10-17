@@ -45,7 +45,7 @@ Multiple-column (composite) foreign keys only accept null values in the followin
 
 For more information about composite foreign keys, see the [composite foreign key matching](#composite-foreign-key-matching) section.
 
-Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint](not-null.html) on foreign keys when [creating your tables](create-table.html). 
+Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint](not-null.html) on foreign keys when [creating your tables](create-table.html).
 
 {{site.data.alerts.callout_info}}
 A `NOT NULL` constraint cannot be added to existing tables.
@@ -105,7 +105,7 @@ Parameter | Description
 `ON DELETE RESTRICT` / `ON UPDATE RESTRICT` | `RESTRICT` and `NO ACTION` are currently equivalent until options for deferring constraint checking are added. To set an existing foreign key action to `RESTRICT`, the foreign key constraint must be dropped and recreated.
 `ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated, respectively. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete will take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
 `ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
-`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key are set to the default value for that column. If the default value for the column is null, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
+`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`](not-null.html) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
 
 ### Performance
 
@@ -251,12 +251,11 @@ The update to the referenced table returns an error because `id = 1001` is refer
 > SELECT * FROM customers;
 ~~~
 ~~~
+   id  |         email
 +------+------------------------+
-|  id  |         email          |
-+------+------------------------+
-| 1001 | a@co.tld               |
-| 1111 | info@cockroachlabs.com |
-+------+------------------------+
+  1001 | a@co.tld
+  1111 | info@cockroachlabs.com
+(2 rows)
 ~~~
 
 Now let's try to delete a referenced row:
@@ -281,11 +280,10 @@ Similarly, the deletion returns an error because `id = 1001` is referenced and t
 > SELECT * FROM customers;
 ~~~
 ~~~
+   id  |  email
 +------+----------+
-|  id  |  email   |
-+------+----------+
-| 1001 | a@co.tld |
-+------+----------+
+  1001 | a@co.tld
+(1 row)
 ~~~
 
 ### Use a Foreign Key Constraint with `CASCADE`
@@ -337,13 +335,12 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM customers_2;
 ~~~
 ~~~
+  id
 +----+
-| id |
-+----+
-|  2 |
-|  3 |
-| 23 |
-+----+
+   2
+   3
+  23
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -351,14 +348,13 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM orders_2;
 ~~~
 ~~~
-+-----+--------------+
-| id  | customers_id |
-+-----+--------------+
-| 100 |           23 |
-| 101 |            2 |
-| 102 |            3 |
-| 103 |           23 |
-+-----+--------------+
+  id  | customer_id
++-----+-------------+
+  100 |          23
+  101 |           2
+  102 |           3
+  103 |          23
+(4 rows)
 ~~~
 
 When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated to the referencing table `orders_2`.
@@ -375,12 +371,11 @@ Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 > SELECT * FROM customers_2;
 ~~~
 ~~~
+  id
 +----+
-| id |
-+----+
-|  2 |
-|  3 |
-+----+
+   2
+   3
+(2 rows)
 ~~~
 
 Let's check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
@@ -390,12 +385,11 @@ Let's check to make sure the rows in `orders_2` where `customers_id = 23` were a
 > SELECT * FROM orders_2;
 ~~~
 ~~~
-+-----+--------------+
-| id  | customers_id |
-+-----+--------------+
-| 101 |            2 |
-| 102 |            3 |
-+-----+--------------+
+  id  | customer_id
++-----+-------------+
+  101 |           2
+  102 |           3
+(2 rows)
 ~~~
 
 ### Use a Foreign Key Constraint with `SET NULL`
@@ -437,17 +431,16 @@ Insert some records into the referencing table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM customers_3;
+> SELECT * FROM orders_3;
 ~~~
 ~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |           1 |
-| 101 |           2 |
-| 102 |           3 |
-| 103 |           1 |
-+-----+-------------+
+  100 |           1
+  101 |           2
+  102 |           3
+  103 |           1
+(4 rows)
 ~~~
 
 Now, let's update an `id` in the referenced table:
@@ -462,13 +455,12 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM customers_3;
 ~~~
 ~~~
+  id
 +----+
-| id |
-+----+
-|  2 |
-|  3 |
-| 23 |
-+----+
+   2
+   3
+  23
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -476,14 +468,13 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM orders_3;
 ~~~
 ~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |        NULL |
-| 101 |           2 |
-| 102 |           3 |
-| 103 |        NULL |
-+-----+-------------+
+  100 |        NULL
+  101 |           2
+  102 |           3
+  103 |        NULL
+(4 rows)
 ~~~
 
 When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
@@ -500,12 +491,11 @@ Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's de
 > SELECT * FROM customers_3;
 ~~~
 ~~~
+  id
 +----+
-| id |
-+----+
-|  3 |
-| 23 |
-+----+
+   3
+  23
+(2 rows)
 ~~~
 
 Let's check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
@@ -515,14 +505,13 @@ Let's check to make sure the row in `orders_3` where `customers_id = 2` was upda
 > SELECT * FROM orders_3;
 ~~~
 ~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |        NULL |
-| 101 |        NULL |
-| 102 |           3 |
-| 103 |        NULL |
-+-----+-------------+
+  100 |        NULL
+  101 |        NULL
+  102 |           3
+  103 |        NULL
+(4 rows)
 ~~~
 
 ### Use a Foreign Key Constraint with `SET DEFAULT`
@@ -561,15 +550,20 @@ Insert some records into the referencing table:
 ~~~ sql
 > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
+
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_4;
 ~~~
+~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |           1 |
-| 101 |           2 |
-| 102 |           3 |
-| 103 |           1 |
-+-----+-------------+
+  100 |           1
+  101 |           2
+  102 |           3
+  103 |           1
+(4 rows)
 ~~~
 
 Now, let's update an `id` in the referenced table:
@@ -584,14 +578,13 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM customers_4;
 ~~~
 ~~~
+   id
 +------+
-|  id  |
-+------+
-|    2 |
-|    3 |
-|   23 |
-| 9999 |
-+------+
+     2
+     3
+    23
+  9999
+(4 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -599,14 +592,13 @@ Now, let's update an `id` in the referenced table:
 > SELECT * FROM orders_4;
 ~~~
 ~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |        9999 |
-| 101 |           2 |
-| 102 |           3 |
-| 103 |        9999 |
-+-----+-------------+
+  100 |        9999
+  101 |           2
+  102 |           3
+  103 |        9999
+(4 rows)
 ~~~
 
 When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first and last rows of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
@@ -623,13 +615,12 @@ Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` va
 > SELECT * FROM customers_4;
 ~~~
 ~~~
+   id
 +------+
-|   id |
-+------+
-|    3 |
-|   23 |
-| 9999 |
-+------+
+     3
+    23
+  9999
+(3 rows)
 ~~~
 
 Let's check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
@@ -639,15 +630,72 @@ Let's check to make sure the corresponding `customer_id` value to `id = 101`, wa
 > SELECT * FROM orders_4;
 ~~~
 ~~~
+  id  | customer_id
 +-----+-------------+
-| id  | customer_id |
-+-----+-------------+
-| 100 |        9999 |
-| 101 |        9999 |
-| 102 |           3 |
-| 103 |        9999 |
-+-----+-------------+
+  100 |        9999
+  101 |        9999
+  102 |           3
+  103 |        9999
+(4 rows)
 ~~~
+
+If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`](not-null.html) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
+
+For example, let's create a new `customers_5` table and insert some values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE customers_5 (
+    id INT PRIMARY KEY
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers_5 VALUES (1), (2), (3), (4);
+~~~
+
+Then we can create a new `orders_5` table that references the `customers_5` table, but with no default value specified for the `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE orders_5 (
+    id INT PRIMARY KEY,
+    customer_id INT REFERENCES customers_5(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders_5 VALUES (200,1), (201,2), (202,3), (203,4);
+~~~
+
+Deleting and updating values in the `customers_5` table sets the referenced values in `orders_5` to `NULL`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM customers_5 WHERE id = 3;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE customers_5 SET id = 0 WHERE id = 1;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM orders_5;
+~~~
+~~~
+  id  | customer_id
++-----+-------------+
+  200 |        NULL
+  201 |           2
+  202 |        NULL
+  203 |           4
+(4 rows)
+~~~
+
 
 ### Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`
 
