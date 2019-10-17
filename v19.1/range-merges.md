@@ -28,6 +28,10 @@ Range merges can provide performance improvements if you're working with a Cockr
 
 Disable (or do not use) range merges if you want to manually control range splits using [`SPLIT AT`](split-at.html).
 
+{{site.data.alerts.callout_info}}
+This limitation has been lifted in v19.2. If you disabled automatic range merging in order to use manual splits, and you are upgrading to v19.2, consider setting `kv.range_merge.queue_enabled` to `true` [to improve performance](range-merges.html#why-range-merges-improve-performance).
+{{site.data.alerts.end}}
+
 ## How range merges work
 
 ### Overview

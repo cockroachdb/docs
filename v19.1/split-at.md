@@ -6,6 +6,10 @@ toc: true
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
 
+{{site.data.alerts.callout_info}}
+In order to manually split a range, you must turn off automatic range merging by [setting the `kv.range_merge.queue_enabled` cluster setting](range-merges.html#enable-disable-range-merges) to `false`. <br><br> This limitation has been lifted in v19.2. If you disabled automatic range merging in order to use manual splits, and you are upgrading to v19.2, consider setting `kv.range_merge.queue_enabled` to `true` [to improve performance](range-merges.html#why-range-merges-improve-performance).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
