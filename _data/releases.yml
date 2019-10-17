@@ -129,6 +129,9 @@
       no_windows: true
 - title: Testing Releases
   releases:
+    - date: Oct 21, 2019
+      version: v19.2.0-rc.1
+      no_windows: true
     - date: Oct 14, 2019
       version: v19.2.0-beta.20191014
       no_windows: true
