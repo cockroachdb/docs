@@ -106,6 +106,17 @@
     ]
   },
   {
+    "title": "Tutorials",
+    "items": [
+      {
+        "title": "Build a Python app with Kubernetes on CockroachCloud",
+        "urls": [
+          "/${VERSION}/cockroachcloud-build-a-python-app-with-kubernetes.html"
+        ]
+      }
+    ]
+  },
+  {
     "title": "FAQs",
     "urls": [
       "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
