@@ -7,19 +7,17 @@ toc_not_nested: true
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-{{site.data.alerts.callout_info}}
-This page shows you how to upgrade to the latest v19.1 release ({{page.release_info.version}}) from v2.1.x, or from any patch release in the v19.1.x series. To upgrade within the v2.1.x series, see [the v2.1 version of this page](https://www.cockroachlabs.com/docs/v2.1/upgrade-cockroach-version.html).
-{{site.data.alerts.end}}
-
 ## Step 1. Verify that you can upgrade
 
-When upgrading, you can skip patch releases, **but you cannot skip full releases**. Therefore, if you are upgrading from v2.0.x to v19.1:
+To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
-1. First [upgrade to v2.1](../v2.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+Therefore, if you are upgrading from v2.0 to v19.1, or from a testing release (alpha/beta) of v2.1 to v19.1:
+
+1. First [upgrade to a production release of v2.1](../v2.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
 2. Then return to this page and perform a second rolling upgrade to v19.1.
 
-If you are upgrading from v2.1.x or from any v19.1.x patch release, you do not have to go through intermediate releases; continue to step 2.
+If you are upgrading from any production release of v2.1, or from any earlier v19.1 release, you do not have to go through intermediate releases; continue to step 2.
 
 ## Step 2. Prepare to upgrade
 
