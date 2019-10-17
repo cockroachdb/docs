@@ -87,6 +87,10 @@ For example:
 
 {% include {{page.version.version}}/misc/force-index-selection.md %}
 
+{{site.data.alerts.callout_info}}
+You can also force index selection for [`DELETE`](delete.html#force-index-selection-for-deletes) and [`UPDATE`](update.html#force-index-selection-for-updates) statements.
+{{site.data.alerts.end}}
+
 ### Access a common table expression
 
 A single identifier in a table expression context can refer to a
