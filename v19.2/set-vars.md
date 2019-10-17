@@ -188,8 +188,10 @@ The time zone value indicates the time zone for the current session.
 
 This value can be a string representation of a local system-defined
 time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
-negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
-`LOCAL`, or `0` sets the session time zone to `UTC`.
+negative numeric offset from UTC (e.g., `-7`, `+7`). 
+All timezone abbreviations are case-sensitive and must be uppercase, with the exception of `UTC`, for which `utc` is an alias.
+
+`DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
