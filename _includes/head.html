@@ -10,13 +10,7 @@
 <meta name="robots" content="nocache">
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
-<!-- TODO: All CockroachCloud pages are excluded from search indexes for now. Eventually,
-for Cloud-only pages, we'll need to NOT do this replacement. -->
-{% if site.cockroachcloud %}
-<link rel="canonical" href="{{ page.canonical | absolute_url | replace: "/cockroachcloud", "" }}">
-{% else %}
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
-{% endif %}
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 <link rel="stylesheet" type="text/css" href="{{ 'css/font-awesome.min.css' | relative_url }}">
