@@ -87,6 +87,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     $ kubectl get csr
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
     NAME                         AGE       REQUESTOR                                   CONDITION
     default.client.root          8m        system:serviceaccount:default:cockroachdb   Approved,Issued
@@ -95,9 +96,22 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     default.node.cockroachdb-2   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
     default.node.cockroachdb-3   2m        system:serviceaccount:default:cockroachdb   Pending
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    ~~~
+    NAME                                    AGE   REQUESTOR                                              CONDITION
+    default.client.root                     8m    system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
+    default.node.my-release-cockroachdb-0   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
+    default.node.my-release-cockroachdb-1   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
+    default.node.my-release-cockroachdb-2   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
+    default.node.my-release-cockroachdb-3   2m    system:serviceaccount:default:my-release-cockroachdb   Pending
+    ~~~
+    </section>
 
 3. Approve the CSR for the new pod:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.cockroachdb-3
@@ -106,6 +120,18 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
     certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.my-release-cockroachdb-3
+    ~~~
+
+    ~~~
+    certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-3 approved
+    ~~~
+    </section>
 
 4. Confirm that pod for the fourth node, `cockroachdb-3`, is `Running` successfully:
 

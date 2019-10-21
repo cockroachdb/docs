@@ -69,7 +69,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node decommission <node ID> \
-    --insecure \
+    --certs-dir=/cockroach-certs \
     --host=my-release-cockroachdb-public
     ~~~    
     </section>
