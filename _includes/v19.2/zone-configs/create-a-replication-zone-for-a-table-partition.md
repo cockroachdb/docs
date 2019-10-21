@@ -6,7 +6,7 @@ To [control replication for table partitions](partitioning.html#replication-zone
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER PARTITION north_america OF TABLE customers CONFIGURE ZONE USING num_replicas = 5, constraints = '[-region=EU]';
+> ALTER PARTITION us_west OF TABLE users CONFIGURE ZONE USING num_replicas = 5, constraints = '[-region=us-east1,-region=europe-west1]';
 ~~~
 
 ~~~ sql
@@ -15,18 +15,18 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE customers;
+> SHOW ZONE CONFIGURATION FOR PARTITION us_west OF TABLE users;
 ~~~
 
 ~~~
-           zone_name           |                                  config_sql
-+------------------------------+-------------------------------------------------------------------------------+
-  test.customers.north_america | ALTER PARTITION north_america OF INDEX customers@primary CONFIGURE ZONE USING
-                               |     range_min_bytes = 1048576,
-                               |     range_max_bytes = 67108864,
-                               |     gc.ttlseconds = 100000,
-                               |     num_replicas = 5,
-                               |     constraints = '[-region=EU]',
-                               |     lease_preferences = '[]'
+               target              |                        raw_config_sql
++----------------------------------+---------------------------------------------------------------+
+  PARTITION us_west OF TABLE users | ALTER PARTITION us_west OF TABLE users CONFIGURE ZONE USING
+                                   |     range_min_bytes = 16777216,
+                                   |     range_max_bytes = 67108864,
+                                   |     gc.ttlseconds = 100000,
+                                   |     num_replicas = 5,
+                                   |     constraints = '[-region=us-east1, -region=europe-west1]',
+                                   |     lease_preferences = '[]'
 (1 row)
 ~~~

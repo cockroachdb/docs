@@ -512,22 +512,22 @@ Next let's [check our zone configurations](show-zone-configurations.html) to mak
 The output should include the following:
 
 ~~~
-auth.token                      | ALTER TABLE auth.public.token CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
-auth.token@token_id_east_idx    | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
-auth.token@token_id_central_idx | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
-auth.token@token_id_west_idx    | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+TABLE token                      | ALTER TABLE auth.public.token CONFIGURE ZONE USING
+                                 |     num_replicas = 5,
+                                 |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                 |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+INDEX token@token_id_east_idx    | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
+                                 |     num_replicas = 5,
+                                 |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                 |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
+INDEX token@token_id_central_idx | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
+                                 |     num_replicas = 5,
+                                 |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                 |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
+INDEX token@token_id_west_idx    | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
+                                 |     num_replicas = 5,
+                                 |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                 |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
 ~~~
 
 Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of dummy data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.

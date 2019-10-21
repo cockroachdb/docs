@@ -28,6 +28,8 @@ Parameter | Description
 
 ## Examples
 
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
+
 ### View all replication zones
 
 {% include {{ page.version.version }}/zone-configs/view-all-replication-zones.md %}
@@ -38,21 +40,21 @@ Parameter | Description
 
 ### View the replication zone for a database
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-database.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
 
 ### View the replication zone for a table
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-table.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
 You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 
 ### View the replication zone for an index
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
 ### View the replication zone for a table partition
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-partition.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
 ## See also
 

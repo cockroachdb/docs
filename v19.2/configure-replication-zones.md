@@ -138,6 +138,8 @@ You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view
 
 ## Basic examples
 
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
+
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
 
 For more examples, see [`CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
@@ -322,15 +324,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-       zone_name  |                   config_sql
-    +-------------+--------------------------------------------------------------------+
-      west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
-                  |     range_min_bytes = 1048576,
-                  |     range_max_bytes = 67108864,
-                  |     gc.ttlseconds = 90000,
-                  |     num_replicas = 3,
-                  |     constraints = '{+region=us-west1: 2, +region=us-central1: 1}',
-                  |     lease_preferences = '[]'
+       target              |                   config_sql
+    +----------------------+--------------------------------------------------------------------+
+      DATABASE west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
+                           |     range_min_bytes = 1048576,
+                           |     range_max_bytes = 67108864,
+                           |     gc.ttlseconds = 90000,
+                           |     num_replicas = 3,
+                           |     constraints = '{+region=us-west1: 2, +region=us-central1: 1}',
+                           |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -412,15 +414,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-        zone_name  |                config_sql
-    +--------------+---------------------------------------------+
-         app1_db   | ALTER DATABASE app1_db CONFIGURE ZONE USING
-                   |     range_min_bytes = 1048576,
-                   |     range_max_bytes = 67108864,
-                   |     gc.ttlseconds = 90000,
-                   |     num_replicas = 5,
-                   |     constraints = '[]',
-                   |     lease_preferences = '[]'
+        target              |                config_sql
+    +-----------------------+---------------------------------------------+
+         DATABASE app1_db   | ALTER DATABASE app1_db CONFIGURE ZONE USING
+                            |     range_min_bytes = 1048576,
+                            |     range_max_bytes = 67108864,
+                            |     gc.ttlseconds = 90000,
+                            |     num_replicas = 5,
+                            |     constraints = '[]',
+                            |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -448,15 +450,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-        zone_name  |                config_sql
-    +--------------+---------------------------------------------+
-         app2_db   | ALTER DATABASE app2_db CONFIGURE ZONE USING
-                   |     range_min_bytes = 1048576,
-                   |     range_max_bytes = 67108864,
-                   |     gc.ttlseconds = 90000,
-                   |     num_replicas = 3,
-                   |     constraints = '[+datacenter=us-2]',
-                   |     lease_preferences = '[]'
+        target              |                config_sql
+    +-----------------------+---------------------------------------------+
+         DATABASE app2_db   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                            |     range_min_bytes = 1048576,
+                            |     range_max_bytes = 67108864,
+                            |     gc.ttlseconds = 90000,
+                            |     num_replicas = 3,
+                            |     constraints = '[+datacenter=us-2]',
+                            |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -538,15 +540,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-              zone_name       |                config_sql
-    +-------------------------+---------------------------------------------+
-         db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
-                              |     range_min_bytes = 1048576,
-                              |     range_max_bytes = 67108864,
-                              |     gc.ttlseconds = 90000,
-                              |     num_replicas = 5,
-                              |     constraints = '[+ssd]',
-                              |     lease_preferences = '[]'
+              target                |                config_sql
+    +-------------------------------+---------------------------------------------+
+         TABLE db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                                    |     range_min_bytes = 1048576,
+                                    |     range_max_bytes = 67108864,
+                                    |     gc.ttlseconds = 90000,
+                                    |     num_replicas = 5,
+                                    |     constraints = '[+ssd]',
+                                    |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -609,15 +611,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     > SHOW ZONE CONFIGURATION FOR RANGE default;
     ~~~
     ~~~
-      zone_name |                config_sql
-    +-----------+------------------------------------------+
-      .default  | ALTER RANGE default CONFIGURE ZONE USING
-                |     range_min_bytes = 1048576,
-                |     range_max_bytes = 67108864,
-                |     gc.ttlseconds = 90000,
-                |     num_replicas = 5,
-                |     constraints = '[]',
-                |     lease_preferences = '[]'
+      target         |                config_sql
+    +----------------+------------------------------------------+
+      RANGE default  | ALTER RANGE default CONFIGURE ZONE USING
+                     |     range_min_bytes = 1048576,
+                     |     range_max_bytes = 67108864,
+                     |     gc.ttlseconds = 90000,
+                     |     num_replicas = 5,
+                     |     constraints = '[]',
+                     |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -631,15 +633,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-      zone_name |              config_sql
-    +-----------+---------------------------------------+
-      .meta     | ALTER RANGE meta CONFIGURE ZONE USING
-                |     range_min_bytes = 1048576,
-                |     range_max_bytes = 67108864,
-                |     gc.ttlseconds = 3600,
-                |     num_replicas = 7,
-                |     constraints = '[]',
-                |     lease_preferences = '[]'
+      target         |              config_sql
+    +----------------+---------------------------------------+
+      RANGE meta     | ALTER RANGE meta CONFIGURE ZONE USING
+                     |     range_min_bytes = 1048576,
+                     |     range_max_bytes = 67108864,
+                     |     gc.ttlseconds = 3600,
+                     |     num_replicas = 7,
+                     |     constraints = '[]',
+                     |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -653,15 +655,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-       zone_name  |                 config_sql
-    +-------------+---------------------------------------------+
-      .timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
-                  |     range_min_bytes = 1048576,
-                  |     range_max_bytes = 67108864,
-                  |     gc.ttlseconds = 90000,
-                  |     num_replicas = 3,
-                  |     constraints = '[]',
-                  |     lease_preferences = '[]'
+       target          |                 config_sql
+    +------------------+---------------------------------------------+
+      RANGE timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
+                       |     range_min_bytes = 1048576,
+                       |     range_max_bytes = 67108864,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 3,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
     (1 row)
     ~~~
 
