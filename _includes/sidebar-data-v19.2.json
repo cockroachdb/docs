@@ -496,6 +496,12 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
+          },
+          {
+            "title": "Run Replication Reports",
+            "urls": [
+              "/${VERSION}/run-replication-reports.html"
+            ]
           }
         ]
       },
