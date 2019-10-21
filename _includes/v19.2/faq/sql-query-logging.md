@@ -32,11 +32,15 @@ With this setting on, each node of the cluster writes all SQL queries it execute
 
 Alternatively, if you are testing CockroachDB locally and want to log queries executed just by a specific node, you can either pass a CLI flag at node startup, or execute a SQL function on a running node.
 
-Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](start-a-node.html) command. For example, to start a single node locally and log all SQL queries it executes, you'd run:
+Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](start-a-node.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
 
 ~~~ shell
-$ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2
+$ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join=<join addresses>
 ~~~
+
+{{site.data.alerts.callout_success}}
+To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
+{{site.data.alerts.end}}
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
@@ -48,15 +52,13 @@ From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()`
 This will result in the following output:
 
 ~~~
+  crdb_internal.set_vmodule
 +---------------------------+
-| crdb_internal.set_vmodule |
-+---------------------------+
-|                         0 |
-+---------------------------+
+                          0
 (1 row)
 ~~~
 
-Once the logging is enabled, all of the node's queries will be written to the [CockroachDB log file](debug-and-error-logs.html) as follows:
+Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the [CockroachDB log file](debug-and-error-logs.html) as follows:
 
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
