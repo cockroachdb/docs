@@ -101,3 +101,11 @@ In CockroachDB, no such modulo is performed.
 ~~~ sql
 SELECT 1::int << (x % 64)
 ~~~
+
+### Locking with `FOR UPDATE`
+
+<span class="version-tag">New in v19.2:</span> The `FOR UPDATE` [locking clause](sql-grammar.html#locking_clause) is supported in [selection queries](selection-queries.html#parameters) for database migration compatibility.
+
+In CockroachDB, the `FOR UPDATE` clause places an advisory lock on data for performance optimization. It does not provide stronger, PostgreSQL-standard locking guarantees for uses unrelated to performance, such as applications that require locks to protect data from concurrent access altogether.
+
+The `FOR UPDATE` clause is not required to ensure concurrent reads and writes in CockroachDB. Instead, the database uses a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
