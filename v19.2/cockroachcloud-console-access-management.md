@@ -6,7 +6,7 @@ build_for: [cockroachcloud]
 redirect-from: managed-console-access-management.html
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachDB Cloud cluster. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud organization. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
 
 <Screenshot here>
 
