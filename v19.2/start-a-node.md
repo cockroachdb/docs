@@ -88,9 +88,9 @@ Flag | Description
 
 ### Locality
 
-The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
+The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality might include region, country, datacenter, rack, etc. The key-value pairs should be ordered into _locality tiers_ from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
 
-- CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. However, locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
+- CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. Locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
 
 - When there is high latency between nodes (e.g., cross-datacenter deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of datacenters.
 
