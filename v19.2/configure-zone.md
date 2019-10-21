@@ -65,11 +65,13 @@ Currently, only the `root` user can configure replication zones.
 
 ## Examples
 
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
+
 ### Edit a replication zone
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4, constraints = '[-region=west]';
+> ALTER TABLE users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~
 
 ~~~

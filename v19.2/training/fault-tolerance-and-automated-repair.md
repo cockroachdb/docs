@@ -180,7 +180,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --background
     ~~~
 
-2. In a new terminal, use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `.default` replication factor to 5:
+2. In a new terminal, use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `default` replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell

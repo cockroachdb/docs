@@ -28,6 +28,8 @@ Parameter | Description
 
 ## Examples
 
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
+
 ### View all replication zones
 
 {% include {{ page.version.version }}/zone-configs/view-all-replication-zones.md %}
@@ -38,21 +40,46 @@ Parameter | Description
 
 ### View the replication zone for a database
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-database.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
 
 ### View the replication zone for a table
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-table.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
 You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 
 ### View the replication zone for an index
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+~~~
+
+~~~
+CONFIGURE ZONE 1
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ZONE CONFIGURATION FOR INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
+~~~
+
+~~~
+                         target                        |                                 raw_config_sql
++------------------------------------------------------+---------------------------------------------------------------------------------+
+  INDEX vehicles@vehicles_auto_index_fk_city_ref_users | ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                       |     range_min_bytes = 16777216,
+                                                       |     range_max_bytes = 67108864,
+                                                       |     gc.ttlseconds = 100000,
+                                                       |     num_replicas = 5,
+                                                       |     constraints = '[]',
+                                                       |     lease_preferences = '[]'
+(1 row)
+~~~
 
 ### View the replication zone for a table partition
 
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-a-partition.md %}
+{% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
 ## See also
 

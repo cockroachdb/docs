@@ -16,7 +16,7 @@ To get the name of a secondary index, which you need for the `CONFIGURE ZONE` st
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER INDEX tpch.frequent_customers CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+> ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
 
 ~~~
@@ -25,18 +25,18 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR INDEX tpch.customer@frequent_customers;
+> SHOW ZONE CONFIGURATION FOR INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~
 
 ~~~
-             zone_name             |                                config_sql
-+----------------------------------+--------------------------------------------------------------------------+
-  tpch.customer@frequent_customers | ALTER INDEX tpch.public.customer@frequent_customers CONFIGURE ZONE USING
-                                   |     range_min_bytes = 1048576,
-                                   |     range_max_bytes = 67108864,
-                                   |     gc.ttlseconds = 100000,
-                                   |     num_replicas = 5,
-                                   |     constraints = '[]',
-                                   |     lease_preferences = '[]'
+                         target                        |                                 raw_config_sql
++------------------------------------------------------+---------------------------------------------------------------------------------+
+  INDEX vehicles@vehicles_auto_index_fk_city_ref_users | ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                       |     range_min_bytes = 16777216,
+                                                       |     range_max_bytes = 67108864,
+                                                       |     gc.ttlseconds = 100000,
+                                                       |     num_replicas = 5,
+                                                       |     constraints = '[]',
+                                                       |     lease_preferences = '[]'
 (1 row)
 ~~~
