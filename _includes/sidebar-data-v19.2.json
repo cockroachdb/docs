@@ -471,6 +471,12 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
+          },
+          {
+            "title": "Verify Constraint Conformance",
+            "urls": [
+              "/${VERSION}/verify-constraint-conformance.html"
+            ]
           }
         ]
       },
