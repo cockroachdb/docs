@@ -84,9 +84,10 @@ Compute Engine instances are preconfigured to use [NTP](http://www.ntp.org/), wh
 
 Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html), which uses a fleet of satellite-connected and atomic reference clocks in each AWS Region to deliver accurate current time readings. The service also smears the leap second.
 
-- If you plan to run your entire cluster on AWS, [configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service).
-- However, if you plan to run a hybrid cluster across AWS and other cloud providers or environments, [configure all machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks), which is comparably accurate and also handles <a href="https://developers.google.com/time/smear">"smearing" the leap second</a>.
-
+- [Configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service).
+    - Per the above instructions, ensure that `etc/chrony.conf` on the instance contains the line `server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4` and that other `server` or `pool` lines are commented out.
+    - To verify that Amazon Time Sync Service is being used, run `chronyc sources -v` and check for a line containing `* 169.254.169.123`. The `*` denotes the preferred time server.
+    
 {% elsif page.title contains "Azure" %}
 
 [`ntpd`](http://doc.ntp.org/) should keep offsets in the single-digit milliseconds, so that software is featured here. However, to run `ntpd` properly on Azure VMs, it's necessary to first unbind the Time Synchronization device used by the Hyper-V technology running Azure VMs; this device aims to synchronize time between the VM and its host operating system but has been known to cause problems.

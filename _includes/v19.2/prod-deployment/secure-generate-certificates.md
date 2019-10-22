@@ -53,6 +53,22 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 5. Upload the CA certificate and node certificate and key to the first node:
 
+    {% if page.title contains "AWS" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh -i /path/<key file>.pem <username>@<node1 DNS name> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp -i /path/<key file>.pem \
+    certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ~~~
+
+    {% else %}
     {% include copy-clipboard.html %}
   	~~~ shell
   	$ ssh <username>@<node1 address> "mkdir certs"
@@ -65,6 +81,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
   	certs/node.key \
   	<username>@<node1 address>:~/certs
   	~~~
+    {% endif %}
 
 6. Delete the local copy of the node certificate and key:
 
@@ -95,19 +112,35 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 8. Upload the CA certificate and node certificate and key to the second node:
 
+    {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ssh <username>@<node2 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    $ ssh -i /path/<key file>.pem <username>@<node2 DNS name> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node2 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp -i /path/<key file>.pem \
+    certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 DNS name>:~/certs
+    ~~~
+
+    {% else %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh <username>@<node2 address> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 address>:~/certs
+    ~~~
+    {% endif %}
 
 9. Repeat steps 6 - 8 for each additional node.
 

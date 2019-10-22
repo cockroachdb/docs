@@ -6,7 +6,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=<address of any node>
+    $ cockroach sql --certs-dir=certs --host=<address of load balancer>
     ~~~
 
 2.  Create a `securenodetest` database:
@@ -16,16 +16,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
     > CREATE DATABASE securenodetest;
     ~~~
 
-3. Use `\q` to exit the SQL shell.
-
-4. Launch the built-in SQL client against a different node:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=<address of different node>
-    ~~~
-
-5. View the cluster's databases, which will include `securenodetest`:
+3. View the cluster's databases, which will include `securenodetest`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -45,4 +36,4 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
     (5 rows)
     ~~~
 
-6. Use `\q` to exit the SQL shell.
+4. Use `\q` to exit the SQL shell.

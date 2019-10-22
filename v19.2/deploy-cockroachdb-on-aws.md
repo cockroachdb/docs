@@ -24,16 +24,38 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
-- All instances running CockroachDB should be members of the same Security Group.
+- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html).
 
-## Step 1. Configure your network
+## Step 1. Create instances
+
+Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
+
+- Run at least 3 nodes to ensure survivability.
+
+- Your instances will rely on Amazon Time Sync Service for clock synchronization. When choosing an AMI, note that some machines are preconfigured to use Amazon Time Sync Service (e.g., Amazon Linux AMIs) and others are not.
+
+- Use `m` (general purpose), `c` (compute-optimized), or `i` (storage-optimized) instance types, with SSD-backed [EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html) or [Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for internal testing.
+
+	- **Do not** use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
+
+- Note the ID of the VPC you select. You will need to look up its CIDR when setting inbound rules for your security group.
+
+- Make sure all your instances are in the same security group.
+
+	- If you are creating a new security group, add the [inbound rules](#step-2-configure-your-network) from the next step. Otherwise note the ID of the security group.
+
+- When creating the instance, you will download a private key file used to securely connect to your instances. Decide where to place this file, and note the file path for later commands.
+
+For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+
+## Step 2. Configure your network
 
 CockroachDB requires TCP communication on two ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
-- `8080` for exposing your Admin UI
+- `8080` for exposing your Admin UI, and for routing from the load balancer to the health check
 
-You can create these rules using [Security Groups' Inbound Rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule).
+If you haven't already done so, [create inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) for your security group.
 
 #### Inter-node and load balancer-node communication
 
@@ -42,16 +64,7 @@ You can create these rules using [Security Groups' Inbound Rules](http://docs.aw
  Type | Custom TCP Rule
  Protocol | TCP
  Port Range | **26257**
- Source | The name of your security group (e.g., *sg-07ab277a*)
-
-#### Admin UI
-
- Field | Recommended Value
--------|-------------------
- Type | Custom TCP Rule
- Protocol | TCP
- Port Range | **8080**
- Source | Your network's IP ranges
+ Source | The ID of your security group (e.g., *sg-07ab277a*)
 
 #### Application data
 
@@ -62,17 +75,29 @@ You can create these rules using [Security Groups' Inbound Rules](http://docs.aw
  Port Range | **26257**
  Source | Your application's IP ranges
 
-## Step 2. Create instances
+If you plan to [run our sample workload](#step-9-run-a-sample-workload) on an instance, the traffic source is the internal (private) IP address of that instance. To find this, open the Instances section of the Amazon EC2 console and click on the instance.
 
-[Create an instance](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate instance for that workload.
+#### Admin UI
 
-- Run at least 3 nodes to ensure survivability.
+ Field | Recommended Value
+-------|-------------------
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **8080**
+ Source | Your network's IP ranges
 
-- Use `m` (general purpose), `c` (compute-optimized), or `i` (storage-optimized) [instances](https://aws.amazon.com/ec2/instance-types/), with SSD-backed [EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html) or [Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for internal testing.
+You can set your network IP by selecting "My IP" in the Source field.
 
-- **Do not** use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
+#### Load balancer-health check communication
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+ Field | Recommended Value
+-------|-------------------
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **8080**
+ Source | The CIDR of your VPC (e.g., 10.12.0.0/16)
+
+To get the CIDR of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
 
 ## Step 3. Synchronize clocks
 
@@ -88,10 +113,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 AWS offers fully-managed load balancing to distribute traffic between instances.
 
-1. [Add AWS load balancing](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html). Be sure to:
-    - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the nodes.
+1. [Add AWS load balancing](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html#scale-and-load-balance). Be sure to:
+	- Select a **Network Load Balancer** (not an Application Load Balancer, as in the above instructions) and use the ports we specify below.
+	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
+	- Set the load balancer port to **26257**.
+    - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
     - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
-2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+    - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
+2. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of AWS's managed load balancing, see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
 
@@ -117,9 +146,13 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 ## Step 10. Monitor the cluster
 
+In the Target Groups section of the Amazon EC2 console, [check the health](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks.html) of your instances by inspecting your target group and opening the Targets tab.
+
 {% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
+
+Before adding a new node, [create a new instance](#step-1-create-instances) as you did earlier. Then [generate and upload a certificate and key](#step-5-generate-certificates) for the new node.
 
 {% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
