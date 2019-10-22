@@ -74,11 +74,11 @@ For example:
 +-------------+-----------------------------------------------------------------+
 |    Table    |                           CreateTable                           |
 +-------------+-----------------------------------------------------------------+
-| logoff_copy | CREATE TABLE logoff_copy (␤                                     |
-|             |     user_id INT NULL,␤                                          |
-|             |     user_email STRING NULL,␤                                    |
-|             |     logoff_date DATE NULL,␤                                     |
-|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)␤ |
+| logoff_copy | CREATE TABLE logoff_copy (                                      |
+|             |     user_id INT NULL,                                           |
+|             |     user_email STRING NULL,                                     |
+|             |     logoff_date DATE NULL,                                      |
+|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)  |
 |             | )                                                               |
 +-------------+-----------------------------------------------------------------+
 (1 row)
@@ -101,12 +101,12 @@ For example:
 +-------------+-----------------------------------------------------------------+
 |    Table    |                           CreateTable                           |
 +-------------+-----------------------------------------------------------------+
-| logoff_copy | CREATE TABLE logoff_copy (␤                                     |
-|             |     user_id INT NULL,␤                                          |
-|             |     user_email STRING NULL,␤                                    |
-|             |     logoff_date DATE NULL,␤                                     |
-|             |     INDEX logoff_copy_id_idx (user_id ASC),␤                    |
-|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)␤ |
+| logoff_copy | CREATE TABLE logoff_copy (                                      |
+|             |     user_id INT NULL,                                           |
+|             |     user_email STRING NULL,                                     |
+|             |     logoff_date DATE NULL,                                      |
+|             |     INDEX logoff_copy_id_idx (user_id ASC),                     |
+|             |     FAMILY "primary" (user_id, user_email, logoff_date, rowid)  |
 |             | )                                                               |
 +-------------+-----------------------------------------------------------------+
 (1 row)

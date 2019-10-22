@@ -59,12 +59,12 @@ Field | Description
 +-----------+----------------------------------------------------+
 |   Table   |                    CreateTable                     |
 +-----------+----------------------------------------------------+
-| customers | CREATE TABLE customers (␤                          |
-|           |     id INT NOT NULL,␤                              |
-|           |     email STRING NULL,␤                            |
-|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤    |
-|           |     UNIQUE INDEX customers_email_key (email ASC),␤ |
-|           |     FAMILY "primary" (id, email)␤                  |
+| customers | CREATE TABLE customers (                           |
+|           |     id INT NOT NULL,                               |
+|           |     email STRING NULL,                             |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),     |
+|           |     UNIQUE INDEX customers_email_key (email ASC),  |
+|           |     FAMILY "primary" (id, email)                   |
 |           | )                                                  |
 +-----------+----------------------------------------------------+
 (1 row)
@@ -78,11 +78,11 @@ Field | Description
 +----------+--------------------------------------------------+
 |  Table   |                   CreateTable                    |
 +----------+--------------------------------------------------+
-| products | CREATE TABLE products (␤                         |
-|          |     sku STRING NOT NULL,␤                        |
-|          |     price DECIMAL(9,2) NULL,␤                    |
-|          |     CONSTRAINT "primary" PRIMARY KEY (sku ASC),␤ |
-|          |     FAMILY "primary" (sku, price)␤               |
+| products | CREATE TABLE products (                          |
+|          |     sku STRING NOT NULL,                         |
+|          |     price DECIMAL(9,2) NULL,                     |
+|          |     CONSTRAINT "primary" PRIMARY KEY (sku ASC),  |
+|          |     FAMILY "primary" (sku, price)                |
 |          | )                                                |
 +----------+--------------------------------------------------+
 (1 row)
@@ -96,18 +96,18 @@ Field | Description
 +--------+------------------------------------------------------------------------------------------+
 | Table  |                                       CreateTable                                        |
 +--------+------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                   |
-|        |     id INT NOT NULL,␤                                                                    |
-|        |     product STRING NOT NULL,␤                                                            |
-|        |     quantity INT NULL,␤                                                                  |
-|        |     customer INT NOT NULL,␤                                                              |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                          |
-|        |     UNIQUE INDEX id_customer_unique (id ASC, customer ASC),␤                             |
-|        |     CONSTRAINT fk_product_ref_products FOREIGN KEY (product) REFERENCES products (sku),␤ |
-|        |     INDEX orders_product_idx (product ASC),␤                                             |
-|        |     CONSTRAINT valid_customer FOREIGN KEY (customer) REFERENCES customers (id),␤         |
-|        |     INDEX orders_customer_idx (customer ASC),␤                                           |
-|        |     FAMILY "primary" (id, product, quantity, customer)␤                                  |
+| orders | CREATE TABLE orders (                                                                    |
+|        |     id INT NOT NULL,                                                                     |
+|        |     product STRING NOT NULL,                                                             |
+|        |     quantity INT NULL,                                                                   |
+|        |     customer INT NOT NULL,                                                               |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                           |
+|        |     UNIQUE INDEX id_customer_unique (id ASC, customer ASC),                              |
+|        |     CONSTRAINT fk_product_ref_products FOREIGN KEY (product) REFERENCES products (sku),  |
+|        |     INDEX orders_product_idx (product ASC),                                              |
+|        |     CONSTRAINT valid_customer FOREIGN KEY (customer) REFERENCES customers (id),          |
+|        |     INDEX orders_customer_idx (customer ASC),                                            |
+|        |     FAMILY "primary" (id, product, quantity, customer)                                   |
 |        | )                                                                                        |
 +--------+------------------------------------------------------------------------------------------+
 (1 row)
