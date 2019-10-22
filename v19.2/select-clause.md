@@ -42,7 +42,7 @@ Parameter | Description
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
 `GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
-`WINDOW window_definition_list` | A list of [window functions definitions](window-functions.html).
+`WINDOW window_definition_list` | A list of [window definitions](window-functions.html#window-definitions).
 
 ## Eliminate duplicate rows
 

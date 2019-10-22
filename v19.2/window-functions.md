@@ -12,23 +12,76 @@ For a complete list of supported window functions, see [Functions and Operators]
 All [aggregate functions][aggregate-functions] can also be used as [window functions][window-functions]. For more information, see the [Examples](#examples) below.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-The examples on this page use the `users`, `rides`, and `vehicles` tables from our open-source fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
-{{site.data.alerts.end}}
+## Window definitions
+
+Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [`WINDOW` clauses](sql-grammar.html#window_clause).
+
+### Syntax
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="basic">Basic</button>
+  <button style="width: 15%" class="filter-button" data-scope="expanded">Expanded</button>
+</div>
+
+<br><br>
+
+<div class="filter-content" markdown="1" data-scope="basic">
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/window_definition.html %}
+</div>
+
+### Parameters
+
+Parameter | Description
+----------|-------------
+`window_name` | The name of the new window frame.
+`opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
+`opt_partition_clause`  | An optional `PARTITION BY` clause.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
+`opt_frame_clause`  | An optional frame clause, which contains a frame boundary and/or an `EXCLUDE` clause.
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="expanded">
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/window_definition.html %}
+</div>
+
+**opt_frame_clause ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_frame_clause.html %}
+</div>
+
+### Parameters
+
+Parameter | Description
+----------|-------------
+`window_name` | The name of the new window frame.
+`opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
+`opt_partition_clause`  | An optional `PARTITION BY` clause.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
+`frame_bound` | An optional frame boundary.<br>Valid start boundaries include `UNBOUNDED PRECEDING`, `<offset> PRECEDING`, and `CURRENT ROW`.<br>Valid end boundaries include `UNBOUNDED FOLLOWING`, `<offset> FOLLOWING`, and `CURRENT ROW`.
+`opt_frame_exclusion` | An optional frame `EXCLUDE` clause.<br>Valid exclusions include `CURRENT ROW`, `GROUP`, `TIES`, and `NO OTHERS`.
+
+</div>
 
 ## How window functions work
 
 At a high level, window functions work by:
 
 1. Creating a "virtual table" using a [selection query][selection-query].
-2. Splitting that table into window frames using an `OVER (PARTITION BY ...)` clause.
-3. Applying the window function to each of the window frames created in step 2
+2. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause](sql-grammar.html#over_clause), directly after the window function, or in a [`WINDOW` clause](sql-grammar.html#window_clause), as a part of the selection query.
+3. Applying the window function to each of the window frames.
 
-For example, consider this query:
+For example, consider a query where the window frames are defined for each window function call:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT(city),
+             SUM(revenue) OVER () AS total_revenue,
              SUM(revenue) OVER (PARTITION BY city) AS city_revenue
             FROM rides
         ORDER BY city_revenue DESC;
@@ -38,112 +91,31 @@ Its operation can be described as follows (numbered steps listed here correspond
 
 1. The outer `SELECT DISTINCT(city) ... FROM rides` creates a "virtual table" on which the window functions will operate.
 2. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
-3. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city (Amsterdam, Boston, L.A., etc.).
+3. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition](partitioning.html) (Amsterdam, Boston, L.A., etc.).
 
 <img src="{{ 'images/v19.2/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
 
-## Caveats
+### Caveats
 
-The most important part of working with window functions is understanding what data will be in the frame that the window function will be operating on. By default, the window frame includes all of the rows of the partition. If you order the partition, the default frame includes all rows from the first row in the partition to the current row. In other words, adding an `ORDER BY` clause when you create the window frame (e.g., `PARTITION BY x ORDER by y`) has the following effects:
+The most important part of working with window functions is understanding what data will be in the frame that the window function will be operating on. By default, the window frame includes all of the rows of the partition. If you order the partition, the default frame includes all rows from the first row in the partition of the current row. In other words, adding an `ORDER BY` clause when you create the window frame (e.g., `PARTITION BY x ORDER by y`) has the following effects:
 
 - It makes the rows inside the window frame ordered.
 - It changes what rows the function is called on - no longer all of the rows in the window frame, but a subset between the "first" row and the current row.
 
-Another way of saying this is that you can run a window function on either:
+Another way of saying this is that you can run a window function on:
 
 - All rows in the window frame created by the  `PARTITION BY` clause, e.g., `SELECT f(x) OVER () FROM z`.
 - A subset of the rows in the window frame if the frame is created with `SELECT f(x) OVER (PARTITION BY x ORDER BY y) FROM z`.
 
-Because of this, you should be aware of the behavior of any [aggregate function][aggregate-functions] you use as a [window function][window-functions]. If you are not seeing results you expect from a window function, this behavior may explain why. You may need to specify the frame boundaries explicitly using a *frame clause* such as `ROWS BETWEEN <start> <end> [exclusion]` (fully supported) or `RANGE BETWEEN <start> <end> [exclusion]` (only `UNBOUNDED PRECEDING`/`CURRENT ROW`/`UNBOUNDED FOLLOWING` supported).
+Because of this, you should be aware of the behavior of any [aggregate function][aggregate-functions] you use as a [window function][window-functions]. If you are not seeing results you expect from a window function, this behavior may explain why. You may need to specify the frame boundaries explicitly in [the window definition](#window-definitions).
+
+{{site.data.alerts.callout_info}}
+If you are running separate window functions over the same window frame, you can define the window frame once in a `WINDOW` clause, and then refer to the window by its name when you call the window function. For an example, see [Customers taking the most rides and generating the most revenue](#customers-taking-the-most-rides-and-generating-the-most-revenue).
+{{site.data.alerts.end}}
 
 ## Examples
 
-### Schema
-
-The tables used in the examples are shown below.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
-
-~~~
-+-------+-------------------------------------------------------------+
-| Table |                         CreateTable                         |
-+-------+-------------------------------------------------------------+
-| users | CREATE TABLE users (                                        |
-|       |     id UUID NOT NULL,                                       |
-|       |     city STRING NOT NULL,                                   |
-|       |     name STRING NULL,                                       |
-|       |     address STRING NULL,                                    |
-|       |     credit_card STRING NULL,                                |
-|       |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),    |
-|       |     FAMILY "primary" (id, city, name, address, credit_card) |
-|       | )                                                           |
-+-------+-------------------------------------------------------------+
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE rides;
-~~~
-
-~~~
-+-------+--------------------------------------------------------------------------+
-| Table |                               CreateTable                                |
-+-------+--------------------------------------------------------------------------+
-| rides | CREATE TABLE rides (                                                     |
-|       |     id UUID NOT NULL,                                                    |
-|       |     city STRING NOT NULL,                                                |
-|       |     vehicle_city STRING NULL,                                            |
-|       |     rider_id UUID NULL,                                                  |
-|       |     vehicle_id UUID NULL,                                                |
-|       |     start_address STRING NULL,                                           |
-|       |     end_address STRING NULL,                                             |
-|       |     start_time TIMESTAMP NULL,                                           |
-|       |     end_time TIMESTAMP NULL,                                             |
-|       |     revenue FLOAT NULL,                                                  |
-|       |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),                 |
-|       |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, rider_id) REFERENCES |
-|       | users (city, id),                                                        |
-|       |     INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),   |
-|       |     CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (vehicle_city,   |
-|       | vehicle_id) REFERENCES vehicles (city, id),                              |
-|       |     INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city    |
-|       | ASC, vehicle_id ASC),                                                    |
-|       |     FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id,      |
-|       | start_address, end_address, start_time, end_time, revenue),              |
-|       |     CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)       |
-|       | )                                                                        |
-+-------+--------------------------------------------------------------------------+
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE vehicles;
-~~~
-
-~~~
-+----------+------------------------------------------------------------------------------------------------+
-|  Table   |                                          CreateTable                                           |
-+----------+------------------------------------------------------------------------------------------------+
-| vehicles | CREATE TABLE vehicles (                                                                       +|
-|          |         id UUID NOT NULL,                                                                     +|
-|          |         city STRING NOT NULL,                                                                 +|
-|          |         type STRING NULL,                                                                     +|
-|          |         owner_id UUID NULL,                                                                   +|
-|          |         creation_time TIMESTAMP NULL,                                                         +|
-|          |         status STRING NULL,                                                                   +|
-|          |         mycol STRING NULL,                                                                    +|
-|          |         ext JSON NULL,                                                                        +|
-|          |         CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),                                  +|
-|          |         CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users (city, id),+|
-|          |         INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),                 +|
-|          |         FAMILY "primary" (id, city, type, owner_id, creation_time, status, mycol, ext)        +|
-|          | )                                                                                              |
-+----------+------------------------------------------------------------------------------------------------+
-(1 row)
-~~~
+{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 ### Customers taking the most rides
 
@@ -159,20 +131,18 @@ To see which customers have taken the most rides, run:
 ~~~
 
 ~~~
-+-------------------+-----------------+
-|       name        | number of rides |
-+-------------------+-----------------+
-| Michael Smith     |              53 |
-| Michael Williams  |              37 |
-| John Smith        |              36 |
-| Jennifer Smith    |              32 |
-| Michael Brown     |              31 |
-| Michael Miller    |              30 |
-| Christopher Smith |              29 |
-| James Johnson     |              28 |
-| Jennifer Johnson  |              27 |
-| Amanda Smith      |              26 |
-+-------------------+-----------------+
+        name       | number of rides
++------------------+-----------------+
+  Michael Brown    |              19
+  Richard Bullock  |              17
+  Judy White       |              15
+  Patricia Herrera |              15
+  Tony Ortiz       |              15
+  Maria Weber      |              15
+  Cindy Medina     |              14
+  Samantha Coffey  |              13
+  Nicole Mcmahon   |              13
+  Amy Cobb         |              13
 (10 rows)
 ~~~
 
@@ -190,20 +160,18 @@ To see which customers have generated the most revenue, run:
 ~~~
 
 ~~~
+        name       | total rider revenue
 +------------------+---------------------+
-|       name       | total rider revenue |
-+------------------+---------------------+
-| Michael Smith    |             2251.04 |
-| Jennifer Smith   |             2114.55 |
-| Michael Williams |             2011.85 |
-| John Smith       |             1826.43 |
-| Robert Johnson   |             1652.99 |
-| Michael Miller   |             1619.25 |
-| Robert Smith     |             1534.11 |
-| Jennifer Johnson |             1506.50 |
-| Michael Brown    |             1478.90 |
-| Michael Johnson  |             1405.68 |
-+------------------+---------------------+
+  Richard Bullock  |              952.00
+  Patricia Herrera |              948.00
+  Maria Weber      |              903.00
+  Michael Brown    |              858.00
+  Judy White       |              818.00
+  Tyler Dalton     |              786.00
+  Samantha Coffey  |              758.00
+  Cindy Medina     |              740.00
+  Tony Ortiz       |              724.00
+  Nicole Mcmahon   |              696.00
 (10 rows)
 ~~~
 
@@ -227,20 +195,18 @@ To add row numbers to the output, kick the previous query down into a subquery a
 ~~~
 
 ~~~
+  row_number |       name       | total rider revenue
 +------------+------------------+---------------------+
-| row_number |       name       | total rider revenue |
-+------------+------------------+---------------------+
-|          1 | Michael Smith    |             2251.04 |
-|          2 | Jennifer Smith   |             2114.55 |
-|          3 | Michael Williams |             2011.85 |
-|          4 | John Smith       |             1826.43 |
-|          5 | Robert Johnson   |             1652.99 |
-|          6 | Michael Miller   |             1619.25 |
-|          7 | Robert Smith     |             1534.11 |
-|          8 | Jennifer Johnson |             1506.50 |
-|          9 | Michael Brown    |             1478.90 |
-|         10 | Michael Johnson  |             1405.68 |
-+------------+------------------+---------------------+
+           1 | Richard Bullock  |              952.00
+           2 | Patricia Herrera |              948.00
+           3 | Maria Weber      |              903.00
+           4 | Michael Brown    |              858.00
+           5 | Judy White       |              818.00
+           6 | Tyler Dalton     |              786.00
+           7 | Samantha Coffey  |              758.00
+           8 | Cindy Medina     |              740.00
+           9 | Tony Ortiz       |              724.00
+          10 | Nicole Mcmahon   |              696.00
 (10 rows)
 ~~~
 
@@ -263,22 +229,22 @@ To see which customers have taken the most rides while generating the most reven
 ~~~
 
 ~~~
-+-------------------+-----------------+---------------------+
-|       name        | number of rides | total rider revenue |
-+-------------------+-----------------+---------------------+
-| Michael Smith     |              53 |             2251.04 |
-| Michael Williams  |              37 |             2011.85 |
-| John Smith        |              36 |             1826.43 |
-| Jennifer Smith    |              32 |             2114.55 |
-| Michael Brown     |              31 |             1478.90 |
-| Michael Miller    |              30 |             1619.25 |
-| Christopher Smith |              29 |             1380.18 |
-| James Johnson     |              28 |             1378.78 |
-| Jennifer Johnson  |              27 |             1506.50 |
-| Robert Johnson    |              26 |             1652.99 |
-+-------------------+-----------------+---------------------+
+        name       | number of rides | total rider revenue
++------------------+-----------------+---------------------+
+  Michael Brown    |              19 |              858.00
+  Richard Bullock  |              17 |              952.00
+  Patricia Herrera |              15 |              948.00
+  Maria Weber      |              15 |              903.00
+  Judy White       |              15 |              818.00
+  Tony Ortiz       |              15 |              724.00
+  Cindy Medina     |              14 |              740.00
+  Tyler Dalton     |              13 |              786.00
+  Samantha Coffey  |              13 |              758.00
+  Nicole Mcmahon   |              13 |              696.00
 (10 rows)
 ~~~
+
+Note that in the query above, a `WINDOW` clause defines the window frame, and the `OVER` clauses reuse the window frame.
 
 ### Customers with the highest average revenue per ride
 
@@ -286,7 +252,7 @@ To see which customers have the highest average revenue per ride, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name,
+> SELECT DISTINCT name,
     COUNT(*)     OVER w AS "number of rides",
     AVG(revenue) OVER w AS "average revenue per ride"
     FROM users JOIN rides ON users.ID = rides.rider_id
@@ -296,26 +262,24 @@ To see which customers have the highest average revenue per ride, run:
 ~~~
 
 ~~~
+         name         | number of rides | average revenue per ride
 +---------------------+-----------------+--------------------------+
-|        name         | number of rides | average revenue per ride |
-+---------------------+-----------------+--------------------------+
-| Madison Jimenez     |               1 |                   100.00 |
-| David Webster       |               1 |                   100.00 |
-| Samantha Holmes     |               1 |                   100.00 |
-| Charles Marquez     |               1 |                   100.00 |
-| Briana Howell       |               1 |                    99.99 |
-| Michelle Williamson |               1 |                    99.99 |
-| Shannon Weiss       |               1 |                    99.98 |
-| Justin Barry        |               1 |                    99.98 |
-| Paul Key            |               1 |                    99.97 |
-| Holly Gregory       |               1 |                    99.97 |
-+---------------------+-----------------+--------------------------+
+  Daniel Hernandez MD |               7 |    69.714285714285714286
+  Pamela Morse        |               5 |                    68.40
+  Mark Adams          |               7 |    66.571428571428571429
+  Sarah Wang DDS      |               8 |                   63.375
+  Patricia Herrera    |              15 |                    63.20
+  Taylor Cunningham   |              10 |                    62.60
+  Tyler Dalton        |              13 |    60.461538461538461538
+  Maria Weber         |              15 |                    60.20
+  James Hamilton      |               8 |                    60.00
+  Deborah Carson      |              10 |                    59.70
 (10 rows)
 ~~~
 
-### Customers with the highest average revenue per ride, given more than five rides
+### Customers with the highest average revenue per ride, given ten or more rides
 
-To see which customers have the highest average revenue per ride, given that they have taken at least 3 rides, run:
+To see which customers have the highest average revenue per ride, given that they have taken at least 10 rides, run:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -326,26 +290,24 @@ To see which customers have the highest average revenue per ride, given that the
       FROM users JOIN rides ON users.ID = rides.rider_id
       WINDOW w AS (PARTITION BY name)
   )
-  WHERE "number of rides" >= 5
+  WHERE "number of rides" >= 10
   ORDER BY "average revenue per ride" DESC
   LIMIT 10;
 ~~~
 
 ~~~
-+------------------+-----------------+--------------------------+
-|       name       | number of rides | average revenue per ride |
-+------------------+-----------------+--------------------------+
-| Richard Wilson   |               5 |                    88.22 |
-| Rachel Johnson   |               6 |                    86.42 |
-| Kenneth Wilson   |               5 |                    85.26 |
-| Benjamin Avila   |               5 |                    85.23 |
-| Katie Evans      |               5 |                    85.10 |
-| Steven Griffith  |               5 |                    84.64 |
-| Phillip Moore    |               5 |                    84.22 |
-| Cheryl Adams     |               5 |                    83.85 |
-| Patrick Baker    |               5 |                    83.63 |
-| Stephen Gonzalez |               6 |                    83.59 |
-+------------------+-----------------+--------------------------+
+        name        | number of rides | average revenue per ride
++-------------------+-----------------+--------------------------+
+  Patricia Herrera  |              15 |                    63.20
+  Taylor Cunningham |              10 |                    62.60
+  Tyler Dalton      |              13 |                    60.46
+  Maria Weber       |              15 |                    60.20
+  Deborah Carson    |              10 |                    59.70
+  Carl Russell      |              11 |                    58.36
+  Samantha Coffey   |              13 |                    58.31
+  Matthew Clay      |              11 |                    56.09
+  Richard Bullock   |              17 |                    56.00
+  Ryan Hickman      |              10 |                    55.70
 (10 rows)
 ~~~
 
@@ -367,11 +329,9 @@ To find out the total number of riders and total revenue generated thus far by t
 ~~~
 
 ~~~
+  total # of riders | total revenue
 +-------------------+---------------+
-| total # of riders | total revenue |
-+-------------------+---------------+
-|             63117 |   15772911.41 |
-+-------------------+---------------+
+                 50 |      46523.00
 (1 row)
 ~~~
 
@@ -383,13 +343,11 @@ To find out the total number of riders and total revenue generated thus far by t
 ~~~
 
 ~~~
-+------------+-------+
-|    type    |  cnt  |
-+------------+-------+
-| bike       | 33377 |
-| scooter    | 33315 |
-| skateboard | 33307 |
-+------------+-------+
+     type    | cnt
++------------+-----+
+  scooter    |   7
+  skateboard |   6
+  bike       |   2
 (3 rows)
 ~~~
 
@@ -401,19 +359,17 @@ To find out the total number of riders and total revenue generated thus far by t
 ~~~
 
 ~~~
+      city      | city_revenue
 +---------------+--------------+
-|    (city)     | city_revenue |
-+---------------+--------------+
-| paris         |    567144.48 |
-| washington dc |    567011.74 |
-| amsterdam     |    564211.74 |
-| new york      |    561420.67 |
-| rome          |    560464.52 |
-| boston        |    559465.75 |
-| san francisco |    558807.13 |
-| los angeles   |    558805.45 |
-| seattle       |    555452.08 |
-+---------------+--------------+
+  boston        |      3019.00
+  amsterdam     |      2966.00
+  new york      |      2923.00
+  san francisco |      2857.00
+  paris         |      2849.00
+  washington dc |      2797.00
+  seattle       |      2792.00
+  los angeles   |      2772.00
+  rome          |      2653.00
 (9 rows)
 ~~~
 
