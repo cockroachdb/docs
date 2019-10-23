@@ -124,6 +124,9 @@ On their own, partitions are inert and simply apply a label to the rows of the t
 
 CockroachDB uses the most granular zone config available. Zone configs that target a partition are considered more granular than those that target a table or index, which in turn are considered more granular than those that target a database.
 
+
+{% include {{page.version.version}}/sql/querying-partitions.md %}
+
 ## Examples
 
 ### Define table partitions by list
