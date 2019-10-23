@@ -173,6 +173,10 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
+### Dumping a table with no user-visible columns
+
+{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
+
 ### Importing an interleaved table from a `cockroach dump` output
 
 {{site.data.alerts.callout_info}}
