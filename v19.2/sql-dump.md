@@ -389,6 +389,10 @@ INSERT INTO dump_test (id, name) VALUES
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
 
+## Known limitations
+
+{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
+
 ## See also
 
 - [Import Data](import-data.html)

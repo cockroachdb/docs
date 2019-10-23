@@ -23,10 +23,6 @@ When `cockroach dump` is executed:
 The user must have the `SELECT` privilege on the target table(s).
 {{site.data.alerts.end}}
 
-## Known limitations
-
-{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
-
 ## Synopsis
 
 Dump the schemas and data of specific tables to stdout:
@@ -392,6 +388,16 @@ INSERT INTO dump_test (id, name) VALUES
 ~~~
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
+
+## Known limitations
+
+### Dumping a table with no user-visible columns
+
+{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
+
+### Importing an interleaved table from a `cockroach dump` output
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
 ## See also
 
