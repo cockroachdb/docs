@@ -2,6 +2,7 @@
 title: CockroachDB Docs
 summary: CockroachDB user documentation.
 toc: true
+homepage: true
 contribute: false
 build_for: [cockroachdb, cockroachcloud]
 cta: false
