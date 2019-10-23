@@ -41,6 +41,9 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
+
+{% include {{page.version.version}}/sql/querying-partitions.md %}
+
 ## Examples
 
 ### Define a list partition on an existing table
