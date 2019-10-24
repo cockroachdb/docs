@@ -18,7 +18,7 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
-- <span class="version-tag">New in v19.2:</span> By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#non-streaming-operations) and [data types](vectorized-execution.html#supported-data-types). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
+- <span class="version-tag">New in v19.2:</span> By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations) and [data types](vectorized-execution.html#supported-data-types). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 

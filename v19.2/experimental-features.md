@@ -136,16 +136,13 @@ The table below lists the experimental SQL functions and operators available in 
 | [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
 | [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
 
-## Vectorized execution on non-streaming operations
+## Vectorized execution on disk-spilling operations
 
-[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [non-streaming operations](vectorized-execution.html#non-streaming-operations):
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [disk-spilling operations](vectorized-execution.html#disk-spilling-operations):
 
-- Global [sorts](query-order.html).
-- [Window functions](window-functions.html).
-- [Hash joins](joins.html#hash-joins).
-- [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", are considered streaming operations.
+{% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-To turn vectorized execution on for non-streaming operations, do one of the following:
+To turn vectorized execution on for all operations, do one of the following:
 
 - Set the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) to `experimental_on`.
 - Set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
