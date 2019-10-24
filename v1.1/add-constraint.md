@@ -66,12 +66,12 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +-----------+-------------------------------------------------+
 |   Table   |                   CreateTable                   |
 +-----------+-------------------------------------------------+
-| customers | CREATE TABLE customers (␤                       |
-|           |     id INT NOT NULL,␤                           |
-|           |     "name" STRING NOT NULL,␤                    |
-|           |     address STRING NULL,␤                       |
-|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤ |
-|           |     FAMILY "primary" (id, "name", address)␤     |
+| customers | CREATE TABLE customers (                        |
+|           |     id INT NOT NULL,                            |
+|           |     "name" STRING NOT NULL,                     |
+|           |     address STRING NULL,                        |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),  |
+|           |     FAMILY "primary" (id, "name", address)      |
 |           | )                                               |
 +-----------+-------------------------------------------------+
 (1 row)
@@ -85,13 +85,13 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +--------+-------------------------------------------------------------------------------------------------------------+
 | Table  |                                                 CreateTable                                                 |
 +--------+-------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                      |
-|        |     id INT NOT NULL,␤                                                                                       |
-|        |     customer_id INT NULL,␤                                                                                  |
-|        |     status STRING NOT NULL,␤                                                                                |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                             |
-|        |     FAMILY "primary" (id, customer_id, status),␤                                                            |
-|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))␤ |
+| orders | CREATE TABLE orders (                                                                                       |
+|        |     id INT NOT NULL,                                                                                        |
+|        |     customer_id INT NULL,                                                                                   |
+|        |     status STRING NOT NULL,                                                                                 |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                              |
+|        |     FAMILY "primary" (id, customer_id, status),                                                             |
+|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))  |
 |        | )                                                                                                           |
 +--------+-------------------------------------------------------------------------------------------------------------+
 (1 row)
