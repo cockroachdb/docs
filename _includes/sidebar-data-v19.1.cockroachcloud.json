@@ -109,9 +109,9 @@
     "title": "Tutorials",
     "items": [
       {
-        "title": "Build a Python app with Kubernetes on CockroachCloud",
+        "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
         "urls": [
-          "/${VERSION}/cockroachcloud-build-a-python-app-with-kubernetes.html"
+          "/${VERSION}/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
         ]
       }
     ]
