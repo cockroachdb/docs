@@ -8,8 +8,8 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ## Details
 
-- If you add a `CHECK` constraint to an existing table, CockroachDB will run a background job to validate existing table data in the process of adding the constraint. If a row is found that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail. This differs from previous versions of CockroachDB, which allowed you to add a check constraint that was enforced for writes but could be violated by rows that existed prior to adding the constraint.
-- Check constraints can be added to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](add-constraint.html#add-the-check-constraint).
+- If you add a `CHECK` constraint to an existing table, CockroachDB will run a background job to validate existing table data in the process of adding the constraint. If a row is found that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail. This differs from previous versions of CockroachDB, which allowed you to add a check constraint that was enforced for writes but could be violated by rows that existed prior to adding the constraint. If the previous behavior is preferred, an unvalidated `CHECK` constraint can be created using the `NOT VALID` modifier.
+- Check constraints can be added to columns that were created earlier in the same transaction. For an example, see [Add a `CHECK` constraint](add-constraint.html#add-a-check-constraint).
 - `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 - You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
 
@@ -28,7 +28,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 `CHECK` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
-{{site.data.alerts.callout_info}}You can also add the <code>CHECK</code> constraint to existing tables through <a href="add-constraint.html#add-the-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}You can also add the <code>CHECK</code> constraint to existing tables through <a href="add-constraint.html#add-a-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
 
 ### Column level
 

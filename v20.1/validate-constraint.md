@@ -4,7 +4,9 @@ summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
 ---
 
-The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column. This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
+The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column. This statement is useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html) when the `NOT VALID` modifier was specified. In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
+
+<span class="version-tag">New in v19.2:</span> Applying a foreign key constraint via `ADD CONSTRAINT` now validates existing rows in addition to enforcing conformance for new rows. As such, it is no longer necessary to use [`VALIDATE CONSTRAINT`](validate-constraint.html) for foreign keys.
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
@@ -29,20 +31,20 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Examples
+## Example
 
-In [`ADD CONSTRAINT`](add-constraint.html), we [added a foreign key constraint](add-constraint.html#add-the-foreign-key-constraint-with-cascade) like so:
+In [`ADD CONSTRAINT`](add-constraint.html), we [added a `CHECK` constraint](add-constraint.html#add-a-check-constraint) like so:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
+> ALTER TABLE orders ADD CONSTRAINT check_id_non_zero CHECK (id > 0) NOT VALID;
 ~~~
 
-In order to ensure that the data added to the `orders` table prior to the creation of the `customer_fk` constraint conforms to that constraint, run the following:
+In order to ensure that the data added to the `orders` table prior to the creation of the `check_id_non_zer` constraint conforms to that constraint, run the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders VALIDATE CONSTRAINT customer_fk;
+> ALTER TABLE orders VALIDATE CONSTRAINT check_id_non_zero;
 ~~~
 
 {{site.data.alerts.callout_info}}

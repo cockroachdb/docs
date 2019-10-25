@@ -19,7 +19,7 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 
 - When using the `UNIQUE` constraint on multiple columns, the collective values of the columns must be unique. This *does not* mean that each value in each column must be unique, as if you had applied the `UNIQUE` constraint to each column individually.
 
-- You can define the `UNIQUE` constraint when [creating a table](#syntax), or you can add it to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
+- You can define the `UNIQUE` constraint when [creating a table](#syntax), or you can add it to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-a-unique-constraint).
 
 ## Syntax
 

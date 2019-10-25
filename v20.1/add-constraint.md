@@ -6,9 +6,9 @@ toc: true
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
-- [`UNIQUE`](#add-the-unique-constraint)
-- [`CHECK`](#add-the-check-constraint)
-- [Foreign key](#add-the-foreign-key-constraint-with-cascade)
+- [`UNIQUE`](#add-a-unique-constraint)
+- [`CHECK`](#add-a-check-constraint)
+- [`FOREIGN KEY`](#add-a-foreign-key-constraint-with-cascade)
 
 {{site.data.alerts.callout_info}}
 The [`PRIMARY KEY`](primary-key.html) can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-column.html).
@@ -32,7 +32,8 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 -----------|-------------
  `table_name` | The name of the table containing the column you want to constrain.
  `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
- `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
+ `constraint_elem` | The [`CHECK`](check.html), [`FOREIGN KEY`](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add.<br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html).<br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).<br><br><span class="version-tag">New in v19.2:</span> Applying a foreign key constraint now validates existing rows in addition to enforcing conformance for new rows. As such, it is no longer necessary to use [`VALIDATE CONSTRAINT`](validate-constraint.html) for foreign keys. To create an unvalidated foreign key constraint, the `NOT VALID` keyword can be used.
+ `opt_validation` | An optional `NOT VALID` modifier used to create unvalidated constraints. When creating an unvalidated constraint, the system does not check that existing table data satisfies the constraint. The constraint is still enforced when table data is modified. An unvalidated constraint can later be validated using [`VALIDATE CONSTRAINT`](validate-constraint.html).
 
 ## Viewing schema changes
 
@@ -40,18 +41,18 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
-### Add the `UNIQUE` constraint
+### Add a `UNIQUE` constraint
 
-Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
+Adding a [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
 
-### Add the `CHECK` constraint
+### Add a `CHECK` constraint
 
-Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
+Adding a [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -82,9 +83,9 @@ The entire transaction will be rolled back, including any new columns that were 
 - If a new column has a default value or is a [computed column](computed-columns.html) that would have contained values that violate the new constraint.
 {{site.data.alerts.end}}
 
-### Add the foreign key constraint with `CASCADE`
+### Add a foreign key constraint with `CASCADE`
 
-To add a foreign key constraint, use the steps shown below.
+To add a cascading foreign key constraint, use the steps shown below.
 
 Given two tables, `customers` and `orders`:
 
@@ -157,6 +158,29 @@ An index on the referencing columns is automatically created for you when you ad
 {{site.data.alerts.callout_info}}
 Adding a foreign key for a non-empty table without an appropriate index will fail, since foreign key columns must be indexed. For more information about the requirements for creating foreign keys, see [Rules for creating foreign keys](foreign-key.html#rules-for-creating-foreign-keys).
 {{site.data.alerts.end}}
+
+### Add an unvalidated foreign key constraint
+
+On the same tables as above, we add an unvalidated foreign key constraint.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) NOT VALID;
+~~~
+
+Even unvalidated, the constraint is enforced during table mutations:
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders VALUES (1, 1, 'open');
+pq: foreign key violation: value [1] not found in customers@primary [id] (txn=9d649525-461e-4e0f-906a-712455125f0e)
+~~~
+
+To validate the constraint (which checks that all existing data conforms to the
+constraint):
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE orders VALIDATE CONSTRAINT customer_fk;
+~~~
 
 ## See also
 

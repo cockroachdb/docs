@@ -22,7 +22,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Cannot be a [computed column](computed-columns.html).
 - Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
     - To meet this requirement when creating a new table, there are a few options:
-        - An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+        - An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-a-foreign-key-constraint-with-cascade).
         - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
         - Rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
         - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
@@ -118,7 +118,7 @@ You can improve the performance of some statements that use foreign keys by also
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-a-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level

@@ -64,7 +64,7 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 <a name="fast-path-deletes"></a>
 
-Fast deletes are available for interleaved tables that use [`ON DELETE CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).  Deleting rows from such tables will use an optimized code path and run much faster, as long as the following conditions are met:
+Fast deletes are available for interleaved tables that use [`ON DELETE CASCADE`](add-constraint.html#add-a-foreign-key-constraint-with-cascade).  Deleting rows from such tables will use an optimized code path and run much faster, as long as the following conditions are met:
 
 - The table or any of its interleaved tables do not have any secondary indices.
 - The table or any of its interleaved tables are not referenced by any other table outside of them by foreign key.
