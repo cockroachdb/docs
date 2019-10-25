@@ -1,26 +1,39 @@
 ---
-title: Build a Python app with Kubernetes on CockroachCloud
-summary: Learn how to build a Python application with CockroachCloud and orchestrate it using Kubernetes.
+title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud
+summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachCloud
 toc: true
+toc_not_nested: true
 build_for: [cockroachcloud]
-redirect-from: managed-build-a-python-app-with-kubernetes.html
+redirect-from:
+- managed-build-a-python-app-with-kubernetes.html
+- cockroachcloud-build-a-python-app-with-kubernetes.html
 ---
 
-This tutorial shows you how to run a [sample Python To-Do app](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy) on a CockroachCloud cluster using a local [Kubernetes](http://kubernetes.io/) cluster.
+This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachCloud as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
 
 ## Before you begin
 
-1. Install [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/).
-2. Install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), the tool used to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
+Install the following tools, if you don't already have them:
+
+Tool | Purpose
+-----|--------
+[pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
+[Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
+[minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
 ## Prepare your cluster
+
+- [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
+- [Step 2. Create a SQL user](#step-2-create-a-sql-user)
+- [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string)
+- [Step 4. Create the CockroachCloud database](#step-4-create-the-cockroachcloud-database)
+- [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
-
 
 1. Navigate to your cluster's **Networking** page.
 2. Click the **Add Network** button in the top right corner.
@@ -171,7 +184,7 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v19.1/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'images/v19.2/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
 
   2. From the **User** dropdown, select `maxroach`.
   3. Select a **Region** to connect to.
@@ -182,7 +195,10 @@ On your local workstation's terminal:
 
 ## Build the app
 
-### Step 6. Configure the sample Python app
+- [Step 1. Configure the sample Python app](#step-1-configure-the-sample-python-app)
+- [Step 2. Test the application locally](#step-2-test-the-application-locally)
+
+### Step 1. Configure the sample Python app
 
 In a new terminal:
 
@@ -213,31 +229,31 @@ In a new terminal:
 
     Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
 
-### Step 7. Test the application locally
+### Step 2. Test the application locally
 
-  1. Install SQLAlchemy, as well as a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL:
+1. Install SQLAlchemy, as well as a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL:
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ pip install flask sqlalchemy cockroachdb Flask-SQLAlchemy
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ pip install flask sqlalchemy cockroachdb Flask-SQLAlchemy
+    ~~~
 
-      For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-  2. Run the `hello.py` code:
+2. Run the `hello.py` code:
 
-      {% include copy-clipboard.html %}
-      ~~~ shell
-      $ python hello.py
-      ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ python hello.py
+    ~~~
 
-      The application should run at [http://localhost:5000](http://localhost:5000)
+    The application should run at [http://localhost:5000](http://localhost:5000)
 
-  3. Enter a new to-do item.
+3. Enter a new to-do item.
 
-  4. Verify that the user interface reflects the new to-do item added to the database.
+4. Verify that the user interface reflects the new to-do item added to the database.
 
-  5. Use `Ctrl+C` to stop the application.
+5. Use `Ctrl+C` to stop the application.
 
 ## Deploy the app
 
@@ -245,7 +261,13 @@ In a new terminal:
 These steps focus on deploying your app locally. For production Kubernetes deployments, use a service like GKE.
 {{site.data.alerts.end}}
 
-### Step 8. Start a local Kubernetes cluster
+- [Step 1. Start a local Kubernetes cluster](#step-1-start-a-local-kubernetes-cluster)
+- [Step 2. Create a Kubernetes secret](#step-2-create-a-kubernetes-secret)
+- [Step 3. Change certificate directory path in configuration file](#step-3-change-certificate-directory-path-in-configuration-file)
+- [Step 4. Dockerize the application](#step-4-dockerize-the-application)
+- [Step 5. Deploy the application](#step-5-deploy-the-application)
+
+### Step 1. Start a local Kubernetes cluster
 
 On your local workstation's terminal:
 
@@ -256,7 +278,7 @@ $ minikube start
 
 The startup procedure might take a few minutes.
 
-### Step 9. Create a Kubernetes secret
+### Step 2. Create a Kubernetes secret
 
 Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
@@ -278,7 +300,7 @@ default-token-875zk   kubernetes.io/service-account-token   3      75s
 maxroach-secret       Opaque                                1      10s
 ~~~
 
-### Step 10. Change certificate directory path in configuration file
+### Step 3. Change certificate directory path in configuration file
 
 In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the `certs` dir to `/data/certs` and save the file.
 
@@ -291,7 +313,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_na
 You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
-### Step 11. Dockerize your application
+### Step 4. Dockerize the application
 
 1. In the `flask-sqlalchemy` folder, create a file named `Dockerfile` and copy the following code into the file:
 
@@ -340,7 +362,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     appdocker          latest          cfb155afed03        3 seconds ago       299MB
     ~~~
 
-### Step 12. Deploy the application
+### Step 5. Deploy the application
 
 1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file:
 
@@ -402,7 +424,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     $ kubectl apply -f app-deployment.yaml
     ~~~
 
-    ~~~ shell
+    ~~~
     deployment.apps/appdeploy created
     service/appdeploy created
     ~~~
@@ -414,7 +436,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     $ kubectl get deployments
     ~~~
 
-    ~~~ shell
+    ~~~
     NAME           READY   UP-TO-DATE   AVAILABLE   AGE
     appdeploy      3/3     3            3           27s
     ~~~
@@ -424,7 +446,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     $ kubectl get services
     ~~~
 
-    ~~~ shell
+    ~~~
     NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
     appdeploy    LoadBalancer   10.96.154.104   <pending>     80:32349/TCP   42s
     ~~~
@@ -449,7 +471,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
         NAME                         READY   STATUS              RESTARTS   AGE
         appdeploy-577f66b4c8-46s5r   0/1     ErrImageNeverPull   0          23m
         appdeploy-577f66b4c8-9chjx   0/1     ErrImageNeverPull   0          23m
-        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m
+        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m  
         ~~~
 
     2. Port-forward from your local machine to one of the pods:
@@ -468,7 +490,10 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ## Monitor the app
 
-### Step 13. Access the Admin UI
+- [Step 1. Access the Admin UI](#step-1-access-the-admin-ui)
+- [Step 2. Monitor cluster health, metrics, and SQL statements](#step-2-monitor-cluster-health-metrics-and-sql-statements)
+
+### Step 1. Access the Admin UI
 
 1. On the Console, navigate to the cluster's **Monitoring** page and click **Open Admin UI**.
 
@@ -478,9 +503,9 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 3. In the **Password** field, enter `Q7gc8rEdS`.
 4. Click **Log In**.
 
-### Step 14. Monitor cluster health, metrics, and SQL statements
+### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/stable/admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -490,7 +515,7 @@ On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/stable/adm
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-2. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/stable/admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+2. On the [**Hardware** dashboard](admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -500,4 +525,4 @@ On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/stable/adm
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-2. The [**Statements** page](https://www.cockroachlabs.com/docs/stable/admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+2. The [**Statements** page](admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
