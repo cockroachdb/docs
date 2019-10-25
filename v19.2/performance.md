@@ -80,18 +80,13 @@ With that in mind, however, you can use [Sysbench](https://github.com/akopytov/s
 
 CockroachDB returns single-row **reads in 1 ms or less** and processes single-row **writes in 2 ms or less**, with a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html).
 
-For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward throughput benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload:
+For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward latency benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload:
 
 <img src="{{ 'images/v19.2/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
 
-## Known limitations
+## Performance limitations
 
-CockroachDB has no theoretical limitations to scaling, throughput, latency, or concurrency other than the speed of light. Practically, we will be improving bottlenecks and addressing challenges over the next several releases. In the meantime, we want you to be aware of the following known limitations:
-
-- CockroachDB is not yet suitable for heavy analytics / OLAP.
-- CockroachDB has not yet been tested beyond 256 nodes; however, we know of no known limitations to horizontal scaling.
-- While CockroachDB supports `SERIAL` and sequential keys, they can create hotspots within CockroachDB. We recommend [using `UUID`s or other methods to avoid writing to sequential keys](performance-best-practices-overview.html#unique-id-best-practices).
-- CockroachDB is optimized for good performance with rotational disk drives when using the durable memory storage engine. It is not recommended that you run with rotational HDDs when using the ssd storage engine.
+CockroachDB has no theoretical limitations to scaling, throughput, latency, or concurrency other than the speed of light. Practically, we will be improving bottlenecks and addressing challenges over the next several releases.
 
 ## See also
 
@@ -99,7 +94,7 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
 
-    Also not that CockroachDB creates a yearly cloud report focused on evaluating hardware performance. In November 2019, we will provide metrics on AWS, GCP, and Azure. In the meantime, you can read the [2018 Cloud Report](https://www.cockroachlabs.com/blog/2018_cloud_report/) that focuses on AWS and GCP.
+    Also note that CockroachDB creates a yearly cloud report focused on evaluating hardware performance. In November 2019, we will provide metrics on AWS, GCP, and Azure. In the meantime, you can read the [2018 Cloud Report](https://www.cockroachlabs.com/blog/2018_cloud_report/) that focuses on AWS and GCP.
 
 - Performance Tuning
 
