@@ -32,7 +32,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 -----------|-------------
  `table_name` | The name of the table containing the column you want to constrain.
  `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
- `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
+ `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add.<br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html).<br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).<br><br><span class="version-tag">New in v19.2:</span> Applying a foreign key constraint now validates existing rows in addition to enforcing conformance for new rows. As such, it is no longer necessary to use [`VALIDATE CONSTRAINT`](validate-constraint.html) for foreign keys.
 
 ## Viewing schema changes
 
