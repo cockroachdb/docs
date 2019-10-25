@@ -56,9 +56,9 @@ To relocate just the lease without moving the replicas, run a statement like the
 > ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
 ~~~
 
-### Show statement fingerprints
+### Show table fingerprints
 
-If two expressions share the same fingerprint, then they are the identical expression.  Fingerprints are used by the [cost-based optimizer](cost-based-optimizer.html) for plan caching.
+Table fingerprints are used to compute an identification string of an entire table, for the purpose of gauging whether two tables have the same data. This is useful, for example, when restoring a table from backup.
 
 Example:
 
@@ -73,7 +73,6 @@ Example:
  primary    | 1999042440040364641
 (1 row)
 ~~~
-
 
 ### Turn on KV event tracing
 
