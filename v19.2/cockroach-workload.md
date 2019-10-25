@@ -196,7 +196,7 @@ Flag | Description
 `--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
-`--initial-rows` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
+`--initial-count` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
 `--json` | Use JSONB rather than relational data.<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
