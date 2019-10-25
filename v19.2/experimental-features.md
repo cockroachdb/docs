@@ -21,8 +21,7 @@ The table below lists the experimental session settings that are available.  For
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `experimental_force_split_at`       | `'off'`       | Indicates whether checks to prevent incorrect usage of [`ALTER TABLE ... SPLIT AT`](split-at.html) should be skipped.                                                                                                                                                                                   |
 | `experimental_enable_zigzag_join`   | `'off'`       | Indicates whether the [cost-based optimizer](cost-based-optimizer.html) will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that they share a sorted order in their key suffix. |
-| `experimental_serial_normalization` | `'rowid'`     | If set to `'virtual_sequence'`, make the [`SERIAL`](serial.html) pseudo-type optionally auto-create a sequence for [better compatibility with Hibernate sequences](https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/).                    |
-| `experimental_vectorize`            | `'off'`       | Whether to run SQL queries in [vectorized execution mode](#vectorized-query-execution). `'off'` means never run queries with vectorized; `'on'` means run queries with vectorized when the query is supported; `always` means run everything with vectorized, even if it's not supported.              |
+| `experimental_serial_normalization` | `'rowid'`     | If set to `'virtual_sequence'`, make the [`SERIAL`](serial.html) pseudo-type optionally auto-create a sequence for [better compatibility with Hibernate sequences](https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/).
 
 ## SQL statements
 
@@ -136,19 +135,16 @@ The table below lists the experimental SQL functions and operators available in 
 | [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
 | [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
 
-## Vectorized query execution
+## Vectorized execution on disk-spilling operations
 
-<span class="version-tag">New in v19.2</span>: When the `experimental_vectorize` setting is enabled, vectorized query execution uses a columnar orientation to dramatically increase query execution performance for supported OLTP Heavy/[Online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. By default, CockroachDB uses a SQL execution engine organized in a row orientation, which offers good performance for [Online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries but can offer suboptimal performance for OLTP Heavy/OLAP queries.
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [disk-spilling operations](vectorized-execution.html#disk-spilling-operations):
 
-For an example of how vectorized query execution works on vectorizing a merge join, see the blog post [Vectorizing the merge joiner in CockroachDB](https://www.cockroachlabs.com/blog/vectorizing-the-merge-joiner-in-cockroachdb/).
+{% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-{{site.data.alerts.callout_danger}}
-The vectorized execution engine has the following limitations:
+To turn vectorized execution on for all operations, do one of the following:
 
-- It does not yet monitor memory usage or spill to disk for large joins, so there is a risk that queries that perform large joins or other memory-intensive operations could cause the node to run out of memory and crash.
-
-- It is undertested compared to CockroachDB's existing row-oriented execution engine.
-{{site.data.alerts.end}}
+- Set the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) to `experimental_on`.
+- Set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
 
 ## See Also
 
@@ -157,3 +153,4 @@ The vectorized execution engine has the following limitations:
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
+- [Vectorized Query Execution](vectorized-execution.html)
