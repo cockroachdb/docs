@@ -156,7 +156,7 @@ Because `public` is the current schema, these statements return the same output:
 (15 rows)
 ~~~
 
-### Show tables with comments
+### Show user-define tables with comments
 
 You can use [`COMMENT ON`](comment-on.html) to add comments on a table.
 
@@ -185,6 +185,35 @@ To view a table's comments:
 ~~~
 
 For more information, see [`COMMENT ON`](comment-on.html).
+
+### Show virtual tables with comments
+
+<span class="version-tag">New in v19.2:</span> The virtual tables in the `pg_catalog`, `information_schema`, and `crdb_internal` schemas contain useful comments, often with links to further documentation.
+
+To view virtual tables with comments and documentation links, use `SHOW TABLES FROM <virtual schema> WITH COMMENT`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM information_schema WITH COMMENT;
+~~~
+
+~~~
+             table_name             |                                                              comment
++-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------+
+  administrable_role_authorizations | roles for which the current user has admin option
+                                    | https://www.cockroachlabs.com/docs/v19.2/information-schema.html#administrable_role_authorizations
+                                    | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
+  applicable_roles                  | roles available to the current user
+                                    | https://www.cockroachlabs.com/docs/v19.2/information-schema.html#applicable_roles
+                                    | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
+  check_constraints                 | check constraints
+                                    | https://www.cockroachlabs.com/docs/v19.2/information-schema.html#check_constraints
+                                    | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
+  column_privileges                 | column privilege grants (incomplete)
+                                    | https://www.cockroachlabs.com/docs/v19.2/information-schema.html#column_privileges
+                                    | https://www.postgresql.org/docs/9.5/infoschema-column-privileges.html~~~
+...
+~~~
 
 ## See also
 
