@@ -35,17 +35,19 @@ Use the Console to authorize networks:
 
 5. From the **Network** dropdown, select **New Network**, **Current Network**, or **Public (Insecure)** network:
 
-        - Select **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
-        - Select **Current Network** to auto-populate your local machine's IP address.
-        - Select **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+         - Select **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
 
-    {{site.data.alerts.callout_info}}
-    IPv6 addresses are currently not supported.
-    {{site.data.alerts.end}}
+         - Select **Current Network** to auto-populate your local machine's IP address.
 
-    If you need to add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation.
+         - Select **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
-    The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+      {{site.data.alerts.callout_info}}
+      IPv6 addresses are currently not supported.
+      {{site.data.alerts.end}}
+
+      If you need to add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation.
+
+      The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
 6. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
@@ -97,15 +99,15 @@ On the machine from which you want to connect to your cluster:
 
 6. Select a connection option:
 
-   - The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
+           - The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
 
-   - Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
+           - Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
 
-        You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
+              You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
 
-   - Click **CockroachDB Client** to view the client connection string. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
+           - Click **CockroachDB Client** to view the client connection string. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
 
-        You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
+    You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
 
 7. Click the name of the **ca.crt** file to download the CA certificate.
 
