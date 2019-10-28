@@ -142,18 +142,6 @@
 
   <tr>
    <td>
-    <code>optimizer</code>
-   </td>
-   <td>The mode in which a query execution plan is generated. If set to <code>on</code>, the <a href="cost-based-optimizer.html">cost-based optimizer</a> is enabled by default and the heuristic planner will only be used if the query is not supported by the cost-based optimizer; if set to <code>off</code>, all queries are run through the legacy heuristic planner.</td>
-   <td>
-    <code>on</code>
-   </td>
-   <td>Yes</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
     <code>results_buffer_size</code>
    </td>
    <td>The default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can also be set for all connections using the 'sql.defaults.results_buffer_size' <a href="cluster-settings.html">cluster setting</a>. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Setting to 0 disables any buffering.

@@ -10,7 +10,6 @@ The cost-based optimizer seeks the lowest cost for a query, usually related to t
 In versions prior to 2.1, a heuristic planner was used to generate query execution plans. The heuristic planner is only used in the following cases:
 
 - If your query uses functionality that is not yet supported by the cost-based optimizer. For more information about the types of queries that are supported, see [Types of statements supported by the cost-based optimizer](#types-of-statements-supported-by-the-cost-based-optimizer).
-- If you explicitly turn off the optimizer. For more information, see [How to turn the optimizer off](#how-to-turn-the-optimizer-off).
 
 ## How is cost calculated?
 
@@ -624,31 +623,9 @@ Time: 619µs
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
-## How to turn the optimizer off
-
-With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
-
-To turn the cost-based optimizer off for the current session:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET optimizer = 'off';
-~~~
-
-To turn the cost-based optimizer off for all sessions:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING sql.defaults.optimizer = 'off';
-~~~
-
-{{site.data.alerts.callout_info}}
-Changing the cluster setting does not immediately turn the optimizer off; instead, it changes the default session setting to `off`. To see the change, restart your session.
-{{site.data.alerts.end}}
-
 ## Known limitations
 
-- Some features are not supported by the cost-based optimizer; however, the optimizer will fall back to the heuristic planner for this functionality. If performance is worse than in previous versions of CockroachDB, you can [turn the optimizer off](#how-to-turn-the-optimizer-off) to manually force it to fallback to the heuristic planner.
+- Some features are not supported by the cost-based optimizer; however, the optimizer will fall back to the heuristic planner for this functionality.
 
 ## See also
 
