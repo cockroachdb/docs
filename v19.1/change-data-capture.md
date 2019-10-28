@@ -143,7 +143,7 @@ For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
 ## Configure a changefeed (Enterprise)
 
-An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor), and [debug](#debug) an enterprise changefeed.
+An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
 
 ### Create
 
@@ -189,7 +189,7 @@ To cancel an enterprise changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
-### Monitor
+## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}
 Monitoring is only available for enterprise changefeeds.
@@ -218,7 +218,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
-### Debug
+## Debug a changefeed
 
 For enterprise changefeeds connected to Kafka, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
