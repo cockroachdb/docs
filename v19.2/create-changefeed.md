@@ -1,18 +1,16 @@
 ---
 title: CREATE CHANGEFEED
-summary: The CREATE CHANGEFEED statement creates a new changefeed, which provides row-level change subscriptions.
+summary: The CREATE CHANGEFEED statement creates a new enterprise changefeed, which provides row-level change subscriptions in a configurable format to a configurable sink.
 toc: true
 ---
-
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.
-
-Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)).
-
-For more information, see [Change Data Capture](change-data-capture.html).
 
 {{site.data.alerts.callout_info}}
 `CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
+
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which targets a whitelist of tables, called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
+
+For more information, see [Change Data Capture](change-data-capture.html).
 
 ## Required privileges
 
@@ -60,6 +58,8 @@ Parameter | Value | Description
 `topic_prefix` | [`STRING`](string.html) | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled=true` | [`BOOL`](bool.html) | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
 `ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert` | [`STRING`](string.html) | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key` | [`STRING`](string.html) | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `sasl_enabled` | [`BOOL`](bool.html) | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
 `sasl_user` | [`STRING`](string.html) | Your SASL username.
 `sasl_password` | [`STRING`](string.html) | Your SASL password.
