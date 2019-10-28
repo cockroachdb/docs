@@ -143,9 +143,11 @@ For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
 ## Configure a changefeed (Enterprise)
 
+An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor), and [debug](#debug) an enterprise changefeed.
+
 ### Create
 
-To create a changefeed:
+To create an enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -156,7 +158,7 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 ### Pause
 
-To pause a changefeed:
+To pause an enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -167,7 +169,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 ### Resume
 
-To resume a paused changefeed:
+To resume a paused enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -178,7 +180,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
-To cancel a changefeed:
+To cancel an enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -187,7 +189,7 @@ To cancel a changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
-### Monitor a changefeed
+### Monitor
 
 {{site.data.alerts.callout_info}}
 Monitoring is only available for enterprise changefeeds.
@@ -216,9 +218,9 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
-### Debug a changefeed
+### Debug
 
-For changefeeds connected to Kafka, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For enterprise changefeeds connected to Kafka, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
