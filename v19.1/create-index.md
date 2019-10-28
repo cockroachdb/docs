@@ -38,18 +38,19 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Parameters
 
- Parameter | Description
------------|-------------
+Parameter | Description
+----------|------------
 `UNIQUE` | Apply the [`UNIQUE` constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the `UNIQUE` constraint at the table level, so the system checks for duplicate values when inserting or updating data.
- `INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).
+`INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING gin`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).
 `IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.
 `opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`
 `table_name` | The name of the table you want to create the index on.
+`USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree` and `gin`, with `btree` for a standard secondary index and `gin` as the PostgreSQL-compatible syntax for an [inverted index](#create-inverted-indexes) on schemaless data in a `JSONB` column.  
 `column_name` | The name of the column you want to index.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` aliases `STORING` and works identically.
 `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.
-`opt_partition_by` | Docs coming soon.
+`opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html).
 
 ## Viewing schema changes
 
