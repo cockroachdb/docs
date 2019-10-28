@@ -136,6 +136,8 @@ Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to v
 
 You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table.
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 ## Basic examples
 
 {% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
