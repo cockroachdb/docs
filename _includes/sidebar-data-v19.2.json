@@ -970,6 +970,12 @@
                 ]
               },
               {
+                "title": "<code>IMPORT INTO</code>",
+                "urls": [
+                  "/${VERSION}/import-into.html"
+                ]
+              },
+              {
                 "title": "<code>INSERT</code>",
                 "urls": [
                   "/${VERSION}/insert.html"
