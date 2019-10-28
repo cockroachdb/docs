@@ -125,6 +125,10 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
+### Incremental import into an existig table
+
+The [`IMPORT INTO`](import-into.html) statement incrementally imports CSV data into an existing table.
+
 ## Functions and Operators
 
 The table below lists the experimental SQL functions and operators available in CockroachDB 2.1.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
@@ -154,3 +158,4 @@ To turn vectorized execution on for all operations, do one of the following:
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
 - [Vectorized Query Execution](vectorized-execution.html)
+- [`IMPORT INTO`](import-into.html)
