@@ -4,15 +4,15 @@ summary: The EXPERIMENTAL CHANGEFEED FOR statement creates a new core changefeed
 toc: true
 ---
 
-The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which provides row-level change subscriptions.
+{{site.data.alerts.callout_info}}
+`EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [enterprise-only](enterprise-licensing.html) version, see [`CREATE CHANGEFEED`](create-changefeed.html).
+{{site.data.alerts.end}}
+
+The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
 Core changefeeds work differently than other CockroachDB SQL statements. Instead of returning a finite result set to the client, a core changefeed streams changes to the watched rows indefinitely until the underlying connection is closed or the changefeed query is canceled. This has important implications for the connection and client parameters related to server- and client-side result buffering.
 
 For more information, see [Change Data Capture](change-data-capture.html).
-
-{{site.data.alerts.callout_info}}
-`EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [enterprise-only](enterprise-licensing.html) version, see [`CREATE CHANGEFEED`](create-changefeed.html).
-{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 

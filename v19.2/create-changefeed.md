@@ -4,15 +4,15 @@ summary: The CREATE CHANGEFEED statement creates a new changefeed, which provide
 toc: true
 ---
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new changefeed, which provides row-level change subscriptions.
+{{site.data.alerts.callout_info}}
+`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+{{site.data.alerts.end}}
+
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
 
 Changefeeds target a whitelist of tables, called the "watched rows." Every change to a watched row is emitted as a record in a configurable format (`JSON`) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)).
 
 For more information, see [Change Data Capture](change-data-capture.html).
-
-{{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
-{{site.data.alerts.end}}
 
 ## Required privileges
 
