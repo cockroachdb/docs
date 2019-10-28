@@ -104,7 +104,8 @@ The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS`
   0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
   0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
   147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
-(5 rows)
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -124,7 +125,8 @@ The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS`
   0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
   0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
   147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
-(5 rows)
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
 ~~~
 
 ### Change column names
@@ -148,7 +150,8 @@ This statement creates a copy of an existing table but with changed column names
   0a3d70a3-d70a-4d80-8000-000000000002 | Judy White
   0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan
   147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson
-(5 rows)
+  19999999-9999-4a00-8000-000000000005 | Nicole Mcmahon
+(6 rows)
 ~~~
 
 ### Create a table from a `VALUES` clause
@@ -190,7 +193,8 @@ This statement creates a copy of an existing table but with changed column names
   0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
   0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
   147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
-(5 rows)
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
 ~~~
 
 When a table copy is created this way, the copy is not associated to
@@ -215,8 +219,9 @@ original table.
   0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan
   051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton
   0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon
   00000000-0000-4000-8000-000000000000 | new york | Robert Murphy
-(5 rows)
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -255,7 +260,8 @@ original table.
   0a3d70a3-d70a-4d80-8000-000000000002 | Judy White       | new york | 18580 Rosario Ville Apt. 61 | 2597958636
   0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan     | new york | 81127 Angela Ferry Apt. 8   | 5614075234
   147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson | new york | 1149 Lee Alley              | 0792553487
-(5 rows)
+  19999999-9999-4a00-8000-000000000005 | Nicole Mcmahon   | new york | 11540 Patton Extensions     | 0303726947
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
