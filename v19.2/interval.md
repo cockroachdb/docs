@@ -8,7 +8,12 @@ The `INTERVAL` [data type](data-types.html) stores a value that represents a spa
 
 ## Aliases
 
-There are no aliases for the interval type. However, CockroachDB supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
+- `INTERVAL(6)`
+{{site.data.alerts.callout_info}}
+`INTERVAL(6)` is supported as an alias for compatibility purposes only. This alias does not determine [the size of an `INTERVAL` value](#size).
+{{site.data.alerts.end}}
+
+CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
 
 ## Syntax
 
@@ -58,7 +63,7 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 ~~~
 
 ~~~
- column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden 
+ column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 -------------+-----------+-------------+----------------+-----------------------+-----------+-----------
  a           | INT8      | f           |                |                       | {primary} | f
  b           | INTERVAL  | t           |                |                       | {}        | f
@@ -69,7 +74,7 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 ~~~ sql
 > INSERT INTO
     intervals
-    VALUES (1, INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'), 
+    VALUES (1, INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'),
            (2, INTERVAL '1-2 3 4:5:6'),
            (3, '1-2 3 4:5:6');
 ~~~
