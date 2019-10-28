@@ -195,6 +195,8 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 As you scale and add more cities, you can repeat steps 2 and 3 with the new complete list of cities to re-partition the table and its secondary indexes, and then repeat step 4 to create replication zones for the new partitions.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 ## Characteristics
 
 ### Latency
