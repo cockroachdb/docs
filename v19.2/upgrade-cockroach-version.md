@@ -229,7 +229,14 @@ Once you are satisfied with the new version, re-enable auto-finalization:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-## Step 6. Troubleshooting
+## Post-upgrade checklist
+
+After you finish upgrading your cluster, check the following [cluster settings](cluster-settings.html), as you might have set them to work around some limitations that were resolved in the latest release:
+
+- `kv.range_merge.queue_enabled`<br>This setting turns [automatic range merging](range-merges.html) on or off. In versions prior to 19.2, setting `kv.range_merge.queue_enabled=off` was required for [manual range splits](split-at.html). This limitation has been lifted in 19.2 and later. We recommend that you set `kv.range_merge.queue_enabled=on`.
+- `kv.raft.command.max_size`<br>This setting sets the maximum size of a raft command. If you increased `kv.raft.command.max_size` to support larger `INSERT INTO...SELECT FROM` or `CREATE TABLE AS SELECT` statements, we recommend that you reset this setting to its default, as this is no longer necessary in 19.2 and later.
+
+## Troubleshooting
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 
