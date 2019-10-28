@@ -20,14 +20,12 @@ Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` u
 
 ## Synopsis
 
-~~~
-> IMPORT INTO table_name (column_name [, ...])
-         CSV DATA ('file_location' [, ...])
-         [ WITH <option> [= <value>] [, ...] ];
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/import_into.html %}
+</div>
 
 {{site.data.alerts.callout_info}}
-The table will be taken offline during the incremental import.
+During incremental import, the table being imported into is taken offline.
 {{site.data.alerts.end}}
 
 ## Parameters
