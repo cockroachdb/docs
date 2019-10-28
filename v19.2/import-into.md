@@ -11,7 +11,7 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-**This is an experimental feature and should not be used in production due to correctness issues.** See [Known limitations](#known-limitations) below for more information.
+**This is an [experimental feature](experimental-features.html) and should not be used in production due to correctness issues.** See [Known limitations](#known-limitations) below for more information.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -36,7 +36,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to incrementally import into.
 `column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
-`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import a table from multiple CSV files](#import-a-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [these options](#import-options).
 
 ### Import file URLs
@@ -184,23 +184,18 @@ Google Cloud:
 ## Known limitations
 
 - Only CSV data importing into a single table is supported.
+- During incremental import, the table being imported into is taken offline.
+- After incremental import, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
 - `IMPORT INTO` **cannot**:
     - Be used within a [transaction](transactions.html).
     - Replace a row.
     - Add a row that conflicts with a `UNIQUE` [index](indexes.html).
-- Currently, `IMPORT INTO` does not work on [indexed tables](indexes.html) or [interleaved tables](interleave-in-parent.html).
-- `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+    - Be used on [indexed](indexes.html) or [interleaved](interleave-in-parent.html) tables.
+- `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~
-- Any [constraints](constraints.html) will be un-validated and need to be re-validated after an incremental import.
-- The table will be taken offline during the incremental import.
-
-Known issues that will be addressed in upcoming alpha releases:
-
-- On failure, partially imported data remains in the table.
-- Specified target columns constraints are not enforced.
 
 ## See also
 

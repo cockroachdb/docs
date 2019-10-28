@@ -5,11 +5,14 @@ toc: true
 toc_not_nested: true
 ---
 
-
 ## How do I bulk insert data into CockroachDB?
 
-- To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement.
-- <span class="version-tag">New in v19.2:</span> To bulk-insert data into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
+- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](insert.html#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+
+    {{site.data.alerts.callout_info}}
+    <span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table. However, note that this is an experimental feature and should not be used in production due to [known limitations](import-into.html#known-limitations).
+    {{site.data.alerts.end}}
+- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases](migration-overview.html) like MySQL, Oracle, and Postgres.  
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 

@@ -759,10 +759,6 @@ This approach reduced the query time from 2489.85ms (query with subquery) to 220
 
 #### Bulk inserting into an existing table
 
-{{site.data.alerts.callout_info}}
-<span class="version-tag">New in v19.2:</span> To import bulk data from one or more CSV files into an existing table, use the [`IMPORT INTO`](import-into.html) statement.
-{{site.data.alerts.end}}
-
 Moving on to writes, let's imagine that you have a batch of 100 new users to insert into the `users` table. The most obvious approach is to insert each row using 100 separate [`INSERT`](insert.html) statements:  
 
 {{site.data.alerts.callout_info}}
@@ -820,6 +816,10 @@ Cumulative time (milliseconds):
 ~~~
 
 As you can see, this multi-row `INSERT` technique reduced the total time for 100 inserts from 910.98ms to 15.40ms. It's useful to note that this technique is equally effective for [`UPSERT`](upsert.html) and [`DELETE`](delete.html) statements as well.
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table. However, note that this is an experimental feature and should not be used in production due to [known limitations](import-into.html#known-limitations).
+{{site.data.alerts.end}}
 
 #### Minimizing unused indexes
 
