@@ -53,18 +53,51 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 5. Upload the CA certificate and node certificate and key to the first node:
 
+    {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ssh <username>@<node1 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    $ ssh -i /path/<key file>.pem <username>@<node1 DNS name> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node1 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp -i /path/<key file>.pem \
+    certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ~~~
+
+    {% elsif page.title contains "Google" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
+    ~~~
+
+    {{site.data.alerts.callout_info}}The above syntax associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">GCP docs</a> for more details.{{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
+
+    {% else %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh <username>@<node1 address> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
+    {% endif %}
 
 6. Delete the local copy of the node certificate and key:
 

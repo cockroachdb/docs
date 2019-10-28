@@ -19,6 +19,8 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
+* This article covers the use of Linux instances with GCE. You may wish to review the instructions for [connecting to Windows instances](https://cloud.google.com/compute/docs/instances/connecting-to-instance#windows).
+
 ## Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
@@ -27,14 +29,10 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 CockroachDB requires TCP communication on two ports:
 
-- **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster)
-- **8080** (`tcp:8080`) for exposing your Admin UI
+- `26257` for inter-node communication (i.e., working as a cluster)
+- `8080` for exposing your Admin UI
 
-Inter-node communication works by default using your GCE instances' internal IP addresses, which allow communication with other instances on CockroachDB's default port `26257`. However, to expose your Admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, you need to [create firewall rules for your project](https://cloud.google.com/compute/docs/vpc/firewalls).
-
-### Creating firewall rules
-
-When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature, which lets you specify that you want to apply the rule only to instance that include the same tag.
+To expose your Admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, [create firewall rules](https://cloud.google.com/compute/docs/vpc/firewalls) for your project. When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature to apply the rule only to instances with the same tag.
 
 #### Admin UI
 
@@ -62,7 +60,7 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 - **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
 
-- If you used a tag for your firewall rules, when you create the instance, select **Management, disk, networking, SSH keys**. Then on the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
+- If you used a tag for your firewall rules, when you create the instance, click **Management, security, disks, networking, sole tenancy**. Under the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
 
 For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
 
@@ -99,6 +97,8 @@ To use GCE's TCP Proxy Load Balancing service:
 {% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
+
+{{site.data.alerts.callout_info}}By default, inter-node communication uses the internal IP addresses of your GCE instances.{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 

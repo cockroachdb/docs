@@ -27,44 +27,77 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 3. Create the CA certificate and key:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-ca \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node1 internal IP address> \
-  	<node1 external IP address> \
-  	<node1 hostname>  \
-  	<other common names for node1> \
-  	localhost \
-  	127.0.0.1 \
-  	<load balancer IP address> \
-  	<load balancer hostname>  \
-  	<other common names for load balancer instances> \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node1 internal IP address> \
+    <node1 external IP address> \
+    <node1 hostname>  \
+    <other common names for node1> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname>  \
+    <other common names for load balancer instances> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 5. Upload the CA certificate and node certificate and key to the first node:
 
+    {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ssh <username>@<node1 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    $ ssh -i /path/<key file>.pem <username>@<node1 DNS name> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node1 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp -i /path/<key file>.pem \
+    certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ~~~
+
+    {% elsif page.title contains "Google" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
+    ~~~
+
+    {{site.data.alerts.callout_info}}The above syntax associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">GCP docs</a> for more details.{{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
+
+    {% else %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh <username>@<node1 address> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
+    {% endif %}
 
 6. Delete the local copy of the node certificate and key:
 
@@ -78,48 +111,48 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node2 internal IP address> \
-  	<node2 external IP address> \
-  	<node2 hostname>  \
-  	<other common names for node2> \
-  	localhost \
-  	127.0.0.1 \
-  	<load balancer IP address> \
-  	<load balancer hostname>  \
-  	<other common names for load balancer instances> \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node2 internal IP address> \
+    <node2 external IP address> \
+    <node2 hostname>  \
+    <other common names for node2> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname>  \
+    <other common names for load balancer instances> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 8. Upload the CA certificate and node certificate and key to the second node:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ ssh <username>@<node2 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    $ ssh <username>@<node2 address> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node2 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Upload the CA certificate and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 address>:~/certs
+    ~~~
 
 9. Repeat steps 6 - 8 for each additional node.
 
 10. Create a client certificate and key for the `root` user:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-client \
-  	root \
-  	--certs-dir=certs \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 11. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
 
