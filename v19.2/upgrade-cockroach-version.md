@@ -229,7 +229,13 @@ Once you are satisfied with the new version, re-enable auto-finalization:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-## Step 6. Troubleshooting
+## Post-upgrade checklist
+
+After you finish upgrading your cluster, check the following cluster settings, as you might have set them to work around some limitations that were resolved in the latest release:
+
+- `kv.range_merge.queue_enabled`<br>This cluster setting turns [automatic range merging](range-merges.html) on or off. In versions prior to 19.2, setting `kv.range_merge.queue_enabled=off` was required for [manual range splits](split-at.html). This limitation has been lifted in v19.2 and later. We recommend that you set `kv.range_merge.queue_enabled=on`.
+
+## Troubleshooting
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 
