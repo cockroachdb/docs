@@ -81,7 +81,7 @@ Support for vectorized execution is experimental for the following memory-intens
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](start-a-node.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](start-a-node.html#general) sets the maximum on-disk storage capacity. 
+You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](start-a-node.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](start-a-node.html#general) sets the maximum on-disk storage capacity.
 
 ## See also
 
