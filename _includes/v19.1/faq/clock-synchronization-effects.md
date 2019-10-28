@@ -7,12 +7,7 @@ The one rare case to note is when a node's clock suddenly jumps beyond the maxim
 When setting up clock synchronization:
 
 - We recommend using [Google Public NTP](https://developers.google.com/time/) or [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html) with the clock sync service you are already using (e.g., [`ntpd`](http://doc.ntp.org/), [`chrony`](https://chrony.tuxfamily.org/index.html)). For example, if you are already using `ntpd`, configure `ntpd` to point to the Google or Amazon time server.
-
-    {{site.data.alerts.callout_info}}
-    Amazon Time Sync Service is only available within [Amazon EC2](https://aws.amazon.com/ec2/), so hybrid environments should use Google Public NTP.
-    {{site.data.alerts.end}}
-
-- In a hybrid cluster, GCE machines should use [Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances) and AWS machines should use [Amazon Time Sync Service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service). The Google and Amazon services handle ["smearing" the leap second](https://developers.google.com/time/smear) in compatible ways.
+- In a hybrid GCE/AWS cluster, GCE machines should use [Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances) and AWS machines should use [Amazon Time Sync Service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service). All other machines should use [Google Public NTP](https://developers.google.com/time/). The Google and Amazon services handle ["smearing" the leap second](https://developers.google.com/time/smear) in compatible ways.
 - If you do not want to use the Google or Amazon time sources, you can use `chrony` and enable client-side leap smearing, unless the time source you're using already does server-side smearing. In most cases, we recommend the Google Public NTP time source because it handles smearing the leap second. If you use a different NTP time source that doesn't smear the leap second, you must configure client-side smearing manually and do so in the same way on each machine.
 - Do not run more than one clock sync service on VMs where `cockroach` is running.
 

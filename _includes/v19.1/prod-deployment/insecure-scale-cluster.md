@@ -34,6 +34,7 @@ For each additional node you want to add to the cluster, complete the following 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
+    --insecure \
     --advertise-addr=<node4 address> \
     --join=<node1 address>,<node2 address>,<node3 address> \
     --cache=.25 \
