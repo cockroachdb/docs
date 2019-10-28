@@ -10,6 +10,8 @@ toc: true
 [Defining table partitions](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 ## Synopsis
 
 <div>
@@ -224,6 +226,7 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 (9 rows)
 ~~~
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions-example.md %}
 
 ## See also
 
