@@ -4,7 +4,7 @@ summary: Incrementally import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) incrementally imports CSV data into an existing CockroachDB table. To create a table, use [`CREATE TABLE`](create-table.html).
+<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) incrementally imports CSV data into an existing table. To create a table, use [`CREATE TABLE`](create-table.html).
 
 {{site.data.alerts.callout_success}}
 `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
@@ -16,7 +16,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
+Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -41,7 +41,7 @@ Parameter | Description
 
 ### Import file URLs
 
-URLs for the files you want to import must use the format shown below.  For examples, see [Example file URLs](#example-file-urls).
+URLs for the files you want to import must use the format shown below. For examples, see [Example file URLs](#example-file-urls).
 
 {% include {{ page.version.version }}/misc/external-urls.md %}
 
@@ -102,12 +102,12 @@ After CockroachDB successfully initiates an incremental import, it registers the
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 {{site.data.alerts.callout_danger}}
-Pausing and then resuming an `IMPORT` job will cause it to restart from the beginning.
+Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
 {{site.data.alerts.end}}
 
 ## Examples
 
-### Import a table from a CSV file
+### Import into an existing table from a CSV file
 
 Amazon S3:
 
@@ -139,7 +139,7 @@ Google Cloud:
     );
 ~~~
 
-### Import a table from multiple CSV files
+### Import into an existing table from multiple CSV files
 
 Amazon S3:
 
@@ -188,13 +188,13 @@ Google Cloud:
     - Be used within a [transaction](transactions.html).
     - Replace a row.
     - Add a row that conflicts with a `UNIQUE` [index](indexes.html).
-- Currently, `IMPORT INTO` does not work on indexed tables.
+- Currently, `IMPORT INTO` does not work on [indexed tables](indexes.html) or [interleaved tables](interleave-in-parent.html).
 - `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
     {% include copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~
-- Any constraints will be un-validated and need to be re-validated after an incremental import.
+- Any [constraints](constraints.html) will be un-validated and need to be re-validated after an incremental import.
 - The table will be taken offline during the incremental import.
 
 Known issues that will be addressed in upcoming alpha releases:
