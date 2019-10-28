@@ -1,8 +1,10 @@
-CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
+CockroachDB replicates and distributes data behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. Once a cluster is live, any node can be used as a SQL gateway.
 
-To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+When using a load balancer, you must issue commands directly to the load balancer, which then routes traffic to the nodes.
 
-1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any node:
+Use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+
+1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
 
     {% include copy-clipboard.html %}
     ~~~ shell

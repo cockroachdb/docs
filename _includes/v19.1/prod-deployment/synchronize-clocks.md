@@ -73,12 +73,16 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 7. Repeat these steps for each machine where a CockroachDB node will run.
 
-{% elsif page.title contains "Google" %}
+{% elsif page.title contains "Google" %} 
 
 Compute Engine instances are preconfigured to use [NTP](http://www.ntp.org/), which should keep offsets in the single-digit milliseconds. However, Google can’t predict how external NTP services, such as `pool.ntp.org`, will handle the leap second. Therefore, you should:
 
 - [Configure each GCE instance to use Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances).
-- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, [configure the non-GCE machines to use Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks).
+- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, all AWS machines should use the internal [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service), and all other non-GCE machines should use [Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks).
+
+{{site.data.alerts.callout_info}}
+The Google and Amazon services handle <a href="https://developers.google.com/time/smear">"smearing" the leap second</a> in compatible ways.
+{{site.data.alerts.end}}
 
 {% elsif page.title contains "AWS" %}
 
@@ -87,6 +91,11 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 - [Configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service).
     - Per the above instructions, ensure that `etc/chrony.conf` on the instance contains the line `server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4` and that other `server` or `pool` lines are commented out.
     - To verify that Amazon Time Sync Service is being used, run `chronyc sources -v` and check for a line containing `* 169.254.169.123`. The `*` denotes the preferred time server.
+- If you plan to run a hybrid cluster across AWS and other cloud providers or environments, all GCE machines should use [Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances) and all other non-AWS machines should use [Google's external NTP service](deploy-cockroachdb-on-digital-ocean.html#step-2-synchronize-clocks).
+
+{{site.data.alerts.callout_info}}
+The Google and Amazon services handle <a href="https://developers.google.com/time/smear">"smearing" the leap second</a> in compatible ways.
+{{site.data.alerts.end}}
 
 {% elsif page.title contains "Azure" %}
 
