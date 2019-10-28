@@ -64,42 +64,11 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
 
 ### Create a changefeed
 
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR foo WITH updated, resolved;
-~~~
-
-Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
-
-~~~
-table,key,value
-foo,[0],"{""after"": {""a"": 0}, ""updated"": ""1549591174801796000.0000000000""}"
-NULL,NULL,"{""resolved"":""1549591174801796000.0000000000""}"
-foo,[1],"{""after"": {""a"": 1}, ""updated"": ""1549591188018217000.0000000000""}"
-~~~
-
-To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
-
-For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed).
+{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
 ### Create a changefeed with Avro
 
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR foo WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
-~~~
-
-Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
-
-<!--
-~~~
-table,key,value
-foo,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
-~~~ -->
-
-To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
-
-For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed-using-avro).
+{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
 <!-- ### Pause and resume a changefeed
 
