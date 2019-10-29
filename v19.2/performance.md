@@ -18,7 +18,7 @@ Once those are available, if you fail to achieve similar performance profiles, t
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses.** That's 98% of the maximum possible throughput per minute for TPC-C 50K. For a refresher on what exactly TPC-C is and how it is measured consult the Benchmarks Used section below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score** For a refresher on what exactly TPC-C is and how it is measured consult the Benchmarks Used section below.
 
 Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 50 times more scalable than Amazon Aurora, supporting 25 billion rows and more than 4 terabytes of frequently accessed data:
 
@@ -44,15 +44,15 @@ CockroachDB has **no theoretical scaling limit** and, in practice, can achieve n
 
 <img src="{{ 'images/v19.2/linearscale.png' | relative_url }}" alt="CRDB Linear Scale" style="max-width:100%" />
 
-This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. We've also shared the concurrency used at each number of nodes tested in the table below.
+This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the table below.
 
-| Number of Nodes | Concurrency
-|-----------------|------------
-| 16              | 512
-| 32              | 512
-| 64              | 1024
-| 128             | 1024
-| 256             | 2048
+| Number of Nodes | Workers | Splits | Concurrency
+|-----------------|---------|--------|------------
+|       16        |    2    |  128   |     512
+|       32        |    4    |  256   |     512
+|       64        |    4    |  256   |     1024
+|       128       |    8    |  512   |     1024
+|       256       |    8    |  512   |     2048
 ## Throughput
 
 As mentioned above, Cockroach Labs believes TPC-C provides the most realistic and objective measure for OLTP throughput. In the real world, applications generate transactional workloads that consist of a combination of reads and writes, possibly with concurrency and likely without all data being loaded into memory. If you see benchmark results quoted in QPS, take them with a grain of salt, because anything as simple as a “query” is unlikely to be representative of the workload you need to run in practice.
@@ -64,11 +64,15 @@ With that in mind, however, you can use [Sysbench](https://github.com/akopytov/s
 
 ## Latency
 
-CockroachDB returns single-row **reads in 1 ms** and processes single-row **writes in 2 ms**, with a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html).
+CockroachDB returns single-row **reads in 1 ms** and processes single-row **writes in 2 ms** within a single availability zone. As you expand out to multiple availability zones or multiple regions, latency can increase due to distance and the limitation of the speed of light.
 
-For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward latency benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload:
+For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward latency benchmarking.
+
+For example, when running Sysbench on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload.
 
 <img src="{{ 'images/v19.2/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
+
+CockroachDB provides a a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
 
 ## Benchmarks Used
 

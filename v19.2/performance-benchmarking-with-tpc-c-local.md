@@ -91,16 +91,14 @@ I191024 03:46:51.682670 1 workload/workloadsql/dataload.go:135  imported order_l
 
 ## Step 3. Run the benchmark
 
-Run the workload for ten "warehouses" of data for five minutes (300 seconds):
+Run the workload for ten "warehouses" of data for ten minutes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload run tpcc \
 --warehouses=10 \
---ramp=30s \
---duration=300s \
---split \
---scatter \
+--ramp=3m \
+--duration=10m \
 'postgresql://root@localhost:26257?sslmode=disable'
 ~~~
 
