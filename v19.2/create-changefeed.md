@@ -60,6 +60,8 @@ Parameter | Value | Description
 `topic_prefix` | [`STRING`](string.html) | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled=true` | [`BOOL`](bool.html) | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
 `ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert` | [`STRING`](string.html) | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key` | [`STRING`](string.html) | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `sasl_enabled` | [`BOOL`](bool.html) | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
 `sasl_user` | [`STRING`](string.html) | Your SASL username.
 `sasl_password` | [`STRING`](string.html) | Your SASL password.
