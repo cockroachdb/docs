@@ -612,6 +612,47 @@
         "urls": [
           "/${VERSION}/sql-tuning-with-explain.html"
         ]
+      },
+      {
+        "title": "Multi-Region Development and Deployment",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/tutorials/multi-region-overview.html"
+            ]
+          },
+            {
+              "title": "Use-Case",
+              "urls": [
+                "/${VERSION}/tutorials/multi-region-use-case.html"
+              ]
+            },
+          {
+            "title": "Database Schema",
+            "urls": [
+              "/${VERSION}/tutorials/multi-region-database.html"
+            ]
+          },
+          {
+            "title": "Setup",
+            "urls": [
+              "/${VERSION}/tutorials/multi-region-setup.html"
+            ]
+          },
+          {
+            "title": "Application",
+            "urls": [
+              "/${VERSION}/tutorials/multi-region-application.html"
+            ]
+          },
+          {
+            "title": "Deployment",
+            "urls": [
+              "/${VERSION}/tutorials/multi-region-deployment.html"
+            ]
+          }
+        ]
       }
     ]
   },
