@@ -18,7 +18,7 @@ Once those are available, if you fail to achieve similar performance profiles, t
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score** For a refresher on what exactly TPC-C is and how it is measured consult the Benchmarks Used section below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured consult the Benchmarks Used section below.
 
 Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 50 times more scalable than Amazon Aurora, supporting 25 billion rows and more than 4 terabytes of frequently accessed data:
 
@@ -46,18 +46,18 @@ CockroachDB has **no theoretical scaling limit** and, in practice, can achieve n
 
 This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the table below.
 
-| Number of Nodes | Workers | Splits | Concurrency
-|-----------------|---------|--------|------------
-|       16        |    2    |  128   |     512
-|       32        |    4    |  256   |     512
-|       64        |    4    |  256   |     1024
-|       128       |    8    |  512   |     1024
-|       256       |    8    |  512   |     2048
+| Number of Nodes | Workers | Concurrency
+|-----------------|---------|------------|
+|       16        |    2    |   512
+|       32        |    4    |   512
+|       64        |    4    |   1024
+|       128       |    8    |   1024
+|       256       |    8    |   2048
 ## Throughput
 
 As mentioned above, Cockroach Labs believes TPC-C provides the most realistic and objective measure for OLTP throughput. In the real world, applications generate transactional workloads that consist of a combination of reads and writes, possibly with concurrency and likely without all data being loaded into memory. If you see benchmark results quoted in QPS, take them with a grain of salt, because anything as simple as a “query” is unlikely to be representative of the workload you need to run in practice.
 
-With that in mind, however, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward throughput benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve 118,000 inserts per second on the `oltp_insert` workload and 336,000 reads per second on the `oltp_point_select` workload. We used a concurrency of 480 on the oltp_insert workload and a concurrency of 216 on the oltp_point_select workload to generate these numbers.
+With that in mind, however, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward throughput benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve 118,000 inserts per second on the `oltp_insert` workload and 336,000 reads per second on the `oltp_point_select` workload. We used a concurrency of 480 on the `oltp_insert` workload and a concurrency of 216 on the `oltp_point_select` workload to generate these numbers.
 
 <img src="{{ 'images/v19.2/sysbench-throughput.png' | relative_url }}" alt="Sysbench Throughput" style="max-width:100%" />
 
@@ -94,7 +94,7 @@ Because TPC-C is constrained to a maximum amount of throughput per warehouse, we
 
 ### Sysbench
 
-[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, as discussed above, but Sysbench is a reasonable alternative for understanding basic throughput and latency across different databases. In the meantime, know that the numbers below were generated from a three-node cluster of AWS `c5d.9xlarge` VMs run across AWS’s us-east-1 region (availability zones a, b, and c) against Sysbench’s oltp_insert and oltp_point_select workloads.
+[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, as discussed above, but Sysbench is a reasonable alternative for understanding basic throughput and latency across different databases. In the meantime, know that the numbers below were generated from a three-node cluster of AWS `c5d.9xlarge` VMs run across AWS’s us-east-1 region (availability zones a, b, and c) against Sysbench’s `oltp_insert` and `oltp_point_select` workloads.
 
 ## Performance limitations
 
