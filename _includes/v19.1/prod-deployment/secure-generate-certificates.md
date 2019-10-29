@@ -56,13 +56,17 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ssh -i /path/<key file>.pem <username>@<node1 DNS name> "mkdir certs"
+    $ ssh-add /path/<key file>.pem
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ scp -i /path/<key file>.pem \
-    certs/ca.crt \
+    $ ssh <username>@<node1 DNS name> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
     certs/node.crt \
     certs/node.key \
     <username>@<node1 DNS name>:~/certs
@@ -74,7 +78,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
     ~~~
 
-    {{site.data.alerts.callout_info}}The above syntax associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">GCP docs</a> for more details.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}<code>gcloud compute ssh</code> associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">GCP docs</a> for more details.{{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
