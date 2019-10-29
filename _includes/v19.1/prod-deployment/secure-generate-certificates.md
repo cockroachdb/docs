@@ -72,6 +72,22 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     <username>@<node1 DNS name>:~/certs
     ~~~
 
+    {% elsif page.title contains "Google" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
+    ~~~
+
+    {{site.data.alerts.callout_info}}<code>gcloud compute ssh</code> associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">GCP docs</a> for more details.{{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ~~~
+
     {% else %}
     {% include copy-clipboard.html %}
     ~~~ shell
