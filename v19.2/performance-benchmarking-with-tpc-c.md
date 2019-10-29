@@ -4,6 +4,11 @@ summary: Learn how to benchmark CockroachDB against TPC-C.
 toc: true
 ---
 
+<div class="filters filters-big clearfix">
+  <button class="filter-button current"><strong>Distributed</strong></button>
+  <a href="performance-benchmarking-with-tpc-c-local.html"><button class="filter-button">Local</button></a>
+</div>
+
 This page walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on CockroachDB. It measures tpmC (new order transactions/minute) on two TPC-C datasets:
 
 - 1,000 warehouses (for a total dataset size of 200GB) on 3 nodes
@@ -422,6 +427,7 @@ Once the workload has finished running, you should see a final output line.-->
 
 ## See also
 
+- [Performance Overview](performance.html)
 - [Benchmarking CockroachDB 2.0: A Performance Report](https://www.cockroachlabs.com/guides/cockroachdb-performance/)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Deploy CockroachDB on Digital Ocean](deploy-cockroachdb-on-digital-ocean.html)
+- [Deploy CockroachDB on GCP](deploy-cockroachdb-on-google-cloud-platform.html)
