@@ -37,7 +37,7 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 	- **Do not** use ["burstable" `t2` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/t2-instances.html), which limit the load on a single core.
 
-- Note the ID of the VPC you select. You will need to look up its CIDR when setting inbound rules for your security group.
+- Note the ID of the VPC you select. You will need to look up its IP range when setting inbound rules for your security group.
 
 - Make sure all your instances are in the same security group.
 
@@ -92,9 +92,9 @@ You can set your network IP by selecting "My IP" in the Source field.
  Type | Custom TCP Rule
  Protocol | TCP
  Port Range | **8080**
- Source | The CIDR of your VPC (e.g., 10.12.0.0/16)
+ Source | The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)
 
-To get the CIDR of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
 
 ## Step 3. Synchronize clocks
 

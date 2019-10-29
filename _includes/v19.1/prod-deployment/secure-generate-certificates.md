@@ -56,13 +56,17 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ssh -i /path/<key file>.pem <username>@<node1 DNS name> "mkdir certs"
+    $ ssh-add /path/<key file>.pem
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ scp -i /path/<key file>.pem \
-    certs/ca.crt \
+    $ ssh <username>@<node1 DNS name> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
     certs/node.crt \
     certs/node.key \
     <username>@<node1 DNS name>:~/certs
@@ -115,13 +119,12 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% if page.title contains "AWS" %}
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ssh -i /path/<key file>.pem <username>@<node2 DNS name> "mkdir certs"
+    $ ssh <username>@<node2 DNS name> "mkdir certs"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ scp -i /path/<key file>.pem \
-    certs/ca.crt \
+    $ scp certs/ca.crt \
     certs/node.crt \
     certs/node.key \
     <username>@<node2 DNS name>:~/certs

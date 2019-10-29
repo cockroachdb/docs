@@ -1,6 +1,6 @@
 CockroachDB replicates and distributes data behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. Once a cluster is live, any node can be used as a SQL gateway.
 
-When using a load balancer, you must issue commands directly to the load balancer, which then routes traffic to the nodes.
+When using a load balancer, you should issue commands directly to the load balancer, which then routes traffic to the nodes.
 
 Use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
 
