@@ -223,7 +223,6 @@ Use the table below for data type mappings:
 
 When moving from Oracle to CockroachDB data types, consider the following:
 
-- [Conversion of integers to `DATE` / `TIME` values](known-limitations.html#conversion-of-integers-to-date-time-values)
 - [Silent validation error with `DECIMAL` values](known-limitations.html#silent-validation-error-with-decimal-values)
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-schema-changes-between-executions-of-prepared-statements)

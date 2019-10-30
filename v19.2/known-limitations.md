@@ -151,14 +151,6 @@ This limitation will be lifted when the cost-based optimizer covers all queries.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 
-### Conversion of integers to date/time values
-
-CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
-
-This conversion is currently only well defined for a small range of integers, i.e., large absolute values are not properly converted. For example, `(-9223372036854775808):::int64::date` converts to `1970-01-01 00:00:00+00:00`.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
-
 ### Cannot decommission nodes
 
 The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.

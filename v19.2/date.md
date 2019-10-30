@@ -23,9 +23,13 @@ CockroachDB also supports using uninterpreted
 [string literals](sql-constants.html#string-literals) in contexts
 where a `DATE` value is otherwise expected.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2:</span> `DATE` values in CockroachDB are fully [PostgreSQL-compatible](https://www.postgresql.org/docs/current/datatype-datetime.html), including support for special values (e.g. `+/- infinity`). Existing dates outside of the PostgreSQL date range (`4714-11-24 BC` to `5874897-12-31`) are converted to `+/- infinity` dates.
+{{site.data.alerts.end}}
+
 ## Size
 
-A `DATE` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
+A `DATE` column supports values up to 16 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 
@@ -83,7 +87,7 @@ Type | Details
 -----|--------
 `DECIMAL` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `FLOAT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`TIMESTAMP` | Sets the time to 00:00 (midnight) in the resulting timestamp
+`TIMESTAMP` | Sets the time to 00:00 (midnight) in the resulting timestamp.
 `INT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `STRING` | ––
 
