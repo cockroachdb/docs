@@ -18,7 +18,7 @@ Once those are available, if you fail to achieve similar performance profiles, t
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured consult the [Benchmarks used](#benchmarks-used) section below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
 
 Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 50 times more scalable than Amazon Aurora, supporting 25 billion rows and more than 4 terabytes of frequently accessed data:
 
@@ -35,8 +35,6 @@ Machine type                       | c5d.4xlarge       | r3.8xl
 Unlike Amazon Aurora, CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard. Like many other databases, Aurora selectively degrades isolation levels for performance, leaving workloads susceptible to fraud and data loss.
 
 To learn more about our comparison with Amazon Aurora, see this [blog post](https://www.cockroachlabs.com/blog/cockroachdb-2dot1-performance/).
-
-<!-- To try this out for yourself on your laptop [visit this docs page](https://www.cockroachlabs.com/docs/v19.1/training/performance-benchmarking.html#main-content). Or, if you want to reproduce the full results of TPC-C [visit this page](https://www.cockroachlabs.com/guides/cockroachdb-performance/). -->
 
 ### Linear scaling
 
@@ -72,7 +70,7 @@ For example, when running Sysbench on a 3-node cluster of AWS `c5d.9xlarge` mach
 
 <img src="{{ 'images/v19.2/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
 
-CockroachDB provides a a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
+CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
 
 ## Benchmarks used
 
