@@ -377,15 +377,15 @@ To create replication zone and apply them to corresponding partitions, use the [
     ~~~
 
     ~~~
-              zone_name             |                                  config_sql
-+-----------------------------------+------------------------------------------------------------------------------+
-  roachlearn.students.north_america | ALTER PARTITION north_america OF INDEX students@primary CONFIGURE ZONE USING
-                                    |     range_min_bytes = 16777216,
-                                    |     range_max_bytes = 67108864,
-                                    |     gc.ttlseconds = 90000,
-                                    |     num_replicas = 3,
-                                    |     constraints = '[+region=us]',
-                                    |     lease_preferences = '[]'
+                   target                   |                            raw_config_sql
++-------------------------------------------+----------------------------------------------------------------------+
+  PARTITION north_america OF TABLE students | ALTER PARTITION north_america OF TABLE students CONFIGURE ZONE USING
+                                            |     range_min_bytes = 16777216,
+                                            |     range_max_bytes = 67108864,
+                                            |     gc.ttlseconds = 90000,
+                                            |     num_replicas = 3,
+                                            |     constraints = '[+region=us]',
+                                            |     lease_preferences = '[]'
 (1 row)
     ~~~
 
@@ -690,9 +690,7 @@ You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](p
 
 ### Show the replication zone for a partition
 
-To view the replication zone for a partition, use the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
-
-{% include {{ page.version.version }}/zone-configs/view-the-replication-zone-for-an-index.md %}
+To view the replication zone for a partition, use the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement.
 
 ## Locality–resilience tradeoff
 
