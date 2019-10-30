@@ -106,6 +106,12 @@
     ]
   },
   {
+    "title": "Troubleshoot",
+    "urls": [
+      "/${VERSION}/cockroachcloud-troubleshooting-page.html"
+    ]
+  },
+  {
     "title": "Tutorials",
     "items": [
       {
