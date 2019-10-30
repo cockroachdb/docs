@@ -71,7 +71,7 @@
 
 4. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
-    1. Get the name of the `Pending` CSR for the first pod:
+    1. Get the names of the `Pending` CSRs:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -128,7 +128,7 @@
         certificatesigningrequest "default.node.my-release-cockroachdb-0" approved
         ~~~
 
-    4. Repeat steps 1-3 for the other 2 pods.
+    4. Repeat steps 2 and 3 for the other 2 pods.
 
 5. Confirm that three pods are `Running` successfully:
 

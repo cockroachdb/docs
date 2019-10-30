@@ -102,6 +102,22 @@ When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are n
     $ kubectl get csr
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-3                             2m        system:serviceaccount:default:default   Pending
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ...
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
     NAME                                                   AGE       REQUESTOR                               CONDITION
     default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
@@ -112,12 +128,43 @@ When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are n
     node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
     node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ...
     ~~~
+    </section>
 
     If you do not see a `Pending` CSR, wait a minute and try again.
 
 4. Examine the CSR for the new pod:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl describe csr default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    Name:               default.node.cockroachdb-3
+    Labels:             <none>
+    Annotations:        <none>
+    CreationTimestamp:  Wed, 30 Oct 2019 13:46:52 -0400
+    Requesting User:    system:serviceaccount:default:cockroachdb
+    Status:             Pending
+    Subject:
+      Common Name:    node
+      Serial Number:
+      Organization:   Cockroach
+    Subject Alternative Names:
+             DNS Names:     localhost
+                            cockroachdb-3.cockroachdb.default.svc.cluster.local
+                            cockroachdb-3.cockroachdb
+                            cockroachdb-public
+                            cockroachdb-public.default.svc.cluster.local
+             IP Addresses:  127.0.0.1
+    Events:  <none>
+    ~~~    
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.my-release-cockroachdb-3
@@ -144,17 +191,31 @@ When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are n
                             10.48.1.6
     Events:  <none>
     ~~~
+    </section>
 
 5. If everything looks correct, approve the CSR for the new pod:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl certificate approve default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.my-release-cockroachdb-3
     ~~~
 
     ~~~
-    certificatesigningrequest "default.node.my-release-cockroachdb-3" approved
+    certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-3 approved
     ~~~
+    </section>
 
 6. Verify that the new pod started successfully:
 
@@ -163,6 +224,19 @@ When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are n
     $ kubectl get pods
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    ~~~
+    NAME                        READY     STATUS    RESTARTS   AGE
+    cockroachdb-0               1/1       Running   0          51m
+    cockroachdb-1               1/1       Running   0          47m
+    cockroachdb-2               1/1       Running   0          3m
+    cockroachdb-3               1/1       Running   0          1m
+    cockroachdb-client-secure   1/1       Running   0          15m
+    ...
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
     NAME                        READY     STATUS    RESTARTS   AGE
     my-release-cockroachdb-0    1/1       Running   0          51m
@@ -170,7 +244,9 @@ When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are n
     my-release-cockroachdb-2    1/1       Running   0          3m
     my-release-cockroachdb-3    1/1       Running   0          1m
     cockroachdb-client-secure   1/1       Running   0          15m
+    ...
     ~~~
+    </section>
 
 8. Back in the Admin UI, view **Node List** to ensure that the fourth node successfully joined the cluster.
 
@@ -197,26 +273,29 @@ To shut down the CockroachDB cluster:
     pod "cockroachdb-0" deleted
     pod "cockroachdb-1" deleted
     pod "cockroachdb-2" deleted
+    statefulset.apps "alertmanager-cockroachdb" deleted
+    statefulset.apps "prometheus-cockroachdb" deleted
     service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
     persistentvolumeclaim "datadir-cockroachdb-0" deleted
     persistentvolumeclaim "datadir-cockroachdb-1" deleted
     persistentvolumeclaim "datadir-cockroachdb-2" deleted
-    poddisruptionbudget "cockroachdb-budget" deleted
-    job "cluster-init-secure" deleted
-    rolebinding "cockroachdb" deleted
-    clusterrolebinding "cockroachdb" deleted
-    clusterrolebinding "prometheus" deleted
-    role "cockroachdb" deleted
-    clusterrole "cockroachdb" deleted
-    clusterrole "prometheus" deleted
+    persistentvolumeclaim "datadir-cockroachdb-3" deleted
+    poddisruptionbudget.policy "cockroachdb-budget" deleted
+    job.batch "cluster-init-secure" deleted
+    rolebinding.rbac.authorization.k8s.io "cockroachdb" deleted
+    clusterrolebinding.rbac.authorization.k8s.io "cockroachdb" deleted
+    clusterrolebinding.rbac.authorization.k8s.io "prometheus" deleted
+    role.rbac.authorization.k8s.io "cockroachdb" deleted
+    clusterrole.rbac.authorization.k8s.io "cockroachdb" deleted
+    clusterrole.rbac.authorization.k8s.io "prometheus" deleted
     serviceaccount "cockroachdb" deleted
     serviceaccount "prometheus" deleted
-    alertmanager "cockroachdb" deleted
-    prometheus "cockroachdb" deleted
-    prometheusrule "prometheus-cockroachdb-rules" deleted
-    servicemonitor "cockroachdb" deleted
+    alertmanager.monitoring.coreos.com "cockroachdb" deleted
+    prometheus.monitoring.coreos.com "cockroachdb" deleted
+    prometheusrule.monitoring.coreos.com "prometheus-cockroachdb-rules" deleted
+    servicemonitor.monitoring.coreos.com "cockroachdb" deleted
     ~~~
 
 2. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
@@ -237,6 +316,21 @@ To shut down the CockroachDB cluster:
     $ kubectl get csr
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    ~~~
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.cockroachdb-3                             12m       system:serviceaccount:default:default   Approved,Issued
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
     NAME                                                   AGE       REQUESTOR                               CONDITION
     default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
@@ -247,10 +341,28 @@ To shut down the CockroachDB cluster:
     node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
     node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ...
     ~~~
+    </section>
 
 4. Delete the CSRs that you created:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete csr default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    certificatesigningrequest "default.client.root" deleted
+    certificatesigningrequest "default.node.cockroachdb-0" deleted
+    certificatesigningrequest "default.node.cockroachdb-1" deleted
+    certificatesigningrequest "default.node.cockroachdb-2" deleted
+    certificatesigningrequest "default.node.cockroachdb-3" deleted
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete csr default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
@@ -263,6 +375,7 @@ To shut down the CockroachDB cluster:
     certificatesigningrequest "default.node.my-release-cockroachdb-2" deleted
     certificatesigningrequest "default.node.my-release-cockroachdb-3" deleted
     ~~~
+    </section>
 
 5. Get the names of the secrets for the cluster:
 
@@ -271,6 +384,21 @@ To shut down the CockroachDB cluster:
     $ kubectl get secrets
     ~~~
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    ~~~
+    NAME                              TYPE                                  DATA      AGE
+    alertmanager-cockroachdb          Opaque                                1         1h
+    default-token-d9gff               kubernetes.io/service-account-token   3         5h
+    default.client.root               Opaque                                2         5h
+    default.node.cockroachdb-0        Opaque                                2         5h
+    default.node.cockroachdb-1        Opaque                                2         5h
+    default.node.cockroachdb-2        Opaque                                2         5h
+    default.node.cockroachdb-3        Opaque                                2         5h
+    prometheus-operator-token-bpdv8   kubernetes.io/service-account-token   3         3h    
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
     NAME                                     TYPE                                  DATA      AGE
     alertmanager-cockroachdb                 Opaque                                1         1h
@@ -282,9 +410,27 @@ To shut down the CockroachDB cluster:
     default.node.my-release-cockroachdb-3    Opaque                                2         5h
     prometheus-operator-token-bpdv8          kubernetes.io/service-account-token   3         3h
     ~~~
+    </section>
 
 6. Delete the secrets that you created:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
+    ~~~
+
+    ~~~
+    secret "alertmanager-cockroachdb" deleted
+    secret "default.client.root" deleted
+    secret "default.node.cockroachdb-0" deleted
+    secret "default.node.cockroachdb-1" deleted
+    secret "default.node.cockroachdb-2" deleted
+    secret "default.node.cockroachdb-3" deleted
+    ~~~        
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
@@ -298,6 +444,7 @@ To shut down the CockroachDB cluster:
     secret "default.node.my-release-cockroachdb-2" deleted
     secret "default.node.my-release-cockroachdb-3" deleted
     ~~~
+    </section>
 
 7. Stop Kubernetes:
     - Hosted GKE:

@@ -17,7 +17,7 @@ To do this, add a new worker node and then edit your StatefulSet configuration t
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
     </section>
 

@@ -19,7 +19,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    service "cockroachdb" labeled
+    service/cockroachdb labeled
     ~~~
 
     This ensures that there is a prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
@@ -32,7 +32,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    service "cockroachdb" labeled
+    service/cockroachdb labeled
     ~~~
 
     This ensures that there is a prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
@@ -47,10 +47,10 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    clusterrolebinding "prometheus-operator" created
-    clusterrole "prometheus-operator" created
-    serviceaccount "prometheus-operator" created
-    deployment "prometheus-operator" created
+    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator created
+    clusterrole.rbac.authorization.k8s.io/prometheus-operator created
+    serviceaccount/prometheus-operator created
+    deployment.apps/prometheus-operator created
     ~~~
 
 3. Confirm that the `prometheus-operator` has started:
@@ -61,8 +61,8 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    NAME                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-    prometheus-operator   1         1         1            1           1m
+    NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+    prometheus-operator   1/1     1            1           27s
     ~~~
 
 4. Use our [`prometheus.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/prometheus.yaml) file to create the various objects necessary to run a Prometheus instance:
@@ -74,10 +74,10 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    clusterrole "prometheus" created
-    clusterrolebinding "prometheus" created
-    servicemonitor "cockroachdb" created
-    prometheus "cockroachdb" created
+    clusterrole.rbac.authorization.k8s.io/prometheus created
+    clusterrolebinding.rbac.authorization.k8s.io/prometheus created
+    servicemonitor.monitoring.coreos.com/cockroachdb created
+    prometheus.monitoring.coreos.com/cockroachdb created
     ~~~
 
 5. Access the Prometheus UI locally and verify that CockroachDB is feeding data into Prometheus:
@@ -128,7 +128,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
     ~~~
-    secret "alertmanager-cockroachdb" created
+    secret/alertmanager-cockroachdb created
     ~~~
 
     {% include copy-clipboard.html %}
@@ -137,7 +137,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
     ~~~
-    secret "alertmanager-cockroachdb" labeled
+    secret/alertmanager-cockroachdb labeled
     ~~~
 
     {{site.data.alerts.callout_danger}}
@@ -153,8 +153,8 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
     ~~~
-    alertmanager "cockroachdb" created
-    service "alertmanager-cockroachdb" created
+    alertmanager.monitoring.coreos.com/cockroachdb created
+    service/alertmanager-cockroachdb created
     ~~~
 
 5. Verify that Alertmanager is running:
@@ -183,7 +183,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
     ~~~
-    prometheusrule "prometheus-cockroachdb-rules" created
+    prometheusrule.monitoring.coreos.com/prometheus-cockroachdb-rules created
     ~~~
 
 8. Ensure that the rules are visible to Prometheus by opening <a href="http://localhost:9090/rules" data-proofer-ignore>http://localhost:9090/rules</a>. The screen should look like this:

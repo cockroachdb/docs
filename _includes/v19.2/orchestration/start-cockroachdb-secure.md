@@ -7,15 +7,15 @@
     ~~~
 
     ~~~
-    serviceaccount "cockroachdb" created
-    role "cockroachdb" created
-    clusterrole "cockroachdb" created
-    rolebinding "cockroachdb" created
-    clusterrolebinding "cockroachdb" created
-    service "cockroachdb-public" created
-    service "cockroachdb" created
-    poddisruptionbudget "cockroachdb-budget" created
-    statefulset "cockroachdb" created
+    serviceaccount/cockroachdb created
+    role.rbac.authorization.k8s.io/cockroachdb created
+    clusterrole.rbac.authorization.k8s.io/cockroachdb created
+    rolebinding.rbac.authorization.k8s.io/cockroachdb created
+    clusterrolebinding.rbac.authorization.k8s.io/cockroachdb created
+    service/cockroachdb-public created
+    service/cockroachdb created
+    poddisruptionbudget.policy/cockroachdb-budget created
+    statefulset.apps/cockroachdb created
     ~~~
 
     Alternatively, if you'd rather start with a configuration file that has been customized for performance:
@@ -42,7 +42,7 @@
 
 2. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
-    1. Get the name of the `Pending` CSR for the first pod:
+    1. Get the names of the `Pending` CSRs:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -50,11 +50,11 @@
         ~~~
 
         ~~~
-        NAME                                                   AGE       REQUESTOR                               CONDITION
-        default.node.cockroachdb-0                             1m        system:serviceaccount:default:default   Pending
-        node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   4m        kubelet                                 Approved,Issued
-        node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   4m        kubelet                                 Approved,Issued
-        node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   5m        kubelet                                 Approved,Issued
+        NAME                         AGE   REQUESTOR                                   CONDITION
+        default.node.cockroachdb-0   1m    system:serviceaccount:default:cockroachdb   Pending
+        default.node.cockroachdb-1   1m    system:serviceaccount:default:cockroachdb   Pending
+        default.node.cockroachdb-2   1m    system:serviceaccount:default:cockroachdb   Pending
+        ...
         ~~~
 
         If you do not see a `Pending` CSR, wait a minute and try again.
@@ -71,7 +71,7 @@
         Labels:             <none>
         Annotations:        <none>
         CreationTimestamp:  Thu, 09 Nov 2017 13:39:37 -0500
-        Requesting User:    system:serviceaccount:default:default
+        Requesting User:    system:serviceaccount:default:cockroachdb
         Status:             Pending
         Subject:
           Common Name:    node
@@ -80,7 +80,9 @@
         Subject Alternative Names:
                  DNS Names:     localhost
                                 cockroachdb-0.cockroachdb.default.svc.cluster.local
+                                cockroachdb-0.cockroachdb
                                 cockroachdb-public
+                                cockroachdb-public.default.svc.cluster.local
                  IP Addresses:  127.0.0.1
                                 10.48.1.6
         Events:  <none>
@@ -97,7 +99,7 @@
         certificatesigningrequest "default.node.cockroachdb-0" approved
         ~~~
 
-    4. Repeat steps 1-3 for the other 2 pods.
+    4. Repeat steps 2 and 3 for the other 2 pods.
 
 3. Initialize the cluster:
 
@@ -124,10 +126,10 @@
         ~~~
 
         ~~~
-        NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
-        pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
-        pvc-52fd3a39-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-1             27s
-        pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
+        NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                           STORAGECLASS   REASON   AGE
+        pvc-9e435563-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-0   standard                51m
+        pvc-9e47d820-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-1   standard                51m
+        pvc-9e4f57f0-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-2   standard                51m
         ~~~
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
@@ -139,7 +141,7 @@
         ~~~
 
         ~~~
-        job "cluster-init-secure" created
+        job.batch/cluster-init-secure created
         ~~~
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
@@ -150,7 +152,7 @@
         ~~~
 
         ~~~
-        certificatesigningrequest "default.client.root" approved
+        certificatesigningrequest.certificates.k8s.io/default.client.root approved
         ~~~
 
     5. Confirm that cluster initialization has completed successfully. The job
@@ -163,8 +165,8 @@
         ~~~
 
         ~~~
-        NAME                  DESIRED   SUCCESSFUL   AGE
-        cluster-init-secure   1         1            2m
+        NAME                  COMPLETIONS   DURATION   AGE
+        cluster-init-secure   1/1           23s        35s
         ~~~
 
         {% include copy-clipboard.html %}
@@ -173,10 +175,11 @@
         ~~~
 
         ~~~
-        NAME            READY     STATUS    RESTARTS   AGE
-        cockroachdb-0   1/1       Running   0          3m
-        cockroachdb-1   1/1       Running   0          3m
-        cockroachdb-2   1/1       Running   0          3m
+        NAME                        READY     STATUS      RESTARTS   AGE
+        cluster-init-secure-q8s7v   0/1       Completed   0          55s
+        cockroachdb-0               1/1       Running     0          3m
+        cockroachdb-1               1/1       Running     0          3m
+        cockroachdb-2               1/1       Running     0          3m
         ~~~
 
 {{site.data.alerts.callout_success}}

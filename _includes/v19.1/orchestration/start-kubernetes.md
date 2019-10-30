@@ -53,7 +53,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     ~~~
 
     ~~~
-    clusterrolebinding "cluster-admin-binding" created
+    clusterrolebinding.rbac.authorization.k8s.io/your.username-cluster-admin-binding created
     ~~~
 
 ### Hosted EKS
