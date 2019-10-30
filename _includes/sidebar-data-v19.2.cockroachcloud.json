@@ -94,6 +94,12 @@
     ]
   },
   {
+    "title": "Troubleshoot Your Cluster",
+    "urls": [
+      "/${VERSION}/cockroachcloud-troubleshooting-page.html"
+    ]
+  },
+  {
     "title": "Manage Your Cluster",
     "urls": [
       "/${VERSION}/cockroachcloud-cluster-management.html"
@@ -103,12 +109,6 @@
     "title": "Manage Console Access",
     "urls": [
       "/${VERSION}/cockroachcloud-console-access-management.html"
-    ]
-  },
-  {
-    "title": "Troubleshoot",
-    "urls": [
-      "/${VERSION}/cockroachcloud-troubleshooting-page.html"
     ]
   },
   {

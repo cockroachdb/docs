@@ -46,6 +46,6 @@ The following error is displayed while trying to a run [CockroachDB workload](ht
 
 ~~~ shell
 Error: x509: certificate signed by unknown authority
-~~
+~~~
 
 **Solution:** This is a known issue. Use `sslmode=require` instead.
