@@ -703,6 +703,7 @@ For best performance, avoid using it when the input is known to not contain dupl
 
 ## See also
 
+- [Ordering of rows in DML statements](query-order.html#Ordering-of-rows-in-DML-statements)
 - [Selection Queries](selection-queries.html)
 - [`DELETE`](delete.html)
 - [`UPDATE`](update.html)

@@ -73,7 +73,8 @@ deleted rows more frequently.
 {% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
 For more information about ordering query results in general, see
-[Ordering Query Results](query-order.html).
+[Ordering Query Results](query-order.html) and [Ordering of rows in
+DML statements](query-order.html#Ordering-of-rows-in-DML-statements).
 
 ## Delete performance on large data sets
 
@@ -230,7 +231,8 @@ To sort and return deleted rows, use a statement like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *] ORDER BY expiration_time;
+> WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
+  SELECT * FROM a ORDER BY expiration_time;
 ~~~
 
 ~~~
