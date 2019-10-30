@@ -36,7 +36,7 @@
         ~~~
 
         ~~~
-        serviceaccount "tiller" created
+        serviceaccount/tiller created
         clusterrolebinding.rbac.authorization.k8s.io/tiller created
         ~~~    
 
@@ -50,6 +50,11 @@
         {% include copy-clipboard.html %}
         ~~~ shell
         $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
+        ~~~
+
+        ~~~
+        deployment.apps/tiller-deploy created
+        service/tiller-deploy created
         ~~~
 
 3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart and setting the `Secure.Enabled` parameter to `true`:
@@ -84,6 +89,7 @@
         default.node.my-release-cockroachdb-0   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
         default.node.my-release-cockroachdb-1   16s       system:serviceaccount:default:my-release-cockroachdb   Pending
         default.node.my-release-cockroachdb-2   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
+        ...
         ~~~
 
         If you do not see a `Pending` CSR, wait a minute and try again.
@@ -113,7 +119,6 @@
                                 my-release-cockroachdb-public
                                 my-release-cockroachdb-public.default.svc.cluster.local
                  IP Addresses:  127.0.0.1
-                                10.48.1.6
         Events:  <none>
         ~~~
 
@@ -125,7 +130,7 @@
         ~~~
 
         ~~~
-        certificatesigningrequest "default.node.my-release-cockroachdb-0" approved
+        certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-0 approved
         ~~~
 
     4. Repeat steps 2 and 3 for the other 2 pods.
@@ -153,7 +158,7 @@
     ~~~
 
     ~~~
-    certificatesigningrequest "default.client.root" approved
+    certificatesigningrequest.certificates.k8s.io/default.client.root approved
     ~~~
 
 7. Confirm that cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
