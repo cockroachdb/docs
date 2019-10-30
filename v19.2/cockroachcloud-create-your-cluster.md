@@ -42,6 +42,8 @@ For optimal performance, select the cloud provider region in which you are runni
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See Example for further guidance.
 - For multi-region deployments, [contact us]().
 
+As of now, you can add a maximum of 24 nodes to your cluster. 
+
 ## Step 4. Select the hardware configuration
 
 The choice of hardware per node determines the throughput and performance characteristics of your cluster.
