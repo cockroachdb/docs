@@ -1,22 +1,33 @@
 ---
 title: Performance Benchmarking with TPC-C
-summary: Learn how to benchmark performance on a local cluster.
+summary: Learn how to benchmark CockroachDB against TPC-C 10k on a local cluster
 toc: true
 toc_not_nested: true
 ---
 
+This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+
 <div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpc-c.html"><button class="filter-button">Distributed</button></a>
-  <button class="filter-button current"><strong>Local</strong></button>
+  <button class="filter-button current"><strong>10</strong></button>
+  <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">1000</button></a>
+  <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">10,000</button></a>
+  <a href="performance-benchmarking-with-tpc-c-100k-warehouses.html"><button class="filter-button">100,000</button></a>
 </div>
 
-This page walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on a local CockroachDB cluster. It measures tpmC (new order transactions/minute) on a TPC-C dataset of 10 warehouses (for a total dataset size of 2GB) on 3 nodes.
+Warehouses | Data size | Cluster size
+-----------|-----------|-------------
+10 | 2GB | 3 nodes on your laptop
+1000 | 80GB | 3 nodes on `c5d.4xlarge` machines
+10,000 | 800GB | 15 nodes on `c5d.4xlarge` machines
+100,000 | 8TB | 81 nodes on `c5d.9xlarge` machines
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](performance.html#tpc-c).
 
-## Step 1. Start a 3-node cluster
+- Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+
+## Step 1. Start CockroachDB
 
 1. Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 
@@ -62,7 +73,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --host=localhost:26257
     ~~~
 
-## Step 2. Load data for the benchmark
+## Step 2. Import the TPC-C dataset
 
 CockroachDB comes with built-in load generators for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. This step features CockroachDB's version of the TPC-C workload.
 
