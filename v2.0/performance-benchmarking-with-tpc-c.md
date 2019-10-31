@@ -82,7 +82,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.
@@ -240,7 +240,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.

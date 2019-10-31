@@ -26,7 +26,7 @@ For each initial node of your cluster, complete the following steps:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.
@@ -81,7 +81,7 @@ For each initial node of your cluster, complete the following steps:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.

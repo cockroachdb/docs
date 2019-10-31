@@ -253,7 +253,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 3. Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
@@ -294,7 +294,7 @@ At this point, your cluster is live and operational but contains only a single n
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
