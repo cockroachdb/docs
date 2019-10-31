@@ -18,7 +18,7 @@ Also, although you can leverage [geo-partitioning](partitioning.html), advanced 
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster is a non-reversible action that will delete all cluster data.
+Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
