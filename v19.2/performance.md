@@ -92,7 +92,7 @@ Because TPC-C is constrained to a maximum amount of throughput per warehouse, we
 
 ### Sysbench
 
-[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, as discussed above, but Sysbench is a reasonable alternative for understanding basic throughput and latency across different databases. In the meantime, know that the numbers below were generated from a three-node cluster of AWS `c5d.9xlarge` VMs run across AWS’s us-east-1 region (availability zones a, b, and c) against Sysbench’s `oltp_insert` and `oltp_point_select` workloads.
+[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, as discussed above, but Sysbench’s `oltp_insert` and `oltp_point_select` workloads are reasonable alternatives for understanding basic throughput and latency across different databases.
 
 ## Performance limitations
 
