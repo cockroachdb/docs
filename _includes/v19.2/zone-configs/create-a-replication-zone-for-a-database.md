@@ -1,4 +1,4 @@
-To control replication for a specific database, use the `ALTER DATABASE ... CONFIGURE ZONE` statement to define the values you want to change (other values will not be affected):
+To control replication for a specific database, use the `ALTER DATABASE ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
 
 {% include copy-clipboard.html %}
 ~~~ sql

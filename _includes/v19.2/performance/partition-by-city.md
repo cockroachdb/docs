@@ -145,7 +145,7 @@ For this service, the most effective technique for improving read and write late
     The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
     {{site.data.alerts.end}}
 
-7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) to require city data to be stored on specific nodes based on node locality.
+7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-partition) to require city data to be stored on specific nodes based on node locality.
 
     City | Locality
     -----|---------
