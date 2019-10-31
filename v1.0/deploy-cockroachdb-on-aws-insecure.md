@@ -114,7 +114,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new CockroachDB cluster with a single node, which will communicate with other nodes on its internal IP address:
@@ -145,7 +145,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new node that joins the cluster using the first node's internal IP address:

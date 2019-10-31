@@ -73,7 +73,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 	If you get a permissions error, prefix the command with `sudo`.

@@ -131,7 +131,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary:
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 2. Create a `certs` directory and a safe directory to keep your CA key:
