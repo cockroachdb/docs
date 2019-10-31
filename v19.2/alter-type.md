@@ -41,7 +41,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Success scenario
 
-The [TPC-C](performance-benchmarking-with-tpc-c.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
+The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -6,7 +6,7 @@ toc_not_nested: true
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpc-c.html"><button class="filter-button">Distributed</button></a>
+  <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">Distributed</button></a>
   <button class="filter-button current"><strong>Local</strong></button>
 </div>
 
