@@ -34,7 +34,7 @@ Parameter | Description
 `column_name` | The name of a column to update.
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column on the left side of `=`.
 `WHERE a_expr`| `a_expr` must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
-`sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) for more details.
+`sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) and [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
 `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
 `RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
@@ -566,3 +566,4 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
 - [Limiting Query Results](limit-offset.html)
+- [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements)
