@@ -295,8 +295,10 @@
               {
                 "title": "Benchmarking Instructions",
                 "urls": [
-                  "/${VERSION}/performance-benchmarking-with-tpc-c.html",
-                  "/${VERSION}/performance-benchmarking-with-tpc-c-local.html"
+                  "/${VERSION}/performance-benchmarking-with-tpc-c-10-warehouses.html",
+                  "/${VERSION}/performance-benchmarking-with-tpc-c-1k-warehouses.html",
+                  "/${VERSION}/performance-benchmarking-with-tpc-c-10k-warehouses.html",
+                  "/${VERSION}/performance-benchmarking-with-tpc-c-100k-warehouses.html"
                 ]
               },
               {

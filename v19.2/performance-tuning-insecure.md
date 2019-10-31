@@ -1044,5 +1044,5 @@ In each of the new zones, SSH to the instance not running a CockroachDB node, an
 ## See also
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Performance Benchmarking](performance-benchmarking-with-tpc-c.html)
+- [Performance Benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html)
 - [Production Checklist](recommended-production-settings.html)

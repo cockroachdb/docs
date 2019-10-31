@@ -9,7 +9,7 @@ sidebar_data: sidebar-data-training.json
 This lab walks you through [TPC-C](http://www.tpc.org/tpcc/) performance benchmarking on CockroachDB. It measures tpmC (new order transactions/minute) on a TPC-C dataset of 10 warehouses (for a total dataset size of 2GB) on 3 nodes.
 
 {{site.data.alerts.callout_info}}
-For training purposes, the dataset used in this lab is small. For instructions on how to benchmark with a larger dataset, see [Performance Benchmarking with TPC-C](../performance-benchmarking-with-tpc-c.html).
+For training purposes, the dataset used in this lab is small. For instructions on how to benchmark with a larger dataset, see [Performance Benchmarking with TPC-C](../performance-benchmarking-with-tpc-c-1k-warehouses.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
