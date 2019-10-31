@@ -38,6 +38,12 @@ Adding replication zones for rows and secondary indexes is an [enterprise-only](
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
 </div>
 
+**alter_zone_partition_stmt ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
+</div>
+
 ## Required privileges
 
 If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be an [`admin`](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have the [CREATE](grant.html#supported-privileges) privilege on the target database or table.
@@ -99,7 +105,7 @@ CONFIGURE ZONE 1
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
-### Create a replication zone for a table or secondary index partition
+### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
