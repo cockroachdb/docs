@@ -52,7 +52,9 @@ CSR names contain the StatefulSet or Helm chart `name`, so if you customize that
 To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
 
 {{site.data.alerts.callout_danger}}
-When running on Amazon EKS, certificates signed by Kubernetes' built-in CA are not supported, so use [this configuration file](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml) instead of the one referenced below, and follow the steps in the comments at the top of the file. Also note that [secure CockroachDB deployments on EKS via Helm are not yet supported](https://github.com/cockroachdb/cockroach/issues/38847); in the meantime, use the configuration file referenced above.  
+Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](https://github.com/cockroachdb/cockroach/issues/38847). In the meantime, use a StatefulSet configuration to deploy on EKS.
+
+Note that when running on Amazon EKS, certificates signed by Kubernetes' built-in CA are not supported, so use [this configuration file](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml) instead of `cockroachdb-statefulset-secure.yaml` referenced below. Follow the steps at the top of the file to load externally created certificates into Kubernetes and initialize the CockroachDB cluster.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">

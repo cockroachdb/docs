@@ -89,11 +89,11 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     --type='json' \
-    -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v19.1.0"}]'
+    -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:{{page.release_info.version}}"}]'
     ~~~
 
     ~~~
-    statefulset "cockroachdb" patched
+    statefulset.apps/cockroachdb patched
     ~~~
     </section>
 
@@ -113,7 +113,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     $ helm upgrade \
     my-release \
     stable/cockroachdb \
-    --set ImageTag=v19.1.0 \
+    --set ImageTag={{ page.release_info.version }} \
     --reuse-values
     ~~~
     </section>
@@ -132,6 +132,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     cockroachdb-1   1/1       Running       0          2m
     cockroachdb-2   1/1       Running       0          2m
     cockroachdb-3   0/1       Terminating   0          1m
+    ...
     ~~~
     </section>
 
@@ -143,6 +144,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     my-release-cockroachdb-2            1/1       Running             0          3m
     my-release-cockroachdb-3            0/1       ContainerCreating   0          25s
     my-release-cockroachdb-init-nwjkh   0/1       ContainerCreating   0          6s
+    ...
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -164,6 +166,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     cockroachdb-1	cockroachdb/cockroach:{{page.release_info.version}}
     cockroachdb-2	cockroachdb/cockroach:{{page.release_info.version}}
     cockroachdb-3	cockroachdb/cockroach:{{page.release_info.version}}
+    ...
     ~~~
     </section>
 
@@ -173,6 +176,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     my-release-cockroachdb-1	cockroachdb/cockroach:{{page.release_info.version}}
     my-release-cockroachdb-2	cockroachdb/cockroach:{{page.release_info.version}}
     my-release-cockroachdb-3	cockroachdb/cockroach:{{page.release_info.version}}
+    ...
     ~~~
     </section>
 

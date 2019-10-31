@@ -101,7 +101,7 @@
 
     4. Repeat steps 2 and 3 for the other 2 pods.
 
-3. Initialize the cluster:
+3. Initialize the CockroachDB cluster:
 
     1. Confirm that three pods are `Running` successfully. Note that they will not
        be considered `Ready` until after the cluster has been initialized:
@@ -132,7 +132,7 @@
         pvc-9e4f57f0-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-2   standard                51m
         ~~~
 
-    3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
+    3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
         {% include copy-clipboard.html %}
         ~~~ shell
