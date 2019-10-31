@@ -1,4 +1,4 @@
-You might also be interested in using a local cluster to explore the following CockroachDB benefits:
+You might also be interested in the following pages:
 
 - [Client Connection Parameters](connection-parameters.html)
 - [Data Replication](demo-data-replication.html)
