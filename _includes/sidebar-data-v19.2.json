@@ -1,5 +1,118 @@
 [
   {
+    "title": "Develop",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/develop/overview.html"
+        ]
+      },
+      {
+        "title": "Languages",
+        "items": [
+          {
+            "title": "Python",
+            "urls": [
+              "/${VERSION}/develop/python.html"
+            ]
+          },
+          {
+            "title": "Java",
+            "urls": [
+              "/${VERSION}/develop/java.html"
+            ]
+          },
+          {
+              "title": "Go",
+              "urls": [
+                "/${VERSION}/develop/go.html"
+              ]
+          },
+          {
+            "title": "Node.js",
+            "urls": [
+              "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+            ]
+          },
+          {
+            "title": "Ruby",
+            "urls": [
+              "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+            ]
+          },
+          {
+            "title": "C++",
+            "urls": [
+              "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "C# (.NET)",
+            "urls": [
+              "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Clojure",
+            "urls": [
+              "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "PHP",
+            "urls": [
+              "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Rust",
+            "urls": [
+              "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3rd-party Tools",
+        "items": [
+          {
+            "title": "ORMs and Drivers",
+            "urls": [
+              "/${VERSION}/develop/orms-drivers.html"
+            ]
+          },
+          {
+            "title": "Schema Management Tool",
+            "urls": [
+              "/${VERSION}/develop/schema-management.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Debug",
+        "urls": [
+          "/${VERSION}/develop/debug.html"
+        ]
+      },
+      {
+        "title": "Tutorials",
+        "items": [
+          {
+            "title": "Build a Flask Application",
+            "urls": [
+              "/${VERSION}/develop/python-flask-app.html"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "title": "Guides",
     "is_top_level": true,
     "items": [
@@ -46,82 +159,6 @@
             "title": "Learn CockroachDB SQL",
             "urls": [
               "/${VERSION}/learn-cockroachdb-sql.html"
-            ]
-          },
-          {
-            "title": "Build an App",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/build-an-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Go",
-                "urls": [
-                  "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
-                ]
-              },
-              {
-                "title": "Python",
-                "urls": [
-                  "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html"
-                ]
-              },
-              {
-                "title": "Ruby",
-                "urls": [
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
-                ]
-              },
-              {
-                "title": "Java",
-                "urls": [
-                  "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
-                ]
-              },
-              {
-                "title": "Node.js",
-                "urls": [
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
-                ]
-              },
-              {
-                "title": "C++",
-                "urls": [
-                  "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "C# (.NET)",
-                "urls": [
-                  "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Clojure",
-                "urls": [
-                  "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "PHP",
-                "urls": [
-                  "/${VERSION}/build-a-php-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Rust",
-                "urls": [
-                  "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
-                ]
-              }
             ]
           }
         ]

@@ -10,7 +10,7 @@ CockroachDB supports the PostgreSQL wire protocol, so most available PostgreSQL 
 For code samples using these drivers, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/misc/drivers.md %}
+{% include {{page.version.version}}/orms-drivers/drivers.md %}
 
 ## See also
 

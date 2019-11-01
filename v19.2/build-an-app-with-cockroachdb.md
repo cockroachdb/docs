@@ -10,7 +10,7 @@ The tutorials in this section show you how to build a simple application with Co
 
 ## Tutorials
 
-{% include {{page.version.version}}/misc/drivers.md %}
+{% include {{page.version.version}}/orms-drivers/drivers.md %}
 
 ## See also
 
