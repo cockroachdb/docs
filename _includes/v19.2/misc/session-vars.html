@@ -97,6 +97,18 @@
 
   <tr>
    <td>
+    <code>enable_zig_zag_join</code>
+   </td>
+   <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that they share a sorted order in their key suffix. </td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>extra_float_digits</code>
    </td>
    <td>The number of digits displayed for floating-point values. Only values between <code>-15</code> and <code>3</code> are supported.</td>
