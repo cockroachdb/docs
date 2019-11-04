@@ -81,6 +81,30 @@ If you are deleting a large amount of data using iterative `DELETE ... LIMIT` st
 
 For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
 
+## Force index selection for deletes
+
+By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for deleting rows of a named table.
+
+{{site.data.alerts.callout_info}}
+Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
+{{site.data.alerts.end}}
+
+The syntax to force a specific index for a delete is:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM table@my_idx;
+~~~
+
+This is equivalent to the longer expression:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM table@{FORCE_INDEX=my_idx};
+~~~
+
+To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+
 ## Examples
 
 ### Delete all rows

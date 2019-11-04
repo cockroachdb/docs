@@ -105,7 +105,7 @@ This is equivalent to the longer expression:
 > DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
-To view how the index hint modifies the [query plan](cost-based-optimizer.html#view-query-plan) that CockroachDB follows for deleting rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
