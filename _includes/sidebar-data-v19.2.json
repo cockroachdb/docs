@@ -1967,7 +1967,7 @@
 				  ]
 			  },
 			  {
-				  "title": "Stability Guarantees",
+				  "title": "Version Compatibility Guarantees",
 				  "urls": [
 					  "/${VERSION}/compatibility-and-programmability-guarantees.html"
 				  ]
@@ -1976,6 +1976,12 @@
 			  	  "title": "Feature lifecycle",
 			  	  "urls": [
 			  		  "/${VERSION}/experimental-feature-lifecycle.html"
+			  	  ]
+			  },
+        {
+			  	  "title": "SQL Interface Stability",
+			  	  "urls": [
+			  		  "/${VERSION}/sql-functional-behavior-guarantees.html"
 			  	  ]
 			  }
 		   ]

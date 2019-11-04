@@ -1,5 +1,5 @@
 ---
-title: Stability Guarantees
+title: Version Compatibility Guarantees
 summary: Stability commitment of various APIs throughout the lifecycle of CockroachDB.
 toc: true
 ---

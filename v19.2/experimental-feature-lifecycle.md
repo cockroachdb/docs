@@ -36,5 +36,5 @@ In addition to mentioning the “experimental” or “beta” status in the doc
 
 - [The Lifecycle of Experimental, Beta, and Stable Features](experimental-features.html)
 - [Interface Types](interface-types.html)
-- [Stability Guarantees](compatibility-and-programmability-guarantees.html)
+- [Version Compatibility Guarantees](compatibility-and-programmability-guarantees.html)
 - [Overview of CockroachDB Interfaces](overview-of-apis-and-interfaces.html)

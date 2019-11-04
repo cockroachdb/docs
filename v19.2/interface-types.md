@@ -47,5 +47,5 @@ For reserved interfaces, the stability guarantees are as follows:
 
 ## See also
 
-- [Stability Guarantees](compatibility-and-programmability-guarantees.html)
+- [Version Compatibility Guarantees](compatibility-and-programmability-guarantees.html)
 - [Overview of APIs and interfaces](overview-of-apis-and-interfaces.html)
