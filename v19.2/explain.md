@@ -279,7 +279,7 @@ To include cost and type details, use `OPT, TYPES`:
 
 <a name="opt-env-option"></a>
 
-To include all details used by the optimizer, including statistics, use `OPT, ENV`:
+To include all details used by the optimizer, including statistics, use `OPT, ENV`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -287,7 +287,20 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 ~~~
 
 ~~~
-Version: CockroachDB CCL v19.2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                           text                                                                                                                                                                                                                                                                                                                                                                                                                            
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  https://cockroachdb.github.io/text/decode.html#eJzEVcFum0wQPmefYsQl9v8DYQl1bCJVImTT0mIcwTatFUWIwLZZBbMWLE2jqlIewsc-nZ-kwjGUXNIeGpkDEt_HNzP7DTNcsLLiorDBFeltKZL05vQEXNeHr3iim7qhlamOYfBtPIpHlpYslznTsqS84wW2VLiueS7BNPDkABsH2AI8ts2xbVoqfBFYx6b-aoiQGxKHEqDOiU-ALXklMlbBAO3xDLyAjiGYUQg--L6K9iqWVKLYwo9QUS-ePEsucwYRDb3gTSeTSZklksEpcb2p47e4OwsiGjpeQEFZlnyRlPcKnIfe1Ann8J7MYcAzcCJ3qKK9M2fq-fPeewOeqfBYkApFvVBhk1qFNtsQDY8RcnxKwu3pGkaW7FZf1tc5T_XutF7wjrgUIupQL6KeG8H-JQIA-L65N5eSirxeFJViw2UHbgieKR1wpfYEJUsky-JEKjYoTRs0jDXDAoxt07TNkW5aE-PI_N8wbMNQesqMV5IXqYxTUReN-mjSY294JUWcijyW90vWxG787-uLZLHB4zippYjjJ1yd511co0eU4q6Xb4P_UP_ahMdGvLgRh8_6sGMPinrx4gaYz38JO3ZgM4G7noZdT8J2_by8DaN_b4P1BxvQ1f4xQuTTue94AQxm51QFElwMISJ-s0H_g7NwNv39G_n4loRku6XhNRzCLDwlIZzMW8yJ3GOkaZqGKlFKBOvVar16WK8eoGI5S-W2nPXqZwunSdHF79hW9JnnkpVVvyP9iG0Z6FcAAAD__yq9370=  
+(1 row)
+~~~
+
+<span class="version-tag">New in v19.1:</span> The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
+
+Note that the data is processed in the local browser session and is never sent out over the network.
+
+When you visit the URL above you should see the following output in your browser.
+
+~~~
+Version: CockroachDB CCL v19.2.0-rc.1 (x86_64-apple-darwin14, built 2019/10/14 18:28:24, go1.12.5)
 
 CREATE TABLE episodes (
 	id INT8 NOT NULL,
@@ -304,7 +317,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "id"
         ],
-        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "created_at": "2019-11-04 11:22:26.249072+00:00",
         "distinct_count": 79,
         "histo_col_type": "INT8",
         "name": "__auto__",
@@ -315,7 +328,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "season"
         ],
-        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "created_at": "2019-11-04 11:22:26.249072+00:00",
         "distinct_count": 3,
         "histo_col_type": "",
         "name": "__auto__",
@@ -326,7 +339,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "num"
         ],
-        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "created_at": "2019-11-04 11:22:26.249072+00:00",
         "distinct_count": 29,
         "histo_col_type": "",
         "name": "__auto__",
@@ -337,7 +350,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "title"
         ],
-        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "created_at": "2019-11-04 11:22:26.249072+00:00",
         "distinct_count": 79,
         "histo_col_type": "",
         "name": "__auto__",
@@ -348,7 +361,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "stardate"
         ],
-        "created_at": "2019-10-08 18:29:26.222957+00:00",
+        "created_at": "2019-11-04 11:22:26.249072+00:00",
         "distinct_count": 76,
         "histo_col_type": "",
         "name": "__auto__",
