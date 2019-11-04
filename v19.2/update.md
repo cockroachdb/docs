@@ -60,7 +60,7 @@ This is equivalent to the longer expression:
 > UPDATE table@{FORCE_INDEX=my_idx} SET ...
 ~~~
 
-To view how the index hint modifies the [query plan](cost-based-optimizer.html#view-query-plan) that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+To view how the index hint modifies the query plan that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
 
 For examples, see [Update with index hints](#update-with-index-hints).
 
