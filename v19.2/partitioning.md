@@ -442,6 +442,8 @@ To retrieve table partitions, you can use the [`SHOW PARTITIONS`](show-partition
 
 You can also view partitions by [database](show-partitions.html#show-partitions-by-database) and [index](show-partitions.html#show-partitions-by-index).
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 ### Define table partitions by range
 
 Suppose we want to store the data of current students on fast and expensive storage devices (e.g., SSD) and store the data of the graduated students on slower, cheaper storage devices (e.g., HDD).
