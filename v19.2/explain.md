@@ -109,6 +109,8 @@ WHERE e.season = '1'
 ORDER BY e.stardate ASC;
 ~~~
 
+<span class="version-tag">New in v19.2:</span>: The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show whether `equality cols are key` for [lookup joins](joins.html#lookup-joins), which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+
 ~~~
             tree           |         field         |        description        |                                         columns                                         | ordering
 +--------------------------+-----------------------+---------------------------+-----------------------------------------------------------------------------------------+-----------+
