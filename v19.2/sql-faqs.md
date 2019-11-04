@@ -58,8 +58,6 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 
 [CockroachDB supports SQL joins](joins.html).  We are working to improve their execution performance.
 
-At this time `LATERAL` joins are not yet supported.  For details, see [this Github issue](https://github.com/cockroachdb/cockroach/issues/24560).
-
 ## When should I use interleaved tables?
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
