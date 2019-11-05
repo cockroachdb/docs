@@ -1,4 +1,4 @@
-#bin/bash
+#!/bin/bash
 
 export JEKYLL_VERSION=4
 export JEKYLL_CONFIG=_config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml,_config_cockroachcloud.yml
