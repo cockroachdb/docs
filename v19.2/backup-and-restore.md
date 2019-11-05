@@ -144,7 +144,7 @@ In the sample script, configure the day of the week for which you want to create
 If you miss an incremental backup, delete the `recent_backups.txt` file and run the script. It'll take a full backup for that day and incremental backups for subsequent days.
 {{site.data.alerts.end}}
 
-### locality-aware backup and restore
+### Locality-aware backup and restore
 
 <span class="version-tag">New in v19.2:</span> You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
 
