@@ -9,16 +9,16 @@ This page describes common CockroachCloud errors and their solutions.
 
 ## Connection errors
 
-### Wrong connection string
+### Wrong cluster name in the connection string
 
-The following error is displayed on the terminal if you use the incorrect connection string while trying to connect to a cluster:
+The following error is displayed on the terminal if you use a wrong cluster name in the connection string while trying to connect to a cluster:
 
 ~~~ shell
 Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check the [connection string](cockroachcloud-connect-to-your-cluster.html#step-3-generate-the-connection-string) to make sure you are using the right one for your cluster.
+**Solution:** Check if you are using the right cluster name in the connection string.
 
 ### Network not authorized
 
@@ -41,6 +41,19 @@ If you do have internet access, check if you have authorized the right network:
 - In a production environment, you need to authorize your application server’s network.
 
 ## Security errors
+
+### Incorrect certs path
+
+The following error is displayed if the directory path for the CA certificate is incorrect:
+
+~~~ shell
+Error: open test-cluster-ca.crt: no such file or directory
+Failed running "sql"
+~~~
+
+**Solution**: Check the directory path for the CA certificate in the connection string. 
+
+### Issue with CockroachDB workloads
 
 The following error is displayed while trying to a run [CockroachDB workload](https://www.cockroachlabs.com/docs/stable/cockroach-workload.html) with `sslmode=verify-full`:
 
