@@ -68,7 +68,6 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \
-    --version 1.13 \
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \

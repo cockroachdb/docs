@@ -32,7 +32,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
-    service/cockroachdb labeled
+    service/my-release-cockroachdb labeled
     ~~~
 
     This ensures that there is a prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
@@ -74,6 +74,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     ~~~
+    serviceaccount/prometheus created
     clusterrole.rbac.authorization.k8s.io/prometheus created
     clusterrolebinding.rbac.authorization.k8s.io/prometheus created
     servicemonitor.monitoring.coreos.com/cockroachdb created

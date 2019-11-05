@@ -7,10 +7,10 @@
     ~~~
 
     ~~~
-    service "cockroachdb-public" created
-    service "cockroachdb" created
-    poddisruptionbudget "cockroachdb-budget" created
-    statefulset "cockroachdb" created
+    service/cockroachdb-public created
+    service/cockroachdb created
+    poddisruptionbudget.policy/cockroachdb-budget created
+    statefulset.apps/cockroachdb created
     ~~~
 
     Alternatively, if you'd rather start with a configuration file that has been customized for performance:
@@ -60,7 +60,7 @@
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-4. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
+4. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -69,12 +69,10 @@
     ~~~
 
     ~~~
-    job "cluster-init" created
+    job.batch/cluster-init created
     ~~~
 
-5. Confirm that cluster initialization has completed successfully. The job
-   should be considered successful and the CockroachDB pods should soon be
-   considered `Ready`:
+5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -82,8 +80,8 @@
     ~~~
 
     ~~~
-    NAME           DESIRED   SUCCESSFUL   AGE
-    cluster-init   1         1            2m
+    NAME           COMPLETIONS   DURATION   AGE
+    cluster-init   1/1           7s         27s
     ~~~
 
     {% include copy-clipboard.html %}
@@ -92,10 +90,11 @@
     ~~~
 
     ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          3m
-    cockroachdb-1   1/1       Running   0          3m
-    cockroachdb-2   1/1       Running   0          3m
+    NAME                 READY   STATUS      RESTARTS   AGE
+    cluster-init-cqf8l   0/1     Completed   0          56s
+    cockroachdb-0        1/1     Running     0          7m51s
+    cockroachdb-1        1/1     Running     0          7m51s
+    cockroachdb-2        1/1     Running     0          7m51s
     ~~~
 
 {{site.data.alerts.callout_success}}

@@ -36,7 +36,7 @@
         ~~~
 
         ~~~
-        serviceaccount "tiller" created
+        serviceaccount/tiller created
         clusterrolebinding.rbac.authorization.k8s.io/tiller created
         ~~~    
 

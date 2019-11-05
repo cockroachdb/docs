@@ -103,8 +103,7 @@
 
 3. Initialize the CockroachDB cluster:
 
-    1. Confirm that three pods are `Running` successfully. Note that they will not
-       be considered `Ready` until after the cluster has been initialized:
+    1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -155,9 +154,7 @@
         certificatesigningrequest.certificates.k8s.io/default.client.root approved
         ~~~
 
-    5. Confirm that cluster initialization has completed successfully. The job
-       should be considered successful and the CockroachDB pods should soon be
-       considered `Ready`:
+    5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
         {% include copy-clipboard.html %}
         ~~~ shell
