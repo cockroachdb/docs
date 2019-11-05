@@ -64,8 +64,11 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v19.1 to v19.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TBD
-
+- **Parallel commits:** After finalization, CockroachDB will use a new [optimized atomic commit protocol](architecture/transaction-layer.html#parallel-commits) that cuts the commit latency of a transaction in half, from two rounds of consensus down to one.
+- **Atomic replication:** After finalization, CockroachDB will rebalance ranges atomically. This ensures that the total number of replicas (and, therefore, consensus requirements) for a range remain unchanged throughout the rebalancing process, eliminating the risk of potential data unavailability during correlated failures.
+- **Locality-aware enterprise backups**: After finalization, enterprise users will be able to create [locality-aware backups](backup-and-restore.html#locality-aware-backup-and-restore) such that each node writes files only to the backup destination that matches the [node's locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes). This can reduce cloud storage data transfer costs by keeping data within cloud regions and can help users comply with data domiciling requirements.
+- **Manually split ranges:** After finalization, ranges manually split via [`ALTER TABLE ... SPLIT AT`](split-at.html)  will not be automatically [re-merged](range-merges.html), whereas prior to finalization, preventing re-merging of these ranges requires disabling merge ranges entirely via the `kv.range_merge.queue_enabled` [cluster setting](cluster-settings.html).
+ 
 ## Step 4. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
