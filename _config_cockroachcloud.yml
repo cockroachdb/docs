@@ -4,7 +4,7 @@ baseurl: "/docs/cockroachcloud"
 destination: _site/cockroachcloud
 
 versions:
-  stable: v19.1
-  dev: v19.2
+  stable: v19.2
+  # dev: v19.2
 
 cockroachcloud: true
