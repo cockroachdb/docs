@@ -68,6 +68,11 @@ Parameter | Description
 
 </div>
 
+
+{{site.data.alerts.callout_danger}}
+<span class="version-tag">New in v19.2:</span> For PostgreSQL compatibility, variables are no longer valid arguments in window frame `ROW`/`RANGE` clauses.
+{{site.data.alerts.end}}
+
 ## How window functions work
 
 At a high level, window functions work by:
