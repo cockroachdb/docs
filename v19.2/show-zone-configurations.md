@@ -50,6 +50,8 @@ You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurat
 
 ### View the replication zone for an index
 
+To control replication for a specific table,  use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
@@ -77,7 +79,7 @@ CONFIGURE ZONE 1
 (1 row)
 ~~~
 
-### View the replication zone for a table partition
+### View the replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 

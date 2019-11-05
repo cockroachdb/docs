@@ -368,7 +368,7 @@ You didn't create any secondary indexes on your MovR tables. However, if you had
 
 ## Step 8. Pin partitions close to users
 
-With the data partitioned by city, you can now use [replication zones](../configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition) to require that city data be stored on specific nodes based on locality:
+With the data partitioned by city, you can now use [replication zones](../configure-replication-zones.html#create-a-replication-zone-for-a-partition) to require that city data be stored on specific nodes based on locality:
 
 City | Locality
 -----|---------

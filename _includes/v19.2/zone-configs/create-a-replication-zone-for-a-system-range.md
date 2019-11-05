@@ -11,7 +11,7 @@ Target Name | Description
 Use caution when editing replication zones for system ranges, as they could cause some (or all) parts of your cluster to stop working.
 {{site.data.alerts.end}}
 
-To control replication for one of the above sets of system ranges, use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) statement to define the values you want to change (other values will not be affected):
+To control replication for one of the above sets of system ranges, use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) statement to define the relevant values (other values will be inherited from the parent zone):
 
 {% include copy-clipboard.html %}
 ~~~ sql
