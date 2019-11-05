@@ -140,6 +140,8 @@ Lookup joins are performed on two tables as follows:
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
+<span class="version-tag">New in v19.2:</span>: The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+
 ## Performance best practices
 
 {{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
