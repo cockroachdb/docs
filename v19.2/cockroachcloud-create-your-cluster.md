@@ -38,7 +38,7 @@ For optimal performance, select the cloud provider region in which you are runni
 
 - For single-region application development and testing, you may create a one-node cluster.
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See Example for further guidance.
-- For multi-region deployments, [contact us]().
+- For multi-region deployments, [contact us](sales@cockroachlabs.com).
 
 As of now, you can add a maximum of 24 nodes to your cluster.
 
@@ -51,7 +51,7 @@ Factor | Description
 Capacity | Total raw data size you expect to store without replication.
 Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.).
-Compression | The percentage of savings you can expect to achieve with compression.  With Snappy, the default algorithm, we typically see about a 40% savings on raw data size.  
+Compression | The percentage of savings you can expect to achieve with compression. With Snappy, the default algorithm, we typically see about a 40% savings on raw data size.  
 
 To change the hardware configuration after the cluster is created, you will have to contact us.
 
@@ -83,7 +83,7 @@ Let's consider a storage buffer of 0.5% to account for overhead and data growth.
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](). We can see that the best option to store 1350 GB of data is 6 Large nodes.
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 6 Large nodes.
 
 Thus our final configuration is as follows:
 
