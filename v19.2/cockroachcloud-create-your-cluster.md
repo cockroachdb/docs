@@ -38,7 +38,7 @@ For optimal performance, select the cloud provider region in which you are runni
 
 - For single-region application development and testing, you may create a one-node cluster.
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See Example for further guidance.
-- For multi-region deployments, [contact us](sales@cockroachlabs.com).
+- For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
 
 As of now, you can add a maximum of 24 nodes to your cluster.
 
