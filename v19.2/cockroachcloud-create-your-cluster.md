@@ -24,17 +24,15 @@ The choice of the cloud provider decides the performance characteristics and pri
 
 Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per node, per month)
 ----------|------------|------------
-X-Small (2 vCPU, 60 GB disk) |	$75	| $180
-Small	(4 vCPU, 100 GB disk) | $300 | $400
-Medium (4 vCPU, 250 GB disk) | $540	| $700
-Large	(8 vCPU, 500 GB disk) | $1,100	| $1,400
-X-Large	(16 vCPU, 900 GB disk) | $2,100	| $2,700
+Small (2 vCPU, 60 GB disk) |	$75	| $180
+Medium	(4 vCPU, 100 GB disk) | $300 | $400
+Large (4 vCPU, 250 GB disk) | $540	| $700
 
 ## Step 3. Select the region and number of nodes
 
 ### Select region
 
-For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-west2` region, select `us-west2` for your CockroachCloud cluster.
+For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
 ### Select number of nodes
 
@@ -46,13 +44,6 @@ As of now, you can add a maximum of 24 nodes to your cluster.
 
 ## Step 4. Select the hardware configuration
 
-The choice of hardware per node determines the throughput and performance characteristics of your cluster.
-
-The following table gives the performance characteristics for YCSB and TPC-C workloads per hardware configuration:
-
-<Performance characteristics table>
-<Also include IOPS numbers for each config>
-
 While selecting the hardware configuration, consider the following factors:
 
 Factor | Description
@@ -63,6 +54,13 @@ Buffer | Additional buffer (overhead data, accounting for data growth, etc.).
 Compression | The percentage of savings you can expect to achieve with compression.  With Snappy, the default algorithm, we typically see about a 40% savings on raw data size.  
 
 To change the hardware configuration after the cluster is created, you will have to contact us.
+
+The choice of hardware per node determines the throughput and performance characteristics of your cluster.
+
+The following table gives the performance characteristics for YCSB and TPC-C workloads per hardware configuration:
+
+<Performance characteristics table>
+<Also include IOPS numbers for each config>
 
 ## Step 5. Name the cluster
 
@@ -76,16 +74,22 @@ After entering the cluster name, click **Continue to Summary**
 
 ## Example
 
-Let's say we want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `uswest-1` region.
+Let's say we want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `useast-1` region.
 
 Suppose the raw data amount we expect to store without replication is 500 GB.
 At 0.4% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
 
-Let's consider a storage buffer of 0.5% to account for overhead and data growth. Then net data amount to be stored is 450 GB.
+Let's consider a storage buffer of 0.5% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
 
-Referring back to the hardware configuration options, we can choose either 6 Medium nodes or 3 Large nodes. Let's consider the costs of each configuration:
+With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
-- 6 Medium nodes cost $3240
-- 3 Large nodes cost $3300
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](). We can see that the best option to store 1350 GB of data is 6 Large nodes.
 
-Since there isn't much difference in price, let's consider performance characteristics of the Medium and Large machines:
+Thus our final configuration is as follows:
+
+Component | Selection
+----------|----------
+Cloud provider | GCP
+Region | us-east1
+Number of nodes | 6
+Size | Large
