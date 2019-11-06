@@ -151,6 +151,14 @@ This limitation will be lifted when the cost-based optimizer covers all queries.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 
+### Using `default_int_size` session variable in batch of statements
+
+When setting the `default_int_size` [session variable](set-vars.html) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
+
+As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
+
 ### Conversion of integers to date/time values
 
 CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
