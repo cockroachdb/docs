@@ -1,9 +1,28 @@
-1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
+1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it.
+
+    Download [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    ~~~
+
+    {{site.data.alerts.callout_danger}}
+    To avoid OOM issues, you need to define memory limits for each CockroachDB node as an absolute value and not a percentage. This is due to how Kubernetes handles memory allocation.
+
+    Review our [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size) guidelines and define an appropriate cache size and SQL memory size for each CockroachDB node in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml#L131) of the above file. For example, if you are allocating 8GB memory to each Kubernetes node, substitute the following values.
+    {{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    --cache 2GB --max-sql-memory 2GB
+    ~~~
+
+    Use the file to create the StatefulSet and start the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-statefulset.yaml
     ~~~
 
     ~~~

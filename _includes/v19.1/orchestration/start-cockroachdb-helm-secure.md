@@ -65,10 +65,21 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install --name my-release --set Secure.Enabled=true stable/cockroachdb
+    $ helm install --name my-release --set Secure.Enabled=true,CacheSize=<your cache size>,MaxSQLMemory=<your SQL memory size> stable/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
+
+    {{site.data.alerts.callout_danger}}
+    To avoid OOM issues, you need to define memory limits for each CockroachDB node as an absolute value and not a percentage. This is due to how Kubernetes handles memory allocation.
+
+    Review our [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size) guidelines and specify an appropriate cache size and SQL memory size for each CockroachDB node using the `--set` flag in the `helm install` comand. For example, if you are allocating 8GB memory to each Kubernetes node, use the following values.
+    {{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    CacheSize="2GB",MaxSQLMemory="2GB"
+    ~~~
 
     {{site.data.alerts.callout_info}}
     You can customize your deployment by passing additional [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
