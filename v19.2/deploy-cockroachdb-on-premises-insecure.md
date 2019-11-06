@@ -16,11 +16,13 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
