@@ -39,10 +39,10 @@ release_info:
     start_time: 2018-09-30 15:10:52.34274101 +0000 UTC
   v19.2:
     name: v19.2.0
-    version: v19.2.0-rc.3
+    version: v19.2.0-rc.4
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2019/11/04 11:00:26 (go1.12.12)
-    start_time: 2019-11-04 11:01:26.34274101 +0000 UTC
+    build_time: 2019/11/07 11:00:26 (go1.12.12)
+    start_time: 2019-11-07 11:01:26.34274101 +0000 UTC
 
 training:
   aws_access_key: AKIAIXNAWDKXMDDNHRCA
