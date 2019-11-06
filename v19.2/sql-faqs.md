@@ -5,10 +5,14 @@ toc: true
 toc_not_nested: true
 ---
 
-
 ## How do I bulk insert data into CockroachDB?
 
-Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best. For more details, see [Import Data](import-data.html).
+- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](insert.html#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+
+    {{site.data.alerts.callout_info}}
+    <span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+    {{site.data.alerts.end}}
+- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases](migration-overview.html) like MySQL, Oracle, and Postgres.  
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
@@ -57,8 +61,6 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 ## Does CockroachDB support `JOIN`?
 
 [CockroachDB supports SQL joins](joins.html).  We are working to improve their execution performance.
-
-At this time `LATERAL` joins are not yet supported.  For details, see [this Github issue](https://github.com/cockroachdb/cockroach/issues/24560).
 
 ## When should I use interleaved tables?
 

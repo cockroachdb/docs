@@ -25,8 +25,8 @@ Before starting the upgrade, complete the following steps.
 
 1. Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
-2. Make sure there are no [schema changes](online-schema-changes.html) in progress. Schema changes are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
-    - To check for ongoing schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
+2. Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
+    - To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
 3. Verify the overall health of your cluster using the [Admin UI](admin-ui-access-and-navigate.html). On the **Cluster Overview**:
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
@@ -64,8 +64,11 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v19.1 to v19.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TBD
-
+- **Parallel commits:** After finalization, CockroachDB will use a new [optimized atomic commit protocol](architecture/transaction-layer.html#parallel-commits) that cuts the commit latency of a transaction in half, from two rounds of consensus down to one.
+- **Atomic replication:** After finalization, CockroachDB will rebalance ranges atomically. This ensures that the total number of replicas (and, therefore, consensus requirements) for a range remain unchanged throughout the rebalancing process, eliminating the risk of potential data unavailability during correlated failures.
+- **Locality-aware enterprise backups**: After finalization, enterprise users will be able to create [locality-aware backups](backup-and-restore.html#locality-aware-backup-and-restore) such that each node writes files only to the backup destination that matches the [node's locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes). This can reduce cloud storage data transfer costs by keeping data within cloud regions and can help users comply with data domiciling requirements.
+- **Manually split ranges:** After finalization, ranges manually split via [`ALTER TABLE ... SPLIT AT`](split-at.html)  will not be automatically [re-merged](range-merges.html), whereas prior to finalization, preventing re-merging of these ranges requires disabling merge ranges entirely via the `kv.range_merge.queue_enabled` [cluster setting](cluster-settings.html).
+ 
 ## Step 4. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
@@ -229,7 +232,14 @@ Once you are satisfied with the new version, re-enable auto-finalization:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-## Step 6. Troubleshooting
+## Post-upgrade checklist
+
+After you finish upgrading your cluster, check the following [cluster settings](cluster-settings.html), as you might have set them to work around some limitations that were resolved in the latest release:
+
+- `kv.range_merge.queue_enabled`<br>This setting turns [automatic range merging](range-merges.html) on or off. In versions prior to 19.2, setting `kv.range_merge.queue_enabled=off` was required for [manual range splits](split-at.html). This limitation has been lifted in 19.2 and later. We recommend that you set `kv.range_merge.queue_enabled=on`.
+- `kv.raft.command.max_size`<br>This setting sets the maximum size of a raft command. If you increased `kv.raft.command.max_size` to support larger `INSERT INTO...SELECT FROM` or `CREATE TABLE AS SELECT` statements, we recommend that you reset this setting to its default, as this is no longer necessary in 19.2 and later.
+
+## Troubleshooting
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 

@@ -106,7 +106,7 @@ With the above examples in mind, it's always important to consider network laten
 1. Reserve 12 instances across 3 GCE zone: roachprod create <yourname>-tuning --geo --gce-zones us-east1-b,us-west1-a,us-west2-a --local-ssd -n 12
 2. Put cockroach` on all instances:
    - roachprod run <yourname>-tuning "curl https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz"
-   - roachprod run <yourname>-tuning "sudo cp -i cockroach-v2.0.4.linux-amd64/cockroach /usr/local/bin"
+   - roachprod run <yourname>-tuning "sudo cp -i cockroach-v2.0.4.linux-amd64/cockroach /usr/local/bin/"
 3. Start the cluster in us-east1-b: roachprod start -b "/usr/local/bin/cockroach" <yourname>-tuning:1-3
 4. You'll need the addresses of all instances later, so list and record them somewhere: roachprod list -d <yourname>-tuning
 5. Import the Movr dataset:
@@ -170,7 +170,7 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -216,7 +216,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 4. Start the [built-in SQL shell](use-the-built-in-sql-client.html), pointing it at one of the CockroachDB nodes:
@@ -1376,7 +1376,7 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -1407,7 +1407,7 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 7. Run the [`cockroach start`](start-a-node.html) command:

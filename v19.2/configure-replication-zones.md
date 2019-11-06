@@ -46,11 +46,11 @@ There are five replication zone levels for [**table data**](architecture/distrib
 
 Level | Description
 ------|------------
-Cluster | CockroachDB comes with a pre-configured `.default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
+Cluster | CockroachDB comes with a pre-configured `default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
 Index ([Enterprise-only](enterprise-licensing.html)) | The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
-Row ([Enterprise-only](enterprise-licensing.html)) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-table-or-secondary-index-partition) for more details.
+Row ([Enterprise-only](enterprise-licensing.html)) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
 
 ### For system data
 
@@ -58,8 +58,8 @@ In addition, CockroachDB stores internal [**system data**](architecture/distribu
 
 Level | Description
 ------|------------
-Cluster | The `.default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
-System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from `.default`. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
+Cluster | The `default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
+System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from `default`. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
 
 ### Level priorities
 
@@ -69,7 +69,7 @@ When replicating data, whether table or system, CockroachDB always uses the most
 2. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the secondary index replication zone.
 3. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the table replication zone.
 4. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
-5. If there's no applicable database replication zone, CockroachDB uses the `.default` cluster-wide replication zone.
+5. If there's no applicable database replication zone, CockroachDB uses the `default` cluster-wide replication zone.
 
 ## Manage replication zones
 
@@ -136,7 +136,11 @@ Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to v
 
 You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table.
 
+{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 ## Basic examples
+
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
 
@@ -184,7 +188,7 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-### Create a replication zone for a table or secondary index partition
+### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
@@ -306,7 +310,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER DATABASE west_app_db \
+    > ALTER DATABASE west_app_db
     CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
     ~~~
 
@@ -322,15 +326,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-       zone_name  |                   config_sql
-    +-------------+--------------------------------------------------------------------+
-      west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
-                  |     range_min_bytes = 1048576,
-                  |     range_max_bytes = 67108864,
-                  |     gc.ttlseconds = 90000,
-                  |     num_replicas = 3,
-                  |     constraints = '{+region=us-west1: 2, +region=us-central1: 1}',
-                  |     lease_preferences = '[]'
+             target        |                           raw_config_sql
+    +----------------------+--------------------------------------------------------------------+
+      DATABASE west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
+                           |     range_min_bytes = 16777216,
+                           |     range_max_bytes = 67108864,
+                           |     gc.ttlseconds = 90000,
+                           |     num_replicas = 3,
+                           |     constraints = '{+region=us-central1: 1, +region=us-west1: 2}',
+                           |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -412,15 +416,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-        zone_name  |                config_sql
-    +--------------+---------------------------------------------+
-         app1_db   | ALTER DATABASE app1_db CONFIGURE ZONE USING
-                   |     range_min_bytes = 1048576,
-                   |     range_max_bytes = 67108864,
-                   |     gc.ttlseconds = 90000,
-                   |     num_replicas = 5,
-                   |     constraints = '[]',
-                   |     lease_preferences = '[]'
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      DATABASE app1_db | ALTER DATABASE app1_db CONFIGURE ZONE USING
+                       |     range_min_bytes = 16777216,
+                       |     range_max_bytes = 67108864,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 5,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -448,15 +452,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-        zone_name  |                config_sql
-    +--------------+---------------------------------------------+
-         app2_db   | ALTER DATABASE app2_db CONFIGURE ZONE USING
-                   |     range_min_bytes = 1048576,
-                   |     range_max_bytes = 67108864,
-                   |     gc.ttlseconds = 90000,
-                   |     num_replicas = 3,
-                   |     constraints = '[+datacenter=us-2]',
-                   |     lease_preferences = '[]'
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      DATABASE app2_db | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                       |     range_min_bytes = 16777216,
+                       |     range_max_bytes = 67108864,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 3,
+                       |     constraints = '[+datacenter=us-2]',
+                       |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -538,15 +542,15 @@ There's no need to make zone configuration changes; by default, the cluster is c
     ~~~
 
     ~~~
-              zone_name       |                config_sql
-    +-------------------------+---------------------------------------------+
-         db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
-                              |     range_min_bytes = 1048576,
-                              |     range_max_bytes = 67108864,
-                              |     gc.ttlseconds = 90000,
-                              |     num_replicas = 5,
-                              |     constraints = '[+ssd]',
-                              |     lease_preferences = '[]'
+                 target             |                config_sql
+    +-------------------------------+---------------------------------------------+
+         TABLE db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                                    |     range_min_bytes = 1048576,
+                                    |     range_max_bytes = 67108864,
+                                    |     gc.ttlseconds = 90000,
+                                    |     num_replicas = 5,
+                                    |     constraints = '[+ssd]',
+                                    |     lease_preferences = '[]'
     (1 row)
     ~~~
 
@@ -609,59 +613,67 @@ There's no need to make zone configuration changes; by default, the cluster is c
     > SHOW ZONE CONFIGURATION FOR RANGE default;
     ~~~
     ~~~
-      zone_name |                config_sql
-    +-----------+------------------------------------------+
-      .default  | ALTER RANGE default CONFIGURE ZONE USING
-                |     range_min_bytes = 1048576,
-                |     range_max_bytes = 67108864,
-                |     gc.ttlseconds = 90000,
-                |     num_replicas = 5,
-                |     constraints = '[]',
-                |     lease_preferences = '[]'
+         target     |              raw_config_sql
+    +---------------+------------------------------------------+
+      RANGE default | ALTER RANGE default CONFIGURE ZONE USING
+                    |     range_min_bytes = 16777216,
+                    |     range_max_bytes = 67108864,
+                    |     gc.ttlseconds = 90000,
+                    |     num_replicas = 5,
+                    |     constraints = '[]',
+                    |     lease_preferences = '[]'
     (1 row)
     ~~~
 
     All data in the cluster will be replicated 5 times, including both SQL data and the internal system data.
 
-5. Configure the `.meta` replication zone:
+5. Configure the `meta` replication zone:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
     ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR RANGE meta;
     ~~~
-      zone_name |              config_sql
-    +-----------+---------------------------------------+
-      .meta     | ALTER RANGE meta CONFIGURE ZONE USING
-                |     range_min_bytes = 1048576,
-                |     range_max_bytes = 67108864,
-                |     gc.ttlseconds = 3600,
-                |     num_replicas = 7,
-                |     constraints = '[]',
-                |     lease_preferences = '[]'
+    ~~~
+        target   |            raw_config_sql
+    +------------+---------------------------------------+
+      RANGE meta | ALTER RANGE meta CONFIGURE ZONE USING
+                 |     range_min_bytes = 16777216,
+                 |     range_max_bytes = 67108864,
+                 |     gc.ttlseconds = 3600,
+                 |     num_replicas = 7,
+                 |     constraints = '[]',
+                 |     lease_preferences = '[]'
     (1 row)
     ~~~
 
-    The `.meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
+    The `meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
 
-6. Configure the `.timeseries` replication zone:
+6. Configure the `timeseries` replication zone:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SHOW ZONE CONFIGURATION FOR RANGE timeseries;
     ~~~
-       zone_name  |                 config_sql
-    +-------------+---------------------------------------------+
-      .timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
-                  |     range_min_bytes = 1048576,
-                  |     range_max_bytes = 67108864,
-                  |     gc.ttlseconds = 90000,
-                  |     num_replicas = 3,
-                  |     constraints = '[]',
-                  |     lease_preferences = '[]'
+    ~~~
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      RANGE timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
+                       |     range_min_bytes = 16777216,
+                       |     range_max_bytes = 67108864,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 3,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
     (1 row)
     ~~~
 

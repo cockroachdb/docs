@@ -60,13 +60,13 @@ There are two ways to increase the concurrency of a workload:
 
 Workload | Description
 ---------|------------
-`bank` | Models a set of accounts with currency balances.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
-`intro` | Loads an `intro` database, with one table, `mytable`, with a hidden message.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
-`kv` | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
-`movr` | Loads a `movr` database, with several tables of data for the [MovR example application](movr.html).<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
-`startrek` | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
-`tpcc` | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
-`ycsb` | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`bank`](#bank-workload) | Models a set of accounts with currency balances.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`intro`](#intro-and-startrek-workloads) | Loads an `intro` database, with one table, `mytable`, with a hidden message.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
+[`kv`](#kv-workload) | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`movr`](#movr-workload) |  <span class="version-tag">New in v19.2:</span>  Simulates a workload for the [MovR example application](movr.html).<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`startrek`](#intro-and-startrek-workloads) | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
+[`tpcc`](#tpcc-workload) | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`ycsb`](#ycsb-workload) | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 ## Flags
 
@@ -134,24 +134,28 @@ Flag | Description
 
 ### `movr` workload
 
-{{site.data.alerts.callout_info}}
-This workload generates data but does not offer the ability to run continuous load. Thus, only the `init` subcommand is supported.
-{{site.data.alerts.end}}
-
 Flag | Description
 -----|------------
-`--concurrency` | The number of concurrent workers.<br><br>**Default:** `16`
-`--db` | The SQL database to use.<br><br>**Default:** `movr`
+`--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `16`
+`--data-loader` | How to load initial table data. Valid options are `INSERT` and `IMPORT`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `INSERT`
+`--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `movr`
 `--display-every` | <span class="version-tag">New in v19.2:</span> The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
 `--display-format` | <span class="version-tag">New in v19.2:</span> The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
-`--drop` | Drop the existing database, if it exists.
-`--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Default:** `prepare`
-`--num-histories` | The initial number of ride location histories.<br><br>**Default:** `1000`
-`--num-promo-codes` | The initial number of promo codes.<br><br>**Default:** `1000`
-`--num-rides` | Initial number of rides.<br><br>**Default:** `500`
-`--num-users` | Initial number of users.<br><br>**Default:** `50`
-`--num-vehicles` | Initial number of vehicles.<br><br>**Default:** `15`
-`--seed` | The random number generator seed.<br><br>**Default:** `1`
+`--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`
+`--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
+`--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--histograms-max-latency` | Expected maximum latency of running a query, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1m40s`
+`--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
+`--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
+`--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `prepare`
+`--num-histories` | The initial number of ride location histories.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1000`
+`--num-promo-codes` | The initial number of promo codes.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1000`
+`--num-rides` | Initial number of rides.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `500`
+`--num-users` | Initial number of users.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `50`
+`--num-vehicles` | Initial number of vehicles.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `15`
+`--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 
 ### `tpcc` workload
 
@@ -196,7 +200,7 @@ Flag | Description
 `--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
-`--initial-rows` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
+`--initial-count` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
 `--json` | Use JSONB rather than relational data.<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
@@ -475,6 +479,55 @@ $ cockroach start \
   0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
   147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
 (5 rows)
+    ~~~
+
+### Run the `movr` workload
+
+1. Load the initial schema:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+2. Initialize and run the workload for 1 minute:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload run movr \
+    --duration=1m \
+    'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    You'll see per-operation statistics print to standard output every second:
+
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+        1.0s        0           31.9           32.0      0.5      0.6      1.4      1.4 addUser
+        1.0s        0            6.0            6.0      1.2      1.4      1.4      1.4 addVehicle
+        1.0s        0           10.0           10.0      2.2      6.3      6.3      6.3 applyPromoCode
+        1.0s        0            2.0            2.0      0.5      0.6      0.6      0.6 createPromoCode
+        1.0s        0            9.0            9.0      0.9      1.6      1.6      1.6 endRide
+        1.0s        0         1407.5         1407.8      0.3      0.5      0.7      4.1 readVehicles
+        1.0s        0           27.0           27.0      2.1      3.1      4.7      4.7 startRide
+        1.0s        0           86.8           86.9      4.7      8.4     11.5     15.2 updateActiveRides
+        2.0s        0           26.0           29.0      0.5      1.1      1.4      1.4 addUser
+        2.0s        0            8.0            7.0      1.2      2.8      2.8      2.8 addVehicle
+        2.0s        0            2.0            6.0      2.6      2.8      2.8      2.8 applyPromoCode
+        2.0s        0            0.0            1.0      0.0      0.0      0.0      0.0 createPromoCode
+        2.0s        0            6.0            7.5      0.8      1.7      1.7      1.7 endRide
+        2.0s        0         1450.4         1429.1      0.3      0.6      0.9      2.6 readVehicles
+        2.0s        0           17.0           22.0      2.1      3.3      5.5      5.5 startRide
+        2.0s        0           59.0           72.9      6.3     11.5     11.5     14.2 updateActiveRides
+    ...
+    ~~~
+
+    After the specified duration (1 minute in this case), the workload will stop and you'll see totals printed to standard output:
+
+    ~~~
+    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+       60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
     ~~~
 
 ### Run the `tpcc` workload

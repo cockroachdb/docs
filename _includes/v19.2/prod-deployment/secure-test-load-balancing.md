@@ -29,7 +29,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
     --init \
     --duration=20m \
     --tolerate-errors \
-    "postgresql://root@<IP ADDRESS OF LOAD BALANCER:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    "postgresql://root@<IP ADDRESS OF LOAD BALANCER>:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
     This command runs the TPC-C workload against the cluster for 20 minutes, loading 1 "warehouse" of data initially and then issuing about 12 queries per minute via 10 "worker" threads. These workers share SQL connections since individual workers are idle for long periods of time between queries.

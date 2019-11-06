@@ -33,8 +33,9 @@ table td:first-child {
  `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
  `table_name` | The name of the table that contains the rows you want to update.
  `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__
- `sort_clause` | An `ORDER BY` clause. <br /><br /> The `ORDER BY` clause can no longer be used with a `DELETE` statement when there is no `LIMIT` clause present.
+`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__
+ `sort_clause` | An `ORDER BY` clause. <br /><br /> See [Ordering of rows in
+DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
@@ -73,7 +74,8 @@ deleted rows more frequently.
 {% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
 For more information about ordering query results in general, see
-[Ordering Query Results](query-order.html).
+[Ordering Query Results](query-order.html) and [Ordering of rows in
+DML statements](query-order.html#ordering-rows-in-dml-statements).
 
 ## Delete performance on large data sets
 
@@ -103,7 +105,7 @@ This is equivalent to the longer expression:
 > DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
-To view how the index hint modifies the [query plan](cost-based-optimizer.html#view-query-plan) that CockroachDB follows for deleting rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
@@ -230,7 +232,8 @@ To sort and return deleted rows, use a statement like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *] ORDER BY expiration_time;
+> WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
+  SELECT * FROM a ORDER BY expiration_time;
 ~~~
 
 ~~~

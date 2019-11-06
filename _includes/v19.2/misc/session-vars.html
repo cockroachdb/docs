@@ -97,6 +97,18 @@
 
   <tr>
    <td>
+    <code>enable_zig_zag_join</code>
+   </td>
+   <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. </td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>extra_float_digits</code>
    </td>
    <td>The number of digits displayed for floating-point values. Only values between <code>-15</code> and <code>3</code> are supported.</td>
@@ -137,18 +149,6 @@
     <br />This variable is particularly useful for verifying load balanced connections.</td>
    <td>Node-dependent</td>
    <td>No</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
-    <code>optimizer</code>
-   </td>
-   <td>The mode in which a query execution plan is generated. If set to <code>on</code>, the <a href="cost-based-optimizer.html">cost-based optimizer</a> is enabled by default and the heuristic planner will only be used if the query is not supported by the cost-based optimizer; if set to <code>off</code>, all queries are run through the legacy heuristic planner.</td>
-   <td>
-    <code>on</code>
-   </td>
-   <td>Yes</td>
    <td>Yes</td>
   </tr>
 
@@ -304,6 +304,20 @@
     <code>NoTxn</code>
    </td>
    <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>vectorize</code>
+   </td>
+   <td>The vectorized execution engine mode. Options include <code>auto</code>, <code>experimental_on</code>, and <code>off</code>.
+     For more details, see <a href="vectorized-execution.html#configuring-vectorized-execution">Configuring vectorized execution for CockroachDB</a>.
+   </td>
+   <td>
+    <code>auto</code>
+   </td>
+   <td>Yes</td>
    <td>Yes</td>
   </tr>
 

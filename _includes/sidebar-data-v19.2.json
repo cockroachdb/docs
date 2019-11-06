@@ -284,6 +284,37 @@
             ]
           },
           {
+            "title": "Performance",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/performance.html"
+                ]
+              },
+              {
+                "title": "Benchmarking Instructions",
+                "urls": [
+                  "/${VERSION}/performance-benchmarking-with-tpc-c.html",
+                  "/${VERSION}/performance-benchmarking-with-tpc-c-local.html"
+                ]
+              },
+              {
+                "title": "Tuning Best Practices",
+                "urls": [
+                  "/${VERSION}/performance-best-practices-overview.html"
+                ]
+              },
+              {
+                "title": "Tuning Tutorial",
+                "urls": [
+                  "/${VERSION}/performance-tuning.html",
+                  "/${VERSION}/performance-tuning-insecure.html"
+                ]
+              }
+            ]
+          },
+          {
             "title": "Security",
             "items": [
               {
@@ -354,40 +385,32 @@
             ]
           },
           {
-            "title": "Configure Replication Zones",
+            "title": "Replication Controls",
             "urls": [
               "/${VERSION}/configure-replication-zones.html"
             ]
           },
           {
-            "title": "Performance Benchmarking",
-            "urls": [
-              "/${VERSION}/performance-benchmarking-with-tpc-c.html"
-            ]
-          },
-          {
-            "title": "Performance Tuning",
-            "urls": [
-              "/${VERSION}/performance-tuning.html",
-              "/${VERSION}/performance-tuning-insecure.html"
-            ]
-          },
-          {
-            "title": "Table Partitioning",
-            "urls": [
-              "/${VERSION}/partitioning.html"
-            ]
-          },
-          {
-            "title": "Change Data Capture",
-            "urls": [
-              "/${VERSION}/change-data-capture.html"
-            ]
-          },
-          {
             "title": "Enterprise Features",
-            "urls": [
-              "/${VERSION}/enterprise-licensing.html"
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/enterprise-licensing.html"
+                ]
+              },
+              {
+                "title": "Table Partitioning",
+                "urls": [
+                  "/${VERSION}/partitioning.html"
+                ]
+              },
+              {
+                "title": "Change Data Capture",
+                "urls": [
+                  "/${VERSION}/change-data-capture.html"
+                ]
+              }
             ]
           }
         ]
@@ -967,6 +990,12 @@
                 "title": "<code>IMPORT</code>",
                 "urls": [
                   "/${VERSION}/import.html"
+                ]
+              },
+              {
+                "title": "<code>IMPORT INTO</code>",
+                "urls": [
+                  "/${VERSION}/import-into.html"
                 ]
               },
               {
@@ -1610,6 +1639,12 @@
                 "title": "Cost-Based Optimizer",
                 "urls": [
                   "/${VERSION}/cost-based-optimizer.html"
+                ]
+              },
+              {
+                "title": "Vectorized Execution",
+                "urls": [
+                  "/${VERSION}/vectorized-execution.html"
                 ]
               }
             ]

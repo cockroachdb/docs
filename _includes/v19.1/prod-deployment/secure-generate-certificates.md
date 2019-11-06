@@ -71,6 +71,25 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     <username>@<node1 address>:~/certs
     ~~~
 
+    {% elsif page.title contains "AWS" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh-add /path/<key file>.pem
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh <username>@<node1 DNS name> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ~~~
+
     {% else %}
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -115,6 +134,21 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 8. Upload the CA certificate and node certificate and key to the second node:
 
+    {% if page.title contains "AWS" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ssh <username>@<node2 DNS name> "mkdir certs"
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 DNS name>:~/certs
+    ~~~
+
+    {% else %}
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<node2 address> "mkdir certs"
@@ -127,6 +161,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     certs/node.key \
     <username>@<node2 address>:~/certs
     ~~~
+    {% endif %}
 
 9. Repeat steps 6 - 8 for each additional node.
 

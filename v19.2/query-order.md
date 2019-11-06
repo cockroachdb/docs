@@ -65,9 +65,10 @@ significant:
    which rows are kept in the result.
 3. The ordering of the data source for an [`INSERT`](insert.html)
    statement or an [`UPSERT`](upsert.html) statement that also uses
-   `LIMIT` is preserved, to determine which rows are processed.
+   `LIMIT` is preserved, to determine [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
 4. The ordering indicated for an [`UPDATE`](update.html) or [`DELETE`](delete.html)
-   statement that also uses `LIMIT` is used to determine which rows are processed.
+   statement that also uses `LIMIT` is used to determine
+   [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
    (This is a CockroachDB extension.)
 5. The ordering of a sub-query used in a scalar expression
    is preserved.
@@ -87,15 +88,6 @@ For example, using a stand-alone `LIMIT` clause in `FROM`:
 > SELECT * FROM a, ((SELECT * FROM b ORDER BY b.x) LIMIT 1);
   -- ensures that only the first row of b in the order of column b.x
   -- is used in the cross join.
-~~~
-
-For example, using `LIMIT` in `INSERT`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO a (SELECT * FROM b ORDER BY b.x) LIMIT 1;
-  -- ensures that only the first row of b in the order of column b.x
-  -- is inserted into a.
 ~~~
 
 For example, using a sub-query in scalar context:
@@ -245,6 +237,35 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
 > SELECT * FROM ab ORDER BY INDEX ab@b_idx DESC; -- orders by b ascending, then a descending.
                                                  -- The index order is inverted.
 ~~~
+
+## Ordering rows in DML statements
+
+When using `ORDER BY` with an [`INSERT`](insert.html),
+[`UPSERT`](upsert.html), [`UPDATE`](update.html) or
+[`DELETE`](delete.html) (i.e., a DML statement), the `ORDER BY` clause is
+ignored if it is not used in combination with [`LIMIT` and/or
+`OFFSET`](limit-offset.html).
+
+The combination of both `ORDER BY` and `LIMIT`/`OFFSET` determines
+which rows of the input are used to insert, update or delete the table
+data, but *it does not determine in which order the mutation takes
+place*.
+
+For example, using `LIMIT` in `INSERT`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO a SELECT * FROM b ORDER BY b.x LIMIT 1;
+  -- ensures that only the first row of b in the order of column b.x
+  -- is inserted into a.
+~~~
+
+The reason why `ORDER BY` does not control the final order of the rows
+in the table is that the ordering of rows in the target table is
+determined by its [primary and secondary indexes](indexes.html).
+
+To order the result of the `RETURNING` clause, see [Sorting the output
+of deletes](#sorting-the-output-of-deletes).
 
 ## Sorting the output of deletes
 

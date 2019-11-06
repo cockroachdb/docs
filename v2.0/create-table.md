@@ -272,13 +272,13 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 +--------+---------------------------------------------------------------------------------------------------------------------+
 | Table  |                                                     CreateTable                                                     |
 +--------+---------------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                              |
-|        |     id INT NOT NULL,␤                                                                                               |
-|        |     customer_id INT NULL,␤                                                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                                     |
-|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,␤ |
-|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),␤                                        |
-|        |     FAMILY "primary" (id, customer_id)␤                                                                             |
+| orders | CREATE TABLE orders (                                                                                               |
+|        |     id INT NOT NULL,                                                                                                |
+|        |     customer_id INT NULL,                                                                                           |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                                      |
+|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,  |
+|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),                                         |
+|        |     FAMILY "primary" (id, customer_id)                                                                              |
 |        | )                                                                                                                   |
 +--------+---------------------------------------------------------------------------------------------------------------------+
 ```
@@ -403,13 +403,13 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 +--------+----------------------------------------------------------+
 | Table  |                       CreateTable                        |
 +--------+----------------------------------------------------------+
-| logoff | CREATE TABLE logoff (␤                                   |
-|        |     user_id INT NOT NULL,␤                               |
-|        |     user_email STRING(50) NULL,␤                         |
-|        |     logoff_date DATE NULL,␤                              |
-|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),␤         |
-|        |     UNIQUE INDEX logoff_user_email_key (user_email),␤    |
-|        |     FAMILY "primary" (user_id, user_email, logoff_date)␤ |
+| logoff | CREATE TABLE logoff (                                    |
+|        |     user_id INT NOT NULL,                                |
+|        |     user_email STRING(50) NULL,                          |
+|        |     logoff_date DATE NULL,                               |
+|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),          |
+|        |     UNIQUE INDEX logoff_user_email_key (user_email),     |
+|        |     FAMILY "primary" (user_id, user_email, logoff_date)  |
 |        | )                                                        |
 +--------+----------------------------------------------------------+
 (1 row)

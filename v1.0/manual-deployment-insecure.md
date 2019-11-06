@@ -46,7 +46,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new CockroachDB cluster with a single node:
@@ -75,7 +75,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new node that joins the cluster using the first node's address:
@@ -166,7 +166,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 4. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:

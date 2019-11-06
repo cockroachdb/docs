@@ -146,7 +146,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -188,7 +188,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -223,7 +223,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -274,7 +274,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     The `cockroach` binary needs to be on these VMs so you can run some client commands built into the binary, such as the command in the next step and the command for starting the built-in SQL shell.

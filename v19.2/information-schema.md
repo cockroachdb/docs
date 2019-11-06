@@ -45,6 +45,10 @@ Currently, there are some `information_schema` tables that are empty but provide
 A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution](sql-name-resolution.html) for more information.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v19.2:</span> The virtual tables in `information_schema` contain useful comments with links to further documentation. To view these comments, use `SHOW TABLES FROM information_schema WITH COMMENT`:
+{{site.data.alerts.end}}
+
 ### administrable_role_authorizations
 
 `administrable_role_authorizations` identifies all roles that the current user has the admin option for.

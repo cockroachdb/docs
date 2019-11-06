@@ -13,7 +13,7 @@ The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation
 
 In CockroachDB, `JSON` is an alias for `JSONB`.
 
-{{site.data.alerts.callout_info}}In PosgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
+{{site.data.alerts.callout_info}}In PostgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
 {{site.data.alerts.end}}
 
 ## Considerations

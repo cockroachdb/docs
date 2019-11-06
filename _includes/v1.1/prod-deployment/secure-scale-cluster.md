@@ -24,7 +24,7 @@ For each additional node you want to add to the cluster, complete the following 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.
@@ -65,7 +65,7 @@ For each additional node you want to add to the cluster, complete the following 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.

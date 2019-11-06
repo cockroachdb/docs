@@ -16,7 +16,7 @@ This page has reference information about the `IMPORT` statement.  For instructi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-`IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html). Also, `IMPORT` cannot be used within a [transaction](transactions.html).
+`IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html). Also, `IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -699,12 +699,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ## Known limitation
 
-`IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
-~~~
+{% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}
 
 ## See also
 

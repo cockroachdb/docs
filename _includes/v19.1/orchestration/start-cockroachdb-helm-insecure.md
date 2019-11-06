@@ -1,8 +1,8 @@
 1. [Install the Helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client).
 
-2. [Install the Helm server, known as Tiller](https://docs.helm.sh/using_helm/#installing-tiller).
+2. Install the Helm server, known as Tiller.
 
-    In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you need to create [RBAC resources](https://docs.helm.sh/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
+    In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you first need to create [RBAC resources](https://docs.helm.sh/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
 
     1. Create a `rbac-config.yaml` file to define a role and service account:
 
@@ -36,15 +36,20 @@
         ~~~
 
         ~~~
-        serviceaccount "tiller" created
-        clusterrolebinding "tiller" created
+        serviceaccount/tiller created
+        clusterrolebinding.rbac.authorization.k8s.io/tiller created
         ~~~    
 
-    3. Start the Helm server:
+    3. Start the Helm server and [install Tiller](https://docs.helm.sh/using_helm/#installing-tiller):
+
+        {{site.data.alerts.callout_info}}
+        Tiller does not currently support [Kubernetes 1.16.0](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/). The following command includes a workaround to install Tiller for use with 1.16.0.
+        {{site.data.alerts.end}}
+
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ helm init --service-account tiller
+        $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
         ~~~
 
 3. Update your Helm chart repositories to ensure that you're using the latest CockroachDB chart:

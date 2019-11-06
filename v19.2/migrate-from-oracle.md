@@ -223,7 +223,6 @@ Use the table below for data type mappings:
 
 When moving from Oracle to CockroachDB data types, consider the following:
 
-- [Conversion of integers to `DATE` / `TIME` values](known-limitations.html#conversion-of-integers-to-date-time-values)
 - [Silent validation error with `DECIMAL` values](known-limitations.html#silent-validation-error-with-decimal-values)
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-schema-changes-between-executions-of-prepared-statements)
@@ -317,7 +316,7 @@ The last phase of the migration process is to change the [transactional behavior
 
 ### Transactions, locking, and concurrency control
 
-Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues; however, this is not required by CockroachDB. As a developer, you will no longer require the `FOR UPDATE` clause and it should be removed.  
+Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. In CockroachDB, the `FOR UPDATE` [locking clause](sql-grammar.html#locking_clause) is supported for [selection queries](selection-queries.html#parameters) for compatibility, but it is not required. See [Locking with `FOR UPDATE`](porting-postgres.html#locking-and-for-update) for details.
 
 Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
 

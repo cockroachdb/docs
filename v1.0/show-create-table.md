@@ -48,17 +48,17 @@ Field | Description
 +--------+--------------------------------------------------------------------------------------------------+
 | Table  |                                           CreateTable                                            |
 +--------+--------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                           |
-|        |     id INT NOT NULL DEFAULT unique_rowid(),␤                                                     |
-|        |     date TIMESTAMP NOT NULL,␤                                                                    |
-|        |     priority INT NULL DEFAULT 1,␤                                                                |
-|        |     customer_id INT NULL,␤                                                                       |
-|        |     status STRING NULL DEFAULT 'open',␤                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id),␤                                                      |
-|        |     UNIQUE INDEX orders_customer_id_key (customer_id),␤                                          |
-|        |     FAMILY fam_0_id_date_priority_customer_id_status (id, date, priority, customer_id, status),␤ |
-|        |     CHECK (priority BETWEEN 1 AND 5),␤                                                           |
-|        |     CHECK (status IN ('open', 'in progress', 'done', 'cancelled'))␤                              |
+| orders | CREATE TABLE orders (                                                                            |
+|        |     id INT NOT NULL DEFAULT unique_rowid(),                                                      |
+|        |     date TIMESTAMP NOT NULL,                                                                     |
+|        |     priority INT NULL DEFAULT 1,                                                                 |
+|        |     customer_id INT NULL,                                                                        |
+|        |     status STRING NULL DEFAULT 'open',                                                           |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id),                                                       |
+|        |     UNIQUE INDEX orders_customer_id_key (customer_id),                                           |
+|        |     FAMILY fam_0_id_date_priority_customer_id_status (id, date, priority, customer_id, status),  |
+|        |     CHECK (priority BETWEEN 1 AND 5),                                                            |
+|        |     CHECK (status IN ('open', 'in progress', 'done', 'cancelled'))                               |
 |        | )                                                                                                |
 +--------+--------------------------------------------------------------------------------------------------+
 (1 row)

@@ -1,12 +1,14 @@
-CockroachDB replicates and distributes data for you behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster.
+CockroachDB replicates and distributes data behind-the-scenes and uses a [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. Once a cluster is live, any node can be used as a SQL gateway.
 
-To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+When using a load balancer, you should issue commands directly to the load balancer, which then routes traffic to the nodes.
 
-1. On your local machine, launch the built-in SQL client:
+Use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+
+1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=<address of any node>
+    $ cockroach sql --certs-dir=certs --host=<address of load balancer>
     ~~~
 
 2.  Create a `securenodetest` database:
@@ -16,16 +18,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
     > CREATE DATABASE securenodetest;
     ~~~
 
-3. Use `\q` to exit the SQL shell.
-
-4. Launch the built-in SQL client against a different node:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=<address of different node>
-    ~~~
-
-5. View the cluster's databases, which will include `securenodetest`:
+3. View the cluster's databases, which will include `securenodetest`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -45,4 +38,4 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
     (5 rows)
     ~~~
 
-6. Use `\q` to exit the SQL shell.
+4. Use `\q` to exit the SQL shell.

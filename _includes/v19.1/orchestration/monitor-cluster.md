@@ -1,6 +1,6 @@
 To access the cluster's [Admin UI](admin-ui-overview.html):
 
-1. Port-forward from your local machine to one of the pods:
+1. In a new terminal window, port-forward from your local machine to one of the pods:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}

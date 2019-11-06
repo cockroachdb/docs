@@ -7,11 +7,6 @@ redirect_from: sql-optimizer.html
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 
-In versions prior to 2.1, a heuristic planner was used to generate query execution plans. The heuristic planner is only used in the following cases:
-
-- If your query uses functionality that is not yet supported by the cost-based optimizer. For more information about the types of queries that are supported, see [Types of statements supported by the cost-based optimizer](#types-of-statements-supported-by-the-cost-based-optimizer).
-- If you explicitly turn off the optimizer. For more information, see [How to turn the optimizer off](#how-to-turn-the-optimizer-off).
-
 ## How is cost calculated?
 
 A given SQL query can have thousands of equivalent query plans with vastly different execution times. The cost-based optimizer enumerates these plans and chooses the lowest cost plan.
@@ -22,33 +17,6 @@ Cost is roughly calculated by:
 - Modeling how data flows through the query plan
 
 The most important factor in determining the quality of a plan is cardinality (i.e., the number of rows); the fewer rows each SQL operator needs to process, the faster the query will run.
-
-## View query plan
-
-To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query.
-
-If the query is unsupported it will return an error message that starts with e.g., `pq: unsupported statement`. In such cases, the query will be run with the legacy heuristic planner. This should be rare since the optimizer [supports most SQL statements](#types-of-statements-supported-by-the-cost-based-optimizer).
-
-## Types of statements supported by the cost-based optimizer
-
-The cost-based optimizer supports most SQL statements. Specifically, the following types of statements are supported:
-
-- [`CREATE TABLE`](create-table.html)
-- [`UPDATE`](update.html)
-- [`INSERT`](insert.html), including:
-  - `INSERT .. ON CONFLICT DO NOTHING`
-  - `INSERT .. ON CONFLICT .. DO UPDATE`
-- [`UPSERT`](upsert.html)
-- [`DELETE`](delete.html)
-- `FILTER` clauses on [aggregate functions](functions-and-operators.html#aggregate-functions)
-- [Sequences](create-sequence.html)
-- [Views](views.html)
-- All [`SELECT`](select.html) statements that do not include window functions
-- All `UNION` statements that do not include window functions
-- All `VALUES` statements that do not include window functions
-- Most correlated subqueries &mdash; for exceptions, see [Correlated subqueries](subqueries.html#correlated-subqueries).
-
-This is not meant to be an exhaustive list. To check whether a particular query will be run with the cost-based optimizer, follow the instructions in the [View query plan](#view-query-plan) section.
 
 ## Table statistics
 
@@ -512,22 +480,22 @@ Next let's [check our zone configurations](show-zone-configurations.html) to mak
 The output should include the following:
 
 ~~~
-auth.token                      | ALTER TABLE auth.public.token CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
-auth.token@token_id_east_idx    | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
-auth.token@token_id_central_idx | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
-auth.token@token_id_west_idx    | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
-                                |     num_replicas = 5,
-                                |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+TABLE auth.public.token                      | ALTER TABLE auth.public.token CONFIGURE ZONE USING
+                                             |     num_replicas = 5,
+                                             |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                             |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+INDEX auth.public.token@token_id_east_idx    | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
+                                             |     num_replicas = 5,
+                                             |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                             |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
+INDEX auth.public.token@token_id_central_idx | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
+                                             |     num_replicas = 5,
+                                             |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                             |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
+INDEX auth.public.token@token_id_west_idx    | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
+                                             |     num_replicas = 5,
+                                             |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                             |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
 ~~~
 
 Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of dummy data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
@@ -624,31 +592,9 @@ Time: 619µs
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
-## How to turn the optimizer off
-
-With the optimizer turned on, the performance of some workloads may change. If your workload performs worse than expected (e.g., lower throughput or higher latency), you can turn off the cost-based optimizer and use the heuristic planner.
-
-To turn the cost-based optimizer off for the current session:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET optimizer = 'off';
-~~~
-
-To turn the cost-based optimizer off for all sessions:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING sql.defaults.optimizer = 'off';
-~~~
-
-{{site.data.alerts.callout_info}}
-Changing the cluster setting does not immediately turn the optimizer off; instead, it changes the default session setting to `off`. To see the change, restart your session.
-{{site.data.alerts.end}}
-
 ## Known limitations
 
-- Some features are not supported by the cost-based optimizer; however, the optimizer will fall back to the heuristic planner for this functionality. If performance is worse than in previous versions of CockroachDB, you can [turn the optimizer off](#how-to-turn-the-optimizer-off) to manually force it to fallback to the heuristic planner.
+- Some features are not supported by the cost-based optimizer; however, the optimizer will fall back to the heuristic planner for this functionality.
 
 ## See also
 

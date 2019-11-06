@@ -93,7 +93,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     ~~~
 
     ~~~
-    statefulset "cockroachdb" patched
+    statefulset.apps/cockroachdb patched
     ~~~
     </section>
 
@@ -132,6 +132,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     cockroachdb-1   1/1       Running       0          2m
     cockroachdb-2   1/1       Running       0          2m
     cockroachdb-3   0/1       Terminating   0          1m
+    ...
     ~~~
     </section>
 
@@ -143,6 +144,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     my-release-cockroachdb-2            1/1       Running             0          3m
     my-release-cockroachdb-3            0/1       ContainerCreating   0          25s
     my-release-cockroachdb-init-nwjkh   0/1       ContainerCreating   0          6s
+    ...
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -160,19 +162,21 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
-    cockroachdb-0	cockroachdb/cockroach:{{page.release_info.version}}
-    cockroachdb-1	cockroachdb/cockroach:{{page.release_info.version}}
-    cockroachdb-2	cockroachdb/cockroach:{{page.release_info.version}}
-    cockroachdb-3	cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-0	cockroachdb/cockroach:v19.1.0
+    cockroachdb-1	cockroachdb/cockroach:v19.1.0
+    cockroachdb-2	cockroachdb/cockroach:v19.1.0
+    cockroachdb-3	cockroachdb/cockroach:v19.1.0
+    ...
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     ~~~
-    my-release-cockroachdb-0	cockroachdb/cockroach:{{page.release_info.version}}
-    my-release-cockroachdb-1	cockroachdb/cockroach:{{page.release_info.version}}
-    my-release-cockroachdb-2	cockroachdb/cockroach:{{page.release_info.version}}
-    my-release-cockroachdb-3	cockroachdb/cockroach:{{page.release_info.version}}
+    my-release-cockroachdb-0	cockroachdb/cockroach:v19.1.0
+    my-release-cockroachdb-1	cockroachdb/cockroach:v19.1.0
+    my-release-cockroachdb-2	cockroachdb/cockroach:v19.1.0
+    my-release-cockroachdb-3	cockroachdb/cockroach:v19.1.0
+    ...
     ~~~
     </section>
 

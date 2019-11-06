@@ -46,7 +46,7 @@ redirect_from: /training/cluster-startup-and-scaling.html
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach \
-    /usr/local/bin
+    /usr/local/bin/
     ~~~
     </div>
 
@@ -54,7 +54,7 @@ redirect_from: /training/cluster-startup-and-scaling.html
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach \
-    /usr/local/bin
+    /usr/local/bin/
     ~~~
     </div>
 

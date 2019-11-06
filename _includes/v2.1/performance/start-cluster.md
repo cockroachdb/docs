@@ -12,7 +12,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](start-a-node.html) command:
@@ -47,7 +47,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 4. Run the [`cockroach init`](initialize-a-cluster.html) command:

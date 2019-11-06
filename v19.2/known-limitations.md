@@ -6,6 +6,31 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
+## New limitations
+
+### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
+
+CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
+
+If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO t (x)
+    SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)
+      FROM (values (3)) AS v(x)
+    ON CONFLICT (x)
+      DO UPDATE SET x = excluded.x;
+~~~
+
+An `x` value less than `1` would result in the following error:
+
+~~~
+pq: check constraint violated
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+
 ## Unresolved limitations
 
 ### Cold starts of large clusters may require manual intervention
@@ -151,13 +176,13 @@ This limitation will be lifted when the cost-based optimizer covers all queries.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 
-### Conversion of integers to date/time values
+### Using `default_int_size` session variable in batch of statements
 
-CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
+When setting the `default_int_size` [session variable](set-vars.html) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
 
-This conversion is currently only well defined for a small range of integers, i.e., large absolute values are not properly converted. For example, `(-9223372036854775808):::int64::date` converts to `1970-01-01 00:00:00+00:00`.
+As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
 
 ### Cannot decommission nodes
 
@@ -197,12 +222,7 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 ### Import with a high amount of disk contention
 
-[`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
-~~~
+{% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}
 
 ### Assigning latitude/longitude for the Node Map
 

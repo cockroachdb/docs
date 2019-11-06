@@ -10,7 +10,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~
 
     ~~~
-    pod "cockroachdb-client-secure" created
+    pod/cockroachdb-client-secure created
     ~~~
 
     {{site.data.alerts.callout_info}}

@@ -38,9 +38,20 @@ Adding replication zones for rows and secondary indexes is an [enterprise-only](
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
 </div>
 
+**alter_zone_partition_stmt ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
+</div>
+
 ## Required privileges
 
-Currently, only the `root` user can configure replication zones.
+If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be an [`admin`](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have the [CREATE](grant.html#supported-privileges) privilege on the target database or table.
+
+{{site.data.alerts.callout_danger}}
+Required privileges for `CONFIGURE ZONE` statements in CockroachDB v19.2 may be backward-incompatible for users running scripted statements with restricted permissions in v19.1 and earlier.<br>To add the necessary permissions, use [`GRANT` &lt;privileges&gt;](../v19.2/grant.html) or [`GRANT` &lt;roles&gt;](../v19.2/grant-roles.html) as a user with an admin role. <br>For example, to grant a user the admin role, run `GRANT admin TO <user>`.<br>To grant the `CREATE` privilege on a database or table, run `GRANT CREATE ON [DATABASE | TABLE] <name> TO <user>`.
+{{site.data.alerts.end}}
+
 
 ## Parameters
 
@@ -65,11 +76,13 @@ Currently, only the `root` user can configure replication zones.
 
 ## Examples
 
+{% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
+
 ### Edit a replication zone
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4, constraints = '[-region=west]';
+> ALTER TABLE users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~
 
 ~~~
@@ -92,7 +105,7 @@ CONFIGURE ZONE 1
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
-### Create a replication zone for a table or secondary index partition
+### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 

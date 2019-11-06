@@ -43,13 +43,13 @@ For example, let's say we want to create a table to store an immutable blob of d
 +-------+---------------------------------------------+
 | Table |                 CreateTable                 |
 +-------+---------------------------------------------+
-| test  | CREATE TABLE test (␤                       |
-|       |     id INT NOT NULL,␤                       |
-|       |     last_accessed TIMESTAMP NULL,␤          |
-|       |     data BYTES NULL,␤                       |
-|       |     CONSTRAINT "primary" PRIMARY KEY (id),␤ |
-|       |     FAMILY f1 (id, last_accessed),␤         |
-|       |     FAMILY f2 (data)␤                       |
+| test  | CREATE TABLE test (                         |
+|       |     id INT NOT NULL,                        |
+|       |     last_accessed TIMESTAMP NULL,           |
+|       |     data BYTES NULL,                        |
+|       |     CONSTRAINT "primary" PRIMARY KEY (id),  |
+|       |     FAMILY f1 (id, last_accessed),          |
+|       |     FAMILY f2 (data)                        |
 |       | )                                           |
 +-------+---------------------------------------------+
 (1 row)

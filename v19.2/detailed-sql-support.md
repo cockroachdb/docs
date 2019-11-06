@@ -517,7 +517,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T461 | Symmetric BETWEEN predicate | Yes |
 |  T471 | Result sets return value | No |
 |  T472 | DESCRIBE CURSOR | No |
-|  T491 | LATERAL derived table | No |
+|  T491 | LATERAL derived table | Yes |
 |  T495 | Combined data change and retrieval | Partial |
 |  T501 | Enhanced EXISTS predicate | Yes |
 |  T502 | Period predicates | No |

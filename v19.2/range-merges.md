@@ -20,14 +20,6 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_merge.que
 > SET CLUSTER SETTING kv.range_merge.queue_enabled = true;
 ~~~
 
-#### When to enable range merges
-
-Range merges can provide performance improvements if you're working with a CockroachDB engineer and running CockroachDB 2.1.3 or newer.
-
-#### When to disable range merges
-
-Disable (or do not use) range merges if you want to manually control range splits using [`SPLIT AT`](split-at.html).
-
 ## How range merges work
 
 ### Overview
