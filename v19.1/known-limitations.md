@@ -249,6 +249,10 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
+### Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed
+
+{% include {{ page.version.version }}/known-limitations/schema-change-ddl-inside-multi-statement-transactions.md %}
+
 ### Schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
