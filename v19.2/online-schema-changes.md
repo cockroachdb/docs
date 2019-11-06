@@ -117,9 +117,13 @@ Schema changes keep your data consistent at all times, but they do not run insid
 
 Specifically, this behavior is necessary because making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
 
-### No schema changes within transactions
+### Schema changes within transactions
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
+
+### Schema change DDL inside a multi-statement transaction can fail while other statements succeed
+
+{% include {{ page.version.version }}/known-limitations/schema-change-ddl-inside-multi-statement-transactions.md %}
 
 ### No schema changes between executions of prepared statements
 
@@ -127,7 +131,7 @@ Specifically, this behavior is necessary because making schema changes transacti
 
 ### Examples of statements that fail
 
-The following statements fail due to the [no schema changes within transactions](#no-schema-changes-within-transactions) limitation.
+The following statements fail due to the limitations on [schema changes within transactions](#schema-changes-within-transactions).
 
 #### Create an index and then run a select against that index inside a transaction
 
