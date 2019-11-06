@@ -3,11 +3,13 @@ title: Performance Benchmarking with TPC-C
 summary: Learn how to benchmark CockroachDB against TPC-C 100k.
 toc: true
 toc_not_nested: true
+redirect-from: performance-benchmarking-with-tpc-c.html
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 <div class="filters filters-big clearfix">
+  <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">10</button></a>
   <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">1000</button></a>
   <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">10,000</button></a>
   <button class="filter-button current"><strong>100,000</strong></button>
@@ -15,6 +17,7 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 
 Warehouses | Data size | Cluster size
 -----------|-----------|-------------
+10 | 2GB | 3 nodes on your laptop
 1000 | 80GB | 3 nodes on `c5d.4xlarge` machines
 10,000 | 800GB | 15 nodes on `c5d.4xlarge` machines
 100,000 | 8TB | 81 nodes on `c5d.9xlarge` machines
@@ -116,7 +119,7 @@ CockroachDB requires TCP communication on two ports:
 
     Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 27 racks for 81 nodes so that 3 nodes will be assigned to each rack.
 
-4. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes, Each time, be sure to:
+4. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
     - Set the [`--locality`](start-a-node.html#locality) flag to the appropriate "rack number", as described above.
 
@@ -180,7 +183,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 ## Step 4. Import the TPC-C dataset
 
-CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC-C benchmark. At the moment, however, some required optimizations aren't present in the pre-built binary, so you'll need to clone the [`cockroach` repo](https://github.com/cockroachdb/cockroach), build a custom binary on your local machine, and then put the binary on the VMs for running TPC-C.
+CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC-C benchmark. At the moment, however, some required optimizations aren't present in the pre-built binary, so you'll need to clone the [`cockroach` repo](https://github.com/cockroachdb/cockroach), build a custom binary on your local machine, and then put the binary on the VMs for importing the dataset and running TPC-C.
 
 1. [Install prerequisites and clone the `cockroach` GitHub repo](https://cockroachlabs.atlassian.net/wiki/x/TgHPCg).
 
@@ -231,7 +234,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
 Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 27 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
-1. On one of the VMs with the custom TPC-C `workload` binary, briefly run the workload to set up partitioning:
+1. On one of the VMs with the `workload` binary, briefly run TPC-C to set up partitioning:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -418,7 +421,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
 ## Step 8. Run the benchmark
 
-Once the allocations finish, run the TPC-C benchmark for 30 minutes on each VM with `workload`:
+Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`:
 
 {{site.data.alerts.callout_info}}
 It is critical to run the benchmark from the workload nodes in parallel, so start them as simultaneously as possible.
