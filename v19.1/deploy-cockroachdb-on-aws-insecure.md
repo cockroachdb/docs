@@ -110,8 +110,8 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 AWS offers fully-managed load balancing to distribute traffic between instances.
 
-1. [Add AWS load balancing](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html#scale-and-load-balance). Be sure to:
-	- Select a **Network Load Balancer** (not an Application Load Balancer, as in the above instructions) and use the ports we specify below.
+1. [Add AWS load balancing](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancer-getting-started.html). Be sure to:
+	- Select a **Network Load Balancer** and use the ports we specify below.
 	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
 	- Set the load balancer port to **26257**.
     - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
