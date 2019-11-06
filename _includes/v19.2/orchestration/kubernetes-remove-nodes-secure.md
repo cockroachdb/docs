@@ -103,7 +103,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
     </section>
 

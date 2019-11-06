@@ -36,7 +36,7 @@
         ~~~
 
         ~~~
-        serviceaccount "tiller" created
+        serviceaccount/tiller created
         clusterrolebinding.rbac.authorization.k8s.io/tiller created
         ~~~    
 
@@ -50,6 +50,11 @@
         {% include copy-clipboard.html %}
         ~~~ shell
         $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
+        ~~~
+
+        ~~~
+        deployment.apps/tiller-deploy created
+        service/tiller-deploy created
         ~~~
 
 3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart and setting the `Secure.Enabled` parameter to `true`:
@@ -69,9 +74,9 @@
     You can customize your deployment by passing additional [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
     {{site.data.alerts.end}}
 
-4. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
+4. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the CockroachDB node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificate, at which point the CockroachDB node is started in the pod.
 
-    1. Get the name of the `Pending` CSR for the first pod:
+    1. Get the names of the `Pending` CSRs:
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -84,6 +89,7 @@
         default.node.my-release-cockroachdb-0   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
         default.node.my-release-cockroachdb-1   16s       system:serviceaccount:default:my-release-cockroachdb   Pending
         default.node.my-release-cockroachdb-2   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
+        ...
         ~~~
 
         If you do not see a `Pending` CSR, wait a minute and try again.
@@ -113,7 +119,6 @@
                                 my-release-cockroachdb-public
                                 my-release-cockroachdb-public.default.svc.cluster.local
                  IP Addresses:  127.0.0.1
-                                10.48.1.6
         Events:  <none>
         ~~~
 
@@ -125,10 +130,10 @@
         ~~~
 
         ~~~
-        certificatesigningrequest "default.node.my-release-cockroachdb-0" approved
+        certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-0 approved
         ~~~
 
-    4. Repeat steps 1-3 for the other 2 pods.
+    4. Repeat steps 2 and 3 for the other 2 pods.
 
 5. Confirm that three pods are `Running` successfully:
 
@@ -153,10 +158,10 @@
     ~~~
 
     ~~~
-    certificatesigningrequest "default.client.root" approved
+    certificatesigningrequest.certificates.k8s.io/default.client.root approved
     ~~~
 
-7. Confirm that cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+7. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include copy-clipboard.html %}
     ~~~ shell

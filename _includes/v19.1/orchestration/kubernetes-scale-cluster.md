@@ -1,8 +1,10 @@
-The Kubernetes cluster contains 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you do not have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod for the new CockroachDB node.
+Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods. A CockroachDB node runs in each pod. As recommended in our [production best practices](recommended-production-settings.html#topology), you should ensure that two pods are not placed on the same worker node. 
 
-1. Add a worker node:
+To do this, add a new worker node and then edit your StatefulSet configuration to add another pod for the new CockroachDB node.
+
+1. Add a worker node, bringing the total from 3 to 4:
     - On GKE, [resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster).
-    - On EKS, resize your [Worker Node Group](https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html).
+    - On EKS, resize your [Worker Node Group](https://eksctl.io/usage/managing-nodegroups/#scaling).
     - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).
     - On AWS, resize your [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling.html).
 
@@ -15,7 +17,7 @@ The Kubernetes cluster contains 4 nodes, one master and 3 workers. Pods get plac
     ~~~
 
     ~~~
-    statefulset "cockroachdb" scaled
+    statefulset.apps/cockroachdb scaled
     ~~~
     </section>
 

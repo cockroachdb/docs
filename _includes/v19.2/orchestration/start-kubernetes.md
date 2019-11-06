@@ -53,7 +53,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     ~~~
 
     ~~~
-    clusterrolebinding "cluster-admin-binding" created
+    clusterrolebinding.rbac.authorization.k8s.io/your.username-cluster-admin-binding created
     ~~~
 
 ### Hosted EKS
@@ -68,7 +68,6 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \
-    --version 1.13 \
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
@@ -80,6 +79,8 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
     Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "cockroachdb" in "us-east-1" region is ready` and details about your cluster.
+
+3. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) to verify that the stacks `eksctl-cockroachdb-cluster` and `eksctl-cockroachdb-nodegroup-standard-workers` were successfully created. Be sure that your region is selected in the console.
 
 ### Manual GCE
 
