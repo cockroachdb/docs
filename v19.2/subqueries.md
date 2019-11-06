@@ -61,40 +61,7 @@ The subquery is correlated because it uses `c` defined in the surrounding query.
 
 ### Limitations
 
-The [cost-based optimizer](cost-based-optimizer.html) supports most correlated subqueries, with the following exceptions:
-
-- Correlated subqueries that generate side effects inside a `CASE` statement.
-
-- Correlated subqueries that result in implicit `LATERAL` joins. Given a cross-join expression `a,b`, if `b` is an application of a [set-returning function](functions-and-operators.html#set-returning-functions) that references a variable defined in the surrounding query, the `LATERAL` keyword is assumed as shown below.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT
-          e.last_name, s.salary, noise
-      FROM
-          employees AS e,
-          salaries AS s,
-          -- Join with a set-returning function implies LATERAL below
-          generate_series(0, s.salary, 10000) AS noise
-      WHERE
-          e.emp_no = s.emp_no
-      ORDER BY
-          s.salary DESC
-      LIMIT
-          10;
-    ~~~
-
-    ~~~
-    ERROR:  no data source matches prefix: s
-    ~~~
-
-    For more information, see [the Github issue tracking `LATERAL` join implementation](https://github.com/cockroachdb/cockroach/issues/24560).
-
-    Note that the example above uses the [employees data set](https://github.com/datacharmer/test_db) that is also used in our [Migrate from MySQL](migrate-from-mysql.html) instructions (and the [MySQL docs](https://dev.mysql.com/doc/employee/en/)).
-
-{{site.data.alerts.callout_info}}
-If you come across an unsupported correlated subquery other than those described above, please [file a Github issue](file-an-issue.html).
-{{site.data.alerts.end}}
+The [cost-based optimizer](cost-based-optimizer.html) supports most correlated subqueries, with the exception of correlated subqueries that generate side effects inside a `CASE` statement.
 
 ## Performance best practices
 
