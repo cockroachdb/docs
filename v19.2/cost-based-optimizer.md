@@ -53,7 +53,7 @@ This is not meant to be an exhaustive list. To check whether a particular query 
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-By default, CockroachDB generates table statistics automatically as tables are updated. It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
+By default, CockroachDB generates table statistics automatically when tables are [created](create-table.html), and as they are [updated](update.html). It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
