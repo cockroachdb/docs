@@ -29,17 +29,16 @@ For each additional node you want to add to the cluster, complete the following 
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. Run the [`cockroach start`](start-a-node.html) command just like you did for the initial nodes:
+4. Run the [`cockroach start`](start-a-node.html) command, passing the new node's address as the `--advertise-addr` flag and pointing `--join` to the three existing nodes (also include `--locality` if you set it earlier).
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
     --advertise-addr=<node4 address> \
-    --locality=<key-value pairs> \
+    --join=<node1 address>,<node2 address>,<node3 address> \
     --cache=.25 \
     --max-sql-memory=.25 \
-    --join=<node1 address>,<node2 address>,<node3 address> \
     --background
     ~~~
 
