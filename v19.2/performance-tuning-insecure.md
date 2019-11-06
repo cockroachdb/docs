@@ -817,6 +817,10 @@ Cumulative time (milliseconds):
 
 As you can see, this multi-row `INSERT` technique reduced the total time for 100 inserts from 910.98ms to 15.40ms. It's useful to note that this technique is equally effective for [`UPSERT`](upsert.html) and [`DELETE`](delete.html) statements as well.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v19.2:</span> You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+{{site.data.alerts.end}}
+
 #### Minimizing unused indexes
 
 Earlier, we saw how important secondary indexes are for read performance. For writes, however, it's important to recognized the overhead that they create.
