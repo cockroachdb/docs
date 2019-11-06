@@ -256,11 +256,11 @@ Suppose you create a multi-column index on the `users` table with the `name` and
 > CREATE INDEX ON users (name, city);
 ~~~
 
-Now suppose you want to delete the two users named "Michael Brown". You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the delete:
+Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the delete:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) DELETE FROM users WHERE name='Michael Brown';
+> EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
 ~~~
 
 ~~~
@@ -268,7 +268,7 @@ Now suppose you want to delete the two users named "Michael Brown". You can use 
 +---------------------------------------------------------------------+
   delete users
    └── scan users@users_name_city_idx
-        └── constraint: /8/7/6: [/'Michael Brown' - /'Michael Brown']
+        └── constraint: /8/7/6: [/'Jon Snow' - /'Jon Snow']
 (3 rows)
 ~~~
 
