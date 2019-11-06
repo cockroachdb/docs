@@ -7,10 +7,6 @@ redirect_from: sql-optimizer.html
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 
-In versions prior to 2.1, a heuristic planner was used to generate query execution plans. The heuristic planner is only used in the following cases:
-
-- If your query uses functionality that is not yet supported by the cost-based optimizer. For more information about the types of queries that are supported, see [Types of statements supported by the cost-based optimizer](#types-of-statements-supported-by-the-cost-based-optimizer).
-
 ## How is cost calculated?
 
 A given SQL query can have thousands of equivalent query plans with vastly different execution times. The cost-based optimizer enumerates these plans and chooses the lowest cost plan.
@@ -21,33 +17,6 @@ Cost is roughly calculated by:
 - Modeling how data flows through the query plan
 
 The most important factor in determining the quality of a plan is cardinality (i.e., the number of rows); the fewer rows each SQL operator needs to process, the faster the query will run.
-
-## View query plan
-
-To see whether a query will be run with the cost-based optimizer, run the query with [`EXPLAIN (OPT)`](explain.html#opt-option). The `OPT` option displays a query plan tree, along with some information that was used to plan the query.
-
-If the query is unsupported it will return an error message that starts with e.g., `pq: unsupported statement`. In such cases, the query will be run with the legacy heuristic planner. This should be rare since the optimizer [supports most SQL statements](#types-of-statements-supported-by-the-cost-based-optimizer).
-
-## Types of statements supported by the cost-based optimizer
-
-The cost-based optimizer supports most SQL statements. Specifically, the following types of statements are supported:
-
-- [`CREATE TABLE`](create-table.html)
-- [`UPDATE`](update.html)
-- [`INSERT`](insert.html), including:
-  - `INSERT .. ON CONFLICT DO NOTHING`
-  - `INSERT .. ON CONFLICT .. DO UPDATE`
-- [`UPSERT`](upsert.html)
-- [`DELETE`](delete.html)
-- `FILTER` clauses on [aggregate functions](functions-and-operators.html#aggregate-functions)
-- [Sequences](create-sequence.html)
-- [Views](views.html)
-- All [`SELECT`](select.html) statements that do not include window functions
-- All `UNION` statements that do not include window functions
-- All `VALUES` statements that do not include window functions
-- Most correlated subqueries &mdash; for exceptions, see [Correlated subqueries](subqueries.html#correlated-subqueries).
-
-This is not meant to be an exhaustive list. To check whether a particular query will be run with the cost-based optimizer, follow the instructions in the [View query plan](#view-query-plan) section.
 
 ## Table statistics
 
