@@ -513,3 +513,7 @@ When running CockroachDB on Kubernetes, making the following minimal customizati
 * Configure CPU and memory [resource requests and limits](kubernetes-performance.html#resource-requests-and-limits).
 
 For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+
+## Transaction Retries
+
+When several transactions [are trying to modify the same underlying data concurrently](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), all but one will fail. To avoid failures in production, your application should be engineered to handle [transaction retries](transactions.html#transaction-retries) using [client-side retry handling](transactions.html#client-side-intervention).
