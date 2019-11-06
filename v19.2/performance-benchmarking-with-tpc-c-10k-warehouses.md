@@ -265,17 +265,12 @@ $ ulimit -n 20500 && ./workload run tpcc \
 
 ## Step 7. Interpret the results
 
-Once the `workload` has finished running, you should see a final output line similar to the following, with **???1.2M tpmC, a nearly perfect score???**:
+Once the `workload` has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine the whether this was a passing run. You should expect to see an efficiency number above 95%, above the minimum of 85% for a passing run, and p95 latencies well below the required 10 seconds.
 
-    ~~~
-    Duration: 1h0m0, Warehouses: 100000, Efficiency: 98.81, tpmC: 1245461.78
-    _elapsed___ops/sec(cum)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
-     3600.1s     	2082.1	151.0	369.1	453.0	637.5   5100.3 delivery
-     3600.1s    	20757.7	167.8	402.7	486.5	671.1   8321.5 newOrder
-     3600.1s     	2083.2  9.4 	62.9 	92.3	159.4   1073.7 orderStatus
-     3600.1s    	20829.5	100.7	251.7	318.8	469.8   7516.2 payment
-     3600.1s     	2082.8 	29.4	100.7	142.6	234.9 103079.2 stockLevel
-    ~~~
+~~~
+_elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
+ 1800.0s    12479.4  97.0%     35.3     23.1     79.7    109.1    176.2    419.4
+~~~
 
 ## See also
 
