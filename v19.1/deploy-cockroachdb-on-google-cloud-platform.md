@@ -15,13 +15,15 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
-* This article covers the use of Linux instances with GCE. You may wish to review the instructions for [connecting to Windows instances](https://cloud.google.com/compute/docs/instances/connecting-to-instance#windows).
+- This article covers the use of Linux instances with GCE. You may wish to review the instructions for [connecting to Windows instances](https://cloud.google.com/compute/docs/instances/connecting-to-instance#windows).
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
@@ -47,8 +49,6 @@ To expose your Admin UI and allow traffic from the TCP proxy load balancer and h
 #### Application data
 
 Applications will not connect directly to your CockroachDB nodes. Instead, they'll connect to GCE's TCP Proxy Load Balancing service, which automatically routes traffic to the instances that are closest to the user. Because this service is implemented at the edge of the Google Cloud, you'll need to create a firewall rule to allow traffic from the load balancer and health checker to your instances. This is covered in [Step 4](#step-4-set-up-load-balancing).
-
-{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance).{{site.data.alerts.end}}
 
 ## Step 2. Create instances
 
@@ -78,7 +78,9 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
-{{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance).{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using [Network TCP Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/) instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the [On-Premises](deploy-cockroachdb-on-premises.html) tutorial for guidance).
+{{site.data.alerts.end}}
 
 To use GCE's TCP Proxy Load Balancing service:
 
@@ -98,7 +100,9 @@ To use GCE's TCP Proxy Load Balancing service:
 
 ## Step 6. Start nodes
 
-{{site.data.alerts.callout_info}}By default, inter-node communication uses the internal IP addresses of your GCE instances.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+By default, inter-node communication uses the internal IP addresses of your GCE instances.
+{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
