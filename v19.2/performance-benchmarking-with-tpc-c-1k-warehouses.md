@@ -135,7 +135,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
     "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
     ~~~
 
-    This will load 80GB of data for 1000 "warehouses". This can take around **TODO** hours to complete.
+    This will load 80GB of data for 1000 "warehouses". This can take a while to complete.
 
     You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
@@ -148,7 +148,8 @@ Still on the VM with the `workload` binary, run TPC-C for 30 minutes:
 $ ./workload run tpcc \
 --warehouses 1000 \
 --ramp 1m \
---duration 30m
+--duration 30m \
+"postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
 ~~~
 
 ## Step 5. Interpret the results
