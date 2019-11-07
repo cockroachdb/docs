@@ -33,13 +33,13 @@ Use the Console to authorize networks:
 
 4. (Optional) Enter a descriptive name for the network.
 
-5. From the **Network** dropdown, select **New Network**, **Current Network**, or **Public (Insecure)** network:
+5. From the **Network** dropdown, select:
 
-         - Select **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
+         - **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
 
-         - Select **Current Network** to auto-populate your local machine's IP address.
+         - **Current Network** to auto-populate your local machine's IP address.
 
-         - Select **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+         - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
       {{site.data.alerts.callout_info}}
       IPv6 addresses are currently not supported.
