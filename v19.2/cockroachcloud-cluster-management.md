@@ -23,6 +23,6 @@ Deleting a cluster will delete all cluster data.
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
-1. Navigate to the cluster overview page for the cluster you want to delete.
+1. Navigate to the Cluster Overview page for the cluster you want to delete.
 2. On the right-hand side, select **Delete cluster** from the **Actions** drop-down.
 3. In the confirmation window, enter the name of the cluster and click **Delete**.
