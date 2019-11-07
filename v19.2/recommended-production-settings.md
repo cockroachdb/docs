@@ -112,7 +112,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
 
-    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
 
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
