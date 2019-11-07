@@ -1,6 +1,6 @@
 ---
 title: EXPERIMENTAL CHANGEFEED FOR
-summary: The EXPERIMENTAL CHANGEFEED FOR statement creates a new core changefeed, which provides row-level change subscriptions.
+summary: which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 toc: true
 ---
 
