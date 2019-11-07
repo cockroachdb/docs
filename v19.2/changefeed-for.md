@@ -10,7 +10,7 @@ toc: true
 
 The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
-Core changefeeds work differently than other CockroachDB SQL statements. Instead of returning a finite result set to the client, a core changefeed streams changes to the watched rows indefinitely until the underlying connection is closed or the changefeed query is canceled. This has important implications for the connection and client parameters related to server- and client-side result buffering.
+{% include {{ page.version.version }}/cdc/core-url.md %}
 
 For more information, see [Change Data Capture](change-data-capture.html).
 

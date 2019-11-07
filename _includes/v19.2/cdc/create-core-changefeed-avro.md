@@ -25,7 +25,9 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
     $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/cdc/core-url.md %}
+    {{site.data.alerts.end}}
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
