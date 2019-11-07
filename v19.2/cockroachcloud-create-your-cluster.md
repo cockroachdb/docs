@@ -20,7 +20,7 @@ Before creating a cluster, check that you have the correct organization selected
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-The choice of the cloud provider decides the performance characteristics and price per node. For optimal performance, choose the cloud platform on which your application is deployed. For pricing comparison, refer to the following table:
+The choice of the cloud provider decides the price per node. To enable VPC peering in the future, choose the cloud platform on which your application is deployed. For pricing comparison, refer to the following table:
 
 Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per node, per month)
 ----------|------------|------------
@@ -72,14 +72,16 @@ After entering the cluster name, click **Continue to Summary**
 
 <Add info here>
 
-## Example
+## Examples
+
+### Select hardware configuration based on storage requirements
 
 Let's say we want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `useast-1` region.
 
 Suppose the raw data amount we expect to store without replication is 500 GB.
 At 0.4% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
 
-Let's consider a storage buffer of 0.5% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
+Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
@@ -93,3 +95,13 @@ Cloud provider | GCP
 Region | us-east1
 Number of nodes | 6
 Size | Large
+
+### Select hardware configuration based on performance requirements
+
+Let's say we want to run a workload resembling the TPC-C 100K run on a CockroachCloud cluster.
+
+One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximately 45 warehouses per vCPU. So a 4 vCPU node can handle 180 warehouses which is 36GB of unreplicated raw data.
+
+With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
+
+So for a workload resembling TPC-C, we want to build out your cluster with "medium" nodes, and you'll only use 1/3 of the storage.
