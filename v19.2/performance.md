@@ -7,34 +7,32 @@ toc_not_nested: true
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Lab's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
 
-For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c-100k-warehouses.html). Instructions to reproduce Sysbench and KV results are coming soon.
+For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c-100k-warehouses.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design. Instructions to reproduce Sysbench and KV results are coming soon.
 
 {{site.data.alerts.callout_success}}
 This document is about CockroachDB’s performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).  
 {{site.data.alerts.end}}
 
-<!-- Let's hold off on this statement until we have reproducible steps.
-Once those are available, if you fail to achieve similar performance profiles, there is likely a problem in either the hardware, workload, or test design. We stand by these profile characteristics and provide reproduction steps for all published benchmarks. -->
-
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **631K tpmC with 50,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.2M tpmC with 100,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
 
-Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 50 times more scalable than Amazon Aurora, supporting 25 billion rows and more than 4 terabytes of frequently accessed data:
+Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 100 times more scalable than Amazon Aurora, supporting ~50 billion rows and more than 8 terabytes of frequently accessed data:
 
-<img src="{{ 'images/v19.2/tpcc50k.png' | relative_url }}" alt="TPC-C 50,000" style="max-width:100%" />
+<img src="{{ 'images/v19.2/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
 
                                    | CockroachDB       | Amazon Aurora   
 -----------------------------------|-------------------|--------------
-Max Throughput                     | 631,851 tpmC      | 12,582 tpmC     
-Max Warehouses with Max Efficiency | 50,000 Warehouses | 1,000 Warehouses
-Max Number of Rows                 | 24.9B             | 0.499B         
-Max Unreplicated Data              | 4TB               | 0.08TB         
-Machine type                       | c5d.4xlarge       | r3.8xl         
+Max Throughput                     | 1,245,462 tpmC    | 12,582 tpmC     
+Max Warehouses with Max Efficiency | 100,000 Warehouses| 1,000 Warehouses
+Max Number of Rows                 | 49.8B             | 0.499B         
+Max Unreplicated Data              | 8TB               | 0.08TB         
+Machine type                       | 81 c5d.9xlarge    | 2 r3.8xl         
 
 Unlike Amazon Aurora, CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard. Like many other databases, Aurora selectively degrades isolation levels for performance, leaving workloads susceptible to fraud and data loss.
 
 To learn more about our comparison with Amazon Aurora, see this [blog post](https://www.cockroachlabs.com/blog/cockroachdb-2dot1-performance/).
+<!--replace link with 100k blog post -->
 
 ### Linear scaling
 
