@@ -42,19 +42,13 @@ Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you
 
     <img src="{{ 'images/v19.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
 
-3. Enter the public IPv4 address of your local workstation in the **Network** field.
-
-    You can use `0.0.0.0/0`, which allows all networks. Use this with caution; anybody who uses your password will be able to access the database, and your cluster will be more exposed if there's ever a security bug. The firewall is an extra layer of defense.
-
-    {{site.data.alerts.callout_info}}
-    IPv6 addresses are currently not supported.
-    {{site.data.alerts.end}}
-
-4. Select both networks: **UI** and **SQL** client.
+3. (Optional) Enter a descriptive name for the network.
+4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
+5. Select both networks: **UI** and **SQL** client.
 
     The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
 
-5. Click **Save**.
+6. Click **Save**.
 
 ### Step 2. Create a SQL user
 

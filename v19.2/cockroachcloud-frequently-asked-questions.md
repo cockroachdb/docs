@@ -20,21 +20,20 @@ We use separate certificate authorities for each cluster, and all connections to
 
 CockroachCloud is a single-tenant offering and resources are not shared between clusters.
 
+## Why can't I use certain regions in AWS and  GCP?
+
+We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+[list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
+
 ### How do I connect to my cluster?
 
-You can generate a connection string for each region (or one region if its a single region cluster) as well as a global load balancer, a CA certificate, and your database username and password. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
-
-### What machines do you run your cluster on?
-
-Our machines run with 4 CPUs, 8 CPUs, or 16 CPUs per node.
-
-Based on your cluster requirements (e.g., number of CPUs, GBs of storage, and regions) and budget, we will determine the optimal setup for your cluster.
+To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
 
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?
 
-Today, you can contact [Support](https://support.cockroachlabs.com/hc/en-us) for most cluster changes. In early 2019, you will be able to make changes using a self-service management console.
+Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your cluster configuration.
 
 ### How do I add nodes?
 
@@ -46,7 +45,7 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 ### Who is responsible for backup?
 
-Cockroach Labs will run daily full backups and hourly incremental backups for all of your CockroachCloud clusters.
+Cockroach Labs will run daily full backups and hourly incremental backups for all of your CockroachCloud clusters. The full backups will be retained for 30 days and incremental backups for 7 days.
 
 ## Product features
 
@@ -80,4 +79,4 @@ Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happ
 
 ### Do you have a UI? How can I see details?
 
-All customers of our CockroachCloud service can view their clusters in the [Console](https://cockroachlabs.cloud/).
+All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
