@@ -124,6 +124,10 @@ You can execute the transaction using the database contents "as of" a specified 
 
 {% include {{ page.version.version }}/sql/begin-transaction-as-of-system-time-example.md %}
 
+{{site.data.alerts.callout_success}}
+You can also use the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement inside the transaction to achieve the same results. This syntax is easier to use from [drivers and ORMs](install-client-drivers.html).
+{{site.data.alerts.end}}
+
 ### Begin a transaction with automatic retries
 
 CockroachDB will [automatically retry](transactions.html#transaction-retries) all transactions that contain both `BEGIN` and `COMMIT` in the same batch. Batching is controlled by your driver or client's behavior, but means that CockroachDB receives all of the statements as a single unit, instead of a number of requests.
