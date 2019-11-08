@@ -57,7 +57,9 @@ SELECT ... FROM ... AS OF SYSTEM TIME experimental_follower_read_timestamp();
 You can set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
 
 ```sql
-BEGIN AS OF SYSTEM TIME experimental_follower_read_timestamp();
+BEGIN;
+
+SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
 SAVEPOINT cockroach_restart;
 
@@ -66,6 +68,10 @@ SELECT ...
 
 COMMIT;
 ```
+
+{{site.data.alerts.callout_success}}
+Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use the follower reads feature from [drivers and ORMs](install-client-drivers.html).
+{{site.data.alerts.end}}
 
 ## How follower reads works
 

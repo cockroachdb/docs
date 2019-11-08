@@ -68,7 +68,9 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > BEGIN AS OF SYSTEM TIME experimental_follower_read_timestamp();
+    > BEGIN;
+
+    SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
       SELECT code FROM postal_codes
         WHERE id = 5;
@@ -78,6 +80,10 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
       COMMIT;
     ~~~
+
+{{site.data.alerts.callout_success}}
+Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use the follower reads feature from [drivers and ORMs](install-client-drivers.html).
+{{site.data.alerts.end}}
 
 ## Characteristics
 
