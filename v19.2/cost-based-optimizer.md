@@ -168,12 +168,11 @@ This feature enables scenarios such as:
 - Reference data such as a table of postal codes that can be replicated to different regions, and queries will use the copy in the same region. See [Example - zone constraints](#zone-constraints) for more details.
 - Optimizing for local reads (potentially at the expense of writes) by adding leaseholder preferences to your zone configuration. See [Example - leaseholder preferences](#leaseholder-preferences) for more details.
 
-
 To take advantage of this feature, you need to:
 
 1. Have an [enterprise license](enterprise-licensing.html).
 2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
-3. Create multiple indexes on the reference tables. Note that the indexes need to include (in key or using [`STORED`](create-index.html#store-columns)) the columns that you wish to query.
+3. Create multiple [secondary indexes](indexes.html) on the reference tables. **Note that these indexes must include (in key or using [`STORED`](create-index.html#store-columns)) *every* column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
 4. Create [replication zones](configure-replication-zones.html) for each index.
 
 With the above pieces in place, the optimizer will automatically choose the index nearest the gateway node that is planning the query.
