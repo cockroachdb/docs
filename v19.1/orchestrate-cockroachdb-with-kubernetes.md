@@ -90,6 +90,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 
 - [Add nodes](#add-nodes)
 - [Remove nodes](#remove-nodes)
+- [Expand disk size](#expand-disk-size)
 - [Upgrade the cluster](#upgrade-the-cluster)
 - [Stop the cluster](#stop-the-cluster)
 
@@ -255,6 +256,10 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 ### Remove nodes
 
 {% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
+
+### Expand disk size
+
+{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
 
 ### Upgrade the cluster
 
