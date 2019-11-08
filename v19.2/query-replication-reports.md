@@ -1,5 +1,5 @@
 ---
-title: Run Replication Reports
+title: Query Replication Reports
 summary: Verify that your cluster's data replication, data placement, and zone configurations are working as expected.
 keywords: availability zone, zone config, zone configs, zone configuration, constraint, constraints
 toc: true
@@ -25,10 +25,10 @@ In particular, the direct access to `system` tables shown here will not be a sup
 
 The following new and updated tables are available for verifying constraint conformance.
 
+- [`system.reports_meta`](#system-reports_meta) contains metadata about the replication report data listed in the `system.replication_*` tables. Currently, the only metadata available is the report generation time.
 - [`system.replication_stats`](#system-replication_stats) shows information about whether data is under-replicated, over-replicated, or unavailable.
-- [`system.replication_constraint_stats`](#system-replication_constraint_stats) shows a list of violations to any data placement requirements you've configured.
+- [`system.replication_constraint_stats`](#system-replication_constraint_stats) shows the status of any data placement constraints you've configured.
 - [`system.replication_critical_localities`](#system-replication_critical_localities) shows which localities in your cluster (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
-- [`system.reports_meta`](#system-reports_meta) lists the IDs and times when the replication reports were produced that generated the data in the `system.replication_*` tables.
 - [`crdb_internal.zones`](#crdb_internal-zones) can be used with the tables above to figure out the databases and table names where the non-conforming or at-risk data is located.
 
 To configure how often the conformance reports are run, adjust the `kv.replication_reports.interval` [cluster setting](cluster-settings.html#kv-replication-reports-interval), which accepts an [`INTERVAL`](interval.html). For example, to run it every five minutes:
@@ -46,7 +46,6 @@ Only members of the `admin` role can access these tables. By default, the `root`
 The replication reports are only generated for zones that meet the following criteria:
 
 - The zone overrides some replication attributes compared to their parent zone. Ranges in zones for which a report is not generated are counted in the report of the first ancestor zone for which a report is generated.
-- The zone's parent is the default zone.
 
 The attributes that must be overridden to trigger each report to run are:
 
@@ -55,24 +54,23 @@ The attributes that must be overridden to trigger each report to run are:
 | `replication_constraint_stats`    | `constraints`                  |
 | `replication_critical_localities` | `constraints`,  `num_replicas` |
 | `replication_stats`               | `constraints`, `num_replicas`  |
+
+In addition to the above, the system's `default` zone always gets a report.
 {{site.data.alerts.end}}
 
 ### system.replication_stats
 
-The `system.replication_stats` table shows information about whether data is under-replicated, over-replicated, or unavailable.
+The `system.replication_stats` report contains information about whether data is under-replicated, over-replicated, or unavailable.
 
 For an example using this table, see [Find out which databases and tables have under-replicated ranges](#find-out-which-databases-and-tables-have-under-replicated-ranges).
 
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW COLUMNS FROM system.replication_stats;
-~~~
+#### Columns
 
 | Column name             | Data type          | Description                                                                                                                           |
 |-------------------------+--------------------+---------------------------------------------------------------------------------------------------------------------------------------|
 | zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-zone.html).                                                                                |
 | subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                         |
-| report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated this data.                                                                |
+| report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
 | total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/overview.html#architecture-range) in the zone this report entry is referring to.                          |
 | unavailable_ranges      | [`INT8`](int.html) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
 | under_replicated_ranges | [`INT8`](int.html) | [Under-replicated ranges](admin-ui-replication-dashboard.html#under-replicated-ranges) in the zone this report entry is referring to. |
@@ -80,7 +78,7 @@ SHOW COLUMNS FROM system.replication_stats;
 
 ### system.replication_critical_localities
 
-The `system.replication_critical_localities` table shows which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+The `system.replication_critical_localities` report contains which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
 
@@ -88,17 +86,14 @@ As described in [Configure Replication Zones](configure-replication-zones.html#d
 
 For an example using this table, see [Find out which databases and tables have ranges in critical localities](#find-out-which-databases-and-tables-have-ranges-in-critical-localities).
 
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW COLUMNS FROM system.replication_critical_localities;
-~~~
+#### Columns
 
 | Column name    | Data type               | Description                                                                                                                         |
 |----------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------|
 | zone_id        | [`INT8`](int.html)      | The ID of the [replication zone](configure-zone.html).                                                                              |
 | subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                       |
 | locality       | [`STRING`](string.html) | The name of the critical [locality](configure-replication-zones.html#zone-config-node-locality).                                    |
-| report_id      | [`INT8`](int.html)      | The ID of the [report](#system-reports_meta) that generated this data.                                                              |
+| report_id      | [`INT8`](int.html)      | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                          |
 | at_risk_ranges | [`INT8`](int.html)      | The [ranges](architecture/overview.html#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
 
 {{site.data.alerts.callout_info}}
@@ -107,14 +102,11 @@ If you have not [defined any localities](configure-replication-zones.html#zone-c
 
 ### system.replication_constraint_stats
 
-The `system.replication_constraint_stats` table lists violations to any data placement requirements you've configured.
+The `system.replication_constraint_stats` report lists violations to any data placement requirements you've configured.
 
 For an example using this table, see [Find out which of your tables have a constraint violation](#find-out-which-of-your-tables-have-a-constraint-violation).
 
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW COLUMNS FROM system.replication_constraint_stats;
-~~~
+#### Columns
 
 | Column name      | Data type                       | Description                                                                                             |
 |------------------+---------------------------------+---------------------------------------------------------------------------------------------------------|
@@ -122,20 +114,17 @@ SHOW COLUMNS FROM system.replication_constraint_stats;
 | subzone_id       | [`INT8`](int.html)              | The ID of the subzone (i.e., [partition](partition-by.html)).                                           |
 | type             | [`STRING`](string.html)         | The type of zone configuration that was violated, e.g., `constraint`.                                   |
 | config           | [`STRING`](string.html)         | The YAML key-value pair used to configure the zone, e.g., `+region=europe-west1`.                       |
-| report_id        | [`INT8`](int.html)              | The ID of the [report](#system-reports_meta) that generated this data.                                  |
+| report_id        | [`INT8`](int.html)              | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.              |
 | violation_start  | [`TIMESTAMPTZ`](timestamp.html) | The time when the violation was detected. Will return `NULL` if the number of `violating_ranges` is 0.  |
 | violating_ranges | [`INT8`](int.html)              | The [ranges](architecture/overview.html#architecture-range) that are in violation of the configuration. |
 
 ### system.reports_meta
 
-The `system.reports_meta` table contains metadata about when the replication reports were last run. Each report contains a number of report entries, one per zone.
+The `system.reports_meta` report contains metadata about when the replication reports were last run. Each report contains a number of report entries, one per zone.
 
 Replication reports are run at the interval specified by the `kv.replication_reports.interval` [cluster setting](cluster-settings.html#kv-replication-reports-interval).
 
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW COLUMNS FROM system.reports_meta;
-~~~
+#### Columns
 
 | Column name | Data type                       | Description                                             |
 |-------------+---------------------------------+---------------------------------------------------------|
@@ -252,7 +241,7 @@ SELECT * FROM system.replication_constraint_stats WHERE violating_ranges > 0;
 (9 rows)
 ~~~
 
-To be more useful, we'd like to find out the database and table names where these constraint-violating ranges live. To get that information we'll need to join the output of `system.replication_constraint_stats` table with the `crdb_internal.zones` table using a query like the following:
+To be more useful, we'd like to find out the database and table names where these constraint-violating ranges live. To get that information we'll need to join the output of `system.replication_constraint_stats` report with the `crdb_internal.zones` table using a query like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -352,7 +341,7 @@ SELECT * FROM system.replication_stats WHERE under_replicated_ranges > 0;
 (4 rows)
 ~~~
 
-To be more useful, we'd like to find out the database and table names where these under-replicated ranges live. To get that information we'll need to join the output of `system.replication_stats` table with the `crdb_internal.zones` table using a query like the following:
+To be more useful, we'd like to find out the database and table names where these under-replicated ranges live. To get that information we'll need to join the output of `system.replication_stats` report with the `crdb_internal.zones` table using a query like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -423,7 +412,7 @@ SELECT * FROM report;
 
 ### Find out which databases and tables have ranges in critical localities
 
-The `system.replication_critical_localities` table shows which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+The `system.replication_critical_localities` report contains which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
 
@@ -455,7 +444,7 @@ SELECT * FROM system.replication_critical_localities WHERE at_risk_ranges > 0;
 (15 rows)
 ~~~
 
-To be more useful, we'd like to find out the database and table names where these ranges live that are at risk of unavailability in the event of a locality becoming unreachable. To get that information we'll need to join the output of `system.replication_critical_localities` table with the `crdb_internal.zones` table using a query like the following:
+To be more useful, we'd like to find out the database and table names where these ranges live that are at risk of unavailability in the event of a locality becoming unreachable. To get that information we'll need to join the output of `system.replication_critical_localities` report with the `crdb_internal.zones` table using a query like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql

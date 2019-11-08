@@ -498,9 +498,9 @@
             ]
           },
           {
-            "title": "Run Replication Reports",
+            "title": "Query Replication Reports",
             "urls": [
-              "/${VERSION}/run-replication-reports.html"
+              "/${VERSION}/query-replication-reports.html"
             ]
           }
         ]
