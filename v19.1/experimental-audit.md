@@ -47,8 +47,8 @@ As of version 2.0, this command logs all reads and writes, and both the <code>RE
 The audit log file format is as shown below.  The numbers above each column are not part of the format; they correspond to the descriptions that follow.
 
 ~~~
-[1]     [2]             [3] [4]                 [5a]                     [5b]       [5c]  [6]  [7a] [7b]        [7c]            [7d]                         [7e]  [7f]  [7g] [7h]
-I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=root, n1]   13   exec "cockroach" {"ab"[53]:READ} "SELECT nonexistent FROM ab" {}    0.123 12   ERROR
+[1]     [2]             [3] [4]                 [5a]                     [5b]       [5c]  [6]  [7a] [7b]        [7c]            [7d]                         [7e]  [7f]  [7g] [7h]  [7i]
+I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=root, n1]   13   exec "cockroach" {"ab"[53]:READ} "SELECT nonexistent FROM ab" {}    0.123 12   ERROR 0
 ~~~
 
 1. Date
@@ -72,6 +72,7 @@ I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=ro
    - h. Status of the query
        - `OK` for success
        - `ERROR` otherwise
+   - i. Number of times the statement was [retried automatically](transactions.html#automatic-retries) by the server so far.
 
 ## Audit log file storage location
 
