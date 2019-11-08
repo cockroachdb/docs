@@ -13,7 +13,7 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
-To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use `SHOW JOBS WHEN COMPLETE`. The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
+<span class="version-tag">New in v19.2:</span> To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use `SHOW JOBS WHEN COMPLETE`. The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
 
 ## Considerations
 
@@ -141,7 +141,7 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 
 ### Show job when complete
 
-To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
+<span class="version-tag">New in v19.2:</span> To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

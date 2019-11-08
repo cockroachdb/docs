@@ -60,7 +60,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 ### Set `NOT NULL` constraint
 
-Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
+<span class="version-tag">New in v19.2:</span> Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
 
 {% include copy-clipboard.html %}
 ~~~ sql
