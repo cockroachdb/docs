@@ -34,11 +34,26 @@ Large (4 vCPU, 250 GB disk) | $540	| $700
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
+{{site.data.alerts.callout_info}}
+Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
+{{site.data.alerts.end}}
+
+**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to technical limitations that we are actively trying to resolve:
+
+- `asia-northeast2`
+- `europe-north1`
+- `europe-west3`
+- `europe-west6`
+
 ### Select number of nodes
 
 - For single-region application development and testing, you may create a one-node cluster.
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See Example for further guidance.
 - For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
+
+{{site.data.alerts.callout_info}}
+You cannot create a 2-node cluster because two-replica configurations are less reliable than a single replica.
+{{site.data.alerts.end}}
 
 As of now, you can add a maximum of 24 nodes to your cluster.
 
