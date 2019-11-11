@@ -81,11 +81,19 @@ The following table gives the performance characteristics for YCSB and TPC-C wor
 
 The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
-After entering the cluster name, click **Continue to Summary**
+After entering the cluster name, click **Continue to Payment**.
 
 ## Step 6. Enter your billing details
 
-<Add info here>
+1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
+2. Verify the monthly estimated cost for the cluster.
+    {{site.data.alerts.callout_info}}
+    The cost displayed does not include taxes.
+    {{site.data.alerts.end}}
+    You will be billed on the 1st and 15th of every month.
+3. Add a credit or debit card as your payment method.
+4. Check the **I agree to Cockroach Labs Terms of Service and Privacy Policy** box.
+5. Click **Create cluster**.
 
 ## Examples
 
@@ -111,7 +119,7 @@ Region | us-east1
 Number of nodes | 6
 Size | Large
 
-### Select hardware configuration based on performance requirements
+### [WIP] Select hardware configuration based on performance requirements
 
 Let's say we want to run a workload resembling the TPC-C 100K run on a CockroachCloud cluster.
 
@@ -120,3 +128,5 @@ One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximate
 With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
 
 So for a workload resembling TPC-C, we want to build out your cluster with "medium" nodes, and you'll only use 1/3 of the storage.
+
+<Need numbers from the perf tests>
