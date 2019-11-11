@@ -45,7 +45,7 @@ You should receive your trial license via email within a few minutes. You'll ena
 
 ### Provision VMs
 
-1. [Create 16 VM instances](https://cloud.google.com/compute/docs/instances/create-start-instance), 15 for CockroachDB nodes and 1 for the TPC-C workload.
+1. [Create 16 VM instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/LaunchingAndUsingInstances.html), 15 for CockroachDB nodes and 1 for the TPC-C workload.
     - Create all instances in the same region and the same security group.
     - Use the `c5d.4xlarge` machine type.
     - Use [local SSD instance store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-volumes). Local SSDs are low latency disks attached to each VM, which maximizes performance. This configuration best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
