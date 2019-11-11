@@ -7,12 +7,29 @@ build_for: [cockroachcloud]
 
 ## Manage cluster configuration
 
-While you manage your [schema](learn-cockroachdb-sql.html), [data](migration-overview.html), and [users](cockroachcloud-authorization.html#use-the-console) yourself, for any of the following cluster management tasks, please reach out to Cockroach Labs at [support.cockroachlabs.com](https://support.cockroachlabs.com) and a member of our team will assist you:
+Although you can leverage [geo-partitioning](partitioning.html), advanced [replication controls](configure-replication-zones.html), and [CDC](change-data-capture.html) without intervention from Cockroach Labs, we recommend [reaching out](https://support.cockroachlabs.com) for initial guidance and best practices.
 
-- Adding or removing nodes
-- Restoring data from a backup
+To add or remove nodes, please contact [Support](https://support.cockroachlabs.com). Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
 
-Also, although you can leverage [geo-partitioning](partitioning.html), advanced [replication controls](configure-replication-zones.html), and [CDC](change-data-capture.html) without intervention from Cockroach Labs, we recommend reaching out for initial guidance and best practices.  
+## Restore data from a backup
+
+Cockroach Labs runs daily full backups and hourly incremental backups for all of your CockroachCloud clusters. The full backups are retained for 30 days and incremental backups for 7 days.
+
+{{site.data.alerts.callout_alert}}
+All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
+{{site.data.alerts.end}}
+
+To restore your data, [contact us](https://support.cockroachlabs.com).
+
+Additionally, you can [backup and restore](backup-and-restore.html) data on your own.
+
+### Backup and restore from a self-hosted CockroachDB cluster to a CockroachCloud cluster.
+
+You can [backup](backup.html) your self-hosted CockroachDB databases to an external location(backup.html#backup-file-urls) and then [restore](restore.html) to your CockroachCloud cluster.
+
+{{site.data.alerts.callout_danger}}
+If you are backing up the data to AWS or GCP, do not use the `implicit` option for the `AUTH` parameter.
+{{site.data.alerts.end}}
 
 ## Delete cluster
 
