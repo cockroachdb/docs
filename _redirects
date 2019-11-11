@@ -13,13 +13,12 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301
 
 # CockroachCloud page renames
-managed-connect-to-your-cluster.html cockroachcloud-connect-to-your-cluster.html 301
-# /docs/cockroachcloud/stable/managed-authentication.html /docs/cockroachcloud/stable/cockroachcloud-authentication.html 301
-# /docs/cockroachcloud/stable/managed-authorization.html /docs/cockroachcloud/stable/cockroachcloud-authorization.html 301
-# /docs/cockroachcloud/stable/managed-cluster-management.html /docs/cockroachcloud/stable/cockroachcloud-cluster-management.html 301
-# /docs/cockroachcloud/stable/managed-cluster-overview.html /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.html 301
-# /docs/cockroachcloud/stable/managed-clusters-page.html /docs/cockroachcloud/stable/cockroachcloud-clusters-page.html 301
-# /docs/cockroachcloud/stable/managed-connect-to-your-cluster.html /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html 301
+/docs/cockroachcloud/stable/managed-authentication.html /docs/cockroachcloud/stable/cockroachcloud-authentication.html 301
+/docs/cockroachcloud/stable/managed-authorization.html /docs/cockroachcloud/stable/cockroachcloud-authorization.html 301
+/docs/cockroachcloud/stable/managed-cluster-management.html /docs/cockroachcloud/stable/cockroachcloud-cluster-management.html 301
+/docs/cockroachcloud/stable/managed-cluster-overview.html /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.html 301
+/docs/cockroachcloud/stable/managed-clusters-page.html /docs/cockroachcloud/stable/cockroachcloud-clusters-page.html 301
+/docs/cockroachcloud/stable/managed-connect-to-your-cluster.html /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html 301
 {% endif %}
 
 {%- for version in site.versions -%}
