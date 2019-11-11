@@ -46,7 +46,7 @@ To invite Team Members to CockroachCloud:
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
 
 {{site.data.alerts.callout_info}}
-If you are a member of multiple [organizations](), make sure you are looking at the same organization as the Team Member you want to manage. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+If you are a member of multiple [organizations](cockroachcloud-sign-up-for-a-cluster.html#create-your-cockroachcloud-account), make sure you are looking at the same organization as the Team Member you want to manage. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 {{site.data.alerts.end}}
 
 #### Change a Team Member's role
