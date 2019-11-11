@@ -11,17 +11,14 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/managed/* /docs/cockroachcloud/:splat 301
 /docs/releases/ /docs/releases/index.html 200!
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301
-/docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301
 
 # CockroachCloud page renames
-managed-connect-to-your-cluster.md cockroachcloud-connect-to-your-cluster.md 301
-# /docs/cockroachcloud/stable/managed-authentication.md /docs/cockroachcloud/stable/cockroachcloud-authentication.md 301
-# /docs/cockroachcloud/stable/managed-authorization.md /docs/cockroachcloud/stable/cockroachcloud-authorization.md 301
-# /docs/cockroachcloud/stable/managed-cluster-management.md /docs/cockroachcloud/stable/cockroachcloud-cluster-management.md 301
-# /docs/cockroachcloud/stable/managed-cluster-overview.md /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.md 301
-# /docs/cockroachcloud/stable/managed-clusters-page.md /docs/cockroachcloud/stable/cockroachcloud-clusters-page.md 301
-# /docs/cockroachcloud/stable/managed-connect-to-your-cluster.md /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.md 301
-# /docs/cockroachcloud/stable/managed-connect-to-your-cluster.md /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.md 301
+/docs/cockroachcloud/*/managed-authentication.md /docs/cockroachcloud/stable/cockroachcloud-authentication.md 301
+/docs/cockroachcloud/*/managed-authorization.md /docs/cockroachcloud/stable/cockroachcloud-authorization.md 301
+/docs/cockroachcloud/*/managed-cluster-management.md /docs/cockroachcloud/stable/cockroachcloud-cluster-management.md 301
+/docs/cockroachcloud/*/managed-cluster-overview.md /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.md 301
+/docs/cockroachcloud/*/managed-clusters-page.md /docs/cockroachcloud/stable/cockroachcloud-clusters-page.md 301
+/docs/cockroachcloud/*/managed-connect-to-your-cluster.md /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.md 301
 {% endif %}
 
 {%- for version in site.versions -%}
