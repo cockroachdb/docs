@@ -24,6 +24,7 @@ To access a database, you need to ask a Console Admin for details of a SQL user.
 
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
+- [Create a cluster](cockroachcloud-create-your-cluster.html)
 - [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-cockroachcloud)
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](cockroachcloud-connect-to-your-cluster.html#step-2-create-a-sql-user)
