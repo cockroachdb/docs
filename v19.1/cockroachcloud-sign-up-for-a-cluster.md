@@ -3,7 +3,6 @@ title: Sign Up for a CockroachCloud Cluster
 summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-sign-up-for-a-cluster.html
 ---
 
 The CockroachCloud offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:

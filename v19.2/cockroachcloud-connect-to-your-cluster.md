@@ -3,7 +3,6 @@ title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-connect-to-your-cluster.html
 ---
 
 Once your CockroachCloud cluster is available and you've [set your password](cockroachcloud-sign-up-for-a-cluster.html#set-your-password) and [signed in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.

@@ -3,7 +3,6 @@ title: Frequently Asked Questions
 summary: CockroachCloud FAQs
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-frequently-asked-questions.html
 ---
 
 ## Cluster basics

@@ -3,7 +3,6 @@ title: Monitoring Page
 summary: The Monitoring page is currently under development. In the future, time series charts will display here.
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-monitoring-page.html
 ---
 
 The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in Admin UI to see them.
