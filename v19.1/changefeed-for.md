@@ -1,18 +1,18 @@
 ---
 title: EXPERIMENTAL CHANGEFEED FOR
-summary: The EXPERIMENTAL CHANGEFEED FOR statement creates a new core changefeed, which provides row-level change subscriptions.
+summary: The EXPERIMENTAL CHANGEFEED FOR statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 toc: true
 ---
-
-<span class="version-tag">New in v19.1:</span> The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which provides row-level change subscriptions.
-
-Core changefeeds work differently than other CockroachDB SQL statements. Instead of returning a finite result set to the client, a core changefeed streams changes to the watched rows indefinitely until the underlying connection is closed or the changefeed query is canceled. This has important implications for the connection and client parameters related to server- and client-side result buffering.
-
-For more information, see [Change Data Capture](change-data-capture.html).
 
 {{site.data.alerts.callout_info}}
 `EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [enterprise-only](enterprise-licensing.html) version, see [`CREATE CHANGEFEED`](create-changefeed.html).
 {{site.data.alerts.end}}
+
+<span class="version-tag">New in v19.1:</span> The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+
+{% include {{ page.version.version }}/cdc/core-url.md %}
+
+For more information, see [Change Data Capture](change-data-capture.html).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -64,42 +64,11 @@ Currently, support for Avro is limited and experimental. Below is a list of unsu
 
 ### Create a changefeed
 
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR foo WITH updated, resolved;
-~~~
-
-Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
-
-~~~
-table,key,value
-foo,[0],"{""after"": {""a"": 0}, ""updated"": ""1549591174801796000.0000000000""}"
-NULL,NULL,"{""resolved"":""1549591174801796000.0000000000""}"
-foo,[1],"{""after"": {""a"": 1}, ""updated"": ""1549591188018217000.0000000000""}"
-~~~
-
-To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
-
-For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed).
+{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
 ### Create a changefeed with Avro
 
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR foo WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
-~~~
-
-Note that it may take a couple of seconds for records to display in the changefeed after a change is made.
-
-<!--
-~~~
-table,key,value
-foo,\000\000\000\000\001\002\024,\000\000\000\000\002\002\002\024
-~~~ -->
-
-To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
-
-For more information on how to create a core changefeed, see [Change Data Capture](change-data-capture.html#create-a-core-changefeed-using-avro).
+{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
 <!-- ### Pause and resume a changefeed
 
