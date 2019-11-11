@@ -606,10 +606,6 @@ Time: 619µs
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
-## Known limitations
-
-- Some features are not supported by the cost-based optimizer; however, the optimizer will fall back to the heuristic planner for this functionality.
-
 ## See also
 
 - [`SET (session variable)`](set-vars.html)
