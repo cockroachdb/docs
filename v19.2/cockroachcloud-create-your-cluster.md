@@ -55,7 +55,7 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 You cannot create a 2-node cluster because two-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
 
-As of now, you can add a maximum of 24 nodes to your cluster.
+As of now, you can add a maximum of 24 nodes to your cluster. For larger configurations, [contact us](mailto:sales@cockroachlabs.com).
 
 ## Step 4. Select the hardware configuration
 
@@ -66,7 +66,7 @@ Factor | Description
 Capacity | Total raw data size you expect to store without replication.
 Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.).
-Compression | The percentage of savings you can expect to achieve with compression. With Snappy, the default algorithm, we typically see about a 40% savings on raw data size.  
+Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.  
 
 To change the hardware configuration after the cluster is created, you will have to contact us.
 
