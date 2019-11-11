@@ -3,7 +3,6 @@ title: Cluster Management
 summary: Manage your cluster's schema, data, and users.
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-cluster-management.html
 ---
 
 ## Manage cluster configuration

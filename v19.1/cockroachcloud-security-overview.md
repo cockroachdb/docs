@@ -3,7 +3,6 @@ title: CockroachCloud Security
 summary: Learn about the authentication, encryption, authorization, and audit log features for CockroachCloud clusters.
 toc: true
 build_for: [cockroachcloud]
-redirect-from: managed-security-overview.html
 ---
 
 A CockroachCloud cluster is single-tenant (no shared machines) running in a Virtual Private Cloud (no shared network) and has data encryption-in-flight enabled by default. Additionally, CockroachCloud provides authentication, authorization, and SQL audit logging features to secure your clusters.
