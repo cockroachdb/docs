@@ -32,7 +32,7 @@ Machine type                       | 81 c5d.9xlarge    | 2 r3.8xl
 Unlike Amazon Aurora, CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard. Like many other databases, Aurora selectively degrades isolation levels for performance, leaving workloads susceptible to fraud and data loss.
 
 To learn more about our comparison with Amazon Aurora, see this [blog post](https://www.cockroachlabs.com/blog/cockroachdb-2dot1-performance/).
-<!--replace link with 100k blog post -->
+{% comment %}replace link with 100k blog post{% endcomment %}
 
 ### Linear scaling
 
