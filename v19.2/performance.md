@@ -17,23 +17,17 @@ This document is about CockroachDB’s performance on benchmarks. For guidance o
 
 TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.2M tpmC with 100,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
 
-Comparing CockroachDB's unofficial TPC-C results to Amazon Aurora RDS's last published metrics from AWS re:Invent 2017, CockroachDB is now 100 times more scalable than Amazon Aurora, supporting ~50 billion rows and more than 8 terabytes of frequently accessed data:
-
 <img src="{{ 'images/v19.2/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
 
-                                   | CockroachDB       | Amazon Aurora   
------------------------------------|-------------------|--------------
-Max Throughput                     | 1,245,462 tpmC    | 12,582 tpmC     
-Max Warehouses with Max Efficiency | 100,000 Warehouses| 1,000 Warehouses
-Max Number of Rows                 | 49.8B             | 0.499B         
-Max Unreplicated Data              | 8TB               | 0.08TB         
-Machine type                       | 81 c5d.9xlarge    | 2 r3.8xl         
+                                   | CockroachDB       
+-----------------------------------|-------------------
+Max Throughput                     | 1,245,462 tpmC    
+Max Warehouses with Max Efficiency | 100,000 Warehouses
+Max Number of Rows                 | 49.8B             
+Max Unreplicated Data              | 8TB               
+Machine type                       | 81 c5d.9xlarge            
 
-Unlike Amazon Aurora, CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard. Like many other databases, Aurora selectively degrades isolation levels for performance, leaving workloads susceptible to fraud and data loss.
-
-To learn more about our comparison with Amazon Aurora, see this [blog post](https://www.cockroachlabs.com/blog/cockroachdb-2dot1-performance/).
-{% comment %}replace link with 100k blog post{% endcomment %}
-
+CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard.
 ### Linear scaling
 
 CockroachDB has **no theoretical scaling limit** and, in practice, can achieve near-linear performance at 256 nodes. Because the TPC-C results above reflect leaps in scale, to test linear scaling, Cockroach Labs ran a simple benchmark named KV 95 (95% point reads, 5% point writes, all uniformly distributed) on AWS `c5d.4xlarge` machines:
