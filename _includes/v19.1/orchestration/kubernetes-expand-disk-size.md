@@ -85,7 +85,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     ~~~
 	</section>
 
-4. If the volume contains a file system, its capacity will not have changed. Confirm this by viewing the persistent volume claim:
+4. Check the capacity of the persistent volume claim:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
@@ -111,11 +111,13 @@ datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100G
     ~~~
 	</section>
 
+    You may need to start or restart a pod before the new PVC capacity is made available. This is necessary if `AllowVolumeExpansion` was initially set to `false` or if the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resizing-an-in-use-persistentvolumeclaim) that has to be expanded.
+
     {{site.data.alerts.callout_success}}
     Running `kubectl get pv` will display the persistent volumes with their *requested* capacity and not their actual capacity. This can be misleading, so it's best to use `kubectl get pvc`.
-	{{site.data.alerts.end}}    
+	{{site.data.alerts.end}}
 
-5. Examine the persistent volume claim, and you will see that it has a `FileSystemResizePending` condition with an accompanying message:
+5. Examine the persistent volume claim. You may see a `FileSystemResizePending` condition with an accompanying message:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
 	{% include copy-clipboard.html %}
@@ -134,8 +136,6 @@ datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100G
     ~~~
     Waiting for user to (re-)start a pod to finish file system resize of volume on node.
     ~~~
-
-    Expanding the file system on the volume is an additional step that only occurs when a pod is started or restarted. See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resizing-an-in-use-persistentvolumeclaim) for more details.
 
 6.  Delete the corresponding pod to restart it:
 
