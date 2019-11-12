@@ -13,7 +13,7 @@ To add or remove nodes, please contact [Support](https://support.cockroachlabs.c
 
 ## Restore data from a backup
 
-Cockroach Labs runs daily full backups and hourly incremental backups for all of your CockroachCloud clusters. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
 {{site.data.alerts.callout_alert}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -25,7 +25,7 @@ Additionally, you can [backup and restore](backup-and-restore.html) data on your
 
 ### Backup and restore from a self-hosted CockroachDB cluster to a CockroachCloud cluster.
 
-You can [backup](backup.html) your self-hosted CockroachDB databases to an external location(backup.html#backup-file-urls) and then [restore](restore.html) to your CockroachCloud cluster.
+You can [backup](backup.html) your self-hosted CockroachDB databases to an [external location](backup.html#backup-file-urls) and then [restore](restore.html) to your CockroachCloud cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, do not use the `implicit` option for the `AUTH` parameter.
