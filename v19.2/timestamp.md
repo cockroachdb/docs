@@ -59,10 +59,8 @@ When it is unambiguous, a simple unannotated [string literal](sql-constants.html
 be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
 Note that the fractional portion is optional and is rounded to
-microseconds (6 digits after decimal) by default, for compatibility with the
+microseconds (6 digits after decimal) for compatibility with the
 PostgreSQL wire protocol.
-
-<span class="version-tag">New in v19.2:</span> `TIMESTAMP` and `TIMESTAMPTZ` definitions can take time precision as arguments. You can specify the precision of `TIMESTAMP` and `TIMESTAMPZ` objects to round to the minute (`0`) or to the microsecond (`6`).
 
 ## Size
 
@@ -81,18 +79,18 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 ~~~
 
 ~~~
-  column_name |  data_type  | is_nullable | column_default | generation_expression |  indices  | is_hidden
-+-------------+-------------+-------------+----------------+-----------------------+-----------+-----------+
-  a           | INT8        |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMPTZ |    true     | NULL           |                       | {}        |   false
++-------------+--------------------------+-------------+----------------+-----------------------+-------------+
+| column_name |        data_type         | is_nullable | column_default | generation_expression |   indices   |
++-------------+--------------------------+-------------+----------------+-----------------------+-------------+
+| a           | INT                      |    false    | NULL           |                       | {"primary"} |
+| b           | TIMESTAMP WITH TIME ZONE |    true     | NULL           |                       | {}          |
++-------------+--------------------------+-------------+----------------+-----------------------+-------------+
 (2 rows)
 ~~~
 
-The `TIMESTAMPTZ` data type can handle timezones:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2019-10-02 10:10:10-05:00'), (2, TIMESTAMPTZ '2019-10-02');
+> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -101,35 +99,13 @@ The `TIMESTAMPTZ` data type can handle timezones:
 ~~~
 
 ~~~
-  a |             b
 +---+---------------------------+
-  1 | 2019-10-02 15:10:10+00:00
-  2 | 2019-10-02 00:00:00+00:00
-(2 rows)
-~~~
-
-Note that the first timestamp is `UTC-05:00`, which is the equivalent of EST.
-
-You can also insert timestamps with varying levels of time precision:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO timestamps VALUES (3, TIMESTAMPTZ(0) '2019-10-02 10:10:10.555555'), (4, TIMESTAMPTZ(6) '2019-10-02 10:10:10.555555');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM timestamps;
-~~~
-
-~~~
-  a |                b
-+---+----------------------------------+
-  1 | 2019-10-02 15:10:10+00:00
-  2 | 2019-10-02 00:00:00+00:00
-  3 | 2019-10-02 10:10:11+00:00
-  4 | 2019-10-02 10:10:10.555555+00:00
-(4 rows)
+| a |             b             |
++---+---------------------------+
+| 1 | 2016-03-26 15:10:10+00:00 |
+| 2 | 2016-03-26 00:00:00+00:00 |
++---+---------------------------+
+# Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
 ~~~
 
 ## Supported casting and conversion
