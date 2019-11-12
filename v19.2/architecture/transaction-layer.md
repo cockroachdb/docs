@@ -241,7 +241,7 @@ In terms of the SQL snippet shown above, all of the waiting for write intents to
 
 <span class="version-tag">New in v19.2</span>: The *Parallel Commits* feature introduces a new, optimized atomic commit protocol that cuts the commit latency of a transaction in half, from two rounds of consensus down to one. Combined with [Transaction pipelining](#transaction-pipelining), this brings the latency incurred by common OLTP transactions to near the theoretical minimum: the sum of all read latencies plus one round of consensus latency.
 
-Under the new atomic commit protocol, the transaction coordinator can return to the client eagerly when it knows that the writes in the transaction have succeeded. Once this occurs, the transaction coordinator can sets the transaction record's state to `COMMITTED` and resolve the transaction's write intents asynchronously.
+Under the new atomic commit protocol, the transaction coordinator can return to the client eagerly when it knows that the writes in the transaction have succeeded. Once this occurs, the transaction coordinator can set the transaction record's state to `COMMITTED` and resolve the transaction's write intents asynchronously.
 
 The transaction coordinator is able to do this while maintaining correctness guarantees because it populates the transaction record with enough information (via a new `STAGING` state, and an array of in-flight writes) for other transactions to determine whether all writes in the transaction are present, and thus prove whether or not the transaction is committed.
 
