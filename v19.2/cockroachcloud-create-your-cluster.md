@@ -14,7 +14,7 @@ Once you have signed into your CockroachCloud account, you can create CockroachD
 
 ## Step 1. Access the Create new cluster page
 
-1. Sign in to your CockroachCloud account.
+1. [Sign in](cockroachcloud-sign-up-for-a-cluster.html#sign-in) to your CockroachCloud account.
 2. On the **Overview** page, click **Create Cluster**.
 
 ##Step 2. Select the cloud provider
@@ -31,7 +31,7 @@ Large (4 vCPU, 250 GB disk) | $540	| $700
 
 ## Step 3. Select the region and number of nodes
 
-### Select region
+### Select the region
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
@@ -46,14 +46,14 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 - `europe-west3`
 - `europe-west6`
 
-### Select number of nodes
+### Select the number of nodes
 
 - For single-region application development and testing, you may create a one-node cluster.
-- For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See Example for further guidance.
+- For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity requirements. See [Example](#example) for further guidance.
 - For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
 
 {{site.data.alerts.callout_info}}
-You cannot create a 2-node cluster because two-replica configurations are less reliable than a single replica.
+You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
 
 As of now, you can add a maximum of 24 nodes to your cluster. For larger configurations, [contact us](mailto:sales@cockroachlabs.com).
@@ -73,11 +73,6 @@ To change the hardware configuration after the cluster is created, you will have
 
 The choice of hardware per node determines the throughput and performance characteristics of your cluster.
 
-The following table gives the performance characteristics for YCSB and TPC-C workloads per hardware configuration:
-
-<Performance characteristics table>
-<Also include IOPS numbers for each config>
-
 ## Step 5. Name the cluster
 
 The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
@@ -96,7 +91,7 @@ After entering the cluster name, click **Continue to Payment**.
 4. Check the **I agree to Cockroach Labs Terms of Service and Privacy Policy** box.
 5. Click **Create cluster**.
 
-## Examples
+## Example
 
 ### Select hardware configuration based on storage requirements
 
@@ -120,9 +115,10 @@ Region | us-east1
 Number of nodes | 6
 Size | Large
 
+<!--
 ### [WIP] Select hardware configuration based on performance requirements
 
-Let's say we want to run a workload resembling the TPC-C 100K run on a CockroachCloud cluster.
+Let's say we want to run a TPC-C workload with 500 warehouses on a CockroachCloud cluster.
 
 One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximately 45 warehouses per vCPU. So a 4 vCPU node can handle 180 warehouses which is 36GB of unreplicated raw data.
 
@@ -131,3 +127,4 @@ With a default replication factor of 3, the total amount of data we need to stor
 So for a workload resembling TPC-C, we want to build out your cluster with "medium" nodes, and you'll only use 1/3 of the storage.
 
 <Need numbers from the perf tests>
+-->
