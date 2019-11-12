@@ -10,6 +10,10 @@ toc: true
 `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+`IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.

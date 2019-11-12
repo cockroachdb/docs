@@ -13,13 +13,14 @@
 	</div>
 	<div class="mobile-menu-dropdown">
 		<span class="blue-arrow blue-arrow--down"></span>
-		<span class="mobile-nav__dropdown-label">Product</span>
+		<span class="mobile-nav__dropdown-label">Products</span>
 		<div class="mobile-subnav">
 			<div class="mobile-subnav__section">
 					<span class="mobile-subnav__label">Products</span>
 					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/">CockroachDB</a>
 					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/cockroachcloud/">CockroachCloud</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/pricing/">Compare Plans</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/pricing/">Compare Products</a>
+					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/blog/cockroachdb-19dot2-release/">What's New in 19.2</a>
 				</div>
 				<div class="mobile-subnav-section">
 					<span class="mobile-subnav__label">Capabilities</span>
@@ -32,13 +33,23 @@
 		</div>
 	</div>
 	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/customers/">Customers</a>
-	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
+	<div class="mobile-menu-dropdown">
+		<span class="blue-arrow blue-arrow--down"></span>
+		<span class="mobile-nav__dropdown-label">Learn</span>
+		<div class="mobile-subnav">
+			<div class="mobile-subnav-section">
+				<span class="mobile-subnav__label"></span>
+				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
+				<a class="mobile-subnav__link" href="https://university.cockroachlabs.com/catalog">University</a>
+			</div>
+		</div>
+	</div>
 	<div class="mobile-menu-dropdown">
 		<span class="blue-arrow blue-arrow--down"></span>
 		<span class="mobile-nav__dropdown-label">Resources</span>
 		<div class="mobile-subnav">
 			<div class="mobile-subnav-section">
-					<span class="mobile-subnav__label"></span>
+				<span class="mobile-subnav__label"></span>
 				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/guides/">Guides</a>
 				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/community/tech-talks/">Videos &amp; Webinars</a>
 				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/partners/">Partners</a>
@@ -46,6 +57,7 @@
 			</div>
 		</div>
 	</div>
+	<a class="mobile-nav__link" href="https://cockroachlabs.cloud/" itemprop="url" style="color:#54B30E;">Sign In &#8594;</a>
 	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/blog/" itemprop="url">Blog</a>
   <a class="mobile-nav__link" href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url">Get CockroachDB</a>
   <a class="mobile-nav__link" href="https://www.cockroachlabs.com/contact/" itemprop="url">Contact Us</a>
@@ -59,15 +71,16 @@
 		</a>
 		<nav class="desktop">
 				<div class='desktop-menu__item'>
-					<div class="desktop-menu__item-link"><a href="https://www.cockroachlabs.com/product/" data-proofer-ignore>Product</a></div>
+					<div class="desktop-menu__item-link"><a href="https://www.cockroachlabs.com/product/" data-proofer-ignore>Products</a></div>
 					<div class="desktop-menu__dropdown-container">
 						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--product">
 							<span class="desktop-menu__subnav-label">Products</span>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/" data-proofer-ignore>CockroachDB</a>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/cockroachcloud/" data-proofer-ignore>CockroachCloud</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>Compare Plans</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>Compare Products</a>
+							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/blog/cockroachdb-19dot2-release/" data-proofer-ignore>What's New in 19.2</a>
 						</div>
-						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--product">
+						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--capabilities">
 							<span class="desktop-menu__subnav-label">Capabilities</span>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/sql/" data-proofer-ignore>SQL</a>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/scale/" data-proofer-ignore>Scale</a>
@@ -78,12 +91,19 @@
 					</div>
 				</div>
 				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
-				<a class="desktop-menu__item-link" href="{{ "/stable/" | relative_url }}" itemprop="url" data-proofer-ignore>Docs</a>
+				<div class="desktop-menu__item">
+					<div class="desktop-menu__item-link">Learn</div>
+					<div class="desktop-menu__dropdown-container">
+						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--learn">
+							<a class="desktop-menu__subnav-link" href="{{ "/stable/" | relative_url }}" itemprop="url" data-proofer-ignore>Docs</a>
+							<a class="desktop-menu__subnav-link" href="https://university.cockroachlabs.com/catalog" data-proofer-ignore>University</a>
+						</div>
+					</div>
+				</div>
 				<div class="desktop-menu__item">
 					<div class="desktop-menu__item-link">Resources</div>
 					<div class="desktop-menu__dropdown-container">
 						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--resources">
-							<span class="desktop-menu__subnav-label">Resources</span>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/guides/" data-proofer-ignore>Guides</a>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/community/tech-talks/" data-proofer-ignore>Videos &amp; Webinars</a>
 							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/partners/" data-proofer-ignore>Partners</a>
@@ -92,6 +112,7 @@
 					</div>
 				</div>
 				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/blog/" itemprop="url" data-proofer-ignore>Blog</a>
+				<a class="desktop-menu__item-link" href="https://cockroachlabs.cloud/" itemprop="url" style="color:#54B30E;" data-proofer-ignore>Sign In &#8594;</a>
 				<a href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
         <a href="https://www.cockroachlabs.com/contact/" itemprop="url" class="button--header button--header--alt menu-item" data-proofer-ignore>Contact Us</a>
 			</nav>

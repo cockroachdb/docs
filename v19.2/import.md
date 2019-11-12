@@ -12,11 +12,11 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CockroachDB dump files](sql-dump.html)
 
 {{site.data.alerts.callout_success}}
-This page has reference information about the `IMPORT` statement.  For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
+`IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-`IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html). Also, `IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+`IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
