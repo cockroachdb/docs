@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachDB Cloud cluster. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud organization. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
 
 <Screenshot here>
 
@@ -34,15 +34,20 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 
 To invite Team Members to CockroachCloud:
 
-1. On the **Access** page, click **Add Team Member**.
-2. In the **Email Address** field, enter the email address of the team member you want to invite.
-3. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
-4. (Optional) Click **Add another** to invite another team member.
-4. Click **Invite**.
+1. If you are a member of multiple [organizations](cockroachcloud-sign-up-for-a-cluster.html#create-your-cockroachcloud-account), navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+2. On the **Access** page, click **Add Team Member**.
+3. In the **Email Address** field, enter the email address of the team member you want to invite.
+4. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
+5. (Optional) Click **Add another** to invite another team member.
+6. Click **Invite**.
 
 ### Manage Team Members
 
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
+
+{{site.data.alerts.callout_info}}
+If you are a member of multiple [organizations](cockroachcloud-sign-up-for-a-cluster.html#create-your-cockroachcloud-account), make sure you are looking at the same organization as the Team Member you want to manage. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+{{site.data.alerts.end}}
 
 #### Change a Team Member's role
 

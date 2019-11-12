@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-Once your CockroachCloud cluster is available and you've [set your password](cockroachcloud-sign-up-for-a-cluster.html#set-your-password) and [signed in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can start interacting with your cluster.
+This page shows you how to connect to your CockroachCloud cluster.
 
 ## Step 1. Authorize your network
 
