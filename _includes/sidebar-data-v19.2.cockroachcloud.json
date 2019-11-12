@@ -5,6 +5,12 @@
       "/${VERSION}/cockroachcloud-sign-up-for-a-cluster.html"
     ]
   },
+  {
+    "title": "Create Your Cluster",
+    "urls": [
+        "/${VERSION}/cockroachcloud-create-your-cluster.html"
+    ]
+  },
     {
       "title": "Connect to Your Cluster",
       "urls": [
