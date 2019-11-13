@@ -19,13 +19,15 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 <img src="{{ 'images/v19.2/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
 
-                                   | CockroachDB       
+                                
 -----------------------------------|-------------------
 Max Throughput                     | 1,245,462 tpmC    
 Max Warehouses with Max Efficiency | 100,000 Warehouses
 Max Number of Rows                 | 49.8B             
 Max Unreplicated Data              | 8TB               
-Machine type                       | 81 c5d.9xlarge            
+Number of Nodes                    | 81
+Node Machine Type                  | c5d.9xlarge            
+
 
 CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard.
 ### Linear scaling
