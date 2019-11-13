@@ -11,7 +11,7 @@ This page provides important recommendations for CockroachCloud production deplo
 
 To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](performance-best-practices-overview.html) guide.
 
-## Use a connection pool
+## Use a small pool of persistent connections
 
 Multiple active connections to the database enable efficient use of the available database resources. However, creating new authenticated connections to the database is CPU and memory-intensive and also adds to the latency since the application has to wait for database to authenticate the connection.
 
