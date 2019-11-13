@@ -82,6 +82,10 @@ After CockroachDB successfully initiates a restore, it registers the restore as 
 
 After the restore has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
+{{site.data.alerts.callout_info}}
+If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
