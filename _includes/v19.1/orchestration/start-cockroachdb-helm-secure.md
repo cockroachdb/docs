@@ -60,20 +60,20 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install --name my-release --set Secure.Enabled=true,CacheSize=<your cache size>,MaxSQLMemory=<your SQL memory size> stable/cockroachdb
+    $ helm install --name my-release --set Secure.Enabled=true,Resources.requests.memory="<your memory allocation>",CacheSize="<your cache size>",MaxSQLMemory="<your SQL memory size>" stable/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
 
     {{site.data.alerts.callout_danger}}
-    To avoid OOM issues, you need to define memory limits for each CockroachDB node as an absolute value and not a percentage. This is due to how Kubernetes handles memory allocation.
+    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes.
 
-    Review our [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size) guidelines and specify an appropriate cache size and SQL memory size for each CockroachDB node using the `--set` flag in the `helm install` comand. For example, if you are allocating 8GB memory to each Kubernetes node, use the following values.
+    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    CacheSize="2GB",MaxSQLMemory="2GB"
+    Requests.resources.memory="8GiB",CacheSize="2GiB",MaxSQLMemory="2GiB"
     ~~~
 
     {{site.data.alerts.callout_info}}
