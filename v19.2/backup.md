@@ -99,6 +99,10 @@ After CockroachDB successfully initiates a backup, it registers the backup as a 
 
 After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
+{{site.data.alerts.callout_info}}
+If initiated correctly, the statement returns when the backup is finished or if it encounters an error. In some cases, the backup can continue after an error has been returned (the error message will tell you that the backup has resumed in background).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
