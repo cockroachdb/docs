@@ -19,7 +19,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 <img src="{{ 'images/v19.2/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
 
-                                
+Metric                             | CockroachDB Results       
 -----------------------------------|-------------------
 Max Throughput                     | 1,245,462 tpmC    
 Max Warehouses with Max Efficiency | 100,000 Warehouses
