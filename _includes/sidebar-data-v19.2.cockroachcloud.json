@@ -94,6 +94,12 @@
     ]
   },
   {
+    "title": "Move into Production",
+    "urls": [
+      "/${VERSION}/cockroachcloud-production-checklist.html"
+    ]
+  },
+  {
     "title": "Monitor Your Cluster",
     "urls": [
       "/${VERSION}/cockroachcloud-monitoring-page.html"
