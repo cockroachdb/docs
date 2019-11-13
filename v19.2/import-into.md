@@ -99,6 +99,10 @@ After CockroachDB successfully initiates an import into an existing table, it re
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
+{{site.data.alerts.callout_info}}
+If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in background).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_danger}}
 Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
 {{site.data.alerts.end}}
