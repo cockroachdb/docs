@@ -28,7 +28,7 @@ Use the Console to authorize networks:
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:50%" />
 
 4. (Optional) Enter a descriptive name for the network.
 

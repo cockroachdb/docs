@@ -1,9 +1,11 @@
 ---
 title: Cluster Management
-summary: Manage your cluster's schema, data, and users.
+summary: Manage your cluster's schema, data, and backups.
 toc: true
 build_for: [cockroachcloud]
 ---
+
+This page describes the cluster management, backup/restore, and cluster deletion workflows.
 
 ## Manage cluster configuration
 
@@ -15,7 +17,7 @@ To add or remove nodes, please contact [Support](https://support.cockroachlabs.c
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
-{{site.data.alerts.callout_alert}}
+{{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
