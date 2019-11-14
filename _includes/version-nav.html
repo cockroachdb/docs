@@ -32,7 +32,9 @@
       <span class="version-nav__link-text version-nav__link-text--managed"></span>
     </a>
     {% if page.version %}
-      {% include version-switcher.html %}
+      {% unless page.cockroachcloud == true}
+        {% include version-switcher.html %}
+      {% endunless %}
     {% endif %}
   </div>
 </div>
