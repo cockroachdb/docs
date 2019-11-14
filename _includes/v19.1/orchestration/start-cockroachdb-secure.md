@@ -7,26 +7,17 @@
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
 
-    Specify the amount of memory to allocate to each CockroachDB node. Add a `resources.requests.memory` parameter inside the `containers` object in the config file:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ resources:
-          requests:
-            memory: "<your memory allocation>"
-    ~~~    
-
     {{site.data.alerts.callout_danger}}
-    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes.
+    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. Specify this amount by adjusting `resources.requests.memory` and `resources.limits.memory` in `cockroachdb-statefulset-secure.yaml`. Their values should be identical.
 
-    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory specified in your `resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, substitute the following values in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml#L232) of `cockroachdb-statefulset-secure.yaml`:
+    We recommend setting `cache` and `max-sql-memory` each to 1/4 of your memory allocation. For example, if you are allocating 8Gi of memory to each CockroachDB node, substitute the following values in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml#L247):
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    --cache 2GiB --max-sql-memory 2GiB
+    --cache 2Gi --max-sql-memory 2Gi
     ~~~
-
+    
     Use the file to create the StatefulSet and start the cluster:
 
     {% include copy-clipboard.html %}
