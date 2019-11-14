@@ -8,9 +8,12 @@ require 'addressable/uri'
 # open in a new window.
 module FlavorSelector
   class Generator < Jekyll::Generator
-    # Ensure we run after JekyllRedirectFrom, so that if cockroachcloud links to
-    # a page that *redirects* to the cockroachdb docs, we rewrite that link.
-    priority :lowest
+    # Ordering requirements:
+    #   - Run after JekyllRedirectFrom, so that if cockroachcloud links to
+    #     a page that *redirects* to the cockroachdb docs, we rewrite that link.
+    #   - Run before JekyllVersions, so that it doesn't see pages that don't
+    #     apply to this flavor.
+    priority :low
 
     def initialize(config)
       @config = config
