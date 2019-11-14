@@ -1,7 +1,7 @@
 site_title: CockroachDB Docs
 url: "https://www.cockroachlabs.com"
 
-gems:
+plugins:
 - jekyll-sitemap
 
 markdown: Redcarpet
