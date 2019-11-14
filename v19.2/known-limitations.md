@@ -202,14 +202,6 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 {% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
 
-### Importing an interleaved table from a `cockroach dump` output
-
-{{site.data.alerts.callout_info}}
-Resolved as of 19.2.0-beta.20190902.
-{{site.data.alerts.end}}
-
-{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
-
 ### Silent validation error with `DECIMAL` values
 
 Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:
