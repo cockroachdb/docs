@@ -28,6 +28,13 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 
 To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
 
+**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to technical limitations that we are actively trying to resolve:
+
+- `asia-northeast2`
+- `europe-north1`
+- `europe-west3`
+- `europe-west6
+
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?

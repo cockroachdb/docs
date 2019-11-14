@@ -12,8 +12,9 @@ The **Access** page displays the name, email address, role, and invite acceptanc
 An **Organization** allows you to manage your clusters under a shared [billing]() account and collaborate with team members. You can belong to multiple organizations.
 
 To switch between the organizations:
+
 1. [Sign in to the Console](cockroachcloud-create-your-account.html#sign-in).
-2. From the drop-down box in the top-right corner, select the **Organization** you want to access.
+2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
 ## Roles
 
