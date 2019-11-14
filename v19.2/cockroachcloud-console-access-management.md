@@ -9,7 +9,7 @@ The **Access** page displays the name, email address, role, and invite acceptanc
 
 ## Organization
 
-An **Organization** allows you to manage your clusters under a shared [billing]() account and collaborate with team members. You can belong to multiple organizations.
+An **Organization** allows you to manage your clusters under a shared [billing](#manage-billing-for-the-organization) account and collaborate with team members. You can belong to multiple organizations.
 
 To switch between the organizations:
 

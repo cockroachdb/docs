@@ -62,7 +62,7 @@ As of now, you can add a maximum of 24 nodes to your cluster. For larger configu
 
 ## Step 4. Select the hardware configuration
 
-The choice of hardware per node determines the [cost](#select-the-cloud-provider), throughput, and performance characteristics of your cluster. To select the hardware configuration, consider the following factors:
+The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. To select the hardware configuration, consider the following factors:
 
 Factor | Description
 ----------|------------
