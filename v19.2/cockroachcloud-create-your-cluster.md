@@ -9,12 +9,12 @@ Once you have signed into your CockroachCloud account, you can create CockroachD
 
 ## Before you begin
 
-- Before creating a cluster, check that you have the correct [organization](cockroachcloud-sign-up-for-a-cluster.html) selected. Click the drop down in the top right corner to select a specific organization.
+- Before creating a cluster, check that you have the correct [organization](cockroachcloud-create-your-account.html) selected. Click the drop down in the top right corner to select a specific organization.
 - Only [CockroachCloud Console Administrators](cockroachcloud-console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 ## Step 1. Access the Create new cluster page
 
-1. [Sign in](cockroachcloud-sign-up-for-a-cluster.html#sign-in) to your CockroachCloud account.
+1. [Sign in](cockroachcloud-create-your-account.html#sign-in) to your CockroachCloud account.
 2. On the **Overview** page, click **Create Cluster**.
 
 ##Step 2. Select the cloud provider

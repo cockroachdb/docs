@@ -1,8 +1,8 @@
 [
   {
-    "title": "Sign Up for a Cluster",
+    "title": "Create Your Account",
     "urls": [
-      "/${VERSION}/cockroachcloud-sign-up-for-a-cluster.html"
+      "/${VERSION}/cockroachcloud-create-your-account.html"
     ]
   },
   {

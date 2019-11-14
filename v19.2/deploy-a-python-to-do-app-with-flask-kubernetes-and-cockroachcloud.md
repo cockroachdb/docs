@@ -33,7 +33,7 @@ Tool | Purpose
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., whitelist the public IP address of the workstation). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to authorize your network:
+Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you can use the Console to authorize your network:
 
 1. Navigate to your cluster's **Networking** page.
 2. Click the **Add Network** button in the top right corner.

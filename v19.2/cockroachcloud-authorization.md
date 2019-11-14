@@ -34,7 +34,7 @@ Make sure you have already [connected to the cluster](cockroachcloud-connect-to-
 
 {% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
 
-Once you are [logged in](cockroachcloud-sign-up-for-a-cluster.html#sign-in), you can use the Console to create a new user:
+Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
