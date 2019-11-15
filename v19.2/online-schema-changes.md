@@ -203,6 +203,7 @@ ROLLBACK
 + [How online schema changes are possible in CockroachDB][blog]: Blog post with more technical details about how our schema change engine works.
 + [`ALTER DATABASE`](alter-database.html)
 + [`ALTER INDEX`](alter-index.html)
++ [`ALTER PARTITION`](alter-partition.html)
 + [`ALTER RANGE`](alter-range.html)
 + [`ALTER SEQUENCE`](alter-sequence.html)
 + [`ALTER TABLE`][alter-table]
