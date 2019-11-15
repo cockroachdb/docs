@@ -7,7 +7,7 @@ toc: true
 <span class="version-tag">New in v19.2:</span> Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html).
 
 {{site.data.alerts.callout_info}}
-[Defining table partitions](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature.
+[Partitioning](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature.
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/crdb-internal-partitions.md %}

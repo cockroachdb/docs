@@ -4,17 +4,11 @@ summary: Use the ALTER TABLE statement to change the schema of a table.
 toc: true
 ---
 
-The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table.
+The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table. For information on using `ALTER TABLE`, see the pages for its relevant [subcommands](#subcommands).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-## Viewing schema changes
-
-{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
-
 ## Subcommands
-
-For information on using `ALTER TABLE`, see the documents for its relevant subcommands.
 
 {{site.data.alerts.callout_success}}
 Some subcommands can be used in combination in a single `ALTER TABLE` statement. For example, you can [atomically rename a column and add a new column with the old name of the existing column](rename-column.html#add-and-rename-columns-atomically).
@@ -30,7 +24,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs. | Yes
-[`PARTITION BY`](partition-by.html)  | Repartition or unpartition a table with partitions ([Enterprise-only](enterprise-licensing.html)). | Yes
+[`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
 [`RENAME TABLE`](rename-table.html) | Change the names of tables. | No

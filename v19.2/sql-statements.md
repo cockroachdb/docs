@@ -16,7 +16,7 @@ Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. Note that this statement requires an [enterprise license](enterprise-licensing.html).
 [`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
 [`IMPORT INTO`](import-into.html) | <span class="version-tag">New in v19.2:</span> Bulk-insert CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
@@ -36,14 +36,15 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or [`NOT NULL` constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER RANGE`](alter-range.html) | Change an existing system range.
+[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
-[`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
+[`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
@@ -58,6 +59,7 @@ Statement | Usage
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
+[`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
@@ -68,7 +70,7 @@ Statement | Usage
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
-[`SHOW PARTITIONS`](show-partitions.html) | <span class="version-tag">New in v19.2:</span> List table partitions in a database.
+[`SHOW PARTITIONS`](show-partitions.html) | <span class="version-tag">New in v19.2:</span> List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | <span class="version-tag">New in v19.2:</span> View the locality of the current node.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
@@ -158,7 +160,7 @@ Statement | Usage
 
 ## Backup and restore statements (Enterprise)
 
-The following statements are available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+The following statements require an [enterprise license](enterprise-licensing.html).
 
 {{site.data.alerts.callout_info}}
 For non-enterprise users, see [Back up Data](backup.html) and [Restore Data](restore.html).
