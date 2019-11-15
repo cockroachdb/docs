@@ -7,4 +7,4 @@ docker run --rm \
   --volume="$PWD:/srv/jekyll" \
   --volume="$PWD/vendor/bundle:/usr/local/bundle" \
   -it jekyll/jekyll:$JEKYLL_VERSION \
-  jekyll serve --config $JEKYLL_CONFIG --incremental --port 4001
+  jekyll serve --config $JEKYLL_CONFIG --incremental --port 4000

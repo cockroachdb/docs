@@ -1,8 +1,9 @@
 ---
-title: Sign Up for a CockroachCloud Cluster
+title: Create Your Account
 summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
 build_for: [cockroachcloud]
+redirect_from: cockroachcloud-sign-up-for-a-cluster.html
 ---
 
 The CockroachCloud offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
@@ -24,9 +25,9 @@ Once you are accepted for the beta program, you'll receive an email prompting yo
     Password should be at least 12 characters long. We recommend using a password manager for added security.
     {{site.data.alerts.end}}
     Click **Next Step**.
-3. Enter an **Organization name** to set up your organization to manage your clusters under a shared billing account and collaborate with team members.
+3. Enter an **Organization name** to set up your [Organization](cockroachcloud-console-access-management.html#organization) to manage your clusters under a shared billing account and collaborate with team members.
     {{site.data.alerts.callout_info}}
-    This page is displayed only if you are creating a new CockroachCloud account through Cockroach Labs' beta invitation email. This page is not displayed if you are creating a CockroachCloud account after [being invited by a Team Member](cockroachcloud-console-access-management.html#invite-team-members-to-cockroachcloud) to an existing organization.
+    This page is displayed only if you are creating a new CockroachCloud account through Cockroach Labs' beta invitation email. This page is not displayed if you are creating a CockroachCloud account after [being invited by a Team Member](cockroachcloud-console-access-management.html#invite-team-members-to-cockroachcloud) to an existing Organization.
     {{site.data.alerts.end}}
 4. Click **Create your account**.
 5. A verification email will be sent to your email address. Click on the verification link in the email to access your CockroachCloud account.
@@ -38,4 +39,4 @@ To sign in to your CockroachCloud account:
 1. Navigate to the [Console](https://cockroachlabs.cloud/).
 2. Enter your **Email** and **Password**.
 3. Click **Continue**.
-    The **Clusters** page displays.
+    The **Clusters** page is displayed.

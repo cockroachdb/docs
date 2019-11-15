@@ -5,6 +5,8 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
+This page answers the frequently asked questions. 
+
 ## Cluster basics
 
 ### Is my cluster secure?
@@ -23,6 +25,13 @@ CockroachCloud is a single-tenant offering and resources are not shared between 
 
 We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
+
+**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to technical limitations that we are actively trying to resolve:
+
+- `asia-northeast2`
+- `europe-north1`
+- `europe-west3`
+- `europe-west6`
 
 ### How do I connect to my cluster?
 
@@ -46,7 +55,7 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
-{{site.data.alerts.callout_alert}}
+{{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 

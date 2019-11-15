@@ -5,13 +5,20 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud organization. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
 
-<Screenshot here>
+## Organization
+
+An **Organization** allows you to manage your clusters under a shared [billing](#manage-billing-for-the-organization) account and collaborate with team members. You can belong to multiple organizations.
+
+To switch between the organizations:
+
+1. [Sign in to the Console](cockroachcloud-create-your-account.html#sign-in).
+2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
 ## Roles
 
-Every CockroachCloud user is either a Developer or a Console Admin.
+Every CockroachCloud user is either a Developer or a Console Admin for the Organization.
 
 ### Developer
 
@@ -27,14 +34,15 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Invite Team Members to CockroachDB Cloud](#invite-team-members-to-cockroachcloud)
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](cockroachcloud-connect-to-your-cluster.html#step-2-create-a-sql-user)
+- [Manage billing for the Organization](#manage-billing-for-the-organization)
 
 ## Administrative tasks
 
 ### Invite Team Members to CockroachCloud
 
-To invite Team Members to CockroachCloud:
+As a Console Admin, you can invite Team Members to CockroachCloud. To invite Team Members:
 
-1. If you are a member of multiple [organizations](cockroachcloud-sign-up-for-a-cluster.html#create-your-cockroachcloud-account), navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+1. If you are a member of multiple Organizations, navigate to the Organization to which you want to invite a Team Member. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
 2. On the **Access** page, click **Add Team Member**.
 3. In the **Email Address** field, enter the email address of the team member you want to invite.
 4. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
@@ -46,7 +54,7 @@ To invite Team Members to CockroachCloud:
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
 
 {{site.data.alerts.callout_info}}
-If you are a member of multiple [organizations](cockroachcloud-sign-up-for-a-cluster.html#create-your-cockroachcloud-account), make sure you are looking at the same organization as the Team Member you want to manage. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+If you are a member of multiple [organizations](cockroachcloud-create-your-account.html#create-your-cockroachcloud-account), make sure you are looking at the same Organization as the Team Member you want to manage. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
 {{site.data.alerts.end}}
 
 #### Change a Team Member's role
@@ -71,3 +79,21 @@ As a Console Admin, you can change your own access to a Developer role; however,
 1. On the **Access** page, locate the Team Member's details whose pending invite you want to revoke.
 2. In the **Action** column, click the three dots to view the allowed actions.
 3. Click **Revoke Invite**.
+
+### Manage billing for the Organization
+
+As a Console Admin, you can set up and manage billing for the Organization.
+
+#### Set up billing for an Organization
+
+1. On the **Billing** page, click the pen icon for the **Payment method** field.
+2. On the **Edit payment method** page, enter the email address at which you want get invoices for the Organization.
+3. Enter the credit or debit card details.
+4. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
+4. Click **Add card**.
+
+#### Change the billing email address
+
+1. On the **Billing** page, click the pen icon for the **Billing email address** field.
+2. On the **Edit payment method** page, enter the new email address at which you want get invoices for the Organization.
+3. Click **Add card**.
