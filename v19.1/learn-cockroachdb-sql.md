@@ -2,7 +2,6 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).

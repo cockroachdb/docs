@@ -6,10 +6,12 @@ build_for: [cockroachdb, cockroachcloud]
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301
 /docs /docs/stable/ 301
-/docs/cockroachcloud /docs/cockroachcloud/stable/ 301
 /docs/v2.2/* /docs/v19.1/:splat 301
-/docs/managed/* /docs/cockroachcloud/:splat 301
 /docs/releases/ /docs/releases/index.html 200!
+/docs/cockroachcloud /docs/cockroachcloud/stable/ 301
+/docs/cockroachcloud/v2.1/* /docs/cockroachcloud/stable/:splat 301
+/docs/cockroachcloud/v19.1/* /docs/cockroachcloud/stable/:splat 301
+/docs/managed/* /docs/cockroachcloud/:splat 301
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301
 
 # CockroachCloud page renames

@@ -2,7 +2,6 @@
 title: Migrate from Oracle
 summary: Learn how to migrate data from Oracle into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables.
