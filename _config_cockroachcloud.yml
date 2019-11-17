@@ -5,6 +5,6 @@ destination: _site/cockroachcloud
 
 versions:
   stable: v19.2
-  dev: v19.2
+  dev: v20.1
 
 cockroachcloud: true
