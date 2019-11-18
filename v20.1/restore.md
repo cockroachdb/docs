@@ -182,11 +182,15 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 
 ### Restore from incremental backups
 
+Restoring from incremental backups requires previous full and incremental backups:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
+
+In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
 ### Point-in-time restore from incremental backups
 
@@ -196,6 +200,8 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-02-28 10:00:00';
 ~~~
+
+Note: Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
 ### Restore into a different database
 
