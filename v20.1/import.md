@@ -70,15 +70,19 @@ You can control the `IMPORT` process's behavior using any of the following key-v
 
 <a name="delimiter"></a>
 
-| Key                 | Context         | Value                                                                                                                                                                                       | Required? | Example                                                                                           |
-|---------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------------------------------------------------------------------------------------------------|
-| `delimiter`         | CSV             | The unicode character that delimits columns in your rows. **Default: `,`**.                                                                                                                 | No        | To use tab-delimited values: `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t'` |
-| `comment`           | CSV             | The unicode character that identifies rows to skip.                                                                                                                                         | No        | `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH comment = '#'`                                  |
-| `nullif`            | CSV             | The string that should be converted to *NULL*.                                                                                                                                              | No        | To use empty columns as *NULL*: `IMPORT TABLE foo (..) CSV DATA ('file.csv') WITH nullif = ''`    |
-| `skip`              | CSV             | The number of rows to be skipped while importing a file. **Default: `'0'`**.                                                                                                                | No        | To import CSV files with column headers: `IMPORT ... CSV DATA ('file.csv') WITH skip = '1'`       |
-| `decompress`        | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression. | No        | `IMPORT ... WITH decompress = 'bzip'`                                                             |
-| `skip_foreign_keys` | Postgres, MySQL | Ignore foreign key constraints in the dump file's DDL. **Off by default**.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.          | No        | `IMPORT TABLE foo FROM MYSQLDUMP 'dump.sql' WITH skip_foreign_keys`                               |
-| `max_row_size`      | Postgres        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.       | No        | `IMPORT PGDUMP DATA ... WITH max_row_size = '5MB'`                                                |
+Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Value                                                                                                                             |
+--------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`delimiter`            | CSV             | The unicode character that delimits columns in your rows. **Default: `,`**.
+`comment`              | CSV             | The unicode character that identifies rows to skip.
+`nullif`               | CSV, [Delimited data](#delimited-data-files) | The string that should be converted to *NULL*.
+`skip`                 | CSV, [Delimited data](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
+`decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
+`skip_foreign_keys`    | Postgres, MySQL | Ignore foreign key constraints in the dump file's DDL. **Off by default**.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
+`max_row_size`         | Postgres        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+`rows_terminated_by`   | [Delimited data](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
+`fields_terminated_by` | [Delimited data](#delimited-data-files)  | The unicode character used to separate fields in each input line.
+`fields_enclosed_by`   | [Delimited data](#delimited-data-files)  | The unicode character that encloses fields.
+`fields_escaped_by`    | [Delimited data](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
