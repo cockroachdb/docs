@@ -749,6 +749,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER PARTITION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-partition.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
                   "/${VERSION}/alter-range.html"
