@@ -1186,6 +1186,7 @@
             <li><a href="#alter_rename_index_stmt" title="alter_rename_index_stmt">alter_rename_index_stmt</a></li>
             <li><a href="#alter_scatter_index_stmt" title="alter_scatter_index_stmt">alter_scatter_index_stmt</a></li>
             <li><a href="#alter_split_index_stmt" title="alter_split_index_stmt">alter_split_index_stmt</a></li>
+            <li><a href="#alter_table_cmd" title="alter_table_cmd">alter_table_cmd</a></li>
             <li><a href="#alter_unsplit_index_stmt" title="alter_unsplit_index_stmt">alter_unsplit_index_stmt</a></li>
             <li><a href="#alter_zone_index_stmt" title="alter_zone_index_stmt">alter_zone_index_stmt</a></li>
             <li><a href="#alter_zone_partition_stmt" title="alter_zone_partition_stmt">alter_zone_partition_stmt</a></li>
@@ -10057,7 +10058,7 @@
          </p><ul>
             <li><a href="#transaction_user_priority" title="transaction_user_priority">transaction_user_priority</a></li>
          </ul>
-      <p></p><br/><p style="font-size: 14px; font-weight:bold"><a name="alter_table_cmd" href="#alter_table_cmd">alter_table_cmd:</a></p><svg width="1051" height="705">
+      <p></p><br/><p style="font-size: 14px; font-weight:bold"><a name="alter_table_cmd" href="#alter_table_cmd">alter_table_cmd:</a></p><svg width="1091" height="749">
          
          <polygon points="9 17 1 13 1 21"></polygon>
          <polygon points="17 17 9 13 9 21"></polygon>
@@ -10102,97 +10103,111 @@
             <text class="nonterminal" x="291" y="185">opt_validate_behavior</text></a><rect x="51" y="211" width="62" height="32" rx="10"></rect>
          <rect x="49" y="209" width="62" height="32" class="terminal" rx="10"></rect>
          <text class="terminal" x="59" y="229">ALTER</text><a xlink:href="#opt_column" xlink:title="opt_column">
-            <rect x="133" y="211" width="94" height="32"></rect>
-            <rect x="131" y="209" width="94" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="141" y="229">opt_column</text></a><a xlink:href="#column_name" xlink:title="column_name">
-            <rect x="247" y="211" width="108" height="32"></rect>
-            <rect x="245" y="209" width="108" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="255" y="229">column_name</text></a><a xlink:href="#alter_column_default" xlink:title="alter_column_default">
-            <rect x="395" y="211" width="154" height="32"></rect>
-            <rect x="393" y="209" width="154" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="403" y="229">alter_column_default</text></a><rect x="395" y="255" width="58" height="32" rx="10"></rect>
-         <rect x="393" y="253" width="58" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="403" y="273">DROP</text>
-         <rect x="493" y="255" width="48" height="32" rx="10"></rect>
-         <rect x="491" y="253" width="48" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="501" y="273">NOT</text>
-         <rect x="561" y="255" width="56" height="32" rx="10"></rect>
-         <rect x="559" y="253" width="56" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="569" y="273">NULL</text>
-         <rect x="493" y="299" width="76" height="32" rx="10"></rect>
-         <rect x="491" y="297" width="76" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="501" y="317">STORED</text>
-         <rect x="395" y="343" width="44" height="32" rx="10"></rect>
-         <rect x="393" y="341" width="44" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="403" y="361">SET</text>
-         <rect x="459" y="343" width="48" height="32" rx="10"></rect>
-         <rect x="457" y="341" width="48" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="467" y="361">NOT</text>
-         <rect x="527" y="343" width="56" height="32" rx="10"></rect>
-         <rect x="525" y="341" width="56" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="535" y="361">NULL</text><a xlink:href="#opt_set_data" xlink:title="opt_set_data">
-            <rect x="395" y="387" width="106" height="32"></rect>
-            <rect x="393" y="385" width="106" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="403" y="405">opt_set_data</text></a><rect x="521" y="387" width="54" height="32" rx="10"></rect>
-         <rect x="519" y="385" width="54" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="529" y="405">TYPE</text><a xlink:href="#typename" xlink:title="typename">
-            <rect x="595" y="387" width="84" height="32"></rect>
-            <rect x="593" y="385" width="84" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="603" y="405">typename</text></a><a xlink:href="#opt_collate" xlink:title="opt_collate">
-            <rect x="699" y="387" width="90" height="32"></rect>
-            <rect x="697" y="385" width="90" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="707" y="405">opt_collate</text></a><a xlink:href="#opt_alter_column_using" xlink:title="opt_alter_column_using">
-            <rect x="809" y="387" width="174" height="32"></rect>
-            <rect x="807" y="385" width="174" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="817" y="405">opt_alter_column_using</text></a><rect x="51" y="431" width="58" height="32" rx="10"></rect>
-         <rect x="49" y="429" width="58" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="59" y="449">DROP</text><a xlink:href="#opt_column" xlink:title="opt_column">
-            <rect x="149" y="431" width="94" height="32"></rect>
-            <rect x="147" y="429" width="94" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="157" y="449">opt_column</text></a><rect x="283" y="463" width="34" height="32" rx="10"></rect>
-         <rect x="281" y="461" width="34" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="291" y="481">IF</text>
-         <rect x="337" y="463" width="70" height="32" rx="10"></rect>
-         <rect x="335" y="461" width="70" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="345" y="481">EXISTS</text><a xlink:href="#column_name" xlink:title="column_name">
-            <rect x="447" y="431" width="108" height="32"></rect>
-            <rect x="445" y="429" width="108" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="455" y="449">column_name</text></a><rect x="149" y="507" width="110" height="32" rx="10"></rect>
-         <rect x="147" y="505" width="110" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="157" y="525">CONSTRAINT</text>
-         <rect x="299" y="539" width="34" height="32" rx="10"></rect>
-         <rect x="297" y="537" width="34" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="307" y="557">IF</text>
-         <rect x="353" y="539" width="70" height="32" rx="10"></rect>
-         <rect x="351" y="537" width="70" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="361" y="557">EXISTS</text><a xlink:href="#constraint_name" xlink:title="constraint_name">
-            <rect x="463" y="507" width="126" height="32"></rect>
-            <rect x="461" y="505" width="126" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="471" y="525">constraint_name</text></a><a xlink:href="#opt_drop_behavior" xlink:title="opt_drop_behavior">
-            <rect x="629" y="431" width="142" height="32"></rect>
-            <rect x="627" y="429" width="142" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="637" y="449">opt_drop_behavior</text></a><rect x="51" y="583" width="88" height="32" rx="10"></rect>
-         <rect x="49" y="581" width="88" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="59" y="601">VALIDATE</text>
-         <rect x="159" y="583" width="110" height="32" rx="10"></rect>
-         <rect x="157" y="581" width="110" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="167" y="601">CONSTRAINT</text><a xlink:href="#constraint_name" xlink:title="constraint_name">
-            <rect x="289" y="583" width="126" height="32"></rect>
-            <rect x="287" y="581" width="126" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="297" y="601">constraint_name</text></a><rect x="51" y="627" width="178" height="32" rx="10"></rect>
-         <rect x="49" y="625" width="178" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="59" y="645">EXPERIMENTAL_AUDIT</text>
-         <rect x="249" y="627" width="44" height="32" rx="10"></rect>
-         <rect x="247" y="625" width="44" height="32" class="terminal" rx="10"></rect>
-         <text class="terminal" x="257" y="645">SET</text><a xlink:href="#audit_mode" xlink:title="audit_mode">
-            <rect x="313" y="627" width="96" height="32"></rect>
-            <rect x="311" y="625" width="96" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="321" y="645">audit_mode</text></a><a xlink:href="#partition_by" xlink:title="partition_by">
-            <rect x="51" y="671" width="96" height="32"></rect>
-            <rect x="49" y="669" width="96" height="32" class="nonterminal"></rect>
-            <text class="nonterminal" x="59" y="689">partition_by</text></a><path class="line" d="m17 17 h2 m20 0 h10 m76 0 h10 m20 0 h10 m94 0 h10 m0 0 h16 m-150 0 h20 m130 0 h20 m-170 0 q10 0 10 10 m150 0 q0 -10 10 -10 m-160 10 v24 m150 0 v-24 m-150 24 q0 10 10 10 m130 0 q10 0 10 -10 m-140 10 h10 m110 0 h10 m20 -44 h10 m108 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m108 0 h10 m0 0 h392 m-992 0 h20 m972 0 h20 m-1012 0 q10 0 10 10 m992 0 q0 -10 10 -10 m-1002 10 v68 m992 0 v-68 m-992 68 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m48 0 h10 m40 0 h10 m0 0 h88 m-118 0 h20 m98 0 h20 m-138 0 q10 0 10 10 m118 0 q0 -10 10 -10 m-128 10 v12 m118 0 v-12 m-118 12 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m78 0 h10 m40 -32 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m92 0 h10 m-522 0 h20 m502 0 h20 m-542 0 q10 0 10 10 m522 0 q0 -10 10 -10 m-532 10 v56 m522 0 v-56 m-522 56 q0 10 10 10 m502 0 q10 0 10 -10 m-512 10 h10 m124 0 h10 m0 0 h10 m162 0 h10 m0 0 h176 m20 -76 h362 m-982 -10 v20 m992 0 v-20 m-992 20 v100 m992 0 v-100 m-992 100 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m62 0 h10 m0 0 h10 m94 0 h10 m0 0 h10 m108 0 h10 m20 0 h10 m154 0 h10 m0 0 h434 m-628 0 h20 m608 0 h20 m-648 0 q10 0 10 10 m628 0 q0 -10 10 -10 m-638 10 v24 m628 0 v-24 m-628 24 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m58 0 h10 m20 0 h10 m48 0 h10 m0 0 h10 m56 0 h10 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v24 m164 0 v-24 m-164 24 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m76 0 h10 m0 0 h48 m20 -44 h346 m-618 -10 v20 m628 0 v-20 m-628 20 v68 m628 0 v-68 m-628 68 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m44 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m56 0 h10 m0 0 h400 m-618 -10 v20 m628 0 v-20 m-628 20 v24 m628 0 v-24 m-628 24 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m106 0 h10 m0 0 h10 m54 0 h10 m0 0 h10 m84 0 h10 m0 0 h10 m90 0 h10 m0 0 h10 m174 0 h10 m-962 -186 v20 m992 0 v-20 m-992 20 v200 m992 0 v-200 m-992 200 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m58 0 h10 m20 0 h10 m94 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m108 0 h10 m0 0 h34 m-480 0 h20 m460 0 h20 m-500 0 q10 0 10 10 m480 0 q0 -10 10 -10 m-490 10 v56 m480 0 v-56 m-480 56 q0 10 10 10 m460 0 q10 0 10 -10 m-470 10 h10 m110 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m126 0 h10 m20 -76 h10 m142 0 h10 m0 0 h232 m-982 -10 v20 m992 0 v-20 m-992 20 v132 m992 0 v-132 m-992 132 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m88 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m126 0 h10 m0 0 h588 m-982 -10 v20 m992 0 v-20 m-992 20 v24 m992 0 v-24 m-992 24 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m178 0 h10 m0 0 h10 m44 0 h10 m0 0 h10 m96 0 h10 m0 0 h594 m-982 -10 v20 m992 0 v-20 m-992 20 v24 m992 0 v-24 m-992 24 q0 10 10 10 m972 0 q10 0 10 -10 m-982 10 h10 m96 0 h10 m0 0 h856 m23 -668 h-3"></path>
-         <polygon points="1041 17 1049 13 1049 21"></polygon>
-         <polygon points="1041 17 1033 13 1033 21"></polygon></svg><p>referenced by:
+            <rect x="153" y="211" width="94" height="32"></rect>
+            <rect x="151" y="209" width="94" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="161" y="229">opt_column</text></a><a xlink:href="#column_name" xlink:title="column_name">
+            <rect x="267" y="211" width="108" height="32"></rect>
+            <rect x="265" y="209" width="108" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="275" y="229">column_name</text></a><a xlink:href="#alter_column_default" xlink:title="alter_column_default">
+            <rect x="415" y="211" width="154" height="32"></rect>
+            <rect x="413" y="209" width="154" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="423" y="229">alter_column_default</text></a><rect x="415" y="255" width="58" height="32" rx="10"></rect>
+         <rect x="413" y="253" width="58" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="423" y="273">DROP</text>
+         <rect x="513" y="255" width="48" height="32" rx="10"></rect>
+         <rect x="511" y="253" width="48" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="521" y="273">NOT</text>
+         <rect x="581" y="255" width="56" height="32" rx="10"></rect>
+         <rect x="579" y="253" width="56" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="589" y="273">NULL</text>
+         <rect x="513" y="299" width="76" height="32" rx="10"></rect>
+         <rect x="511" y="297" width="76" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="521" y="317">STORED</text>
+         <rect x="415" y="343" width="44" height="32" rx="10"></rect>
+         <rect x="413" y="341" width="44" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="423" y="361">SET</text>
+         <rect x="479" y="343" width="48" height="32" rx="10"></rect>
+         <rect x="477" y="341" width="48" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="487" y="361">NOT</text>
+         <rect x="547" y="343" width="56" height="32" rx="10"></rect>
+         <rect x="545" y="341" width="56" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="555" y="361">NULL</text><a xlink:href="#opt_set_data" xlink:title="opt_set_data">
+            <rect x="415" y="387" width="106" height="32"></rect>
+            <rect x="413" y="385" width="106" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="423" y="405">opt_set_data</text></a><rect x="541" y="387" width="54" height="32" rx="10"></rect>
+         <rect x="539" y="385" width="54" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="549" y="405">TYPE</text><a xlink:href="#typename" xlink:title="typename">
+            <rect x="615" y="387" width="84" height="32"></rect>
+            <rect x="613" y="385" width="84" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="623" y="405">typename</text></a><a xlink:href="#opt_collate" xlink:title="opt_collate">
+            <rect x="719" y="387" width="90" height="32"></rect>
+            <rect x="717" y="385" width="90" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="727" y="405">opt_collate</text></a><a xlink:href="#opt_alter_column_using" xlink:title="opt_alter_column_using">
+            <rect x="829" y="387" width="174" height="32"></rect>
+            <rect x="827" y="385" width="174" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="837" y="405">opt_alter_column_using</text></a><rect x="153" y="431" width="84" height="32" rx="10"></rect>
+         <rect x="151" y="429" width="84" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="161" y="449">PRIMARY</text>
+         <rect x="257" y="431" width="46" height="32" rx="10"></rect>
+         <rect x="255" y="429" width="46" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="265" y="449">KEY</text>
+         <rect x="323" y="431" width="64" height="32" rx="10"></rect>
+         <rect x="321" y="429" width="64" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="331" y="449">USING</text>
+         <rect x="407" y="431" width="64" height="32" rx="10"></rect>
+         <rect x="405" y="429" width="64" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="415" y="449">INDEX</text><a xlink:href="#table_index_name" xlink:title="table_index_name">
+            <rect x="491" y="431" width="138" height="32"></rect>
+            <rect x="489" y="429" width="138" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="499" y="449">table_index_name</text></a><rect x="51" y="475" width="58" height="32" rx="10"></rect>
+         <rect x="49" y="473" width="58" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="59" y="493">DROP</text><a xlink:href="#opt_column" xlink:title="opt_column">
+            <rect x="149" y="475" width="94" height="32"></rect>
+            <rect x="147" y="473" width="94" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="157" y="493">opt_column</text></a><rect x="283" y="507" width="34" height="32" rx="10"></rect>
+         <rect x="281" y="505" width="34" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="291" y="525">IF</text>
+         <rect x="337" y="507" width="70" height="32" rx="10"></rect>
+         <rect x="335" y="505" width="70" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="345" y="525">EXISTS</text><a xlink:href="#column_name" xlink:title="column_name">
+            <rect x="447" y="475" width="108" height="32"></rect>
+            <rect x="445" y="473" width="108" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="455" y="493">column_name</text></a><rect x="149" y="551" width="110" height="32" rx="10"></rect>
+         <rect x="147" y="549" width="110" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="157" y="569">CONSTRAINT</text>
+         <rect x="299" y="583" width="34" height="32" rx="10"></rect>
+         <rect x="297" y="581" width="34" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="307" y="601">IF</text>
+         <rect x="353" y="583" width="70" height="32" rx="10"></rect>
+         <rect x="351" y="581" width="70" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="361" y="601">EXISTS</text><a xlink:href="#constraint_name" xlink:title="constraint_name">
+            <rect x="463" y="551" width="126" height="32"></rect>
+            <rect x="461" y="549" width="126" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="471" y="569">constraint_name</text></a><a xlink:href="#opt_drop_behavior" xlink:title="opt_drop_behavior">
+            <rect x="629" y="475" width="142" height="32"></rect>
+            <rect x="627" y="473" width="142" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="637" y="493">opt_drop_behavior</text></a><rect x="51" y="627" width="88" height="32" rx="10"></rect>
+         <rect x="49" y="625" width="88" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="59" y="645">VALIDATE</text>
+         <rect x="159" y="627" width="110" height="32" rx="10"></rect>
+         <rect x="157" y="625" width="110" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="167" y="645">CONSTRAINT</text><a xlink:href="#constraint_name" xlink:title="constraint_name">
+            <rect x="289" y="627" width="126" height="32"></rect>
+            <rect x="287" y="625" width="126" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="297" y="645">constraint_name</text></a><rect x="51" y="671" width="178" height="32" rx="10"></rect>
+         <rect x="49" y="669" width="178" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="59" y="689">EXPERIMENTAL_AUDIT</text>
+         <rect x="249" y="671" width="44" height="32" rx="10"></rect>
+         <rect x="247" y="669" width="44" height="32" class="terminal" rx="10"></rect>
+         <text class="terminal" x="257" y="689">SET</text><a xlink:href="#audit_mode" xlink:title="audit_mode">
+            <rect x="313" y="671" width="96" height="32"></rect>
+            <rect x="311" y="669" width="96" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="321" y="689">audit_mode</text></a><a xlink:href="#partition_by" xlink:title="partition_by">
+            <rect x="51" y="715" width="96" height="32"></rect>
+            <rect x="49" y="713" width="96" height="32" class="nonterminal"></rect>
+            <text class="nonterminal" x="59" y="733">partition_by</text></a><path class="line" d="m17 17 h2 m20 0 h10 m76 0 h10 m20 0 h10 m94 0 h10 m0 0 h16 m-150 0 h20 m130 0 h20 m-170 0 q10 0 10 10 m150 0 q0 -10 10 -10 m-160 10 v24 m150 0 v-24 m-150 24 q0 10 10 10 m130 0 q10 0 10 -10 m-140 10 h10 m110 0 h10 m20 -44 h10 m108 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m108 0 h10 m0 0 h432 m-1032 0 h20 m1012 0 h20 m-1052 0 q10 0 10 10 m1032 0 q0 -10 10 -10 m-1042 10 v68 m1032 0 v-68 m-1032 68 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m48 0 h10 m40 0 h10 m0 0 h88 m-118 0 h20 m98 0 h20 m-138 0 q10 0 10 10 m118 0 q0 -10 10 -10 m-128 10 v12 m118 0 v-12 m-118 12 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m78 0 h10 m40 -32 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m92 0 h10 m-522 0 h20 m502 0 h20 m-542 0 q10 0 10 10 m522 0 q0 -10 10 -10 m-532 10 v56 m522 0 v-56 m-522 56 q0 10 10 10 m502 0 q10 0 10 -10 m-512 10 h10 m124 0 h10 m0 0 h10 m162 0 h10 m0 0 h176 m20 -76 h402 m-1022 -10 v20 m1032 0 v-20 m-1032 20 v100 m1032 0 v-100 m-1032 100 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m62 0 h10 m20 0 h10 m94 0 h10 m0 0 h10 m108 0 h10 m20 0 h10 m154 0 h10 m0 0 h434 m-628 0 h20 m608 0 h20 m-648 0 q10 0 10 10 m628 0 q0 -10 10 -10 m-638 10 v24 m628 0 v-24 m-628 24 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m58 0 h10 m20 0 h10 m48 0 h10 m0 0 h10 m56 0 h10 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v24 m164 0 v-24 m-164 24 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m76 0 h10 m0 0 h48 m20 -44 h346 m-618 -10 v20 m628 0 v-20 m-628 20 v68 m628 0 v-68 m-628 68 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m44 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m56 0 h10 m0 0 h400 m-618 -10 v20 m628 0 v-20 m-628 20 v24 m628 0 v-24 m-628 24 q0 10 10 10 m608 0 q10 0 10 -10 m-618 10 h10 m106 0 h10 m0 0 h10 m54 0 h10 m0 0 h10 m84 0 h10 m0 0 h10 m90 0 h10 m0 0 h10 m174 0 h10 m-890 -176 h20 m890 0 h20 m-930 0 q10 0 10 10 m910 0 q0 -10 10 -10 m-920 10 v200 m910 0 v-200 m-910 200 q0 10 10 10 m890 0 q10 0 10 -10 m-900 10 h10 m84 0 h10 m0 0 h10 m46 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m138 0 h10 m0 0 h394 m-1002 -230 v20 m1032 0 v-20 m-1032 20 v244 m1032 0 v-244 m-1032 244 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m58 0 h10 m20 0 h10 m94 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m108 0 h10 m0 0 h34 m-480 0 h20 m460 0 h20 m-500 0 q10 0 10 10 m480 0 q0 -10 10 -10 m-490 10 v56 m480 0 v-56 m-480 56 q0 10 10 10 m460 0 q10 0 10 -10 m-470 10 h10 m110 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m126 0 h10 m20 -76 h10 m142 0 h10 m0 0 h272 m-1022 -10 v20 m1032 0 v-20 m-1032 20 v132 m1032 0 v-132 m-1032 132 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m88 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m126 0 h10 m0 0 h628 m-1022 -10 v20 m1032 0 v-20 m-1032 20 v24 m1032 0 v-24 m-1032 24 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m178 0 h10 m0 0 h10 m44 0 h10 m0 0 h10 m96 0 h10 m0 0 h634 m-1022 -10 v20 m1032 0 v-20 m-1032 20 v24 m1032 0 v-24 m-1032 24 q0 10 10 10 m1012 0 q10 0 10 -10 m-1022 10 h10 m96 0 h10 m0 0 h896 m23 -712 h-3"></path>
+         <polygon points="1081 17 1089 13 1089 21"></polygon>
+         <polygon points="1081 17 1073 13 1073 21"></polygon></svg><p>referenced by:
          </p><ul>
             <li><a href="#alter_table_cmds" title="alter_table_cmds">alter_table_cmds</a></li>
          </ul>
