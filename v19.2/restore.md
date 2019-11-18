@@ -188,6 +188,10 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
+{{site.data.alerts.callout_success}}
+Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+{{site.data.alerts.end}}
+
 ### Point-in-time restore from incremental backups
 
 {% include copy-clipboard.html %}
@@ -196,6 +200,10 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-02-28 10:00:00';
 ~~~
+
+{{site.data.alerts.callout_success}}
+Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+{{site.data.alerts.end}}
 
 ### Restore into a different database
 
@@ -295,6 +303,8 @@ RESTORE DATABASE bank FROM
 	('s3://us-east-bucket/database-bank-2019-10-07-weekly', 's3://us-west-bucket/database-bank-2019-10-07-weekly'),
 	('s3://us-east-bucket/database-bank-2019-10-08-nightly', 's3://us-west-bucket/database-bank-2019-10-08-nightly');
 ~~~
+
+Note: Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
 ## See also
 
