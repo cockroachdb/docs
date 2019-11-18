@@ -57,6 +57,8 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 > RESTORE <database_name> FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
 ~~~
 
+Note: [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups.
+
 ### Automated full and incremental backups
 
 You can automate your backups using scripts and your preferred method of automation, such as cron jobs.
