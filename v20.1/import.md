@@ -10,6 +10,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
 - [CockroachDB dump files](sql-dump.html)
+- [Delimited data files](#delimited-data-files)
 
 {{site.data.alerts.callout_success}}
 `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
@@ -54,9 +55,20 @@ Parameter | Description
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create. Use this when the dump file contains a specific table. Leave out `TABLE table_name FROM` when the dump file contains an entire database.
-`import_format` | [PGDUMP](#import-a-postgres-database-dump) or [MYSQLDUMP](#import-a-mysql-database-dump)
+`import_format` | [`PGDUMP`](#import-a-postgres-database-dump), [`MYSQLDUMP`](#import-a-mysql-database-dump), or [`DELIMITED DATA`](#delimited-data-files)
 `file_location` | The [URL](#import-file-urls) of a dump file you want to import.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
+
+#### Delimited data files
+
+The `DELIMITED DATA` format can be used to import delimited data from any text file type, while ignoring characters that need to be escaped, like the following:
+
+- The file's delimiter (`,` by default)
+- Double quotes (`"`)
+- Newline (`\n`)
+- Carriage return (`\r`)
+
+For examples showing how to use the `DELIMITED DATA` format, see the [Examples](#import-a-delimited-data-file) section below.
 
 ### Import file URLs
 
@@ -66,23 +78,23 @@ URLs for the files you want to import must use the format shown below.  For exam
 
 ### Import options
 
-You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `kv_option`.
+You can control the `IMPORT` process's behavior using any of the following optional key-value pairs as a `kv_option`.
 
 <a name="delimiter"></a>
 
 Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Value                                                                                                                             |
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-`delimiter`            | CSV             | The unicode character that delimits columns in your rows. **Default: `,`**.
-`comment`              | CSV             | The unicode character that identifies rows to skip.
-`nullif`               | CSV, [Delimited data](#delimited-data-files) | The string that should be converted to *NULL*.
-`skip`                 | CSV, [Delimited data](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
+`delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**.
+`comment`              | `CSV DATA `     | The unicode character that identifies rows to skip.
+`nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
+`skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
-`skip_foreign_keys`    | Postgres, MySQL | Ignore foreign key constraints in the dump file's DDL. **Off by default**.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
-`max_row_size`         | Postgres        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
-`rows_terminated_by`   | [Delimited data](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
-`fields_terminated_by` | [Delimited data](#delimited-data-files)  | The unicode character used to separate fields in each input line.
-`fields_enclosed_by`   | [Delimited data](#delimited-data-files)  | The unicode character that encloses fields.
-`fields_escaped_by`    | [Delimited data](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
+`skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Off by default**.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
+`max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+`rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
+`fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
+`fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
+`fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -684,26 +696,74 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys
+> IMPORT TABLE employees FROM MYSQLDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
 For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+
+### Import a delimited data file
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH fields_terminated_by='|',fields_enclosed_by='"';
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH fields_terminated_by='|',fields_enclosed_by='"';
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv' WITH fields_terminated_by='|',fields_enclosed_by='"';
+~~~
+
+### Import a table from a delimited data file
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM DELIMITED DATA 's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' skip_foreign_keys;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' skip_foreign_keys;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM DELIMITED DATA 'gs://acme-co/employees.csv' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 ## Known limitation
 
