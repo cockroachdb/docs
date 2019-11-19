@@ -126,7 +126,9 @@
         "urls": [
           "/${VERSION}/cockroachcloud-cluster-management.html"
         ]
-      },
+      }
+    ]
+  },
   {
     "title": "Manage Console Access",
     "urls": [
