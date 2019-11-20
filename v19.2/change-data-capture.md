@@ -213,7 +213,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     ~~~
             job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
     +--------------------+------------+------------------------------------------------------------------------+ ... +--------------------------------+-------+----------------+
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs2 INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
     (1 row)
     ~~~
 
@@ -372,17 +372,18 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     $ ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
-    --property print.key=true \
     --from-beginning \
     --topic=office_dogs
     ~~~
 
     ~~~ shell
-    [1]	{"id": 1, "name": "Petee H"}
-    [2]	{"id": 2, "name": "Carl"}
+    {"after": {"id": 1, "name": "Petee H"}}
+    {"after": {"id": 2, "name": "Carl"}}
     ~~~
 
-    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+    The initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+
+    {% include {{ page.version.version }}/cdc/print-key.md %}
 
 14. Back in the SQL client, insert more data:
 
@@ -394,7 +395,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    [3]	{"id": 3, "name": "Ernie"}
+    {"after": {"id": 3, "name": "Ernie"}}
     ~~~
 
 16. When you are done, exit the SQL shell (`\q`).
@@ -540,17 +541,18 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     $ ./bin/kafka-avro-console-consumer \
     --bootstrap-server=localhost:9092 \
-    --property print.key=true \
     --from-beginning \
     --topic=office_dogs
     ~~~
 
     ~~~ shell
-    {"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}
-    {"id":{"long":2}}	{"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
+    {"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
+    {"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     ~~~
 
-    Note that the initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+    The initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+
+    {% include {{ page.version.version }}/cdc/print-key.md %}
 
 14. Back in the SQL client, insert more data:
 
@@ -562,7 +564,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
-    {"id":{"long":3}}	{"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
+    {"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
 16. When you are done, exit the SQL shell (`\q`).
@@ -681,7 +683,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-10. Monitor your changefeed on the Admin UI (http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
+10. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
 
 11. When you are done, exit the SQL shell (`\q`).
 
