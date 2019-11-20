@@ -248,7 +248,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 ### Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
@@ -299,12 +299,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<organization name>';
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
@@ -416,7 +416,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
@@ -467,12 +467,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<organization name>';
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
@@ -584,7 +584,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
