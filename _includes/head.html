@@ -1,7 +1,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{% if site.cockroachcloud %}
+<meta name="description" content="{% if page.summary %}{% if page.homepage == true %}CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.{% else %}{{ page.summary | strip_html | strip_newlines | truncate: 160 | replace: "CockroachDB", "CockroachCloud" }}{% endif %}{% endif %}">
+{% else %}
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
+{% endif %}
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% if page.block_search %}
 <meta name="robots" content="noindex">
@@ -9,7 +13,11 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="nocache">
 {% endif %}
+{% if site.cockroachcloud %}
+<title>{{ page.title | replace: "CockroachDB", "CockroachCloud" }} | {{ site.site_title | replace: "CockroachDB", "CockroachCloud" }}</title>
+{% else %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
+{% endif %}
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
