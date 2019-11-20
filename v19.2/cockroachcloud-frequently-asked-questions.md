@@ -39,7 +39,9 @@ To connect to a cluster, you need to authorize your network, create a SQL user, 
 
 ### Do I need a load balancer to connect to my cluster?
 
-No. CockroachCloud generates a [connection string] to a regional load balancer for the cluster, so no additional work is needed on the application side.
+No. CockroachCloud generates a [connection string](cockroachcloud-connect-to-your-cluster.html) to a regional load balancer for the cluster, so no additional work is needed on the application side.
+
+If you have a multi-region cluster, make sure you generate the connection string to the region closest to where your application is running.
 
 ## Cluster maintenance
 
