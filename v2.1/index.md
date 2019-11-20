@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Docs
-summary: CockroachDB user documentation.
+summary: CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
 toc: true
 homepage: true
 contribute: false
