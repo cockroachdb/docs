@@ -27,6 +27,8 @@ Also keep in mind some basic topology recommendations:
     - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region and set `--locality` on each node to spread data evenly across regions and AZs. In this case, if 1 AZ goes offline, the 2 remaining AZs retain a majority of replicas.
     - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
 
+- **Do not** run fewer than 3 nodes in a cluster, such as 2 AZs in a single region or 2 regions in a multi-region deployment. These [anti-patterns](topology-patterns.html#anti-patterns) cannot [tolerate failures](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) or take advantage of CockroachDB's automatic replication, distribution, rebalancing, and resiliency capabilities.
+
 ## Hardware
 
 {{site.data.alerts.callout_info}}
