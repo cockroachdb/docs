@@ -19,9 +19,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     --format=csv
     ~~~
 
-    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/cdc/core-url.md %}
-    {{site.data.alerts.end}}
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
