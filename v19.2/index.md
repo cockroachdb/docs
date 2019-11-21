@@ -42,10 +42,11 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="landing-column-title">Get Started</p>
       <div class="landing-column-content">
+        <p><a href="https://university.cockroachlabs.com/catalog">Online Training</a></p>
         <p><a href="install-cockroachdb.html">Install CockroachDB</a></p>
         <p><a href="start-a-local-cluster.html">Start a Local Cluster</a></p>
         <p><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></p>
-        <p><a href="build-an-app-with-cockroachdb.html">Build an App</a></p>
+        <p><a href="build-an-app-with-cockroachdb.html">Hello, World!</a></p>
         <p><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></p>
       </div>
     </div>
@@ -57,6 +58,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="performance-best-practices-overview.html">SQL Best Practices</a></p>
         <p><a href="sql-statements.html">SQL Statements</a></p>
         <p><a href="data-types.html">SQL Data Types</a></p>
+        <p><a href="sql-tuning-with-explain.html">SQL Tuning</a></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
@@ -66,6 +68,7 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="topology-patterns.html">Topology Patterns</a></p>
         <p><a href="manual-deployment.html">Manual Deployment</a></p>
         <p><a href="orchestration.html">Orchestration</a></p>
+        <p><a href="performance.html">Performance</a></p>
         <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
       </div>
     </div>
