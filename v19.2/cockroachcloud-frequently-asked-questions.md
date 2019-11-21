@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-This page answers the frequently asked questions. 
+This page answers the frequently asked questions.
 
 ## Cluster basics
 
@@ -36,6 +36,12 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 ### How do I connect to my cluster?
 
 To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
+
+### Do I need a load balancer to connect to my cluster?
+
+No. CockroachCloud generates a [connection string](cockroachcloud-connect-to-your-cluster.html) to a regional load balancer for the cluster, so no additional work is needed on the application side.
+
+If you have a multi-region cluster, make sure you generate the connection string to the region closest to where your application is running.
 
 ## Cluster maintenance
 
