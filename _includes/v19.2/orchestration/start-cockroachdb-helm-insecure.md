@@ -75,7 +75,7 @@
     {{site.data.alerts.callout_danger}}
     To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes.
 
-    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
+    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory allocation specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
