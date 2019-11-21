@@ -17,6 +17,8 @@ Multiple active connections to the database enable efficient use of the availabl
 
 Connection pooling helps resolve this dilemma by creating a set of authenticated connections that can be reused to connect to the database. To determine the size of the connection pool, our recommendation is to start your testing with a pool size of  `(core_count * 2) + ssd_count)`, where `core_count` is the total number of cores in the cluster, and `ssd_count` is the total number of SSDs in the cluster (for CockroachCloud, consider 1 SSD per node). The optimal pool size will vary based on your workload and application, and may be smaller than that.
 
+In addition to setting a maximum connection pool size, the idle connection pool size must also be set. Our recommendation is to set the idle connection pool size equal to the maximum pool size. While this uses more application server memory, this allows there to be many connections when concurrency is high, without having to dial a new connection for every new operation.
+
 ## Authorize the right network
 
 CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
