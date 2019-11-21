@@ -95,7 +95,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
     ~~~
     NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
     ~~~     
     </section>
 
@@ -107,17 +107,17 @@ datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e
 
     ~~~
     NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
     ~~~
     </section>
 
-    You may need to start or restart a pod before the new PVC capacity is made available. This is necessary if `AllowVolumeExpansion` was initially set to `false` or if the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resizing-an-in-use-persistentvolumeclaim) that has to be expanded.
+    If the PVC capacity has not changed, this may be because `AllowVolumeExpansion` was initially set to `false` or because the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resizing-an-in-use-persistentvolumeclaim) that has to be expanded. You will need to start or restart a pod in order to have it reflect the new capacity.
 
     {{site.data.alerts.callout_success}}
     Running `kubectl get pv` will display the persistent volumes with their *requested* capacity and not their actual capacity. This can be misleading, so it's best to use `kubectl get pvc`.
     {{site.data.alerts.end}}
 
-5. Examine the persistent volume claim. You may see a `FileSystemResizePending` condition with an accompanying message:
+5. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
 	{% include copy-clipboard.html %}
