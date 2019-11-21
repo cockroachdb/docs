@@ -54,7 +54,7 @@ $ go run basic-sample.go
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 1 1000
 2 250

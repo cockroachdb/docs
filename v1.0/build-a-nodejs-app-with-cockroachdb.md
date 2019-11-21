@@ -59,7 +59,7 @@ $ node basic-sample.js
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 { id: '1', balance: '1000' }
 { id: '2', balance: '250' }

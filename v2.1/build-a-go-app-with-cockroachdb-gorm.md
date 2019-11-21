@@ -72,7 +72,7 @@ $ go run gorm-basic-sample.go
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 1 1000
 2 250
@@ -124,7 +124,7 @@ $ go run gorm-basic-sample.go
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 1 1000
 2 250
