@@ -61,7 +61,7 @@ $ python basic-sample.py
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 ['1', '1000']
 ['2', '250']

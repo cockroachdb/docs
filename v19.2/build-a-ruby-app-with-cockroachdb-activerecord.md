@@ -71,7 +71,7 @@ $ ruby activerecord-basic-sample.rb
 
 The output should be:
 
-~~~ shell
+~~~
 -- create_table(:accounts, {:force=>true})
    -> 0.0361s
 1 1000
@@ -131,7 +131,7 @@ $ ruby activerecord-basic-sample.rb
 
 The output should be:
 
-~~~ shell
+~~~
 -- create_table(:accounts, {:force=>true})
    -> 0.0361s
 1 1000
