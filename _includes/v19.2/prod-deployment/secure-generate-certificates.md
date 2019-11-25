@@ -52,8 +52,28 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     ~~~
 
 5. Upload the CA certificate and node certificate and key to the first node:
+   
+    {% if page.title contains "Google" %}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute ssh \
+    --project <project name> <instance name> \
+    --command "mkdir certs"
+    ~~~
 
-    {% if page.title contains "AWS" %}
+    {{site.data.alerts.callout_info}}
+    `gcloud compute ssh` associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the [GCP docs](https://cloud.google.com/sdk/gcloud/reference/compute/ssh) for more details.
+    {{site.data.alerts.end}}
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
+
+    {% elsif page.title contains "AWS" %}
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ssh-add /path/<key file>.pem
@@ -63,26 +83,6 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     ~~~ shell
     $ ssh <username>@<node1 DNS name> "mkdir certs"
     ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ scp certs/ca.crt \
-    certs/node.crt \
-    certs/node.key \
-    <username>@<node1 DNS name>:~/certs
-    ~~~
-
-    
-    {% elsif page.title contains "Google" %}
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ssh <username>@<node1 DNS name> "mkdir certs"
-    $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    `gcloud compute ssh` associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the [GCP docs](https://cloud.google.com/sdk/gcloud/reference/compute/ssh) for more details.
-    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -114,7 +114,9 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     $ rm certs/node.crt certs/node.key
     ~~~
 
-    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
+    {{site.data.alerts.end}}
 
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
