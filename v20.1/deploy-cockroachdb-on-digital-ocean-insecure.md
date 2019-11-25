@@ -15,11 +15,13 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
@@ -100,7 +102,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
-2. [Create users](create-user.html) and [grant them privileges](grant.html).
+2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
 
 ## See also

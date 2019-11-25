@@ -15,11 +15,13 @@ This tutorial shows you how to manually deploy a secure multi-node CockroachDB c
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
@@ -57,36 +59,36 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 1. On your local machine, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach gen haproxy \
-  	--certs-dir=certs \
-  	--host=<address of any node>
-  	~~~
+    ~~~ shell
+    $ cockroach gen haproxy \
+    --certs-dir=certs \
+    --host=<address of any node>
+    ~~~
 
       {% include {{ page.version.version }}/misc/haproxy.md %}
 
 2. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
 
-	{% include copy-clipboard.html %}
-	~~~ shell
-	$ scp haproxy.cfg <username>@<haproxy address>:~/
-	~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ scp haproxy.cfg <username>@<haproxy address>:~/
+  ~~~
 
 3. SSH to the machine where you want to run HAProxy.
 
 4. Install HAProxy:
 
-    {% include copy-clipboard.html %}
-	~~~ shell
-	$ apt-get install haproxy
-	~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ apt-get install haproxy
+  ~~~
 
 5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include copy-clipboard.html %}
-	~~~ shell
-	$ haproxy -f haproxy.cfg
-	~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ haproxy -f haproxy.cfg
+  ~~~
 
 6. Repeat these steps for each additional instance of HAProxy you want to run.
 

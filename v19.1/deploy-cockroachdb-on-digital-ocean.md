@@ -15,11 +15,13 @@ This page shows you how to deploy a secure multi-node CockroachDB cluster on Dig
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
