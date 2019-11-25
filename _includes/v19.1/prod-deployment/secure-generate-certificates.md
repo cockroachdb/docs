@@ -56,7 +56,9 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% if page.title contains "Google" %}
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ gcloud compute ssh --project <project name> <instance name> --command "mkdir certs"
+    $ gcloud compute ssh \
+    --project <project name> <instance name> \
+    --command "mkdir certs"
     ~~~
 
     {{site.data.alerts.callout_info}}
