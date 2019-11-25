@@ -16,11 +16,13 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
@@ -55,10 +57,10 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 2. Install HAProxy:
 
-    {% include copy-clipboard.html %}
-	~~~ shell
-	$ apt-get install haproxy
-	~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ apt-get install haproxy
+  ~~~
 
 3. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
@@ -75,25 +77,25 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-	If you get a permissions error, prefix the command with `sudo`.
+  If you get a permissions error, prefix the command with `sudo`.
 
 5. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
 
     {% include copy-clipboard.html %}
-	  ~~~ shell
-	  $ cockroach gen haproxy --insecure \
-	  --host=<address of any node> \
-	  --port=26257 \
-	  ~~~
+    ~~~ shell
+    $ cockroach gen haproxy --insecure \
+    --host=<address of any node> \
+    --port=26257 \
+    ~~~
 
       {% include {{ page.version.version }}/misc/haproxy.md %}
 
 6. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include copy-clipboard.html %}
-	~~~ shell
-	$ haproxy -f haproxy.cfg
-	~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ haproxy -f haproxy.cfg
+  ~~~
 
 7. Repeat these steps for each additional instance of HAProxy you want to run.
 

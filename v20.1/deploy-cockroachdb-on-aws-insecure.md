@@ -15,11 +15,13 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-## Requirements
+## Before you begin
+
+### Requirements
 
 {% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
-## Recommendations
+### Recommendations
 
 {% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
@@ -94,7 +96,7 @@ You can set your network IP by selecting "My IP" in the Source field.
  Port Range | **8080**
  Source | The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)
 
-To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console. 
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
 
 ## Step 3. Synchronize clocks
 

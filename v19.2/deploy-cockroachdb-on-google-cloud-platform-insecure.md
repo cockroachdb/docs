@@ -36,10 +36,6 @@ CockroachDB requires TCP communication on two ports:
 
 To expose your Admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, [create firewall rules](https://cloud.google.com/compute/docs/vpc/firewalls) for your project. When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature to apply the rule only to instances with the same tag.
 
-### Creating firewall rules
-
-When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature, which lets you specify that you want to apply the rule only to instance that include the same tag.
-
 #### Admin UI
 
  Field | Recommended Value
