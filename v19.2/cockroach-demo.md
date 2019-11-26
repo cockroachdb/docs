@@ -239,6 +239,10 @@ $ cockroach demo --geo-partitioned-replicas
 
 This command starts a 9-node demo cluster with the `movr` database preloaded, and [partitions](partitioning.html) and [zone constraints](configure-replication-zones.html) applied to the primary and secondary indexes. For more information, see the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern.
 
+### Try your own scenario
+
+Cockroach demo uses movr database by default but the demo is not limited to that database alone. Feel free to create your own database or `USE defaultdb;` to try out your own use case.
+
 ## See also
 
 - [`cockroach sql`](use-the-built-in-sql-client.html)
