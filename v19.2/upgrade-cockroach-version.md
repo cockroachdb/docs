@@ -73,6 +73,10 @@ When upgrading from v19.1 to v19.2, certain features and performance improvement
 
 For each node in your cluster, complete the following steps.
 
+{{site.data.alerts.callout_info}}
+These steps apply to manual deployments. If you are running CockroachDB on Kubernetes, read our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments of CockroachDB.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 We recommend creating scripts to perform these steps instead of performing them manually.
 {{site.data.alerts.end}}
