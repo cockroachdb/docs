@@ -185,269 +185,183 @@ For more details about the built-in SQL client, and many examples of how to use 
 
 ### Use a Postgres driver or ORM
 
-These steps show you how to connect simple Python test applications to your CockroachCloud cluster with the [psycopg2 driver](http://initd.org/psycopg/docs/) or the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/). For code samples in other languages, see [Build an App with CockroachDB](build-an-app-with-cockroachdb.html).
+You can use the connection string or parameters to connect to the cluster using a PostgreSQL-compatible driver or ORM. The following language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
-Start by choosing the Python driver or ORM:
+For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v19.2/build-an-app-with-cockroachdb.html).
+
+<div class="filters">
+    <button class="filter-button" data-scope="python">Python</button>
+    <button class="filter-button" data-scope="go">Go</button>
+    <button class="filter-button" data-scope="java">Java</button>
+    <button class="filter-button" data-scope="js">Node.js</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+Start by choosing the [Python psycopg2 driver](http://initd.org/psycopg/docs/) or SQLAlchemy [ORM](https://docs.sqlalchemy.org/en/latest/):
 
 - [psycopg2 driver](#psycopg2-driver)
 - [SQLAlchemy ORM](#sqlalchemy-orm)
 
 #### psycopg2 driver
 
-On the machine where you want to run your application:
+{% include copy-clipboard.html %}
+~~~ python
+# Import the driver.
+import psycopg2
 
-1. Install the Python psycopg2 driver:
+# Connect to the database.
+conn = psycopg2.connect(
+    user='<username>',
+    password='<password>',
+    host='<region>.<cluster_name>',
+    port=26257,
+    database='<database_name>',
+    sslmode='verify-full',
+    sslrootcert='<path to the CA certificate>'
+)
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ pip install psycopg2
-    ~~~
-
-    For other ways to install psycopg2, see the [official documentation](http://initd.org/psycopg/docs/install.html).
-
-2. Run code to execute basic SQL statements, creating a table, inserting some rows, and reading and printing the rows.
-
-    1. Create a `basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [connection details](#step-3-generate-the-connection-string) and the appropriate SQL user and password:
-
-        {{site.data.alerts.callout_info}}
-        For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
-        {{site.data.alerts.end}}
-
-        {% include copy-clipboard.html %}
-        ~~~ python
-        # Import the driver.
-        import psycopg2
-
-        # Connect to the database.
-        conn = psycopg2.connect(
-            user='<username>',
-            password='<password>',
-            host='<load balancer host>',
-            port=26257,
-            database='<database>',
-            sslmode='require',
-            sslrootcert='certs/ca.crt'
-        )
-
-        # Make each statement commit immediately.
-        conn.set_session(autocommit=True)
-
-        # Open a cursor to perform database operations.
-        cur = conn.cursor()
-
-        # Create an "accounts" table.
-        cur.execute("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)")
-
-        # Insert two rows into the "accounts" table.
-        cur.execute("INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
-
-        # Print out the balances.
-        cur.execute("SELECT id, balance FROM accounts")
-        rows = cur.fetchall()
-        print('Initial balances:')
-        for row in rows:
-            print([str(cell) for cell in row])
-
-        # Close the database connection.
-        cur.close()
-        conn.close()
-        ~~~
-
-    2. Run the code:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ python basic-sample.py
-        ~~~
-
-        The output should be:
-
-        ~~~
-        Initial balances:
-        ['1', '1000']
-        ['2', '250']
-        ~~~
-
-3. Now run code to connect to your cluster, this time executing a batch of statements as an [atomic transaction](transactions.html) to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-    1. Create a `txn-sample.py` file and copy the code into it, replacing placeholders in the [connection parameters](#step-3-generate-the-connection-string) and the appropriate SQL user and password:
-
-        {{site.data.alerts.callout_info}}
-        For `host`, be sure to use the load balancer hostname for the region closest to your client. Load balancer hostnames are identified in the initial confirmation details you received from Cockroach Labs.
-        {{site.data.alerts.end}}
-
-        {{site.data.alerts.callout_info}}
-        CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
-        {{site.data.alerts.end}}
-
-        {% include copy-clipboard.html %}
-        ~~~ python
-        # Import the driver.
-        import psycopg2
-        import psycopg2.errorcodes
-
-        # Connect to the cluster.
-        conn = psycopg2.connect(
-            user='<username>',
-            password='<password>',
-            host='<load balancer host>',
-            port=26257,
-            database='<database>',
-            sslmode='require',
-            sslrootcert='certs/ca.crt'
-        )
-
-        def onestmt(conn, sql):
-            with conn.cursor() as cur:
-                cur.execute(sql)
-
-
-        # Wrapper for a transaction.
-        # This automatically re-calls "op" with the open transaction as an argument
-        # as long as the database server asks for the transaction to be retried.
-        def run_transaction(conn, op):
-            with conn:
-                onestmt(conn, "SAVEPOINT cockroach_restart")
-                while True:
-                    try:
-                        # Attempt the work.
-                        op(conn)
-
-                        # If we reach this point, commit.
-                        onestmt(conn, "RELEASE SAVEPOINT cockroach_restart")
-                        break
-
-                    except psycopg2.OperationalError as e:
-                        if e.pgcode != psycopg2.errorcodes.SERIALIZATION_FAILURE:
-                            # A non-retryable error; report this up the call stack.
-                            raise e
-                        # Signal the database that we'll retry.
-                        onestmt(conn, "ROLLBACK TO SAVEPOINT cockroach_restart")
-
-
-        # The transaction we want to run.
-        def transfer_funds(txn, frm, to, amount):
-            with txn.cursor() as cur:
-
-                # Check the current balance.
-                cur.execute("SELECT balance FROM accounts WHERE id = " + str(frm))
-                from_balance = cur.fetchone()[0]
-                if from_balance < amount:
-                    raise "Insufficient funds"
-
-                # Perform the transfer.
-                cur.execute("UPDATE accounts SET balance = balance - %s WHERE id = %s",
-                            (amount, frm))
-                cur.execute("UPDATE accounts SET balance = balance + %s WHERE id = %s",
-                            (amount, to))
-
-
-        # Execute the transaction.
-        run_transaction(conn, lambda conn: transfer_funds(conn, 3, 4, 100))
-
-
-        with conn:
-            with conn.cursor() as cur:
-                # Check account balances.
-                cur.execute("SELECT id, balance FROM accounts")
-                rows = cur.fetchall()
-                print('Balances after transfer:')
-                for row in rows:
-                    print([str(cell) for cell in row])
-
-        # Close communication with the database.
-        conn.close()
-        ~~~
-
-    2. Run the code:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ python txn-sample.py
-        ~~~
-
-        The output should be:
-
-        ~~~
-        Balances after transfer:
-        ['3', '900']
-        ['4', '350']
-        ~~~
+~~~
 
 #### SQLAlchemy ORM
 
-On the machine where you want to run your application:
+{{site.data.alerts.callout_info}}
+You must replace the `postgres://` prefix with `cockroachdb://` in the connection string passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python%22) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+{{site.data.alerts.end}}
 
-1. Install the SQLAlchemy ORM as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL:
+{% include copy-clipboard.html %}
+~~~ python
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ pip install sqlalchemy cockroachdb
-    ~~~
+# Create an engine to communicate with the database. The "cockroachdb://" prefix
+# for the engine URL indicates that we are connecting to CockroachDB.
+engine = create_engine('cockroachdb://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>')
 
-    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+~~~
 
-2. Run code to execute basic SQL statements.
+</section>
 
-    In the following code, the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) maps Python-specific objects to SQL operations. Specifically, `Base.metadata.create_all(engine)` creates an `accounts` table based on the `Account` class, `session.add_all([Account(),...])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
+<section class="filter-content" markdown="1" data-scope="go">
 
-    {{site.data.alerts.callout_info}}
-    The [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) installed earlier is triggered by the `cockroachdb://` prefix in the engine URL. Using `postgres://` to connect to your cluster will not work.
-    {{site.data.alerts.end}}
+Start by choosing the [Go pq driver](https://godoc.org/github.com/lib/pq) or [GORM ORM](http://gorm.io/):
 
-    1. Create a `sqlalchemy-basic-sample.py` file and copy the code into it, replacing placeholders in the connection parameters with the [application connection string](#step-3-generate-the-connection-string):
+- [Go pq driver](#go-pq-driver)
+- [GORM](#gorm)
 
-        {% include copy-clipboard.html %}
-        ~~~ python
-        from __future__ import print_function
-        from sqlalchemy import create_engine, Column, Integer
-        from sqlalchemy.ext.declarative import declarative_base
-        from sqlalchemy.orm import sessionmaker
+#### Go pq driver
 
-        Base = declarative_base()
+{% include copy-clipboard.html %}
+~~~ go
+  //Connect to the database.
+	db, err := sql.Open(
+		"postgres",
+		"postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>",
+	)
+	if err != nil {
+		log.Fatal("error connecting to the database: ", err)
+	}
 
-        # The Account class corresponds to the "accounts" database table.
-        class Account(Base):
-            __tablename__ = 'accounts'
-            id = Column(Integer, primary_key=True)
-            balance = Column(Integer)
+~~~
 
-        # Create an engine to communicate with the database. The "cockroachdb://" prefix
-        # for the engine URL indicates that we are connecting to CockroachDB.
-        engine = create_engine('cockroachdb://<username>:<password>@<load balancer host>:26257/<database>',
-                               connect_args = {
-                                   'sslmode' : 'require',
-                                   'sslrootcert': 'certs/ca.crt'
-                               })
-        Session = sessionmaker(bind=engine)
+#### GORM
 
-        # Automatically create the "accounts" table based on the Account class.
-        Base.metadata.create_all(engine)
+{% include copy-clipboard.html %}
+~~~ go
 
-        # Insert two rows into the "accounts" table.
-        session = Session()
-        session.add_all([
-            Account(id=1, balance=1000),
-            Account(id=2, balance=250),
-        ])
-        session.commit()
+  // Connect to the database.
+    const addr = "postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>"
+    db, err := gorm.Open("postgres", addr)
+    if err != nil {
+        log.Fatal(err)
+    }
+~~~
 
-        # Print out the balances.
-        for account in session.query(Account):
-            print(account.id, account.balance)
+</section>
 
-        ~~~
+<section class="filter-content" markdown="1" data-scope="js">
 
-    2. Run the code:
+Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/):
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ python sqlalchemy-basic-sample.py
-        ~~~
+- [Node.js pg driver](#nodejs-pg-driver)
+- [Sequelize ORM](#Sequelize-orm)
 
-        The output should be:
+#### Node.js pg driver
 
-        ~~~ shell
-        1 1000
-        2 250
-        ~~~
+{% include copy-clipboard.html %}
+~~~ js
+
+// Connect to the "bank" database.
+var config = {
+    user: '<username>',
+    host: '<region>.<cluster_name>',
+    database: '<database_name>',
+    port: 26257,
+    ssl: {
+        ca: fs.readFileSync('<path to the CA certificate>')
+            .toString()
+    }
+};
+
+~~~
+
+#### Sequelize ORM
+
+{% include copy-clipboard.html %}
+~~~ js
+// Connect to CockroachDB through Sequelize.
+var sequelize = new Sequelize('<database_name>', '<username>', '<password>', {
+    host: '<region>.<cluster_name>',
+    dialect: 'postgres',
+    port: 26257,
+    logging: false,
+    dialectOptions: {
+        ssl: {
+            ca: fs.readFileSync('<path to the CA certificate>')
+                .toString()
+        }
+    }
+});
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hibernate ORM](http://hibernate.org/):
+
+- [Java JBDC driver](#java-jbdc-driver)
+- [Hibernate ORM](#hibernate-orm)
+
+#### Java JBDC driver
+
+{% include copy-clipboard.html %}
+~~~ java
+
+// Configure the database connection.
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setServerName("<region>.<cluster_name>");
+        ds.setPortNumber(26257);
+        ds.setDatabaseName("<database_name>");
+        ds.setUser("<username>");
+        ds.setPassword("<password>");
+        ds.setSsl(true);
+        ds.setSslMode("verify-full");
+        ds.setSslCert("<path to the CA certificate>");
+~~~
+
+#### Hibernate ORM
+
+{% include copy-clipboard.html %}
+~~~ java
+
+    //Database connection settings
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate]]></property>
+        <property name="hibernate.connection.username">username</property>
+~~~
+
+</section>
+
+## What's next
+
+- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
