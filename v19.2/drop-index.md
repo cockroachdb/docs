@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `IF EXISTS`	| Drop the named indexes if they exist; if they do not exist, do not return an error.
  `table_name`	| The name of the table with the index you want to drop. Find table names with [`SHOW TABLES`](show-tables.html).
  `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's `primary` index.
- `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. To drop a `UNIQUE INDEX`, you must use `CASCADE`.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+ `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. To drop a `UNIQUE INDEX`, you must use `CASCADE`. If index is created explicitly with `CREATEA UNIQUE INDEX` command, `CASCADE` is not required. <br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
  `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
 
 ## Viewing schema changes
