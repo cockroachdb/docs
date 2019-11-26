@@ -281,8 +281,8 @@ Start by choosing the [Go pq driver](https://godoc.org/github.com/lib/pq) or [GO
 
 Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/):
 
-- [Node.js pg driver](#nodejs-pg-driver)
-- [Sequelize ORM](#Sequelize-orm)
+- [Node.js pg driver](#node-js-pg-driver)
+- [Sequelize ORM](#sequelize-orm)
 
 #### Node.js pg driver
 
