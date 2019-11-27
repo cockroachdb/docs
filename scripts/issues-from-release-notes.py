@@ -10,8 +10,7 @@ Example use: python3 issues-from-release-notes.py --release_notes=v2.0.1.md --mi
 
 Requirements:
   - Requests: http://docs.python-requests.org/en/master/
-  - A GitHub personal access token. This is required for POSTing due to 2-factor auth.
-    Store your token as a GITHUB_ACCESS_TOKEN environment variable.
+  - A GitHub personal access token.
 """
 
 import argparse
@@ -22,13 +21,16 @@ import requests
 
 parser = argparse.ArgumentParser(
     description = "create docs issues from a release notes file")
+parser.add_argument("--github_access_token",
+    default=os.environ.get("GITHUB_ACCESS_TOKEN", None),
+    help="""your GitHub personal access token. Store as a GITHUB_ACCESS_TOKEN
+            environment variable or pass here.""")
+parser.add_argument("-m", "--milestone", required=True,
+    help="milestone to assign to docs issues, e.g., 20.1, 20.2, etc.")
 parser.add_argument("-r", "--release_notes", required=True,
     help="release notes file from which to create docs issues")
-parser.add_argument("-m", "--milestone", required=True,
-    help="milestone to assign to docs issues, e.g., 19.2, 19.1, 2.1.x")
 
 args = parser.parse_args()
-
 release_notes = args.release_notes
 milestone = args.milestone
 
@@ -49,8 +51,6 @@ if milestone == "2.1.x":
     milestone = 12
 if milestone == "2.1":
     milestone = 8
-if milestone == "2.0.x":
-    milestone = 10
 
 bullets_with_comments = 0
 issues_created = 0
@@ -81,8 +81,7 @@ with open("../releases/" + release_notes) as file:
                          "labels": ["C-release-note"],
                          "milestone": milestone}
                 url = "https://api.github.com/repos/cockroachdb/docs/issues"
-                access_token = os.getenv("GITHUB_ACCESS_TOKEN")
-                headers = {"Authorization": "token " + access_token}
+                headers = {"Authorization": "token " + args.github_access_token}
                 req = requests.post(url, headers=headers, data=json.dumps(issue))
                 if req.status_code == 201:
                     print("Successfully created issue {0:s}".format(title), "\n")

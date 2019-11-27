@@ -12,7 +12,6 @@ Requirements:
 import argparse
 import json
 import os
-import re
 import requests
 
 parser = argparse.ArgumentParser(
@@ -24,9 +23,7 @@ parser.add_argument("--github_access_token",
 parser.add_argument("--airtable_api_key",
     default=os.environ.get("AIRTABLE_API_KEY", None),
     help="your Airtable developer key. Store as AIRTABLE_API_KEY or pass here")
-# parser.add_argument("--airtable_product_area", required=True,
-#     help="the Airtable product area to create docs issues for")
-parser.add_argument("--milestone", required=True,
+parser.add_argument("-m", "--milestone", required=True,
     help="milestone to assign to docs issues, e.g., 20.1, 20.2, etc.")
 args = parser.parse_args()
 
@@ -36,10 +33,9 @@ github_issues_created = 0
 # Get list of docs-relevant airtable epics for 20.1.
 offset = ""
 while True:
-    # filter_formula = "AND({Product Area} = " + args.airtable_product_area + ")"
-    # url = "https://api.airtable.com/v0/apppcLIR8IFy1QDcA/Epics%2FFeatures?view=20.1%20Docs%20view&filterByFormula=" + filter_formula + "&api_key=" + args.airtable_api_key
-    url = "https://api.airtable.com/v0/apppcLIR8IFy1QDcA/Epics%2FFeatures?view=20.1%20Docs%20view&offset=" + offset + "&api_key=" + args.airtable_api_key
-    req = requests.get(url)
+    url = "https://api.airtable.com/v0/apppcLIR8IFy1QDcA/Epics%2FFeatures?view=20.1%20Docs%20view&offset=" + offset
+    headers = {"Authorization": "Bearer " + args.airtable_api_key}
+    req = requests.get(url, headers=headers)
     resp = req.json()
     records = resp["records"]
     airtable_records = airtable_records + len(records)
@@ -58,14 +54,12 @@ while True:
             if key == "Product Area":
                 epic_area = fields[key]
             if key == "Team Members":
-                epic_members = ""
                 members = fields[key]
                 for member in members:
                     name = member.get("name")
                     epic_members = epic_members + name + ", "
                 epic_members = epic_members.rstrip(", ")
         # print("Background: https://airtable.com/tblD3oZPLJgGhCmch/viw1DKmbKhg2MIECH/" + epic_id + "\n\nEpic: " + epic_name + "\n\nDescription: " + epic_desc + "\n\nTeam: " + str(epic_members))
-        # print("\n\n")
 
         # Map Airtable product areas to GitHub labels and writers.
         if epic_area == "KV":
