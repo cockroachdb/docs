@@ -33,9 +33,10 @@ github_issues_created = 0
 # Get list of docs-relevant airtable epics for 20.1.
 offset = ""
 while True:
-    url = "https://api.airtable.com/v0/apppcLIR8IFy1QDcA/Epics%2FFeatures?view=20.1%20Docs%20view&offset=" + offset
+    url = "https://api.airtable.com/v0/apppcLIR8IFy1QDcA/Epics%2FFeatures"
     headers = {"Authorization": "Bearer " + args.airtable_api_key}
-    req = requests.get(url, headers=headers)
+    params = {"view": "20.1 Docs view", "pageSize": "5", "offset": offset}
+    req = requests.get(url, headers=headers, params=params)
     resp = req.json()
     records = resp["records"]
     airtable_records = airtable_records + len(records)
