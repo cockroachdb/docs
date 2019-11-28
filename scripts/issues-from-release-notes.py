@@ -67,7 +67,8 @@ with open("../releases/" + release_notes) as file:
             try:
                 pr_num = line[line.rfind("[")+2:line.rfind("]")]
                 url = "https://api.github.com/repos/cockroachdb/cockroach/pulls/" + str(pr_num)
-                req = requests.get(url)
+                headers = {"Authorization": "token " + args.github_access_token}
+                req = requests.get(url, headers=headers)
                 resp = req.json()
                 title = resp["title"]
             except Exception as e:
