@@ -35,4 +35,4 @@ The location parameters often contain special characters that need to be URI-enc
 | Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///employees.sql`                                                     |
+| NFS/Local    | `nodelocal:///path/employees`                                                     |
