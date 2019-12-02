@@ -211,7 +211,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     ~~~
             job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
     +--------------------+------------+------------------------------------------------------------------------+ ... +--------------------------------+-------+----------------+
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs2 INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
     (1 row)
     ~~~
 
@@ -544,7 +544,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~ shell
-    {"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}
+    {"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
     {"id":{"long":2}}	{"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     ~~~
 
@@ -677,7 +677,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-10. Monitor your changefeed on the Admin UI (http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
+10. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
 
 11. When you are done, exit the SQL shell (`\q`).
 
