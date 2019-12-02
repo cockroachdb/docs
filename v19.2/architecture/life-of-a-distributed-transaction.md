@@ -177,7 +177,7 @@ Note that this write operation creates a write intent; these writes will not be 
 Now that we have followed an operation all the way down from the SQL client to RocksDB, we can pretty quickly cover what happens on the way back up (i.e., when generating a response to the client).
 
 1. Once the leaseholder applies a write to its Raft log,
- it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
+ it sends a commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
 1. Once all operations have successfully completed (i.e., reads have returned values and write intents have been committed), the `DistSender` tries to record the transaction's success in the transaction record (which provides a durable mechanism of tracking the transaction's state), which can cause a few situations to arise:
     - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh](transaction-layer.html#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
