@@ -40,7 +40,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:50%" />
 
 3. (Optional) Enter a descriptive name for the network.
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
@@ -59,7 +59,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:50%" />
 
 3. In the **Username** field, enter `maxroach`.
 4. In the **Password** field, enter `Q7gc8rEdS`.
@@ -73,7 +73,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />
 
 3. From the **User** dropdown, select `maxroach`.
 4. Select a **Region** to connect to.
@@ -178,12 +178,12 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v19.2/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:50%" />
 
   2. From the **User** dropdown, select `maxroach`.
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
-  5. On the **Connect Your App** tab, click **Copy connection string**.
+  5. On the **Connection String** tab, click **Copy**.
 
       Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 
