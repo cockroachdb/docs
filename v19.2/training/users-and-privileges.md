@@ -87,7 +87,6 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --insecure
     --certs-dir=certs \
     --host=localhost:26257 \
     --execute="CREATE USER spock;"
