@@ -135,6 +135,9 @@
       no_windows: true
 - title: Testing Releases
   releases:
+    - date: Dec 16, 2019
+      version: v20.1.0-alpha.20191216
+      no_windows: true
     - date: Nov 18, 2019
       version: v20.1.0-alpha.20191118
       no_windows: true
