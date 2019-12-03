@@ -98,13 +98,13 @@ On the machine from which you want to connect to your cluster:
 
 6. Select a connection option:
 
-           - The **Parameters** tab is displayed by default. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
+           - The **CockroachDB Client** tab is displayed by default. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
 
            - Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
 
               You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
 
-           - Click **CockroachDB Client** to view the client connection string. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
+          - Click the **Parameters** tab to view the client connection parameters. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
 
     You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
 
@@ -155,7 +155,7 @@ On the machine where you want to run the CockroachDB SQL client:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=certs/ca.crt'
+    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
     ~~~
 
     You can add the `--execute` flag to run specific SQL statements directly from the command-line:
@@ -163,7 +163,7 @@ On the machine where you want to run the CockroachDB SQL client:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=certs/ca.crt' \
+    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>' \
     --execute="CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);"
     ~~~
 
@@ -279,9 +279,10 @@ Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [
 {% include copy-clipboard.html %}
 ~~~ js
 
-// Connect to the "bank" database.
+// Connect to the database.
 var config = {
     user: '<username>',
+    password: '<password>'
     host: '<region>.<cluster_name>',
     database: '<database_name>',
     port: 26257,
