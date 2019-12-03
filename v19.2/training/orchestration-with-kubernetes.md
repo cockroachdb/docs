@@ -182,8 +182,8 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         ~~~
 
         ~~~
-        NAME                  DESIRED   SUCCESSFUL   AGE
-        cluster-init-secure   1         1            2m
+        NAME                  COMPLETIONS     DURATION      AGE
+        cluster-init-secure   1/1             10s           16s
         ~~~
 
         {% include copy-clipboard.html %}
