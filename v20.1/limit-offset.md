@@ -26,6 +26,10 @@ as part of [`INSERT`](insert.html) or [`UPSERT`](upsert.html).
 `OFFSET` restricts the operation to skip the first `offset_value` number of rows.
 It is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.
 
+{{site.data.alerts.callout_danger}}
+Using `LIMIT`/`OFFSET` to implement pagination can be very slow for large tables.  We recommend using [keyset pagination](selection-queries.html#pagination-example) instead.
+{{site.data.alerts.end}}
+
 For PostgreSQL compatibility, CockroachDB also supports `FETCH FIRST
 limit_val ROWS ONLY` and `FETCH NEXT limit_val ROWS ONLY` as aliases
 for `LIMIT`. If `limit_val` is omitted, then one row is fetched.
