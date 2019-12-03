@@ -122,43 +122,33 @@ On the machine where you want to run the CockroachDB SQL client:
 
 1. [Download the CockroachDB binary](install-cockroachdb.html):
 
-    <div class="filters clearfix">
-      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
-      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
-    </div>
-    <p></p>
-
-    <section class="filter-content" markdown="1" data-scope="mac">
+    For Mac:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
-    </section>
 
-    <section class="filter-content" markdown="1" data-scope="linux">
+    For Linux:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
     ~~~
-    </section>
 
 2. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
 
-    <section class="filter-content" markdown="1" data-scope="mac">
+    For Mac:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
-    </section>
 
-    <section class="filter-content" markdown="1" data-scope="linux">
+    For Linux:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
-    </section>
 
 3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection string](#step-3-generate-the-connection-string) with the correct username, password, and path to the `ca.cert`:
 
@@ -189,15 +179,12 @@ You can use the connection string or parameters to connect to the cluster using 
 
 For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v19.2/build-an-app-with-cockroachdb.html).
 
-<section>
-
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="python">Python</button>
   <button style="width: 15%" class="filter-button" data-scope="go">Go</button>
   <button style="width: 15%" class="filter-button" data-scope="java">Java</button>
   <button style="width: 15%" class="filter-button" data-scope="js">Node.js</button>
 </div>
-<p></p>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -362,8 +349,6 @@ Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hiber
         <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate]]></property>
         <property name="hibernate.connection.username">username</property>
 ~~~
-
-</section>
 
 </section>
 
