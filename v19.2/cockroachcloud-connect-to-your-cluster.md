@@ -189,12 +189,15 @@ You can use the connection string or parameters to connect to the cluster using 
 
 For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v19.2/build-an-app-with-cockroachdb.html).
 
-<div class="filters">
-    <button class="filter-button" data-scope="python">Python</button>
-    <button class="filter-button" data-scope="go">Go</button>
-    <button class="filter-button" data-scope="java">Java</button>
-    <button class="filter-button" data-scope="js">Node.js</button>
+<section>
+
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="python">Python</button>
+  <button style="width: 15%" class="filter-button" data-scope="go">Go</button>
+  <button style="width: 15%" class="filter-button" data-scope="java">Java</button>
+  <button style="width: 15%" class="filter-button" data-scope="js">Node.js</button>
 </div>
+<p></p>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -359,6 +362,8 @@ Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hiber
         <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate]]></property>
         <property name="hibernate.connection.username">username</property>
 ~~~
+
+</section>
 
 </section>
 
