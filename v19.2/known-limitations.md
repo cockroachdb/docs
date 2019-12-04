@@ -33,6 +33,10 @@ pq: check constraint violated
 
 ## Unresolved limitations
 
+### Adding stores to a node
+
+{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+
 ### Cold starts of large clusters may require manual intervention
 
 If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.

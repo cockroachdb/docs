@@ -8,6 +8,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Adding stores to a node
+
+{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
