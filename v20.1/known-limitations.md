@@ -8,6 +8,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
+### Adding stores to a node
+
+{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+
 ### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
 
 CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.

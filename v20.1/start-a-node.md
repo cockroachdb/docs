@@ -180,6 +180,10 @@ Field | Description
 `clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the [troubleshooting](common-errors.html#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) docs.
 `nodeID` | The ID of the node.
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+
 ## Examples
 
 ### Start a multi-node cluster
