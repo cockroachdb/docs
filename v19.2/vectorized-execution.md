@@ -60,6 +60,8 @@ Vectorized execution is supported for the following [data types](data-types.html
 - [`FLOAT`](float.html)
 - [`INT`](int.html)
 - [`STRING`](string.html)
+- [`TIMESTAMP`](timestamp.html)
+- [`UUID`](uuid.html)
 
 In all [`vectorize` modes](#configuring-vectorized-execution), queries on tables that contain unsupported data types are executed with the row-oriented execution engine. Using [`EXPLAIN(VEC)`](explain.html#vec-option) on queries of tables that include unsupported data types will return an unhandled data type error.
 
