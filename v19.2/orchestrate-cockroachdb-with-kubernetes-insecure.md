@@ -140,7 +140,7 @@ To shut down the CockroachDB cluster:
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm delete my-release --purge
+    $ helm uninstall my-release
     ~~~
 
     ~~~

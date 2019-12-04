@@ -1,63 +1,18 @@
-1. [Install the Helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client).
+1. [Install the Helm](https://helm.sh/docs/intro/install) and add `@stable` chart repository to it.
 
-2. Install the Helm server, known as Tiller.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+    ~~~
 
-    In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you first need to create [RBAC resources](https://docs.helm.sh/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
+2. Update your Helm chart repositories to ensure that you're using the latest CockroachDB chart:
 
-    1. Create a `rbac-config.yaml` file to define a role and service account:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm repo update
+    ~~~
 
-        {% include copy-clipboard.html %}
-        ~~~
-        apiVersion: v1
-        kind: ServiceAccount
-        metadata:
-          name: tiller
-          namespace: kube-system
-        ---
-        apiVersion: rbac.authorization.k8s.io/v1
-        kind: ClusterRoleBinding
-        metadata:
-          name: tiller
-        roleRef:
-          apiGroup: rbac.authorization.k8s.io
-          kind: ClusterRole
-          name: cluster-admin
-        subjects:
-          - kind: ServiceAccount
-            name: tiller
-            namespace: kube-system
-        ~~~
-
-    2. Create the service account:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl create -f rbac-config.yaml
-        ~~~
-
-        ~~~
-        serviceaccount/tiller created
-        clusterrolebinding.rbac.authorization.k8s.io/tiller created
-        ~~~    
-
-    3. Start the Helm server and [install Tiller](https://docs.helm.sh/using_helm/#installing-tiller):
-
-        {{site.data.alerts.callout_info}}
-        Tiller does not currently support [Kubernetes 1.16.0](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/). The following command includes a workaround to install Tiller for use with 1.16.0.
-        {{site.data.alerts.end}}
-
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
-        ~~~
-
-        ~~~
-        deployment.apps/tiller-deploy created
-        service/tiller-deploy created
-        ~~~
-
-3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart and setting the `Secure.Enabled` parameter to `true`:
+3. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart and setting the `tls.enabled` parameter to `yes` (or `true`):
 
     {{site.data.alerts.callout_info}}
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
@@ -65,7 +20,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install --name my-release --set Secure.Enabled=true,Resources.requests.memory="<your memory allocation>",CacheSize="<your cache size>",MaxSQLMemory="<your SQL memory size>" stable/cockroachdb
+    $ helm install --name my-release --set tls.enabled=true,statefulset.resources.requests.memory="<your memory allocation>",conf.cache="<your cache size>",conf.max-sql-memory="<your SQL memory size>" stable/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
@@ -73,16 +28,16 @@
     {{site.data.alerts.callout_danger}}
     To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes.
 
-    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory allocation specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
+    We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the memory allocation specified in your `statefulset.resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    Requests.resources.memory="8GiB",CacheSize="2GiB",MaxSQLMemory="2GiB"
+    statefulset.resources.requests.memory="8GiB",conf.cache="2GiB",conf.max-sql-memory="2GiB"
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can customize your deployment by passing additional [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
+    You can customize your deployment by passing additional [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `storage.persistentVolume.storageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
     {{site.data.alerts.end}}
 
 4. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the CockroachDB node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificate, at which point the CockroachDB node is started in the pod.

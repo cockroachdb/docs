@@ -1,8 +1,8 @@
-1. [Install the Helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client).
+1. [Install the Helm client](https://v2.helm.sh/docs/using_helm/#installing-the-helm-client).
 
 2. Install the Helm server, known as Tiller.
 
-    In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you first need to create [RBAC resources](https://docs.helm.sh/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
+    In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you first need to create [RBAC resources](https://v2.helm.sh/docs/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
 
     1. Create a `rbac-config.yaml` file to define a role and service account:
 
@@ -40,7 +40,7 @@
         clusterrolebinding.rbac.authorization.k8s.io/tiller created
         ~~~    
 
-    3. Start the Helm server and [install Tiller](https://docs.helm.sh/using_helm/#installing-tiller):
+    3. Start the Helm server and [install Tiller](https://v2.helm.sh/docs/using_helm/#installing-tiller):
 
         {{site.data.alerts.callout_info}}
         Tiller does not currently support [Kubernetes 1.16.0](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/). The following command includes a workaround to install Tiller for use with 1.16.0.
@@ -84,7 +84,7 @@
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can customize your deployment by passing [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
+    You can customize your deployment by passing [configuration parameters](https://github.com/helm/charts/tree/fe6c09b96ba882be9a5462e7a420263c1fe567ff/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
     {{site.data.alerts.end}}
 
 5. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:

@@ -1,4 +1,4 @@
-To safely remove a node from your cluster, you must first decommission the node and only then adjust the `Replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+To safely remove a node from your cluster, you must first decommission the node and only then adjust the `spec.replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
 
 {{site.data.alerts.callout_danger}}
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
@@ -124,7 +124,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     $ helm upgrade \
     my-release \
     stable/cockroachdb \
-    --set Replicas=3 \
+    --set statefulset.replicas=3 \
     --reuse-values
     ~~~
     </section>

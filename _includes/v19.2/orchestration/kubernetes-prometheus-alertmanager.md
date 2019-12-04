@@ -22,7 +22,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     service/cockroachdb labeled
     ~~~
 
-    This ensures that there is a prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
+    This ensures that there is a Prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
@@ -35,7 +35,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     service/my-release-cockroachdb labeled
     ~~~
 
-    This ensures that there is a prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
+    This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
     </section>
 
 2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml):
