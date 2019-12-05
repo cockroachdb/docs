@@ -1,4 +1,4 @@
-1. [Install the Helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client).
+1. [Install the Helm client](https://helm.sh/docs/intro/install/).
 
 2. Install the Helm server, known as Tiller.
 
@@ -8,6 +8,7 @@
 
         {% include copy-clipboard.html %}
         ~~~
+        cat > rbac-config.yaml <<EOF
         apiVersion: v1
         kind: ServiceAccount
         metadata:
@@ -26,6 +27,7 @@
           - kind: ServiceAccount
             name: tiller
             namespace: kube-system
+        EOF
         ~~~
 
     2. Create the service account:
@@ -52,40 +54,70 @@
         $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
         ~~~
 
-3. Update your Helm chart repositories to ensure that you're using the latest CockroachDB chart:
+        ~~~
+        deployment.apps/tiller-deploy created
+        service/tiller-deploy created
+        ~~~
+
+3. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/helm/charts/blob/master/stable/cockroachdb/Chart.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
 
-4. Install the CockroachDB Helm chart, providing a "release" name to identify and track this particular deployment of the chart:
+4. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
+
+    Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
+
+    {% include copy-clipboard.html %}
+    ~~~
+    cat > my-values.yaml <<EOF
+    statefulset:
+      resources:
+        limits:
+          cpu: "4"
+          memory: "8Gi"
+        requests:
+          cpu: "4"
+          memory: "8Gi"
+      env:
+        - name: GOMAXPROCS
+          value: "4"
+    conf:
+      cache: "2Gi"
+      max-sql-memory: "2Gi"
+    EOF
+    ~~~
+
+    1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`. 
+
+        {{site.data.alerts.callout_success}}
+        For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
+        {{site.data.alerts.end}}
+
+    2. You can specify the number of CPUs to allocate to each CockroachDB node. This may differ from the number of physical cores available to the Kubernetes node. When doing so, request the highest number of `cpu` resources possible for your deployment in `statefulset.resources.requests` and `statefulset.resources.limits`, and also specify an identical GOMAXPROCS value in `statefulset.env`.
+
+    3. You may want to modify `storage.persistentVolume.size` and/or `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. The default `storageClass` also differs per environment (e.g., GCE and Azure do not default to SSD). 
+
+        {{site.data.alerts.callout_info}}
+        If necessary, you can [expand disk size](#expand-disk-size) after the cluster is live.
+        {{site.data.alerts.end}}
+
+5. Install the CockroachDB Helm chart. 
+
+    Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.
 
     {{site.data.alerts.callout_info}}
-    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
+    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install --name my-release --set Resources.requests.memory="<your memory allocation>",CacheSize="<your cache size>",MaxSQLMemory="<your SQL memory size>" stable/cockroachdb
+    $ helm install --name my-release --values my-values.yaml stable/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
-
-    {{site.data.alerts.callout_danger}}
-    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes.
-
-    We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
-    {{site.data.alerts.end}}
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    Requests.resources.memory="8GiB",CacheSize="2GiB",MaxSQLMemory="2GiB"
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    You can customize your deployment by passing [configuration parameters](https://github.com/helm/charts/tree/master/stable/cockroachdb#configuration) to `helm install` using the `--set key=value[,key=value]` flag. For a production cluster, you should consider modifying the `Storage` and `StorageClass` parameters. This chart defaults to 100 GiB of disk space per pod, but you may want more or less depending on your use case, and the default persistent volume `StorageClass` in your environment may not be what you want for a database (e.g., on GCE and Azure the default is not SSD).
-    {{site.data.alerts.end}}
 
 5. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:
 

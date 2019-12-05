@@ -59,7 +59,14 @@
         service/tiller-deploy created
         ~~~
 
-3. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
+3. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/helm/charts/blob/master/stable/cockroachdb/Chart.yaml):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm repo update
+    ~~~
+
+4. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
 
     Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
 
@@ -101,14 +108,7 @@
 
     4. For a secure deployment, set `tls.enabled` to true.
 
-4. Install the CockroachDB Helm chart. 
-
-    Get the latest chart:
-
-    {% include copy-clipboard.html %}
-    ~~~
-    helm repo update
-    ~~~
+5. Install the CockroachDB Helm chart. 
 
     Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.
 
@@ -123,7 +123,7 @@
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
 
-5. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the CockroachDB node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificate, at which point the CockroachDB node is started in the pod.
+6. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the CockroachDB node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificate, at which point the CockroachDB node is started in the pod.
 
     1. Get the names of the `Pending` CSRs:
 
@@ -184,7 +184,7 @@
 
     4. Repeat steps 2 and 3 for the other 2 pods.
 
-6. Confirm that three pods are `Running` successfully:
+7. Confirm that three pods are `Running` successfully:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -199,7 +199,7 @@
     my-release-cockroachdb-init-hxzsc   0/1       Init:0/1   0          6m
     ~~~
 
-7. Approve the CSR for the one-off pod from which cluster initialization happens:
+8. Approve the CSR for the one-off pod from which cluster initialization happens:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -210,7 +210,7 @@
     certificatesigningrequest.certificates.k8s.io/default.client.root approved
     ~~~
 
-8. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+9. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -225,7 +225,7 @@
     my-release-cockroachdb-init-hxzsc   0/1       Completed   0          1h
     ~~~
 
-9. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+10. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include copy-clipboard.html %}
     ~~~ shell
