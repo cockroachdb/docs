@@ -17,7 +17,7 @@ redirect_from: /training/node-startup-troubleshooting.html
 
 ## Problem 1: SSL required
 
-In this scenario, you try to add a node to a secure cluster without providing the node's security certificate.
+In this scenario, you try to add a node to a secure cluster without providing the node's security certificate. You'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
 ### Step 1. Generate security certificates
 
@@ -135,22 +135,26 @@ $ cockroach start \
 The startup process will fail, and you'll see the following printed to `stderr`:
 
 ~~~
-W180817 16:54:49.514313 1 cli/start.go:853  Using the default setting for --cache (128 MiB).
+W191203 19:35:14.018995 1 cli/start.go:1046  Using the default setting for --cache (128 MiB).
   A significantly larger value is usually needed for good performance.
-  If you have a dedicated server a reasonable setting is --cache=.25 (2.0 GiB).
-W180817 16:54:49.514693 1 cli/start.go:866  Using the default setting for --max-sql-memory (128 MiB).
+  If you have a dedicated server a reasonable setting is --cache=.25 (8.0 GiB).
+W191203 19:35:14.019049 1 cli/start.go:1059  Using the default setting for --max-sql-memory (128 MiB).
   A significantly larger value is usually needed in production.
-  If you have a dedicated server a reasonable setting is --max-sql-memory=.25 (2.0 GiB).
-E180817 16:54:49.621930 1 cli/error.go:230  cannot load certificates.
-Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
-
-problem with CA certificate: not found
+  If you have a dedicated server a reasonable setting is --max-sql-memory=.25 (8.0 GiB).
 *
 * ERROR: cannot load certificates.
 * Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
 *
-* problem with CA certificate: not found
+* failed to start server: problem with CA certificate: not found
 *
+E191203 19:35:14.137329 1 cli/error.go:233  cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+failed to start server: problem with CA certificate: not found
+Error: cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+failed to start server: problem with CA certificate: not found
 Failed running "start"
 ~~~
 
@@ -167,8 +171,7 @@ $ cockroach start \
 --store=node4 \
 --listen-addr=localhost:26260 \
 --http-addr=localhost:8083 \
---join=localhost:26257,localhost:26258,localhost:26259 \
---background
+--join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
 ## Problem 2: Wrong join address
@@ -177,7 +180,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 ### Step 1. Simulate the problem
 
-Try to add another node:
+In a new terminal, try to add another node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -201,7 +204,7 @@ These warnings tell you that the node cannot establish a connection with the add
 
 ### Step 2. Resolve the problem
 
-1. Press **CTRL-C** to stop the previous startup attempt.
+1. Press **CTRL-C** twice to stop the previous startup attempt.
 
 2. To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address:
 
@@ -212,8 +215,7 @@ These warnings tell you that the node cannot establish a connection with the add
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 ## Problem 3: Missing join address
@@ -238,13 +240,16 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
     ~~~
     CockroachDB node starting at 2018-02-08 16:30:26.690638 +0000 UTC (took 0.2s)
     build:      CCL {{page.release_info.version}} @ 2018/01/08 17:30:06 (go1.8.3)
-    admin:      https://localhost:8085
-    sql:        postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
-    logs:       /Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6/logs
-    store[0]:   path=/Users/jesseseldess/cockroachdb-training/cockroach-{{page.release_info.version}}.darwin-10.9-amd64/node6
-    status:     initialized new cluster
-    clusterID:  cfcd80ee-9005-4975-9ae9-9c36d9aaa57e
-    nodeID:     1
+    webui:               https://localhost:8085
+    sql:                 postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+    RPC client flags:    cockroach <client cmd> --host=localhost:26262 --certs-dir=certs
+    logs:                /Users/crossman/node6/logs
+    temp dir:            /Users/crossman/node6/cockroach-temp138121774
+    external I/O path:   /Users/crossman/node6/extern
+    store[0]:            path=/Users/crossman/node6
+    status:              initialized new cluster
+    clusterID:           e2514c0a-9dd5-4b2e-a20f-85183365c207
+    nodeID:              1
     ~~~
 
 2. Press **CTRL-C** to stop the new node.
