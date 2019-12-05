@@ -10,12 +10,37 @@ CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos au
 GSSAPI authentication is an [enterprise-only](enterprise-licensing.html) feature.
 {{site.data.alerts.end}}
 
-## Configuring KDC
+## Requirements
+
+- A working Active Directory or Kerberos Environment
+- A Service Principal
+- A GSSAPI-compatable Postgres Client (psql, etc)
+- A client machine with a Kerberos client installed and configured
+
+## Configuring KDC for CockroachDB
 
 To use Kerberos authentication with CockroachDB, configure a Kerberos service principal name (SPN) for CockroachDB and generate a valid keytab file with the following specifications:
 
 - Set the SPN to the name specified by your client driver. For example, if you use the psql client, set SPN to `postgres`.
 - Create SPNs for all DNS addresses that a user would use to connect to your CockroachDB cluster (including any TCP load balancers between the user and the CockroachDB node) and ensure that the keytab contains the keys for every SPN you create.
+
+In Active Directory, the syntax for generating a keytab that maps a Service Principal to the SPN you need for your client is as follows:
+
+ktpass -out {keytab_filename} -princ {Client_SPN}/{CLIENT_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+
+EXAMPLE:
+ktpass -out postgres.keytab -princ postgres/ad-client2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+
+In MIT KDC, you can't map a service principal to an SPN with a different user name, so you will need to create a service principal that includes the SPN for your client. 
+
+create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
+create-keytab: kadmin.local -q "ktadd -k keytab {SPN}/{CLIENT_FQDN}@{DOMAIN}"
+
+EXAMPLE:
+kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES" -pw "testing12345!"
+kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
+
+The resulting keytab needs to be copied to the client machine.  For both examples above, if connecting from multiple client machines you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
 
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
@@ -53,6 +78,8 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable.
 
+EXAMPLE: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
+
 4. Start a CockroachDB node:
 
     {% include copy-clipboard.html %}
@@ -82,6 +109,8 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
+The above syntax is based on the pg_hba.conf standard for PostgreSQL which is documented here: https://www.postgresql.org/docs/current/auth-pg-hba-conf.html - this can be used to exclude other users from Kerberos authentication.
+
 8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
     {% include copy-clipboard.html %}
@@ -103,16 +132,43 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 {{site.data.alerts.end}}
 
 1. Install and configure your Kerberos client.
+
+In CentOS/RHEL - `yum install krb5-user`
+Edit /etc/krb5.conf to include:
+
+       [libdefaults]
+		 default_realm = {REALM}
+
+	   [realms]
+		 {REALM} = {
+		  kdc = {fqdn-kdc-server or ad-server}
+		  admin_server = {fqdn-kdc-server or ad-server}
+		  default_domain = {realm-lower-case}
+		}
+
+EXAMPLE:
+
+       [libdefaults]
+		 default_realm = COCKROACH.INDUSTRIES
+
+	   [realms]
+		 COCKROACH.INDUSTRIES = {
+		  kdc = ad.cockroach.industries
+		  admin_server = ad.cockroach.industries
+		  default_domain = cockroach.industries
+		}
+
+Then you need to load the keytab using the command `kinit postgres` - `klist` should then show a valid ticket.
+
 2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
-3. Get a Kerberos TGT for the Kerberos user from the KDC using `kinit`.
-4. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
+3. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     > psql "postgresql://localhost:26257/defaultdb?sslmode=require" -U carl
     ~~~
 
-5. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
+4. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
 
 ## See also
 
