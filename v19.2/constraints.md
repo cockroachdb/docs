@@ -93,7 +93,7 @@ Constraint Type | Procedure
 [`FOREIGN KEY`](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html)
 [`NOT NULL`](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint)
 [`PRIMARY KEY`](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
-[`UNIQUE`](unique.html) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index](drop-index.html) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint CASCADE` (note that `CASCADE` is required for dropping indexes used by unique constraints).
+[`UNIQUE`](unique.html) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index](drop-index.html) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint`.
 
 ### Change constraints
 
