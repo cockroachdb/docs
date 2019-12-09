@@ -12,9 +12,9 @@ GSSAPI authentication is an [enterprise-only](enterprise-licensing.html) feature
 
 ## Requirements
 
-- A working Active Directory or Kerberos Environment
+- A working Active Directory or Kerberos environment
 - A Service Principal
-- A GSSAPI-compatable Postgres Client (psql, etc)
+- A GSSAPI-compatable Postgres Client (psql, etc.)
 - A client machine with a Kerberos client installed and configured
 
 ## Configuring KDC for CockroachDB
@@ -24,23 +24,43 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 - Set the SPN to the name specified by your client driver. For example, if you use the psql client, set SPN to `postgres`.
 - Create SPNs for all DNS addresses that a user would use to connect to your CockroachDB cluster (including any TCP load balancers between the user and the CockroachDB node) and ensure that the keytab contains the keys for every SPN you create.
 
-In Active Directory, the syntax for generating a keytab that maps a Service Principal to the SPN you need for your client is as follows:
+### Active Directory
 
+For Active Directory, the client syntax for generating a keytab that maps a service principal to the SPN is as follows:
+
+{% include copy-clipboard.html %}
+~~~ shell
 ktpass -out {keytab_filename} -princ {Client_SPN}/{CLIENT_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+~~~
 
-EXAMPLE:
+Example:
+
+{% include copy-clipboard.html %}
+~~~ shell
 ktpass -out postgres.keytab -princ postgres/ad-client2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+~~~
 
-In MIT KDC, you can't map a service principal to an SPN with a different user name, so you will need to create a service principal that includes the SPN for your client. 
+Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
 
+### MIT KDC
+
+In MIT KDC, you can't map a service principal to an SPN with a different user name, so you will need to create a service principal that includes the SPN for your client.
+
+{% include copy-clipboard.html %}
+~~~ shell
 create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
 create-keytab: kadmin.local -q "ktadd -k keytab {SPN}/{CLIENT_FQDN}@{DOMAIN}"
+~~~
 
-EXAMPLE:
+Example:
+
+{% include copy-clipboard.html %}
+~~~ shell
 kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES" -pw "testing12345!"
 kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
+~~~
 
-The resulting keytab needs to be copied to the client machine.  For both examples above, if connecting from multiple client machines you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
+Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
 
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
@@ -78,7 +98,7 @@ The resulting keytab needs to be copied to the client machine.  For both example
 
 3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable.
 
-EXAMPLE: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
+    Example: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
 
 4. Start a CockroachDB node:
 
@@ -90,6 +110,7 @@ EXAMPLE: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
     ~~~
 
 5. Connect to CockroachDB as `root` using the `root` client certificate generated above:
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
@@ -109,7 +130,7 @@ EXAMPLE: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
-The above syntax is based on the pg_hba.conf standard for PostgreSQL which is documented here: https://www.postgresql.org/docs/current/auth-pg-hba-conf.html - this can be used to exclude other users from Kerberos authentication.
+      The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
 
 8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
@@ -133,35 +154,60 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
 1. Install and configure your Kerberos client.
 
-In CentOS/RHEL - `yum install krb5-user`
-Edit /etc/krb5.conf to include:
+    For CentOS/RHEL systems, run:
 
-       [libdefaults]
-		 default_realm = {REALM}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    yum install krb5-user
+    ~~~
 
-	   [realms]
-		 {REALM} = {
-		  kdc = {fqdn-kdc-server or ad-server}
-		  admin_server = {fqdn-kdc-server or ad-server}
-		  default_domain = {realm-lower-case}
-		}
+    Edit the `/etc/krb5.conf` file to include:
 
-EXAMPLE:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+           [libdefaults]
+    		 default_realm = {REALM}
 
-       [libdefaults]
-		 default_realm = COCKROACH.INDUSTRIES
+    	   [realms]
+    		 {REALM} = {
+    		  kdc = {fqdn-kdc-server or ad-server}
+    		  admin_server = {fqdn-kdc-server or ad-server}
+    		  default_domain = {realm-lower-case}
+    		}
+    ~~~
 
-	   [realms]
-		 COCKROACH.INDUSTRIES = {
-		  kdc = ad.cockroach.industries
-		  admin_server = ad.cockroach.industries
-		  default_domain = cockroach.industries
-		}
+    Example:
 
-Then you need to load the keytab using the command `kinit postgres` - `klist` should then show a valid ticket.
+    {% include copy-clipboard.html %}
+    ~~~ shell
 
-2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
-3. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
+           [libdefaults]
+    		 default_realm = COCKROACH.INDUSTRIES
+
+    	   [realms]
+    		 COCKROACH.INDUSTRIES = {
+    		  kdc = ad.cockroach.industries
+    		  admin_server = ad.cockroach.industries
+    		  default_domain = cockroach.industries
+    		}
+    ~~~
+
+2. Load the keytab:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+      kinit postgres
+    ~~~
+
+3. Verify if a valid ticket has been generated:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    klist
+    ~~~
+
+4. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
+5. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
     ~~~ shell
