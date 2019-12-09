@@ -251,7 +251,7 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 (1 row)
 ~~~
 
-For added clarity, here's a key showing how nodes map to localities:
+Note: you may need to execute `use movr;` to be in the proper database context. For added clarity, here's a key showing how nodes map to localities:
 
 Node ID | Region | Datacenter
 --------|--------|-----------
@@ -454,7 +454,7 @@ If you had created any secondary index partitions, it would be important to crea
 
 ## Step 9. Check data distribution after partitioning
 
-Over the next minutes, CockroachDB will rebalance all partitions based on the constraints you defined.
+Over the next few minutes, CockroachDB will rebalance all partitions based on the constraints you defined.
 
 To check this, run the `SHOW RANGES` statement on the `vehicles` and `users` tables:
 
