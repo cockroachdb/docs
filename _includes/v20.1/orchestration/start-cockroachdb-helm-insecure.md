@@ -96,7 +96,7 @@
         For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
         {{site.data.alerts.end}}
 
-    2. You can specify the number of CPUs to allocate to each CockroachDB node. This may differ from the number of physical cores available to the Kubernetes node. When doing so, request the highest number of `cpu` resources possible for your deployment in `statefulset.resources.requests` and `statefulset.resources.limits`, and also specify an identical GOMAXPROCS value in `statefulset.env`.
+    2. You can specify the number of `cpu` resources to allocate to each CockroachDB node. When doing so, you should request the highest number of cores that the Linux scheduler can dedicate to CockroachDB, which will be 1 less than the physical cores on the Kubernetes node. Also specify an identical GOMAXPROCS value in `statefulset.env`.
 
     3. You may want to modify `storage.persistentVolume.size` and/or `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. The default `storageClass` also differs per environment (e.g., GCE and Azure do not default to SSD). 
 
