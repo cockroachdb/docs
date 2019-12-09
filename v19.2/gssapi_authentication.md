@@ -30,14 +30,14 @@ For Active Directory, the client syntax for generating a keytab that maps a serv
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ktpass -out {keytab_filename} -princ {Client_SPN}/{CLIENT_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+$ ktpass -out {keytab_filename} -princ {Client_SPN}/{CLIENT_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ktpass -out postgres.keytab -princ postgres/ad-client2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+$ ktpass -out postgres.keytab -princ postgres/ad-client2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
@@ -48,16 +48,19 @@ In MIT KDC, you can't map a service principal to an SPN with a different user na
 
 {% include copy-clipboard.html %}
 ~~~ shell
-create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
-create-keytab: kadmin.local -q "ktadd -k keytab {SPN}/{CLIENT_FQDN}@{DOMAIN}"
+$ create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ create-keytab: kadmin.local -q "ktadd -k keytab {SPN}/{CLIENT_FQDN}@{DOMAIN}"
 ~~~
 
 Example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES" -pw "testing12345!"
-kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
+$ kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES" -pw "testing12345!"
+$ kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
 ~~~
 
 Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
@@ -158,13 +161,13 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    yum install krb5-user
+    $ yum install krb5-user
     ~~~
 
     Edit the `/etc/krb5.conf` file to include:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~
            [libdefaults]
     		 default_realm = {REALM}
 
@@ -179,7 +182,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     Example:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~
 
            [libdefaults]
     		 default_realm = COCKROACH.INDUSTRIES
@@ -196,14 +199,14 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-      kinit postgres
+    $ kinit postgres
     ~~~
 
 3. Verify if a valid ticket has been generated:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    klist
+    $ klist
     ~~~
 
 4. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
@@ -211,7 +214,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    > psql "postgresql://localhost:26257/defaultdb?sslmode=require" -U carl
+    $ psql "postgresql://localhost:26257/defaultdb?sslmode=require" -U carl
     ~~~
 
 4. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
