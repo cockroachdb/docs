@@ -76,14 +76,14 @@
     statefulset:
       resources:
         limits:
-          cpu: "4"
+          cpu: "16"
           memory: "8Gi"
         requests:
-          cpu: "4"
+          cpu: "16"
           memory: "8Gi"
       env:
         - name: GOMAXPROCS
-          value: "4"
+          value: "16"
     conf:
       cache: "2Gi"
       max-sql-memory: "2Gi"
@@ -92,7 +92,7 @@
     EOF
     ~~~
 
-    1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`. 
+    1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
 
         {{site.data.alerts.callout_success}}
         For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.

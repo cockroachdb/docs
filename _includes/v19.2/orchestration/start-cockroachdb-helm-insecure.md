@@ -76,14 +76,14 @@
     statefulset:
       resources:
         limits:
-          cpu: "4"
+          cpu: "16"
           memory: "8Gi"
         requests:
-          cpu: "4"
+          cpu: "16"
           memory: "8Gi"
       env:
         - name: GOMAXPROCS
-          value: "4"
+          value: "16"
     conf:
       cache: "2Gi"
       max-sql-memory: "2Gi"
