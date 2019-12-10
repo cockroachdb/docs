@@ -66,7 +66,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [Porting from PostgreSQL](porting-postgres.html)
+- [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [SQL Dump (Export)](sql-dump.html)
 - [Back Up and Restore](backup-and-restore.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
