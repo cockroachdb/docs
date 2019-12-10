@@ -27,11 +27,11 @@ The `primary` index helps filter a table's primary key but doesn't help SQL find
 
 To create the most useful secondary indexes, you should also check out our [best practices](#best-practices).
 
-### Selection
+### Choosing an Index
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/), which will show you how to use the [`EXPLAIN`](https://www.cockroachlabs.com/docs/v19.1/explain.html) statement for your query to see which index is being used.
 
-To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
+To override CockroachDB's index selection, you can also force queries [to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting"). Index hinting is supported for [`SELECT`](select-clause.html#select-from-a-specific-index), [`DELETE`](delete.html#force-index-selection-for-deletes), and [`UPDATE`](update.html#force-index-selection-for-updates) statements.
 
 ### Storage
 
@@ -49,10 +49,45 @@ To maximize your indexes' performance, we recommend following a few [best practi
 
 ## Best practices
 
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
+- [Store columns](#storing-columns) that are _only_ in the `SELECT` clause 
+  - i.e., columns _projected_ but not filtered by the query
+
+For example, consider the following query:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT last_name, first_name, email, city 
+    FROM users 
+   WHERE country = 'USA' AND city = 'San Diego';
+~~~
+
+An ideal index would index the `country` and `city` columns, and store the `last_name`, `first_name`, and `email` fields:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON users (country, city) STORING (last_name, first_name, email);
+~~~
+
+You can confirm that the index is used efficiently by looking at the [`EXPLAIN`](explain.html) plan:
+
+~~~ sql
+> EXPLAIN SELECT last_name, first_name, email, city 
+     FROM users 
+    WHERE country = 'USA' AND city = 'San Diego';
+    tree    |    field    |                   description
++-----------+-------------+-------------------------------------------------+
+            | distributed | false
+            | vectorized  | false
+  render    |             |
+   └── scan |             |
+            | table       | users@users_country_city_idx
+            | spans       | /"USA"/"San Diego"-/"USA"/"San Diego"/PrefixEnd
+~~~
+
+This query uses the `users_country_city_idx` index, filters by country and city (as shown in the `spans` row), and does not have an index join, demonstrating that it is a covered query, one that can be answered using only the index.
 
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html) and the [Performance Tuning](performance-tuning.html) tutorial.
