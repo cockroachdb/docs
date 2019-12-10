@@ -8,6 +8,10 @@ toc: true
 
 If locality was not specified on node startup, the statement returns an empty row.
 
+{{site.data.alerts.callout_success}}
+In 19.1.x you can retrieve locality information using `select * from crdb_internal.gossip_nodes;`
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 No [privileges](authorization.html#assign-privileges) are required to list the locality of the current node.
