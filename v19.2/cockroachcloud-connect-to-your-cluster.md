@@ -204,7 +204,7 @@ import psycopg2
 conn = psycopg2.connect(
     user='<username>',
     password='<password>',
-    host='<region>.<cluster_name>',
+    host='<host>',
     port=26257,
     database='<database_name>',
     sslmode='verify-full',
@@ -224,7 +224,7 @@ You must replace the `postgres://` prefix with `cockroachdb://` in the connectio
 
 # Create an engine to communicate with the database. The "cockroachdb://" prefix
 # for the engine URL indicates that we are connecting to CockroachDB.
-engine = create_engine('cockroachdb://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>')
+engine = create_engine('cockroachdb://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>')
 
 ~~~
 
@@ -244,7 +244,7 @@ Start by choosing the [Go pq driver](https://godoc.org/github.com/lib/pq) or [GO
   //Connect to the database.
 	db, err := sql.Open(
 		"postgres",
-		"postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>",
+		"postgresql://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>",
 	)
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
@@ -258,7 +258,7 @@ Start by choosing the [Go pq driver](https://godoc.org/github.com/lib/pq) or [GO
 ~~~ go
 
   // Connect to the database.
-    const addr = "postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>"
+    const addr = "postgresql://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>"
     db, err := gorm.Open("postgres", addr)
     if err != nil {
         log.Fatal(err)
@@ -283,7 +283,7 @@ Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [
 var config = {
     user: '<username>',
     password: '<password>'
-    host: '<region>.<cluster_name>',
+    host: '<host>',
     database: '<database_name>',
     port: 26257,
     ssl: {
@@ -300,7 +300,7 @@ var config = {
 ~~~ js
 // Connect to CockroachDB through Sequelize.
 var sequelize = new Sequelize('<database_name>', '<username>', '<password>', {
-    host: '<region>.<cluster_name>',
+    host: '<host>',
     dialect: 'postgres',
     port: 26257,
     logging: false,
@@ -329,7 +329,7 @@ Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hiber
 
 // Configure the database connection.
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setServerName("<region>.<cluster_name>");
+        ds.setServerName("<host>");
         ds.setPortNumber(26257);
         ds.setDatabaseName("<database_name>");
         ds.setUser("<username>");
@@ -347,7 +347,7 @@ Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hiber
     //Database connection settings
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
          <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
-        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://<username>:<password>@<region>.<cluster_name>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate]]></property>
+        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://<username>:<password>@<host>:26257/<database>?sslmode=verify-full&sslrootcert=<absolute path to CA certificate]]></property>
         <property name="hibernate.connection.username">username</property>
 ~~~
 
