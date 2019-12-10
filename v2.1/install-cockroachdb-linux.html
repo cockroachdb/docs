@@ -130,7 +130,10 @@ key: install-cockroachdb.html
         </tr>
         <tr>
           <td>Go</td>
-          <td>Version 1.10 or higher is required.</td>
+          <td>Version 1.10.*. Older go versions might work by doing
+            <code>make build IGNORE_GOVERS=1</code>,
+            but you're on your own. 1.11 and above is not recommended.
+          </td>
         </tr>
         <tr>
           <td>Bash</td>
