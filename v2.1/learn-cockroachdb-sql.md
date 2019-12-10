@@ -2,93 +2,17 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{% unless site.cockroachcloud %}
 {{site.data.alerts.callout_success}}
 Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
-{% endunless %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
 {{site.data.alerts.end}}
-
-{% if site.cockroachcloud %}
-## Before you begin
-
-Make sure you have already [connected the CockroachDB SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
-
-## Create a database
-
-Your Managed CockroachDB cluster comes with a `defaultdb` for testing and some internal databases.
-
-To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE bank;
-~~~
-
-Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS bank;
-~~~
-
-When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP DATABASE bank;
-~~~
-
-## Show databases
-
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-  database_name
-+---------------+
-  bank
-  defaultdb
-  postgres
-  system
-(4 rows)
-~~~
-
-## Set the default database
-
-It's best to set the default database directly in your [connection string](cockroachcloud-sign-up-for-a-cluster.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET DATABASE = bank;
-~~~
-
-When working in the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASE;
-~~~
-
-~~~
-  database
-+----------+
-  bank
-(1 row)
-~~~
-{% endif %}
 
 ## Create a table
 
@@ -374,11 +298,9 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
-{% unless site.cockroachcloud %}
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
-{% endunless %}

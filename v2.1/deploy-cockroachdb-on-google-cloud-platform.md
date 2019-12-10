@@ -85,9 +85,9 @@ GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/loa
 
 To use GCE's TCP Proxy Load Balancing service:
 
-1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-uncockroachcloud-instances).
+1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances).
     - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp26257` as the **Port name** and `26257` as the **Port number**.
-2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-uncockroachcloud-instances#addinstances).
+2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
 3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#configure_load_balancer).
     - During backend configuration, create a health check, setting the **Protocol** to `HTTPS`, the **Port** to `8080`, and the **Request path** to path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
         - If you want to maintain long-lived SQL connections that may be idle for more than tens of seconds, increase the backend timeout setting accordingly.
