@@ -1,0 +1,198 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"P",
+				"Printf"
+			],
+			[
+				"new",
+				"newLic"
+			],
+			[
+				"lice",
+				"licenseMatch"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/matthewvardi/supportscripts/licenseautomation/script.py",
+		"/Users/matthewvardi/Desktop/dds_bk_2019_07_23_13_52_28_old.sql",
+		"/Users/matthewvardi/Testing_Purposes/node1/extern/dump.sql",
+		"/Users/matthewvardi/Desktop/dump.sql",
+		"/Users/matthewvardi/Desktop/test.sql",
+		"/Users/matthewvardi/Testing_Purposes/destroylocal.sh",
+		"/Users/matthewvardi/supportscripts/licenseautomation/sfdc.go",
+		"/Users/matthewvardi/supportscripts/licenseautomation/main.go",
+		"/Users/matthewvardi/supportscripts/licenseautomation/config.ini",
+		"/Users/matthewvardi/go/src/github.com/cockroachlabs/registration/README.md",
+		"/Users/matthewvardi/Desktop/crdblocal.sh",
+		"/Users/matthewvardi/Downloads/Simple_Bulk_Ticket_Update_Template.py",
+		"/Users/matthewvardi/Downloads/debug/settings.json",
+		"/Users/matthewvardi/go/src/github.com/cockroachdb/cockroach/README.md",
+		"/Users/matthewvardi/go/src/github.com/cockroachlabs/roachprod/README.md",
+		"/Users/matthewvardi/Downloads/person.sql",
+		"/Users/matthewvardi/Downloads/car.sql",
+		"/Users/matthewvardi/Downloads/person-car.sql",
+		"/Users/matthewvardi/cockroachdb-training/pg_dump.sql",
+		"/Users/matthewvardi/go/src/github.com/cockroachdb/docs/_includes/sidebar-data-v2.1.json",
+		"/Users/matthewvardi/go/src/github.com/cockroachdb/docs/v2.1/start-a-node.md",
+		"/Users/matthewvardi/go/src/github.com/cockroachlabs/production/README.md"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "jsonb.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

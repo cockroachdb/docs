@@ -13,27 +13,26 @@ We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ign
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-<section class="filter-content" markdown="1" data-scope="secure">
-
 ## Step 1. Install the Rust Postgres driver
 
 Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
-{% include {{ page.version.version }}/app/common-steps.md %}
+<section class="filter-content" markdown="1" data-scope="secure">
 
-## Step 5. Create a table in the new database
+## Step 2. Create the `maxroach` users and `bank` database
 
-As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
+{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+
+## Step 3. Generate a certificate for the `maxroach` user
+
+Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure \
---database=bank \
---user=maxroach \
--e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)'
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
 
-## Step 6. Run the Rust code
+## Step 4. Run the Rust code
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
@@ -67,7 +66,7 @@ After running the code, use the [built-in SQL client](use-the-built-in-sql-clien
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
 
 ~~~
@@ -84,13 +83,11 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-## Step 1. Install the Rust Postgres driver
+## Step 2. Create the `maxroach` users and `bank` database
 
-Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
 
-{% include {{ page.version.version }}/app/common-steps.md %}
-
-## Step 5. Create a table in the new database
+## Step 3. Create a table in the new database
 
 As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
 
@@ -102,7 +99,7 @@ $ cockroach sql --insecure \
 -e 'CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)'
 ~~~
 
-## Step 6. Run the Rust code
+## Step 4. Run the Rust code
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
