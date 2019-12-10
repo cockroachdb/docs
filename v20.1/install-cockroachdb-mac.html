@@ -156,7 +156,10 @@ If you previously installed CockroachDB using a different method, you may need t
         </tr>
         <tr>
           <td>Go</td>
-          <td>Version 1.12.12 or higher is required.</td>
+          <td>Version 1.12.12+ or 1.13.4+. Older go versions might work by doing
+            <code>make build IGNORE_GOVERS=1</code>,
+            but you're on your own. 1.14 and above is not recommended.
+          </td>
         </tr>
         <tr>
           <td>Bash</td>
