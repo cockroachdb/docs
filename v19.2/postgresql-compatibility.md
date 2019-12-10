@@ -4,15 +4,13 @@ summary: A summary of CockroachDB's compatibility with PostgreSQL
 toc: true
 redirect-from: porting-postgres.html
 ---
-CockroachDB supports both the PostgreSQL wire protocol and the majority of its syntax. This means that you can use your existing PostgreSQL connectors and clients, and your existing applications can often be migrated to CockroachDB without changing any application code.
+CockroachDB supports the PostgreSQL wire protocol and the majority of its syntax. This means that your existing applications can often be migrated to CockroachDB without changing application code.
 
-Currently CockroachDB is compatible with PostgreSQL 9.6 and works with most PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](build-an-app-with-cockroachdb.html).
+CockroachDB is compatible with PostgreSQL 9.6 and works with majority of PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](build-an-app-with-cockroachdb.html).
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because these features cannot be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
-Note that some of these differences only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
-
-{{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as the <code>ENUM</code> type.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as the <code>ENUM</code> type.{{site.data.alerts.end}}
 
 ## Unsupported Features
 - Stored procedures and functions
@@ -29,6 +27,8 @@ Note that some of these differences only apply to rare inputs, and so no change 
 - XA syntax
 
 ##Features that differ from PostgreSQL
+Note, some of these differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
+
 ### Overflow of `float`
 
 In PostgreSQL, the `float` type returns an error when it overflows or an expression would return Infinity:
@@ -126,5 +126,5 @@ SELECT 1::int << (x % 64)
 
 CockroachDB uses a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
 
-###
-A full com
+###SQL Compatibility
+Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html)
