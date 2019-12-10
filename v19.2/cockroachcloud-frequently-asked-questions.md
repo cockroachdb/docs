@@ -83,6 +83,10 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
+{{site.data.alerts.callout_danger}}
+Do not alter the cluster settings `cluster.organization` and `enterprise.license`. If you think you need to change them, please [contact us](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
+
 ## Cluster troubleshooting
 
 ### What do I do if my queries are too slow?
