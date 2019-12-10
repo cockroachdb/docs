@@ -103,7 +103,7 @@ Constraint Type | Procedure
 -----------------|-----------
 [`CHECK`](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 [`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-column.html).
-[`FOREIGN KE`Y](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
+[`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 [`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
 [`PRIMARY KEY`](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
 [`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
