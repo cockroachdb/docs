@@ -1,133 +1,199 @@
 [
   {
-    "title": "Guides",
+    "title": "Get Started",
     "is_top_level": true,
     "items": [
       {
-        "title": "Get Started",
+        "title": "Install CockroachDB",
+        "urls": [
+          "/${VERSION}/install-cockroachdb.html",
+          "/${VERSION}/install-cockroachdb-mac.html",
+          "/${VERSION}/install-cockroachdb-linux.html",
+          "/${VERSION}/install-cockroachdb-windows.html"
+        ]
+      },
+      {
+        "title": "Start a Local Cluster",
         "items": [
           {
-            "title": "Install CockroachDB",
+            "title": "From Binary",
             "urls": [
-              "/${VERSION}/install-cockroachdb.html",
-              "/${VERSION}/install-cockroachdb-mac.html",
-              "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html"
+              "/${VERSION}/start-a-local-cluster.html",
+              "/${VERSION}/secure-a-cluster.html"
             ]
           },
           {
-            "title": "Start a Local Cluster",
-            "items": [
-              {
-                "title": "From Binary",
-                "urls": [
-                  "/${VERSION}/start-a-local-cluster.html",
-                  "/${VERSION}/secure-a-cluster.html"
-                ]
-              },
-              {
-                "title": "In Kubernetes",
-                "urls": [
-                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
-                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
-                ]
-              },
-              {
-                "title": "In Docker",
-                "urls": [
-                  "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
-                  "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
-                  "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
-                ]
-              }
-            ]
-          },
-          {
-            "title": "Learn CockroachDB SQL",
+            "title": "In Kubernetes",
             "urls": [
-              "/${VERSION}/learn-cockroachdb-sql.html"
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
+              "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
             ]
           },
           {
-            "title": "Build an App",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/build-an-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Go",
-                "urls": [
-                  "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
-                ]
-              },
-              {
-                "title": "Python",
-                "urls": [
-                  "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html"
-                ]
-              },
-              {
-                "title": "Ruby",
-                "urls": [
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
-                ]
-              },
-              {
-                "title": "Java",
-                "urls": [
-                  "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
-                ]
-              },
-              {
-                "title": "Node.js",
-                "urls": [
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
-                ]
-              },
-              {
-                "title": "C++",
-                "urls": [
-                  "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "C# (.NET)",
-                "urls": [
-                  "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Clojure",
-                "urls": [
-                  "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "PHP",
-                "urls": [
-                  "/${VERSION}/build-a-php-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Rust",
-                "urls": [
-                  "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
-                ]
-              }
+            "title": "In Docker",
+            "urls": [
+              "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
+              "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
+              "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
             ]
           }
         ]
       },
       {
-        "title": "Deploy",
+        "title": "Learn CockroachDB SQL",
+        "urls": [
+          "/${VERSION}/learn-cockroachdb-sql.html"
+        ]
+      },
+      {
+        "title": "Build an App",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/build-an-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Go",
+            "urls": [
+              "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
+            ]
+          },
+          {
+            "title": "Python",
+            "urls": [
+              "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html"
+            ]
+          },
+          {
+            "title": "Ruby",
+            "urls": [
+              "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+            ]
+          },
+          {
+            "title": "Java",
+            "urls": [
+              "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
+            ]
+          },
+          {
+            "title": "Node.js",
+            "urls": [
+              "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+              "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+            ]
+          },
+          {
+            "title": "C++",
+            "urls": [
+              "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "C# (.NET)",
+            "urls": [
+              "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Clojure",
+            "urls": [
+              "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "PHP",
+            "urls": [
+              "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Rust",
+            "urls": [
+              "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Product FAQs",
+        "urls": [
+          "/${VERSION}/frequently-asked-questions.html"
+        ]
+      },
+      {
+        "title": "Tutorials",
+        "items": [
+          {
+            "title": "Replication & Rebalancing",
+            "urls": [
+              "/${VERSION}/demo-replication-and-rebalancing.html"
+            ]
+          },
+          {
+            "title": "Fault Tolerance & Recovery",
+            "urls": [
+              "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+            ]
+          },
+          {
+            "title": "Serializable Transactions",
+            "urls": [
+              "/${VERSION}/demo-serializable.html"
+            ]
+          },
+          {
+            "title": "Follow-the-Workload",
+            "urls": [
+              "/${VERSION}/demo-follow-the-workload.html"
+            ]
+          },
+          {
+            "title": "Orchestration with Kubernetes",
+            "urls": [
+              "/${VERSION}/orchestration-with-kubernetes.html"
+            ]
+          },
+          {
+            "title": "JSON Support",
+            "urls": [
+              "/${VERSION}/demo-json-support.html"
+            ]
+          },
+          {
+            "title": "SQL Tuning with <code>EXPLAIN</code>",
+            "urls": [
+              "/${VERSION}/sql-tuning-with-explain.html"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Develop",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "SQL FAQs",
+        "urls": [
+          "/${VERSION}/sql-faqs.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Operate",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Deployment",
         "items": [
           {
             "title": "Production Checklist",
@@ -391,34 +457,11 @@
             "urls": [
               "/${VERSION}/configure-replication-zones.html"
             ]
-          },
-          {
-            "title": "Enterprise Features",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/enterprise-licensing.html"
-                ]
-              },
-              {
-                "title": "Table Partitioning",
-                "urls": [
-                  "/${VERSION}/partitioning.html"
-                ]
-              },
-              {
-                "title": "Change Data Capture",
-                "urls": [
-                  "/${VERSION}/change-data-capture.html"
-                ]
-              }
-            ]
           }
         ]
       },
       {
-        "title": "Migrate",
+        "title": "Data Migration",
         "items": [
           {
             "title": "Migration Overview",
@@ -453,7 +496,7 @@
         ]
       },
       {
-        "title": "Maintain",
+        "title": "Maintenance",
         "items": [
           {
             "title": "Upgrade to CockroachDB v19.2",
@@ -506,48 +549,54 @@
         ]
       },
       {
-        "title": "Troubleshoot",
+        "title": "Enterprise Features",
         "items": [
           {
             "title": "Overview",
             "urls": [
-              "/${VERSION}/troubleshooting-overview.html"
+              "/${VERSION}/enterprise-licensing.html"
             ]
           },
           {
-            "title": "Common Errors",
+            "title": "Table Partitioning",
             "urls": [
-              "/${VERSION}/common-errors.html"
+              "/${VERSION}/partitioning.html"
             ]
           },
           {
-            "title": "Troubleshoot Cluster Setup",
+            "title": "Change Data Capture",
             "urls": [
-              "/${VERSION}/cluster-setup-troubleshooting.html"
+              "/${VERSION}/change-data-capture.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Operational FAQs",
+        "urls": [
+          "/${VERSION}/operational-faqs.html"
+        ]
+      },
+      {
+        "title": "Tutorials",
+        "items": [
+          {
+            "title": "Low Latency Multi-Region Deployment",
+            "urls": [
+              "/${VERSION}/demo-low-latency-multi-region-deployment.html"
             ]
           },
           {
-            "title": "Troubleshoot Query Behavior",
+            "title": "Performance Tuning",
             "urls": [
-              "/${VERSION}/query-behavior-troubleshooting.html"
+              "/${VERSION}/performance-tuning.html",
+              "/${VERSION}/performance-tuning-insecure.html"
             ]
           },
           {
-            "title": "Understand Debug Logs",
+            "title": "Cross-Cloud Migration",
             "urls": [
-              "/${VERSION}/debug-and-error-logs.html"
-            ]
-          },
-          {
-            "title": "Support Resources",
-            "urls": [
-              "/${VERSION}/support-resources.html"
-            ]
-          },
-          {
-            "title": "File an Issue",
-            "urls": [
-              "/${VERSION}/file-an-issue.html"
+              "/${VERSION}/demo-automatic-cloud-migration.html"
             ]
           }
         ]
@@ -555,61 +604,49 @@
     ]
   },
   {
-    "title": "Tutorials",
+    "title": "Troubleshoot",
     "is_top_level": true,
     "items": [
       {
-        "title": "Replication & Rebalancing",
+        "title": "Overview",
         "urls": [
-          "/${VERSION}/demo-replication-and-rebalancing.html"
+          "/${VERSION}/troubleshooting-overview.html"
         ]
       },
       {
-        "title": "Fault Tolerance & Recovery",
+        "title": "Common Errors",
         "urls": [
-          "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+          "/${VERSION}/common-errors.html"
         ]
       },
       {
-        "title": "Low Latency Multi-Region Deployment",
+        "title": "Troubleshoot Cluster Setup",
         "urls": [
-          "/${VERSION}/demo-low-latency-multi-region-deployment.html"
+          "/${VERSION}/cluster-setup-troubleshooting.html"
         ]
       },
       {
-        "title": "Serializable Transactions",
+        "title": "Troubleshoot Query Behavior",
         "urls": [
-          "/${VERSION}/demo-serializable.html"
+          "/${VERSION}/query-behavior-troubleshooting.html"
         ]
       },
       {
-        "title": "Cross-Cloud Migration",
+        "title": "Understand Debug Logs",
         "urls": [
-          "/${VERSION}/demo-automatic-cloud-migration.html"
+          "/${VERSION}/debug-and-error-logs.html"
         ]
       },
       {
-        "title": "Follow-the-Workload",
+        "title": "Support Resources",
         "urls": [
-          "/${VERSION}/demo-follow-the-workload.html"
+          "/${VERSION}/support-resources.html"
         ]
       },
       {
-        "title": "Orchestration with Kubernetes",
+        "title": "File an Issue",
         "urls": [
-          "/${VERSION}/orchestration-with-kubernetes.html"
-        ]
-      },
-      {
-        "title": "JSON Support",
-        "urls": [
-          "/${VERSION}/demo-json-support.html"
-        ]
-      },
-      {
-        "title": "SQL Tuning with <code>EXPLAIN</code>",
-        "urls": [
-          "/${VERSION}/sql-tuning-with-explain.html"
+          "/${VERSION}/file-an-issue.html"
         ]
       }
     ]
@@ -1964,36 +2001,6 @@
               "/${VERSION}/movr.html"
             ]
           }
-        ]
-      }
-    ]
-  },
-  {
-    "title": "FAQs",
-    "is_top_level": true,
-    "items": [
-      {
-        "title": "Product FAQs",
-        "urls": [
-          "/${VERSION}/frequently-asked-questions.html"
-        ]
-      },
-      {
-        "title": "SQL FAQs",
-        "urls": [
-          "/${VERSION}/sql-faqs.html"
-        ]
-      },
-      {
-        "title": "Operational FAQs",
-        "urls": [
-          "/${VERSION}/operational-faqs.html"
-        ]
-      },
-      {
-        "title": "Availability FAQs",
-        "urls": [
-          "/${VERSION}/multi-active-availability.html"
         ]
       },
       {
