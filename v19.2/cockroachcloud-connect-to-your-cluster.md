@@ -74,7 +74,7 @@ Use the Console to authorize networks:
 
     Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
-## Step 3. Generate the connection string
+## Step 3. Select a connection method
 
 On the machine from which you want to connect to your cluster:
 
@@ -96,23 +96,21 @@ On the machine from which you want to connect to your cluster:
 
     <img src="{{ 'images/v19.2/cockroachcloud/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />
 
-6. Select a connection option:
+6. Select a connection method:
 
-           - The **CockroachDB Client** tab is displayed by default. You can use the client connection string to access the [built-in SQL client](#use-the-cockroachdb-sql-client).
+    You can connect to your cluster using the in-built SQL client or using a Postgres-compatible ORM or driver.
 
-           - Click **Connection String** to view the application connection string. You can use the application connection string to connect to the cluster using a Postgres ORM such as the [SQLAlchemy ORM](#sqlalchemy-orm).
+    To connect to your cluster using the [in-built SQL client](#use-the-cockroachdb-sql-client), use the command displayed on the **CockroachDB Client** tab. 
 
-              You will need to replace the `<password>` and `<certs_dir>` placeholders with your SQL username's password and the path to your `certs` directory, respectively.
-
-          - Click the **Parameters** tab to view the client connection parameters. You can use the parameters to connect to the cluster using a Postgres driver such as the [psycopg2 driver](#psycopg2-driver).
-
-    You will need to replace the `<certs_dir>` placeholder with  the path to your `certs` directory.
+    To connect to your cluster [using a Postgres ORM or driver](#use-a-postgres-driver-or-orm), use either the **Connection String** or the **Parameters** as required by your ORM or driver.
 
 7. Click the name of the **ca.crt** file to download the CA certificate.
 
-8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection strings.
+8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection string.
 
-## Step 4. Connect to the cluster
+    You will need to replace the `<certs_dir>` placeholders with the path to your certs directory in the CockroachDB client command or the connection string.
+
+## Step 4. Connect to your cluster
 
 ### Use the CockroachDB SQL client
 
