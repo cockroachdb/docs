@@ -675,6 +675,12 @@
         "title": "SQL",
         "items": [
           {
+            "title": "PostgreSQL Compatibility",
+            "urls": [
+              "/${VERSION}/postgresql-compatibility.html"
+            ]
+          },
+          {
             "title": "Client Drivers",
             "urls": [
               "/${VERSION}/install-client-drivers.html"
@@ -1667,17 +1673,6 @@
             "title": "Information Schema",
             "urls": [
               "/${VERSION}/information-schema.html"
-            ]
-          },
-          {
-            "title": "Porting Applications",
-            "items": [
-              {
-                "title": "From PostgreSQL",
-                "urls": [
-                  "/${VERSION}/porting-postgres.html"
-                ]
-              }
             ]
           },
           {

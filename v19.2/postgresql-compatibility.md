@@ -127,4 +127,4 @@ SELECT 1::int << (x % 64)
 CockroachDB uses a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
 
 ###SQL Compatibility
-Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html)
+Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).
