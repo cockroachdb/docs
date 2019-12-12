@@ -49,10 +49,10 @@ To maximize your indexes' performance, we recommend following a few [best practi
 
 ## Best practices
 
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
+- [Store columns](#storing-columns) that are _only_ in the `SELECT` clause.
 
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html) and the [Performance Tuning](performance-tuning.html) tutorial.
@@ -69,29 +69,55 @@ When designing indexes, it's important to consider which columns you index and t
 
 ### Storing columns
 
-Storing a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but do not filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
-
-However, for SQL to use stored columns, queries must filter another column in the same index.
+The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the primary index.
 
 ### Example
 
-If you wanted to optimize the performance of the following queries:
+Say we have a table with three columns, two of which are indexed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT col1 FROM tbl WHERE col1 = 10;
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
+~~~
+
+If we filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+~~~
+
+~~~
+       tree       |    field    |      description
++-----------------+-------------+-----------------------+
+  render          |             |
+   └── index-join |             |
+        │         | table       | tbl@primary
+        │         | key columns | rowid
+        └── scan  |             |
+                  | table       | tbl@tbl_col1_col2_idx
+                  | spans       | /10/2-/11
+~~~
+
+However, if we store `col3` in the index, the index join is no longer necessary. This means our query only needs to read from the secondary index, so it will be more efficient.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
 
-You could create a single index of `col1` and `col2` that stores `col3`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON tbl (col1, col2) STORING (col3);
+~~~
+    tree    |    field    |    description
++-----------+-------------+-------------------+
+  render    |             |
+   └── scan |             |
+            | table       | tbl@tbl_col1_col2_idx
+            | spans       | /10/2-/11
 ~~~
 
 ## See also
