@@ -67,13 +67,9 @@ In all [`vectorize` modes](#configuring-vectorized-execution), queries on tables
 
 ### Queries with constant `NULL` arguments
 
-The vectorized execution engine does not support queries that contain a constant `NULL` argument. This includes `NOT NULL` permutations in generic [selection query](selection-queries.html) comparisons and [`CASE`](scalar-expressions.html#simple-case-expressions) expressions, in addition to other projection operators on constant `NULL` values.
+The vectorized execution engine does not support queries that contain constant `NULL` arguments, with the exception of the `IS` projection operators `IS NULL` and `IS NOT NULL`.
 
-For example, the following statements return an `unable to vectorize execution plan` error:
-
-- `SELECT x IS NOT NULL FROM t`
-- `CASE ... WHEN x IS NOT NULL ... ELSE ... END`
-- `SELECT x + NULL FROM t`
+For example, `SELECT x IS NOT NULL FROM t` is supported, but `SELECT x + NULL FROM t` returns an `unable to vectorize execution plan` error.
 
 For more information, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41001).
 
