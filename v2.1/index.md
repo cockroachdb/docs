@@ -4,36 +4,8 @@ summary: CockroachDB is the SQL database for building global, scalable cloud ser
 toc: true
 homepage: true
 contribute: false
-build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
-
-{% if site.cockroachcloud %}
-Managed CockroachDB is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
-
-{{site.data.alerts.callout_info}}
-These docs are a work in progress. Please reach out to [support.cockroachlabs.com](https://support.cockroachlabs.com) if you have questions not yet answered here.
-{{site.data.alerts.end}}
-
-### Always-On Service
-
-- Cloud vendor agnostic
-- Automatic data replication across 3+ data centers
-- Zero downtime migration between cloud providers
-
-### Operational Excellence
-
-- Automatic hardware provisioning, setup, and configuration
-- Automatic rolling upgrades
-- Automated daily backups and hourly incremental backups
-
-### Enterprise-Grade Security
-
-- TLS 1.2 for all connections
-- Single tenant clusters
-- SOC-2 Compliance (in process)
-
-{% else %}
 
 CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
 
@@ -128,4 +100,3 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
     </div>
   </div>
 </div>
-{% endif %}
