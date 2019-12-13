@@ -62,6 +62,10 @@ cockroachcloud-build: bootstrap
 cockroachcloud: jekyll-action := serve --port 4001
 cockroachcloud: cockroachcloud-build
 
+.PHONY: htmltest
+htmltest: cockroachdb-build cockroachcloud-build
+	htmltest -s
+
 .PHONY: test
 test: bootstrap
 	go get -u github.com/cockroachdb/htmltest

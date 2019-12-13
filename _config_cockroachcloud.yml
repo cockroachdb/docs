@@ -1,6 +1,6 @@
 homepage_title: CockroachCloud Docs
 
-baseurl: "/docs/cockroachcloud"
+baseurl: "/cockroachcloud"
 destination: _site/cockroachcloud
 
 versions:
