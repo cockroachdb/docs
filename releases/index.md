@@ -14,8 +14,8 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
 <tr>
   <td>Version &amp; Release Notes</td>
   <td>Date</td>
-  <td class="os-release-cell">Precompiled 64-bit Binaries</td>
-  <td>Source Code</td>
+  <td class="os-release-cell">Downloads</td>
+  <td>Docker Image</td>
 </tr>
 </thead>
 
@@ -47,13 +47,14 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
                         <i class="fa fa-windows" aria-hidden="true"></i> Windows
                     </a>
                 {% endunless %}
-            </td>
-            <td>
                 {% unless release.no_source %}
                 <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">
                     <i class="fa fa-file-archive-o" aria-hidden="true"></i> Source
                 </a>
                 {% endunless %}
+            </td>
+            <td>
+                <code>cockroachdb/cockroach{% if release.testing %}-unstable{% endif %}:{{ release.version }}</code>                
             </td>
         {% endif %}
     </tr>
