@@ -9,13 +9,26 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
 
 {% for section in site.data.releases %}
 ## {{section.title}}
+<div id="os-tabs" class="filters filters-big clearfix">
+    <button id="linux" class="filter-button" data-scope="linux">Linux</button>
+    <button id="mac" class="filter-button" data-scope="mac">Mac</button>
+    <button id="windows" class="filter-button" data-scope="windows">Windows</button>
+    <button id="docker" class="filter-button" data-scope="docker">Docker</button>
+    <button id="source" class="filter-button" data-scope="source">Source</button>
+</div>
+
 <table class="release-table">
 <thead>
 <tr>
   <td>Version &amp; Release Notes</td>
   <td>Date</td>
-  <td class="os-release-cell">Downloads</td>
-  <td>Docker Image</td>
+  <td>
+    <section class="filter-content" data-scope="linux">Precompiled 64-bit Binary</section>
+    <section class="filter-content" data-scope="mac">Precompiled 64-bit Binary</section>
+    <section class="filter-content" data-scope="windows">Precompiled 64-bit Binary</section>
+    <section class="filter-content" data-scope="docker">Docker Image</section>
+    <section class="filter-content" data-scope="source">Source Code</section>
+  </td>
 </tr>
 </thead>
 
@@ -34,27 +47,29 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
             <td></td>
         {% else %}
             <td class="os-release-cell">
-                <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz">
-                    <i class="fa fa-linux" aria-hidden="true"></i> Linux
-                </a>
-                <wbr>
-                <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">
-                    <i class="fa fa-apple" aria-hidden="true"></i> Mac
-                </a>
-                {% unless release.no_windows %}
-                    <wbr>
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">
-                        <i class="fa fa-windows" aria-hidden="true"></i> Windows
-                    </a>
-                {% endunless %}
-                {% unless release.no_source %}
-                <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">
-                    <i class="fa fa-file-archive-o" aria-hidden="true"></i> Source
-                </a>
-                {% endunless %}
-            </td>
-            <td>
-                <code>cockroachdb/cockroach{% if release.testing %}-unstable{% endif %}:{{ release.version }}</code>                
+                <section class="filter-content" data-scope="linux">
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz">Download</a>
+                </section>
+                <section class="filter-content" data-scope="mac">
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">Download</a>
+                </section>
+                <section class="filter-content" data-scope="windows">
+                {% if release.no_windows %}
+                    N/A
+                {% else %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">Download</a>
+                {% endif %}
+                </section>
+                <section class="filter-content" data-scope="docker">
+                    <code>cockroachdb/cockroach{% if release.version contains "-" %}-unstable{% endif %}:{{ release.version }}</code>
+                </section>
+                <section class="filter-content" data-scope="source">
+                {% if release.no_source %}
+                    N/A
+                {% else %}
+                    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">Download</a>
+                {% endif %}
+                </section>
             </td>
         {% endif %}
     </tr>

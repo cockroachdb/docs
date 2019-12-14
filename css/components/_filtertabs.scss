@@ -189,7 +189,7 @@
 			}
 
 			&#mac {
-				
+
 				&:before {
 					content: "\f179";
 	        }
@@ -213,6 +213,13 @@
 
 				&:before {
 					content: "\f1c6";
+				}
+			}
+
+			&#docker {
+
+				&:before {
+					content: "\f395";
 				}
 			}
 		}
