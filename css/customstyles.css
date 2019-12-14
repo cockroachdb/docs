@@ -984,10 +984,10 @@ section.footer {
           .version-nav__link-text--crdb:after {
             content: 'CockroachDB'; } }
       .version-nav__link-text--managed:after {
-        content: 'CRCloud'; }
+        content: 'CRC'; }
         @media screen and (min-width: 768px) {
           .version-nav__link-text--managed:after {
-            content: 'CockroachCloud'; } }
+            content: 'Cockroach Cloud'; } }
     .version-nav__link-icon--crdb {
       margin-right: 8px; }
     .version-nav__link-icon--managed {
@@ -1375,6 +1375,8 @@ section.footer {
       content: "\f17a"; }
     #os-tabs button#source:before {
       content: "\f1c6"; }
+    #os-tabs button#docker:before {
+      content: "\f395"; }
 
   #mac-installs .install-button, #linux-installs .install-button, #windows-installs .install-button {
     width: auto;

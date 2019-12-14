@@ -149,430 +149,331 @@
       no_windows: true
     - date: Nov 18, 2019
       version: v20.1.0-alpha.20191118
-      no_windows: true
-      testing: true
     - date: Nov 7, 2019
       version: v19.2.0-rc.4
       no_windows: true
-      testing: true
     - date: Nov 4, 2019
       version: v19.2.0-rc.3
       no_windows: true
-      testing: true
     - date: Oct 28, 2019
       version: v19.2.0-rc.2
       no_windows: true
-      testing: true
     - date: Oct 21, 2019
       version: v19.2.0-rc.1
       no_windows: true
-      testing: true
     - date: Oct 14, 2019
       version: v19.2.0-beta.20191014
       no_windows: true
-      testing: true
     - date: Sep 30, 2019
       version: v19.2.0-beta.20190930
       no_windows: true
-      testing: true
     - date: Aug 5, 2019
       version: v19.2.0-alpha.20190805
       no_windows: true
-      testing: true
     - date: Jul 1, 2019
       version: v19.2.0-alpha.20190701
       no_windows: true
-      testing: true
     - date: Jun 6, 2019
       version: v19.2.0-alpha.20190606
       no_windows: true
-      testing: true
     - date: Apr 25, 2019
       version: v19.1.0-rc.4
       no_windows: true
-      testing: true
     - date: Apr 15, 2019
       version: v19.1.0-rc.3
       no_windows: true
-      testing: true
     - date: Apr 8, 2019
       version: v19.1.0-rc.2
       no_windows: true
-      testing: true
     - date: Apr 2, 2019
       version: v19.1.0-rc.1
       no_windows: true
-      testing: true
     - date: Mar 18, 2019
       version: v19.1.0-beta.20190318
       no_windows: true
-      testing: true
     - date: Mar 4, 2019
       version: v19.1.0-beta.20190304
       no_windows: true
-      testing: true
     - date: Feb 25, 2019
       version: v19.1.0-beta.20190225
       no_windows: true
-      testing: true
     - date: Feb 11, 2019
       version: v2.2.0-alpha.20190211
       no_windows: true
-      testing: true
     - date: Jan 14, 2019
       version: v2.2.0-alpha.20190114
       no_windows: true
-      testing: true
     - date: Dec 17, 2018
       version: v2.2.0-alpha.20181217
       no_windows: true
-      testing: true
     - date: Nov 19, 2018
       version: v2.2.0-alpha.20181119
       no_windows: true
-      testing: true
     - date: Oct 25, 2018
       version: v2.1.0-rc.2
       no_windows: true
-      testing: true
     - date: Oct 22, 2018
       version: v2.1.0-rc.1
       no_windows: true
-      testing: true
     - date: Oct 15, 2018
       version: v2.1.0-beta.20181015
       no_windows: true
-      testing: true
     - date: Oct 8, 2018
       version: v2.1.0-beta.20181008
       no_windows: true
-      testing: true
     - date: Oct 1, 2018
       version: v2.1.0-beta.20181001
       no_windows: true
-      testing: true
     - date: Sep 24, 2018
       version: v2.1.0-beta.20180924
       no_windows: true
-      testing: true
     - date: Sep 17, 2018
       version: v2.1.0-beta.20180917
       no_windows: true
-      testing: true
     - date: Sep 10, 2018
       version: v2.1.0-beta.20180910
       no_windows: true
-      testing: true
     - date: Sep 4, 2018
       version: v2.1.0-beta.20180904
       no_windows: true
-      testing: true
     - date: Aug 27, 2018
       version: v2.1.0-beta.20180827
       no_windows: true
-      testing: true
     - date: Jul 30, 2018
       version: v2.1.0-alpha.20180730
       no_windows: true
-      testing: true
     - date: Jul 02, 2018
       version: v2.1.0-alpha.20180702
       no_windows: true
-      testing: true
     - date: Jun 04, 2018
       version: v2.1.0-alpha.20180604
       no_windows: true
-      testing: true
     - date: May 07, 2018
       version: v2.1.0-alpha.20180507
       no_windows: true
-      testing: true
     - date: Apr 16, 2018
       version: v2.1.0-alpha.20180416
       no_windows: true
-      testing: true
     - date: Apr 2, 2018
       version: v2.0-rc.1
       no_windows: true
-      testing: true
     - date: Mar 26, 2018
       version: v2.0-beta.20180326
       no_windows: true
-      testing: true
     - date: Mar 19, 2018
       version: v2.0-beta.20180319
       no_windows: true
-      testing: true
     - date: Mar 12, 2018
       version: v2.0-beta.20180312
       no_windows: true
-      testing: true
     - date: Mar 5, 2018
       version: v2.0-beta.20180305
       no_windows: true
-      testing: true
     - date: Jan 29, 2018
       version: v2.0-alpha.20180129
       no_windows: true
-      testing: true
     - date: Dec 18, 2017
       version: v2.0-alpha.20171218
       no_windows: true
-      testing: true
     - date: Dec 11, 2017
       version: v1.2-alpha.20171211
       no_windows: true
-      testing: true
     - date: Dec 4, 2017
       version: v1.2-alpha.20171204
       no_windows: true
-      testing: true
     - date: Nov 13, 2017
       version: v1.2-alpha.20171113
       no_source: true
       no_windows: true
-      testing: true
     - date: Oct 26, 2017
       version: v1.2-alpha.20171026
       no_windows: true
-      testing: true
     - date: Oct 5, 2017
       version: v1.1.0-rc.1
       no_windows: true
-      testing: true
     - date: Sep 28, 2017
       version: v1.1-beta.20170928
       no_windows: true
-      testing: true
     - date: Sep 21, 2017
       version: v1.1-beta.20170921
       no_windows: true
-      testing: true
     - date: Sep 7, 2017
       version: v1.1-beta.20170907
       no_windows: true
-      testing: true
     - date: Aug 17, 2017
       version: v1.1-alpha.20170817
       no_windows: true
-      testing: true
     - date: Aug 10, 2017
       version: v1.1-alpha.20170810
       no_windows: true
-      testing: true
     - date: Aug 3, 2017
       version: v1.1-alpha.20170803
       no_windows: true
-      testing: true
     - date: Jul 20, 2017
       version: v1.1-alpha.20170720
       no_windows: true
-      testing: true
     - date: Jul 13, 2017
       version: v1.1-alpha.20170713
       no_windows: true
-      testing: true
     - date: Jun 29, 2017
       version: v1.1-alpha.20170629
       no_windows: true
-      testing: true
     - date: Jun 22, 2017
       version: v1.1-alpha.20170622
       no_windows: true
-      testing: true
     - date: Jun 8, 2017
       version: v1.1-alpha.20170608
       no_windows: true
-      testing: true
     - date: Jun 1, 2017
       version: v1.1-alpha.20170601
       no_windows: true
-      testing: true
     - date: May 5, 2017
       version: v1.0-rc.2
       no_windows: true
-      testing: true
     - date: May 1, 2017
       version: v1.0-rc.1
       no_windows: true
-      testing: true
     - date: Apr 20, 2017
       version: beta-20170420
       no_windows: true
-      testing: true
     - date: Apr 13, 2017
       version: beta-20170413
       no_windows: true
-      testing: true
     - date: Mar 30, 2017
       version: beta-20170330
       no_windows: true
-      testing: true
     - date: Mar 23, 2017
       version: beta-20170323
       no_source: true
       no_windows: true
-      testing: true
     - date: Mar 9, 2017
       version: beta-20170309
       no_source: true
       no_windows: true
-      testing: true
     - date: Feb 23, 2017
       version: beta-20170223
       no_source: true
       no_windows: true
-      testing: true
     - date: Feb 16, 2017
       version: beta-20170216
       no_source: true
       no_windows: true
-      testing: true
     - date: Feb 9, 2017
       version: beta-20170209
       no_source: true
       no_windows: true
-      testing: true
     - date: Jan 26, 2017
       version: beta-20170126
       no_source: true
       no_windows: true
-      testing: true
     - date: Jan 12, 2017
       version: beta-20170112
       no_source: true
       no_windows: true
-      testing: true
     - date: Jan 5, 2017
       version: beta-20170105
       no_source: true
       no_windows: true
-      testing: true
     - date: Dec 15, 2016
       version: beta-20161215
       no_source: true
       no_windows: true
-      testing: true
     - date: Dec 8, 2016
       version: beta-20161208
       no_source: true
       no_windows: true
-      testing: true
     - date: Dec 1, 2016
       version: beta-20161201
       no_source: true
       no_windows: true
-      testing: true
     - date: Nov 3, 2016
       version: beta-20161103
       no_source: true
       no_windows: true
-      testing: true
     - date: Oct 27, 2016
       version: beta-20161027
       no_source: true
       no_windows: true
-      testing: true
     - date: Oct 13, 2016
       version: beta-20161013
       no_source: true
       no_windows: true
-      testing: true
     - date: Oct 6, 2016
       version: beta-20161006
       no_source: true
       no_windows: true
-      testing: true
     - date: Sep 29, 2016
       version: beta-20160929
       no_source: true
       no_windows: true
-      testing: true
     - date: Sep 15, 2016
       version: beta-20160915
       no_source: true
       no_windows: true
-      testing: true
     - date: Sep 9, 2016
       version: beta-20160908
       no_source: true
       no_windows: true
-      testing: true
     - date: Aug 29, 2016
       version: beta-20160829
       no_source: true
       no_windows: true
-      testing: true
     - date: Jul 28, 2016
       version: beta-20160728
       no_source: true
       no_windows: true
-      testing: true
     - date: Jul 21, 2016
       version: beta-20160721
       no_source: true
       no_windows: true
-      testing: true
     - date: Jul 14, 2016
       version: beta-20160714
       no_source: true
       no_windows: true
-      testing: true
     - date: Jun 29, 2016
       version: beta-20160629
       no_source: true
       no_windows: true
-      testing: true
     - date: Jun 16, 2016
       version: beta-20160616
       no_source: true
       no_windows: true
-      testing: true
     - date: Jun 9, 2016
       version: beta-20160609
       no_source: true
       no_windows: true
-      testing: true
     - date: Jun 2, 2016
       version: beta-20160602
       no_source: true
       no_windows: true
-      testing: true
     - date: May 26, 2016
       version: beta-20160526
       no_source: true
       no_windows: true
-      testing: true
     - date: May 19, 2016
       version: beta-20160519
       no_source: true
       no_windows: true
-      testing: true
     - date: May 12, 2016
       version: beta-20160512
       no_source: true
       no_windows: true
-      testing: true
     - date: May 5, 2016
       version: beta-20160505
       no_source: true
       no_windows: true
-      testing: true
     - date: Apr 28, 2016
       version: beta-20160428
       no_source: true
       no_windows: true
-      testing: true
     - date: Apr 21, 2016
       version: beta-20160421
       no_source: true
       no_windows: true
-      testing: true
     - date: Apr 14, 2016
       version: beta-20160414
       no_source: true
       no_windows: true
-      testing: true
     - date: Apr 7, 2016
       version: beta-20160407
       no_source: true
