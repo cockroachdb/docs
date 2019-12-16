@@ -8,3 +8,4 @@ IgnoreURLs:
   - http://localhost:4000
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
+DocumentConcurrencyLimit: 16
