@@ -14,18 +14,8 @@ However, CockroachDB does not support some of the PostgreSQL features or behaves
 {{site.data.alerts.callout_info}}This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as the <code>ENUM</code> type.{{site.data.alerts.end}}
 
 ## Unsupported Features
-- Stored procedures and functions
-- Triggers
-- Events
-- User-defined functions
-- FULLTEXT functions and indexes
-- GEOSPATIAL functions and indexes
-- Drop primary key
-- XML Functions
-- Savepoints
-- Column-level privileges
-- CREATE TEMPORARY TABLE syntax
-- XA syntax
+
+{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
 ##Features that differ from PostgreSQL
 Note, some of these differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
