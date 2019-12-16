@@ -63,8 +63,10 @@ cockroachcloud: jekyll-action := serve --port 4001
 cockroachcloud: cockroachcloud-build
 
 .PHONY: test
-test: bootstrap
+test:
 	go get -u github.com/cockroachdb/htmltest
+	# Docker must be running locally for this to work.
+	./netlify/local
 	htmltest
 
 vendor:
