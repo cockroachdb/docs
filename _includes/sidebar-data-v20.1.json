@@ -47,16 +47,75 @@
             "urls": [
               "/${VERSION}/learn-cockroachdb-sql.html"
             ]
+          }
+        ]
+      },
+      {
+        "title": "Develop",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/developer-guide-overview.html"
+            ]
           },
           {
-            "title": "Build an App",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/build-an-app-with-cockroachdb.html"
-                ]
-              },
+            "title": "Connect to the Database",
+            "urls": [
+              "/${VERSION}/connect-to-the-database.html"
+            ]
+          },
+          {
+            "title": "Insert Data",
+            "urls": [
+              "/${VERSION}/insert-data.html"
+            ]
+          },
+          {
+            "title": "Query Data",
+            "urls": [
+              "/${VERSION}/query-data.html"
+            ]
+          },
+          {
+            "title": "Update Data",
+            "urls": [
+              "/${VERSION}/update-data.html"
+            ]
+          },
+          {
+            "title": "Delete Data",
+            "urls": [
+              "/${VERSION}/delete-data.html"
+            ]
+          },
+          {
+            "title": "Run Multi-Statement Transactions",
+            "urls": [
+              "/${VERSION}/run-multi-statement-transactions.html"
+            ]
+          },
+          {
+            "title": "Error Handling & Troubleshooting",
+            "urls": [
+              "/${VERSION}/error-handling-and-troubleshooting.html"
+            ]
+          },
+          {
+            "title": "Make Queries Fast",
+            "urls": [
+              "/${VERSION}/make-queries-fast.html"
+            ]
+          },
+          {
+            "title": "'Hello World' Example Apps",
+              "items": [
+                  {
+                      "title": "Overview",
+                      "urls": [
+                          "/${VERSION}/hello-world-example-apps.html"
+                      ]
+                  },
               {
                 "title": "Go",
                 "urls": [
@@ -123,7 +182,7 @@
                   "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
                 ]
               }
-            ]
+              ]
           }
         ]
       },
