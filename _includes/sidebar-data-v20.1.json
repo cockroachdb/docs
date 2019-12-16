@@ -47,83 +47,6 @@
             "urls": [
               "/${VERSION}/learn-cockroachdb-sql.html"
             ]
-          },
-          {
-            "title": "Build an App",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/build-an-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Go",
-                "urls": [
-                  "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
-                ]
-              },
-              {
-                "title": "Python",
-                "urls": [
-                  "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                  "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
-                ]
-              },
-              {
-                "title": "Ruby",
-                "urls": [
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
-                ]
-              },
-              {
-                "title": "Java",
-                "urls": [
-                  "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
-                ]
-              },
-              {
-                "title": "Node.js",
-                "urls": [
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
-                ]
-              },
-              {
-                "title": "C++",
-                "urls": [
-                  "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "C# (.NET)",
-                "urls": [
-                  "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Clojure",
-                "urls": [
-                  "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "PHP",
-                "urls": [
-                  "/${VERSION}/build-a-php-app-with-cockroachdb.html"
-                ]
-              },
-              {
-                "title": "Rust",
-                "urls": [
-                  "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
-                ]
-              }
-            ]
           }
         ]
       },
@@ -450,6 +373,142 @@
             "urls": [
               "/${VERSION}/migrate-from-csv.html"
             ]
+          }
+        ]
+      },
+      {
+        "title": "Develop",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/developer-guide-overview.html"
+            ]
+          },
+          {
+            "title": "Connect to the Database",
+            "urls": [
+              "/${VERSION}/connect-to-the-database.html"
+            ]
+          },
+          {
+            "title": "Insert Data",
+            "urls": [
+              "/${VERSION}/insert-data.html"
+            ]
+          },
+          {
+            "title": "Query Data",
+            "urls": [
+              "/${VERSION}/query-data.html"
+            ]
+          },
+          {
+            "title": "Update Data",
+            "urls": [
+              "/${VERSION}/update-data.html"
+            ]
+          },
+          {
+            "title": "Delete Data",
+            "urls": [
+              "/${VERSION}/delete-data.html"
+            ]
+          },
+          {
+            "title": "Run Multi-Statement Transactions",
+            "urls": [
+              "/${VERSION}/run-multi-statement-transactions.html"
+            ]
+          },
+          {
+            "title": "Error Handling & Troubleshooting",
+            "urls": [
+              "/${VERSION}/error-handling-and-troubleshooting.html"
+            ]
+          },
+          {
+            "title": "Make Queries Fast",
+            "urls": [
+              "/${VERSION}/make-queries-fast.html"
+            ]
+          },
+          {
+            "title": "'Hello World' Example Apps",
+              "items": [
+                  {
+                      "title": "Overview",
+                      "urls": [
+                          "/${VERSION}/hello-world-example-apps.html"
+                      ]
+                  },
+              {
+                "title": "Go",
+                "urls": [
+                  "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
+                ]
+              },
+              {
+                "title": "Python",
+                "urls": [
+                  "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                  "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
+                ]
+              },
+              {
+                "title": "Ruby",
+                "urls": [
+                  "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+                ]
+              },
+              {
+                "title": "Java",
+                "urls": [
+                  "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
+                ]
+              },
+              {
+                "title": "Node.js",
+                "urls": [
+                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+                ]
+              },
+              {
+                "title": "C++",
+                "urls": [
+                  "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+                ]
+              },
+              {
+                "title": "C# (.NET)",
+                "urls": [
+                  "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+                ]
+              },
+              {
+                "title": "Clojure",
+                "urls": [
+                  "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+                ]
+              },
+              {
+                "title": "PHP",
+                "urls": [
+                  "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+                ]
+              },
+              {
+                "title": "Rust",
+                "urls": [
+                  "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+                ]
+              }
+              ]
           }
         ]
       },
