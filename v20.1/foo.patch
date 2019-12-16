@@ -1,0 +1,27 @@
+diff --git a/v19.1/selection-queries.md b/v19.1/selection-queries.md
+index f0fae5e7..e64bc3bb 100644
+--- a/v19.1/selection-queries.md
++++ b/v19.1/selection-queries.md
+@@ -387,6 +387,10 @@ SELECT * FROM employees WHERE emp_no > 10000 LIMIT 25;
+ Time: 1.31ms
+ ~~~
+ 
++{{site.data.alerts.callout_success}}
++If you don't know what the minimum value of the key is, either `SELECT min(key) FROM table` or use a known minimum value for the key's data type.
++{{site.data.alerts.end}}
++
+ To get the second page of results, run:
+ 
+ {% include copy-clipboard.html %}
+@@ -467,9 +471,9 @@ EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
+             | limit       | 200049
+ ~~~
+ 
+-The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a full table scan (see `spans` = `ALL` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049 (complexity `O(n)`).
++The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a full table scan (see `spans` = `ALL` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049.
+ 
+-Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans` = `300026-` + 25 below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an `O(1)` array lookup on the index to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
++Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans` = `300026-` + 25 below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
+ 
+ {% include copy-clipboard.html %}
+ ~~~ sql
