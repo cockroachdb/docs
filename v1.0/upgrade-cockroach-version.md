@@ -5,7 +5,7 @@ toc: true
 toc_not_nested: true
 ---
 
-Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations. 
+Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 {{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0 to a patch release in the 1.0.x series. To upgrade from v1.0.x to v1.1, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the 1.1 version of this page</a>.{{site.data.alerts.end}}
 
@@ -66,13 +66,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
@@ -80,13 +78,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
@@ -102,7 +98,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -114,7 +110,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}

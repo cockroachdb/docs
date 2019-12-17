@@ -122,13 +122,11 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
@@ -136,13 +134,11 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
@@ -158,7 +154,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -170,7 +166,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}

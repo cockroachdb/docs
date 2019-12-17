@@ -68,7 +68,7 @@ When upgrading from v19.1 to v19.2, certain features and performance improvement
 - **Atomic replication:** After finalization, CockroachDB will rebalance ranges atomically. This ensures that the total number of replicas (and, therefore, consensus requirements) for a range remain unchanged throughout the rebalancing process, eliminating the risk of potential data unavailability during correlated failures.
 - **Locality-aware enterprise backups**: After finalization, enterprise users will be able to create [locality-aware backups](backup-and-restore.html#locality-aware-backup-and-restore) such that each node writes files only to the backup destination that matches the [node's locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes). This can reduce cloud storage data transfer costs by keeping data within cloud regions and can help users comply with data domiciling requirements.
 - **Manually split ranges:** After finalization, ranges manually split via [`ALTER TABLE ... SPLIT AT`](split-at.html)  will not be automatically [re-merged](range-merges.html), whereas prior to finalization, preventing re-merging of these ranges requires disabling merge ranges entirely via the `kv.range_merge.queue_enabled` [cluster setting](cluster-settings.html).
- 
+
 ## Step 4. Perform the rolling upgrade
 
 For each node in your cluster, complete the following steps.
@@ -125,13 +125,11 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
@@ -139,13 +137,11 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
@@ -161,7 +157,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -173,7 +169,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
