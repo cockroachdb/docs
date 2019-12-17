@@ -31,7 +31,7 @@ To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">co
 
 ## Set a license
 
-As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
+As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -50,7 +50,7 @@ $ cockroach sql --insecure
 
 ## Verify a license
 
-To verify a license, open the [built-in SQL shell](use-the-built-in-sql-client.html) and use the `SHOW CLUSTER SETTING` command to check the organization name and license key:
+To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use the `SHOW CLUSTER SETTING` command to check the organization name and license key:
 
 {% include copy-clipboard.html %}
 ~~~ sql

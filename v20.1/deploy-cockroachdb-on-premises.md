@@ -56,7 +56,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. On your local machine, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
+1. On your local machine, run the [`cockroach gen haproxy`](cockroach-gen.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell

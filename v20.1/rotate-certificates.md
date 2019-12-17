@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB allows you to rotate security certificates without restarting nodes.
 
-{{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="create-security-certificates.html">Create Security Certificates</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="cockroach-cert.html">Create Security Certificates</a>.{{site.data.alerts.end}}
 
 
 ## When to rotate certificates
@@ -144,7 +144,7 @@ On rotating node and client certificates after rotating the CA certificate, the 
 
 ## See also
 
-- [Create Security Certificates](create-security-certificates.html)
+- [Create Security Certificates](cockroach-cert.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Test Deployment](deploy-a-test-cluster.html)

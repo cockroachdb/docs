@@ -17,7 +17,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
-2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+2. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -116,7 +116,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
         The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
         {{site.data.alerts.end}}
 
-2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+2. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

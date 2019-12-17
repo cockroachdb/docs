@@ -94,11 +94,11 @@ The location of replicas, both when they are first added and when they are rebal
 
 #### Descriptive attributes assigned to nodes
 
-When starting a node with the [`cockroach start`](start-a-node.html) command, you can assign the following types of descriptive attributes:
+When starting a node with the [`cockroach start`](cockroach-start.html) command, you can assign the following types of descriptive attributes:
 
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](start-a-node.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, datacenter, rack, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=east,datacenter=us-east-2`<br>`--locality=region=west,datacenter=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](demo-follow-the-workload.html) for more details.
+**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, datacenter, rack, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=east,datacenter=us-east-2`<br>`--locality=region=west,datacenter=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](demo-follow-the-workload.html) for more details.
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
@@ -223,7 +223,7 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 **Approach:**
 
-1. Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
+1. Start each node with its datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
     Datacenter 1:
 
@@ -269,7 +269,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its region and datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
+1. Start each node with its region and datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
     Start the five nodes:
 
@@ -292,7 +292,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -353,7 +353,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its datacenter location specified in the [`--locality`](start-a-node.html#locality) flag:
+1. Start each node with its datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
     Datacenter 1:
 
@@ -383,7 +383,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -508,7 +508,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -567,7 +567,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with a different [locality](start-a-node.html#locality) attribute:
+1. Start each node with a different [locality](cockroach-start.html#locality) attribute:
 
     ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
@@ -592,7 +592,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-2. On any node, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

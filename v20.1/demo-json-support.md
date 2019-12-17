@@ -41,7 +41,7 @@ $ cockroach start-single-node \
 
 ## Step 3. Create a user
 
-Open the [built-in SQL shell](use-the-built-in-sql-client.html) as the `root` user and create a new user, `maxroach`:
+Open the [built-in SQL shell](cockroach-sql.html) as the `root` user and create a new user, `maxroach`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -248,7 +248,7 @@ Instead of 103.748ms, the query now takes 6.862ms.
 
 ## Step 10. Clean up
 
-If the program is still running, press CTRL + c to stop it and then use [`cockroach quit`](stop-a-node.html) to stop the single-node CockroachDB cluster:
+If the program is still running, press CTRL + c to stop it and then use [`cockroach quit`](cockroach-quit.html) to stop the single-node CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

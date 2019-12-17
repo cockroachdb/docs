@@ -71,7 +71,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 ## Step 2. Perform a "core" backup
 
-1. Use the [`cockroach gen`](../generate-cockroachdb-resources.html) command to generate an example `startrek` database:
+1. Use the [`cockroach gen`](../cockroach-gen.html) command to generate an example `startrek` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -100,7 +100,7 @@ Start and initialize an insecure cluster like you did in previous modules.
     (1 row)
     ~~~
 
-3. Use the [`cockroach dump`](../sql-dump.html) command to create a SQL dump file for the `startrek` database:
+3. Use the [`cockroach dump`](../cockroach-dump.html) command to create a SQL dump file for the `startrek` database:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -215,7 +215,7 @@ For examples, see [Update with index hints](#update-with-index-hints).
 If you do not use the `WHERE` clause to specify the rows to be updated, the values for all rows will be updated.
 {{site.data.alerts.end}}
 {{site.data.alerts.callout_info}}
-If the [`sql_safe_updates`](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+If the [`sql_safe_updates`](cockroach-sql.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}

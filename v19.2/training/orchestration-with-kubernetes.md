@@ -221,7 +221,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
-2. Get a shell into the pod and start the CockroachDB [built-in SQL client](../use-the-built-in-sql-client.html):
+2. Get a shell into the pod and start the CockroachDB [built-in SQL client](../cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -438,7 +438,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
-2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](../view-node-details.html) command to decommission it:
+2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](../cockroach-node.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
     It's important to decommission the node with the highest number in its address because, when you reduce the `--replica` count, Kubernetes will remove the pod for that node.

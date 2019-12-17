@@ -29,7 +29,7 @@ Warehouses | Data size | Cluster size
 
 ## Step 1. Start CockroachDB
 
-1. Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
+1. Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -64,7 +64,7 @@ Warehouses | Data size | Cluster size
     --background
     ~~~
 
-2. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -149,7 +149,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
 ## Step 5. Clean up
 
-1. When you're done with your test cluster, use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node.
+1. When you're done with your test cluster, use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node.
 
     {% include copy-clipboard.html %}
     ~~~ shell

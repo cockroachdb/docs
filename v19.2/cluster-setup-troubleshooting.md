@@ -53,13 +53,13 @@ If the `cockroach` process had exit status `132 (SIGILL)`, it attempted to use a
 
 ### Default ports already in use
 
-Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](start-a-node.html#networking).
+Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](cockroach-start.html#networking).
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
 ### Networking issues
 
-Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](start-a-node.html#networking).
+Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](cockroach-start.html#networking).
 
   If you change the host, you will need to include `--host=<specified host>` in each subsequent cockroach command.
 
@@ -196,7 +196,7 @@ If a client cannot connect to the cluster, check basic network connectivity (`pi
 Most networking-related issues are caused by one of two issues:
 
 -   Firewall rules, which require your network administrator to investigate
--   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](start-a-node.html#networking)
+-   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](cockroach-start.html#networking)
 
 
 **Solution:**
@@ -335,7 +335,7 @@ Like any database system, if you run out of disk space the system will no longer
 
 ### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a CockroachDB cluster tracks. See the `--cache` flag in [`cockroach start`](start-a-node.html#general).
+A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a CockroachDB cluster tracks. See the `--cache` flag in [`cockroach start`](cockroach-start.html#general).
 
 CockroachDB memory usage has 3 components:
 
@@ -378,7 +378,7 @@ If the command returns the following message, then you know the node crashed due
 $ host kernel: Out of Memory: Killed process <process_id> (cockroach).
 ~~~
 
-To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](start-a-node.html#flags).
+To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](cockroach-start.html#flags).
 
 ## Decommissioning issues
 

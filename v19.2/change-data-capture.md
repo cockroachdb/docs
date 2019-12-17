@@ -289,7 +289,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
     {{site.data.alerts.end}}
 
-6. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+6. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -458,7 +458,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
     {{site.data.alerts.end}}
 
-6. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+6. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -606,7 +606,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-3. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+3. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

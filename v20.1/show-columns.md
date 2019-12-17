@@ -58,7 +58,7 @@ Field | Description
 (5 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
+Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -1,10 +1,12 @@
 ---
-title: Create a Ballast File
+title: cockroach debug ballast
 summary: Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 toc: true
+redirect-from: debug-ballast.html
+key: debug-ballast.html
 ---
 
-The `debug ballast` [command](cockroach-commands.html) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+The `cockroach debug ballast` [command](cockroach-commands.html) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - In addition to placing a ballast file in each node's storage directory, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).
 - Ballast files may be created in many ways, including the standard `dd` command. `cockroach debug ballast` uses the `fallocate` system call when available, so it will be faster than `dd`.

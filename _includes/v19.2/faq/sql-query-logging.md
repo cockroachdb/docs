@@ -32,7 +32,7 @@ With this setting on, each node of the cluster writes all SQL queries it execute
 
 Alternatively, if you are testing CockroachDB locally and want to log queries executed just by a specific node, you can either pass a CLI flag at node startup, or execute a SQL function on a running node.
 
-Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](start-a-node.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
+Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](cockroach-start.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
 
 ~~~ shell
 $ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join=<join addresses>

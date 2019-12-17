@@ -180,7 +180,7 @@ On the machine where you want to run the CockroachDB SQL client:
 4. Execute some [CockroachDB SQL](learn-cockroachdb-sql.html).
 
 {{site.data.alerts.callout_success}}
-For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](use-the-built-in-sql-client.html) documentation.
+For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](cockroach-sql.html) documentation.
 {{site.data.alerts.end}}
 
 ### Use a Postgres driver or ORM

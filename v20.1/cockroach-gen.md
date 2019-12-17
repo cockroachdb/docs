@@ -1,10 +1,12 @@
 ---
-title: Generate CockroachDB Resources
+title: cockroach gen
 summary: Use cockroach gen to generate command-line interface utlities, such as man pages, and example data.
 toc: true
+redirect-from: generate-cockroachdb-resources.html
+key: generate-cockroachdb-resources.html
 ---
 
-The `cockroach gen` command can generate command-line interface (CLI) utilities ([`man` pages](https://en.wikipedia.org/wiki/Man_page) and a `bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
+The `cockroach gen` [command](cockroach-commands.html) can generate command-line interface (CLI) utilities ([`man` pages](https://en.wikipedia.org/wiki/Man_page) and a `bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
 
 ## Subcommands
 
@@ -106,10 +108,10 @@ Flag | Description
 `--host` | The server host and port number to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost:26257`
 `--port`<br>`-p` | The server port to connect to. Note: The port number can also be specified via `--host`. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--insecure` | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir` | The path to the [certificate directory](cockroach-cert.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--url` | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--out` | The path where the `haproxy.cfg` file will be generated. If an `haproxy.cfg` file already exists in the directory, it will be overwritten.<br><br>**Default:** `haproxy.cfg` in the current directory
-`--locality` | If nodes were started with [locality](start-a-node.html#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
+`--locality` | If nodes were started with [locality](cockroach-start.html#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
 
 ### Logging
 
@@ -293,7 +295,7 @@ $ cockroach sql --insecure
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="secure">
-To generate an HAProxy config file for an entire secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory](create-security-certificates.html) and the address of any instance running a CockroachDB node:
+To generate an HAProxy config file for an entire secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory](cockroach-cert.html) and the address of any instance running a CockroachDB node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -302,7 +304,7 @@ $ cockroach gen haproxy \
 --host=<address of any node in the cluster>
 ~~~
 
-To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"](cockroach-start.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -323,7 +325,7 @@ $ cockroach gen haproxy \
 --host=<address of any node in the cluster>
 ~~~
 
-To limit the HAProxy config file to nodes matching specific ["localities"](start-a-node.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"](cockroach-start.html#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -368,7 +370,7 @@ Field | Description
 `bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
 `balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
 `option httpchk` | The HTTP endpoint that HAProxy uses to check node health. [`/health?ready=1`](monitoring-and-alerting.html#health-ready-1) ensures that HAProxy doesn't direct traffic to nodes that are live but not ready to receive requests.
-`server` | For each included node, this field specifies the address the node advertises to other nodes in the cluster, i.e., the addressed pass in the [`--advertise-addr` flag](start-a-node.html#networking) on node startup. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.
+`server` | For each included node, this field specifies the address the node advertises to other nodes in the cluster, i.e., the addressed pass in the [`--advertise-addr` flag](cockroach-start.html#networking) on node startup. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.
 
 {{site.data.alerts.callout_info}}
 For full details on these and other configuration settings, see the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html).

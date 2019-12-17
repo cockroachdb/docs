@@ -1,4 +1,4 @@
-Start the [built-in SQL shell](use-the-built-in-sql-client.html):
+Start the [built-in SQL shell](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

@@ -63,7 +63,7 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
 
 You can use either `cockroach cert` commands or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates. This section features the `cockroach cert` commands.
 
-Locally, you'll need to [create the following certificates and keys](create-security-certificates.html):
+Locally, you'll need to [create the following certificates and keys](cockroach-cert.html):
 
 - A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses.

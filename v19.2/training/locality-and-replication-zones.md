@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 Start a cluster like you did previously, but this time use the [`--locality`](../configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) flag to indicate that the nodes are all in a datacenter in the Eastern region of the US.
 
 {{site.data.alerts.callout_info}}
-To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../cockroach-start.html#general) instead of in separate terminals.
 {{site.data.alerts.end}}
 
 1. In a new terminal, start node 1:
@@ -68,7 +68,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
     --background
     ~~~
 
-4. Use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell

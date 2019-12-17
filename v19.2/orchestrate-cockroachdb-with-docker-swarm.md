@@ -113,7 +113,7 @@ $ sudo docker network create --driver overlay --attachable cockroachdb
 
 ## Step 5. Create security resources
 
-A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and client/node authentication and communication. In this step, you'll install CockroachDB on the instance running your manager node, use the [`cockroach cert`](create-security-certificates.html) command to generate certificate authority (CA), node, and client certificate and key pairs, and use the [`docker secret create`](https://docs.docker.com/engine/reference/commandline/secret_create/) command to assign these files to Docker [secrets](https://docs.docker.com/engine/swarm/secrets/) for use by your Docker services.
+A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and client/node authentication and communication. In this step, you'll install CockroachDB on the instance running your manager node, use the [`cockroach cert`](cockroach-cert.html) command to generate certificate authority (CA), node, and client certificate and key pairs, and use the [`docker secret create`](https://docs.docker.com/engine/reference/commandline/secret_create/) command to assign these files to Docker [secrets](https://docs.docker.com/engine/swarm/secrets/) for use by your Docker services.
 
 1. On the instance running your manager node, install CockroachDB from our latest binary:
 
@@ -393,7 +393,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
     - `--publish`: This flag makes the Admin UI accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
     - `--secret`: These flags identify the secrets to use in securing the node. They must reference the secret names defined in step 5. For the node and client certificate and key secrets, the `source` field identifies the relevant secret, and the `target` field defines the name to be used in `cockroach start` and `cockroach sql` flags. For the node and client key secrets, the `mode` field also sets the file permissions to `0600`; if this isn't set, Docker will assign a default file permission of `0444`, which will not work with CockroachDB's built-in SQL client.
-    - `cockroachdb/cockroach:{{page.release_info.version}} start ...`: The CockroachDB command to [start a node](start-a-node.html) in the container in insecure mode and instruct other cluster members to talk to each other using their persistent network addresses, which match the services' names.
+    - `cockroachdb/cockroach:{{page.release_info.version}} start ...`: The CockroachDB command to [start a node](cockroach-start.html) in the container in insecure mode and instruct other cluster members to talk to each other using their persistent network addresses, which match the services' names.
 
 2. Verify that all three services were created successfully:
 

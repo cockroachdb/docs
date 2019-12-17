@@ -4,7 +4,7 @@ summary: The SHOW LOCALITY statement returns the locality of the current node.
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span> The `SHOW LOCALITY` [statement](sql-statements.html) returns the [locality](start-a-node.html#locality) of the current node.
+<span class="version-tag">New in v19.2:</span> The `SHOW LOCALITY` [statement](sql-statements.html) returns the [locality](cockroach-start.html#locality) of the current node.
 
 If locality was not specified on node startup, the statement returns an empty row.
 
@@ -77,12 +77,12 @@ If you know the locality key, you can use the [`crdb_internal.locality_value`](f
 (1 row)
 ~~~
 
-For a more extensive example, see [Create a table with node locality information](start-a-node.html#create-a-table-with-node-locality-information).
+For a more extensive example, see [Create a table with node locality information](cockroach-start.html#create-a-table-with-node-locality-information).
 
 
 ## See also
 
 - [Geo-Partitioning](demo-geo-partitioning.html)
-- [Locality](start-a-node.html#locality)
+- [Locality](cockroach-start.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)

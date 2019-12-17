@@ -1,7 +1,9 @@
 ---
-title: SQL Dump (Export)
+title: cockroach dump
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: true
+redirect-from: sql-dump.html
+key: sql-dump.html
 ---
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
@@ -104,7 +106,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 ## Examples
 
 {{site.data.alerts.callout_info}}
-These examples use our sample `startrek` database, which you can add to a cluster via the [`cockroach gen`](generate-cockroachdb-resources.html#generate-example-data) command. Also, the examples assume that the `maxroach` user has been [granted](grant.html) the `SELECT` privilege on all target tables.
+These examples use our sample `startrek` database, which you can add to a cluster via the [`cockroach gen`](cockroach-gen.html#generate-example-data) command. Also, the examples assume that the `maxroach` user has been [granted](grant.html) the `SELECT` privilege on all target tables.
 {{site.data.alerts.end}}
 
 ### Dump a table's schema and data
@@ -272,7 +274,7 @@ Failed running "dump"
 
 ### Restore a table from a backup file
 
-In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](use-the-built-in-sql-client.html) command to recreate a table, based on a file created by the `dump` command.
+In this example, a user that has the `CREATE` privilege on the `startrek` database uses the [`cockroach sql`](cockroach-sql.html) command to recreate a table, based on a file created by the `dump` command.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -397,5 +399,5 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 - [Import Data](import-data.html)
 - [`IMPORT`](import.html)
-- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -1,5 +1,5 @@
 ---
-title: Run a Sample Workload
+title: cockroach workload
 summary: Use cockroach workload to run a load generator against a CockroachDB cluster.
 toc: true
 ---

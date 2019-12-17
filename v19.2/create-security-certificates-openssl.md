@@ -1,5 +1,5 @@
 ---
-title: Create Security Certificates
+title: Create Security Certificates using Openssl
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 ---
@@ -13,7 +13,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
-  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
+  <a href="cockroach-cert.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
   <button style="width:28%" class="filter-button current">Use <strong>Openssl</strong></button></a>
   <a href="create-security-certificates-custom-ca.html"><button style="width:28%" class="filter-button">Use custom CA</button></a>
 </div>
@@ -337,5 +337,5 @@ In the following steps, replace the placeholder text in the code with the actual
 ## See also
 
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster
+- [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
 - [Client Connection Parameters](connection-parameters.html)

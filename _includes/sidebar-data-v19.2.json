@@ -1695,13 +1695,13 @@
           {
             "title": "<code>cockroach start</code>",
             "urls": [
-              "/${VERSION}/start-a-node.html"
+              "/${VERSION}/cockroach-start.html"
             ]
           },
           {
             "title": "<code>cockroach init</code>",
             "urls": [
-              "/${VERSION}/initialize-a-cluster.html"
+              "/${VERSION}/cockroach-init.html"
             ]
           },
           {
@@ -1713,43 +1713,37 @@
           {
             "title": "<code>cockroach cert</code>",
             "urls": [
-              "/${VERSION}/create-security-certificates.html"
+              "/${VERSION}/cockroach-cert.html"
             ]
           },
           {
             "title": "<code>cockroach quit</code>",
             "urls": [
-              "/${VERSION}/stop-a-node.html"
+              "/${VERSION}/cockroach-quit.html"
             ]
           },
           {
             "title": "<code>cockroach sql</code>",
             "urls": [
-              "/${VERSION}/use-the-built-in-sql-client.html"
+              "/${VERSION}/cockroach-sql.html"
             ]
           },
           {
             "title": "<code>cockroach sqlfmt</code>",
             "urls": [
-              "/${VERSION}/use-the-query-formatter.html"
-            ]
-          },
-          {
-            "title": "<code>cockroach user</code>",
-            "urls": [
-              "/${VERSION}/create-and-manage-users.html"
+              "/${VERSION}/cockroach-sqlfmt.html"
             ]
           },
           {
             "title": "<code>cockroach node</code>",
             "urls": [
-              "/${VERSION}/view-node-details.html"
+              "/${VERSION}/cockroach-node.html"
             ]
           },
           {
             "title": "<code>cockroach dump</code>",
             "urls": [
-              "/${VERSION}/sql-dump.html"
+              "/${VERSION}/cockroach-dump.html"
             ]
           },
           {
@@ -1761,37 +1755,37 @@
           {
             "title": "<code>cockroach debug ballast</code>",
             "urls": [
-              "/${VERSION}/debug-ballast.html"
+              "/${VERSION}/cockroach-debug-ballast.html"
             ]
           },
           {
             "title": "<code>cockroach debug encryption-active-key</code>",
             "urls": [
-              "/${VERSION}/debug-encryption-active-key.html"
+              "/${VERSION}/cockroach-debug-encryption-active-key.html"
             ]
           },
           {
             "title": "<code>cockroach debug merge-logs</code>",
             "urls": [
-              "/${VERSION}/debug-merge-logs.html"
+              "/${VERSION}/cockroach-debug-merge-logs.html"
             ]
           },
           {
             "title": "<code>cockroach debug zip</code>",
             "urls": [
-              "/${VERSION}/debug-zip.html"
+              "/${VERSION}/cockroach-debug-zip.html"
             ]
           },
           {
             "title": "<code>cockroach gen</code>",
             "urls": [
-              "/${VERSION}/generate-cockroachdb-resources.html"
+              "/${VERSION}/cockroach-gen.html"
             ]
           },
           {
             "title": "<code>cockroach version</code>",
             "urls": [
-              "/${VERSION}/view-version-details.html"
+              "/${VERSION}/cockroach-version.html"
             ]
           },
           {

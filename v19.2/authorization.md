@@ -46,7 +46,7 @@ To create and manage your cluster's roles, use the following statements:
 
 In CockroachDB, privileges are granted to [users](#create-and-manage-users) and [roles](#create-and-manage-roles) at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 
-When a user connects to a database, either via the [built-in SQL client](use-the-built-in-sql-client.html) or a [client driver](install-client-drivers.html), CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
+When a user connects to a database, either via the [built-in SQL client](cockroach-sql.html) or a [client driver](install-client-drivers.html), CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
 
 For the privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
@@ -96,7 +96,7 @@ This example demonstrates user- and role-based access management. Role-based acc
     --background
     ~~~
 
-2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -298,7 +298,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 ### Step 2. Create the schema
 
-1. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

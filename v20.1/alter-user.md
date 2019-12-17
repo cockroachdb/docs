@@ -74,5 +74,5 @@ To preserve case in a password specified using identifier syntax, use double quo
 - [`SHOW USERS`](show-users.html)
 - [`GRANT <privileges>`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Create Security Certificates](create-security-certificates.html)
+- [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)

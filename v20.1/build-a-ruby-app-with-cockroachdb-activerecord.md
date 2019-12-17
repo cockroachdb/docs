@@ -78,7 +78,7 @@ The output should be:
 2 250
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -138,7 +138,7 @@ The output should be:
 2 250
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

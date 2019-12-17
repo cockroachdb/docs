@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_danger}}
-The `BACKUP` feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users. For non-enterprise backups, see [`cockroach dump`](sql-dump.html).
+The `BACKUP` feature is only available to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users. For non-enterprise backups, see [`cockroach dump`](cockroach-dump.html).
 {{site.data.alerts.end}}
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create full or incremental backups of your cluster's schema and data that are consistent as of a given timestamp. Backups can be with or without [revision history](backup.html#backups-with-revision-history).
@@ -195,7 +195,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 
 ### Create locality-aware backups
 
-<span class="version-tag">New in v19.2:</span> You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+<span class="version-tag">New in v19.2:</span> You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](cockroach-start.html).
 
 A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`.
 

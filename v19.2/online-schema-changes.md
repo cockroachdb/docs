@@ -236,6 +236,6 @@ ROLLBACK
 [create-table]: create-table.html
 [select]: selection-queries.html
 [show-jobs]: show-jobs.html
-[sql-client]: use-the-built-in-sql-client.html
+[sql-client]: cockroach-sql.html
 [txns]: transactions.html
 [truncate]: truncate.html

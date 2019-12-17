@@ -63,7 +63,7 @@ For other ways to install Gradle, see [its official documentation](https://gradl
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-You can pass the [`--also-generate-pkcs8-key` flag](create-security-certificates.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -117,7 +117,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;
@@ -128,7 +128,7 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -206,7 +206,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;
@@ -217,7 +217,7 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

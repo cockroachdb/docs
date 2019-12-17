@@ -9,7 +9,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
-- [CockroachDB dump files](sql-dump.html)
+- [CockroachDB dump files](cockroach-dump.html)
 - <span class="version-tag">New in v19.2:</span> [Delimited data files](#delimited-data-files)
 
 {{site.data.alerts.callout_success}}
@@ -119,7 +119,7 @@ You can specify the target database in the table name in the `IMPORT` statement.
 
 Your `IMPORT` statement must reference a `CREATE TABLE` statement representing the schema of the data you want to import.  You have several options:
 
-- Specify the table's columns explicitly from the [SQL client](use-the-built-in-sql-client.html). For an example, see [Import a table from a CSV file](#import-a-table-from-a-csv-file) below.
+- Specify the table's columns explicitly from the [SQL client](cockroach-sql.html). For an example, see [Import a table from a CSV file](#import-a-table-from-a-csv-file) below.
 
 - Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
 
@@ -131,9 +131,9 @@ By default, the [Postgres][postgres] and [MySQL][mysql] import formats support f
 
 ### Available storage
 
-Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](start-a-node.html#store) directory must have enough available storage to hold its portion of the data.
+Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](cockroach-start.html#store) directory must have enough available storage to hold its portion of the data.
 
-On [`cockroach start`](start-a-node.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
+On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
 
 ### Import file location
 
@@ -146,7 +146,7 @@ To import a local file, you have the following options:
 - Option 1. Run a [local file server](create-a-file-server.html) to make the file accessible from all nodes.
 
 - Option 2. Make the file accessible from each local node's store:
-    1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](start-a-node.html#general), but will look something like `/path/to/cockroach-data/extern/`.
+    1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](cockroach-start.html#general), but will look something like `/path/to/cockroach-data/extern/`.
     2. Copy the file to each node's `extern` directory.
     3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal:///data.sql'`.
 
@@ -663,7 +663,7 @@ Google Cloud:
 > IMPORT PGDUMP 'gs://acme-co/employees.sql';
 ~~~
 
-For more information, see [SQL Dump (Export)](sql-dump.html).
+For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 

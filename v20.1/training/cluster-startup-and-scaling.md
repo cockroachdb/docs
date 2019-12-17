@@ -84,7 +84,7 @@ redirect_from: /training/cluster-startup-and-scaling.html
 
 ## Step 2. Start a node
 
-Use the [`cockroach start`](../start-a-node.html) command to start a node:
+Use the [`cockroach start`](../cockroach-start.html) command to start a node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -165,7 +165,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 5. Initialize the cluster
 
-1. In another terminal, use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+1. In another terminal, use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -218,7 +218,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 6. Verify that the cluster is live
 
-1. Use the [`cockroach node status`](../view-node-details.html) command to check that all 3 nodes are part of the cluster:
+1. Use the [`cockroach node status`](../cockroach-node.html) command to check that all 3 nodes are part of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -234,7 +234,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
     (3 rows)
     ~~~
 
-2. Use the [`cockroach sql`](../use-the-built-in-sql-client.html) command to query the cluster:
+2. Use the [`cockroach sql`](../cockroach-sql.html) command to query the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell

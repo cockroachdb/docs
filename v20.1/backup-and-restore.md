@@ -128,7 +128,7 @@ In the sample script, configure the day of the week for which you want to create
     `extra`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
     `backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.
 
-    Also customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, and [additional flags](use-the-built-in-sql-client.html#flags) as required.
+    Also customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, and [additional flags](cockroach-sql.html#flags) as required.
 
 3. Change the file permissions to make the script executable:
 
@@ -150,7 +150,7 @@ If you miss an incremental backup, delete the `recent_backups.txt` file and run 
 
 ### Locality-aware backup and restore
 
-You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](start-a-node.html).
+You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](cockroach-start.html).
 
 This is useful for:
 
@@ -200,14 +200,14 @@ The locality query string parameters must be [URL-encoded](https://en.wikipedia.
 
 ## Perform Core backup and restore
 
-In case you do not have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](sql-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
+In case you do not have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore a database from a Core backup, [use the `cockroach sql` command to execute the statements in the backup file](sql-dump.html#restore-a-table-from-a-backup-file):
+To restore a database from a Core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -222,9 +222,9 @@ If you created a backup from another database and want to import it into Cockroa
 
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
-- [`SQL DUMP`](sql-dump.html)
+- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](import-data.html)
-- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 
 <!-- Reference links -->

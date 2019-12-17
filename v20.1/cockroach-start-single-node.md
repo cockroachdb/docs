@@ -1,5 +1,5 @@
 ---
-title: Start a Single-Node Cluster
+title: cockroach start-single-node
 summary: Start a single-node cluster for app development.
 toc: true
 ---
@@ -7,7 +7,7 @@ toc: true
 This page explains the `cockroach start-single-node` [command](cockroach-commands.html), which you use to start a single-node cluster with replication disabled. A single-node cluster is all you need for quick SQL testing or app development.
 
 {{site.data.alerts.callout_success}}
-To run a multi-node cluster with replicated data for availability and consistency, use [`cockroach start`](start-a-node.html) and [`cockroach init`](initialize-a-cluster.html).
+To run a multi-node cluster with replicated data for availability and consistency, use [`cockroach start`](cockroach-start.html) and [`cockroach init`](cockroach-init.html).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -31,7 +31,7 @@ The `cockroach start-single-node` command supports the following [general-use](#
 Many flags have useful defaults that can be overridden by specifying the flags explicitly. If you specify flags explicitly, however, be sure to do so each time the node is restarted, as they will not be remembered.
 
 {{site.data.alerts.callout_info}}
-The `cockroach start-single-node` flags are identical to [`cockroach start`](start-a-node.html#flags) flags. However, many of them are not relevant for single-node clusters but are provided for users who want to test concepts that appear in multi-node clusters. These flags are called out as such. In most cases, accepting most defaults is sufficient (see the [examples](#examples) below).
+The `cockroach start-single-node` flags are identical to [`cockroach start`](cockroach-start.html#flags) flags. However, many of them are not relevant for single-node clusters but are provided for users who want to test concepts that appear in multi-node clusters. These flags are called out as such. In most cases, accepting most defaults is sufficient (see the [examples](#examples) below).
 {{site.data.alerts.end}}
 
 ### General
@@ -43,7 +43,7 @@ Flag | Description
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
 `--external-io-dir` | The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to `disabled`, backups and restores using local node directories and NFS drives are disabled.<br><br>**Default:** `extern` subdirectory of the first configured [`store`](#store).<br><br>To set the `--external-io-dir` flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the `extern` directory.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
-`--locality` | **Not relevant for single-node clusters.** Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](start-a-node.html#locality) below.
+`--locality` | **Not relevant for single-node clusters.** Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](cockroach-start.html#locality) below.
 `--max-disk-temp-storage` | The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see `--max-sql-memory`). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit (e.g., `.25`, `25%`, `500GB`, `1TB`, `1TiB`).<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead. Also, if expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br>**Default:** `32GiB`
 `--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `128MiB`<br><br>The default SQL memory size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
 `--pid-file` | The file to which the node's process ID will be written on successful startup. When this flag is not set, the process ID is not written to file.
@@ -61,7 +61,7 @@ Flag | Description
 
 Flag | Description
 -----|-----------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir` | The path to the [certificate directory](cockroach-cert.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
 `--enterprise-encryption` | This optional flag specifies the encryption options for one of the stores on the node. If multiple stores exist, the flag must be specified for each store. <br /><br /> This flag takes a number of options.  For a complete list of options, and usage instructions, see [Encryption at Rest](encryption.html). <br /><br /> Note that this is an [enterprise feature](enterprise-licensing.html).   
 
@@ -229,7 +229,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --host=localhost:26257
     ~~~
 
-2. Restart the node with the [`cockroach start`](start-a-node.html) command:  
+2. Restart the node with the [`cockroach start`](cockroach-start.html) command:  
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -269,7 +269,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine. Also, since all nodes use the same hostname (`localhost`), you can use the first node's certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
-4. Open the [built-in SQL shell](use-the-built-in-sql-client.html):
+4. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -329,7 +329,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --host=localhost:26257
     ~~~
 
-2. Restart the node with the [`cockroach start`](start-a-node.html) command:  
+2. Restart the node with the [`cockroach start`](cockroach-start.html) command:  
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -369,7 +369,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine.
 
-4. Open the [built-in SQL shell](use-the-built-in-sql-client.html):
+4. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

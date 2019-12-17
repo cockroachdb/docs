@@ -1,7 +1,9 @@
 ---
-title: Start a Node
+title: cockroach start
 summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
+redirect-form: start-a-node.html
+key: start-a-node.html
 ---
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.
@@ -71,7 +73,7 @@ Flag | Description
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
-`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](initialize-a-cluster.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.<br><br><span class="version-tag">Changed in v19.2:</span> Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
+`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](cockroach-init.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.<br><br>Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
 `--host` | **Deprecated.** Use `--listen-addr` instead.
 `--port`<br>`-p` | **Deprecated.** Specify port in `--advertise-addr` and/or `--listen-addr` instead.
@@ -82,7 +84,7 @@ Flag | Description
 
 Flag | Description
 -----|-----------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir` | The path to the [certificate directory](cockroach-cert.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; any user, even `root`, can log in without providing a password; any user, connecting as `root`, can read or write any data in your cluster; and there is no network encryption or authentication, and thus no confidentiality.<br><br>**Default:** `false`
 `--enterprise-encryption` | This optional flag specifies the encryption options for one of the stores on the node. If multiple stores exist, the flag must be specified for each store. <br /><br /> This flag takes a number of options.  For a complete list of options, and usage instructions, see [Encryption at Rest](encryption.html). <br /><br /> Note that this is an [enterprise feature](enterprise-licensing.html).
 
@@ -259,7 +261,7 @@ $ cockroach start \
 ~~~
 </div>
 
-Then run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
+Then run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -316,7 +318,7 @@ $ cockroach init \
     --max-sql-memory=.25
     ~~~
 
-3. Run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
+3. Run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -462,7 +464,7 @@ $ cockroach sql --insecure --port 26261
 
 ## See also
 
-- [Initialize a Cluster](initialize-a-cluster.html)
+- [Initialize a Cluster](cockroach-init.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Test Deployment](deploy-a-test-cluster.html)

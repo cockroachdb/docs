@@ -10,7 +10,7 @@ If you've tried to [troubleshoot](troubleshooting-overview.html) an issue yourse
 
 Before filing an issue:
 
-  - Read the details of the relevant documentation. For example, it's important to understand the function of all flags when [starting nodes](start-a-node.html).
+  - Read the details of the relevant documentation. For example, it's important to understand the function of all flags when [starting nodes](cockroach-start.html).
   - Review our [troubleshooting documentation](troubleshooting-overview.html).
   - Check our [open issues](https://github.com/cockroachdb/cockroach/issues) for existing tickets related to your problem. Specifically, the [known limitation](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+is%3Aissue+label%3Aknown-limitation), [UX surprise](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Aux-surprise) and [SQL semantics](https://github.com/cockroachdb/cockroach/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Asql-semantics) flags. If you've encountered one of these issues, please leave a comment about your use case.
   - Use our [support resources](support-resources.html), including:

@@ -91,7 +91,7 @@ CockroachDB requires TCP communication on two ports:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -106,7 +106,7 @@ CockroachDB requires TCP communication on two ports:
 
 4. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
 
-5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](initialize-a-cluster.html) command to join the first nodes into a cluster:
+5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell

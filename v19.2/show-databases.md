@@ -37,7 +37,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the d
 (5 rows)
 ~~~
 
-<span class="version-tag">New in v19.2:</span> Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](use-the-built-in-sql-client.html#commands) to list all databases:
+<span class="version-tag">New in v19.2:</span> Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](cockroach-sql.html#commands) to list all databases:
 
 {% include copy-clipboard.html %}
 ~~~ sql

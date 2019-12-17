@@ -30,7 +30,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 ## Step 1. Start the cluster
 
-1. Use the [`cockroach start`](start-a-node.html) command to start the first node:
+1. Use the [`cockroach start`](cockroach-start.html) command to start the first node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -64,7 +64,7 @@ Also, feel free to watch this process in action before going through the steps y
     *
     ~~~
 
-2. Take a moment to understand the [flags](start-a-node.html#flags) you used:
+2. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
     - The `--insecure` flag makes communication unencrypted.
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the Admin UI.
     - The `--store` flag indicates the location where the node's data and logs are stored.
@@ -97,7 +97,7 @@ Also, feel free to watch this process in action before going through the steps y
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -110,7 +110,7 @@ Also, feel free to watch this process in action before going through the steps y
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details](start-a-node.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
+    At this point, each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -138,7 +138,7 @@ Also, feel free to watch this process in action before going through the steps y
 
 Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use CockroachDB's built-in SQL client.
 
-1. Run the [cockroach sql](use-the-built-in-sql-client.html) command against node 1:
+1. Run the [cockroach sql](cockroach-sql.html) command against node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -266,7 +266,7 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 ## Step 5. Simulate node failure
 
-1. In a new terminal, run the [`cockroach quit`](stop-a-node.html) command against a node to simulate a node failure:
+1. In a new terminal, run the [`cockroach quit`](cockroach-quit.html) command against a node to simulate a node failure:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -330,7 +330,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## Step 7. Stop the cluster
 
-1. When you're done with your test cluster, use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node.
+1. When you're done with your test cluster, use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -372,7 +372,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## What's next?
 
-- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](use-the-built-in-sql-client.html)
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), geo-partitioning](demo-geo-partitioning.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

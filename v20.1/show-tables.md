@@ -57,7 +57,7 @@ When a `database_name` and `schema_name` are omitted, the tables of the [current
 (6 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
+Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql

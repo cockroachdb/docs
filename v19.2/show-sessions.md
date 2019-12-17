@@ -38,7 +38,7 @@ Field | Description
 `session_id` | The ID of the connected session.
 `user_name` | The username of the connected user.
 `client_address` | The address and port of the connected client.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client](use-the-built-in-sql-client.html), this will be `cockroach`.
+`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client](cockroach-sql.html), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
 `session_start` | The timestamp at which the session started.
@@ -116,7 +116,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 #### Exclude sessions from the built-in SQL client
 
-To exclude sessions from the [built-in SQL client](use-the-built-in-sql-client.html), filter for sessions that do not show `cockroach` as the `application_name`:
+To exclude sessions from the [built-in SQL client](cockroach-sql.html), filter for sessions that do not show `cockroach` as the `application_name`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

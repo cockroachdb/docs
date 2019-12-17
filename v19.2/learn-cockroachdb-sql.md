@@ -21,7 +21,7 @@ Do one of the following:
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -72,7 +72,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -344,7 +344,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 ## What's next?
 
 - Explore all [SQL Statements](sql-statements.html)
-- [Use the built-in SQL client](use-the-built-in-sql-client.html) to execute statements from a shell or directly from the command line
+- [Use the built-in SQL client](cockroach-sql.html) to execute statements from a shell or directly from the command line
 - [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
 {% endunless %}
@@ -384,7 +384,7 @@ When you no longer need a database, use [`DROP DATABASE`](drop-database.html) fo
 
 ## Show databases
 
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement or the `\l` [shell command](use-the-built-in-sql-client.html#commands):
+To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement or the `\l` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -448,7 +448,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](use-the-built-in-sql-client.html#commands):
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -472,7 +472,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](use-the-built-in-sql-client.html#commands):
+To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql

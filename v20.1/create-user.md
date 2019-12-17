@@ -15,7 +15,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
     - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
-- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
 ## Required privileges
 
@@ -64,7 +64,7 @@ Usernames are case-insensitive; must start with either a letter or underscore; m
 After creating users, you must:
 
 - [Grant them privileges to databases](grant.html).
-- For secure clusters, you must also [create their client certificates](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client).
+- For secure clusters, you must also [create their client certificates](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client).
 
 ### Create a user with a password
 
@@ -91,7 +91,7 @@ After creating a user, you can use the [`ALTER USER`](alter-user.html) statement
 
 #### Secure clusters with client certificates
 
-All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
+All users can authenticate their access to a secure cluster using [a client certificate](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -128,5 +128,5 @@ $ cockroach sql --insecure --user=jpointsman
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Create Security Certificates](create-security-certificates.html)
+- [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)

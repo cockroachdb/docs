@@ -7,7 +7,7 @@ For example, let's say you want to maintain a group of servers, and the nodes ru
 > SET CLUSTER SETTING server.time_until_store_dead = '15m0s';
 ~~~
 
-After completing the maintenance work and [restarting the nodes](start-a-node.html), you would then change the setting back to its default:
+After completing the maintenance work and [restarting the nodes](cockroach-start.html), you would then change the setting back to its default:
 
 {% include copy-clipboard.html %}
 ~~~ sql
