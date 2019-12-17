@@ -91,7 +91,7 @@
         For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
         {{site.data.alerts.end}}
 
-    2. You may want to modify `storage.persistentVolume.size` and/or `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. The default `storageClass` also differs per environment (e.g., GCE and Azure do not default to SSD). 
+    2. You may want to modify `storage.persistentVolume.size` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
 
         {{site.data.alerts.callout_info}}
         If necessary, you can [expand disk size](#expand-disk-size) after the cluster is live.
