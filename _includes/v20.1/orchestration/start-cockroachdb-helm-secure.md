@@ -1,14 +1,13 @@
-1. [Install the Helm client](https://helm.sh/docs/intro/install/).
+1. [Install the Helm client](https://helm.sh/docs/intro/install/). Note that these steps are valid for Helm v2.16.0 and earlier.
 
 2. Install the Helm server, known as Tiller.
 
     In the likely case that your Kubernetes cluster uses RBAC (e.g., if you are using GKE), you first need to create [RBAC resources](https://docs.helm.sh/using_helm/#role-based-access-control) to grant Tiller access to the Kubernetes API:
 
-    1. Create a `rbac-config.yaml` file to define a role and service account:
+    1. Create a `rbac-config.yaml` file to define a role and service account. It should contain the following:
 
         {% include copy-clipboard.html %}
         ~~~
-        cat > rbac-config.yaml <<EOF
         apiVersion: v1
         kind: ServiceAccount
         metadata:
@@ -27,7 +26,6 @@
           - kind: ServiceAccount
             name: tiller
             namespace: kube-system
-        EOF
         ~~~
 
     2. Create the service account:
@@ -72,7 +70,6 @@
 
     {% include copy-clipboard.html %}
     ~~~
-    cat > my-values.yaml <<EOF
     statefulset:
       resources:
         limits:
@@ -84,7 +81,6 @@
       max-sql-memory: "2Gi"
     tls:
       enabled: true
-    EOF
     ~~~
 
     1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
