@@ -92,7 +92,7 @@
     2. You may want to modify `storage.persistentVolume.size` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
 
         {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](#expand-disk-size) after the cluster is live.
+        If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
         {{site.data.alerts.end}}
 
     3. For a secure deployment, set `tls.enabled` to true.
