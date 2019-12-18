@@ -64,7 +64,7 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 pq: database "db2" does not exist
 ~~~
 
-For interactive sessions from the [built-in SQL client](use-the-built-in-sql-client.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
+For interactive sessions from the [built-in SQL client](cockroach-sql.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
 
 ### Prevent dropping a non-empty database (`RESTRICT`)
 

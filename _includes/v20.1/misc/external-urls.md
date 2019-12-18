@@ -12,7 +12,7 @@
 | S3-compatible services&nbsp;[<sup>6</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>7</sup>](#considerations) (optional), `AWS_ENDPOINT` |
 
 {{site.data.alerts.callout_danger}}
-If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](start-a-node.html#general) point to the same NFS mount or other network-backed, shared storage.
+If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -31,7 +31,7 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 - <sup>3</sup> You can create your own HTTP server with [Caddy or nginx](create-a-file-server.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
-- <sup>4</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](start-a-node.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
+- <sup>4</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
 - <sup>5</sup>  The host component of NFS/Local can either be empty or the `nodeID`. If the `nodeID` is specified, it is currently ignored (i.e., any node can be sent work and it will look in its local input/output directory); however, the `nodeID` will likely be required in the future.
 
@@ -47,4 +47,4 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 | Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
 | Google Cloud | `gs://acme-co/employees.sql`                                                     |
 | HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///path/employees`, `nodelocal://2/path/employees` <br><br>**Note:** If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](start-a-node.html#general) point to the same NFS mount or other network-backed, shared storage.         |
+| NFS/Local    | `nodelocal:///path/employees`, `nodelocal://2/path/employees` <br><br>**Note:** If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.         |

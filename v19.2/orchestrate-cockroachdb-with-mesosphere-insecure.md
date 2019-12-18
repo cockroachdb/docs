@@ -112,7 +112,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
     $ dcos node ssh --master-proxy --leader
     ~~~
 
-3. Start a temporary container and open the [built-in SQL shell](use-the-built-in-sql-client.html) inside it, using the `vip` endpoint as the `--host`:
+3. Start a temporary container and open the [built-in SQL shell](cockroach-sql.html) inside it, using the `vip` endpoint as the `--host`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -195,7 +195,7 @@ The default `cockroachdb` service creates a 3-node CockroachDB cluster. You can 
 
 The Scheduler process will restart with the new configuration and will validate any detected changes. To check that nodes were successfully added to the cluster, go back to the Admin UI, view **Node List**, and check for the new nodes.
 
-Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](view-node-details.html) command in a temporary container, again using the `vip` endpoint as the `--host`:
+Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](cockroach-node.html) command in a temporary container, again using the `vip` endpoint as the `--host`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -313,7 +313,7 @@ To view logs for a given node:
 
 ### Backup and restore
 
-The `cockroachdb` DC/OS service provides an easy way use CockroachDB's [`cockroach dump`](sql-dump.html) command to back up data on a per-database basis to an S3 bucket and to restore data from such a backup. Note that using datastores other than S3 is not yet supported.
+The `cockroachdb` DC/OS service provides an easy way use CockroachDB's [`cockroach dump`](cockroach-dump.html) command to back up data on a per-database basis to an S3 bucket and to restore data from such a backup. Note that using datastores other than S3 is not yet supported.
 
 {{site.data.alerts.callout_success}}If you need to back up to/restore from datasources other than S3, or you have a very large database and need <a href="backup.html">faster backups</a>, <a href="backup.html#incremental-backups">incremental backups</a>, or a <a href="restore.html">faster, distributed restore process</a>, consider contacting Cockroach Labs about an <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a>.{{site.data.alerts.end}}
 

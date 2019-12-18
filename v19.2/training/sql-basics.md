@@ -17,7 +17,7 @@ Make sure you have already completed [Data Import](data-import.html).
 
 ## Step 1. Start a SQL shell
 
-Use the [`cockroach sql`](../start-a-node.html) command to open the built-in SQL client:
+Use the [`cockroach sql`](../cockroach-start.html) command to open the built-in SQL client:
 
 {% include copy-clipboard.html %}
 ~~~ shell

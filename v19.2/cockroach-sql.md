@@ -1,7 +1,9 @@
 ---
-title: Use the Built-in SQL Client
+title: cockroach sql
 summary: CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line.
 toc: true
+redirect-from: use-the-built-in-sql-client.html
+key: use-the-built-in-sql-client.html
 ---
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
@@ -142,10 +144,10 @@ Command | Usage
 `\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>You can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\show` | During a multi-line statement or transaction, show the SQL entered so far.
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
-`\l` | List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
-`\dt`<br>`d` | Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
-`\du` | List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
-`\d <table>` | Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
+`\l` | <span class="version-tag">New in v19.2:</span> List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
+`\dt`<br>`d` | <span class="version-tag">New in v19.2:</span> Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
+`\du` | <span class="version-tag">New in v19.2:</span> List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
+`\d <table>` | <span class="version-tag">New in v19.2:</span> Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
 
 ### Client-side options
 

@@ -12,7 +12,7 @@ For insecure clusters, anyone can access and view the Admin UI. For secure clust
 
 You can access the Admin UI from any node in the cluster.
 
-The Admin UI is reachable at the IP address/hostname and port set via the `--http-addr` flag when [starting each node](start-a-node.html), for example, `http://<address from --http-addr>:<port from --http-addr>` for an insecure cluster or `https://<address from --http-addr>:<port from --http-addr>` for a secure cluster.
+The Admin UI is reachable at the IP address/hostname and port set via the `--http-addr` flag when [starting each node](cockroach-start.html), for example, `http://<address from --http-addr>:<port from --http-addr>` for an insecure cluster or `https://<address from --http-addr>:<port from --http-addr>` for a secure cluster.
 
 If `--http-addr` is not specified when starting a node, the Admin UI is reachable at the IP address/hostname set via the `--listen-addr` flag and port `8080`.
 

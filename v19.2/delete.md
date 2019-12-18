@@ -118,7 +118,7 @@ For examples, see [Delete with index hints](#delete-with-index-hints).
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
 {{site.data.alerts.callout_info}}
-If the [`sql_safe_updates`](use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+If the [`sql_safe_updates`](cockroach-sql.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}

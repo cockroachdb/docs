@@ -186,9 +186,9 @@ Example usage:
 - [`IMPORT`][import]
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](sql-dump.html)
+- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](backup-and-restore.html)
-- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 
 <!-- Reference Links -->

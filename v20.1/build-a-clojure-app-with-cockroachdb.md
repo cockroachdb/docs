@@ -28,7 +28,7 @@ Install the Clojure `lein` utility as described in its [official documentation](
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-<span class="version-tag">New in v19.1</span>: Pass the [`--also-generate-pkcs8-key` flag](create-security-certificates.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+<span class="version-tag">New in v19.1</span>: Pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -37,7 +37,7 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 
 ## Step 4. Create a table in the new database
 
-As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
+As the `maxroach` user, use the [built-in SQL client](cockroach-sql.html) to create an `accounts` table in the new database.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -106,7 +106,7 @@ Run with:
 $ lein run
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -131,7 +131,7 @@ id | balance
 
 ## Step 3. Create a table in the new database
 
-As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
+As the `maxroach` user, use the [built-in SQL client](cockroach-sql.html) to create an `accounts` table in the new database.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -199,7 +199,7 @@ Run with:
 $ lein run
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell

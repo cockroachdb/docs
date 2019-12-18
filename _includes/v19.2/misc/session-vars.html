@@ -21,7 +21,7 @@
     <code>application_name</code>
    </td>
    <td>The current application name for statistics collection.</td>
-   <td>Empty string, or <code>cockroach</code> for sessions from the <a href="use-the-built-in-sql-client.html">built-in SQL client</a>.</td>
+   <td>Empty string, or <code>cockroach</code> for sessions from the <a href="cockroach-sql.html">built-in SQL client</a>.</td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
@@ -210,9 +210,9 @@
    <td>
     <code>sql_safe_updates</code>
    </td>
-   <td>If <code>false</code>, potentially unsafe SQL statements are allowed, including <code>DROP</code> of a non-empty database and all dependent objects, <code>DELETE</code> without a <code>WHERE</code> clause, <code>UPDATE</code> without a <code>WHERE</code> clause, and <code>ALTER TABLE .. DROP COLUMN</code>. See <a href="use-the-built-in-sql-client.html#allow-potentially-unsafe-sql-statements">Allow Potentially Unsafe SQL Statements</a> for more details.</td>
+   <td>If <code>false</code>, potentially unsafe SQL statements are allowed, including <code>DROP</code> of a non-empty database and all dependent objects, <code>DELETE</code> without a <code>WHERE</code> clause, <code>UPDATE</code> without a <code>WHERE</code> clause, and <code>ALTER TABLE .. DROP COLUMN</code>. See <a href="cockroach-sql.html#allow-potentially-unsafe-sql-statements">Allow Potentially Unsafe SQL Statements</a> for more details.</td>
    <td>
-    <code>true</code> for interactive sessions from the <a href="use-the-built-in-sql-client.html">built-in SQL client</a>,<br /><code>false</code> for sessions from other clients</td>
+    <code>true</code> for interactive sessions from the <a href="cockroach-sql.html">built-in SQL client</a>,<br /><code>false</code> for sessions from other clients</td>
     <td>Yes</td>
     <td>Yes</td>
   </tr>

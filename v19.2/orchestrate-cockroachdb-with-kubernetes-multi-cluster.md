@@ -284,7 +284,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     The pod uses the `root` client certificate created earlier by the `setup.py` script. Note that this will work from any of the three Kubernetes clusters as long as you use the correct namespace and context combination.
 
-2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html), again specifying the namespace and context of the Kubernetes cluster where the pod is running:
+2. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html), again specifying the namespace and context of the Kubernetes cluster where the pod is running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -467,7 +467,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade:
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
         {% include copy-clipboard.html %}
         ~~~ shell
@@ -525,7 +525,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     Once you are satisfied with the new version, re-enable auto-finalization:
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
         {% include copy-clipboard.html %}
         ~~~ shell

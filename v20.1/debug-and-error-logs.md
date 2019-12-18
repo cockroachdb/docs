@@ -17,7 +17,7 @@ When a node processes a [`cockroach` command](cockroach-commands.html), it produ
 
 As a command generates messages, CockroachDB uses the [command](#commands)'s [logging flags](#flags) and the message's [severity level](#severity-levels) to determine the appropriate [location](#output-locations) for it.
 
-Each node's logs detail only the internal activity of that node without visibility into the behavior of other nodes in the cluster. When troubleshooting, this means that you must identify the node where the problem occurred or [collect the logs from all active nodes in your cluster](debug-zip.html).
+Each node's logs detail only the internal activity of that node without visibility into the behavior of other nodes in the cluster. When troubleshooting, this means that you must identify the node where the problem occurred or [collect the logs from all active nodes in your cluster](cockroach-debug-zip.html).
 
 ### Commands
 
@@ -39,7 +39,7 @@ CockroachDB identifies each message with a severity level, letting operators kno
 
 Command | `INFO` messages | `WARNING` and above messages
 --------|--------|--------------------
-[`cockroach start`](start-a-node.html) | Write to file | Write to file
+[`cockroach start`](cockroach-start.html) | Write to file | Write to file
 [All other commands](cockroach-commands.html) | Discard | Print to `stderr`
 
 ### Output locations
@@ -69,7 +69,7 @@ cockroach.richards-mbp.rloveland.2018-03-15T15_24_10Z.024338.log
 Property | `cockroach start` | All other commands
 ---------|-------------------|-------------------
 Enabled by | Default<sup>1</sup> | Explicit `--log-dir` flag
-Default File Destination | `[first `[`store`](start-a-node.html#store)` dir]/logs` | *N/A*
+Default File Destination | `[first `[`store`](cockroach-start.html#store)` dir]/logs` | *N/A*
 Change File Destination | `--log-dir=[destination]` | `--log-dir=[destination]`
 Default Severity Level Threshold | `INFO` | *N/A*
 Change Severity Threshold | `--log-file-verbosity=[severity level]` | `--log-file-verbosity=[severity level]`

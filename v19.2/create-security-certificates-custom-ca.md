@@ -1,5 +1,5 @@
 ---
-title: Create Security Certificates
+title: Create Security Certificates using a Custom CA
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 ---
@@ -13,7 +13,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
 <div class="filters filters-big clearfix">
-  <a href="create-security-certificates.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
+  <a href="cockroach-cert.html"><button style="width:28%" class="filter-button">Use cockroach cert</button>
   <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use Openssl</button></a>
   <button style="width:28%" class="filter-button current">Use <strong>custom CA</strong></button></a>
 </div>
@@ -34,7 +34,7 @@ For secure clusters, you can avoid getting the warning message by using a certif
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` to the [certificate directory](create-security-certificates.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). You can disable this check by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
+3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). You can disable this check by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
 4. For nodes that are already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
    {% include copy-clipboard.html %}
    ~~~ shell
@@ -66,7 +66,7 @@ File name | File usage
 
 ## Split node certificates
 
-The node certificate discussed in the `cockroach cert` command [documentation](create-security-certificates.html) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
+The node certificate discussed in the `cockroach cert` command [documentation](cockroach-cert.html) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
 
 To get around this issue, you can split the node key and certificate into two:
 
@@ -133,5 +133,5 @@ File name | File usage
 ## See also
 
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node](start-a-node.html): Learn more about the flags you pass when adding a node to a secure cluster
+- [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
 - [Client Connection Parameters](connection-parameters.html)

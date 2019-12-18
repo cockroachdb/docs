@@ -1,6 +1,6 @@
 Now you'll import Movr data representing users, vehicles, and rides in 3 eastern US cities (New York, Boston, and Washington DC) and 3 western US cities (Los Angeles, San Francisco, and Seattle).
 
-1. Still on the fourth instance, start the [built-in SQL shell](use-the-built-in-sql-client.html), pointing it at one of the CockroachDB nodes:
+1. Still on the fourth instance, start the [built-in SQL shell](cockroach-sql.html), pointing it at one of the CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

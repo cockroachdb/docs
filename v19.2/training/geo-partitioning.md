@@ -63,7 +63,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
     --background
     ~~~
 
-4. Use the [`cockroach init`](../initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -198,7 +198,7 @@ Now you'll import data representing users, vehicles, and rides for the fictional
     This command creates the `movr` database with six tables: `users`, `vehicles`, `rides`, `promo_codes`, `vehicle_location_histories`, and `user_promo_codes`. The [`--num`](../cockroach-workload.html#movr-workload) flags specify a larger quantity of data to generate for the `users`, `rides`, and `vehicles` tables.
 
 
-2. Start the [built-in SQL shell](../use-the-built-in-sql-client.html):
+2. Start the [built-in SQL shell](../cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -21,7 +21,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 Start and initialize a cluster like you did in previous modules.
 
 {{site.data.alerts.callout_info}}
-To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../start-a-node.html#general) instead of in separate terminals.
+To simplify the process of running multiple nodes on your local computer, you'll start them in the [background](../cockroach-start.html#general) instead of in separate terminals.
 {{site.data.alerts.end}}
 
 1. In a new terminal, start node 1:

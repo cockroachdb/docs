@@ -9,7 +9,7 @@ Cluster settings apply to all nodes of a CockroachDB cluster and control, for ex
 They can be updated anytime after a cluster has been started, but only by a member of the `admin` role, to which the `root` user belongs by default.
 
 {{site.data.alerts.callout_info}}
-In contrast to cluster-wide settings, node-level settings apply to a single node. They are defined by flags passed to the `cockroach start` command when starting a node and cannot be changed without stopping and restarting the node. For more details, see [Start a Node](start-a-node.html).
+In contrast to cluster-wide settings, node-level settings apply to a single node. They are defined by flags passed to the `cockroach start` command when starting a node and cannot be changed without stopping and restarting the node. For more details, see [Start a Node](cockroach-start.html).
 {{site.data.alerts.end}}
 
 ## Settings
@@ -39,5 +39,5 @@ Before changing a cluster setting, please note the following:
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [Diagnostics Reporting](diagnostics-reporting.html)
-- [Start a Node](start-a-node.html)
-- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Start a Node](cockroach-start.html)
+- [Use the Built-in SQL Client](cockroach-sql.html)

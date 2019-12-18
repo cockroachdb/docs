@@ -2,7 +2,7 @@ CockroachDB replicates and distributes data behind-the-scenes and uses a [Gossip
 
 When using a load balancer, you should issue commands directly to the load balancer, which then routes traffic to the nodes.
 
-Use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follows:
+Use the [built-in SQL client](cockroach-sql.html) locally as follows:
 
 1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
 

@@ -82,7 +82,7 @@ You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help
 
 If you encounter issues other than those outlined above, please [file an issue on the `cockroachdb/cockroach` GitHub repo](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`](view-version-details.html))
+- CockroachDB version ([`cockroach version`](cockroach-version.html))
 - IntelliJ IDEA version
 - Operating system
 - Steps to reproduce the behavior

@@ -15,7 +15,7 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -50,11 +50,11 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-4. Run the [`cockroach init`](initialize-a-cluster.html) command:
+4. Run the [`cockroach init`](cockroach-init.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach init {{page.certs}} --host=<address of any node>
     ~~~
 
-    Each node then prints helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
+    Each node then prints helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.

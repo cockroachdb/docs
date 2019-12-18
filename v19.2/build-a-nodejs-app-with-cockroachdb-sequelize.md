@@ -73,7 +73,7 @@ The output should be:
 2 250
 ~~~
 
-To verify that funds were transferred from one account to another, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -126,7 +126,7 @@ The output should be:
 2 250
 ~~~
 
-To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the table and rows were created successfully, you can again use the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

@@ -43,7 +43,7 @@ Field | Description
 `start` | The timestamp at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](use-the-built-in-sql-client.html), this will be `cockroach`.
+`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](cockroach-sql.html), this will be `cockroach`.
 `distributed` | If `true`, the query is being executed by the Distributed SQL (DistSQL) engine. If `false`, the query is being executed by the standard "local" SQL engine. If `NULL`, the query is being prepared and it's not yet known which execution engine will be used.
 `phase` | The phase of the query's execution. If `preparing`, the statement is being parsed and planned. If `executing`, the statement is being executed.
 
@@ -152,7 +152,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 #### Exclude queries from the built-in SQL client
 
-To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.html), filter for queries that do not show `cockroach` as the `application_name`:
+To exclude queries from the [built-in SQL client](cockroach-sql.html), filter for queries that do not show `cockroach` as the `application_name`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

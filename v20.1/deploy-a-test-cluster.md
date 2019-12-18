@@ -58,7 +58,7 @@ Before getting started, it's important to review some limitations and requiremen
 
 2. In the **Outputs** section of the CloudFormation UI, note the **Connection String**.
 
-3. In a terminal, start the [SQL shell](use-the-built-in-sql-client.html) built into the `cockroach` binary, using the **Connection String** as the `--url` flag:
+3. In a terminal, start the [SQL shell](cockroach-sql.html) built into the `cockroach` binary, using the **Connection String** as the `--url` flag:
 
     {% include copy-clipboard.html %}
     ~~~ shell

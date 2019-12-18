@@ -92,7 +92,7 @@ Then run the code:
 $ ruby txn-sample.rb
 ~~~
 
-To verify that funds were transferred from one account to another, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -174,7 +174,7 @@ Then run the code:
 $ ruby txn-sample.rb
 ~~~
 
-To verify that funds were transferred from one account to another, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

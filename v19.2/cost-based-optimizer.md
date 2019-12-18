@@ -204,9 +204,9 @@ We can demonstrate the necessary configuration steps using a local cluster. The 
 
 - How to [start a local cluster](start-a-local-cluster.html).
 - The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
-- Using [the built-in SQL client](use-the-built-in-sql-client.html).
+- Using [the built-in SQL client](cockroach-sql.html).
 
-First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
+First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -367,9 +367,9 @@ The instructions below assume that you are already familiar with:
 
 - How to [start a local cluster](start-a-local-cluster.html).
 - The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
-- Using [the built-in SQL client](use-the-built-in-sql-client.html).
+- Using [the built-in SQL client](cockroach-sql.html).
 
-First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them each in a different region.
+First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region.
 
 {% include copy-clipboard.html %}
 ~~~ shell

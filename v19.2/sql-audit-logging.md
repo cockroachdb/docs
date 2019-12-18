@@ -106,7 +106,7 @@ Now let's verify that our customers were added successfully:
 
 ## Step 4. Check the audit log
 
-By default, the active audit log file is named `cockroach-sql-audit.log` and is stored in CockroachDB's standard log directory.  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](start-a-node.html).  Like the other log files, it's rotated according to the `--log-file-max-size` setting.
+By default, the active audit log file is named `cockroach-sql-audit.log` and is stored in CockroachDB's standard log directory.  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](cockroach-start.html).  Like the other log files, it's rotated according to the `--log-file-max-size` setting.
 
 When we look at the audit log for this example, we see the following lines showing every command we've run so far, as expected.
 
@@ -180,7 +180,7 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 ## See also
 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
-- [`cockroach start` logging flags](start-a-node.html#logging)
+- [`cockroach start` logging flags](cockroach-start.html#logging)
 - [SQL FAQ - generating unique row IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [SQL Feature Support](sql-feature-support.html)

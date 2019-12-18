@@ -33,9 +33,9 @@ Before starting the upgrade, complete the following steps.
     - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
     - In the **Node List**:
         - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
-        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](start-a-node.html) to your cluster before beginning your upgrade.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
 
-4. Capture the cluster's current state by running the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
+4. Capture the cluster's current state by running the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs troubleshoot issues.
 
 5. [Back up the cluster](backup-and-restore.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
@@ -49,7 +49,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 1. [Upgrade to v19.2](../v19.2/upgrade-cockroach-version.html), if you haven't already.
 
-2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
 3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
@@ -177,7 +177,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
 
 5. Start the node to have it rejoin the cluster.
 
-    Without a process manager like `systemd`, re-run the [`cockroach start`](start-a-node.html) command that you used to start the node initially, for example:
+    Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -221,7 +221,7 @@ If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-wil
 
 Once you are satisfied with the new version, re-enable auto-finalization:
 
-1. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
+1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 2. Re-enable auto-finalization:
 
     {% include copy-clipboard.html %}
@@ -239,14 +239,14 @@ TBD
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 
-1. Run the [`cockroach debug zip`](debug-zip.html) command against any node in the cluster to capture your cluster's state.
+1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
 2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
 ## See also
 
-- [View Node Details](view-node-details.html)
-- [Collect Debug Information](debug-zip.html)
-- [View Version Details](view-version-details.html)
+- [View Node Details](cockroach-node.html)
+- [Collect Debug Information](cockroach-debug-zip.html)
+- [View Version Details](cockroach-version.html)
 - [Release notes for our latest version](../releases/{{page.release_info.version}}.html)

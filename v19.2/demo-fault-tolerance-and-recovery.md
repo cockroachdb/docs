@@ -12,7 +12,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Start a 6-node cluster
 
-1. Use the [`cockroach start`](start-a-node.html) command to start 6 nodes:
+1. Use the [`cockroach start`](cockroach-start.html) command to start 6 nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -80,7 +80,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --background
     ~~~
 
-2. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -117,7 +117,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     ~~~
     </div>
 
-2. Run the [`cockroach gen haproxy`](../generate-cockroachdb-resources.html) command, specifying the port of any node:
+2. Run the [`cockroach gen haproxy`](../cockroach-gen.html) command, specifying the port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -232,7 +232,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
-2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop a node:
+2. Then use the [`cockroach quit`](../cockroach-quit.html) command to stop a node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -291,7 +291,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 9. Simulate two simultaneous node failures
 
-Use the [`cockroach quit`](../stop-a-node.html) command to stop two nodes:
+Use the [`cockroach quit`](../cockroach-quit.html) command to stop two nodes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -364,7 +364,7 @@ $ cockroach quit --insecure --host=localhost:26261
     $ pkill haproxy
     ~~~
 
-3. Use the [`cockroach quit`](stop-a-node.html) command to shut down the remaining 4 nodes:
+3. Use the [`cockroach quit`](cockroach-quit.html) command to shut down the remaining 4 nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

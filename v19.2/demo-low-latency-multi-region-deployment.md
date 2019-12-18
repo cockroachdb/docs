@@ -51,7 +51,7 @@ You'll deploy a 9-node CockroachDB cluster across 3 GCE regions, with each node 
 A few notes:
 
 - For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
-- You'll start each node with the [`--locality` flag](start-a-node.html#locality) describing the node's region and availability zone. Initially, this locality information will lead CockroachDB to evenly distribute data across the 3 regions. Then, it will be used to apply data topologies for lower latency.
+- You'll start each node with the [`--locality` flag](cockroach-start.html#locality) describing the node's region and availability zone. Initially, this locality information will lead CockroachDB to evenly distribute data across the 3 regions. Then, it will be used to apply data topologies for lower latency.
 - There will be an extra VM in each region for an instance of the MovR application and the open-source HAProxy load balancer. The application in each region will be pointed at the local load balancer, which will direct connections only to the CockroachDB nodes in the same region.
 
 ### Review the MovR application
@@ -133,7 +133,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -168,7 +168,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -203,7 +203,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -223,7 +223,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
 ### Initialize the cluster
 
-On any of the VMs, run the one-time [`cockroach init`](initialize-a-cluster.html) command to join the first nodes into a cluster:
+On any of the VMs, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -286,7 +286,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
     The `cockroach` binary needs to be on these VMs so you can run some client commands built into the binary, such as the command in the next step and the command for starting the built-in SQL shell.
 
-5. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command to generate an HAProxy config file, specifying the address of any CockroachDB node and the `--locality` of nodes in the US East region:
+5. Run the [`cockroach gen haproxy`](cockroach-gen.html) command to generate an HAProxy config file, specifying the address of any CockroachDB node and the `--locality` of nodes in the US East region:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -337,7 +337,7 @@ Before you can run MovR against the cluster, you must create a `movr` database a
 
 1. SSH to the client VM in the US East region.
 
-2. Use the [`cockroach sql`](use-the-built-in-sql-client.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
+2. Use the [`cockroach sql`](cockroach-sql.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -522,7 +522,7 @@ With network latency in mind, now use the built-in SQL shell to check the distri
 
 1. SSH to the client VM in any region.
 
-2. Use the [`cockroach sql`](use-the-built-in-sql-client.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
+2. Use the [`cockroach sql`](cockroach-sql.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -1128,7 +1128,7 @@ Given that most of the data in your cluster is geo-partitioned, let's focus on A
 
 1. SSH to the client VM in the US East region.
 
-2. Use the [`cockroach quit`](stop-a-node.html) command to stop one node, effectively simulating one of the 3 AZ's failing:
+2. Use the [`cockroach quit`](cockroach-quit.html) command to stop one node, effectively simulating one of the 3 AZ's failing:
 
     {% include copy-clipboard.html %}
     ~~~ shell

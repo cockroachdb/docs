@@ -41,9 +41,9 @@ Field | Description
 `range_id` | The range ID.
 `range_size_mb` | The size of the range.
 `lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
-`lease_holder_locality` | The [locality](start-a-node.html#locality) of the leaseholder.
+`lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
 `replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
-`replica_localities` | The [locality](start-a-node.html#locality) of the range.
+`replica_localities` | The [locality](cockroach-start.html#locality) of the range.
 
 ## Examples
 

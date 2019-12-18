@@ -6,7 +6,7 @@ toc: true
 
 This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
 
-For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](stop-a-node.html).
+For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](cockroach-quit.html).
 
 ## Overview
 
@@ -91,7 +91,7 @@ Open the Admin UI, click **Metrics** on the left, select the **Replication** das
 
 ### Step 2. Decommission and remove the node
 
-SSH to the machine where the node is running and execute the [`cockroach quit`](stop-a-node.html) command with the `--decommission` flag and other required flags:
+SSH to the machine where the node is running and execute the [`cockroach quit`](cockroach-quit.html) command with the `--decommission` flag and other required flags:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -168,7 +168,7 @@ Open the Admin UI and select the **Node List** view. Note the ID of the node lis
 
 ### Step 2. Mark the dead node as decommissioned
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to officially decommission:
+SSH to any live node in the cluster and run the [`cockroach node decommission`](cockroach-node.html) command with the ID of the node to officially decommission:
 
 
 <div class="filter-content" markdown="1" data-scope="secure">
@@ -227,7 +227,7 @@ Select the **Replication** dashboard, and hover over the **Replicas per Store** 
 
 ### Step 3. Decommission the nodes
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to officially decommission:
+SSH to any live node in the cluster and run the [`cockroach node decommission`](cockroach-node.html) command with the IDs of the nodes to officially decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -318,7 +318,7 @@ Open the Admin UI and select the **Node List** view. Note the IDs of the nodes l
 
 ### Step 2. Recommission the nodes
 
-SSH to one of the live nodes and execute the [`cockroach node recommission`](view-node-details.html) command with the IDs of the nodes to recommission:
+SSH to one of the live nodes and execute the [`cockroach node recommission`](cockroach-node.html) command with the IDs of the nodes to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -398,4 +398,4 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 
 ## See also
 
-- [Temporarily Stop a Node](stop-a-node.html)
+- [Temporarily Stop a Node](cockroach-quit.html)

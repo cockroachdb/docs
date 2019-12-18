@@ -32,7 +32,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 (3 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](use-the-built-in-sql-client.html#commands):
+Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](cockroach-sql.html#commands):
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -28,7 +28,7 @@ Concept | Description
 
 This increases the speed of reads, but it doesn't guarantee that the range lease will be anywhere close to the origin of requests. If requests are coming from the US West, for example, and the relevant range lease is on a node in the US East, the requests would likely enter a gateway node in the US West and then get routed to the node with the range lease in the US East.
 
-However, you can cause the cluster to actively move range leases for even better read performance by starting each node with the [`--locality`](start-a-node.html#locality) flag. With this flag specified, the cluster knows about the location of each node, so when there's high latency between nodes, the cluster will move active range leases to a node closer to the origin of the majority of the workload. This is especially helpful for applications with workloads that move around throughout the day (e.g., most of the traffic is in the US East in the morning and in the US West in the evening).
+However, you can cause the cluster to actively move range leases for even better read performance by starting each node with the [`--locality`](cockroach-start.html#locality) flag. With this flag specified, the cluster knows about the location of each node, so when there's high latency between nodes, the cluster will move active range leases to a node closer to the origin of the majority of the workload. This is especially helpful for applications with workloads that move around throughout the day (e.g., most of the traffic is in the US East in the morning and in the US West in the evening).
 
 {{site.data.alerts.callout_success}}
 To enable "follow-the-workload", you just need to start each node of the cluster with the `--locality` flag, as shown in the tutorial below. No additional user action is required.
@@ -40,7 +40,7 @@ In this example, let's imagine that lots of read requests are going to node 1, a
 
 <img src="{{ 'images/v20.1/follow-workload-1.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
-However, if the nodes were started with the [`--locality`](start-a-node.html#locality) flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network round trips and increasing the speed of reads.
+However, if the nodes were started with the [`--locality`](cockroach-start.html#locality) flag, after a short while, the cluster would move range 3's lease to node 1, which is closer to the origin of the workload, thus reducing the network round trips and increasing the speed of reads.
 
 <img src="{{ 'images/v20.1/follow-workload-2.png' | relative_url }}" alt="Follow-the-workload example" style="max-width:100%" />
 
@@ -56,7 +56,7 @@ Also, to keep track of the data files and logs for your cluster, you may want to
 
 ## Step 2. Start the cluster
 
-Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your local workstation, using the [`--locality`](start-a-node.html#locality) flag to pretend that each node is in a different region of the US.
+Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on your local workstation, using the [`--locality`](cockroach-start.html#locality) flag to pretend that each node is in a different region of the US.
 
 1. Start a node in the "US West":
 
@@ -100,7 +100,7 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes on your 
     --background
     ~~~
 
-4. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -146,7 +146,7 @@ Now that the cluster is live, use CockroachDB's [built-in version the `tpcc` ben
 
 The load generator created a `tpcc` database with several tables that map to underlying key-value ranges. Verify that the range lease for the `customer` table moved to the node in the "US East" as follows.
 
-1. Run the [`cockroach node status`](view-node-details.html) command against any node:
+1. Run the [`cockroach node status`](cockroach-node.html) command against any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -164,7 +164,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
 2. In the response, note the ID of the node running on port `26259` (in this case, node 2).
 
-3. Connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
+3. Connect the [built-in SQL shell](cockroach-sql.html) to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -217,7 +217,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
 Verify that the range lease for the `customer` table moved to the node in the "US West" as follows.
 
-1. Connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node:
+1. Connect the [built-in SQL shell](cockroach-sql.html) to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -249,7 +249,7 @@ Verify that the range lease for the `customer` table moved to the node in the "U
     $ comcast --device lo0 --stop
     ~~~
 
-2. Use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node:
+2. Use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node:
 
     {% include copy-clipboard.html %}
     ~~~ shell

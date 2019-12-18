@@ -67,7 +67,7 @@ $ cockroach start \
 
 ## Step 3. Initialize the cluster
 
-In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -80,7 +80,7 @@ $ cockroach init \
 
 You're now running 3 nodes in a simulated cloud. Each of these nodes is an equally suitable SQL gateway to your cluster, but to ensure an even balancing of client requests across these nodes, you can use a TCP load balancer. Let's use the open-source [HAProxy](http://www.haproxy.org/) load balancer that you installed earlier.
 
-In a new terminal, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the port of any node:
+In a new terminal, run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the port of any node:
 
 {% include copy-clipboard.html %}
 ~~~ shell

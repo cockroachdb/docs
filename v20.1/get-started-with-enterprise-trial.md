@@ -13,7 +13,7 @@ If you haven't already, you'll need to [locally install](install-cockroachdb.htm
 
 ## Enable Enterprise features
 
-As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode.
+As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -21,7 +21,7 @@ $ cockroach sql --insecure
 ~~~
 
 {{site.data.alerts.callout_info}}
-If you've secured your deployment, you'll need to [include the flags for your certificates](create-security-certificates.html) instead of the `--insecure` flag.
+If you've secured your deployment, you'll need to [include the flags for your certificates](cockroach-cert.html) instead of the `--insecure` flag.
 {{site.data.alerts.end}}
 
 Now, use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:

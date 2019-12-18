@@ -62,7 +62,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 {% include {{ page.version.version }}/app/txn-sample.rs %}
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -89,7 +89,7 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 
 ## Step 3. Create a table in the new database
 
-As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
+As the `maxroach` user, use the [built-in SQL client](cockroach-sql.html) to create an `accounts` table in the new database.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -129,7 +129,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 {% include {{ page.version.version }}/app/insecure/txn-sample.rs %}
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell

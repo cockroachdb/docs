@@ -46,7 +46,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     ~~~
     </div>
 
-2. Run the [`cockroach gen haproxy`](../generate-cockroachdb-resources.html) command, specifying the port of any node:
+2. Run the [`cockroach gen haproxy`](../cockroach-gen.html) command, specifying the port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -136,7 +136,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
-2. Then use the [`cockroach quit`](../stop-a-node.html) command to stop node 5:
+2. Then use the [`cockroach quit`](../cockroach-quit.html) command to stop node 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -195,7 +195,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 8. Simulate two simultaneous node failures
 
-1. Use the [`cockroach quit`](../stop-a-node.html) command to stop nodes 4 and 5:
+1. Use the [`cockroach quit`](../cockroach-quit.html) command to stop nodes 4 and 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell

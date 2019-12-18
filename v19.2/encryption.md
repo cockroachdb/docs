@@ -171,14 +171,14 @@ The report shows encryption status for all stores on the selected node, includin
 * Active data key information.
 * The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on RocksDB compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force RocksDB compaction with the `cockroach debug compact` command (the node must first be [stopped](stop-a-node.html)).
+CockroachDB relies on RocksDB compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force RocksDB compaction with the `cockroach debug compact` command (the node must first be [stopped](cockroach-quit.html)).
 
 Information about keys is written to [the logs](debug-and-error-logs.html), including:
 
 * Active/old key information at startup.
 * New key information after data key rotation.
 
-Alternatively, you can use the [`cockroach debug encryption-active-key`](debug-encryption-active-key.html) command to view information about a store's encryption algorithm and store key.
+Alternatively, you can use the [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) command to view information about a store's encryption algorithm and store key.
 
 #### Changing encryption algorithm or keys
 

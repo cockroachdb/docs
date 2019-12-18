@@ -38,7 +38,7 @@ When inserting a string:
 A value of type `STRING` can be expressed using a variety of formats.
 See [string literals](sql-constants.html#string-literals) for more details.
 
-When printing out a `STRING` value in the [SQL shell](use-the-built-in-sql-client.html), the shell uses the simple
+When printing out a `STRING` value in the [SQL shell](cockroach-sql.html), the shell uses the simple
 SQL string literal format if the value doesn't contain special character,
 or the escaped format otherwise.
 

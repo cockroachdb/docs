@@ -14,7 +14,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% if page.secure == true %}
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}
@@ -38,7 +38,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% else %}
 
-    1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
+    1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}
@@ -196,7 +196,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% if page.secure == true %}
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}
@@ -220,7 +220,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% else %}
 
-    1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
+    1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}

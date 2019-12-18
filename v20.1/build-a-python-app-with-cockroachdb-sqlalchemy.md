@@ -124,7 +124,7 @@ WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,251 INFO sqlalchemy.engine.base.Engine COMMIT
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -225,7 +225,7 @@ WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,251 INFO sqlalchemy.engine.base.Engine COMMIT
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
+To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell

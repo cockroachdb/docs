@@ -41,7 +41,7 @@ Logs | Click **Logs** to see detailed logs for the node.
 
 ### Dead Nodes
 
-Nodes are considered dead once they have not responded for a certain amount of time (5 minutes by default). At this point, the automated repair process starts, wherein CockroachDB automatically rebalances replicas from the dead node, using the unaffected replicas as sources. See [Stop a Node](stop-a-node.html#how-it-works) for more information.
+Nodes are considered dead once they have not responded for a certain amount of time (5 minutes by default). At this point, the automated repair process starts, wherein CockroachDB automatically rebalances replicas from the dead node, using the unaffected replicas as sources. See [Stop a Node](cockroach-quit.html#how-it-works) for more information.
 
 The following details are shown for each dead node:
 

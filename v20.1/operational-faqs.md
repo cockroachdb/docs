@@ -17,7 +17,7 @@ the right place.
 In order to keep your data consistent, CockroachDB only works when at least a
 majority of its nodes are running. This means that if only one node of a three
 node cluster is running, that one node will not be able to do anything. The
-`--background` flag of [`cockroach start`](start-a-node.html) causes the start
+`--background` flag of [`cockroach start`](cockroach-start.html) causes the start
 command to wait until the node has fully initialized and is able to start
 serving queries.
 
@@ -97,7 +97,7 @@ If you want all existing timeseries data to be deleted, change the `timeseries.s
 
 ## What happens when a node runs out of disk space?
 
-When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as log files.
+When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as log files.
 
 {{site.data.alerts.callout_info}}
 In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).

@@ -103,7 +103,7 @@ $ cockroach start \
 --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
-Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

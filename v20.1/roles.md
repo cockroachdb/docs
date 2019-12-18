@@ -42,7 +42,7 @@ $ cockroach start \
 --listen-addr=localhost:26257
 ~~~
 
-1. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

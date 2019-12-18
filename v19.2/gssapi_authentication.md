@@ -20,7 +20,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-2. [Create certificates](create-security-certificates.html) for internode and `root` user authentication:
+2. [Create certificates](cockroach-cert.html) for internode and `root` user authentication:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -117,4 +117,4 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 ## See also
 
 - [Authentication](authentication.html)
-- [Create Security Certificates](create-security-certificates.html)
+- [Create Security Certificates](cockroach-cert.html)

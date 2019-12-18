@@ -64,7 +64,7 @@ as described below.
 {{site.data.alerts.callout_info}}
 The `<database>` part is not used for [`cockroach`
 commands](cockroach-commands.html) other than [`cockroach
-sql`](use-the-built-in-sql-client.html). A warning
+sql`](cockroach-sql.html). A warning
 is currently printed if it is mistakenly specified, and
 future versions of CockroachDB may return an error in that case.
 {{site.data.alerts.end}}
@@ -77,9 +77,9 @@ Parameter | Description | Default value
 ----------|-------------|---------------
 `application_name` | An initial value for the [`application_name` session variable](set-vars.html).<br><br>Note: For [Java JBDC](build-a-java-app-with-cockroachdb.html), use `ApplicationName`. | Empty string.
 `sslmode` | Which type of secure connection to use: `disable`, `allow`, `prefer`, `require`, `verify-ca` or `verify-full`. See [Secure Connections With URLs](#secure-connections-with-urls) for details. | `disable`
-`sslrootcert` | Path to the [CA certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
-`sslcert` | Path to the [client certificate](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
-`sslkey` | Path to the [client private key](create-security-certificates.html), when `sslmode` is not `disable`. | Empty string.
+`sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
+`sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
+`sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 
 ### Secure connections with URLs
 
@@ -131,7 +131,7 @@ This uses the following components:
   - Client key `path/to/client.username.key`
 
 For details about how to create and manage SSL/TLS certificates, see
-[Create Security Certificates](create-security-certificates.html) and
+[Create Security Certificates](cockroach-cert.html) and
 [Rotate Certificates](rotate-certificates.html).
 
 ## Connect using discrete parameters
@@ -203,7 +203,7 @@ The `cockroach start` command prints out the following connection URL, which con
 postgres://root@servername:26257/?sslmode=disable
 ~~~
 
-To specify `mydb` as the current database using [`cockroach sql`](use-the-built-in-sql-client.html), run the following command:
+To specify `mydb` as the current database using [`cockroach sql`](cockroach-sql.html), run the following command:
 
 ~~~
 cockroach sql \
@@ -220,6 +220,6 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 ## See also
 
 - [`cockroach` commands](cockroach-commands.html)
-- [Create Security Certificates](create-security-certificates.html)
+- [Create Security Certificates](cockroach-cert.html)
 - [Secure a Cluster](secure-a-cluster.html)
 - [Create and Manage Users](authorization.html#create-and-manage-users)

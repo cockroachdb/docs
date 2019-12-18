@@ -24,7 +24,7 @@ If any Admin UI graphs or Debug pages show the problem, include screenshots.
 
 ## Debug zip of active nodes
 
-Use the [`cockroach debug zip`](../debug-zip.html) command to create a single file with the following details from all active nodes in your cluster:
+Use the [`cockroach debug zip`](../cockroach-debug-zip.html) command to create a single file with the following details from all active nodes in your cluster:
 
 - Log files
 - Schema change events

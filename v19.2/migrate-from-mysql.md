@@ -172,10 +172,10 @@ Example usage:
 - [Migrate from CSV][csv]
 - [Migrate from Postgres][postgres]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [SQL Dump (Export)](sql-dump.html)
+- [SQL Dump (Export)](cockroach-dump.html)
 - [Back up Data](back-up-data.html)
 - [Restore Data](restore-data.html)
-- [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
+- [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 
 <!-- Reference Links -->

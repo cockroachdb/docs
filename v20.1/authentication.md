@@ -8,7 +8,7 @@ Authentication refers to the act of verifying the identity of the other party in
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
-- If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](create-security-certificates.html).
+- If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](cockroach-cert.html).
 
 ## Using digital certificates with CockroachDB
 
@@ -16,14 +16,14 @@ CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB n
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
-  - The values specified in [`--listen-addr`](start-a-node.html#networking) and [`--advertise-addr`](start-a-node.html#networking) flags, or the node hostname and fully qualified hostname if not specified
+  - The values specified in [`--listen-addr`](cockroach-start.html#networking) and [`--advertise-addr`](cockroach-start.html#networking) flags, or the node hostname and fully qualified hostname if not specified
   - Any host addresses/names used to reach a specific node
   - Any load balancer addresses/names or DNS aliases through which the node could be reached
   - `localhost` and local address if connections are made through the loopback device on the same host
 
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands](create-security-certificates.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands](cockroach-cert.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the Admin UI. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
@@ -64,7 +64,7 @@ CockroachDB offers three methods for client authentication:
 
 ### Using `cockroach cert` or `openssl` commands
 
-You can use the [`cockroach cert` commands](create-security-certificates.html) or [`openssl` commands](create-security-certificates-openssl.html) to create the CA certificate and key, and node and client certificates and keys.
+You can use the [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to create the CA certificate and key, and node and client certificates and keys.
 
 Note that the node certificate created using `cockroach cert` or`openssl` is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. Thus all nodes must have the following:
 

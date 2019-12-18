@@ -56,7 +56,7 @@ $ cockroach demo movr
 
     </section>
 
-1. Use [`cockroach sql`](use-the-built-in-sql-client.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
+1. Use [`cockroach sql`](cockroach-sql.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
 
     <section class="filter-content" markdown="1" data-scope="secure">
 

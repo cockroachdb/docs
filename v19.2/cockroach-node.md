@@ -1,7 +1,9 @@
 ---
-title: View Node Details
+title: cockroach node
 summary: To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags.
 toc: true
+redirect-from: view-node-details.html
+key: view-node-details.html
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
@@ -143,7 +145,7 @@ Field | Description
 `id` | The ID of the node.<br><br>**Required flag:** None
 `address` | The address of the node.<br><br>**Required flag:** None
 `build` | The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br><br>**Required flag:** None
-`locality` | The [locality](start-a-node.html#locality) information specified for the node.<br><br>**Required flag:** None
+`locality` | The [locality](cockroach-start.html#locality) information specified for the node.<br><br>**Required flag:** None
 `updated_at` | The date and time when the node last recorded the information displayed in this command's output. When healthy, a new status should be recorded every 10 seconds or so, but when unhealthy this command's stats may be much older.<br><br>**Required flag:** None
 `started_at` | The date and time when the node was started.<br><br>**Required flag:** None
 `replicas_leaders` | The number of range replicas on the node that are the Raft leader for their range. See `replicas_leaseholders` below for more details.<br><br>**Required flag:** `--ranges` or `--all`
@@ -186,7 +188,7 @@ Field | Description
 
 ### Setup
 
-To follow along with the examples, start [an insecure cluster](start-a-local-cluster.html), with [localities](start-a-node.html#locality) defined.
+To follow along with the examples, start [an insecure cluster](start-a-local-cluster.html), with [localities](cockroach-start.html#locality) defined.
 
 ### List node IDs
 

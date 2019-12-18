@@ -71,7 +71,7 @@ For more information about using DBeaver, see the [DBeaver documentation](https:
 
 If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`](view-version-details.html))
+- CockroachDB version ([`cockroach version`](cockroach-version.html))
 - DBeaver version
 - Operating system
 - Steps to reproduce the behavior

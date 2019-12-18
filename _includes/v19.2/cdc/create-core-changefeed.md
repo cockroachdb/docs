@@ -10,7 +10,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     --background
     ~~~
 
-2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
+2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

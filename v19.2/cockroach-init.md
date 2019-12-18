@@ -1,7 +1,9 @@
 ---
-title: Initialize a Cluster
+title: cockroach init
 summary: Perform a one-time-only initialization of a CockroachDB cluster.
 toc: true
+redirect_from: initialize-a-cluster.html
+key: initialize-a-cluster.html
 ---
 
 This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
@@ -44,7 +46,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-These examples assume that nodes have already been started with [`cockroach start`](start-a-node.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+These examples assume that nodes have already been started with [`cockroach start`](cockroach-start.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 ### Initialize a Cluster on a Node's Machine
 
@@ -65,7 +67,7 @@ These examples assume that nodes have already been started with [`cockroach star
     $ cockroach init --certs-dir=certs --host=<address of this node>
     ~~~
 
-    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
+    At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
@@ -78,7 +80,7 @@ These examples assume that nodes have already been started with [`cockroach star
     $ cockroach init --insecure --host=<address of this node>
     ~~~
 
-    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
+    At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
 ### Initialize a cluster from another machine
@@ -100,7 +102,7 @@ These examples assume that nodes have already been started with [`cockroach star
     $ cockroach init --certs-dir=certs --host=<address of any node>
     ~~~
 
-    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
+    At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
@@ -113,7 +115,7 @@ These examples assume that nodes have already been started with [`cockroach star
     $ cockroach init --insecure --host=<address of any node>
     ~~~
 
-    At this point, all the nodes complete startup and print helpful details to the [standard output](start-a-node.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
+    At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 </section>
 
 ## See also
@@ -122,5 +124,5 @@ These examples assume that nodes have already been started with [`cockroach star
 - [Orchestrated Deployment](orchestration.html)
 - [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
-- [`cockroach start`](start-a-node.html)
+- [`cockroach start`](cockroach-start.html)
 - [Other Cockroach Commands](cockroach-commands.html)

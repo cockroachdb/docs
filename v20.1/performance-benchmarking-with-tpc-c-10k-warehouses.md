@@ -102,7 +102,7 @@ CockroachDB requires TCP communication on two ports:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-3. Run the [`cockroach start`](start-a-node.html) command:
+3. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -116,13 +116,13 @@ CockroachDB requires TCP communication on two ports:
     --background
     ~~~
 
-    Each node will start with a [locality](start-a-node.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 5 racks for 15 nodes so that 3 nodes will be assigned to each rack.
+    Each node will start with a [locality](cockroach-start.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 5 racks for 15 nodes so that 3 nodes will be assigned to each rack.
 
 4. Repeat steps 1 - 3 for the other 14 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
-    - Set the [`--locality`](start-a-node.html#locality) flag to the appropriate "rack number", as described above.
+    - Set the [`--locality`](cockroach-start.html#locality) flag to the appropriate "rack number", as described above.
 
-5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](initialize-a-cluster.html) command to join the first nodes into a cluster:
+5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -135,7 +135,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 1. SSH to any VM with the `cockroach` binary.
 
-2. Launch the [built-in SQL shell](use-the-built-in-sql-client.html):
+2. Launch the [built-in SQL shell](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -213,7 +213,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
     1. SSH to any VM with the `cockroach` binary.
 
-    2. Launch the [built-in SQL shell](use-the-built-in-sql-client.html):
+    2. Launch the [built-in SQL shell](cockroach-sql.html):
 
         {% include copy-clipboard.html %}
         ~~~ shell

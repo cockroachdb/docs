@@ -28,13 +28,13 @@ Table partitioning involves a combination of CockroachDB features:
 
 ### Node attributes
 
-To store partitions in specific locations (e.g., geo-partitioning), or on machines with specific attributes (e.g., archival-partitioning), the nodes of your cluster must be [started](start-a-node.html) with the relevant flags:
+To store partitions in specific locations (e.g., geo-partitioning), or on machines with specific attributes (e.g., archival-partitioning), the nodes of your cluster must be [started](cockroach-start.html) with the relevant flags:
 
 - Use the `--locality` flag to assign key-value pairs that describe the location of a node, for example, `--locality=region=east,datacenter=us-east-1`.
 - Use the `--attrs` flag to specify node capability, which might include specialized hardware or number of cores, for example, `--attrs=ram:64gb`.
 - Use the `attrs` field of the `--store` flag to specify disk type or capability, for example,`--store=path=/mnt/ssd01,attrs=ssd`.
 
-For more details about these flags, see the [`cockroach start`](start-a-node.html) documentation.
+For more details about these flags, see the [`cockroach start`](cockroach-start.html) documentation.
 
 ### Enterprise license
 

@@ -27,8 +27,8 @@ This message indicates a client is trying to connect to a node that is either no
 
 To resolve this issue, do one of the following:
 
-- If the node hasn't yet been started, [start the node](start-a-node.html).
-- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](start-a-node.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
+- If the node hasn't yet been started, [start the node](cockroach-start.html).
+- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
 If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also kill the `cockroach` process, and then restart the node:
 
@@ -46,7 +46,7 @@ $ cockroach start [flags]
 
 This message indicates that the cluster is using TLS encryption to protect network communication, and the client is trying to open a connection without using the required TLS certificates.
 
-To resolve this issue, use the [`cockroach cert client-create`](create-security-certificates.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
+To resolve this issue, use the [`cockroach cert client-create`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
 ## restart transaction
 
@@ -76,7 +76,7 @@ Uncertainty errors can occur when two transactions which start on different gate
 
 For example, if the clock on node A is ahead of the clock on node B, a transaction started on node A may be able to commit a write with a timestamp that is still in the "future" from the perspective of node B. A later transaction that starts on node B should be able to see the earlier write from node A, even if B's clock has not caught up to A. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node B's transaction retries, it will unambiguously occur after the transaction from node A.
 
-Note that as long as the [client-side retry protocol](transactions.html#client-side-intervention) is followed, a transaction that has restarted once is much less likely to hit another uncertainty error, and the [`--max-offset` option](start-a-node.html#flags) provides an upper limit on how long a transaction can continue to restart due to uncertainty.
+Note that as long as the [client-side retry protocol](transactions.html#client-side-intervention) is followed, a transaction that has restarted once is much less likely to hit another uncertainty error, and the [`--max-offset` option](cockroach-start.html#flags) provides an upper limit on how long a transaction can continue to restart due to uncertainty.
 
 When errors like this occur, the application has the following options:
 

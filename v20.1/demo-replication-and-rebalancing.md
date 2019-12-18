@@ -15,7 +15,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Start a 3-node cluster
 
-1. Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
+1. Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -50,7 +50,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --background
     ~~~
 
-2. Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
+2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -69,7 +69,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Open the [built-in SQL shell](use-the-built-in-sql-client.html) and verify that the new `intro` database was added with one table, `mytable`:
+2. Open the [built-in SQL shell](cockroach-sql.html) and verify that the new `intro` database was added with one table, `mytable`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -195,7 +195,7 @@ At first, the replica count will be lower for nodes 4 and 5. Very soon, however,
 
 ## Step 6. Stop the cluster
 
-1. When you're done with your test cluster, use the [`cockroach quit`](stop-a-node.html) command to gracefully shut down each node.
+1. When you're done with your test cluster, use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node.
 
     {% include copy-clipboard.html %}
     ~~~ shell

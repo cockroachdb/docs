@@ -53,7 +53,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
-- Place a [ballast file](debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+- Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
@@ -120,7 +120,7 @@ An insecure cluster comes with serious risks:
 - Any user, connecting as `root`, can read or write any data in your cluster.
 - There is no network encryption or authentication, and thus no confidentiality.
 
-Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](create-security-certificates.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
+Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
 
 - A certificate authority (CA) certificate and key, used to sign all of the other certificates.
 - A separate certificate and key for each node in your deployment, with the common name `node`.
@@ -134,7 +134,7 @@ For more information, see the [Security Overview](security-overview.html).
 
 ### Networking flags
 
-When [starting a node](start-a-node.html), two main flags are used to control its network connections:
+When [starting a node](cockroach-start.html), two main flags are used to control its network connections:
 
 - `--listen-addr` determines which address(es) to listen on for connections from other nodes and clients.
 - `--advertise-addr` determines which address to tell other nodes to use.
@@ -166,7 +166,7 @@ When running a cluster across multiple networks, the setup depends on whether no
 Nodes reachable across networks? | Recommended setup
 ---------------------------------|------------------
 Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
-No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`](start-a-node.html#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](start-a-node.html#locality) flag. For more details, see this [example](start-a-node.html#start-a-multi-node-cluster-across-private-networks).
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`](cockroach-start.html#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](cockroach-start.html#locality) flag. For more details, see this [example](cockroach-start.html#start-a-multi-node-cluster-across-private-networks).
 
 ## Load balancing
 
@@ -212,7 +212,7 @@ By default, each node's cache size and temporary SQL memory size is `128MiB` res
 - Increasing a node's **cache size** will improve the node's read performance.
 - Increasing a node's **SQL memory size** will increase the number of simultaneous client connections it allows (the `128MiB` default allows a maximum of 6200 simultaneous connections) as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions.
 
-To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](start-a-node.html#flags) and [`--max-sql-memory`](start-a-node.html#flags) flags:
+To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -230,7 +230,7 @@ The [CockroachDB binary for Linux](install-cockroachdb-linux.html) depends on th
 Library | Description
 -----------|------------
 [`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
-`libncurses` | Required by the [built-in SQL shell](use-the-built-in-sql-client.html).
+`libncurses` | Required by the [built-in SQL shell](cockroach-sql.html).
 [`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br>When running CockroachDB on a Windows machine, install the Go toolchain to ensure that location-based time zone names resolve successfully. For more details, see this [known limitation](known-limitations.html#location-based-time-zone-names-on-windows).
 
 These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date. For the `tzdata` library in particular, it's important for all nodes to have the same version; when updating the library, do so as quickly as possible across all nodes.

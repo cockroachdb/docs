@@ -1,10 +1,12 @@
 ---
-title: Collect Debug Information from Your Cluster
+title: cockroach debug zip
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: true
+redirect-from: debug-zip.html
+key: debug-zip.html
 ---
 
-The `debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
+The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
 - Cluster events
@@ -22,7 +24,7 @@ The `debug zip` [command](cockroach-commands.html) connects to your cluster and 
 - Sessions
 - Queries
 
-Additionally, you can run the [`debug merge-logs`](debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
+Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
 {{site.data.alerts.callout_danger}}
 The file produced by `cockroach debug zip` can contain highly sensitive, unanonymized information, such as usernames, hashed passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.
@@ -40,7 +42,7 @@ There are two scenarios in which `debug zip` is useful:
 
 ### Collecting log files
 
-When you issue the `debug zip` command, the node that receives the request connects to each other node in the cluster. Once it's connected, the node requests the content of all log files stored on the node, the location of which is determined by the `--log-dir` value when you [started the node](start-a-node.html).
+When you issue the `debug zip` command, the node that receives the request connects to each other node in the cluster. Once it's connected, the node requests the content of all log files stored on the node, the location of which is determined by the `--log-dir` value when you [started the node](cockroach-start.html).
 
 Because `debug zip` relies on CockroachDB's distributed architecture, this means that nodes not currently connected to the cluster cannot respond to the request, so their log files *are not* included.
 
@@ -58,7 +60,7 @@ You can locate logs in the unarchived file's `debug/nodes/[node dir]/logs` direc
 $ cockroach debug zip [ZIP file destination] [flags]
 ~~~
 
-It's important to understand that the `[flags]` here are used to connect to CockroachDB nodes. This means the values you use in those flags must connect to an active node. If no nodes are live, you must [start at least one node](start-a-node.html).
+It's important to understand that the `[flags]` here are used to connect to CockroachDB nodes. This means the values you use in those flags must connect to an active node. If no nodes are live, you must [start at least one node](cockroach-start.html).
 
 ## Flags
 
@@ -68,7 +70,7 @@ The `debug zip` subcommand supports the following [general-use](#general), [clie
 
 Flag | Description
 -----|-----------
-`--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir` | The path to the [certificate directory](cockroach-cert.html). The directory must contain valid certificates if running in secure mode.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`

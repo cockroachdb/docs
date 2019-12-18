@@ -95,7 +95,7 @@ Then run the `txn-sample` file from that directory:
 $ ./txn-sample
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -177,7 +177,7 @@ Then run the `txn-sample` file from that directory:
 $ ./txn-sample
 ~~~
 
-After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
+After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
 {% include copy-clipboard.html %}
 ~~~ shell

@@ -23,7 +23,7 @@ On hovering over the graph, the values for the following metrics are displayed:
 
 Metric | Description
 --------|----
-**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](start-a-node.html#store).
+**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](cockroach-start.html#store).
 **Available** | The free storage capacity available to CockroachDB.
 **Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
 
