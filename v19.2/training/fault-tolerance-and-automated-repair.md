@@ -112,7 +112,7 @@ Initially, the workload creates a new database called `ycsb`, creates a `usertab
 
     <img src="{{ 'images/v19.2/training-5.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    You'll notice 3 client connections for the 3 concurrent workloads from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to each of the first three nodes. For each node, you'll see a single client connection.
+    You'll notice 3 client connections for the 3 concurrent workloads from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to each of the nodes. For three of the nodes, you'll see a single client connection.
 
 3. To see more details about the `ycsb` database and `usertable` table, click **Databases** in the upper left and then scroll down until you see **ycsb**:
 
@@ -187,7 +187,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
     ~~~
 
-3. Back in the Admin UI **Overview** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
+3. Back in the Admin UI **Metrics** dashboard, watch the **Replicas per Node** graph to see how the replica count increases and evens out across all 5 nodes:
 
     <img src="{{ 'images/v19.2/training-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
