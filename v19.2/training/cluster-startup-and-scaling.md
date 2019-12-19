@@ -124,7 +124,7 @@ Before moving on, take a moment to understand the flags you used with the `cockr
 Flag | Description
 -----|------------
 `--insecure` | Indicates that the node will communicate without encryption.<br><br>You'll start all other nodes with this flag, as well as all other `cockroach` commands you'll use against the cluster.<br><br>Without this flag, `cockroach` expects to be able to find security certificates to encrypt its communication. More about these in a later module.
-`--store` | The location where the node stores its data and logs.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique storage location for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use the its default storage location (`cockroach-data`).
+`--store` | The location where the node stores its data and logs.<br><br>Since you'll be running all nodes on your computer, you need to specify a unique storage location for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use its default storage location (`cockroach-data`).
 `--listen-addr`<br>`--http-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients and for Admin UI HTTP request, respectively.<br><br>Again, since you'll be running all nodes on your computer, you need to specify unique ports for each node. In contrast, in a real deployment, with one node per machine, it's fine to let `cockroach` use its default TPC port (`26257`) and HTTP port (`8080`).
 `--join` | The addresses and ports of all of your initial nodes.<br><br>You'll use this exact `--join` flag when starting all other nodes.
 `--background` | The node will run in the background.
