@@ -165,7 +165,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 ## Step 5. Initialize the cluster
 
-1. In another terminal, use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+1. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
