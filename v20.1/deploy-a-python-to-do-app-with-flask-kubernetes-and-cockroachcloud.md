@@ -4,7 +4,7 @@ summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and
 toc: true
 toc_not_nested: true
 build_for: [cockroachcloud]
-redirect-from:
+redirect_from:
 - managed-build-a-python-app-with-kubernetes.html
 - cockroachcloud-build-a-python-app-with-kubernetes.html
 ---

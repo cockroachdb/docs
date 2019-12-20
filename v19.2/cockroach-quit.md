@@ -2,7 +2,7 @@
 title: cockroach quit
 summary: Learn how to temporarily stop a CockroachDB node.
 toc: true
-redirect-from: stop-a-node.html
+redirect_from: stop-a-node.html
 key: stop-a-node.html
 ---
 
