@@ -20,6 +20,10 @@ To do this, add a new worker node and then edit your StatefulSet configuration t
     ~~~
     statefulset.apps/cockroachdb scaled
     ~~~
+
+    {{site.data.alerts.callout_success}}
+    If you aren't using the Kubernetes CA to sign certificates, you can now skip to step 6.
+    {{site.data.alerts.end}}
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
