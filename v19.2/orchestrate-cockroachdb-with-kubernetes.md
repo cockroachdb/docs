@@ -30,7 +30,7 @@ Feature | Description
 [pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate Kubernetes node and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
-[CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster. Note that Kubernetes environments that don't support CSRs, such as Amazon EKS, can [use a different certificate authority](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/bring-your-own-certs) than the one Kubernetes uses.
+[CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or certificate signing request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster. Note that Kubernetes environments that don't support CSRs, such as Amazon EKS, can use a different certificate authority than the one Kubernetes uses.
 [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
 ### Limitations
@@ -51,10 +51,8 @@ CSR names contain the StatefulSet or Helm chart `name`, so if you customize that
 
 To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
 
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](https://github.com/cockroachdb/cockroach/issues/38847). In the meantime, use a StatefulSet configuration to deploy on EKS.
-
-Note that when running on Amazon EKS, certificates signed by Kubernetes' built-in CA are not supported, so use [this configuration file](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml) instead of `cockroachdb-statefulset-secure.yaml` referenced below. Follow the steps at the top of the file to load externally created certificates into Kubernetes and initialize the CockroachDB cluster.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">

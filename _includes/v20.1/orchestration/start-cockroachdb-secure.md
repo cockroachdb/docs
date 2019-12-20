@@ -1,24 +1,81 @@
-1. From your local workstation, use our [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it.
+Download and modify our StatefulSet configuration, depending on how you want to sign your certificates.
 
-    Download [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml):
+{{site.data.alerts.callout_danger}}
+Some environments, such as Amazon EKS, do not support certificates signed by Kubernetes' built-in CA. In this case, use the second configuration below.
+{{site.data.alerts.end}}
+
+- Using the Kubernetes CA: [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml). 
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
 
-    {{site.data.alerts.callout_danger}}
-    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. Specify this amount by adjusting `resources.requests.memory` and `resources.limits.memory` in `cockroachdb-statefulset-secure.yaml`. Their values should be identical.
-
-    We recommend setting `cache` and `max-sql-memory` each to 1/4 of your memory allocation. For example, if you are allocating 8Gi of memory to each CockroachDB node, substitute the following values in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml#L247):
-    {{site.data.alerts.end}}
+- Using a non-Kubernetes CA: [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml)
 
     {% include copy-clipboard.html %}
+    ~~~ shell
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
+    ~~~
+
+#### Set up configuration file
+
+Modify the values in the StatefulSet configuration.
+
+1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. In the `containers` specification, set this amount in both `resources.requests.memory` and `resources.limits.memory`.
+
+    ~~~ shell
+    $ resources:
+        requests:
+          memory: "8Gi"
+        limits:
+          memory: "8Gi"
+    ~~~
+
+    We recommend setting `cache` and `max-sql-memory` each to 1/4 of the memory allocation. These are defined as placeholder percentages in the StatefulSet command that creates the CockroachDB nodes:
+
+    ~~~
+    - "exec /cockroach/cockroach start --logtostderr --certs-dir /cockroach/cockroach-certs --advertise-host $(hostname -f) --http-addr 0.0.0.0 --join cockroachdb-0.cockroachdb,cockroachdb-1.cockroachdb,cockroachdb-2.cockroachdb --cache 25% --max-sql-memory 25%"
+    ~~~
+
+    {{site.data.alerts.callout_success}}
+    For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
+    {{site.data.alerts.end}}
+
     ~~~ shell
     --cache 2Gi --max-sql-memory 2Gi
     ~~~
 
-    Use the file to create the StatefulSet and start the cluster:
+2. In the `volumeClaimTemplates` specification, you may want to modify `resources.requests.storage` for your use case. This configuration defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
+
+    ~~~ shell
+    $ resources:
+        requests:
+          storage: "100Gi"
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
+    {{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
+{{site.data.alerts.end}}
+
+#### Initialize the cluster
+
+Choose the authentication method that corresponds to the StatefulSet configuration you downloaded and modified above.
+
+- [Kubernetes CA](#kubernetes-ca)
+- [Non-Kubernetes CA](#non-kubernetes-ca)
+
+{{site.data.alerts.callout_success}}
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+{{site.data.alerts.end}}
+
+##### Kubernetes CA
+
+1. Use the config file you downloaded to create the StatefulSet that automatically creates 3 pods, each running a CockroachDB node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -36,28 +93,6 @@
     poddisruptionbudget.policy/cockroachdb-budget created
     statefulset.apps/cockroachdb created
     ~~~
-
-    Alternatively, if you'd rather start with a configuration file that has been customized for performance:
-
-    1. Download our [performance version of `cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml):
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml
-        ~~~
-
-    2. Modify the file wherever there is a `TODO` comment.
-
-    3. Use the file to create the StatefulSet and start the cluster:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl create -f cockroachdb-statefulset-secure.yaml
-        ~~~
-
-    {{site.data.alerts.callout_success}}
-    If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-    {{site.data.alerts.end}}
 
 2. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificates, at which point the CockroachDB node is started in the pod.
 
@@ -140,7 +175,7 @@
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl get persistentvolumes
+        $ kubectl get pv
         ~~~
 
         ~~~
@@ -198,6 +233,174 @@
         cockroachdb-2               1/1       Running     0          3m
         ~~~
 
-{{site.data.alerts.callout_success}}
-The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+##### Non-Kubernetes CA
+
+{{site.data.alerts.callout_info}}
+The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication](authentication.html#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
 {{site.data.alerts.end}}
+
+1. Create two directories:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir my-safe-directory
+    ~~~
+
+    Directory | Description
+    ----------|------------
+    `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
+    `my-safe-directory` | You'll generate your CA key in this directory and then reference the key when generating node and client certificates.
+
+2. Create the CA certificate and key pair:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+3. Create a client certificate and key pair for the root user:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+4. Upload the client certificate and key to the Kubernetes cluster as a secret:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create secret \
+    generic cockroachdb.client.root \
+    --from-file=certs
+    ~~~
+
+    ~~~
+    secret/cockroachdb.client.root created
+    ~~~
+
+5. Create the certificate and key pair for your CockroachDB nodes:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach cert create-node \
+    localhost 127.0.0.1 \
+    cockroachdb-public \
+    cockroachdb-public.default \
+    cockroachdb-public.default.svc.cluster.local \
+    *.cockroachdb \
+    *.cockroachdb.default \
+    *.cockroachdb.default.svc.cluster.local \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
+
+6. Upload the node certificate and key to the Kubernetes cluster as a secret:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create secret \
+    generic cockroachdb.node \
+    --from-file=certs
+    ~~~
+
+    ~~~
+    secret/cockroachdb.node created
+    ~~~
+
+7. Check that the secrets were created on the cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get secrets
+    ~~~
+
+    ~~~
+    NAME                      TYPE                                  DATA   AGE
+    cockroachdb.client.root   Opaque                                3      41m
+    cockroachdb.node          Opaque                                5      14s
+    default-token-6qjdb       kubernetes.io/service-account-token   3      4m
+    ~~~
+
+8. Use the config file you downloaded to create the StatefulSet that automatically creates 3 pods, each running a CockroachDB node:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-statefulset.yaml
+    ~~~
+
+    ~~~
+    serviceaccount/cockroachdb created
+    role.rbac.authorization.k8s.io/cockroachdb created
+    rolebinding.rbac.authorization.k8s.io/cockroachdb created
+    service/cockroachdb-public created
+    service/cockroachdb created
+    poddisruptionbudget.policy/cockroachdb-budget created
+    statefulset.apps/cockroachdb created
+    ~~~
+
+9. Initialize the CockroachDB cluster:
+
+    1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl get pods
+        ~~~
+
+        ~~~
+        NAME            READY     STATUS    RESTARTS   AGE
+        cockroachdb-0   0/1       Running   0          2m
+        cockroachdb-1   0/1       Running   0          2m
+        cockroachdb-2   0/1       Running   0          2m
+        ~~~
+
+    2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl get pv
+        ~~~
+
+        ~~~
+        NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                           STORAGECLASS   REASON   AGE
+        pvc-9e435563-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-0   standard                51m
+        pvc-9e47d820-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-1   standard                51m
+        pvc-9e4f57f0-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-2   standard                51m
+        ~~~
+
+    3. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl exec -it cockroachdb-0 \
+        -- /cockroach/cockroach init \
+        --certs-dir=/cockroach/cockroach-certs
+        ~~~
+
+        ~~~
+        Cluster successfully initialized
+        ~~~
+
+    4. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl get pods
+        ~~~
+
+        ~~~
+        NAME            READY     STATUS    RESTARTS   AGE
+        cockroachdb-0   1/1       Running   0          3m
+        cockroachdb-1   1/1       Running   0          3m
+        cockroachdb-2   1/1       Running   0          3m
+        ~~~

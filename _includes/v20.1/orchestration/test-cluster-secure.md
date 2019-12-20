@@ -1,7 +1,7 @@
 To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, get a shell into the pod, and then start the built-in SQL client.
 
 <section class="filter-content" markdown="1" data-scope="manual">
-1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely:
+- Using the Kubernetes CA: [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml)
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -9,15 +9,23 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
     ~~~
 
-    ~~~
-    pod/cockroachdb-client-secure created
+- Using a non-Kubernetes CA: [`client.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/client.yaml)
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
     ~~~
 
     {{site.data.alerts.callout_info}}
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
-2. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+    ~~~
+    pod/cockroachdb-client-secure created
+    ~~~
+
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -42,7 +50,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     root@cockroachdb-public:26257/defaultdb>
     ~~~
 
-3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -71,7 +79,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     (1 row)
     ~~~
 
-4. [Create a user with a password](create-user.html#create-a-user-with-a-password):
+3. [Create a user with a password](create-user.html#create-a-user-with-a-password):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -80,7 +88,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
       You will need this username and password to access the Admin UI later.
 
-5. Exit the SQL shell and pod:
+4. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql
