@@ -2,7 +2,7 @@
 title: cockroach debug ballast
 summary: Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 toc: true
-redirect-from: cockroach-debug-ballast.html
+redirect_from: cockroach-debug-ballast.html
 key: cockroach-debug-ballast.html
 ---
 

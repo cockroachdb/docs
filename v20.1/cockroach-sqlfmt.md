@@ -2,7 +2,7 @@
 title: cockroach sqlfmt
 summary: Use cockroach sqlfmt to enhance the text layout of a SQL query.
 toc: true
-redirect-from: use-the-query-formatter.html
+redirect_from: use-the-query-formatter.html
 key: use-the-query-formatter.html
 ---
 

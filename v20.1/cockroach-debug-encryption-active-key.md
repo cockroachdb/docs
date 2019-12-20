@@ -2,7 +2,7 @@
 title: cockroach debug encryption-active-key
 summary: Learn the command for viewing the algorithm and store key for an encrypted store.
 toc: true
-redirect-from: debug-encryption-active-key.html
+redirect_from: debug-encryption-active-key.html
 key: debug-encryption-active-key.html
 ---
 

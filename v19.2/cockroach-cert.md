@@ -2,7 +2,7 @@
 title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-redirect-from: create-security-certificates.html
+redirect_from: create-security-certificates.html
 key: create-security-certificates.html
 ---
 
