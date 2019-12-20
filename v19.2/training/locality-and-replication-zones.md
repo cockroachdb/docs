@@ -355,7 +355,7 @@ Now verify that the data for the table in the `intro` database is located on US-
     ~~~ shell
     $ cockroach sql \
     --insecure \
-    --host=127.0.0.1:54942 \
+    --host=localhost:26257 \
     --execute="SHOW RANGES FROM TABLE intro.mytable;" \
     --execute="SHOW RANGES FROM TABLE startrek.episodes;" \
     --execute="SHOW RANGES FROM TABLE startrek.quotes;"    
