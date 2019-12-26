@@ -723,22 +723,26 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH fields_terminated_by='|',fields_enclosed_by='"';
+> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH fields_terminated_by='|',fields_enclosed_by='"';
+> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv' WITH fields_terminated_by='|',fields_enclosed_by='"';
+> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you want to escape the character used as the delimiter, use `fields_escaped_by`.
+{{site.data.alerts.end}}
 
 ### Import a table from a delimited data file
 
