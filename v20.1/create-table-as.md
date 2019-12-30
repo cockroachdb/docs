@@ -292,7 +292,7 @@ You can define the [column families](column-families.html) of a new table create
 
 If you are [partitioning](partitioning.html) a table based on a [primary key](primary-key.html), you must correctly define the primary key at table creation. It is not possible to add or change primary keys after table creation. To work around this limitation, you can create a new table from an existing one, with the correct primary keys specified in your `CREATE TABLE ... AS` statement.
 
-Suppose that you want to [geo-partition](demo-geo-partitioning.html) the `drivers` table that you created with the following statement:
+Suppose that you want to [geo-partition](demo-low-latency-multi-region-deployment.html) the `drivers` table that you created with the following statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql

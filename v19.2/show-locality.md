@@ -82,7 +82,7 @@ For a more extensive example, see [Create a table with node locality information
 
 ## See also
 
-- [Geo-Partitioning](demo-geo-partitioning.html)
+- [Geo-Partitioning](demo-low-latency-multi-region-deployment.html)
 - [Locality](cockroach-start.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)
