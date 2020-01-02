@@ -144,6 +144,12 @@
         "urls": [
           "/${VERSION}/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
         ]
+      },
+      {
+        "title": "Stream a changefeed to Snowflake",
+        "urls": [
+          "/${VERSION}/demo-stream-changefeed-to-snowflake-aws.html"
+        ]
       }
     ]
   },
