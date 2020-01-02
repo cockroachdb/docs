@@ -732,7 +732,7 @@ Amazon S3:
   WITH
     fields_terminated_by='|',
     fields_enclosed_by='"',
-    fields_escaped_by='*';
+    fields_escaped_by='"';
 ~~~
 
 Azure:
@@ -743,7 +743,7 @@ Azure:
   WITH
     fields_terminated_by='|',
     fields_enclosed_by='"',
-    fields_escaped_by='*';
+    fields_escaped_by='"';
 ~~~
 
 Google Cloud:
@@ -754,11 +754,11 @@ Google Cloud:
   WITH
     fields_terminated_by='|',
     fields_enclosed_by='"',
-    fields_escaped_by='*';
+    fields_escaped_by='"';
 ~~~
 
 {{site.data.alerts.callout_info}}
-If you want to escape the character used as the delimiter, use `fields_escaped_by`.
+If you want to escape special symbols, use `fields_escaped_by`.
 {{site.data.alerts.end}}
 
 ### Import a table from a delimited data file

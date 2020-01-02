@@ -728,25 +728,37 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
+> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
+> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv' WITH fields_terminated_by='|',fields_enclosed_by='"', fields_escaped_by='*';
+> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
 ~~~
 
 {{site.data.alerts.callout_info}}
-If you want to escape the character used as the delimiter, use `fields_escaped_by`.
+If you want to escape special symbols, use `fields_escaped_by`.
 {{site.data.alerts.end}}
 
 ### Import a table from a delimited data file
@@ -755,21 +767,30 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM DELIMITED DATA 's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' skip_foreign_keys;
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+    WITH
+      skip_foreign_keys;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' skip_foreign_keys;
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+    WITH
+      skip_foreign_keys;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM DELIMITED DATA 'gs://acme-co/employees.csv' WITH skip_foreign_keys;
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 'gs://acme-co/employees.csv'
+    WITH
+      skip_foreign_keys;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
