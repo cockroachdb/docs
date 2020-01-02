@@ -86,6 +86,8 @@ Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`]
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
 
+The following are limitations in the current release and will be addressed in the future:
+
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ### Admin UI may become inaccessible for secure clusters
