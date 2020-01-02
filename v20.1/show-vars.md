@@ -21,7 +21,9 @@ No [privileges](authorization.html#assign-privileges) are required to display th
 {% include {{ page.version.version }}/sql/diagrams/show_var.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SHOW</code> statement for session settings is unrelated to the other <code>SHOW</code> statements: <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `SHOW` statement for session settings is unrelated to the other `SHOW` statements: [`SHOW CLUSTER SETTING`](cluster-settings.html#view-current-cluster-settings), [`SHOW CREATE`](show-create.html), [`SHOW USERS`](show-users.html), [`SHOW DATABASES`](show-databases.html), [`SHOW COLUMNS`](show-columns.html), [`SHOW GRANTS`](show-grants.html), and [`SHOW CONSTRAINTS`](show-constraints.html).
+{{site.data.alerts.end}}
 
 ## Parameters
 
@@ -37,10 +39,10 @@ Special syntax cases supported for compatibility:
 
  Syntax | Equivalent to
 --------|---------------
- `SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
- `SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
- `SHOW TIME ZONE` | `SHOW "timezone"`
- `SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
+`SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
+`SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
+`SHOW TIME ZONE` | `SHOW "timezone"`
+`SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
 
 ## Examples
 
@@ -67,12 +69,12 @@ Special syntax cases supported for compatibility:
 
 ~~~
                variable               |                                                          value
-+-------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
++-------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
   application_name                    | $ cockroach demo
   bytea_output                        | hex
   client_encoding                     | UTF8
   client_min_messages                 | notice
-  crdb_version                        | CockroachDB OSS v19.2.0
+  crdb_version                        | CockroachDB OSS v20.1.0-alpha.20191118-947-ga99740bb34 (x86_64-apple-darwin17.7.0, built 2020/01/02 14:33:59, go1.13.4)
   database                            | movr
   datestyle                           | ISO, MDY
   default_int_size                    | 8
@@ -80,8 +82,11 @@ Special syntax cases supported for compatibility:
   default_transaction_isolation       | serializable
   default_transaction_read_only       | off
   distsql                             | auto
+  enable_insert_fast_path             | on
   enable_zigzag_join                  | on
+  experimental_enable_temp_tables     | off
   experimental_force_split_at         | off
+  experimental_optimizer_foreign_keys | on
   experimental_serial_normalization   | rowid
   extra_float_digits                  | 2
   force_savepoint_restart             | off
@@ -90,10 +95,10 @@ Special syntax cases supported for compatibility:
   intervalstyle                       | postgres
   locality                            | region=us-east1,az=b
   lock_timeout                        | 0
+  max_identifier_length               | 128
   max_index_keys                      | 32
   node_id                             | 1
   optimizer                           | on
-  optimizer_foreign_keys              | off
   reorder_joins_limit                 | 4
   results_buffer_size                 | 16384
   row_security                        | off
@@ -101,6 +106,7 @@ Special syntax cases supported for compatibility:
   server_encoding                     | UTF8
   server_version                      | 9.5.0
   server_version_num                  | 90500
+  session_id                          | 15e6192a00e0d9100000000000000001
   session_user                        | root
   sql_safe_updates                    | on
   standard_conforming_strings         | on
@@ -114,7 +120,7 @@ Special syntax cases supported for compatibility:
   transaction_status                  | NoTxn
   vectorize                           | auto
   vectorize_row_count_threshold       | 1000
-(46 rows)
+(50 rows)
 ~~~
 
 ## See also

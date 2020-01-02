@@ -38,6 +38,16 @@
 
   <tr>
    <td>
+    <code>crdb_version</code>
+   </td>
+   <td>Details about the version of CockroachDB running on the node current connected to.</td>
+   <td>The ID of the node currently connected to.</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>database</code>
    </td>
    <td>The <a href="sql-name-resolution.html#current-database">current database</a>.</td>
@@ -55,6 +65,16 @@
     <code>8</code>
    </td>
    <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_tablespace</code>
+   </td>
+   <td>?</td>
+   <td>?</td>
+   <td>?</td>
    <td>Yes</td>
   </tr>
 
@@ -90,6 +110,18 @@
    <td>The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node.</td>
    <td>
     <code>auto</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_insert_fast_path</code>
+   </td>
+   <td>?</td>
+   <td>
+    <code>on</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
