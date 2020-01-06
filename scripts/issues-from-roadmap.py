@@ -18,11 +18,10 @@ from ratelimiter import RateLimiter
 
 # Map Airtable product areas to GitHub labels and writers.
 epic_area_to_tag_and_writer = {
-    "KV": ("A-kv-storage", "rmloveland"),
+    "OKS": ("A-kv-storage", "rmloveland"),
     "SQL": ("A-sql", "ericharmeling"),
     "Observability": ("A-observability", "taroface"),
     "IAM & Security": ("A-iam-security", "Amruta-Ranade"),
-    "Bulk I/O": ("A-io", "lnhsingh"),
     "I/O": ("A-io", "lnhsingh"),
     "CockroachCloud - Platform": ("A-cloud", "Amruta-Ranade"),
 }
@@ -65,7 +64,7 @@ def create_issue(issue):
     resp = requests.post(url, headers=headers, data=json.dumps(issue))
     if resp.status_code == 201:
         ret = resp.json()
-        print("Successfully created issue {0:s} #{}".format(epic_name, ret['number']), "\n")
+        print("Successfully created issue {} #{}".format(epic_name, ret['number']), "\n")
         print(issue, "\n")
         github_issues_created += 1
         return resp.json()
@@ -84,7 +83,7 @@ def search_issue(issue):
         url,
         headers=headers,
         params={
-            "q": issue["title"].replace(' ', '+') + '+milestone:"{}"+label:"C-roadmap"+state:"open"+repo:cockroachdb/docs'.format(args.milestone),
+            "q": issue["title"].replace(' ', '+') + '+milestone:"{}"+label:"C-roadmap"+repo:cockroachdb/docs'.format(args.milestone),
         },
     )
     assert resp.ok, resp
@@ -124,9 +123,9 @@ while has_more:
         fields = r.get("fields")
         assert fields, "missing fields in airtable entry"
         epic_name = fields.get("Epic/Feature Name", "")
-        epic_desc = fields.get("Describe this feature to the customer", "")
+        epic_desc = fields.get("Customer-facing description", "")
         epic_area = fields.get("Product Area", "")
-        epic_members = ", ".join(member['name'] for member in fields.get("Team Members", []))
+        epic_members = ", ".join(member['name'] for member in fields.get("Points of contact", []))
         github_tracking_issue = fields.get("Github Tracking Issue", "")
 
         assert epic_area in epic_area_to_tag_and_writer, "could not found tag and writer for {}".format(epic_area)
@@ -164,7 +163,7 @@ while has_more:
         # Otherwise, update each issue. For now, assert there to only be one.
         assert len(found_issues) == 1, (
             "found multiple issues from search: " +
-            ','.join(['#' + iss['number'] for iss in found_issues])
+            ','.join(['#' + str(iss['number']) for iss in found_issues])
         )
 
         for found_issue in found_issues:
