@@ -314,7 +314,7 @@ To shut down the CockroachDB cluster:
     pod "cockroachdb-client-secure" deleted
     ~~~
 
-3. Get the names of the CSRs for the cluster:
+3. Get the names of any CSRs for the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -350,7 +350,7 @@ To shut down the CockroachDB cluster:
     ~~~
     </section>
 
-4. Delete the CSRs that you created:
+4. Delete any CSRs that you created:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
