@@ -47,7 +47,7 @@ Parameter | Description
 `table_name` | The name of the table you want to import/create.
 `table_elem_list` | The table schema you want to use.  
 `CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-urls) of a CSV file containing the table schema.
-`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be a comma-separated list of URLs to CSV files. For an example, see [Import a table from multiple CSV files](#import-a-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
 ### For import from dump file
@@ -257,6 +257,8 @@ CSV DATA ('gs://acme-co/customers.csv')
 
 ### Import a table from multiple CSV files
 
+## Using a comma-separated list
+
 Amazon S3:
 
 {% include copy-clipboard.html %}
@@ -354,6 +356,59 @@ CSV DATA ('gs://acme-co/customers.tsv')
 WITH
 	delimiter = e'\t'
 ;
+~~~
+
+#### Using a wildcard
+
+- <span class="version-tag">New in v19.2:</span> You can specify file patterns to match instead of explicitly listing every file. Use the `*` wildcard character to include matching files directly under the specified path. A wildcard can be used to include:
+
+- All files in a given directory (e.g.,`s3://bucket-name/path/to/data/*`)
+- All files in a given directory that end with a given string (e.g., `s3://bucket-name/files/*.csv`)
+- All files in a given directory that start with a given string (e.g., `s3://bucket-name/files/data*`)
+-All files in a given directory that start and end with a given string (e.g., `s3://bucket-name/files/data*.csv`)
+
+These only match files directly under the specified path, and do not descend into additional directories recursively.
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    's3://acme-co/*?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+);
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://acme-co/customer-import-data*?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'  
+);
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'gs://acme-co/*'
+);
 ~~~
 
 ### Skip commented lines

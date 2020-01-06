@@ -2,18 +2,14 @@
 [scheme]://[host]/[path]?[parameters]
 ~~~
 
-| Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
-|-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------|
-| Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`&nbsp;[<sup>1</sup>](#considerations) (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`                               |
-| Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`                                  |
-| Google Cloud&nbsp;[<sup>2</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS`                         |
-| HTTP&nbsp;[<sup>3</sup>](#considerations)                   | `http`      | Remote host                                      | N/A                                                                        |
-| NFS/Local&nbsp;[<sup>4</sup>](#considerations)              | `nodelocal` | Empty or `nodeID` [<sup>5</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A                                                                        |
-| S3-compatible services&nbsp;[<sup>6</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>7</sup>](#considerations) (optional), `AWS_ENDPOINT` |
-
-{{site.data.alerts.callout_danger}}
-If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
-{{site.data.alerts.end}}
+Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
+|-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`&nbsp;[<sup>1</sup>](#considerations) (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`                               
+Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
+Google Cloud&nbsp;[<sup>2</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS`
+HTTP&nbsp;[<sup>3</sup>](#considerations)                   | `http`      | Remote host                                      | N/A
+NFS/Local&nbsp;[<sup>4</sup>](#considerations)              | `nodelocal` | Empty or `nodeID` [<sup>5</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
+S3-compatible services&nbsp;[<sup>6</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>7</sup>](#considerations) (optional), `AWS_ENDPOINT`
 
 {{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -33,7 +29,7 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 - <sup>4</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-- <sup>5</sup>  The host component of NFS/Local can either be empty or the `nodeID`. If the `nodeID` is specified, it is currently ignored (i.e., any node can be sent work and it will look in its local input/output directory); however, the `nodeID` will likely be required in the future.
+- <sup>5</sup>  The host component of NFS/Local can either be empty or the `nodeID`. If you do not specify a `nodeID` when using `nodelocal` storage, the individual data files will be in the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage. <span class="version-tag">New in v20.1:</span> If a `nodeID` is provided, the data files will be in the `extern` directory of the specified node. The `nodeID` will likely be required in the future.
 
 - <sup>6</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
 
@@ -41,10 +37,10 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 #### Example file URLs
 
-| Location     | Example                                                                          |
-|--------------+----------------------------------------------------------------------------------|
-| Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     |
-| Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         |
-| Google Cloud | `gs://acme-co/employees.sql`                                                     |
-| HTTP         | `http://localhost:8080/employees.sql`                                            |
-| NFS/Local    | `nodelocal:///path/employees`, `nodelocal://2/path/employees` <br><br>**Note:** If you write to `nodelocal` storage in a multi-node cluster, individual data files will be written to the `extern` directories of arbitrary nodes and will likely not work as intended. To work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.         |
+Location     | Example                                                                          
+-------------+----------------------------------------------------------------------------------
+Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
+Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
+Google Cloud | `gs://acme-co/employees.sql`                                                     
+HTTP         | `http://localhost:8080/employees.sql`                                            
+NFS/Local    | `nodelocal:///path/employees`, `nodelocal://2/path/employees`&nbsp;[<sup>5</sup>](#considerations)
