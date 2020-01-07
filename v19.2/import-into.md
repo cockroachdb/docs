@@ -174,7 +174,7 @@ Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT INTO customers (d, name)
+> IMPORT INTO customers (id, name)
     CSV DATA (
       'gs://acme-co/customers.csv',
       'gs://acme-co/customers2.csv',
