@@ -20,15 +20,9 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
 <table class="release-table">
 <thead>
 <tr>
-  <td>Version &amp; Release Notes</td>
+  <td>Version</td>
   <td>Date</td>
-  <td>
-    <section class="filter-content" data-scope="linux">Precompiled 64-bit Binary</section>
-    <section class="filter-content" data-scope="mac">Precompiled 64-bit Binary</section>
-    <section class="filter-content" data-scope="windows">Precompiled 64-bit Binary</section>
-    <section class="filter-content" data-scope="docker">Docker Image</section>
-    <section class="filter-content" data-scope="source">Source Code</section>
-  </td>
+  <td>Download</td>
 </tr>
 </thead>
 
@@ -48,16 +42,16 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
         {% else %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz">Download</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz">Precompiled 64-bit Binary</a>
                 </section>
                 <section class="filter-content" data-scope="mac">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">Download</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">Precompiled 64-bit Binary</a>
                 </section>
                 <section class="filter-content" data-scope="windows">
                 {% if release.no_windows %}
                     N/A
                 {% else %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">Download</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">Precompiled 64-bit Binary</a>
                 {% endif %}
                 </section>
                 <section class="filter-content" data-scope="docker">
@@ -67,7 +61,7 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
                 {% if release.no_source %}
                     N/A
                 {% else %}
-                    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">Download</a>
+                    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">Source</a>
                 {% endif %}
                 </section>
             </td>

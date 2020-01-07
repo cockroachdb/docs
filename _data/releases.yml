@@ -3,13 +3,10 @@
     - date: Dec 16, 2019
       version: v19.2.2
       latest: true
-      no_windows: true
     - date: Nov 25, 2019
       version: v19.2.1
-      no_windows: true
     - date: Nov 12, 2019
       version: v19.2.0
-      no_windows: true
     - date: Dec 16, 2019
       version: v19.1.6
       no_windows: true
@@ -146,7 +143,6 @@
   releases:
     - date: Dec 16, 2019
       version: v20.1.0-alpha20191216
-      no_windows: true
     - date: Nov 18, 2019
       version: v20.1.0-alpha.20191118
     - date: Nov 7, 2019
