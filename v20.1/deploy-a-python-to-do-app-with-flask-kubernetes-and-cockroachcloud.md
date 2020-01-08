@@ -133,7 +133,7 @@ On your local workstation's terminal:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url 'postgres://maxroach@<region>.<cluster_name>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    $ cockroach sql --url 'postgres://maxroach@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
 4. Enter the password you created for `maxroach`:
@@ -214,7 +214,7 @@ In a new terminal:
 
     {% include copy-clipboard.html %}
     ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -300,7 +300,7 @@ In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate d
 
 {% include copy-clipboard.html %}
 ~~~
-SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
 ~~~
 
 {{site.data.alerts.callout_info}}
