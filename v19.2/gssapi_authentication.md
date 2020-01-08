@@ -44,7 +44,7 @@ Copy the resulting keytab to the client machine. If you are connecting from mult
 
 ### MIT KDC
 
-In MIT KDC, you can't map a service principal to an SPN with a different user name, so you will need to create a service principal that includes the SPN for your client.
+In MIT KDC, you can't map a service principal to an SPN with a different username, so you will need to create a service principal that includes the SPN for your client.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -155,13 +155,20 @@ Copy the resulting keytab to the client machine. If you are connecting from mult
 The `cockroach sql` shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible Postgres client, such as Postgres's `psql` client.
 {{site.data.alerts.end}}
 
-1. Install and configure your Kerberos client.
+1. Install and configure your Kerberos client:
 
     For CentOS/RHEL systems, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ yum install krb5-user
+    ~~~
+
+    For Ubuntu/Debian systems, run:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ apt-get install krb5-user
     ~~~
 
     Edit the `/etc/krb5.conf` file to include:
