@@ -33,20 +33,15 @@ Use the Console to authorize networks:
 4. (Optional) Enter a descriptive name for the network.
 
 5. From the **Network** dropdown, select:
+   - **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
+   - **Current Network** to auto-populate your local machine's IP address.
+   - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
-         - **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
+     {{site.data.alerts.callout_info}}
+     IPv6 addresses are currently not supported.
+     {{site.data.alerts.end}}
 
-         - **Current Network** to auto-populate your local machine's IP address.
-
-         - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
-
-      {{site.data.alerts.callout_info}}
-      IPv6 addresses are currently not supported.
-      {{site.data.alerts.end}}
-
-      If you need to add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation.
-
-      The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+     To add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
 6. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
@@ -76,8 +71,6 @@ Use the Console to authorize networks:
 
 ## Step 3. Select a connection method
 
-On the machine from which you want to connect to your cluster:
-
 1. In the top right corner of the Console, click the **Connect** button.
 
     The **Connect** modal displays.
@@ -100,7 +93,7 @@ On the machine from which you want to connect to your cluster:
 
     You can connect to your cluster using the in-built SQL client or using a Postgres-compatible ORM or driver.
 
-    To connect to your cluster using the [in-built SQL client](#use-the-cockroachdb-sql-client), use the command displayed on the **CockroachDB Client** tab. 
+    To connect to your cluster using the [in-built SQL client](#use-the-cockroachdb-sql-client), use the command displayed on the **CockroachDB Client** tab.
 
     To connect to your cluster [using a Postgres ORM or driver](#use-a-postgres-driver-or-orm), use either the **Connection String** or the **Parameters** as required by your ORM or driver.
 
@@ -148,7 +141,7 @@ On the machine where you want to run the CockroachDB SQL client:
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection string](#step-3-generate-the-connection-string) with the correct username, password, and path to the `ca.cert`:
+3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection method](#step-3-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
