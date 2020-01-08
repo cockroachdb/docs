@@ -40,7 +40,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Add Network** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:50%" />
 
 3. (Optional) Enter a descriptive name for the network.
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
@@ -59,7 +59,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:50%" />
 
 3. In the **Username** field, enter `maxroach`.
 4. In the **Password** field, enter `Q7gc8rEdS`.
@@ -73,7 +73,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#sign-in), you c
 
     The **Connect** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />
 
 3. From the **User** dropdown, select `maxroach`.
 4. Select a **Region** to connect to.
@@ -133,7 +133,7 @@ On your local workstation's terminal:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url 'postgres://maxroach@<region>.<cluster_name>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    $ cockroach sql --url 'postgres://maxroach@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
 4. Enter the password you created for `maxroach`:
@@ -178,12 +178,12 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v19.2/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:50%" />
 
   2. From the **User** dropdown, select `maxroach`.
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
-  5. On the **Connect Your App** tab, click **Copy connection string**.
+  5. On the **Connection String** tab, click **Copy**.
 
       Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 
@@ -214,7 +214,7 @@ In a new terminal:
 
     {% include copy-clipboard.html %}
     ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -300,7 +300,7 @@ In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate d
 
 {% include copy-clipboard.html %}
 ~~~
-SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<region>.<cluster_name>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
 ~~~
 
 {{site.data.alerts.callout_info}}
