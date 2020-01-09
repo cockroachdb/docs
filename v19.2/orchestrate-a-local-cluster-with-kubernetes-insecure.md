@@ -29,7 +29,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 </div>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-insecure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
