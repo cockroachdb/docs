@@ -60,94 +60,7 @@
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
 
-6. As each pod is created, it issues a Certificate Signing Request, or CSR, to have the CockroachDB node's certificate signed by the Kubernetes CA. You must manually check and approve each node's certificate, at which point the CockroachDB node is started in the pod.
-
-    1. Get the names of the `Pending` CSRs:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl get csr
-        ~~~
-
-        ~~~
-        NAME                                    AGE       REQUESTOR                                              CONDITION
-        default.client.root                     21s       system:serviceaccount:default:my-release-cockroachdb   Pending
-        default.node.my-release-cockroachdb-0   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
-        default.node.my-release-cockroachdb-1   16s       system:serviceaccount:default:my-release-cockroachdb   Pending
-        default.node.my-release-cockroachdb-2   15s       system:serviceaccount:default:my-release-cockroachdb   Pending
-        ...
-        ~~~
-
-        If you do not see a `Pending` CSR, wait a minute and try again.
-
-    2. Examine the CSR for the first pod:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl describe csr default.node.my-release-cockroachdb-0
-        ~~~
-
-        ~~~
-        Name:               default.node.my-release-cockroachdb-0
-        Labels:             <none>
-        Annotations:        <none>
-        CreationTimestamp:  Mon, 10 Dec 2018 05:36:35 -0500
-        Requesting User:    system:serviceaccount:default:my-release-cockroachdb
-        Status:             Pending
-        Subject:
-          Common Name:    node
-          Serial Number:
-          Organization:   Cockroach
-        Subject Alternative Names:
-                 DNS Names:     localhost
-                                my-release-cockroachdb-0.my-release-cockroachdb.default.svc.cluster.local
-                                my-release-cockroachdb-0.my-release-cockroachdb
-                                my-release-cockroachdb-public
-                                my-release-cockroachdb-public.default.svc.cluster.local
-                 IP Addresses:  127.0.0.1
-        Events:  <none>
-        ~~~
-
-    3. If everything looks correct, approve the CSR for the first pod:
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl certificate approve default.node.my-release-cockroachdb-0
-        ~~~
-
-        ~~~
-        certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-0 approved
-        ~~~
-
-    4. Repeat steps 2 and 3 for the other 2 pods.
-
-7. Confirm that three pods are `Running` successfully:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
-    ~~~
-    NAME                                READY     STATUS     RESTARTS   AGE
-    my-release-cockroachdb-0            0/1       Running    0          6m
-    my-release-cockroachdb-1            0/1       Running    0          6m
-    my-release-cockroachdb-2            0/1       Running    0          6m
-    my-release-cockroachdb-init-hxzsc   0/1       Init:0/1   0          6m
-    ~~~
-
-8. Approve the CSR for the one-off pod from which cluster initialization happens:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.client.root
-    ~~~
-
-    ~~~
-    certificatesigningrequest.certificates.k8s.io/default.client.root approved
-    ~~~
-
-9. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+5. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -162,7 +75,7 @@
     my-release-cockroachdb-init-hxzsc   0/1       Completed   0          1h
     ~~~
 
-10. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+6. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include copy-clipboard.html %}
     ~~~ shell
