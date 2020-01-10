@@ -67,8 +67,8 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 4. Use our [`prometheus.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/prometheus.yaml) file to create the various objects necessary to run a Prometheus instance:
 
-    {{site.data.alerts.callout_info}}
-    If you authenticated with a non-Kubernetes CA, first add `insecureSkipVerify: true` to the `tlsConfig` specification. This disables certificate verification with Kubernetes.
+    {{site.data.alerts.callout_success}}
+    This configuration defaults to using the Kubernetes CA for authentication.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
