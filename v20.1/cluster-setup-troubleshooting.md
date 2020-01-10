@@ -57,7 +57,7 @@ Other services may be running on port 26257 or 8080 (CockroachDB's default `--li
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
-### Networking issues
+### Single-node networking issues
 
 Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](cockroach-start.html#networking).
 
@@ -432,6 +432,66 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
 
+## Node liveness issues
+
+"Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. This is achieved using checks that ensure that each node connected to the cluster is updating its liveness record. This information is shared with the rest of the cluster using an internal gossip protocol.
+
+Common reasons for node liveness issues include:
+
+- Heavy I/O load on the node. Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed. See also: [Capacity planning issues](#capacity-planning-issues).
+- Outright I/O failure due to a disk stall. This will cause node liveness issues for the same reasons as listed above.
+- Any [Networking issues](#networking-issues) with the node.
+
+The [Admin UI][admin_ui] provides several ways to check for node liveness issues in your cluster:
+
+- [Check node heartbeat latency](#check-node-heartbeat-latency)
+- [Check node liveness record last update](#check-node-liveness-record-last-update)
+- [Check command commit latency](#check-command-commit-latency)
+
+{{site.data.alerts.callout_info}}
+For more information about how node liveness works, see [the architecture documentation on the replication layer](architecture/replication-layer.html#epoch-based-leases-table-data).
+{{site.data.alerts.end}}
+
+### Check node heartbeat latency
+
+Go to the [Admin UI][admin_ui]. Select the **Metrics** tab from the left-hand side of the page.
+
+From the metrics page, select **Dashboard: Distributed** from the dropdown at the top of the page.
+
+Then, scroll down the page to find the **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs.
+
+*Expected values for a healthy cluster*: XXX
+
+<img src="{{ 'images/v20.1/cluster-setup-troubleshooting/node-heartbeat-latency-graph.png' | relative_url }}" alt="node heartbeat latency graph" style="border:1px solid #eee;max-width:100%" />
+
+### Check node liveness record last update
+
+Go to the **Node Diagnostics** page of the [Admin UI][admin_ui], which lives at
+
+https://yourcluster.yourdomain/#/reports/nodes
+
+On the node diagnostics page, you will see a table listing information about the nodes in your cluster.
+
+To see when a node last updated its liveness record, check the **Updated at** field at the bottom of that node's column.
+
+*Expected values for a healthy cluster*: XXX
+
+<img src="{{ 'images/v20.1/cluster-setup-troubleshooting/node-diagnostics-updated-at.png' | relative_url }}" alt="node diagnostics table">
+
+### Check command commit latency
+
+A good signal of I/O load is the **Command Commit Latency** in the **Storage** section of the dashboards. This dashboard measures how quickly [Raft commands](architecture/replication-layer.html) are being committed by nodes in the cluster.
+
+Go to the [Admin UI][admin_ui]. Select the **Metrics** tab from the left-hand side of the page.
+
+From the metrics page, select **Dashboard: Storage** from the dropdown at the top of the page.
+
+Then, scroll to the bottom of the page to see the **Command Commit Latency: 90th percentile** and **Command Commit Latency: 99th percentile** graphs.
+
+*Expected values for a healthy cluster*: XXX
+
+<img src="{{ 'images/v20.1/cluster-setup-troubleshooting/command-commit-latency.png' | relative_url }}" alt="command commit latency graph" style="border:1px solid #eee;max-width:100%" />
+
 ## Something else?
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
@@ -439,3 +499,7 @@ If we do not have a solution here, you can try using our other [support resource
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+
+<!-- Reference Links -->
+
+[admin_ui]: admin-ui-access-and-navigate.html#accessing-the-admin-ui-for-a-secure-cluster
