@@ -72,7 +72,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '19.1';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '19.2';
         ~~~
 
     3. Exit the SQL shell and delete the temporary pod:
