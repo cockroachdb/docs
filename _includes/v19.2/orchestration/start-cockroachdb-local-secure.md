@@ -18,46 +18,6 @@ Some environments, such as Amazon EKS, do not support certificates signed by Kub
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
 
-#### Set up configuration file
-
-Modify the values in the StatefulSet configuration.
-
-1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. In the `containers` specification, set this amount in both `resources.requests.memory` and `resources.limits.memory`.
-
-    ~~~
-    resources:
-      requests:
-        memory: "8Gi"
-      limits:
-        memory: "8Gi"
-    ~~~
-
-    We recommend setting `cache` and `max-sql-memory` each to 1/4 of the memory allocation. These are defined as placeholder percentages in the StatefulSet command that creates the CockroachDB nodes:
-
-    ~~~
-    - "exec /cockroach/cockroach start --logtostderr --certs-dir /cockroach/cockroach-certs --advertise-host $(hostname -f) --http-addr 0.0.0.0 --join cockroachdb-0.cockroachdb,cockroachdb-1.cockroachdb,cockroachdb-2.cockroachdb --cache 25% --max-sql-memory 25%"
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
-    {{site.data.alerts.end}}
-
-    ~~~
-    --cache 2Gi --max-sql-memory 2Gi
-    ~~~
-
-2. In the `volumeClaimTemplates` specification, you may want to modify `resources.requests.storage` for your use case. This configuration defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
-
-    ~~~
-    resources:
-      requests:
-        storage: "100Gi"
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
-    {{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
 {{site.data.alerts.end}}
