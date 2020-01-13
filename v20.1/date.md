@@ -6,6 +6,7 @@ toc: true
 
 The `DATE` [data type](data-types.html) stores a year, month, and day.
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
 
 ## Syntax
 

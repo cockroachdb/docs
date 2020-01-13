@@ -5,6 +5,7 @@ toc: true
 ---
 The `INET` [data type](data-types.html) stores an IPv4 or IPv6 address.
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
 
 ## Syntax
 

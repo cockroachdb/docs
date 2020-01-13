@@ -5,6 +5,8 @@ toc: true
 ---
 The `TIME` [data type](data-types.html) stores the time of day in UTC.
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
+
 ## Aliases
 
 In CockroachDB, the following are aliases:
