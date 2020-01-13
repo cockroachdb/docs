@@ -6,6 +6,8 @@ toc: true
 
 The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time.
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
+
 ## Aliases
 
 - `INTERVAL(6)`
