@@ -18,7 +18,7 @@ The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) stores a date an
     The default session time zone is UTC, which means that by default `TIMESTAMPTZ` values display in UTC.
     {{site.data.alerts.end}}
 
-The difference between these two variants is that `TIMESTAMPTZ` uses the client's session time zone, while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMPTZ` values.
+The difference between these two variants is that `TIMESTAMPTZ` uses the client's session [time zone](set-vars.html#set-time-zone), while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMPTZ` values.
 
 You can use the [`timezone()`](functions-and-operators.html#date-and-time-functions) and [`AT TIME ZONE`](functions-and-operators.html#special-syntax-forms) functions to convert a `TIMESTAMPTZ` into a `TIMESTAMP` at a specified timezone, or to convert a `TIMESTAMP` into a `TIMESTAMPTZ` at a specified timezone.
 
@@ -62,6 +62,10 @@ Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
 PostgreSQL wire protocol.
 
+{{site.data.alerts.callout_info}}
+A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIMESTAMP` values, but is not stored in the database.
+{{site.data.alerts.end}}
+
 ## Size
 
 A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
@@ -79,12 +83,10 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 ~~~
 
 ~~~
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
-| column_name |        data_type         | is_nullable | column_default | generation_expression |   indices   |
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
-| a           | INT                      |    false    | NULL           |                       | {"primary"} |
-| b           | TIMESTAMP WITH TIME ZONE |    true     | NULL           |                       | {}          |
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
+  column_name |  data_type  | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-------------+-------------+----------------+-----------------------+-----------+-----------+
+  a           | INT8        |    false    | NULL           |                       | {primary} |   false
+  b           | TIMESTAMPTZ |    true     | NULL           |                       | {}        |   false
 (2 rows)
 ~~~
 
@@ -99,14 +101,14 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 ~~~
 
 ~~~
+  a |             b
 +---+---------------------------+
-| a |             b             |
-+---+---------------------------+
-| 1 | 2016-03-26 15:10:10+00:00 |
-| 2 | 2016-03-26 00:00:00+00:00 |
-+---+---------------------------+
-# Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
+  1 | 2016-03-26 15:10:10+00:00
+  2 | 2016-03-26 00:00:00+00:00
+(2 rows)
 ~~~
+
+Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
 
 ## Supported casting and conversion
 

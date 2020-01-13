@@ -24,7 +24,7 @@ Type | Description | Example | [Vectorized Execution](vectorized-execution.html)
 [`JSONB`](jsonb.html) | JSON (JavaScript Object Notation) data.  | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'` | Not supported
 [`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html).  | `148591304110702593` | Not supported
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'` | Supported
-[`TIME`](time.html) | A time of day in UTC.  | `TIME '01:23:45.123456'` | Not supported
+[`TIME`<br>`TIMETZ`](time.html) | A time of day in UTC. | `TIME '01:23:45.123456'`<br> `TIMETZ '01:23:45.123456-5:00'` | Not supported
 [`TIMESTAMP`<br>`TIMESTAMPTZ`](timestamp.html) | A date and time pairing in UTC. | `TIMESTAMP '2016-01-25 10:10:10'`<br>`TIMESTAMPTZ '2016-01-25 10:10:10-05:00'` | Supported
 [`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec` | Supported
 
