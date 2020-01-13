@@ -166,7 +166,7 @@ The following demonstrates how to assign a list of values:
 
 {{site.data.alerts.callout_danger}}As a best practice, we recommend not using this setting and avoid setting a session time for your database. We instead recommend converting UTC values to the appropriate time zone on the client side.{{site.data.alerts.end}}
 
-You can control your client's default time zone for the current session with <code>SET TIME ZONE</code>. This will apply a session offset to all [`TIMESTAMP WITH TIME ZONE`](timestamp.html) values.
+You can control your client's default time zone for the current session with <code>SET TIME ZONE</code>. This will apply a session offset to all [`TIMESTAMPTZ`\`TIMESTAMP WITH TIME ZONE`](timestamp.html) and [`TIMETZ`\`TIME WITH TIME ZONE`](time.html) values.
 
 {{site.data.alerts.callout_info}}With setting <code>SET TIME ZONE</code>, CockroachDB uses UTC as the default time zone.{{site.data.alerts.end}}
 
@@ -176,7 +176,7 @@ The time zone value indicates the time zone for the current session.
 
 This value can be a string representation of a local system-defined
 time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
-negative numeric offset from UTC (e.g., `-7`, `+7`). 
+negative numeric offset from UTC (e.g., `-7`, `+7`).
 All timezone abbreviations are case-sensitive and must be uppercase, with the exception of `UTC`, for which `utc` is an alias.
 
 `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
