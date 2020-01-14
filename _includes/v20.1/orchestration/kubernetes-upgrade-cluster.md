@@ -113,7 +113,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     $ helm upgrade \
     my-release \
     stable/cockroachdb \
-    --set ImageTag={{page.release_info.version}} \
+    --set image.tag={{page.release_info.version}} \
     --reuse-values
     ~~~
     </section>

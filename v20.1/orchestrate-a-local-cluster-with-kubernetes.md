@@ -35,7 +35,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-secure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-helm-secure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
@@ -71,7 +71,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     $ helm upgrade \
     my-release \
     stable/cockroachdb \
-    --set Replicas=4 \
+    --set statefulset.replicas=4 \
     --reuse-values
     ~~~
 

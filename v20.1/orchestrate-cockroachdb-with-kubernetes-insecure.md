@@ -79,6 +79,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 - [Add nodes](#add-nodes)
 - [Remove nodes](#remove-nodes)
+- [Expand disk size](#expand-disk-size)
 - [Upgrade the cluster](#upgrade-the-cluster)
 - [Stop the cluster](#stop-the-cluster)
 
@@ -96,6 +97,10 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 ### Remove nodes
 
 {% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
+
+### Expand disk size
+
+{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
 
 ### Upgrade the cluster
 
@@ -140,7 +145,7 @@ To shut down the CockroachDB cluster:
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm delete my-release --purge
+    $ helm uninstall my-release
     ~~~
 
     ~~~

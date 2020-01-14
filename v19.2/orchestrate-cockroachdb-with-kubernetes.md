@@ -269,6 +269,7 @@ To shut down the CockroachDB cluster:
 
 1. Delete all of the resources associated with the `cockroachdb` label, including the logs, remote persistent volumes, and Prometheus and Alertmanager resources:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
@@ -302,6 +303,18 @@ To shut down the CockroachDB cluster:
     prometheusrule.monitoring.coreos.com "prometheus-cockroachdb-rules" deleted
     servicemonitor.monitoring.coreos.com "cockroachdb" deleted
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm uninstall my-release
+    ~~~
+
+    ~~~
+    release "my-release" deleted
+    ~~~
+    </section>
 
 2. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 

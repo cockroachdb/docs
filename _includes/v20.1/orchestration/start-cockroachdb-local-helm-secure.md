@@ -1,4 +1,4 @@
-1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the official `stable` chart repository:
+1. [Install the Helm client](https://helm.sh/docs/intro/install) and add the official `stable` chart repository:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -18,36 +18,13 @@
 
 3. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
 
-    Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
+    Create a `my-values.yaml` file to override the defaults. For a secure deployment, set `tls.enabled` to true:
 
     {% include copy-clipboard.html %}
     ~~~
-    statefulset:
-      resources:
-        limits:
-          memory: "8Gi"
-        requests:
-          memory: "8Gi"
-    conf:
-      cache: "2Gi"
-      max-sql-memory: "2Gi"
     tls:
       enabled: true
     ~~~
-
-    1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
-
-        {{site.data.alerts.callout_success}}
-        For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
-        {{site.data.alerts.end}}
-
-    2. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
-
-        {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
-        {{site.data.alerts.end}}
-
-    3. For a secure deployment, set `tls.enabled` to true.
 
 4. Install the CockroachDB Helm chart. 
 

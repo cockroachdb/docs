@@ -33,7 +33,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-helm-insecure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
