@@ -21,6 +21,11 @@ The user granting privileges must have the `GRANT` privilege on the target datab
 Roles and users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below).
 
 - When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
+
+    {{site.data.alerts.callout_info}}
+    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](https://www.cockroachlabs.com/docs/stable/grant.html#grant-privileges-on-all-tables-in-a-database)
+    {{site.data.alerts.end}}
+
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
