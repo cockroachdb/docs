@@ -76,7 +76,7 @@ This then lets the node primarily responsible for the range (i.e., the leasehold
 
 CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), **it crashes immediately**.
 
-This avoids the risk of violating [serializable consistency](https://en.wikipedia.org/wiki/Serializability) and causing stale reads and write skews, but it's important to prevent clocks from drifting too far in the first place by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
+While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
