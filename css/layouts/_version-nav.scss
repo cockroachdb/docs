@@ -67,7 +67,7 @@
           content: 'CRC';
 
           @include at-query($min, $screen-sm) {
-            content: 'Cockroach Cloud';
+            content: 'CockroachCloud';
           }
         }
       }

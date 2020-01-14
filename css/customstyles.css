@@ -987,7 +987,7 @@ section.footer {
         content: 'CRC'; }
         @media screen and (min-width: 768px) {
           .version-nav__link-text--managed:after {
-            content: 'Cockroach Cloud'; } }
+            content: 'CockroachCloud'; } }
     .version-nav__link-icon--crdb {
       margin-right: 8px; }
     .version-nav__link-icon--managed {
