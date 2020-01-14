@@ -13,7 +13,7 @@ While CockroachDB is an excellent system of record, it also needs to coexist wit
 This page walks you through a demonstration of how to use an [enterprise changefeed](create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
-This tutorial is for append-only data and does not transform any of the data that is sent to Snowflake. For example, records that are deleted or updated will be added as new JSON records to the Snowflake stage. To sync the table in Snowflake completely with the CockroachDB table, additional setup (not covered in this tutorial) must be completed.
+Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -156,7 +156,7 @@ Be sure to replace the placeholders with AWS key and secret key.
       );
     ~~~
 
-    This will [store all of the data in a single `VARIANT` column](https://docs.snowflake.net/manuals/user-guide/semistructured-considerations.html#storing-semi-structured-data-in-a-variant-column-vs-flattening-the-nested-structure) as JSON. You can then access this field with valid JSON and query the column as if it were a table.
+    This will store all of the data in a single [`VARIANT` column](https://docs.snowflake.net/manuals/user-guide/semistructured-considerations.html#storing-semi-structured-data-in-a-variant-column-vs-flattening-the-nested-structure) as JSON. You can then access this field with valid JSON and query the column as if it were a table.
 
 4. Click **Run**.
 
@@ -164,7 +164,7 @@ Be sure to replace the placeholders with AWS key and secret key.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE STAGE cdc_stage url='s3://changefeed-example/'credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY') file_format = (type = json);
+    > CREATE STAGE cdc_stage url='s3://changefeed-example/'credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
 
     Be sure to replace the placeholders with AWS key and secret key.
@@ -216,5 +216,6 @@ Your changefeed is now streaming to Snowflake.
 
 ## Known limitations
 
-- Streaming your changefeed to Snowflake will only work if your changefeed targets one table.
-- Create as few running changefeeds at a time as possible to avoid consuming excess memory.
+- Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
+- Snowpipe is unaware of CockroachDB resolved timestamps. This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage
