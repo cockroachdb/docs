@@ -45,10 +45,10 @@ release_info:
     start_time: 2019-12-16 11:01:26.34274101 +0000 UTC
   v20.1:
     name: v20.1.0
-    version: v20.1.0-alpha20191216
+    version: v20.1.0-alpha.20200113
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2019/12/16 11:00:26 (go1.12.12)
-    start_time: 2019-12-16 11:01:26.34274101 +0000 UTC
+    build_time: 2020/01/13 11:00:26 (go1.12.12)
+    start_time: 2020-01-13 11:01:26.34274101 +0000 UTC
 
 include: ["_redirects"]
 exclude:
