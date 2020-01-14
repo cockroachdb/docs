@@ -207,10 +207,12 @@ In addition to setting a maximum connection pool size, the idle connection pool 
 
 ## Cache and SQL memory size
 
-By default, each node's cache size and temporary SQL memory size is `128MiB` respectively. These defaults were chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single computer. When running a production cluster with one node per host, however, it's recommended to increase these values:
+Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. When running a production cluster with one node per host, we recommend increasing this value.
+
+Each node has a default SQL memory size of `25%`. This memory is used as-needed by active operations to store temporary data for SQL queries.
 
 - Increasing a node's **cache size** will improve the node's read performance.
-- Increasing a node's **SQL memory size** will increase the number of simultaneous client connections it allows (the `128MiB` default allows a maximum of 6200 simultaneous connections) as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions.
+- Increasing a node's **SQL memory size** will increase the number of simultaneous client connections it allows, as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. 
 
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags:
 
