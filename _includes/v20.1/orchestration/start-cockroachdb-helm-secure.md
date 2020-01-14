@@ -1,4 +1,4 @@
-1. [Install the Helm client](https://helm.sh/docs/intro/install) and add the official `stable` chart repository:
+1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the official `stable` chart repository:
 
     {% include copy-clipboard.html %}
     ~~~ shell
