@@ -57,6 +57,7 @@ Vectorized execution is supported for the following [data types](data-types.html
 
 - [`BOOL`](bool.html)
 - [`BYTES`](bytes.html)
+- [`DATE`](date.html)
 - [`FLOAT`](float.html)
 - [`INT`](int.html)
 - [`STRING`](string.html)
