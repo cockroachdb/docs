@@ -69,7 +69,7 @@ You can use the [`cockroach cert` commands](cockroach-cert.html) or [`openssl` c
 Note that the node certificate created using `cockroach cert` or`openssl` is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. Thus all nodes must have the following:
 
 - `CN=node` for the special user `node` when the node acts as a client.
-- All IP addresses and DNS names for the node must be listed in `Subject Alternative Name` field for when the node acts as a server. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
+- All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name` field for when the node acts as a server. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
 
 **Node key and certificates**
 
@@ -78,7 +78,7 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by `ca.crt`.
+`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
 
 **Client key and certificates**
@@ -88,7 +88,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
@@ -97,13 +97,13 @@ Alternatively, you can use [password authentication](#client-authentication). Re
 
 In the previous section, we discussed the scenario where the node and client certificates are signed by the CA created using the `cockroach cert` command. But what if you want to use an external CA, like your organizational CA or a public CA? In that case, our certificates might need some modification. Here’s why:
 
-As mentioned earlier, the node certificate is multi-functional, as in the same certificate is presented irrespective of whether the node is acting as a server or client. To make the certificate multi-functional, the `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Names` field.
+As mentioned earlier, the node certificate is multi-functional, as in the same certificate is presented irrespective of whether the node is acting as a server or client. To make the certificate multi-functional, the `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the`Subject Alternative Names` field.
 
 But some CAs will not sign a certificate containing a `CN` that is not an IP address or domain name. Here's why: The TLS client certificates are used to authenticate the client connecting to a server. Because most client certificates authenticate a user instead of a device, the certificates contain usernames instead of hostnames. This makes it difficult for public CAs to verify the client's identity and hence most public CAs will not sign a client certificate.
 
 To get around this issue, we can split the node key and certificate into two:
 
-- `node.crt` and `node.key`: The node certificate to be presented when the node acts as a server and the corresponding key. `node.crt` must have the list of IP addresses and DNS names listed in `Subject Alternative Names`.
+- `node.crt` and `node.key`: The node certificate to be presented when the node acts as a server and the corresponding key. `node.crt` must have the list of IP addresses and DNS names listed in the `Subject Alternative Names`.
 - `client.node.crt` and `client.node.key`: The node certificate to be presented when the node acts as a client for another node, and the corresponding key. `client.node.crt` must have `CN=node`.
 
 **Node key and certificates**
@@ -113,9 +113,9 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate issued by the public CA or your organizational CA.
-`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by `ca.crt`.
+`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key corresponding to `node.crt`.
-`client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by `ca.crt`.
+`client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
 
 Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
@@ -127,7 +127,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate issued by the public CA or your organizational CA.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br>Must be signed by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`). <br><br>Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key corresponding to `client.<user>.crt`.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
@@ -145,9 +145,9 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by `ca.crt`.
+`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
-`ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Name`.
+`ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Name`.
 `ui.key` | UI key corresponding to `ui.crt`.
 
 **Client key and certificates**
@@ -157,7 +157,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
@@ -178,9 +178,9 @@ File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate to verify node certificates.
 `ca-client.crt` | CA certificate to verify client certificates.
-`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br> Must be signed by `ca.crt`.
+`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br> Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key corresponding to `node.crt`.
-`client.node.crt` | Node certificate for when node acts as client. This certificate must be signed using `ca-client.crt`  <br><br>Must have `CN=node`.
+`client.node.crt` | Node certificate for when node acts as client. This certificate must be signed by the CA represented by `ca-client.crt`.  <br><br>Must have `CN=node`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
 
 Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
@@ -192,7 +192,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by `ca-client.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by the CA represented by `ca-client.crt`.
 `client.<user>.key` | Client key corresponding to `client.<user>.crt`.
 
 ## Authentication for cloud storage
