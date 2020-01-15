@@ -6,11 +6,6 @@ asciicast: true
 twitter: false
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button current">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 28%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
-</div>
-
 This tutorial shows you how build a simple Python Django application with CockroachDB.
 
 We have tested the [django-cockroachdb](https://github.com/cockroachdb/django-cockroachdb) adapter enough to claim **alpha-level** support. If you encounter problems, please open an issue with details to help us make progress toward full support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/django-cockroachdb/issues/new) with details to help us make progress toward full support.
@@ -26,6 +21,10 @@ To install the Django and the Django-cockroachdb backend, run the following comm
 {% include copy-clipboard.html %}
 ~~~ shell
 $ pip install django
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ pip install django-cockroachdb
 ~~~
 
@@ -42,7 +41,7 @@ In the SQL shell, issue the following statements to create the `django` user and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER IF NOT EXISTS django WITH PASSWORD 'XXXXXX;
+> CREATE USER IF NOT EXISTS django WITH PASSWORD 'XXXXXX';
 ~~~
 
 {% include copy-clipboard.html %}
@@ -66,14 +65,14 @@ Exit the SQL shell:
 
 ## Step 3. Create your Django project
 
-In the directory where you'd like to store your code, issue the following statement to create your project
+In the directory where you'd like to store your code, issue the following statement to create your project:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ django-admin startproject myproject
 ~~~
 
-This creates a new project in a directory called myproject. Open this directory in your IDE of choice. Open settings.py and change DATABASES to the following:
+This creates a new project in a directory called `myproject`. Open this directory in your IDE of choice. Open `settings.py` and change `DATABASES` to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -91,12 +90,20 @@ DATABASES = {
 
 ## Step 3. Set up and run your Django app
 
-Then, in the same directory, use the manage.py script to set up your database for Django:
+Then, in the same directory, use the `manage.py` script to set up your database for Django:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 manage.py makemigrations
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ python3 manage.py migrate
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ python3 manage.py createsuperuser
 ~~~
 
@@ -107,7 +114,7 @@ This will prompt you to create a user to be an admin for your app. Once, you hav
 $ python3 manage.py runserver 0.0.0.0:8000
 ~~~
 
-Now you can access the admin section of your Django app at [0.0.0.0:8000](0.0.0.0:8000). You can also inspect the database and see that the admin structure has been created:
+Now you can access the admin section of your Django app. You can also inspect the database and see that the admin structure has been created:
 
 ~~~ shell
 > \dt
