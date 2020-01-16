@@ -500,6 +500,10 @@ $ kubectl delete job.batch/cluster-init-secure
 
 {% include copy-clipboard.html %}
 ~~~ shell
+$ kubectl delete pod cockroachdb-client-secure
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ minikube delete
 ~~~
 
