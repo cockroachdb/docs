@@ -133,6 +133,16 @@ Now you can access the admin section of your Django app. You can also inspect th
 (10 rows)
 ~~~
 
+## Step 4. Write your application logic
+
+Copy TBD use the code here <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample" download>download it directly</a>. Or copy from below:
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include {{page.version.version}}/app/django-basic-sample/urls.py %}
+~~~
+
+
 ## What's next?
 
 Read more about writing a [Django app](https://docs.djangoproject.com/en/3.0/intro/tutorial01/).
