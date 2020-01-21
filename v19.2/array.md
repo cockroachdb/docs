@@ -8,10 +8,11 @@ The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of a
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 
-
 {{site.data.alerts.callout_info}}
 CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/sql/vectorized-support.md %}
 
 ## Syntax
 

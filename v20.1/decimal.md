@@ -6,7 +6,6 @@ toc: true
 
 The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
-
 ## Aliases
 
 In CockroachDB, the following are aliases for `DECIMAL`:

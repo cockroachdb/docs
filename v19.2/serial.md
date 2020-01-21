@@ -20,6 +20,8 @@ In most cases, we recommend using the [`UUID`](uuid.html) data type with the `ge
 See [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
+
 ## Modes of operation
 
 The keyword `SERIAL` is recognized in `CREATE TABLE` and is

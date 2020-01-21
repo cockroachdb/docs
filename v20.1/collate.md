@@ -9,6 +9,7 @@ The `COLLATE` feature lets you sort [`STRING`](string.html) values according to 
 
 Collated strings are important because different languages have [different rules for alphabetic order](https://en.wikipedia.org/wiki/Alphabetical_order#Language-specific_conventions), especially with respect to accented letters. For example, in German accented letters are sorted with their unaccented counterparts, while in Swedish they are placed at the end of the alphabet. A collation is a set of rules used for ordering and usually corresponds to a language, though some languages have multiple collations with different rules for sorting; for example Portuguese has separate collations for Brazilian and European dialects (`pt-BR` and `pt-PT` respectively).
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
 
 ## Details
 

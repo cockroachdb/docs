@@ -6,6 +6,10 @@ toc: true
 
 The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) stores a date and time pair in UTC.
 
+{{site.data.alerts.callout_info}}
+[Vectorized execution](vectorized-execution.html) is not supported for `TIMESTAMPTZ` in CockroachDB v19.2.
+{{site.data.alerts.end}}
+
 ## Variants
 
 `TIMESTAMP` has two variants:

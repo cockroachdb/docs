@@ -8,6 +8,7 @@ The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/vectorized-support.md %}
 
 ## Alias
 

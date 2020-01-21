@@ -6,7 +6,6 @@ toc: true
 
 The `DATE` [data type](data-types.html) stores a year, month, and day.
 
-
 ## Syntax
 
 A constant value of type `DATE` can be expressed using an

@@ -6,6 +6,9 @@ toc: true
 
 The `DECIMAL` [data type](data-types.html) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
+{{site.data.alerts.callout_info}}
+The [vectorized execution](vectorized-execution.html) engine does not support the serialization of `DECIMAL` data types in CockroachDB v19.2. As such, vectorized execution is not supported for `DECIMAL` data types that must be sent over a network.
+{{site.data.alerts.end}}
 
 ## Aliases
 
