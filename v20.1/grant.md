@@ -23,7 +23,7 @@ Roles and users can be granted the following privileges. Some privileges are app
 - When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
 
     {{site.data.alerts.callout_info}}
-    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](https://www.cockroachlabs.com/docs/stable/grant.html#grant-privileges-on-all-tables-in-a-database)
+    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](#grant-privileges-on-all-tables-in-a-database)
     {{site.data.alerts.end}}
 
 - When a role or user is granted privileges for a table, the privileges are limited to the table.

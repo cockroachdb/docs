@@ -7,9 +7,9 @@ redirect_from: create-and-manage-users.html
 
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, if you have an [Enterprise license](get-started-with-enterprise-trial.html), you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
-## SQL Users
+## SQL users
 
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html) or through an application.
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
 
 ### Create and manage users
 
@@ -18,7 +18,7 @@ Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) stat
 A new user must be granted the required privileges for each database and table that the user needs to access.
 
 {{site.data.alerts.callout_info}}
-By default, a new user belongs to the `public` role and does not have any privileges except the privileges assigned to the `public` role. For more information, see [Public role](#public-role).
+By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role. For more information, see [Public role](#public-role).
 {{site.data.alerts.end}}
 
 ### `root` user
@@ -33,7 +33,7 @@ Role-based access management is an enterprise feature. To request a 30-day trial
 Roles enable you to group users and other roles and grant or revoke privileges to the group as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 {{site.data.alerts.callout_info}}
-PostgresSQL considers users and roles as the same thing. CockroachDB, however, has different concepts of users and roles.
+PostgreSQL uses the term "role" to mean either a database users or a group of database users. CockroachDB, however, uses the term "user" to mean an individual database user and "role" to mean a group of database users.
 {{site.data.alerts.end}}
 
 ### Create and manage roles
@@ -53,9 +53,9 @@ To create and manage your cluster's roles, use the following statements:
 The `admin` role and `public` roles exist by default for Core as well as Enterprise clusters. Enterprise customers can change the privileges assigned to these roles.
 
 #### `admin` role
-The admin role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
+The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
-A `superuser` or `admin` user is a member of the admin role. Only superusers can [`CREATE ROLE`](create-role.html) or [`DROP ROLE`](drop-role.html).
+An `admin` user is a member of the `admin` role. Only admin users can use [`CREATE ROLE`](create-role.html) and [`DROP ROLE`](drop-role.html).
 
 #### `public` role
 
@@ -65,20 +65,22 @@ All new users and roles belong to the `public` role by default and can create an
 
 #### Role admin
 
-A role admin is a member of the role that's allowed to modify role membership. To create a role admin, use [`WITH ADMIN OPTION`](https://www.cockroachlabs.com/docs/stable/grant-roles.html#grant-the-admin-option).
+A `role admin` is a member of the role that's allowed to modify role membership. To create a `role admin`, use [`WITH ADMIN OPTION`](https://www.cockroachlabs.com/docs/stable/grant-roles.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_info}}
-The terms “`admin` role” and “role admin” can be confusing. Use the `admin role` if you want the SQL user to have privileges across cluster. Use the `role admin` if you want to limit the SQL user’s privileges to that role, but with an option to grant or revoke role membership to other users.
+The terms “`admin` role” and “`role admin`” can be confusing. Assign the `admin` role to a SQL user if you want the user to have privileges across cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users.
 {{site.data.alerts.end}}
 
 #### Direct member
 
 A user or role that is an immediate member of the role.
+
 Example: A is a member of B.
 
 #### Indirect member
 
 A user or role that is a member of the role by association.
+
 Example: A is a member of C ... is a member of B where "..." is an arbitrary number of memberships.
 
 ## Privileges
@@ -94,7 +96,7 @@ The following rules apply when roles and users are granted privileges or inherit
 - When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
 
     {{site.data.alerts.callout_info}}
-    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](https://www.cockroachlabs.com/docs/stable/grant.html#grant-privileges-on-all-tables-in-a-database)
+    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](grant.html#grant-privileges-on-all-tables-in-a-database)
     {{site.data.alerts.end}}
 
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
@@ -136,18 +138,18 @@ The following example uses MovR, a fictional vehicle-sharing application, to dem
 
 Let's say we want to create the following access control setup for the `movr` database:
 
-- One database admin (named `db_admin`) who can perform all database operations for existing tables as well as tables added in the future.
+- One database admin (named `db_admin`) who can perform all database operations for existing tables as well as for tables added in the future.
 - One app user (named `app_user`) who can add, read update, and delete vehicles from the `vehicles` table.
 - One user (named `report_user`) who can only read the `vehicles` table.
 
-1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster.:
+1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo
     ~~~
 
-2. Create the database admin (named `db_admin`) who can perform all database operations for existing tables as well as tables added in the future:
+2. Create the database admin (named `db_admin`) who can perform all database operations for existing tables as well as for  tables added in the future:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -250,7 +252,7 @@ The following example uses MovR, a fictional vehicle-sharing application, to dem
 
 Let's say we want to create the following access control setup for the `movr` database:
 
-- Two database admins (named `db_admin_1` and `db_admin_2`) who can perform all database operations for existing tables as well as tables added in the future.
+- Two database admins (named `db_admin_1` and `db_admin_2`) who can perform all database operations for existing tables as well as for tables added in the future.
 - Three app users (named `app_user_1`, `app_user_2`, and `app_user_3`) who can add, read update, and delete vehicles from the `vehicles` table.
 - Five users (named `report_user_1`, `report_user_2`, `report_user_3`, `report_user_4`, `report_user_5`) who can only read the `vehicles` table.
 
@@ -261,9 +263,9 @@ Let's say we want to create the following access control setup for the `movr` da
     $ cockroach demo
     ~~~
 
-    Each `cockroach demo` instance comes with a temporary enterprise license which enables you to try out enterprise features such as role-based access control. The license expires after an hour.
+    Each `cockroach demo` instance comes with a temporary enterprise license which enables you to try out enterprise features such as [role-based access management](#create-and-manage-roles). The license expires after an hour.
 
-2. Create the database admin role (named `db_admin_role`) whose members can perform all database operations for existing tables as well as tables added in the future:
+2. Create the database admin role (named `db_admin_role`) whose members can perform all database operations for existing tables as well as for tables added in the future:
 
     {% include copy-clipboard.html %}
     ~~~ sql
