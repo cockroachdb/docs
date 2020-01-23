@@ -2,7 +2,8 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
-from django.db import atomic, Error IntegrityError
+from django.db import Error, IntegrityError
+from django.db.transaction import atomic
 
 import json
 import sys
@@ -15,6 +16,7 @@ in_retry = False
 def retry_on_exception(num_retries=3, on_failure=HttpResponse(status=500), delay_=0.5, backoff_=1.5):
     def retry(view):
         def wrapper(*args, **kwargs):
+            global in_retry
             if in_retry:
                 return view(*args, **kwargs)
             in_retry = True
