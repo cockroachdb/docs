@@ -68,7 +68,8 @@
                 "title": "Python",
                 "urls": [
                   "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html"
+                  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                  "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
                 ]
               },
               {
