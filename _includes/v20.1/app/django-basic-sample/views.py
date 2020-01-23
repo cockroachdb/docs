@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
-from django.db import IntegrityError
+from django.db import atomic, Error IntegrityError
 
 import json
 import sys
@@ -10,25 +10,36 @@ import time
 
 from .models import *
 
-class PingView(View):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse("python/django", status=200)
-
+# Don't allow nesting retries
+in_retry = False
 def retry_on_exception(num_retries=3, on_failure=HttpResponse(status=500), delay_=0.5, backoff_=1.5):
     def retry(view):
         def wrapper(*args, **kwargs):
+            if in_retry:
+                return view(*args, **kwargs)
+            in_retry = True
             delay = delay_
             for i in range(num_retries):
                 try:
-                    return view(*args, **kwargs)
-                except IntegrityError as e:
-                    if i < num_retries - 1:
+                    result = view(*args, **kwargs)
+                    in_retry = False
+                    return result
+                except IntegrityError as ex:
+                    if i == num_retries - 1:
+                        in_retry = False
+                        return on_failure
+                    elif getattr(ex.__cause__, 'pgcode', '') == errorcodes.SERIALIZATION_FAILURE:
                         time.sleep(delay)
                         delay *= backoff_
-                    else:
-                        return on_failure
+                except Error as ex:
+                    in_retry = False
+                    return on_failure
         return wrapper
     return retry
+
+class PingView(View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("python/django", status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CustomersView(View):
@@ -40,6 +51,7 @@ class CustomersView(View):
         return JsonResponse(customers, safe=False)
 
     @retry_on_exception(3)
+    @atomic
     def post(self, request, *args, **kwargs):
         form_data = json.loads(request.body.decode())
         name = form_data['name']
@@ -48,12 +60,13 @@ class CustomersView(View):
         return HttpResponse(status=200)
 
     @retry_on_exception(3)
+    @atomic
     def delete(self, request, id=None, *args, **kwargs):
         if id is None:
             return HttpResponse(status=404)
         Customers.objects.filter(id=id).delete()
         return HttpResponse(status=200)
-    
+
     # The PUT method is shadowed by the POST method, so there doesn't seem
     # to be a reason to include it.
 
@@ -67,6 +80,7 @@ class ProductView(View):
         return JsonResponse(products, safe=False)
 
     @retry_on_exception(3)
+    @atomic
     def post(self, request, *args, **kwargs):
         form_data = json.loads(request.body.decode())
         name, price = form_data['name'], form_data['price']
@@ -85,8 +99,9 @@ class OrdersView(View):
         else:
             orders = list(Orders.objects.filter(id=id).values())
         return JsonResponse(orders, safe=False)
-    
+
     @retry_on_exception(3)
+    @atomic
     def post(self, request, *args, **kwargs):
         form_data = json.loads(request.body.decode())
         c = Customers.objects.get(id=form_data['customer']['id'])
