@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django_cockroachdb',
         'NAME': 'bank',
         'USER': 'django',
-        'PASSWORD': 'XXXXXX',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '26257',
     }
