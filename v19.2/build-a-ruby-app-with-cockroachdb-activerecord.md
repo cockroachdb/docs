@@ -1,5 +1,5 @@
 ---
-title: Build a Ruby App with CockroachDB
+title: Build a Ruby App with CockroachDB and ActiveRecord
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
 toc: true
 twitter: false
@@ -10,9 +10,9 @@ twitter: false
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button current">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+This tutorial shows you how build a simple Ruby application with CockroachDB and the ActiveRecord ORM.
 
-We have tested the [Ruby pg driver](https://rubygems.org/gems/pg) and the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}
 For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.

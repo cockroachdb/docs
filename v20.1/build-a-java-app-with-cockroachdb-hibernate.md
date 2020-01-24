@@ -1,5 +1,5 @@
 ---
-title: Build a Java App with CockroachDB
+title: Build a Java App with CockroachDB and Hibernate
 summary: Learn how to use CockroachDB from a simple Java application with the Hibernate ORM.
 toc: true
 twitter: false
@@ -10,9 +10,9 @@ twitter: false
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button current">Use <strong>Hibernate</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Java application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
-We have tested the [Java JDBC driver](https://jdbc.postgresql.org/) and the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
@@ -117,7 +117,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;
@@ -206,7 +206,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;

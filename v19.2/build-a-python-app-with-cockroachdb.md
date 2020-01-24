@@ -1,19 +1,19 @@
 ---
-title: Build a Python App with CockroachDB
+title: Build a Python App with CockroachDB and psycopg2
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
 toc: true
-asciicast: true
 twitter: false
 ---
 
 <div class="filters filters-big clearfix">
     <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button current">Use <strong>psycopg2</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 28%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 28%" class="filter-button">Use <strong>Django</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver.
 
-We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 

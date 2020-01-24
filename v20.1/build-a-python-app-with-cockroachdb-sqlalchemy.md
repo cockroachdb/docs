@@ -1,5 +1,5 @@
 ---
-title: Build a Python App with CockroachDB
+title: Build a Python App with CockroachDB and SQLAlchemy
 summary: Learn how to use CockroachDB from a simple Python application with SQLAlchemy.
 toc: true
 twitter: false
@@ -11,9 +11,9 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 28%" class="filter-button">Use <strong>Django</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/).
+This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
 
-We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) and [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 

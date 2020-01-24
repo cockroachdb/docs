@@ -1,5 +1,5 @@
 ---
-title: Build a Python App with CockroachDB
+title: Build a Python App with CockroachDB and SQLAlchemy
 summary: Learn how to use CockroachDB from a simple Python application with SQLAlchemy.
 toc: true
 twitter: false
@@ -8,11 +8,12 @@ twitter: false
 <div class="filters filters-big clearfix">
     <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button">Use <strong>psycopg2</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 28%" class="filter-button current">Use <strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 28%" class="filter-button">Use <strong>Django</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB using [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/).
+This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
 
-We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) and [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 
@@ -111,7 +112,7 @@ The output should look something like the following:
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance 
+2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
 FROM accounts
 WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
@@ -139,7 +140,7 @@ Then, issue the following statement:
 ~~~
 
 ~~~
- count 
+ count
 -------
    100
 (1 row)
@@ -212,8 +213,8 @@ The output should look something like the following:
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance 
-FROM accounts 
+2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
+FROM accounts
 WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
 2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
@@ -240,7 +241,7 @@ Then, issue the following statement:
 ~~~
 
 ~~~
- count 
+ count
 -------
    100
 (1 row)
@@ -268,7 +269,7 @@ In general, this is in line with the recommendations of the [SQLAlchemy FAQs](ht
 
 > As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.
 
-and 
+and
 
 > Keep the lifecycle of the session (and usually the transaction) **separate and external**.
 
