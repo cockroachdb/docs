@@ -1,13 +1,13 @@
 ---
-title: Build a C# (.NET) App with CockroachDB
+title: Build a C# App with CockroachDB and the .NET Npgsql Driver
 summary: Learn how to use CockroachDB from a simple C# (.NET) application with a low-level client driver.
 toc: true
 twitter: true
 ---
 
-This tutorial shows you how build a simple C# (.NET) application with CockroachDB using a PostgreSQL-compatible driver.
+This tutorial shows you how build a simple C# application with CockroachDB and the .NET Npgsql driver.
 
-We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 

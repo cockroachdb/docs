@@ -1,5 +1,5 @@
 ---
-title: Build a Java App with CockroachDB
+title: Build a Java App with CockroachDB and JDBC
 summary: Learn how to use CockroachDB from a simple Java application with the JDBC driver.
 toc: true
 twitter: false
@@ -10,9 +10,9 @@ twitter: false
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button">Use <strong>Hibernate</strong></button></a>
 </div>
 
-This tutorial shows you how to build a simple Java application with CockroachDB using a PostgreSQL-compatible driver or ORM.
+This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
 
-We have tested the [Java JDBC driver](https://jdbc.postgresql.org/) and the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [Java JDBC driver](https://jdbc.postgresql.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 
