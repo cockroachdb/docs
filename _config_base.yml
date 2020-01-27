@@ -26,11 +26,11 @@ release_info:
     build_time: 2018/12/10 14:48:26 (go1.10)
     start_time: 2018-12-10 15:10:52.34274101 +0000 UTC
   v2.1:
-    name: v2.1.10
-    version: v2.1.10
+    name: v2.1.11
+    version: v2.1.11
     docker_image: cockroachdb/cockroach
-    build_time: 2019/12/16 14:48:26 (go1.10.3)
-    start_time: 2019-12-16 15:10:52.34274101 +0000 UTC
+    build_time: 2019/01/29 14:48:26 (go1.10.3)
+    start_time: 2019-01-29 15:10:52.34274101 +0000 UTC
   v19.1:
     name: v19.1.7
     version: v19.1.7
