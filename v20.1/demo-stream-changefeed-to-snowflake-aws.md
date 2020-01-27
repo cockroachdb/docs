@@ -40,7 +40,7 @@ If you have not done so already, [create a cluster](cockroachcloud-create-your-c
 
 ## Step 2. Configure your cluster
 
-1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](cockroachcloud-connect-to-your-cluster.html#step-3-generate-the-connection-string) with the correct username, password, and path to the `ca.cert`:
+1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -108,7 +108,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 1. Log in to your [AWS S3 Console](https://s3.console.aws.amazon.com/).
 2. Create an S3 bucket, called `changefeed-example`, where streaming updates from the watched tables will be collected.
 
-    The name of the S3 bucket is needed when you [create your changefeed](#create-an-enterprise-changefeed). Be sure that the you have write access on the S3 bucket.
+    The name of the S3 bucket is needed when you [create your changefeed](#step-6-create-an-enterprise-changefeed). Be sure that the you have write access on the S3 bucket.
 
 ## Step 6. Create an enterprise changefeed
 
@@ -150,7 +150,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     INSERT 2
     ~~~
 
-2. Navigate to back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab. 
+2. Navigate to back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
     If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](change-data-capture.html#debug-a-changefeed).
