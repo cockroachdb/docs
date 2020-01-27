@@ -53,7 +53,7 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 ## See also
 
 - [Authorization](authorization.html)
-- [`DROP ROLE` (Enterprise)](drop-user.html)
+- [`DROP ROLE` (Enterprise)](drop-role.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`GRANT <roles>` (Enterprise)](grant-roles.html)
