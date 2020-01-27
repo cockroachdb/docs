@@ -22,7 +22,12 @@ Before you begin, make sure you have:
 
 - Admin access to a [CockroachCloud account](cockroachcloud-create-your-account.html)
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
-- `SYSADMIN` access to a [Snowflake](https://www.snowflake.com) cluster
+
+    {{site.data.alerts.callout_info}}
+    This demo uses AWS S3 for cloud storage, but Snowflake also supports [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html). Snowflake does not support GCS yet.
+    {{site.data.alerts.end}}
+
+- [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
 
 <!-- <div class="filters filters-big clearfix">
     <a href="demo-stream-changefeed-to-snowflake-aws.html"><button class="filter-button current">Use <strong>AWS</strong></button></a>
@@ -31,7 +36,7 @@ Before you begin, make sure you have:
 
 ## Step 1. Create a cluster
 
-If you have not done so already, [create a cluster](cockroachcloud-create-your-cluster.html) with **AWS** as your preferred cloud provider.
+If you have not done so already, [create a cluster](cockroachcloud-create-your-cluster.html).
 
 ## Step 2. Configure your cluster
 
@@ -57,7 +62,7 @@ If you have not done so already, [create a cluster](cockroachcloud-create-your-c
     SET CLUSTER SETTING
     ~~~
 
-## Step 3. Create a databases
+## Step 3. Create a database
 
 1. In the built-in SQL shell, create a database called `cdc_test`:
 
@@ -126,6 +131,10 @@ Back in the built-in SQL shell, [create an enterprise changefeed](create-changef
 
 Be sure to replace the placeholders with AWS key and secret key.
 
+{{site.data.alerts.callout_info}}
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](change-data-capture.html#debug-a-changefeed).
+{{site.data.alerts.end}}
+
 ## Step 7. Insert data into the tables
 
 1. In the built-in SQL shell, insert data into the `order_alerts` table that the changefeed is targeting:
@@ -141,11 +150,15 @@ Be sure to replace the placeholders with AWS key and secret key.
     INSERT 2
     ~~~
 
-2. Navigate to back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
+2. Navigate to back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab. 
+
+    {{site.data.alerts.callout_info}}
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](change-data-capture.html#debug-a-changefeed).
+    {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
 
-1. Log in to Snowflake as a `SYSADMIN` user.
+1. Log in to Snowflake as a user with [read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a cluster.
 2. Navigate to the **Worksheet** view.
 3. Create a table to store the data to be ingested:
 
@@ -158,16 +171,20 @@ Be sure to replace the placeholders with AWS key and secret key.
 
     This will store all of the data in a single [`VARIANT` column](https://docs.snowflake.net/manuals/user-guide/semistructured-considerations.html#storing-semi-structured-data-in-a-variant-column-vs-flattening-the-nested-structure) as JSON. You can then access this field with valid JSON and query the column as if it were a table.
 
-4. Click **Run**.
+4. Run the statement.
 
 5. In the Worksheet, create a stage called `cdc-stage`, which tells Snowflake where your data files reside in S3:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE STAGE cdc_stage url='s3://changefeed-example/'credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
+    > CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
 
     Be sure to replace the placeholders with AWS key and secret key.
+
+    {{site.data.alerts.callout_info}}
+    Currently, auto-ingest in Snowflake only works with AWS and [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html). Snowflake does not support GCS yet.
+    {{site.data.alerts.end}}
 
 6. In the Worksheet, create a snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
@@ -175,6 +192,10 @@ Be sure to replace the placeholders with AWS key and secret key.
     ~~~ sql
     > CREATE PIPE cdc_pipe auto_ingest = TRUE as COPY INTO order_alerts FROM @cdc_stage;
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    Currently, auto-ingest in Snowflake only works with AWS and [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html). Snowflake does not support GCS yet.
+    {{site.data.alerts.end}}
 
 7. In the Worksheet, view the snowpipe:
 
@@ -218,4 +239,5 @@ Your changefeed is now streaming to Snowflake.
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
 - Snowpipe is unaware of CockroachDB resolved timestamps. This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
-- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage
+- Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
+- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage.
