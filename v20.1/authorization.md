@@ -52,16 +52,16 @@ Statement | Description
 [`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
 
 ### Default roles
-The `admin` and `public` roles exist by default for Core as well as Enterprise clusters. However, only Enterprise customers can change the privileges assigned to these roles.
+The `admin` and `public` roles exist by default for Core as well as Enterprise clusters.
 
 #### `admin` role
-The `admin` role is created by default and cannot be dropped. By default, users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
+The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
 An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](create-role.html) and [`DROP ROLE`](drop-role.html).
 
 #### `public` role
 
-All new users and roles belong to the `public` role by default and can create and manage database objects in the `public` schema. Enterprise customers can grant and revoke the privileges on the `public` role to manage access to the public schema.
+All new users and roles belong to the `public` role by default. You can grant and revoke the privileges on the `public` role.
 
 ### Terminology
 
@@ -70,7 +70,7 @@ All new users and roles belong to the `public` role by default and can create an
 A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
-The terms “`admin` role” and “`role admin`” can be confusing. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users.
+The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users.
 {{site.data.alerts.end}}
 
 #### Direct member
@@ -106,18 +106,16 @@ Take the following points into consideration while granting privileges to roles 
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-As the following table shows, some privileges are applicable both for databases and tables, while others are applicable only for tables:
+You can manage the following privileges for databases and tables:
 
-Privilege | Levels
-----------|------------
-`ALL` | Database, Table
-`CREATE` | Database, Table
-`DROP` | Database, Table
-`GRANT` | Database, Table
-`SELECT` | Table
-`INSERT` | Table
-`DELETE` | Table
-`UPDATE` | Table
+- `ALL`
+- `CREATE`
+- `DROP`
+- `GRANT`  
+- `SELECT`  
+- `INSERT`  
+- `DELETE`  
+- `UPDATE`  
 
 ## Authorization best practices
 
