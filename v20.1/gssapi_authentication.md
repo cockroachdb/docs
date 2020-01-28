@@ -30,17 +30,29 @@ For Active Directory, the client syntax for generating a keytab that maps a serv
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ktpass -out {keytab_filename} -princ {Client_SPN}/{CLIENT_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+$ ktpass -out {keytab_filename} -princ {Client_SPN}/{NODE/LB_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ktpass -out postgres.keytab -princ postgres/ad-client2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+$ ktpass -out postgres.keytab -princ postgres/loadbalancer1.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
-Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
+Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.  You can do this using the ktpass command as well, using the following syntax:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ ktpass -out {new_keytab_filename} -in {old_keytab_filename} -princ {Client_SPN}/{NODE/LB_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp add -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+~~~
+
+Example (adds loadbalancer2 to the above example):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ ktpass -out postgres_2lb.keytab -in postgres.keytab -princ postgres/loadbalancer2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp add  -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
+~~~
 
 ### MIT KDC
 
@@ -63,7 +75,8 @@ $ kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDU
 $ kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
 ~~~
 
-Copy the resulting keytab to the client machine. If you are connecting from multiple client machines, you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.
+Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client.  You may want to merge your keytabs together for easier management.  The `ktutil` command can be used to read multiple keytab files and output them into a single output [here](https://web.mit.edu/kerberos/krb5-devel/doc/admin/admin_commands/ktutil.html).
+
 
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
