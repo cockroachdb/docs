@@ -15,14 +15,13 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 We have tested the [django-cockroachdb](https://github.com/cockroachdb/django-cockroachdb) adapter enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/django-cockroachdb/issues/new) with details to help us make progress toward full support.
 
+## Before you begin
+
+{% include {{page.version.version}}/app/before-you-begin.md %}
+
 {{site.data.alerts.callout_info}}
 The example code and instructions on this page use Python 3.
 {{site.data.alerts.end}}
-
-## Before you begin
-
-1. [Install CockroachDB](install-cockroachdb.html).
-2. Start up a [secure](secure-a-cluster.html) local cluster.
 
 ## Step 1. Install Django and the CockroachDB backend for Django
 
@@ -38,7 +37,9 @@ $ python3 -m pip install django
 $ python3 -m pip install django-cockroachdb
 ~~~
 
-## Step 2. Create the `django` user and database
+<section class="filter-content" markdown="1" data-scope="secure">
+
+## Step 2. Create the `django` user and `bank` database
 
 Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
 
@@ -73,6 +74,47 @@ Exit the SQL shell:
 > \q
 ~~~
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+## Step 2. Create the `django` user and `bank` database
+
+Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost:26257
+~~~
+
+In the SQL shell, issue the following statements to create the `django` user and `bank` database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER IF NOT EXISTS django;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE bank;
+~~~
+
+Give the `django` user the necessary permissions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON DATABASE bank TO django;
+~~~
+
+Exit the SQL shell:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \q
+~~~
+
+</section>
+
 ## Step 3. Create a Django project
 
 In the directory where you'd like to store your code, use the [`django-admin` command-line tool](https://docs.djangoproject.com/en/3.0/ref/django-admin/) to create an application project:
@@ -102,13 +144,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myproject'
+    'myproject',
 ]
 ~~~
 
 The other installed applications listed are added to all starter Django applications by default.
 
 In `myproject/myproject/settings.py`, change `DATABASES` to the following:
+
+<section class="filter-content" markdown="1" data-scope="secure">
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -124,9 +168,30 @@ DATABASES = {
 }
 ~~~
 
-## Step 3. Write the application logic
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+{% include copy-clipboard.html %}
+~~~ python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_cockroachdb',
+        'NAME': 'bank',
+        'USER': 'django',
+        'HOST': 'localhost',
+        'PORT': '26257',
+    }
+}
+~~~
+
+</section>
+
+## Step 4. Write the application logic
 
 After you generate the initial Django project files, you need to build out the application with a few `.py` files in `myproject/myproject`.
+
+<section class="filter-content" markdown="1" data-scope="secure">
 
 ### Models
 
@@ -154,14 +219,53 @@ Importantly, the file defines a [transaction retry loop](transactions.html#trans
 
 ### URL routes
 
-Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/django-basic-sample/urls.py" download>download the file directly</a>.
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
 
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/django-basic-sample/urls.py %}
 ~~~
 
-## Step 4. Set up and run the Django app
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+### Models
+
+Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/models.py" download>download the file directly</a>.
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include {{page.version.version}}/app/insecure/django-basic-sample/models.py %}
+~~~
+
+In this file, we define some simple classes that map to the tables in the example database `bank`.
+
+### Views
+
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/views.py" download>download the file directly</a>.
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include {{page.version.version}}/app/insecure/django-basic-sample/views.py %}
+~~~
+
+This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
+
+Importantly, the file defines a [transaction retry loop](transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](transactions.html).
+
+### URL routes
+
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include {{page.version.version}}/app/insecure/django-basic-sample/urls.py %}
+~~~
+
+</section>
+
+## Step 5. Set up and run the Django app
 
 In the top `myproject` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.0/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.0/topics/migrations/) that initialize the database for the application:
 
@@ -175,14 +279,29 @@ $ python3 manage.py makemigrations myproject
 $ python3 manage.py migrate
 ~~~
 
-Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
+
+<section class="filter-content" markdown="1" data-scope="secure">
+
+To verify that the migration succeeded, open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --host=localhost:26257
 ~~~
 
-This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application:
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+To verify that the migration succeeded, open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost:26257
+~~~
+
+</section>
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -214,14 +333,16 @@ This initializes the `bank` database with the tables defined in `models.py`, in 
 (14 rows)
 ~~~
 
-You can now start the app:
+In a new terminal, start the app:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 manage.py runserver 0.0.0.0:8000
 ~~~
 
-To perform a simple insert to the database, you can use `curl`. For example:
+To perform simple reads and writes to the database, you can send HTTP requests to the application.
+
+For example, in a new terminal, you can use `curl` to send a POST request to the application that inserts a new row into the `customers` table:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -229,6 +350,8 @@ $ curl --header "Content-Type: application/json" \
 --request POST \
 --data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
 ~~~
+
+You can then send a GET request to read from that table:
 
 {% include copy-clipboard.html %}
 ~~~ shell
