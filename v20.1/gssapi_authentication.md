@@ -40,14 +40,14 @@ Example:
 $ ktpass -out postgres.keytab -princ postgres/loadbalancer1.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
-Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  You can do this using the ktpass command as well, using the following syntax:
+Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  You can do this using the `ktpass` command as well, using the following syntax:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ ktpass -out {new_keytab_filename} -in {old_keytab_filename} -princ {Client_SPN}/{NODE/LB_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp add -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
-Example (adds loadbalancer2 to the above example):
+Example (adds `loadbalancer2` to the above example):
 
 {% include copy-clipboard.html %}
 ~~~ shell
