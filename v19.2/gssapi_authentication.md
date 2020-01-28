@@ -202,11 +202,11 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     		}
     ~~~
 
-2. Load the keytab:
+2. Get a ticket for the db user:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kinit postgres
+    $ kinit carl
     ~~~
 
 3. Verify if a valid ticket has been generated:
