@@ -138,11 +138,17 @@
   {
     "title": "Tutorials",
     "is_top_level": true,
-    "items": [
+    "items":  [
       {
         "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
         "urls": [
           "/${VERSION}/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+        ]
+      },
+      {
+        "title": "Stream a Changefeed to Snowflake",
+        "urls": [
+          "/${VERSION}/demo-stream-changefeed-to-snowflake-aws.html"
         ]
       }
     ]

@@ -225,7 +225,9 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ## Debug a changefeed
 
-For enterprise changefeeds connected to Kafka, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+### Using logs
+
+For enterprise changefeeds, [use log information](debug-and-error-logs.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
@@ -234,6 +236,24 @@ I190312 18:56:53.536730 569 vendor/github.com/Shopify/sarama/broker.go:148  [kaf
 I190312 18:56:53.537661 585 vendor/github.com/Shopify/sarama/client.go:500  [kafka-producer] client/brokers registered new broker #0 at 172.16.94.87:9092
 I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kafka-producer] Successfully initialized new client
 ~~~
+
+### Using `SHOW JOBS`
+
+For enterprise changefeeds, you can check the status by using:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * FROM [SHOW JOBS] WHERE job_type='CHANGEFEED';
+~~~
+
+Or:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * from crdb_internal.jobs WHERE job_type='CHANGEFEED';
+~~~
+
+For more information, see [`SHOW JOBS`](show-jobs.html).
 
 ## Usage examples
 

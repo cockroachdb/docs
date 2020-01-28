@@ -146,7 +146,7 @@
         ]
       },
       {
-        "title": "Stream a changefeed to Snowflake",
+        "title": "Stream a Changefeed to Snowflake",
         "urls": [
           "/${VERSION}/demo-stream-changefeed-to-snowflake-aws.html"
         ]
