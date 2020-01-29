@@ -70,6 +70,8 @@ You can choose from several variants of the [`IMPORT`][import] statement, depend
 
 Note that all of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
 
+{% include {{ page.version.version }}/sql/use-import-into.md %}
+
 ### Import a full database dump
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
