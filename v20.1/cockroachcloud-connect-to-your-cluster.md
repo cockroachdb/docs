@@ -269,11 +269,13 @@ Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [
 
 {% include copy-clipboard.html %}
 ~~~ js
+var fs = require('fs');
+var pg = require('pg');
 
 // Connect to the database.
 var config = {
     user: '<username>',
-    password: '<password>'
+    password: '<password>',
     host: '<host>',
     database: '<database_name>',
     port: 26257,
@@ -283,6 +285,13 @@ var config = {
     }
 };
 
+var pool = new pg.Pool(config);
+
+pool.connect(function (err, client, done) {
+    // Your code goes here.
+    // For more information, see the 'node-postgres' docs:
+    // https://node-postgres.com
+}
 ~~~
 
 #### Sequelize ORM
