@@ -11,8 +11,6 @@ The examples below use the [employees data set](https://github.com/datacharmer/t
 
 The examples below pull real data from [Amazon S3](https://aws.amazon.com/s3/).  They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/), dumped as a set of CSV files.
 
-Note that CockroachDB's [`IMPORT`][import] does not support importing data into existing tables.
-
 ## Step 1. Export data to CSV
 
 Please refer to the documentation of your database for instructions on exporting data to CSV.
@@ -41,7 +39,7 @@ We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to h
 
 You will need to write an [`IMPORT TABLE`][import] statement that matches the schema of the table data you're importing.
 
-For example, to import the data from `employees.csv` into an `employees` table, issue the following statement:
+For example, to import the data from `employees.csv` into a new `employees` table, issue the following statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -64,7 +62,13 @@ For example, to import the data from `employees.csv` into an `employees` table, 
 
 Repeat the above for each CSV file you want to import.
 
-Note that you will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to add any foreign key relationships.
+{{site.data.alerts.callout_info}}
+To import data into an existing table, use [`IMPORT INTO`](import-into.html).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to add any foreign key relationships.
+{{site.data.alerts.end}}
 
 ## Configuration Options
 
