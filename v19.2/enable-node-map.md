@@ -45,7 +45,7 @@ Build SHA-1:  367ad4f673b33694df06caaa2d7fc63afaaf3053
 Build Type:   release
 ~~~
 
-If any node is running an earlier version, [upgrade it to CockroachDB v2.0](upgrade-cockroach-version.html).
+If any node is running an earlier version, [upgrade to the latest supported CockroachDB version](upgrade-cockroach-version.html).
 
 ### Step 2. Start the nodes with the correct `--locality` flags
 
