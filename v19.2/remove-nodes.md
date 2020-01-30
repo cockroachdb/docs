@@ -22,7 +22,7 @@ Basic terms:
 
 ### Considerations
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommissioning process will hang indefinitely. See the [Examples](#examples) below for more details.
 
 ### Examples
 
@@ -32,11 +32,17 @@ In this scenario, each range is replicated 3 times, with each replica on a diffe
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
+If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioning node's replicas to the other 2 nodes, which already have a replica of each range:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-To successfully decommission a node, you need to first add a 4th node:
+The decommissioning node will be marked as **Suspect** in the Admin UI. 
+
+{{site.data.alerts.callout_info}}
+Adding a 4th node to the cluster at this point will neither enable the decommissioning process to complete nor change the **Suspect** node status. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
+{{site.data.alerts.end}}
+
+To successfully decommission a node in this cluster, you need to first add a 4th node. The node will then decommission properly:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -56,11 +62,17 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
+If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-To successfully decommission a node, you need to first add a 6th node:
+The decommissioning node will be marked as **Suspect** in the Admin UI. 
+
+{{site.data.alerts.callout_info}}
+Adding a 6th node to the cluster at this point will neither enable the decommissioning process to complete nor change the **Suspect** node status. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
+{{site.data.alerts.end}}
+
+To successfully decommission a node in this cluster, you need to first add a 6th node. The node will then decommission properly:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -76,9 +88,9 @@ To successfully decommission a node, you need to first add a 6th node:
 To ensure your cluster can adequately handle decommissioning nodes:
 
 - Only decommission one node at a time, and before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
-- If you have a decommissioning node that appears to be stuck or hung, [contact our support team](support-resources.html).
+- If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node. If you notice any issues persisting, [contact our support team](support-resources.html).
 
-    If possible, keep the node running instead of killing it, because a stuck decommissioning process might be a symptom of a problem that could result in data loss.
+    If possible, keep the node running instead of killing it, because a hung decommissioning process might be a symptom of a problem that could result in data loss.
 - Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
 
 ### Step 1. Check the node before decommissioning
@@ -308,7 +320,7 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-If you accidentally decommissioned any nodes, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
+If you accidentally decommissioned any nodes, have a decommissioned node that is causing the process to hang, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
 
 ### Step 1. Identify the IDs of the decommissioned nodes
 
