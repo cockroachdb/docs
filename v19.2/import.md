@@ -168,15 +168,15 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 
 ## Viewing and controlling import jobs
 
-After CockroachDB successfully initiates an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
-
-After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+After CockroachDB initiates an import, you can view its progress with [`SHOW JOBS`](show-jobs.html) and on the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI, and you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 {{site.data.alerts.callout_info}}
-If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in background).
+If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in the background).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}Pausing and then resuming an <code>IMPORT</code> job will cause it to restart from the beginning.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+Pausing and then resuming an `IMPORT` job will cause it to restart from the beginning.
+{{site.data.alerts.end}}
 
 ## Examples
 
