@@ -253,7 +253,7 @@ The Oracle privileges for [users](create-user.html) and [roles](create-role.html
 
 ## Step 8. Import the CSV
 
-For example, to import the data from `CUSTOMERS.csv.gz` into a `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
+For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -296,6 +296,8 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a `CUSTOMERS` table
  381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
 (1 row)
 ~~~
+
+{% include {{ page.version.version }}/sql/use-import-into.md %}
 
 Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
 
