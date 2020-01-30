@@ -1,12 +1,14 @@
 ---
-title: Deploying a Multi-Region Web Application
+title: Deploy a Multi-Region Web Application
 summary: This page includes instructions for deploying a multi-region web application using CockroachCloud and Google Cloud services.
 toc: true
 ---
 
-After you finish [developing and debugging your multi-region application](multi-region-application.html) in a local development environment, you are ready to deploy the application.
+This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) guide.
 
 ## Before you begin
+
+Before you begin this section, complete the previous section of the guide, [Develop a Multi-Region Web Application](multi-region-application.html). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
 
 In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html), make sure that you have the following installed on your local machine:
 
@@ -56,7 +58,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
     ~~~
 
 {{site.data.alerts.callout_info}}
-You can also deploy CRDB manually. For instructions, see the [Manual Deployment](../manual-deployment.html) page of the Cockroach Labs documentation site.
+You can also deploy CRDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
 ## Multi-region application deployment (GKE)
@@ -212,11 +214,11 @@ The example HTML templates include maps. Not providing an API key to the applica
 
 ## Next steps
 
-### Developing your own application
+### Develop your own application
 
-This guide demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](../build-an-app-with-cockroachdb.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
+This guide demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](build-an-app-with-cockroachdb.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
 
-### Upgrading your deployment
+### Upgrade your deployment
 
 Some time after you have deployed your application, you will likely need to push changes that you've made locally. When pushing changes, be aware that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, see [Online Schema Changes](https://www.cockroachlabs.com/docs/stable/online-schema-changes.html).
 
