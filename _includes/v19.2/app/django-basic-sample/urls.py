@@ -1,20 +1,20 @@
 from django.contrib import admin
-from django.conf.urls import url
+from django.urls import path
 
 from .views import CustomersView, OrdersView, PingView, ProductView
 
 urlpatterns = [
-    url('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    url('ping/', PingView.as_view()),
-
-    # Endpoints for customers URL.
-    url('customer/', CustomersView.as_view(), name='customers'),
-    url('customer/<int:id>/', CustomersView.as_view(), name='customers'),
+    path('ping/', PingView.as_view()),
 
     # Endpoints for customers URL.
-    url('product/', ProductView.as_view(), name='product'),
-    url('product/<int:id>/', ProductView.as_view(), name='product'),
+    path('customer/', CustomersView.as_view(), name='customers'),
+    path('customer/<int:id>/', CustomersView.as_view(), name='customers'),
 
-    url('order/', OrdersView.as_view(), name='order'),
+    # Endpoints for customers URL.
+    path('product/', ProductView.as_view(), name='product'),
+    path('product/<int:id>/', ProductView.as_view(), name='product'),
+
+    path('order/', OrdersView.as_view(), name='order'),
 ]
