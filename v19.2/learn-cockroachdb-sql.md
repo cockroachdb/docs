@@ -266,7 +266,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 ~~~
 
 ~~~
-      city      |    type    |        current_location         
+      city      |    type    |        current_location
 +---------------+------------+--------------------------------+
   amsterdam     | scooter    | 57637 Mitchell Shoals Suite 59
   amsterdam     | scooter    | 62609 Stephanie Route
