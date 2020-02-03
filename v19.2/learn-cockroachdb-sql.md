@@ -266,23 +266,23 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 ~~~
 
 ~~~
-      city      |    type    |        current_location
+      city      |    type    |        current_location         
 +---------------+------------+--------------------------------+
-  amsterdam     | skateboard | 19202 Edward Pass
-  boston        | scooter    | 19659 Christina Ville
-  chicago       | skateboard | 69721 Noah River
-  detroit       | scooter    | 43051 Jonathan Fords Suite 36
-  los angeles   | skateboard | 49164 Anna Mission Apt. 38
-  minneapolis   | scooter    | 62609 Stephanie Route
-  minneapolis   | scooter    | 57637 Mitchell Shoals Suite 59
-  new york      | skateboard | 64110 Richard Crescent
-  new york      | scooter    | 86667 Edwards Valley
-  paris         | skateboard | 2505 Harrison Parkway Apt. 89
-  rome          | bike       | 64935 Matthew Flats Suite 55
-  san francisco | skateboard | 81472 Morris Run
-  san francisco | scooter    | 91427 Steven Spurs Apt. 49
-  seattle       | bike       | 37754 Farmer Extension
-  washington dc | scooter    | 47259 Natasha Cliffs
+  amsterdam     | scooter    | 57637 Mitchell Shoals Suite 59  
+  amsterdam     | scooter    | 62609 Stephanie Route           
+  boston        | scooter    | 19659 Christina Ville           
+  boston        | scooter    | 47259 Natasha Cliffs            
+  los angeles   | scooter    | 43051 Jonathan Fords Suite 36   
+  new york      | skateboard | 64110 Richard Crescent          
+  new york      | scooter    | 86667 Edwards Valley            
+  paris         | skateboard | 2505 Harrison Parkway Apt. 89   
+  paris         | skateboard | 19202 Edward Pass               
+  rome          | bike       | 64935 Matthew Flats Suite 55    
+  san francisco | skateboard | 49164 Anna Mission Apt. 38      
+  san francisco | skateboard | 69721 Noah River                
+  seattle       | skateboard | 81472 Morris Run                
+  seattle       | scooter    | 91427 Steven Spurs Apt. 49      
+  washington dc | bike       | 37754 Farmer Extension          
 (15 rows)
 ~~~
 
