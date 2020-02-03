@@ -11,30 +11,21 @@ import time
 
 from .models import *
 
-# Don't allow nesting retries
-in_retry = False
+# Warning: Do not use retry_on_exception in an inner nested transaction.
 def retry_on_exception(num_retries=3, on_failure=HttpResponse(status=500), delay_=0.5, backoff_=1.5):
     def retry(view):
         def wrapper(*args, **kwargs):
-            global in_retry
-            if in_retry:
-                return view(*args, **kwargs)
-            in_retry = True
             delay = delay_
             for i in range(num_retries):
                 try:
-                    result = view(*args, **kwargs)
-                    in_retry = False
-                    return result
+                    return view(*args, **kwargs)
                 except IntegrityError as ex:
                     if i == num_retries - 1:
-                        in_retry = False
                         return on_failure
                     elif getattr(ex.__cause__, 'pgcode', '') == errorcodes.SERIALIZATION_FAILURE:
                         time.sleep(delay)
                         delay *= backoff_
                 except Error as ex:
-                    in_retry = False
                     return on_failure
         return wrapper
     return retry
