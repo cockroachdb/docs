@@ -248,13 +248,13 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 ~~~
 
 ~~~
-                   id                  |       name        
+                   id                  |       name
 +--------------------------------------+------------------+
-  75c28f5c-28f5-4400-8000-000000000017 | William Wood      
-  7ae147ae-147a-4000-8000-000000000018 | Alfred Garcia     
-  80000000-0000-4000-8000-000000000019 | Matthew Clay      
-  851eb851-eb85-4000-8000-00000000001a | Samantha Coffey   
-  8a3d70a3-d70a-4000-8000-00000000001b | Jessica Martinez  
+  75c28f5c-28f5-4400-8000-000000000017 | William Wood
+  7ae147ae-147a-4000-8000-000000000018 | Alfred Garcia
+  80000000-0000-4000-8000-000000000019 | Matthew Clay
+  851eb851-eb85-4000-8000-00000000001a | Samantha Coffey
+  8a3d70a3-d70a-4000-8000-00000000001b | Jessica Martinez
 (5 rows)
 ~~~
 
