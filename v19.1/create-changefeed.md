@@ -190,7 +190,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 
 ### Create a changefeed connected to a cloud storage sink
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include {{ page.version.version }}/cdc/correctness-warning.md %}
 
 {% include copy-clipboard.html %}
 ~~~ sql
