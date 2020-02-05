@@ -7,5 +7,5 @@ The following are limitations in the v19.1 release and will be addressed in the 
 - Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Additional target options will be added, including partitions and ranges of primary key rows.
 - In v19.1.0, when emitting deletes, [cloud storage sinks](create-changefeed.html#cloud-storage-sink) do not emit the record's keys; therefore, the deleted record is not identifiable. This has been fixed in v19.1.1 and above.
-- Currently, changefeed does not pick up data ingested with [`IMPORT INTO`](import-into.html) command.
-- When [cloud storage sink](create-changefeed.html#cloud-storage-sink) is used, the output of a changefeed is a newline-delimited json. See http://ndjson.org.
+- Changefeeds do not pick up data ingested with the [`IMPORT INTO`](import-into.html) statement.
+- Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. 
