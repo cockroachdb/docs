@@ -173,6 +173,95 @@ For example:
 
 In this single query, you define two CTE's and then reuse them in a table join.
 
+## Recursive common table expressions
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports [recursive common table expressions](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression). Recursive common table expressions are common table expressions that contain subqueries that refer to their own output.
+
+Recursive CTE definitions take the following form:
+
+~~~
+WITH RECURSIVE <cte name> (<columns>) AS (
+    <initial subquery>
+  UNION ALL
+    <recursive subquery>
+)
+<query>
+~~~
+
+To create a recursive CTE:
+
+1. Add the `RECURSIVE` keyword directly after the `WITH` operator in the CTE definition, and before the CTE name.
+1. Define an initial, non-recursive subquery. This subquery defines the initial values of the CTE.
+1. Add the `UNION ALL` keyword after the initial subquery.
+1. Define a recursive subquery that references its own output. This subquery iterates over its own output.
+1. Write a query that returns the results of the CTE.
+
+CockroachDB evaluates recursive CTEs as follows:
+
+1. The initial query is evaluated, and the results are stored to the first row of the CTE and saved to a working table. This working table is a single row of data that updates across iterations of the recursive subquery.
+1. The recursive subquery is evaluated iteratively on the contents of the working table, replacing its contents with each iteration's results, and storing its results to new rows of the CTE. The subquery iterates until a [`WHERE` clause](select-clause.html#filter-rows) evaluates as false, or a [`LIMIT`](limit-offset.html) on the query results is reached. If no `WHERE` clause or `LIMIT` is defined, the query will run forever, resulting in an `integer out of range` error.
+1. The query on the CTE is evaluated.
+
+For example, the following CTE calculates the factorial of the numbers 0 through 9, using a `WHERE` clause to limit the iterations:
+
+~~~
+WITH RECURSIVE cte (n, factorial) AS (
+    VALUES (0, 1) -- initial subquery
+  UNION ALL
+    SELECT n+1, (n+1)*factorial FROM cte WHERE n < 9 -- recursive subquery
+)
+SELECT * FROM cte;
+~~~
+
+~~~
+  n | factorial
++---+-----------+
+  0 |         1
+  1 |         1
+  2 |         2
+  3 |         6
+  4 |        24
+  5 |       120
+  6 |       720
+  7 |      5040
+  8 |     40320
+  9 |    362880
+(10 rows)
+~~~
+
+The initial subquery (`VALUES (0, 1)`) initializes the working table with the values `0` for the `n` column and `1` for the `factorial` column. The recursive subquery (`SELECT n+1, (n+1)*factorial FROM cte`) evaluates over the initial values of the working table and replaces its contents with the results. It then iterates over the contents of the working table, until `n` reaches `9`.
+
+You can also use `LIMIT` instead of a `WHERE` clause to limit the recursion to a specific number of iterations. For example:
+
+~~~
+WITH RECURSIVE cte (n, factorial) AS (
+    VALUES (0, 1) -- initial subquery
+  UNION ALL
+    SELECT n+1, (n+1)*factorial FROM cte -- recursive subquery
+)
+SELECT * FROM cte LIMIT 10;
+~~~
+
+~~~
+  n | factorial
++---+-----------+
+  0 |         1
+  1 |         1
+  2 |         2
+  3 |         6
+  4 |        24
+  5 |       120
+  6 |       720
+  7 |      5040
+  8 |     40320
+  9 |    362880
+(10 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+CockroachDB does not currently support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Subqueries](subqueries.html)
