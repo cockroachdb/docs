@@ -156,7 +156,7 @@ To create an enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name INTO 'scheme://host:port';
+> CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO 'scheme://host:port';
 ~~~
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
@@ -280,7 +280,7 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink.
+In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
@@ -302,7 +302,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
-5. Create a Kafka topic:
+5. Create two Kafka topics:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -312,6 +312,16 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --replication-factor 1 \
     --partitions 1 \
     --topic office_dogs
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/kafka-topics \
+    --create \
+    --zookeeper localhost:2181 \
+    --replication-factor 1 \
+    --partitions 1 \
+    --topic employees
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -379,11 +389,27 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-12. Start the changefeed:
+12. Create another table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092';
+    > CREATE TABLE employees (
+         dog_id INT REFERENCES office_dogs (id),
+         employee_name STRING);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO employees VALUES
+       (1, 'Lauren'),
+       (2, 'Spencer');
+    ~~~
+
+13. Start the changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
     ~~~
     ~~~
 
@@ -395,48 +421,50 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --topic=office_dogs
+    --whitelist 'office_dogs|employees'
     ~~~
 
     ~~~ shell
     {"after": {"id": 1, "name": "Petee H"}}
     {"after": {"id": 2, "name": "Carl"}}
+    {"after": {"name": "Lauren", "rowid": 528514320239329281}}
+    {"after": {"name": "Spencer", "rowid": 528514320239362049}}
     ~~~
 
-    The initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
+    The initial scan displays the state of the tables as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
     {% include {{ page.version.version }}/cdc/print-key.md %}
 
-14. Back in the SQL client, insert more data:
+15. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+16. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     {"after": {"id": 3, "name": "Ernie"}}
     ~~~
 
-16. When you are done, exit the SQL shell (`\q`).
+17. When you are done, exit the SQL shell (`\q`).
 
-17. To stop `cockroach`, run:
+18. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+19. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -449,7 +477,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records.
+In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
@@ -471,7 +499,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
-5. Create a Kafka topic:
+5. Create two Kafka topics:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -481,6 +509,16 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --replication-factor 1 \
     --partitions 1 \
     --topic office_dogs
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ ./bin/kafka-topics \
+    --create \
+    --zookeeper localhost:2181 \
+    --replication-factor 1 \
+    --partitions 1 \
+    --topic employees
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -548,11 +586,27 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-12. Start the changefeed:
+12. Create another table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > CREATE TABLE employees (
+         dog_id INT REFERENCES office_dogs_avro (id),
+         employee_name STRING);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO employees VALUES
+       (1, 'Lauren'),
+       (2, 'Spencer');
+    ~~~
+
+13. Start the changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     ~~~
@@ -564,48 +618,50 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-13. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./bin/kafka-avro-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --topic=office_dogs
+    --whitelist 'office_dogs|employees'
     ~~~
 
     ~~~ shell
     {"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
     {"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
+    {"after":{"employees":{"dog_id":{"long":1},"employee_name":{"string":"Lauren"},"rowid":{"long":528537452042682369}}}}
+    {"after":{"employees":{"dog_id":{"long":2},"employee_name":{"string":"Spencer"},"rowid":{"long":528537452042747905}}}}
     ~~~
 
     The initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
 
     {% include {{ page.version.version }}/cdc/print-key.md %}
 
-14. Back in the SQL client, insert more data:
+15. Back in the SQL client, insert more data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-15. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+16. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
 
     ~~~ shell
     {"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
-16. When you are done, exit the SQL shell (`\q`).
+17. When you are done, exit the SQL shell (`\q`).
 
-17. To stop `cockroach`, run:
+18. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~
 
-18. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
+19. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -624,7 +680,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 There is an open correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. Note that you can set up changefeeds for any of [these cloud storage providers](create-changefeed.html#cloud-storage-sink).
+In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](create-changefeed.html#cloud-storage-sink).
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
@@ -696,11 +752,27 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
     ~~~
 
-9. Start the changefeed:
+9. Create another table and add data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs INTO 'experimental-s3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
+    > CREATE TABLE employees (
+         dog_id INT REFERENCES office_dogs_avro (id),
+         employee_name STRING);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO employees VALUES
+       (1, 'Lauren'),
+       (2, 'Spencer');
+    ~~~
+
+10. Start the changefeed:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'experimental-s3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
     ~~~
 
     ~~~
@@ -712,11 +784,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-10. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
+11. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
 
-11. When you are done, exit the SQL shell (`\q`).
+12. When you are done, exit the SQL shell (`\q`).
 
-12. To stop `cockroach`, run:
+13. To stop `cockroach`, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
