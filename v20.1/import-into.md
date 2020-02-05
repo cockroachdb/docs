@@ -68,6 +68,8 @@ Before using `IMPORT INTO`, you should have:
 - An existing table to import into (use [`CREATE TABLE`](create-table.html)).
 - The CSV data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster. For more information, see the [Import file location](#import-file-location) section below.
 
+{% include {{ page.version.version }}/sql/import-into-default-value.md %}
+
 ### Available storage
 
 Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](cockroach-start.html#store) directory must have enough available storage to hold its portion of the data.
