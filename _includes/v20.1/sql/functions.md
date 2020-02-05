@@ -311,6 +311,7 @@ has no relationship with the commit order of concurrent transactions.</p>
 <p>The value is based on a timestamp picked when the transaction starts
 and which stays constant throughout the transaction. This timestamp
 has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
 </span></td></tr>
 <tr><td><a name="current_timestamp"></a><code>current_timestamp(precision: <a href="int.html">int</a>) &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
 <p>The value is based on a timestamp picked when the transaction starts
@@ -326,6 +327,7 @@ has no relationship with the commit order of concurrent transactions.</p>
 <p>The value is based on a timestamp picked when the transaction starts
 and which stays constant throughout the transaction. This timestamp
 has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
 </span></td></tr>
 <tr><td><a name="date_trunc"></a><code>date_trunc(element: <a href="string.html">string</a>, input: <a href="date.html">date</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Truncates <code>input</code> to precision <code>element</code>.  Sets all fields that are less
 significant than <code>element</code> to zero (or one, for day and month)</p>
@@ -368,6 +370,10 @@ return without an error.</p>
 quarter, month, week, dayofweek, isodow, dayofyear, julian,
 hour, minute, second, millisecond, microsecond, epoch</p>
 </span></td></tr>
+<tr><td><a name="extract"></a><code>extract(element: <a href="string.html">string</a>, input: <a href="interval.html">interval</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.</p>
+<p>Compatible elements: millennium, century, decade, year,
+month, day, hour, minute, second, millisecond, microsecond, epoch</p>
+</span></td></tr>
 <tr><td><a name="extract"></a><code>extract(element: <a href="string.html">string</a>, input: <a href="time.html">time</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.</p>
 <p>Compatible elements: hour, minute, second, millisecond, microsecond, epoch</p>
 </span></td></tr>
@@ -387,7 +393,40 @@ timezone, timezone_hour, timezone_minute</p>
 timezone, timezone_hour, timezone_minute</p>
 </span></td></tr>
 <tr><td><a name="extract_duration"></a><code>extract_duration(element: <a href="string.html">string</a>, input: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts <code>element</code> from <code>input</code>.
-Compatible elements: hour, minute, second, millisecond, microsecond.</p>
+Compatible elements: hour, minute, second, millisecond, microsecond.
+This is deprecated in favor of <code>extract</code> which supports duration.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp(precision: <a href="int.html">int</a>) &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp(precision: <a href="int.html">int</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
+</span></td></tr>
+<tr><td><a name="localtimestamp"></a><code>localtimestamp(precision: <a href="int.html">int</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
+<p>The value is based on a timestamp picked when the transaction starts
+and which stays constant throughout the transaction. This timestamp
+has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="now"></a><code>now() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
 <p>The value is based on a timestamp picked when the transaction starts
@@ -403,14 +442,35 @@ has no relationship with the commit order of concurrent transactions.</p>
 <p>The value is based on a timestamp picked when the transaction starts
 and which stays constant throughout the transaction. This timestamp
 has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
 </span></td></tr>
 <tr><td><a name="statement_timestamp"></a><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Returns the start time of the current statement.</p>
 </span></td></tr>
 <tr><td><a name="statement_timestamp"></a><code>statement_timestamp() &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Returns the start time of the current statement.</p>
 </span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(timestamp: <a href="timestamp.html">timestamp</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Treat given time stamp without time zone as located in the specified time zone</p>
+<tr><td><a name="timeofday"></a><code>timeofday() &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the current system time on one of the cluster nodes as a string.</p>
 </span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(timestamptz: <a href="timestamp.html">timestamptz</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Convert given time stamp with time zone to the new time zone, with no time zone designation</p>
+<tr><td><a name="timezone"></a><code>timezone(time: <a href="time.html">time</a>, timezone: <a href="string.html">string</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Treat given time without time zone as located in the specified time zone
+This is deprecated in favor of timezone(str, time)</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timestamp: <a href="timestamp.html">timestamp</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Treat given time stamp without time zone as located in the specified time zone.
+This is deprecated in favor of timezone(str, timestamp)</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timestamptz: <a href="timestamp.html">timestamptz</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Convert given time stamp with time zone to the new time zone, with no time zone designation
+This is deprecated in favor of timezone(str, timestamptz)</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timetz: timetz, timezone: <a href="string.html">string</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Convert given time with time zone to the new time zone
+This is deprecated in favor of timezone(str, timetz)</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, time: <a href="time.html">time</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Treat given time without time zone as located in the specified time zone.</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, timestamp: <a href="timestamp.html">timestamp</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Treat given time stamp without time zone as located in the specified time zone.</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, timestamptz: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Convert given time stamp with time zone to the new time zone, with no time zone designation.</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, timestamptz_string: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Convert given time stamp with time zone to the new time zone, with no time zone designation.</p>
+</span></td></tr>
+<tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, timetz: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Convert given time with time zone to the new time zone.</p>
 </span></td></tr>
 <tr><td><a name="transaction_timestamp"></a><code>transaction_timestamp() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
 <p>The value is based on a timestamp picked when the transaction starts
@@ -426,6 +486,7 @@ has no relationship with the commit order of concurrent transactions.</p>
 <p>The value is based on a timestamp picked when the transaction starts
 and which stays constant throughout the transaction. This timestamp
 has no relationship with the commit order of concurrent transactions.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
 </span></td></tr></tbody>
 </table>
 
@@ -623,6 +684,10 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="ln"></a><code>ln(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the natural log of <code>val</code>.</p>
 </span></td></tr>
+<tr><td><a name="log"></a><code>log(b: <a href="decimal.html">decimal</a>, x: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="log"></a><code>log(b: <a href="float.html">float</a>, x: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
+</span></td></tr>
 <tr><td><a name="log"></a><code>log(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="log"></a><code>log(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
@@ -750,6 +815,8 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="jsonb_object_keys"></a><code>jsonb_object_keys(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
 </span></td></tr>
 <tr><td><a name="pg_get_keywords"></a><code>pg_get_keywords() &rarr; tuple{string AS word, string AS catcode, string AS catdesc}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
+</span></td></tr>
+<tr><td><a name="unnest"></a><code>unnest(anyelement[], anyelement[], anyelement[]...) &rarr; tuple</code></td><td><span class="funcdesc"><p>Returns the input arrays as a set of rows</p>
 </span></td></tr>
 <tr><td><a name="unnest"></a><code>unnest(input: anyelement[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the input array as a set of rows</p>
 </span></td></tr></tbody>
@@ -980,6 +1047,8 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="to_hex"></a><code>to_hex(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> to its hexadecimal representation.</p>
 </span></td></tr>
+<tr><td><a name="to_hex"></a><code>to_hex(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> to its hexadecimal representation.</p>
+</span></td></tr>
 <tr><td><a name="to_ip"></a><code>to_ip(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Converts the character string representation of an IP to its byte string representation.</p>
 </span></td></tr>
 <tr><td><a name="to_uuid"></a><code>to_uuid(val: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Converts the character string representation of a UUID to its byte string representation.</p>
@@ -1022,6 +1091,8 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.force_retry"></a><code>crdb_internal.force_retry(val: <a href="interval.html">interval</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
+<tr><td><a name="crdb_internal.get_namespace_id"></a><code>crdb_internal.get_namespace_id(parent_id: <a href="int.html">int</a>, name: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td></td></tr>
+<tr><td><a name="crdb_internal.get_zone_config"></a><code>crdb_internal.get_zone_config(namespace_id: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td></td></tr>
 <tr><td><a name="crdb_internal.is_admin"></a><code>crdb_internal.is_admin() &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Retrieves the current user’s admin status.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.json_num_index_entries"></a><code>crdb_internal.json_num_index_entries(val: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
@@ -1064,10 +1135,22 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 <tr><td><a name="current_time"></a><code>current_time() &rarr; <a href="time.html">time</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with no time zone.</p>
 </span></td></tr>
 <tr><td><a name="current_time"></a><code>current_time() &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with time zone.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
 </span></td></tr>
 <tr><td><a name="current_time"></a><code>current_time(precision: <a href="int.html">int</a>) &rarr; <a href="time.html">time</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with no time zone.</p>
 </span></td></tr>
 <tr><td><a name="current_time"></a><code>current_time(precision: <a href="int.html">int</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with time zone.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
+</span></td></tr>
+<tr><td><a name="localtime"></a><code>localtime() &rarr; <a href="time.html">time</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with no time zone.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
+</span></td></tr>
+<tr><td><a name="localtime"></a><code>localtime() &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with time zone.</p>
+</span></td></tr>
+<tr><td><a name="localtime"></a><code>localtime(precision: <a href="int.html">int</a>) &rarr; <a href="time.html">time</a></code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with no time zone.</p>
+<p>This function is the preferred overload and will be evaluated by default.</p>
+</span></td></tr>
+<tr><td><a name="localtime"></a><code>localtime(precision: <a href="int.html">int</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Returns the current transaction’s time with time zone.</p>
 </span></td></tr></tbody>
 </table>
 
