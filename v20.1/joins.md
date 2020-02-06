@@ -142,6 +142,10 @@ You can override the use of lookup joins using [join hints](cost-based-optimizer
 
 The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
+## `LATERAL` joins
+
+CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins. For more information about `LATERAL` subqueries, see [Lateral subqueries](subqueries.html#lateral-subqueries).
+
 ## Performance best practices
 
 {{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
