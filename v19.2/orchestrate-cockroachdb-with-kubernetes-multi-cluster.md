@@ -47,9 +47,11 @@ Kubernetes 1.8 or higher is required.
 
 #### Exposing DNS servers
 
-In the approach documented here, the DNS servers from each Kubernetes cluster are hooked together by exposing them via a load balanced IP address that is visible to the public Internet. This is because [Google Cloud Platform's Internal Load Balancers do not currently support clients in one region using a load balancer in another region](https://cloud.google.com/load-balancing/docs/internal/#deploying_internal_load_balancing_with_clients_across_vpn_or_interconnect).
+{{site.data.alerts.callout_danger}}
+Until December 2019, Google Cloud Platform restricted clients to using a load balancer in the same region. In the approach documented below, the DNS servers from each Kubernetes cluster are hooked together by exposing them via a load balanced IP address that is visible to the public Internet. None of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
 
-None of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker. If this is unacceptable, please let us know and we can demonstrate other options. [Your voice could also help convince Google to allow clients from one region to use an Internal Load Balancer in another](https://issuetracker.google.com/issues/111021512), eliminating the problem.
+You can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access) on Google Cloud Platform to allow clients from one region to use an internal load balancer in another. We will update this tutorial accordingly.
+{{site.data.alerts.end}}
 
 ## Step 1. Start Kubernetes clusters
 
