@@ -83,12 +83,10 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 ~~~
 
 ~~~
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
-| column_name |        data_type         | is_nullable | column_default | generation_expression |   indices   |
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
-| a           | INT                      |    false    | NULL           |                       | {"primary"} |
-| b           | TIMESTAMP WITH TIME ZONE |    true     | NULL           |                       | {}          |
-+-------------+--------------------------+-------------+----------------+-----------------------+-------------+
+  column_name |  data_type  | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-------------+-------------+----------------+-----------------------+-----------+-----------+
+  a           | INT8        |    false    | NULL           |                       | {primary} |   false
+  b           | TIMESTAMPTZ |    true     | NULL           |                       | {}        |   false
 (2 rows)
 ~~~
 
@@ -103,13 +101,11 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 ~~~
 
 ~~~
+  a |             b
 +---+---------------------------+
-| a |             b             |
-+---+---------------------------+
-| 1 | 2016-03-26 15:10:10+00:00 |
-| 2 | 2016-03-26 00:00:00+00:00 |
-+---+---------------------------+
-# Note that the first timestamp is UTC-05:00, which is the equivalent of EST.
+  1 | 2016-03-26 15:10:10+00:00
+  2 | 2016-03-26 00:00:00+00:00
+(2 rows)
 ~~~
 
 ## Supported casting and conversion
