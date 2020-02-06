@@ -14,7 +14,7 @@ This page walks you through the process of creating a CockroachCloud cluster.
 
 ## Step 1. Access the Create new cluster page
 
-1. [Sign in](cockroachcloud-create-your-account.html#sign-in) to your CockroachCloud account.
+1. [Log in](cockroachcloud-create-your-account.html#log-in) to your CockroachCloud account.
 2. On the **Overview** page, click **Create Cluster**.
 
 ##Step 2. Select the cloud provider

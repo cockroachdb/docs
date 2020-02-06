@@ -33,7 +33,7 @@ Use the Console to authorize networks:
 4. (Optional) Enter a descriptive name for the network.
 
 5. From the **Network** dropdown, select:
-   - **New Network** to authorize your application server’s network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
+   - **New Network** to authorize your local machine's network or application server’s network. Enter the public IPv4 address of the machine in the **Network** field.
    - **Current Network** to auto-populate your local machine's IP address.
    - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
 
@@ -61,11 +61,8 @@ Use the Console to authorize networks:
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:50%" />
-
-3. Enter a **Username**.
-4. Enter and confirm the **Password**.
-5. Click **Create**.
+3. Enter a **Username** and **Password**.
+4. Click **Create**.
 
     Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
@@ -79,7 +76,7 @@ Use the Console to authorize networks:
 
 2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 3. From the **Region** dropdown, select the region closest to where your client or application is running.
-4. From the **Database** dropdown, select the dabatase you want to connect to.
+4. From the **Database** dropdown, select the database you want to connect to.
 
     The default database is `defaultdb`. For more information, see [Default databases](show-databases.html#default-databases).
 
@@ -96,6 +93,10 @@ Use the Console to authorize networks:
     To connect to your cluster using the [in-built SQL client](#use-the-cockroachdb-sql-client), use the command displayed on the **CockroachDB Client** tab.
 
     To connect to your cluster [using a Postgres ORM or driver](#use-a-postgres-driver-or-orm), use either the **Connection String** or the **Parameters** as required by your ORM or driver.
+
+    {{site.data.alerts.callout_info}}
+    The connection string allows you to connect to the cluster's regional load balancer. No additional load balancing needs to be implemented on the application side.
+    {{site.data.alerts.end}}
 
 7. Click the name of the **ca.crt** file to download the CA certificate.
 
@@ -141,7 +142,7 @@ On the machine where you want to run the CockroachDB SQL client:
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection method](#step-3-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
+3. Use the `cockroach sql` command to open an interactive SQL shell, replacing placeholders in the [client connection method](#step-3-select-a-connection-method) with the correct path to the `ca.cert`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
