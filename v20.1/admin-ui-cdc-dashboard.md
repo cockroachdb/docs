@@ -6,6 +6,7 @@ toc: true
 
 The **Changefeeds** dashboard in the CockroachDB Admin UI lets you monitor the [changefeeds](change-data-capture.html) created across your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
+{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
 The **Changefeeds** dashboard displays the following time series graphs:
 

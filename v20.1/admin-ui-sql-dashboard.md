@@ -6,6 +6,7 @@ toc: true
 
 The **SQL** dashboard in the CockroachDB Admin UI lets you monitor the performance of your SQL queries. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
 
+{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
 The **SQL** dashboard displays the following time series graphs:
 

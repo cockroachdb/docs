@@ -6,6 +6,8 @@ toc: true
 
 The **Hardware** dashboard lets you monitor CPU usage, disk throughput, network traffic, storage capacity, and memory. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and then select **Dashboard** > **Hardware**.
 
+{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
+
 The **Hardware** dashboard displays the following time series graphs:
 
 ## CPU Percent

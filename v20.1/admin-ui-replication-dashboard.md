@@ -6,7 +6,6 @@ toc: true
 
 The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Replication**.
 
-
 ## Review of CockroachDB terminology
 
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
@@ -17,11 +16,11 @@ The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/)
 
-## Replication dashboard
+{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
 The **Replication** dashboard displays the following time series graphs:
 
-### Ranges
+## Ranges
 
 <img src="{{ 'images/v20.1/admin_ui_ranges.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
@@ -42,7 +41,7 @@ Leaders w/o Leases | The number of Raft leaders without leases. If the number if
 Unavailable | The number of unavailable ranges. If the number if non-zero for a long time, troubleshoot your cluster.
 Under-replicated | The number of under-replicated ranges.
 
-### Replicas Per Store
+## Replicas Per Store
 
 <img src="{{ 'images/v20.1/admin_ui_replicas_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
@@ -52,7 +51,7 @@ Under-replicated | The number of under-replicated ranges.
 
 You can [Configure replication zones](configure-replication-zones.html) to set the number and location of replicas. You can monitor the configuration changes using the Admin UI, as described in [Fault tolerance and recovery](demo-fault-tolerance-and-recovery.html).
 
-### Replica Quiescence
+## Replica Quiescence
 
 <img src="{{ 'images/v20.1/admin_ui_replica_quiescence.png' | relative_url }}" alt="CockroachDB Admin UI Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
 
@@ -67,7 +66,7 @@ Metric | Description
 Replicas | The number of replicas.
 Quiescent | The number of replicas that haven't been accessed for a while.
 
-### Snapshots
+## Snapshots
 
 <img src="{{ 'images/v20.1/admin_ui_replica_snapshots.png' | relative_url }}" alt="CockroachDB Admin UI Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
@@ -81,7 +80,7 @@ Applied (Learner) | The number of snapshots applied to nodes per second that wer
 Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future releases.
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
 
-### Other graphs
+## Other graphs
 
 The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
 
