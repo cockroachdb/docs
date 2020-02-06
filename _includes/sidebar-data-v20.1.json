@@ -762,6 +762,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER PRIMARY KEY</code>",
+                "urls": [
+                  "/${VERSION}/alter-primary-key.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
                   "/${VERSION}/alter-range.html"

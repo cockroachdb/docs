@@ -84,7 +84,7 @@ table td:first-child {
 Tables created with `CREATE TABLE ... AS` are not [interleaved](interleave-in-parent.html) with other tables.
 The default rules for [column families](column-families.html) apply.
 
-The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key) and [Specify a primary key for partitioning](create-table-as.html#specify-a-primary-key-for-partitioning). Like for other tables, it is not possible to add or change the primary key after table creation.
+The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key) and [Specify a primary key for partitioning](create-table-as.html#specify-a-primary-key-for-partitioning).
 
 ## Examples
 
@@ -290,7 +290,7 @@ You can define the [column families](column-families.html) of a new table create
 
 ### Specify a primary key for partitioning
 
-If you are [partitioning](partitioning.html) a table based on a [primary key](primary-key.html), you must correctly define the primary key at table creation. It is not possible to add or change primary keys after table creation. To work around this limitation, you can create a new table from an existing one, with the correct primary keys specified in your `CREATE TABLE ... AS` statement.
+If you are [partitioning](partitioning.html) a table based on a [primary key](primary-key.html), the primary key must be properly defined. To change the primary key after table creation, you can use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.
 
 Suppose that you want to [geo-partition](demo-low-latency-multi-region-deployment.html) the `drivers` table that you created with the following statement:
 
@@ -315,7 +315,7 @@ Suppose that you want to [geo-partition](demo-low-latency-multi-region-deploymen
 (1 row)
 ~~~
 
-In order for this table to be properly geo-partitioned with the other tables in the `movr` dataset, the table must have a composite primary key defined that includes the unique row identifier (`id`, in this case) and the row locality identifier (`city`). Use the following statement to create a new table with the correct composite primary key:
+In order for this table to be properly geo-partitioned with the other tables in the `movr` dataset, the table must have a composite primary key defined that includes the unique row identifier (`id`, in this case) and the row locality identifier (`city`). Use the following statement to change the primary key to a composite primary key:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -348,3 +348,5 @@ In order for this table to be properly geo-partitioned with the other tables in 
 - [`INSERT`](insert.html)
 - [`DROP TABLE`](drop-table.html)
 - [Other SQL Statements](sql-statements.html)
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER TABLE`](alter-table.html)

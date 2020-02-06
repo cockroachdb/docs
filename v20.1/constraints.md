@@ -92,7 +92,7 @@ Constraint Type | Procedure
 [`DEFAULT` value](default-value.html) | Use [`ALTER COLUMN`](alter-column.html#remove-default-constraint)
 [`FOREIGN KEY`](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html)
 [`NOT NULL`](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint)
-[`PRIMARY KEY`](primary-key.html) | Primary Keys cannot be removed.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
+[`PRIMARY KEY`](primary-key.html) | Primary Keys cannot be removed.  However, you can change a primary key with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.
 [`UNIQUE`](unique.html) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index](drop-index.html) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint`.
 
 ### Change constraints
@@ -105,7 +105,7 @@ Constraint Type | Procedure
 [`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-column.html).
 [`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 [`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only removed. However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
-[`PRIMARY KEY`](primary-key.html) | Primary Keys cannot be modified.  However, you can move the table's data to a new table with [this process](#table-migrations-to-add-or-change-immutable-constraints).
+[`PRIMARY KEY`](primary-key.html) | To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.
 [`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 
 #### Table migrations to add or change immutable constraints
@@ -123,3 +123,5 @@ If you want to make a change to an immutable constraint, you can use the followi
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
 - [`SHOW CREATE`](show-create.html)
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER TABLE`](alter-table.html)

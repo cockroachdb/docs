@@ -19,6 +19,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`ADD COLUMN`](add-column.html) | Add columns to tables. | Yes
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns. | Yes
 [`ALTER COLUMN`](alter-column.html) | Change or drop a column's [`DEFAULT` constraint](default-value.html) or [`NOT NULL` constraint](not-null.html). | Yes
+[`ALTER PRIMARY KEY`](alter-column.html) | Change the [primary key](primary-key.html) of a table. | Yes
 [`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html). | Yes
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a table. | No
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes

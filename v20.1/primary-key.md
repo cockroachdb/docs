@@ -8,9 +8,7 @@ The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained 
 
 Unlike other constraints which have very specific uses, the `PRIMARY KEY` constraint *should be used for every table* because it provides an intrinsic structure to the table's data. This both makes it easier to understand, as well as improving query performance.
 
-{{site.data.alerts.callout_info}}
-A table's primary key can only be specified in the [`CREATE TABLE`](create-table.html) statement. It cannot be changed later using `ALTER TABLE`, though it is possible to [go through a process](constraints.html#change-constraints) to create a new table with the new primary key you want and then migrate the data.
-{{site.data.alerts.end}}
+A table's primary key can be specified in the [`CREATE TABLE`](create-table.html) statement, or using [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), after the table is created.
 
 ## Details
 
@@ -27,6 +25,8 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 - For optimal performance, we recommend defining a primary key for *every* table.
 
     If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+
+- You can change the primary key of a table using the [`ALTER PRIMARY KEY`](alter-primary-key.html) subcommand in an [`ALTER TABLE`](alter-table.html) statement.
 
 ## Syntax
 
@@ -131,3 +131,5 @@ pq: null value in column "warehouse_id" violates not-null constraint
 - [`NOT NULL` constraint](not-null.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER TABLE`](alter-table.html)
