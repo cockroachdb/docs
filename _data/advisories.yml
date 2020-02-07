@@ -1,0 +1,20 @@
+- advisory: 44348
+  summary: Data leak in statement details
+  versions: 2.1.0-2.1.11, 19.1.0-19.1.7, 19.2.0-19.2.3
+  date: Feb 11, 2020
+- advisory: 44166
+  summary: SHOW JOBS and Jobs page can endanger cluster stability
+  versions: 19.2.0-19.2.2
+  date: Feb 11, 2020
+- advisory: 43870
+  summary: HTTP authentication for non-Enterprise users
+  versions: 2.1.10-onward, 19.1.6-onward, 19.2.2
+  date: Jan 22, 2020
+- advisory: 42567
+  summary: HTTP endpoint vulnerability
+  versions: 2.1.0-2.1.8, 19.1.0-19.1.5, 19.2.0-19.2.1
+  date: Jan 22, 2020
+- advisory: 30821
+  summary: Authentication bypass for internal RPCs
+  versions: 1.1.0-1.1.8, 2.0.0-2.0.4
+  date: Oct 1, 2018
