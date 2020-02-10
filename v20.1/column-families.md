@@ -4,10 +4,11 @@ summary: A column family is a group of columns in a table that are stored as a s
 toc: true
 ---
 
-A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store. The reduced number of keys results in a smaller storage overhead and, even more significantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
+A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store](architecture/storage-layer.html). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`](insert.html), [`UPDATE`](update.html), and [`DELETE`](delete.html) operations.
 
 This page explains how CockroachDB organizes columns into families as well as cases in which you might want to manually override the default behavior.
 
+<span class="version-tag">New in v20.1:</span> [Secondary indexes](indexes.html) respect the column family definitions applied to tables. When you define a secondary index, CockroachDB breaks the secondary index key-value pairs into column families, according to the family and stored column configurations. In versions prior to v20.1, all secondary indexes store values in a single column family.
 
 ## Default behavior
 
@@ -36,26 +37,23 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE users;
+> SHOW CREATE test;
 ~~~
 
 ~~~
-+-------+---------------------------------------------+
-| Table |                 CreateTable                 |
-+-------+---------------------------------------------+
-| test  | CREATE TABLE test (                         |
-|       |     id INT NOT NULL,                        |
-|       |     last_accessed TIMESTAMP NULL,           |
-|       |     data BYTES NULL,                        |
-|       |     CONSTRAINT "primary" PRIMARY KEY (id),  |
-|       |     FAMILY f1 (id, last_accessed),          |
-|       |     FAMILY f2 (data)                        |
-|       | )                                           |
-+-------+---------------------------------------------+
+  table_name |                create_statement
+-------------+-------------------------------------------------
+  test       | CREATE TABLE test (
+             |     id INT8 NOT NULL,
+             |     last_accessed TIMESTAMP NULL,
+             |     data BYTES NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY f1 (id, last_accessed),
+             |     FAMILY f2 (data)
+             | )
 (1 row)
 ~~~
 
-{{site.data.alerts.callout_info}}Columns that are part of the primary index are always assigned to the first column family. If you manually assign primary index columns to a family, it must therefore be the first family listed in the <code>CREATE TABLE</code> statement.{{site.data.alerts.end}}
 
 ### Assign column families when adding columns
 
