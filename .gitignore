@@ -10,3 +10,4 @@ _site
 bootstrap
 vendor/
 tmp/
+venv/
