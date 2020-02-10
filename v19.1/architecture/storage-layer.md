@@ -57,7 +57,7 @@ Using these tools, you can get consistent data from your database as far back as
 
 ### Garbage collection
 
-CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. By default, the garbage collection period is 24 hours, but it can be set at the cluster, database, or table level through [replication zones](../configure-replication-zones.html).
+CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. The garbage collection period can be set at the cluster, database, or table level by configuring the [`gc.ttlseconds` replication zone variable](../configure-replication-zones.html#gc-ttlseconds).  For more information about replication zones, see [Configure Replication Zones](../configure-replication-zones.html).
 
 ## Interactions with other layers
 
