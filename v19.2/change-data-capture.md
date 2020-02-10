@@ -412,7 +412,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -425,8 +425,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     {"after": {"id": 1, "name": "Petee H"}}
     {"after": {"id": 2, "name": "Carl"}}
-    {"after": {"name": "Lauren", "rowid": 528514320239329281}}
-    {"after": {"name": "Spencer", "rowid": 528514320239362049}}
+    {"after": {"id": 1, "name": "Lauren", "rowid": 528514320239329281}}
+    {"after": {"id": 2, "name": "Spencer", "rowid": 528514320239362049}}
     ~~~
 
     The initial scan displays the state of the tables as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -440,7 +440,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-16. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+16. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
     ~~~ shell
     {"after": {"id": 3, "name": "Ernie"}}
@@ -609,7 +609,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
 
-14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topic:
+14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -637,7 +637,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
-16. Back in the terminal where you're watching the Kafka topic, the following output has appeared:
+16. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
     ~~~ shell
     {"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
