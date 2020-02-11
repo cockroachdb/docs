@@ -13,14 +13,14 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
-We have tested the [django-cockroachdb](https://github.com/cockroachdb/django-cockroachdb) adapter enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/django-cockroachdb/issues/new) with details to help us make progress toward full support.
+We have tested the [django-cockroachdb](https://github.com/cockroachdb/django-cockroachdb) adapter enough to claim **beta-level** support for Django versions 2 and 3. If you encounter problems, please [open an issue](https://github.com/cockroachdb/django-cockroachdb/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
 {{site.data.alerts.callout_info}}
-The example code and instructions on this page use Python 3.
+The example code and instructions on this page use Python 3 and Django 3.
 {{site.data.alerts.end}}
 
 ## Step 1. Install Django and the CockroachDB backend for Django
@@ -36,6 +36,44 @@ $ python3 -m pip install django
 ~~~ shell
 $ python3 -m pip install django-cockroachdb
 ~~~
+
+These commands download and install the latest stable minor release of `django` and `django-cockroachdb`. At the time of writing this tutorial, the latest stable minor release of each module was 3.0.
+
+{{site.data.alerts.callout_info}}
+The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
+
+For example, if you install the latest minor release of `django` 2:
+
+~~~ shell
+$ python3 -m pip install django==2.*
+~~~
+
+You can also install the latest minor release of `django-cockroachdb` 2:
+
+~~~ sql
+python3 -m pip install django-cockroachdb==2.**
+~~~
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+If alpha or beta releases exist for a version of `django-cockroachdb`, you might encounter an error when attempting to install the latest release of that version. To resolve this issue, specify the exact release that you want.
+
+For example, if `django-cockroachdb` 3.0 alpha 1 is available, and you want to install it, you could encounter an error:
+
+~~~ sql
+$ pip install django-cockroachdb==3.0.*
+ERROR: Could not find a version that satisfies the requirement
+django-cockroachdb==3.0.* (from versions: 3.0a1)
+~~~
+
+Instead, use the following command:
+
+~~~ sql
+$ pip install django-cockroachdb==3.0a1
+...
+Successfully installed django-cockroachdb-3.0a1 psycopg2-2.8.4
+~~~
+{{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
