@@ -13,7 +13,7 @@
       version: v19.2.0
     - date: Feb 11, 2020
       version: v19.1.8
-      no_windows: true  
+      no_windows: true
     - date: Jan 27, 2020
       version: v19.1.7
       no_windows: true
@@ -154,6 +154,8 @@
       no_windows: true
 - title: Testing Releases
   releases:
+    - date: Feb 17, 2020
+      version: v20.1.0-beta.1
     - date: Jan 30, 2020
       version: v20.1.0-alpha.20200123
     - date: Dec 16, 2019
