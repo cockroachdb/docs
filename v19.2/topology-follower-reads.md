@@ -45,8 +45,15 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 ~~~ sql
 > CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
-    code STRING,
+    code STRING
 );
+~~~
+
+Insert some data:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
 
 1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
@@ -60,8 +67,8 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT code FROM postal_codes
-        WHERE id = 5
-        AS OF SYSTEM TIME experimental_follower_read_timestamp();
+        AS OF SYSTEM TIME experimental_follower_read_timestamp()
+                WHERE id = 5;
     ~~~
 
     Alternately, instead of modifying individual read queries on the table, you can set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
