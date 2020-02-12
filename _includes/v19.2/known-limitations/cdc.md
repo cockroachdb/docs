@@ -1,6 +1,7 @@
 The following are limitations in the v19.2 release and will be addressed in the future:
 
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
+- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
 - Many DDL queries (including [`TRUNCATE`](truncate.html) and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](change-data-capture.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](change-data-capture.html#monitor-a-changefeed).

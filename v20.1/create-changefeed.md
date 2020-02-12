@@ -26,7 +26,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.
+`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
@@ -156,7 +156,7 @@ Statement                                      | Response
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name
+> CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
   WITH updated, resolved;
 ~~~
@@ -175,7 +175,7 @@ For more information on how to create a changefeed connected to Kafka, see [Chan
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name
+> CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
   WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
 ~~~
@@ -200,7 +200,7 @@ There is an open correctness issue with changefeeds connected to cloud storage s
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name
+> CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'experimental-scheme://host?parameters'
   WITH updated, resolved;
 ~~~
@@ -269,7 +269,7 @@ Use the `high_water_timestamp` to start the new changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name
+> CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka//host:port'
   WITH cursor = '<high_water_timestamp>';
 ~~~
