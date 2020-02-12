@@ -513,8 +513,7 @@ On the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), view es
 
 #### Monitor inter-node latencies
 
-1. Click the gear icon on the left-hand navigation bar.
-2. In the **Reports** section, click **Network Latency** to check latencies between all nodes in your cluster.
+1. Click **Network Latency** in the left-hand navigation to check latencies between all nodes in your cluster.
 
 #### Identify frequently executed or high latency SQL statements
 

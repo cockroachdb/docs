@@ -12,6 +12,10 @@ You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an e
 
 <img src="{{ 'images/v20.1/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
 
+{{site.data.alerts.callout_info}}
+Network latencies will increase with geographic distance between nodes. You can observe this in the [Network Latency page](admin-ui-network-latency-page.html) of the Admin UI.
+{{site.data.alerts.end}}
+
 To reproduce the performance demonstrated in this tutorial:
 
 - For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.

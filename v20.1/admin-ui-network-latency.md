@@ -21,7 +21,7 @@ Select **Collapse Nodes** to display the mean latencies of each cloud, region, o
 
 Each cell displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet.
 
-The x-axis shows TK. The y-axis shows TK.
+Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and cloud, region, and zone metadata for origin and destination nodes.
 
 <standard deviation screenshot TK>
 

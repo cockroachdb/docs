@@ -225,22 +225,19 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 ### Network partition
 
-If the Admin UI lists live nodes in the **Dead Nodes** table, then you might have a network partition.
+If the Admin UI lists live nodes in the [**Dead Nodes** table](admin-ui-cluster-overview-page.html#dead-nodes), then you might have a network partition.
 
-**Explanation:** A network partition indicates that the nodes can't communicate with each other in one or both directions because of a configuration problem with the network itself. A symmetric partition is one where the communication is broken in both directions. An asymmetric partition means the connection works in one direction but not the other. An example of a scenario that can cause a network partition is when specific IP addresses or hostnames are whitelisted in the firewall, and then those addresses or names change after tearing down and rebuilding a node.
+**Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when whitelisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
-The effect of a network partition depends on which nodes are partitioned and where the ranges are located. It depends to a large extent on whether localities have been defined.
-
-A partition is a lot like an outage, where all nodes in a smaller partition are down. If you don’t provide localities, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities](cockroach-start.html#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 
 **Solution:**
 
 To identify a network partition:
 
-1.  [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui).
-2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-3.  Click **Network Latency**.
-4.  In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition.
+1.  Access the [Network Latency](admin-ui-network-latency-page.html) page of the Admin UI.
+2.  Click **Network Latency** in the left-hand navigation.
+3.  In the **Latencies** table, check for nodes with [no connections](admin-ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
 ## CockroachDB authentication issues
 

@@ -57,4 +57,4 @@
     $ cockroach init {{page.certs}} --host=<address of any node>
     ~~~
 
-    Each node then prints helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Web UI, and the SQL URL for clients.
+    Each node then prints helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.

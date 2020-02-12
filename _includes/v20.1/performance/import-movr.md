@@ -115,7 +115,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     {{site.data.alerts.callout_success}}
-    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page](admin-ui-jobs-page.html) of the Web UI.
+    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI.
     {{site.data.alerts.end}}
 
 7. Logically, there should be a number of [foreign key](foreign-key.html) relationships between the tables:
