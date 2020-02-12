@@ -153,28 +153,28 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user db_admin;
+    > CREATE USER db_admin;
     ~~~
 
 3. Grant all privileges on database `movr` to user `db_admin`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant all on database movr to db_admin;
+    > GRANT ALL ON DATABASE movr TO db_admin;
     ~~~
 
 4. Grant all privileges on all tables in database `movr` to user `db_admin`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant all on table * to db_admin;
+    > GRANT ALL ON TABLE * TO db_admin;
     ~~~
 
 5. Verify that `db_admin` has all privileges:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants for db_admin;
+    > SHOW GRANTS FOR db_admin;
     ~~~
 
     ~~~
@@ -197,17 +197,17 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user app_user;
+    > CREATE USER app_user;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant insert, delete, update, select on vehicles to app_user;
+    > GRANT INSERT, DELETE, UPDATE, SELECT ON vehicles TO app_user;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants for app_user;
+    > SHOW GRANTS FOR app_user;
     ~~~
 
     ~~~
@@ -224,17 +224,17 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user;
+    > CREATE USER report_user;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant select on vehicles to report_user;
+    > GRANT SELECT ON vehicles TO report_user;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants for report_user;
+    > SHOW GRANTS FOR report_user;
     ~~~
 
     ~~~
@@ -269,12 +269,12 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create role db_admin_role;
+    > CREATE ROLE db_admin_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show roles;
+    > SHOW ROLES;
     ~~~
 
     ~~~
@@ -287,17 +287,17 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant all on database movr to db_admin_role;
+    > GRANT ALL ON DATABASE movr TO db_admin_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant all on table * to db_admin_role;
+    > GRANT ALL ON TABLE * TO db_admin_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants ON database movr;
+    > SHOW GRANTS ON DATABASE movr;
     ~~~
 
     ~~~
@@ -322,29 +322,29 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user db_admin_1;
+    > CREATE USER db_admin_1;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user db_admin_2;
+    > CREATE USER db_admin_2;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant db_admin_role to db_admin_1, db_admin_2;
+    > GRANT db_admin_role TO db_admin_1, db_admin_2;
     ~~~
 
 4. Create a role named `app_user_role` whose members can add, read update, and delete vehicles to the `vehicles` table.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create role app_user_role;
+    > CREATE ROLE app_user_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show roles;
+    > SHOW ROLES;
     ~~~
 
     ~~~
@@ -358,12 +358,12 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant INSERT, UPDATE, DELETE, SELECT on table vehicles to app_user_role;
+    > GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE vehicles TO app_user_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants ON vehicles;
+    > SHOW GRANTS ON vehicles;
     ~~~
 
     ~~~
@@ -383,34 +383,34 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user app_user_1;
+    > CREATE USER app_user_1;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user app_user_2;
+    > CREATE USER app_user_2;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user app_user_3;
+    > CREATE USER app_user_3;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant app_user_role to app_user_1, app_user_2, app_user_3;
+    > GRANT app_user_role TO app_user_1, app_user_2, app_user_3;
     ~~~
 
 6. Create a role named `report_user_role` whose members can only read the `vehicles` table.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create role report_user_role;
+    > CREATE ROLE report_user_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show roles;
+    > SHOW ROLES;
     ~~~
 
     ~~~
@@ -425,12 +425,12 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant select on vehicles to report_user_role;
+    > GRANT SELECT ON vehicles TO report_user_role;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > show grants ON vehicles;
+    > SHOW GRANTS ON vehicles;
     ~~~
 
     ~~~
@@ -451,32 +451,32 @@ Let's say we want to create the following access control setup for the `movr` da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user_1;
+    > CREATE USER report_user_1;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user_2;
+    > CREATE USER report_user_2;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user_3;
+    > CREATE USER report_user_3;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user_4;
+    > CREATE USER report_user_4;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user report_user_5;
+    > CREATE USER report_user_5;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > grant report_user_role to report_user_1, report_user_2, report_user_3, report_user_4, report_user_5;
+    > GRANT report_user_role TO report_user_1, report_user_2, report_user_3, report_user_4, report_user_5;
     ~~~
 
 </section>
