@@ -55,6 +55,12 @@
       "urls": [
         "/${VERSION}/known-limitations.html"
       ]
+    },
+    {
+      "title": "Technical Advisories",
+      "urls": [
+        "/advisories/index.html"
+      ]
     }
   ]
 }
