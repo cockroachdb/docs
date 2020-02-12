@@ -6,9 +6,10 @@ twitter: false
 ---
 
 <div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button current">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 28%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 28%" class="filter-button">Use <strong>Django</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 20%" class="filter-button current">Use <strong>psycopg2</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 20%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 20%" class="filter-button">Use <strong>Django</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 20%" class="filter-button">Use <strong>PonyORM</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver.
