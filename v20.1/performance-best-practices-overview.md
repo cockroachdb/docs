@@ -276,6 +276,12 @@ See [Join Performance Best Practices](joins.html#performance-best-practices).
 
 Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
 
+### Avoid indexes on sequential keys
+
+Writes to indexes on sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](#unique-id-best-practices), or [multi-column keys](#use-multi-column-primary-keys).
+
+If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](indexes.html#hash-sharded-indexes). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
+
 ## Join best practices
 
 See [Join Performance Best Practices](joins.html#performance-best-practices).

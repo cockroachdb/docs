@@ -24,11 +24,12 @@ toc: true
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table with the primary key that you want to modify. |
-| `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s). |
-| `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data. |
+ Parameter | Description
+-----------|-------------
+ `table_name` | The name of the table with the primary key that you want to modify.
+ `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s).
+ `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
+ `USING HASH WITH BUCKET COUNT` | Creates a [hash-sharded index](indexes.html#hash-sharded-indexes) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
 
 ## Required privileges
 

@@ -12,6 +12,7 @@ The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in
 
 - Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required.
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
+- {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 ## Required privileges
 
@@ -117,45 +118,6 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 |                    | MAXVALUE -1 INCREMENT -2 START -1                                        |
 +--------------------+--------------------------------------------------------------------------+
 (1 row)
-~~~
-
-### Create a table with a sequence
-
-In this example, we create a table using the sequence we created in the first example as the table's primary key.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customer_list (
-    id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
-    customer string,
-    address string
-  );
-~~~
-
-Insert a few records to see the sequence.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO customer_list (customer, address)
-  VALUES
-    ('Lauren', '123 Main Street'),
-    ('Jesse', '456 Broad Ave'),
-    ('Amruta', '9876 Green Parkway');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM customer_list;
-~~~
-
-~~~
-+----+----------+--------------------+
-| id | customer |      address       |
-+----+----------+--------------------+
-|  1 | Lauren   | 123 Main Street    |
-|  2 | Jesse    | 456 Broad Ave      |
-|  3 | Amruta   | 9876 Green Parkway |
-+----+----------+--------------------+
 ~~~
 
 ### View the current value of a sequence
