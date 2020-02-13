@@ -21,6 +21,7 @@ Statement | Usage
 [`IMPORT INTO`](import-into.html) | Bulk-insert CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
+[`SELECT ... FOR UPDATE`](select-for-update.html) | Order transactions by controlling concurrent access to one or more rows of a table.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.

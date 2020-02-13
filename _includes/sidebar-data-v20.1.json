@@ -1200,6 +1200,12 @@
                 ]
               },
               {
+                "title": "<code>SELECT FOR UPDATE</code>",
+                "urls": [
+                  "/${VERSION}/select-for-update.html"
+                ]
+              },
+              {
                 "title": "<code>SET</code> &lt;session variable&gt;",
                 "urls": [
                   "/${VERSION}/set-vars.html"
