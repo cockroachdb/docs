@@ -525,10 +525,17 @@ Results from two or more queries can be combined together as follows:
 - Using [set operations](selection-queries.html#set-operations) to combine rows
   using inclusion/exclusion rules.
 
+### Row-level locking for concurrency control with `SELECT FOR UPDATE`
+
+{% include {{page.version.version}}/sql/select-for-update-overview.md %}
+
+For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-update.html).
+
 ## See also
 
 - [Scalar Expressions](scalar-expressions.html)
 - [Selection Clauses](selection-queries.html#selection-clauses)
+- [`SELECT FOR UPDATE`](select-for-update.html)
 - [Set Operations](selection-queries.html#set-operations)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](query-order.html)

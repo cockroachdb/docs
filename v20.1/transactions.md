@@ -66,7 +66,9 @@ Type | Description
 
 ## Transaction retries
 
-Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability). (However, it's possible to mitigate read-write conflicts by performing reads using [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).)
+Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
+
+{% include {{page.version.version}}/misc/mitigate-contention-note.md %}
 
 There are two cases in which transaction retries occur:
 
@@ -155,6 +157,8 @@ To handle these types of errors you have the following options:
    - **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can re-use the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
 2. **Most users, such as application authors**: Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. For an example, see the [Client-side intervention example](#client-side-intervention-example).
 3. **Advanced users, such as library authors**: Use the [`SAVEPOINT`](savepoint.html) statement to create retryable transactions. Retryable transactions can improve performance because their priority is increased each time they are retried, making them more likely to succeed the longer they're in your system. For instructions showing how to do this, see [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
+
+{% include {{page.version.version}}/misc/mitigate-contention-note.md %}
 
 #### Client-side intervention example
 

@@ -383,6 +383,8 @@ To avoid contention, multiple strategies can be applied:
   [`INSERT`](insert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html)/[`UPSERT`](upsert.html)
   clauses together in a single SQL statement.
 
+- Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. It orders transactions by controlling concurrent access to one or more rows of a table. It causes the rows returned by a [selection query](selection-queries.html) to be effectively "locked", such that other transactions trying to access those rows are forced to wait for the first transaction to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
+
 - When replacing values in a row, use [`UPSERT`](upsert.html) and
   specify values for all columns in the inserted rows. This will
   usually have the best performance under contention, compared to
