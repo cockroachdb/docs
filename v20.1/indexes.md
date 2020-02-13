@@ -47,6 +47,22 @@ Indexes create a trade-off: they greatly improve the speed of queries, but may s
 
 To maximize your indexes' performance, we recommend following a few [best practices](#best-practices).
 
+## Hash-sharded indexes
+
+<span class="version-tag">New in v20.1:</span> CockroachDB automatically splits ranges of data in the key-value store based on [the size of the range](architecture/distribution-layer.html#range-splits), and on [the load streaming to the range](load-based-splitting.html). To split ranges based on load, the system looks for a point in the range that evenly divides incoming traffic. Because sequential workloads append data to the end of a single range, rather than to different ranges or different parts of a single range, there is no point at which the system can evenly divide sequential traffic. As a result, sequential workloads cannot benefit from load-based splitting, resulting in a hotspot on a single range.
+
+For performance reasons, we [discourage indexing on sequential keys](#indexing-columns), but if you are working with a table that must be indexed on sequential keys (e.g., for sequential workloads), you should use **hash-sharded indexes**. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+
+To hash-shard indexes, add the optional [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) to a [`CREATE INDEX`](create-index.html) statement, to an [`INDEX` definition](sql-grammar.html#index_def) in a [`CREATE TABLE`](create-table.html) statement, or to an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement. When this clause is used, CockroachDB creates `n_buckets` computed columns, shards the index into `n_buckets` shards, and then stores each index shard in the underlying key-value store with one of the computed column's hash as its prefix.
+
+{{site.data.alerts.callout_info}}
+Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
+
 ## Best practices
 
 We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
@@ -65,6 +81,7 @@ When designing indexes, it's important to consider which columns you index and t
 - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index.<br><br>This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
 - Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 - Indexes of the same columns in different orders can produce different results for each query. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
+- Avoid simple sequential indexes, where possible. Writes to sequential indexes can result in range hotspots, which can negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices), or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
 ### Storing columns
 

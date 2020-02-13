@@ -265,6 +265,8 @@ You can use [secondary indexes](indexes.html) to improve the performance of quer
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
+- Avoid simple sequential indexes, where possible. Writes to sequential indexes can result in range hotspots, which can negatively affect performance. Instead, use [randomly generated unique IDs](#unique-id-best-practices), or [multi-column keys](#use-multi-column-primary-keys).
+- <span class="version-tag">New in v20.1:</span> If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](indexes.html#hash-sharded-indexes).
 
 To create the most useful secondary indexes, check out our [best practices](indexes.html#best-practices).
 

@@ -36,7 +36,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Parameters
 
- arameter | Description
+Parameter | Description
 ----------|------------
 `UNIQUE` | Apply the [`UNIQUE` constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the `UNIQUE` constraint at the table level, so the system checks for duplicate values when inserting or updating data.
 `INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).
@@ -47,8 +47,9 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 `column_name` | The name of the column you want to index.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` aliases `STORING` and works identically.
-`opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.
+`opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](hash-sharded-indexes.html) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html).
+`USING HASH WITH BUCKET COUNT` | <span class="version-tag">New in v20.1:</span> Creates a [hash-sharded index](indexes.html#hash-sharded-indexes) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
 
 ## Viewing schema changes
 
@@ -175,6 +176,66 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
   Judy White
   Robert Murphy
 (5 rows)
+~~~
+
+### Create a hash-sharded secondary index
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE events (
+    product_id INT8,
+    owner UUID,
+    serial_number VARCHAR,
+    event_id UUID,
+    ts TIMESTAMP,
+    data JSONB,
+    PRIMARY KEY (product_id, owner, serial_number, ts, event_id)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON events(ts) USING HASH WITH BUCKET_COUNT=8;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEX FROM events;
+~~~
+
+~~~
+  table_name |               index_name               | non_unique | seq_in_index |       column_name        | direction | storing | implicit
+-------------+----------------------------------------+------------+--------------+--------------------------+-----------+---------+-----------
+  events     | primary                                |   false    |            1 | product_id               | ASC       |  false  |  false
+  events     | primary                                |   false    |            2 | owner                    | ASC       |  false  |  false
+  events     | primary                                |   false    |            3 | serial_number            | ASC       |  false  |  false
+  events     | primary                                |   false    |            4 | ts                       | ASC       |  false  |  false
+  events     | primary                                |   false    |            5 | event_id                 | ASC       |  false  |  false
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            5 | serial_number            | ASC       |  false  |   true
+  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            6 | event_id                 | ASC       |  false  |   true
+(11 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM events;
+~~~
+
+~~~
+        column_name        | data_type | is_nullable | column_default |       generation_expression       |                     indices                      | is_hidden
+---------------------------+-----------+-------------+----------------+-----------------------------------+--------------------------------------------------+------------
+  product_id               | INT8      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
+  owner                    | UUID      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
+  serial_number            | VARCHAR   |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
+  event_id                 | UUID      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
+  ts                       | TIMESTAMP |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
+  data                     | JSONB     |    true     | NULL           |                                   | {}                                               |   false
+  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(CAST(ts AS STRING)), 8) | {events_crdb_internal_ts_shard_8_ts_idx}         |   true
+(7 rows)
 ~~~
 
 ## See also

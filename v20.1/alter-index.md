@@ -16,7 +16,7 @@ Subcommand | Description
 [`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition an index. ([Enterprise-only](enterprise-licensing.html)).
 [`RENAME`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the index.
-[`UNSPLIT AT`](unsplit-at.html) | <span class="version-tag">New in v19.2:</span> Remove a range split enforcement at a specified row in the index.
+[`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the index.
 
 ## Viewing schema changes
 
