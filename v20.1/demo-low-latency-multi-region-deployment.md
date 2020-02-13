@@ -506,7 +506,7 @@ Use the Admin UI to see the affect of network latency before applying multi-regi
 
     <img src="{{ 'images/v20.1/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
 
-    The **Network Diagnostics** page shows the round-trip latency between any two nodes in your cluster. Here's a node/region mapping:
+    The **Network Latency** page shows the round-trip latency between any two nodes in your cluster. Here's a node/region mapping:
 
     Nodes | Region
     ------|-------
