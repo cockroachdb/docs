@@ -87,6 +87,7 @@ A well-designed multi-column primary key can yield even better performance than 
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE posts (
     username STRING,
