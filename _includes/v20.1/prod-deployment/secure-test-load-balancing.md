@@ -2,7 +2,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
 {{site.data.alerts.callout_success}}For comprehensive guidance on benchmarking CockroachDB with TPC-C, see our <a href="https://www.cockroachlabs.com/guides/cockroachdb-performance/">Performance Benchmarking white paper</a>.{{site.data.alerts.end}}
 
-1. SSH to the machine where you want the run the sample TPC-C workload.
+1. SSH to the machine where you want to run the sample TPC-C workload.
 
     This should be a machine that is not running a CockroachDB node, and it should already have a `certs` directory containing `ca.crt`, `client.root.crt`, and `client.root.key` files.
 
