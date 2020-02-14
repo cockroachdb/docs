@@ -23,11 +23,10 @@ On the **Create new cluster** page, select either **Google Cloud** or **AWS** as
 
 The choice of the cloud provider decides the price per node. For pricing comparison, refer to the following table:
 
-Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per node, per month)
+Hardware configuration	| GCP Pricing (per node, per hour)	| AWS Pricing (per node, per hour)
 ----------|------------|------------
-Small (2 vCPU, 60 GB disk) |	$75	| $180
-Medium	(4 vCPU, 100 GB disk) | $300 | $400
-Large (4 vCPU, 250 GB disk) | $540	| $700
+Small (2 vCPU, 60 GB disk) |	$0.11	| $0.48
+Large (4 vCPU, 150 GB disk) | $0.69	| $0.83
 
 To enable VPC peering in the future, choose the cloud platform on which your application is deployed.
 
@@ -85,7 +84,7 @@ After entering the cluster name, click **Continue to Payment**.
 ## Step 6. Enter your billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
-2. Verify the monthly estimated cost for the cluster.
+2. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
@@ -107,9 +106,9 @@ Let's consider a storage buffer of 50% to account for overhead and data growth. 
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 6 Large nodes.
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 Large nodes.
 
-Let's verify if 6 Large nodes meet our performance requirements of 2000 TPS. 6 Large nodes have (6*4) = 24 vCPUs. Since each vCPU can handle around 1000 TPS, 6 Large nodes can meet our performance requirements.
+Let's verify if 9 Large nodes meet our performance requirements of 2000 TPS. 6 Large nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 Large nodes can meet our performance requirements.
 
 Thus our final configuration is as follows:
 
@@ -117,7 +116,7 @@ Component | Selection
 ----------|----------
 Cloud provider | GCP
 Region | us-east1
-Number of nodes | 6
+Number of nodes | 9
 Size | Large
 
 <!--
