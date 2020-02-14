@@ -80,7 +80,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 To rotate the CA certificate, you create a new CA key and a combined CA certificate that contains the new CA certificate followed by the old CA certificate, and then you reload the new combined CA certificate on the nodes and clients. Once all nodes and clients have the combined CA certificate, you then create new node and client certificates signed with the new CA certificate and reload those certificates on the nodes and clients as well.
 
-For more background, see [Why CockroachDB creates a combined CA certificate](rotate-certificates.html#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance](rotate-certificates.html#why-to-rotate-ca-certificates-in-advance).
+For more background, see [Why CockroachDB creates a combined CA certificate](rotate-certificates.html#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance](rotate-certificates.html#why-rotate-ca-certificates-in-advance).
 
 1. Rename the existing CA key:
 
