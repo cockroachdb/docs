@@ -220,7 +220,7 @@ To understand how CockroachDB uses digital certificates, let's first understand 
 
 Consider two people: Amy and Rosa, who want to communicate securely over an insecure computer network. The traditional solution is to use symmetric encryption that involves encrypting and decrypting a plaintext message using a shared key. Amy encrypts her message using the key and sends the encrypted message across the insecure channel. Rosa decrypts the message using the same key and reads the message. This seems like a logical solution until you realize that you need a secure communication channel to send the encryption key.
 
-To solve this problem, cryptographers came up **asymmetric encryption** to set up a secure communication channel over which an encryption key can be shared.
+To solve this problem, cryptographers came up with **asymmetric encryption** to set up a secure communication channel over which an encryption key can be shared.
 
 ### Asymmetric encryption
 
