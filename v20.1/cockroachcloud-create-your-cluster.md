@@ -84,7 +84,7 @@ After entering the cluster name, click **Continue to Payment**.
 ## Step 6. Enter your billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
-2. Verify the monthly estimated cost for the cluster.
+2. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
