@@ -27,27 +27,7 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-### Step 1. Ensure the CockroachDB Version is 2.0 or higher
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach version
-~~~
-
-~~~
-Build Tag:   {{page.release_info.version}}
-Build Time:  {{page.release_info.build_time}}
-Distribution: CCL
-Platform:     darwin amd64 (x86_64-apple-darwin13)
-Go Version:   go1.10
-C Compiler:   4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)
-Build SHA-1:  367ad4f673b33694df06caaa2d7fc63afaaf3053
-Build Type:   release
-~~~
-
-If any node is running an earlier version, [upgrade to the latest supported CockroachDB version](upgrade-cockroach-version.html).
-
-### Step 2. Start the nodes with the correct `--locality` flags
+### Step 1. Start the nodes with the correct `--locality` flags
 
 To start a new cluster with the correct `--locality` flags:
 
@@ -114,13 +94,13 @@ $ cockroach init --insecure --host=<address of any node>
 
 <img src="{{ 'images/v19.2/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 3. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
+### Step 2. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
 
 The following page should be displayed:
 
 <img src="{{ 'images/v19.2/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 4. Set the latitudes and longitudes for the localities
+### Step 3. Set the latitudes and longitudes for the localities
 
 Launch the built-in SQL client:
 
@@ -143,13 +123,13 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates-for-reference).
 
-### Step 5. View the Node Map
+### Step 4. View the Node Map
 
 [Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu. The **Node Map** will be displayed:
 
 <img src="{{ 'images/v19.2/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 6. Navigate the Node Map
+### Step 5. Navigate the Node Map
 
 Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
 
@@ -180,7 +160,7 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 - If you assign the latitude/longitude coordinates at the region level, the **Node Map** shows the regions on the world map. However, when you drill down to the datacenter and further to the individual nodes, the world map disappears and the datacenters/nodes are plotted in a circular layout.  
 - If you assign the latitude/longitude coordinates at the datacenter level, the **Node Map** shows the regions with single datacenters at the same location assigned to the datacenter, while regions with multiple datacenters are shown at the center of the datacenter coordinates in the region. When you drill down to the datacenter levels, the **Node Map** shows the datacenter at their assigned coordinates. Further drilling down to individual nodes shows the nodes in a circular layout.
 
-[Assign latitude/longitude coordinates](#step-4-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
+[Assign latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
 
 ## Known limitations
 
