@@ -28,8 +28,6 @@ Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per no
 Small (2 vCPU, 60 GB disk) |	$0.11	| $0.48
 Large (4 vCPU, 150 GB disk) | $0.69	| $0.83
 
-To enable VPC peering in the future, choose the cloud platform on which your application is deployed.
-
 ## Step 3. Select the region and number of nodes
 
 ### Select the region
