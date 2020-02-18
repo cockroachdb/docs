@@ -4,11 +4,11 @@ summary: This page includes instructions for building a multi-region web applica
 toc: true
 ---
 
-This page walks you through developing a multi-region application. It is the fourth section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) guide.
+This page walks you through developing a multi-region application. It is the fourth section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the guide, [Set Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html). After you set up the database and development environment, you should be ready to look at the example application source code.
+Before you begin this section, complete the previous section of the tutorial, [Set Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html).
 
 ## Project structure
 
@@ -98,7 +98,7 @@ Base = declarative_base()
 
 The first data structure that the file imports is `declarative_base`, a constructor for the [declarative base class](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base), built on SQLAlchemy's Declarative extension. All mapped objects inherit from this object. We assign a declarative base object to the `Base` variable right below the imports.
 
-The `models.py` file also imports some other standard SQLAlchemy data structures that represent database objects (like columns), data types, and constraints, in addition to a standard Python library to help with default values (i.e. `datetime`).
+The `models.py` file also imports some other standard SQLAlchemy data structures that represent database objects (like columns), data types, and constraints, in addition to a standard Python library to help with default values (i.e., `datetime`).
 
 Since the application handles user logins and authentication, we also need to import some security libraries from the Flask ecosystem. We'll cover the web development libraries in more detail in the [Web application](multi-region-application.html#web-application) section below.
 
@@ -199,7 +199,7 @@ The [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python/tree/maste
 
 `run_transaction()` has the following additional benefits:
 
-- When passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object, it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction. Note that a `sessionmaker` objects is different from a `session` object, which is not an allowable `transactor` for `run_transaction()`.
+- When passed a [`sqlalchemy.orm.session.sessionmaker`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object, it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction. Note that a `sessionmaker` objects is different from a `session` object, which is not an allowable `transactor` for `run_transaction()`.
 - By abstracting transaction retry logic away from your application, it keeps your application code portable across different databases.
 
  Because all callback functions are passed to `run_transaction()`, the `Session` method calls within those callback functions are written a little differently than the typical SQLAlchemy application. Most importantly, those functions must not change the session and/or transaction state. This is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/en/latest/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that

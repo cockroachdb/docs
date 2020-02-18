@@ -4,11 +4,11 @@ summary: This page includes instructions for deploying a multi-region web applic
 toc: true
 ---
 
-This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) guide.
+This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the guide, [Develop a Multi-Region Web Application](multi-region-application.html). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
+Before you begin this section, complete the previous section of the tutorial, [Develop a Multi-Region Web Application](multi-region-application.html). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
 
 In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html), make sure that you have the following installed on your local machine:
 
@@ -65,7 +65,7 @@ You can also deploy CRDB manually. For instructions, see the [Manual Deployment]
 
 To deploy an application in multiple regions in production, we recommend that you use a [managed Kubernetes engine](https://kubernetes.io/docs/setup/#production-environment), like [Amazon EKS](https://aws.amazon.com/eks/), [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/), or [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/). To route requests to the container cluster deployed closest to clients, you should also set up a multi-cluster [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
-In this guide, we use [kubemci](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-ingress) to configure a GCP HTTP Load Balancer to container clusters deployed on GKE.
+In this tutorial, we use [kubemci](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-ingress) to configure a GCP HTTP Load Balancer to container clusters deployed on GKE.
 
 {{site.data.alerts.callout_info}}
 To serve a secure web application, you also need a public domain name!
@@ -77,16 +77,24 @@ To serve a secure web application, you also need a public domain name!
 
 1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all subdomains of your domain name (e.g. `https://site.com/*`), and retrieve the API key.
 
-{{site.data.alerts.callout_info}}
-The example HTML templates include maps. Not providing an API key to the application will not break the application.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    The example HTML templates include maps. Not providing an API key to the application will not break the application.
+    {{site.data.alerts.end}}
 
 1. Configure/authorize the `gcloud` CLI to use your project and region.
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ gcloud init
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ gcloud auth login
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ gcloud auth application-default login
     ~~~
 
@@ -119,8 +127,16 @@ The example HTML templates include maps. Not providing an API key to the applica
     ~~~ shell
     $ gcloud config set compute/zone us-east1-b && \
       gcloud container clusters create movr-us-east
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ gcloud config set compute/zone us-west1-b && \
       gcloud container clusters create movr-us-west
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell  
     $ gcloud config set compute/zone europe-west1-b && \
       gcloud container clusters create movr-europe-west
     ~~~
@@ -130,7 +146,15 @@ The example HTML templates include maps. Not providing an API key to the applica
     {% include copy-clipboard.html %}
     ~~~ shell
     $ KUBECONFIG=~/mcikubeconfig gcloud container clusters get-credentials --zone=us-east1-b movr-us-east
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ KUBECONFIG=~/mcikubeconfig gcloud container clusters get-credentials --zone=us-west1-b movr-us-west
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
     $ KUBECONFIG=~/mcikubeconfig gcloud container clusters get-credentials --zone=europe-west1-b movr-europe-west
     ~~~
 
@@ -189,9 +213,9 @@ The example HTML templates include maps. Not providing an API key to the applica
         - On the "**Create a new certificate**" page, give a name to the certificate (e.g., "`movr-ssl-cert`"), check "**Create Google-managed certificate**", and then under "Domains", enter a domain name that you own and want to use for your application.
     1. Review and finalize the load balancer, and then "**Update**".
 
-    {{site.data.alerts.callout_info}}
-    It will take several minutes to provision the SSL certificate that you just created for the frontend.
-    {{site.data.alerts.end}}
+        {{site.data.alerts.callout_info}}
+        It will take several minutes to provision the SSL certificate that you just created for the frontend.
+        {{site.data.alerts.end}}
 
 1. Check the status of the ingress.
 
@@ -216,7 +240,7 @@ The example HTML templates include maps. Not providing an API key to the applica
 
 ### Develop your own application
 
-This guide demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](build-an-app-with-cockroachdb.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
+This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](build-an-app-with-cockroachdb.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
 
 ### Upgrade your deployment
 

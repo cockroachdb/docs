@@ -4,19 +4,19 @@ summary: This page walks you through setting up a demo multi-region CockroachDB 
 toc: true
 ---
 
-This page walks you through setting up a virtual environment for developing and debugging an example multi-region application. It is the third section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) guide. In this section, you will set up a demo CockroachDB cluster, initialize the database, and set up a virtual development environment.
+This page walks you through setting up a virtual environment for developing and debugging an example multi-region application. It is the third section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial. In this section, you will set up a demo CockroachDB cluster, initialize the database, and set up a virtual development environment.
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the guide, [Create a Multi-Region Database Schema](multi-region-database.html). After you create a database schema for the application, you should be ready to set up an environment for developing and debugging.
+1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema](multi-region-database.html).
 
-Make sure that you have the following installed on your local machine:
+1. Make sure that you have the following installed on your local machine:
 
-- [CockroachDB](install-cockroachdb-mac.html)
-- [Python 3](https://www.python.org/downloads/)
-- [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+    - [CockroachDB](install-cockroachdb-mac.html)
+    - [Python 3](https://www.python.org/downloads/)
+    - [Pipenv](https://pipenv.readthedocs.io/en/latest/)
 
-After you finish installing the prerequisites listed above, clone the [movr-flask](https://github.com/cockroachlabs/movr-flask) repo. We'll reference the source code in this repo throughout the guide.
+1. Clone the [movr-flask](https://github.com/cockroachlabs/movr-flask) repo. We'll reference the source code in this repo throughout the tutorial.
 
 ## Set up a demo multi-region CockroachDB cluster
 
@@ -28,7 +28,9 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
     ~~~ shell
     $ cockroach demo \
     --nodes=9 \
-    --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1
+    --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:\
+    region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:\
+    region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1
     ~~~
 
     ~~~

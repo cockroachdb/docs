@@ -4,11 +4,11 @@ summary: This page documents the database schema for the multi-region Flask appl
 toc: true
 ---
 
-This page walks you through creating a database schema for an example multi-region application. It is the second section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) guide.
+This page walks you through creating a database schema for an example multi-region application. It is the second section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the guide, [MovR: An Example Multi-Region Use-Case](multi-region-use-case.html). After you are familiar with the fictional vehicle-sharing company MovR, and the challenges that global companies can solve by building multi-region applications, you should be ready to create a database schema for the application's database.
+Before you begin this section, complete the previous section of the tutorial, [MovR: An Example Multi-Region Use-Case](multi-region-use-case.html).
 
 ## The `movr` database
 
@@ -45,22 +45,22 @@ You can [partition the tables](partition-by.html) of the `movr` database, based 
 For example:
 
 ~~~ sql
-PARTITION BY LIST (city) (
-             |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-             |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-             |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-             | );
+> PARTITION BY LIST (city) (
+    PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+    PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+    PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+);
 ~~~
 
 After you define a partition, you can constrain it to a replication zone, using a [zone constraint](configure-zone.html) on the `region` locality. For the `users` table, this looks like:
 
 ~~~ sql
-ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
-             |     constraints = '[+region=gcp-europe-west1]';
-             | ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
-             |     constraints = '[+region=gcp-us-east1]';
-             | ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
-             |     constraints = '[+region=gcp-us-west1]'
+> ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+    constraints = '[+region=gcp-europe-west1]';
+  ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+    constraints = '[+region=gcp-us-east1]';
+  ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+    constraints = '[+region=gcp-us-west1]';
 ~~~
 
 For full partitioning statements for each table and secondary index, see `dbinit.sql`.
@@ -71,21 +71,21 @@ See below for the [`CREATE TABLE`](create-table.html) statements for each table 
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
-~~~
-CREATE TABLE users (
-      id UUID NOT NULL,
-      city STRING NOT NULL,
-      first_name STRING NULL,
-      last_name STRING NULL,
-      email STRING NULL,
-      username STRING NULL,
-      password_hash STRING NULL,
-      is_owner BOOL NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      UNIQUE INDEX users_username_key (username ASC),
-      FAMILY "primary" (id, city, first_name, last_name, email, username, password_hash, is_owner),
-      CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-  );
+~~~ sql
+> CREATE TABLE users (
+    id UUID NOT NULL,
+    city STRING NOT NULL,
+    first_name STRING NULL,
+    last_name STRING NULL,
+    email STRING NULL,
+    username STRING NULL,
+    password_hash STRING NULL,
+    is_owner BOOL NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    UNIQUE INDEX users_username_key (username ASC),
+    FAMILY "primary" (id, city, first_name, last_name, email, username, password_hash, is_owner),
+    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
+);
 ~~~
 
 Note the following:
@@ -97,41 +97,41 @@ Note the following:
 
 ## The `vehicles` table
 
-~~~
-CREATE TABLE vehicles (
-      id UUID NOT NULL,
-      city STRING NOT NULL,
-      type STRING NULL,
-      owner_id UUID NULL,
-      date_added DATE NULL,
-      status STRING NULL,
-      last_location STRING NULL,
-      color STRING NULL,
-      brand STRING NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
-      INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC, status ASC) PARTITION BY LIST (city) (
-          PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-          PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-          PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-      ),
-      FAMILY "primary" (id, city, type, owner_id, date_added, status, last_location, color, brand),
-      CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-  );
+~~~ sql
+> CREATE TABLE vehicles (
+    id UUID NOT NULL,
+    city STRING NOT NULL,
+    type STRING NULL,
+    owner_id UUID NULL,
+    date_added DATE NULL,
+    status STRING NULL,
+    last_location STRING NULL,
+    color STRING NULL,
+    brand STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
+    INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC, status ASC) PARTITION BY LIST (city) (
+        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+    ),
+    FAMILY "primary" (id, city, type, owner_id, date_added, status, last_location, color, brand),
+    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
+);
 ~~~
 
 Note the following:
 
 - Like the `users` table, the `vehicles` table has a composite primary key on `city` and `id`.
-- The `vehicles` table has a [foreign key constraint](foreign-key.html) on the `users` table, for the `city` and `owner_id` columns. This guarantees that a vehicle is registered to a particular user (i.e. an "owner") in the city where that user is registered.
+- The `vehicles` table has a [foreign key constraint](foreign-key.html) on the `users` table, for the `city` and `owner_id` columns. This guarantees that a vehicle is registered to a particular user (i.e., an "owner") in the city where that user is registered.
 - The table has a secondary index (`vehicles_auto_index_fk_city_ref_users`) on the `city`, `owner_id`, and `status`. By default, CockroachDB creates secondary indexes for all foreign key constraints. This optimizes scans made on the foreign key columns, for foreign key enforcement. Here, we add `status` to the secondary index, because reading and writing the status of a vehicle is a common query for the application. As mentioned in the `users` table section, it is a best practice to [index columns in a `WHERE` clause.](indexes.html#best-practices)
 - We include a [`PARTITION BY`](partition-by.html) statement for the `vehicles_auto_index_fk_city_ref_users` index. When geo-partitioning a database, it's important to geo-partition all indexes containing partition columns. In this case, the index includes `city`, so we should partition the index.
 
     After defining this partition, you also need to add a zone constraint to the partition, so that it is truly geo-partitioned. For example, for the index's `us_east` partition, we use the following statement to configure the zone:
 
     ~~~ sql
-    ALTER PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
-    constraints = '[+region=gcp-us-east1]';
+    > ALTER PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+        constraints = '[+region=gcp-us-east1]';
     ~~~
 
     See `dbinit.sql` for full zone configuration statements for all partitioned indexes.
@@ -140,34 +140,34 @@ Note the following:
 
 ## The `rides` table
 
-~~~
-  CREATE TABLE rides (
-      id UUID NOT NULL,
-      city STRING NOT NULL,
-      vehicle_id UUID NULL,
-      rider_id UUID NULL,
-      rider_city STRING NOT NULL,
-      start_location STRING NULL,
-      end_location STRING NULL,
-      start_time TIMESTAMPTZ NULL,
-      end_time TIMESTAMPTZ NULL,
-      length INTERVAL NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      CONSTRAINT fk_city_ref_users FOREIGN KEY (rider_city, rider_id) REFERENCES users(city, id),
-      CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (city, vehicle_id) REFERENCES vehicles(city, id),
-      INDEX rides_auto_index_fk_city_ref_users (rider_city ASC, rider_id ASC) PARTITION BY LIST (rider_city) (
-          PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-          PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-          PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-      ),
-      INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (city ASC, vehicle_id ASC) PARTITION BY LIST (city) (
-          PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-          PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-          PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-      ),
-      FAMILY "primary" (id, city, rider_id, rider_city, vehicle_id, start_location, end_location, start_time, end_time, length),
-      CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-  );
+~~~ sql
+> CREATE TABLE rides (
+    id UUID NOT NULL,
+    city STRING NOT NULL,
+    vehicle_id UUID NULL,
+    rider_id UUID NULL,
+    rider_city STRING NOT NULL,
+    start_location STRING NULL,
+    end_location STRING NULL,
+    start_time TIMESTAMPTZ NULL,
+    end_time TIMESTAMPTZ NULL,
+    length INTERVAL NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    CONSTRAINT fk_city_ref_users FOREIGN KEY (rider_city, rider_id) REFERENCES users(city, id),
+    CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (city, vehicle_id) REFERENCES vehicles(city, id),
+    INDEX rides_auto_index_fk_city_ref_users (rider_city ASC, rider_id ASC) PARTITION BY LIST (rider_city) (
+        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+    ),
+    INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (city ASC, vehicle_id ASC) PARTITION BY LIST (city) (
+        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+    ),
+    FAMILY "primary" (id, city, rider_id, rider_city, vehicle_id, start_location, end_location, start_time, end_time, length),
+    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
+);
 ~~~
 
 
@@ -180,7 +180,7 @@ Note the following:
 
 ## Next steps
 
-Now that you are familiar with the `movr` schema, you should be ready to [set up a development environment for a multi-region application](multi-region-setup.html).
+Now that you are familiar with the `movr` schema, [set up a development environment for a multi-region application](multi-region-setup.html).
 
 ## See also
 
