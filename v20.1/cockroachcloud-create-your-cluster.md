@@ -108,7 +108,7 @@ With the default replication factor of 3, the total amount of data stored is (3 
 
 To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 Large nodes.
 
-Let's verify if 6 Large nodes meet our performance requirements of 2000 TPS. 6 Large nodes have (6*9) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 Large nodes can meet our performance requirements.
+Let's verify if 9 Large nodes meet our performance requirements of 2000 TPS. 9 Large nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 Large nodes can meet our performance requirements.
 
 Thus our final configuration is as follows:
 
