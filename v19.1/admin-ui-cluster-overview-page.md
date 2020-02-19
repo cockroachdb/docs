@@ -37,7 +37,7 @@ CPUs | The number of CPU cores on the machine.
 Capacity Usage | The storage capacity used by CockroachDB as a percentage of the total usable capacity on the node. The value is represented numerically and as a bar graph.
 Mem Usage | The memory used by CockroachDB as a percentage of the total memory on the node. The value is represented numerically and as a bar graph.
 Version | The build tag of the CockroachDB version installed on the node.
-Logs | Click **Logs** to see detailed logs for the node.
+Logs | Click **Logs** to see detailed logs for the node. [Requires `admin` privileges](admin-ui-overview.html#admin-ui-access) on secure clusters.
 
 ### Dead Nodes
 
