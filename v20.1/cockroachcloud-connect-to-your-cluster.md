@@ -62,6 +62,9 @@ Use the Console to authorize networks:
     The **Add User** modal displays.
 
 3. Enter a **Username** and **Password**.
+    {{site.data.alerts.callout_info}}
+    Password should be at least 12 characters long. 
+    {{site.data.alerts.end}}
 4. Click **Create**.
 
     Currently, all new users are created with Admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
