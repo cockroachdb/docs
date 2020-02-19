@@ -99,7 +99,7 @@ Option | Value | Description
 `key_in_value` | N/A | Makes the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for these sinks (currently only [cloud storage sinks](#cloud-storage-sink)).
 
 {{site.data.alerts.callout_warning}}
-<span class="version-tag">New in v20.1:</span> Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless. This is a backwards-incompatible change.
+<span class="version-tag">New in v20.1:</span> Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
 #### Avro limitations
