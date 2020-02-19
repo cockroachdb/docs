@@ -25,11 +25,8 @@ The choice of the cloud provider decides the price per node. For pricing compari
 
 Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per node, per month)
 ----------|------------|------------
-Small (2 vCPU, 60 GB disk) |	$75	| $180
-Medium	(4 vCPU, 100 GB disk) | $300 | $400
-Large (4 vCPU, 250 GB disk) | $540	| $700
-
-To enable VPC peering in the future, choose the cloud platform on which your application is deployed.
+Small (2 vCPU, 60 GB disk) |	$0.11	| $0.48
+Medium (4 vCPU, 150 GB disk) | $0.69	| $0.83
 
 ## Step 3. Select the region and number of nodes
 
@@ -70,7 +67,7 @@ Capacity | Total raw data size you expect to store without replication.
 Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
 Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
-Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence a Small node (2vCPUs) can handle 2000 transactions per second and a Medium/Large (4vCPUs) node can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence a Small node (2vCPUs) can handle 2000 transactions per second and a Medium (4vCPUs) node can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 To change the hardware configuration after the cluster is created, you will have to [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
@@ -85,7 +82,7 @@ After entering the cluster name, click **Continue to Payment**.
 ## Step 6. Enter your billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
-2. Verify the monthly estimated cost for the cluster.
+2. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
@@ -107,9 +104,9 @@ Let's consider a storage buffer of 50% to account for overhead and data growth. 
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 6 Large nodes.
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 Medium nodes.
 
-Let's verify if 6 Large nodes meet our performance requirements of 2000 TPS. 6 Large nodes have (6*4) = 24 vCPUs. Since each vCPU can handle around 1000 TPS, 6 Large nodes can meet our performance requirements.
+Let's verify if 9 Medium nodes meet our performance requirements of 2000 TPS. 9 Medium nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 Medium nodes can meet our performance requirements.
 
 Thus our final configuration is as follows:
 
@@ -117,8 +114,8 @@ Component | Selection
 ----------|----------
 Cloud provider | GCP
 Region | us-east1
-Number of nodes | 6
-Size | Large
+Number of nodes | 9
+Size | Medium
 
 <!--
 ### [WIP] Select hardware configuration based on performance requirements
