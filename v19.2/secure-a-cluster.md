@@ -308,7 +308,30 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
     <img src="{{ 'images/v19.2/admin_ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-3. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+5. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+
+    Run the [cockroach sql](cockroach-sql.html) command against node 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --host=localhost:26257
+    ~~~
+
+6. Assign `max` to the `admin` role:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true)
+    ~~~
+
+7. Exit the SQL shell on node 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+
+8. Now you can use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6. Simulate node failure
 

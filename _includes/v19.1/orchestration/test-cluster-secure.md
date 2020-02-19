@@ -80,7 +80,16 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
       You will need this username and password to access the Admin UI later.
 
-5. Exit the SQL shell and pod:
+5. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+
+    Assign `roach` to the `admin` role:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true)
+    ~~~
+
+6. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -179,7 +188,16 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     You will need this username and password to access the Admin UI later.
 
-5. Exit the SQL shell and pod:
+5. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+
+    Assign `roach` to the `admin` role:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true)
+    ~~~
+
+6. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql

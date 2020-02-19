@@ -3,6 +3,10 @@ title: Jobs Page
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+{{site.data.alerts.end}}
+
 The **Jobs** page of the Admin UI provides details about the backup/restore jobs, schema changes, [user-created table statistics](create-statistics.html) and [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, and changefeeds performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
 
 
