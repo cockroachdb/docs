@@ -191,7 +191,7 @@ average_csats = dict()
 weighted_csats = dict()
 
 
-def calculate_csat(no_votes, yes_votes, pageviews, blacklist):
+def calculate_csat(no_votes, yes_votes, pageviews):
 
     # Remove blacklisted pages.
     for p in blacklist:
@@ -257,7 +257,7 @@ def main():
     print()
     print(
         'Docs CSAT (basic, weighted):',
-        calculate_csat(no_votes, yes_votes, pageviews, blacklist)
+        calculate_csat(no_votes, yes_votes, pageviews)
     )
     print()
 
