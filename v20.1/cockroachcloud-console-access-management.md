@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [sign in to the Console](cockroachcloud-sign-up-for-a-cluster.html#sign-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in to the Console](cockroachcloud-create-your-account.html#log-in) and click **Access**.
 
 ## Organization
 
@@ -13,7 +13,7 @@ An **Organization** allows you to manage your clusters under a shared [billing](
 
 To switch between the organizations:
 
-1. [Sign in to the Console](cockroachcloud-create-your-account.html#sign-in).
+1. [Log in to the Console](cockroachcloud-create-your-account.html#log-in).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
 ## Roles
