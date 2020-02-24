@@ -97,8 +97,9 @@ Option | Value | Description
 `format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). For mappings of CockroachDB types to Avro types, [see the table below](#avro-types). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
 `key_in_value` | N/A | Makes the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for these sinks (currently only [cloud storage sinks](#cloud-storage-sink)).
+`diff` | N/A | <span class="version-tag">New in v20.1:</span> A `before` field is published with each message, which includes the value of the row before the update was applied.
 
-{{site.data.alerts.callout_warning}}
+{{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.1:</span> Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
