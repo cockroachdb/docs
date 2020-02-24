@@ -41,7 +41,12 @@ The sink URI follows the basic format of:
 '[scheme]://[host]:[port]?[query_parameters]'
 ~~~
 
-The `scheme` can be [`kafka`](#kafka) or any [cloud storage sink](#cloud-storage-sink).
+URI Component      | Description
+-------------------+------------------------------------------------------------------
+`scheme`           | The type of sink: [`kafka`](#kafka) or any [cloud storage sink](#cloud-storage-sink).
+`host`             | The sink's hostname or IP address.
+`port`             | The sink's port.
+`query_parameters` | The sink's [query parameters](#query-parameters).
 
 #### Kafka
 
@@ -51,19 +56,6 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones'
 ~~~
 
-Query parameters include:
-
-Parameter | Value | Description
-----------+-------+---------------
-`topic_prefix` | [`STRING`](string.html) | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`tls_enabled=true` | [`BOOL`](bool.html) | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
-`ca_cert` | [`STRING`](string.html) | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`client_cert` | [`STRING`](string.html) | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
-`client_key` | [`STRING`](string.html) | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
-`sasl_enabled` | [`BOOL`](bool.html) | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
-`sasl_user` | [`STRING`](string.html) | Your SASL username.
-`sasl_password` | [`STRING`](string.html) | Your SASL password.
-
 #### Cloud storage sink
 
 Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
@@ -72,33 +64,44 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Currently, cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-Example of a cloud storage sink (i.e., AWS S3) URI:
-
-~~~
-'experimental-s3://test-s3encryption/test?AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOPQ&AWS_SECRET_ACCESS_KEY=LS0tLS1CRUdJTiBDRVJUSUZ'
-~~~
+Any of the cloud storages below can be used as a sink:
 
 {{site.data.alerts.callout_info}}
 The `scheme` for a cloud storage sink should be prepended with `experimental-`.
 {{site.data.alerts.end}}
 
-Any of the cloud storages below can be used as a sink:
-
 {% include {{ page.version.version }}/misc/external-urls.md %}
+
+#### Query parameters
+
+Query parameters include:
+
+Parameter          | <div style="width:100px">Sink Type</div>     | Description
+-------------------+----------------------------------------------+-------------------------------------------------------------------
+`topic_prefix`     | [Kafka](#kafka), [cloud](#cloud-storage-sink) | Type: [`STRING`](string.html) <br><br>Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`tls_enabled=true` | [Kafka](#kafka)                               | Type: [`BOOL`](bool.html) <br><br>If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
+`ca_cert`          | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert`      | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
+`sasl_enabled`     | [Kafka](#kafka)                               | Type: [`BOOL`](bool.html) <br><br>If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
+`sasl_user`        | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>Your SASL username.
+`sasl_password`    | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>Your SASL password.
+`file_size`        | [cloud](#cloud-storage-sink)                 | Type: [`STRING`](string.html) <br><br>The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 
 ### Options
 
 Option | Value | Description
 -------|-------|------------
 `updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](change-data-capture.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
-`resolved` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
+`resolved` | [`INTERVAL`](interval.html) | Periodically emit [resolved timestamps](change-data-capture.html#resolved-def) to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
 `format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). For mappings of CockroachDB types to Avro types, [see the table below](#avro-types). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
 `key_in_value` | N/A | Makes the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for these sinks (currently only [cloud storage sinks](#cloud-storage-sink)).
+`diff` | N/A | <span class="version-tag">New in v20.1:</span> A `before` field is published with each message, which includes the value of the row before the update was applied.
 
-{{site.data.alerts.callout_warning}}
+{{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.1:</span> Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
