@@ -66,3 +66,8 @@ defaults:
       type: "pages"
     values:
       layout: "page"
+
+algolia:
+  application_id: 7RXZLDVR5F
+  search_api_key: d3908f7681c855f6ba95c2a14d063d89
+  index_name: cockroachcloud_docs
