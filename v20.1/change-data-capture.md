@@ -793,8 +793,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Known limitations
 
-The following are limitations in the current release and will be addressed in the future:
-
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ## See also
