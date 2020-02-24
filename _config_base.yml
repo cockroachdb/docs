@@ -66,3 +66,11 @@ defaults:
       type: "pages"
     values:
       layout: "page"
+
+algolia:
+  application_id: 7RXZLDVR5F
+  index_name: staging_cockroachcloud_docs # new staging index
+  files_to_exclude:
+    - index.html
+    - index.md
+    - search.html
