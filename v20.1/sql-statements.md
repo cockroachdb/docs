@@ -90,9 +90,10 @@ Statement | Usage
 ----------|------------
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
 [`COMMIT`](commit-transaction.html) | Commit the current [transaction](transactions.html).
-[`RELEASE SAVEPOINT`](release-savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), commit the transaction's changes once there are no retry errors.
-[`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the savepoint and retry the transaction.
-[`SAVEPOINT`](savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), start a retryable transaction.
+[`SAVEPOINT`](savepoint.html) | Start a [sub-transaction](transactions.html#sub-transactions).
+[`RELEASE SAVEPOINT`](release-savepoint.html) | Commit a [sub-transaction](transactions.html#sub-transactions).
+[`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-sub-transaction) | Roll back and restart the [sub-transaction](transactions.html#sub-transactions) started at the corresponding `SAVEPOINT` statement.
+[`ROLLBACK`](rollback-transaction.html) | Rolls back the current [transaction](transactions.html) and all of its [sub-transaction](transactions.html#sub-transactions), discarding all transactional updates made by statements inside the transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
