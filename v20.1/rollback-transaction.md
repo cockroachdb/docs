@@ -89,3 +89,4 @@ For examples of retrying transactions in an application, check out the transacti
 - [`COMMIT`](commit-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
+- [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html)

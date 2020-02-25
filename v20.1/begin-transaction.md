@@ -36,7 +36,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
 `AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> The `AS OF SYSTEM TIME` clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the `READ WRITE` mode is specified, an error will be returned.<br/><br/>For more information, see [AS OF SYSTEM TIME](as-of-system-time.html).<br/><br/>
 
- CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
+CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
 
 ## Examples
 
@@ -44,7 +44,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 
 #### Use default settings
 
-Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` isolation and `NORMAL` priority.
+Without modifying the `BEGIN` statement, the transaction uses `NORMAL` priority.
 
 {% include copy-clipboard.html %}
 ~~~ sql
