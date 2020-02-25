@@ -65,7 +65,7 @@ table tr td:nth-child(2) {
  `BEGIN` | ✓ | Standard | [`BEGIN` documentation](begin-transaction.html)
  `COMMIT` | ✓ | Standard | [`COMMIT` documentation](commit-transaction.html)
  `ROLLBACK` | ✓ | Standard | [`ROLLBACK` documentation](rollback-transaction.html)
- `SAVEPOINT` | ✓ | CockroachDB Extension | While `SAVEPOINT` is part of the SQL standard, we only support [our extension of it](transactions.html#transaction-retries)
+ `SAVEPOINT` | ✓ | Standard with CockroachDB extensions | <span class="version-tag">New in v20.1:</span> CockroachDB supports nested transactions using [`SAVEPOINT`](savepoint.html)
 
 ### Indexes
 

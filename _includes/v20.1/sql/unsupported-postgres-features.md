@@ -6,6 +6,5 @@
 - GEOSPATIAL functions and indexes
 - Drop primary key
 - XML Functions
-- Savepoints
 - Column-level privileges
 - XA syntax
