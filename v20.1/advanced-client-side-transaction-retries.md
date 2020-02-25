@@ -24,15 +24,15 @@ A retryable transaction goes through the process described below, which maps to 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;                                  -- #1
-> SAVEPOINT cockroach_restart;            -- #2
+> SAVEPOINT retry_savepoint;            -- #2
 -- ... various transaction statements ... -- #3
-> RELEASE SAVEPOINT cockroach_restart;    -- #5 (Or #4, ROLLBACK, in case of retry error)
+> RELEASE SAVEPOINT retry_savepoint;    -- #5 (Or #4, ROLLBACK, in case of retry error)
 > COMMIT;
 ~~~
 
 1. The transaction starts with the [`BEGIN`](begin-transaction.html) statement.
 
-2. The [`SAVEPOINT`](savepoint.html) statement declares the intention to retry the transaction in the case of contention errors. Note that CockroachDB's savepoint implementation does not support all savepoint functionality, such as nested transactions. It must be executed after [`BEGIN`](begin-transaction.html) but before the first statement that manipulates a database.
+2. The [`SAVEPOINT`](savepoint.html) statement declares the intention to retry the transaction in the case of contention errors. It must be executed after [`BEGIN`](begin-transaction.html) but before the first statement that manipulates a database.  In other words, it must be the outermost statement in an XXX: YOU ARE HERE.
 
 3. The statements in the transaction are executed.
 
@@ -45,10 +45,6 @@ A retryable transaction goes through the process described below, which maps to 
 5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
     In some cases, the [`RELEASE SAVEPOINT`](release-savepoint.html) statement itself can fail with a retry error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retry error is handled as described in step 4.
-
-## Customizing the savepoint name
-
-{% include {{ page.version.version }}/misc/customizing-the-savepoint-name.md %}
 
 ## Examples
 

@@ -41,11 +41,11 @@ To use [advanced client-side transaction retries](advanced-client-side-transacti
 ~~~ sql
 > BEGIN;
 
-> SAVEPOINT cockroach_restart;
+> SAVEPOINT my_retry_savepoint;
 
 <transaction statements>
 
-> RELEASE SAVEPOINT cockroach_restart;
+> RELEASE SAVEPOINT my_retry_savepoint;
 
 > COMMIT;
 ~~~
@@ -165,6 +165,14 @@ To handle these types of errors you have the following options:
 Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
 
 For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+## Sub-transactions
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports the nesting of transactions using [savepoints](savepoint.html).  These nested transactions are also known as sub-transactions.
+
+Just as [`COMMIT`](commit-transaction.html) and [`ROLLBACK`](rollback-transaction.html) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`](release-savepoint.html) and [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#using-rollbacks-with-nested-savepoints) are used to commit and discard sub-transactions.
+
+For more information, including examples showing how to use savepoints to create sub-transactions, see [the savepoints documentation](savepoint.html#examples).
 
 ## Transaction priorities
 

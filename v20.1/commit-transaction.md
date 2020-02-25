@@ -40,7 +40,7 @@ When using [advanced client-side transaction retries](advanced-client-side-trans
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SAVEPOINT cockroach_restart;
+> SAVEPOINT retry_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -55,7 +55,7 @@ When using [advanced client-side transaction retries](advanced-client-side-trans
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RELEASE SAVEPOINT cockroach_restart;
+> RELEASE SAVEPOINT retry_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -81,3 +81,4 @@ If you are using transactions that CockroachDB will [automatically retry](transa
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`ROLLBACK`](rollback-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
+- [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html)

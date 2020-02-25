@@ -1,10 +1,16 @@
 ---
 title: ROLLBACK
-summary: Abort the current transaction, discarding all updates made by statements included in the transaction with the ROLLBACK statement in CockroachDB.
+summary: Rolls back the current transaction or sub-transaction, discarding all transactional updates made by statements inside the transaction.
 toc: true
 ---
 
-The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.
+The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html) or [sub-transaction](transactions.html#sub-transactions), discarding all transactional updates made by statements included in the transaction.
+
+The base `ROLLBACK` syntax [rolls back the entire transaction](#rollback-a-transaction).
+
+The `ROLLBACK TO SAVEPOINT` syntax rolls back and restarts the [sub-transaction](transactions.html#sub-transactions) started at the corresponding `SAVEPOINT` statement.  For more information, see [the documentation for `SAVEPOINT`](savepoint.html).
+
+{% include {{page.version.version}}/sql/savepoint-ddl-rollbacks.md %}
 
 When using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), use `ROLLBACK TO SAVEPOINT` to handle a transaction that needs to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
 
@@ -22,9 +28,13 @@ No [privileges](authorization.html#assign-privileges) are required to rollback a
 
  Parameter | Description
 -----------|-------------
- `TO SAVEPOINT cockroach_restart` | If using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error.
+ `TO SAVEPOINT <name>` | If using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error.
 
 ## Example
+
+### Using rollbacks with nested savepoints
+
+For examples showing how to use `ROLLBACK` with nested savepoints, see [the `SAVEPOINT` documentation](savepoint.html).
 
 ### Rollback a transaction
 
@@ -77,15 +87,16 @@ To use [advanced client-side transaction retries](advanced-client-side-transacti
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ROLLBACK TO SAVEPOINT cockroach_restart;
+> ROLLBACK TO SAVEPOINT my_retry_savepoint;
 ~~~
 
 For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB](build-an-app-with-cockroachdb.html) tutorials.
 
 ## See also
 
+- [`SAVEPOINT`](savepoint.html)
 - [Transactions](transactions.html)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
-- [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
+- [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html)

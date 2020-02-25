@@ -53,7 +53,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SAVEPOINT cockroach_restart;
+> SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -68,7 +68,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RELEASE SAVEPOINT cockroach_restart;
+> RELEASE SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -89,7 +89,7 @@ You can set a transaction's priority to `LOW` or `HIGH`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SAVEPOINT cockroach_restart;
+> SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -104,7 +104,7 @@ You can set a transaction's priority to `LOW` or `HIGH`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RELEASE SAVEPOINT cockroach_restart;
+> RELEASE SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}

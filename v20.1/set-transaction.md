@@ -44,7 +44,7 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SAVEPOINT cockroach_restart;
+> SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -59,7 +59,7 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RELEASE SAVEPOINT cockroach_restart;
+> RELEASE SAVEPOINT my_savepoint;
 ~~~
 
 {% include copy-clipboard.html %}

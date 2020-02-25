@@ -61,7 +61,7 @@ BEGIN;
 
 SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
-SAVEPOINT cockroach_restart;
+SAVEPOINT my_savepoint;
 
 SELECT ...
 SELECT ...
@@ -102,7 +102,7 @@ To counteract this, you can issue all follower reads in explicit transactions se
 ```sql
 BEGIN PRIORITY HIGH AS OF SYSTEM TIME experimental_follower_read_timestamp();
 
-SAVEPOINT cockroach_restart;
+SAVEPOINT my_savepoint;
 
 SELECT ...
 SELECT ...

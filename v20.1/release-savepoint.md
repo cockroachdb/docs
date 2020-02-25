@@ -1,16 +1,16 @@
 ---
 title: RELEASE SAVEPOINT
-summary: Commit a transaction's changes once there are no retry errors with the RELEASE SAVEPOINT statement in CockroachDB.
+summary: Commit a sub-transaction.
 toc: true
 ---
 
-When using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), the `RELEASE SAVEPOINT` statement commits the transaction.
+The `RELEASE SAVEPOINT` statement commits the [sub-transaction](transactions.html#sub-transactions) starting at the corresponding `SAVEPOINT` statement using the same savepoint name, including all its nested sub-transactions.
 
-If statements in the transaction [generated any non-retry errors](transactions.html#error-handling), `RELEASE SAVEPOINT` is equivalent to [`ROLLBACK`](rollback-transaction.html), which aborts the transaction and discards all updates made by its statements.
+The `RELEASE SAVEPOINT` statement is invalid after the sub-transaction has encountered an error. After an error, the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#using-rollbacks-with-nested-savepoints) statement must be used instead.
 
-Note that although issuing this statement commits the transaction, you must also issue a subsequent [`COMMIT`](commit-transaction.html) statement to prepare the connection for the next transaction.
+When a (sub-)transaction encounters a retry error, the client should repeat `ROLLBACK TO SAVEPOINT` and the statements in the transaction until the statements complete without error, then issue `RELEASE`.
 
-{% include {{ page.version.version }}/misc/savepoint-limitations.md %}
+To completely remove the marker of a sub-transaction after it encounters an error and begin other work in the outer transaction, use [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#using-rollbacks-with-nested-savepoints) immediately followed by `RELEASE`.
 
 ## Synopsis
 
@@ -26,11 +26,7 @@ No [privileges](authorization.html#assign-privileges) are required to release a 
 
 Parameter | Description
 --------- | -----------
-name      | The name of the savepoint.  Defaults to `cockroach_restart`, but may be customized.  For more information, see [Customizing the savepoint name](#customizing-the-savepoint-name).
-
-## Customizing the savepoint name
-
-{% include {{ page.version.version }}/misc/customizing-the-savepoint-name.md %}
+name      | The name of the savepoint.
 
 ## Examples
 
@@ -40,25 +36,19 @@ After declaring a [`SAVEPOINT`](savepoint.html), commit the transaction with `RE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BEGIN;
-
-> SAVEPOINT cockroach_restart;
-
-> UPDATE products SET inventory = 0 WHERE sku = '8675309';
-
-> INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
-
-> RELEASE SAVEPOINT cockroach_restart;
-
-> COMMIT;
+BEGIN;
+SAVEPOINT update_inventory;
+UPDATE products SET inventory = 0 WHERE sku = '8675309';
+INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+RELEASE SAVEPOINT update_inventory;
+COMMIT;
 ~~~
-
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
 ## See also
 
 - [Transactions](transactions.html)
 - [`SAVEPOINT`](savepoint.html)
+- [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html)
 - [`ROLLBACK`](rollback-transaction.html)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)

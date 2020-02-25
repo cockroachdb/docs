@@ -52,7 +52,7 @@ However, as of version v2.1, you can run schema changes inside the same transact
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
-  SAVEPOINT cockroach_restart;
+  SAVEPOINT my_savepoint;
   CREATE TABLE fruits (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name STRING,
@@ -62,7 +62,7 @@ However, as of version v2.1, you can run schema changes inside the same transact
   ALTER TABLE fruits ADD COLUMN inventory_count INTEGER DEFAULT 5;
   ALTER TABLE fruits ADD CONSTRAINT name CHECK (name IN ('apple', 'banana', 'orange'));
   SELECT name, color, inventory_count FROM fruits;
-  RELEASE SAVEPOINT cockroach_restart;
+  RELEASE SAVEPOINT my_savepoint;
   COMMIT;
 ~~~
 
@@ -139,10 +139,10 @@ The following statements fail due to [limited support for schema changes within 
 ~~~ sql
 > CREATE TABLE foo (id INT PRIMARY KEY, name VARCHAR);
   BEGIN;
-  SAVEPOINT cockroach_restart;
+  SAVEPOINT my_savepoint;
   CREATE INDEX foo_idx ON foo (id, name);
   SELECT * from foo_idx;
-  RELEASE SAVEPOINT cockroach_restart;
+  RELEASE SAVEPOINT my_savepoint;
   COMMIT;
 ~~~
 
@@ -162,10 +162,10 @@ ROLLBACK
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;
-  SAVEPOINT cockroach_restart;
+  SAVEPOINT my_savepoint;
   ALTER TABLE foo ADD COLUMN bar VARCHAR;
   ALTER TABLE foo ADD CONSTRAINT bar CHECK (foo IN ('a', 'b', 'c', 'd'));
-  RELEASE SAVEPOINT cockroach_restart;
+  RELEASE SAVEPOINT my_savepoint;
   COMMIT;
 ~~~
 
@@ -185,10 +185,10 @@ ROLLBACK
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;
-  SAVEPOINT cockroach_restart;
+  SAVEPOINT my_savepoint;
   ALTER TABLE foo ADD COLUMN bar VARCHAR;
   SELECT bar FROM foo;
-  RELEASE SAVEPOINT cockroach_restart;
+  RELEASE SAVEPOINT my_savepoint;
   COMMIT;
 ~~~
 
