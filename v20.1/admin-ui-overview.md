@@ -37,9 +37,7 @@ On secure clusters, certain areas of the Admin UI can only be accessed by [`admi
 For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 
 {{site.data.alerts.callout_info}}
-The default `root` user is a member of the `admin` role, but on CockroachDB clusters prior to v20.1, the Admin UI cannot be accessed by `root`. To access the secure Admin UI areas, [grant a user membership to the `admin` role](grant-roles.html) using an [enterprise license](enterprise-licensing.html#obtain-a-license) (a trial license can be used).
-
-If you don't have an enterprise license, use this command to manually create a secondary `admin` user: `INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', '<sql_user>', true)`
+The default `root` user is a member of the `admin` role.
 {{site.data.alerts.end}}
 
 Secure area | Privileged information
