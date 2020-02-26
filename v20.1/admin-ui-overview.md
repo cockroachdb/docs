@@ -23,7 +23,7 @@ Area | Description
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Statements Details](admin-ui-statements-page.html) | Identify frequently executed or high latency [SQL statements](sql-statements.html)
-[Jobs Details](admin-ui-jobs-page.html) | View details of the jobs running in the cluster.
+[Jobs Details](admin-ui-jobs-page.html) | View details of jobs running in the cluster.
 [Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports.
 
 The Admin UI also provides details about the way data is **Distributed**, the state of specific **Queues**, and metrics for **Slow Queries**, but these details are largely internal and intended for use by CockroachDB developers.
@@ -34,7 +34,7 @@ On insecure clusters, all areas of the Admin UI are accessible to all users.
 
 On secure clusters, certain areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with [`root` user](authorization.html#root-user) permissions.
 
-For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
+For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables, jobs, and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 
 {{site.data.alerts.callout_info}}
 The default `root` user is a member of the `admin` role.
@@ -45,7 +45,6 @@ Secure area | Privileged information
 [Node Map](enable-node-map.html) | Database and table names
 [Database Details](admin-ui-databases-page.html) | Stored table data	
 [Statements Details](admin-ui-statements-page.html) | SQL statements
-[Jobs Details](admin-ui-jobs-page.html) | SQL statements and operational details
 [Advanced Debugging Pages](admin-ui-debug-pages.html) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
 
 {{site.data.alerts.callout_info}}

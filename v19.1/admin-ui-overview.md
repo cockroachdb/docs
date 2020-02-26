@@ -32,7 +32,7 @@ The Admin UI also provides details about the way data is **Distributed**, the st
 
 On insecure clusters, all areas of the Admin UI are accessible to all users.
 
-On secure clusters, certain areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with [`root` user](authorization.html#root-user) permissions.
+On secure clusters, certain areas of the Admin UI can only be accessed by [`admin` users](authorization.html). These areas display information from privileged HTTP endpoints that operate with `root` user permissions.
 
 For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 

@@ -26,7 +26,7 @@ Report | Description | Access level
 Problem Ranges | View ranges in your cluster that are unavailable, underreplicated, slow, or have other problems. | [`admin` users only on secure clusters](admin-ui-overview.html#admin-ui-access)
 Network Latency | Check latencies between all nodes in your cluster. | All users
 Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](admin-ui-overview.html#admin-ui-access)
-Cluster Settings | View all cluster settings and their configured values. | All users
+Cluster Settings | View cluster settings and their configured values. | All users can view data according to their privileges
 Localities | Check node localities for your cluster. | [`admin` users only on secure clusters](admin-ui-overview.html#admin-ui-access)
 
 ## Even More Advanced Debugging
