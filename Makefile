@@ -62,6 +62,10 @@ cockroachcloud-build: bootstrap
 cockroachcloud: jekyll-action := serve --port 4001
 cockroachcloud: cockroachcloud-build
 
+.PHONY: algolia
+algolia: bootstrap
+	bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
+
 .PHONY: test
 test:
 	go get -u github.com/cockroachdb/htmltest

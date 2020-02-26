@@ -13,3 +13,7 @@ gem "jekyll-sitemap", "~> 1.3.1"
 gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.4"
 gem "sassc", "~> 2.2"
+
+group :jekyll_plugins do
+    gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
+  end

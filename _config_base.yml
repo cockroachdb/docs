@@ -55,6 +55,7 @@ exclude:
 - "ci"
 - "scripts"
 - "vendor"
+- "jekyll-algolia-dev"
 - "hackathon.md"
 
 keep_files: [_internal]
