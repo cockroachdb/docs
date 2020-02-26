@@ -14,8 +14,6 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and [PonyORM](https://ponyorm.org/).
 
-We have tested PonyORM enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/ponyorm/pony/issues/new) with details to help us make progress toward full support.
-
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}

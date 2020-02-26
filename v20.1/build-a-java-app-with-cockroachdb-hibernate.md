@@ -12,8 +12,6 @@ twitter: false
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
-We have tested the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
-
 {{site.data.alerts.callout_success}}
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
