@@ -60,6 +60,12 @@
             ]
           },
           {
+            "title": "Supported Drivers and ORMs",
+            "urls": [
+              "/${VERSION}/install-client-drivers.html"
+            ]
+          },
+          {
             "title": "Connect to the Database",
             "urls": [
               "/${VERSION}/connect-to-the-database.html"
@@ -780,12 +786,6 @@
             "title": "PostgreSQL Compatibility",
             "urls": [
               "/${VERSION}/postgresql-compatibility.html"
-            ]
-          },
-          {
-            "title": "Client Drivers",
-            "urls": [
-              "/${VERSION}/install-client-drivers.html"
             ]
           },
           {
