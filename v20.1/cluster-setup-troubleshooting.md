@@ -225,7 +225,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 ### Network partition
 
-If the Admin UI lists live nodes in the [**Dead Nodes** table](admin-ui-cluster-overview-page.html#dead-nodes), then you might have a network partition.
+If the Admin UI lists any dead nodes on the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), then you might have a network partition.
 
 **Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when whitelisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
@@ -236,8 +236,7 @@ The effect of a network partition depends on which nodes are partitioned, where 
 To identify a network partition:
 
 1.  Access the [Network Latency](admin-ui-network-latency-page.html) page of the Admin UI.
-2.  Click **Network Latency** in the left-hand navigation.
-3.  In the **Latencies** table, check for nodes with [no connections](admin-ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+2.  In the **Latencies** table, check for nodes with [no connections](admin-ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
 ## CockroachDB authentication issues
 
