@@ -3,6 +3,10 @@ title: Database Page
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+{{site.data.alerts.end}}
+
 The **Databases** page of the Admin UI provides details of the databases configured, the tables in each database, and the grants assigned to each user. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Databases** on the left-hand navigation bar.
 
 

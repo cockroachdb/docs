@@ -4,6 +4,10 @@ summary: Learn how to enable the node map in the Admin UI.
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+{{site.data.alerts.end}}
+
 The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
 
 This page walks you through the process of setting up and enabling the **Node Map**.
