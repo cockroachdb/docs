@@ -1,10 +1,10 @@
 ---
 title: COMMENT ON
-summary: The COMMENT ON statement associates comments to databases, tables, or columns.
+summary: The COMMENT ON statement associates comments to databases, tables, columns, or indexes.
 toc: true
 ---
 
-The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), or [columns](add-column.html).
+The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](add-column.html), or [indexes](indexes.html).
 
 ## Required privileges
 
@@ -20,7 +20,8 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ------------|--------------
 `database_name` | The name of the database you are commenting on.
 `table_name` | The name of the  table you are commenting on.
-`column_name` | The name column you are commenting on.
+`column_name` | The name of the column you are commenting on.
+`table_index_name` | The name of the index you are commenting on.
 `comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
 
 ## Examples
@@ -108,12 +109,49 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 (5 rows)
 ~~~
 
+### Add a comment to an index
+
+Suppose we [create an index](create-index.html) on the `name` column of the `users` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON users(name);
+~~~
+
+To add a comment to the index:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
+~~~
+
+To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES FROM users WITH COMMENT;
+~~~
+
+~~~
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |                             comment
+-------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+  users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
+  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
+  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+...
+(15 rows)
+~~~
 
 ## See also
 
 - [`CREATE DATABASE`](create-database.html)
 - [`CREATE TABLE`](create-table.html)
 - [`ADD COLUMN`](add-column.html)
+- [`CREATE INDEX`](create-index.html)
 - [`SHOW TABLES`](show-tables.html)
 - [Other SQL Statements](sql-statements.html)
 - [dBeaver](dbeaver.html)
