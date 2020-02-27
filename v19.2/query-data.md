@@ -6,24 +6,27 @@ toc: true
 
 This page has instructions for making SQL [selection queries][selection] against CockroachDB from various programming languages.
 
-The instructions assume that you have already:
+## Before you begin
+
+Make sure you have already:
 
 - Set up a [local cluster](secure-a-cluster.html).
+- [Installed a Postgres client](install-client-drivers.html).
 - [Connected to the database](connect-to-the-database.html).
 - [Inserted data](insert-data.html) that you now want to run queries against.
 
-<div class="filters filters-big clearfix">
+{% include {{page.version.version}}/app/retry-errors.md %}
+
+## Simple selects
+
+<div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
   <button class="filter-button" data-scope="python">Python</button>
 </div>
 
-{% include {{page.version.version}}/app/retry-errors.md %}
-
 <section class="filter-content" markdown="1" data-scope="sql">
-
-## SQL
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -35,8 +38,6 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 </section>
 
 <section class="filter-content" markdown="1" data-scope="go">
-
-## Go
 
 {% include copy-clipboard.html %}
 ~~~ go
@@ -62,8 +63,6 @@ for rows.Next() {
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
-
-## Java
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -91,8 +90,6 @@ try (Connection connection = ds.getConnection()) {
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
-
-## Python
 
 {% include copy-clipboard.html %}
 ~~~ python

@@ -6,30 +6,28 @@ toc: true
 
 This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](insert.html) SQL statement.
 
-The instructions assume that you already have a [local cluster](secure-a-cluster.html) up and running.
+## Before you begin
 
-The instructions assume you are already [connected to the database](connect-to-the-database.html).
+Make sure you have already:
 
-{{site.data.alerts.callout_success}}
-If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](import.html) statement instead of sending SQL [`INSERT`s](insert.html) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](migration-overview.html).
-{{site.data.alerts.end}}
+- Set up a [local cluster](secure-a-cluster.html).
+- [Installed a Postgres client](install-client-drivers.html).
+- [Connected to the database](connect-to-the-database.html).
 
-<div class="filters filters-big clearfix">
+{% include {{page.version.version}}/app/retry-errors.md %}
+
+## Insert rows
+
+When inserting multiple rows, a single [multi-row insert statement](insert.html#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
+
+<div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
   <button class="filter-button" data-scope="python">Python</button>
 </div>
 
-{% include {{page.version.version}}/app/retry-errors.md %}
-
-{{site.data.alerts.callout_success}}
-For [`INSERT`](insert.html) statements, a single multi-row statement is faster than multiple single-row statements.  Whenever possible, use a multi-row statement.  For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
-{{site.data.alerts.end}}
-
 <section class="filter-content" markdown="1" data-scope="sql">
-
-## SQL
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -42,8 +40,6 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 </section>
 
 <section class="filter-content" markdown="1" data-scope="go">
-
-## Go
 
 {% include copy-clipboard.html %}
 ~~~ go
@@ -61,8 +57,6 @@ if _, err := db.Exec(
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
-
-## Java
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -90,8 +84,6 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-## Python
-
 {% include copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
@@ -105,6 +97,10 @@ conn.commit()
 {% include {{page.version.version}}/app/for-a-complete-example-python.md %}
 
 </section>
+
+## Bulk insert
+
+If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](import.html) statement instead of sending SQL [`INSERT`s](insert.html) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](migration-overview.html).
 
 ## See also
 
