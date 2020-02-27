@@ -1342,13 +1342,15 @@ section.footer {
     color: #152849 !important;
     text-decoration: none !important;
     padding: 15px;
-    margin: 1%;
+    margin: 15px 15px 15px 0px;
     outline: none; }
     .filters .filter-button:hover {
       border: 1px solid #54B30E; }
     .filters .filter-button.current {
       border: 1px solid #54B30E;
       background-color: #F0FFE8; }
+    .filters .filter-button.page-level {
+      margin: 15px 15px 0px 0px; }
   .filters a:hover {
     border-bottom: none; }
 
@@ -1385,7 +1387,6 @@ section.footer {
       margin-right: 0; }
 
   .filters .filter-button {
-    margin: 0 0.5%;
     font-family: 'AvenirLTStd-Roman', serif;
     font-size: 16px;
     font-weight: normal;

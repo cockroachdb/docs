@@ -60,7 +60,7 @@
             ]
           },
           {
-            "title": "Supported Drivers and ORMs",
+            "title": "Install a Postgres Client",
             "urls": [
               "/${VERSION}/install-client-drivers.html"
             ]

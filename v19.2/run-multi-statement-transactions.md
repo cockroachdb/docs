@@ -6,15 +6,21 @@ toc: true
 
 This page has instructions for running [multi-statement transactions](transactions.html#batched-statements) against CockroachDB from various programming languages.
 
-The instructions assume that you have already:
+## Before you begin
+
+Make sure you have already:
 
 - Set up a [local cluster](secure-a-cluster.html).
+- [Installed a Postgres client](install-client-drivers.html).
 - [Connected to the database](connect-to-the-database.html).
 - [Inserted data](insert-data.html) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
-<div class="filters filters-big clearfix">
+
+## Run a transaction
+
+<div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
@@ -22,8 +28,6 @@ The instructions assume that you have already:
 </div>
 
 <section class="filter-content" markdown="1" data-scope="sql">
-
-## SQL
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -39,8 +43,6 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-## Go
-
 The best way to run a multi-statement transaction from Go code is to use one of the following approaches:
 
 - Use the [`crdb` transaction wrapper](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) which automatically handles transaction retry errors if they occur, as shown in [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
@@ -51,8 +53,6 @@ The best way to run a multi-statement transaction from Go code is to use one of 
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-## Java
-
 The best way to run a multi-statement transaction from Java is to write a wrapper method that automatically handles transaction retry errors.
 
 For complete examples showing how to write and use such wrapper methods, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
@@ -60,8 +60,6 @@ For complete examples showing how to write and use such wrapper methods, see [Bu
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
-
-## Python
 
 The best way to run a multi-statement transaction from Python code is to use one of the following approaches:
 
