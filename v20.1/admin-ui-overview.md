@@ -1,12 +1,13 @@
 ---
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
-toc: false
 redirect_from: explore-the-admin-ui.html
 key: explore-the-admin-ui.html
 ---
 
-The CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance by monitoring the following areas:
+The CockroachDB Admin UI provides details about your cluster and database configuration, and helps you optimize cluster performance.
+
+## Admin UI areas
 
 Area | Description
 --------|----
@@ -24,9 +25,7 @@ Area | Description
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Statements Details](admin-ui-statements-page.html) | Identify frequently executed or high latency [SQL statements](sql-statements.html)
 [Jobs Details](admin-ui-jobs-page.html) | View details of jobs running in the cluster.
-[Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports.
-
-The Admin UI also provides details about the way data is **Distributed**, the state of specific **Queues**, and metrics for **Slow Queries**, but these details are largely internal and intended for use by CockroachDB developers.
+[Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
 
 ## Admin UI access
 
