@@ -9,7 +9,7 @@ key: demo-geo-partitioning.html
 
 In CockroachDB, data is replicated and distributed across the nodes of a cluster for consistency and resiliency, and [read and write requests are automatically routed between nodes](architecture/reads-and-writes-overview.html) as appropriate. In a single-region cluster, this behavior doesn't affect performance because network latency between nodes is sub-millisecond. In a cluster spread across multiple geographic regions, however, the distribution of data becomes a key performance bottleneck, and for that reason, it is important to think about the latency requirements of each table and then use the appropriate [data topologies](topology-patterns.html) to locate data for optimal performance.
 
-This tutorial walks you through the process of deploying a 9-node CockroachDB cluster across 3 US regions, 3 AZs per region, with a fictional vehicle-sharing application called [MovR](movr.html) running concurrently in each region. Initially, you'll see the affect of network latency when requests must move back and forth across the US. Then you'll use two important multi-region data topologies, [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) and [Duplicate Indexes](topology-duplicate-indexes.html), to remove this bottleneck and dramatically lower latency, with the majority of reads and writes executing in 2 milliseconds or less. Finally, you'll experience the cluster's resiliency to AZ-level failure.
+This tutorial walks you through the process of deploying a 9-node CockroachDB cluster across 3 US regions, 3 AZs per region, with a fictional vehicle-sharing application called [MovR](movr.html) running concurrently in each region. Initially, you'll see the effect of network latency when requests must move back and forth across the US. Then you'll use two important multi-region data topologies, [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) and [Duplicate Indexes](topology-duplicate-indexes.html), to remove this bottleneck and dramatically lower latency, with the majority of reads and writes executing in 2 milliseconds or less. Finally, you'll experience the cluster's resiliency to AZ-level failure.
 
 ## See it in action
 
@@ -494,7 +494,7 @@ Now that you've deployed and configured your cluster, take a look at it in the A
 
 ## Step 5. Check latency
 
-Use the Admin UI to see the affect of network latency before applying multi-region data topologies.
+Use the Admin UI to see the effect of network latency before applying multi-region data topologies.
 
 1. Still in the Admin UI, click **Metrics** on the left and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
 

@@ -4,10 +4,13 @@ summary: A column family is a group of columns in a table that are stored as a s
 toc: true
 ---
 
-A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store. The reduced number of keys results in a smaller storage overhead and, even more significantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
+A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store](architecture/storage-layer.html). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`](insert.html), [`UPDATE`](update.html), and [`DELETE`](delete.html) operations.
 
 This page explains how CockroachDB organizes columns into families as well as cases in which you might want to manually override the default behavior.
 
+{{site.data.alerts.callout_info}}
+[Secondary indexes](indexes.html) do not respect column families. All secondary indexes store values in a single column family.
+{{site.data.alerts.end}}
 
 ## Default behavior
 

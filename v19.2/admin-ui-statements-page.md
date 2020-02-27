@@ -3,6 +3,10 @@ title: Statements Page
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+{{site.data.alerts.end}}
+
 The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
 
 To view the **Statements** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Statements** on the left.

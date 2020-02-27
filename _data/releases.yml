@@ -1,14 +1,19 @@
 - title: Production Releases
   releases:
+    - date: Feb 11, 2020
+      version: v19.2.4
+      latest: true
     - date: Feb 03, 2020
       version: v19.2.3
-      latest: true
     - date: Dec 16, 2019
       version: v19.2.2
     - date: Nov 25, 2019
       version: v19.2.1
     - date: Nov 12, 2019
       version: v19.2.0
+    - date: Feb 11, 2020
+      version: v19.1.8
+      no_windows: true
     - date: Jan 27, 2020
       version: v19.1.7
       no_windows: true
@@ -149,6 +154,8 @@
       no_windows: true
 - title: Testing Releases
   releases:
+    - date: Feb 17, 2020
+      version: v20.1.0-beta.1
     - date: Jan 30, 2020
       version: v20.1.0-alpha.20200123
     - date: Dec 16, 2019

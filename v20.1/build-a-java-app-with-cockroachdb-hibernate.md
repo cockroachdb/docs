@@ -8,11 +8,10 @@ twitter: false
 <div class="filters filters-big clearfix">
     <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button">Use <strong>JDBC</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button current">Use <strong>Hibernate</strong></button></a>
+    <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button">Use <strong>jOOQ</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
-
-We have tested the [Hibernate ORM](http://hibernate.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.

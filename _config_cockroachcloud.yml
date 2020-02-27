@@ -1,7 +1,7 @@
 homepage_title: CockroachCloud Docs
 
 baseurl: "/docs/cockroachcloud"
-destination: _site/cockroachcloud
+destination: _site/docs/cockroachcloud
 
 versions:
   stable: v19.2

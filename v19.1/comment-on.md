@@ -24,7 +24,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ------------|--------------
 `database_name` | The name of the database you are commenting on.
 `table_name` | The name of the  table you are commenting on.
-`column_name` | The name column you are commenting on.
+`column_name` | The name of the column you are commenting on.
 `comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
 
 ## Examples
