@@ -29,6 +29,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
+**opt_temp_create_table ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
+</div>
+
 **column_def ::=**
 
 <div>
@@ -82,6 +88,7 @@ Parameter | Description
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+`opt_temp_create_table` | Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temp-tables.html).<br>**Support for temp tables is experimental**. The interface and output are subject to change.
 
 ## Table-level replication
 
@@ -154,13 +161,8 @@ In this example, we create secondary and inverted indexes during table creation.
         type STRING,
         owner_id UUID,
         creation_time TIMESTAMP,
-        status STRING,
-        current_location STRING,
-        ext JSONB,
         CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
         INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
-        INVERTED INDEX ix_vehicle_ext (ext),
-        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
 );
 ~~~
 

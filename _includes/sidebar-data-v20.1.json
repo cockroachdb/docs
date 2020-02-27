@@ -1654,6 +1654,12 @@
                 ]
               },
               {
+                "title": "Temporary Tables",
+                "urls": [
+                  "/${VERSION}/temp-tables.html"
+                ]
+              },
+              {
                 "title": "Name Resolution",
                 "urls": [
                   "/${VERSION}/sql-name-resolution.html"
