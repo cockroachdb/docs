@@ -11,7 +11,7 @@ In addition to various updates, enhancements, and bug fixes, this beta release i
 
 - For all customers who had opted in for CockroachDB upgrades, CockroachCloud clusters running CockroachDB v19.1 have now been upgraded to [v19.1.8](https://www.cockroachlabs.com/docs/releases/v19.1.8.html) and clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). To learn how to opt-in for CockroachDB version upgrades for your CockroachCloud clusters, [contact us](https://support.cockroachlabs.com/hc/en-us).
 - All new clusters will now be created with CockroachDB V19.2.4.
-- CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
+- CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 Get future release notes emailed to you:
 
@@ -36,11 +36,11 @@ Get future release notes emailed to you:
 ### General changes
 
 - Added a **Sign up** link to the [CockroachCloud **Log In** page](https://cockroachlabs.cloud/).
-- While [creating a new cluster](cockroachcloud-create-your-cluster.html), you can now type in the number of nodes you want in the cluster instead of having to click the `+` sign repeatedly.
-- The [**Create cluster**](cockroachcloud-create-your-cluster.html) page now displays the estimated hourly cost instead of the monthly cost.
+- While [creating a new cluster](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html), you can now type in the number of nodes you want in the cluster instead of having to click the `+` sign repeatedly.
+- The [**Create cluster**](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html) page now displays the estimated hourly cost instead of the monthly cost.
 - Removed the cluster creation banner displayed at the top of the **Clusters page**.
 - CockroachCloud now alphabetically sorts the nodes on a **Cluster page**.
-- CockroachCloud no longer displays the IOPS per node on the [**Create cluster**](cockroachcloud-create-your-cluster.html) page.
+- CockroachCloud no longer displays the IOPS per node on the [**Create cluster**](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html) page.
 - Billing periods are now displayed in the UTC timezone.
 - If you are the only Admin for a CockroachCloud Organization, you can no longer change your role to Developer. Assign another user as Admin and then change your role to Developer.
 
