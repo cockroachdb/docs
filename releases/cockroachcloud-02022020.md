@@ -9,7 +9,7 @@ build_for: [cockroachcloud]
 
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
-- For all customers who had opted in for CockroachDB upgrades, CockroachCloud clusters running CockroachDB v19.1 have now been upgraded to [v19.1.8](https://www.cockroachlabs.com/docs/releases/v19.1.8.html) and clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). To learn how to opt-in for CockroachDB version upgrades for your CockroachCloud clusters, [contact us](https://support.cockroachlabs.com/hc/en-us).
+- Upgraded CockroachCloud clusters running CockroachDB v19.2 to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html) for all customers who had opted in for CockroachDB upgrades. To learn how to opt-in for CockroachDB version upgrades for your CockroachCloud clusters, [contact us](https://support.cockroachlabs.com/hc/en-us).
 - All new clusters will now be created with CockroachDB V19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
