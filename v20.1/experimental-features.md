@@ -20,7 +20,7 @@ The table below lists the experimental session settings that are available.  For
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `experimental_enable_hash_sharded_indexes`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables hash-sharded indexes with `USING HASH`.                                                                                                                                                                                   |
-| `experimental_enable_temp_tables`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables temporary tables.                                                                                                                                                                                   |
+| `experimental_enable_temp_tables`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables [temporary objects](#temporary-objects), including [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences).                                                                                                                                                                                   |
 | `experimental_optimizer_foreign_keys`       | `'on'`       | <span class="version-tag">New in v20.1:</span> If set to `'off'`, disables optimizer-driven foreign key checks.                                                                                                                                                                                   |
 | `experimental_serial_normalization` | `'rowid'`     | If set to `'virtual_sequence'`, make the [`SERIAL`](serial.html) pseudo-type optionally auto-create a sequence for [better compatibility with Hibernate sequences](https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/).                    |
 
@@ -143,6 +143,10 @@ The table below lists the experimental SQL functions and operators available in 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
 To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
+
+## Temporary objects
+
+Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
 ## See Also
 
