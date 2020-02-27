@@ -14,7 +14,7 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
-We have tested the [django-cockroachdb](https://github.com/cockroachdb/django-cockroachdb) adapter enough to claim **beta-level** support for Django versions 2 and 3. If you encounter problems, please [open an issue](https://github.com/cockroachdb/django-cockroachdb/issues/new) with details to help us make progress toward full support.
+CockroachDB supports Django versions 2 and 3.
 
 ## Before you begin
 
