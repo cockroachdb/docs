@@ -149,7 +149,8 @@
                 "title": "Java",
                 "urls": [
                   "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
+                  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
+                  "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html"
                 ]
               },
               {
