@@ -9,7 +9,7 @@ build_for: [cockroachcloud]
 
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
-- Upgraded existing CockroachCloud clusters running CockroachDB v19.2 to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB V19.2.4.
+- Upgraded existing CockroachCloud clusters running CockroachDB v19.2 to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 Get future release notes emailed to you:
@@ -52,6 +52,6 @@ Get future release notes emailed to you:
 
 ### Doc updates
 
-- Added language-specific connection string examples to the [Connect to your cluster document](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html#use-a-postgres-driver-or-orm).
-- Added a tutorial on [streaming an Enterprise changefeed from CockroachCloud to Snowflake](https://www.cockroachlabs.com/docs/cockroachcloud/stable/stream-changefeed-to-snowflake-aws.html).
-- Added a tutorial on [developing and deploying a Multi-Region Web Application](https://www.cockroachlabs.com/docs/stable/multi-region-overview.html).
+- Added language-specific connection string examples to the [Connect to your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html#use-a-postgres-driver-or-orm) document.
+- Added a tutorial on [streaming an enterprise changefeed from CockroachCloud to Snowflake](https://www.cockroachlabs.com/docs/cockroachcloud/stable/stream-changefeed-to-snowflake-aws.html).
+- Added a tutorial on [developing and deploying a multi-region web application](https://www.cockroachlabs.com/docs/stable/multi-region-overview.html).
