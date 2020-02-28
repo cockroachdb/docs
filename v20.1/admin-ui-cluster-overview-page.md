@@ -21,7 +21,7 @@ Replication Status | <ul><li>The total number of [ranges](architecture/overview.
 
 ## Node List
 
-The **Node List** groups nodes by locality. The highest-level locality tier is used to organize the Node List. Hover over a locality to see all localities for the group of nodes.
+The **Node List** groups nodes by locality. The lowest-level locality tier is used to organize the Node List. Hover over a locality to see all localities for the group of nodes.
 
 {{site.data.alerts.callout_success}}
 We recommend [defining `--locality` flags when starting nodes](cockroach-start.html#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency](admin-ui-network-latency-page.html). Locality is also a prerequisite for enabling the [Node Map](#node-map-enterprise).
@@ -67,7 +67,7 @@ Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned Nodes
 
-Nodes that have been decommissioned for permanent removal from the cluster are listed in the table of **Recently Decommissioned Nodes**. You can see the full history of decommissioned nodes by clicking **View all decommissioned nodes**.
+Nodes that have been decommissioned for permanent removal from the cluster are listed in the table of **Recently Decommissioned Nodes**. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
 
 <img src="{{ 'images/v20.1/admin-ui-decommissioned-nodes.png' | relative_url }}" alt="CockroachDB Admin UI node list" style="border:1px solid #eee;max-width:100%" />
 
