@@ -12,21 +12,6 @@ In addition to various updates, enhancements, and bug fixes, this beta release i
 - CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../stable/cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
-Get future release notes emailed to you:
-
-<div class="hubspot-install-form install-form-1 clearfix">
-    <script>
-        hbspt.forms.create({
-            css: '',
-            cssClass: 'install-form',
-            portalId: '1753393',
-            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
-            formInstanceId: 1,
-            target: '.install-form-1'
-        });
-    </script>
-</div>
-
 ### Security updates
 
 - CockroachCloud now requires that the password for a SQL user is at least 12 characters in length.
