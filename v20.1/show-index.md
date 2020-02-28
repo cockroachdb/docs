@@ -112,6 +112,7 @@ Field | Description
 ## See also
 
 - [`CREATE INDEX`](create-index.html)
+- [`COMMENT ON`](comment-on.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
 - [Information Schema](information-schema.html)

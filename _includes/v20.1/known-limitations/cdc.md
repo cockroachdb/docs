@@ -7,4 +7,4 @@
 - Additional target options will be added, including partitions and ranges of primary key rows.
 - There is an open correctness issue with changefeeds connected to cloud storage sinks where new row information will display with a lower timestamp than what has already been emitted, which violates our [ordering guarantees](change-data-capture.html#ordering-guarantees).
 - Changefeeds do not pick up data ingested with the [`IMPORT INTO`](import-into.html) statement.
-- Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. 
+- Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.

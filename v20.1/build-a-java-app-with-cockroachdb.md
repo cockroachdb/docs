@@ -8,11 +8,10 @@ twitter: false
 <div class="filters filters-big clearfix">
     <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button current">Use <strong>JDBC</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button">Use <strong>Hibernate</strong></button></a>
+    <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button">Use <strong>jOOQ</strong></button></a>
 </div>
 
 This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
-
-We have tested the [Java JDBC driver](https://jdbc.postgresql.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 

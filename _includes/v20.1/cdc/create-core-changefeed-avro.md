@@ -1,10 +1,13 @@
 In this example, you'll set up a core changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
-1. In a terminal window, start `cockroach`:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node \
+    --insecure \
+    --listen-addr=localhost \
+    --background
     ~~~
 
 2. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/).

@@ -345,7 +345,16 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
       You will need this username and password to access the Admin UI in Step 4.
 
-4. Exit the SQL shell and pod:
+4. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+
+    Assign `roach` to the `admin` role:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true)
+    ~~~
+
+5. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql

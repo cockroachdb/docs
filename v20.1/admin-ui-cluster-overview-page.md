@@ -57,7 +57,7 @@ The following details are also shown.
 Column | Description
 -------|------------
 Node Count | Number of nodes in the locality.
-Nodes | Nodes are grouped by locality and displayed with their address. Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log.
+Nodes | Nodes are grouped by locality and displayed with their address. Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log ([requires `admin` privileges](admin-ui-overview.html#admin-ui-access) on secure clusters).
 Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
 Capacity Usage | Disk space used by CockroachDB data as a percentage of the usable capacity on the node or in the locality.

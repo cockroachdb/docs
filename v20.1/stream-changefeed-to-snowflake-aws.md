@@ -233,6 +233,7 @@ Your changefeed is now streaming to Snowflake.
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
 - Snowpipe is unaware of CockroachDB resolved timestamps. This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
-- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage.
+
+### General change data capture known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}

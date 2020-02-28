@@ -218,6 +218,15 @@ Finally, [create a user with a password](create-user.html#create-a-user-with-a-p
 > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
+On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+
+Assign `max` to the `admin` role:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true)
+~~~
+
 Exit the SQL shell on node 2:
 
 {% include copy-clipboard.html %}

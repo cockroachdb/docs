@@ -101,9 +101,24 @@ When the SQL shell connects to the in-memory cluster, it prints a welcome text w
 root@127.0.0.1:60104/defaultdb>
 ~~~
 
-## Diagnostics Reporting
+## Diagnostics reporting
 
 By default, `cockroach demo` shares anonymous usage details with Cockroach Labs. To opt out, set the [`diagnostics.reporting.enabled`](diagnostics-reporting.html#after-cluster-initialization) [cluster setting](cluster-settings.html) to `false`. You can also opt out by setting the [`COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING`](diagnostics-reporting.html#at-cluster-initialization) environment variable to `false` before running `cockroach demo`.
+
+## Shutting down and restarting nodes
+
+<span class="version-tag">New in v20.1:</span>  You can shut down and restart individual nodes in a multi-node demo cluster with the `\demo_node` SQL shell command.
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+Command | Description
+----------------|------------
+`\demo_node shutdown <node number>` | Shuts down a node.<br>This command simulates stopping a node that can be restarted. It is similar to [`cockroach quit`](cockroach-quit.html).
+`\demo_node restart <node number>` | Restarts a node that has been shut down.
+`\demo_node decommission <node number>` | Decommissions a node.<br>This command simulates [decommissioning a node](remove-nodes.html). It is similar to [`cockroach quit --decommission`](cockroach-quit.html#general).
+`\demo_node recommission <node number>` | Recommissions a decommissioned node.
+
+For examples, see [Shut down and restart nodes](cockroach-demo.html#shut-down-and-restart-nodes).
 
 ## Example
 
@@ -238,6 +253,59 @@ $ cockroach demo --geo-partitioned-replicas
 ~~~
 
 This command starts a 9-node demo cluster with the `movr` database preloaded, and [partitions](partitioning.html) and [zone constraints](configure-replication-zones.html) applied to the primary and secondary indexes. For more information, see the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern.
+
+### Shut down and restart nodes
+
+If you start a demo cluster with multiple nodes, you can use the [`\demo_node`](cockroach-demo.html#shutting-down-and-restarting-nodes) to shut down and restart individual nodes in the demo cluster.
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+For example, if you start a demo cluster with the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach demo --nodes=3
+~~~
+
+You can shutdown the 3rd node and then restart it:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo_node shutdown 3
+~~~
+
+~~~
+node 3 has been shutdown
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo_node restart 3
+~~~
+
+~~~
+node 3 has been restarted
+~~~
+
+You can also decommission the 3rd node and then recommission it:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo_node decommission 3
+~~~
+
+~~~
+node 3 has been decommissioned
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo_node recommission 3
+~~~
+
+~~~
+node 3 has been recommissioned
+~~~
 
 ## See also
 
