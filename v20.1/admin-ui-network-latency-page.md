@@ -17,11 +17,11 @@ Select **Collapse Nodes** to display the mean latencies of each locality, depend
 
 ## Understanding the Network Latency matrix
 
-Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network.
+Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher.
 
 <img src="{{ 'images/v20.1/admin_ui_network_latency_matrix.png' | relative_url }}" alt="CockroachDB Admin UI Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
 
-Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and cloud, region, and zone metadata for origin and destination nodes.
+Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
 
 On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-admin-ui), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution. 
 
