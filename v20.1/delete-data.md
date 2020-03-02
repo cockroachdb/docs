@@ -6,28 +6,27 @@ toc: true
 
 This page has instructions for deleting data from CockroachDB (using the [`DELETE`](update.html) statement) using various programming languages.
 
-The instructions assume that you have already:
+## Before you begin
+
+Make sure you have already:
 
 - Set up a [local cluster](secure-a-cluster.html).
+- [Installed a Postgres client](install-client-drivers.html).
 - [Connected to the database](connect-to-the-database.html).
 - [Inserted data](insert-data.html) that you now want to delete.
 
-<div class="filters filters-big clearfix">
+{% include {{page.version.version}}/app/retry-errors.md %}
+
+## Delete a single row
+
+<div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
   <button class="filter-button" data-scope="python">Python</button>
 </div>
 
-{% include {{page.version.version}}/app/retry-errors.md %}
-
-{{site.data.alerts.callout_success}}
-For [`DELETE`](delete.html) statements, a single statement that deletes multiple rows (using a `WHERE` clause) is faster than multiple single-row statements.  Whenever possible, use a multi-row statement.  For more information, see [Delete Multiple Rows](delete.html#delete-specific-rows).
-{{site.data.alerts.end}}
-
 <section class="filter-content" markdown="1" data-scope="sql">
-
-## Delete a single row
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -39,8 +38,6 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 </section>
 
 <section class="filter-content" markdown="1" data-scope="go">
-
-## Delete a single row
 
 {% include copy-clipboard.html %}
 ~~~ go
@@ -56,8 +53,6 @@ if _, err := db.Exec("DELETE FROM accounts WHERE id = 1"); err != nil {
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
-
-## Delete a single row
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -77,8 +72,6 @@ try (Connection connection = ds.getConnection()) {
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
-
-## Delete a single row
 
 {% include copy-clipboard.html %}
 ~~~ python
