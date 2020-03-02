@@ -158,5 +158,17 @@
     "urls": [
       "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
     ]
+  },
+  {
+    "title": "Releases",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "March 2020",
+        "urls": [
+          "/releases/cockroachcloud-02022020.html"
+        ]
+      }
+    ]
   }
 ]
