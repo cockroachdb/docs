@@ -9,6 +9,7 @@ build_for: [cockroachcloud]
 
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
+- CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
 - CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../v19.2/cockroachcloud-create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
