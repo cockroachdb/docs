@@ -6,9 +6,10 @@
 <tr><td><code>cloudstorage.timeout</code></td><td>duration</td><td><code>10m0s</code></td><td>the timeout for import/export storage operations</td></tr>
 <tr><td><code>cluster.organization</code></td><td>string</td><td><code></code></td><td>organization name</td></tr>
 <tr><td><code>cluster.preserve_downgrade_option</code></td><td>string</td><td><code></code></td><td>disable (automatic or manual) cluster version upgrade from the specified version until reset</td></tr>
-<tr><td><code>diagnostics.forced_stat_reset.interval</code></td><td>duration</td><td><code>2h0m0s</code></td><td>interval after which pending diagnostics statistics should be discarded even if not reported</td></tr>
+<tr><td><code>diagnostics.forced_sql_stat_reset.interval</code></td><td>duration</td><td><code>2h0m0s</code></td><td>interval after which SQL statement statistics are refreshed even if not collected (should be more than diagnostics.sql_stat_reset.interval). It has a max value of 24H.</td></tr>
 <tr><td><code>diagnostics.reporting.enabled</code></td><td>boolean</td><td><code>true</code></td><td>enable reporting diagnostic metrics to cockroach labs</td></tr>
-<tr><td><code>diagnostics.reporting.interval</code></td><td>duration</td><td><code>1h0m0s</code></td><td>interval at which diagnostics data should be reported (should be shorter than diagnostics.forced_stat_reset.interval)</td></tr>
+<tr><td><code>diagnostics.reporting.interval</code></td><td>duration</td><td><code>1h0m0s</code></td><td>interval at which diagnostics data should be reported</td></tr>
+<tr><td><code>diagnostics.sql_stat_reset.interval</code></td><td>duration</td><td><code>1h0m0s</code></td><td>interval controlling how often SQL statement statistics should be reset (should be less than diagnostics.forced_sql_stat_reset.interval). It has a max value of 24H.</td></tr>
 <tr><td><code>enterprise.license</code></td><td>string</td><td><code></code></td><td>the encoded cluster license</td></tr>
 <tr><td><code>external.graphite.endpoint</code></td><td>string</td><td><code></code></td><td>if nonempty, push server metrics to the Graphite or Carbon server at the specified host:port</td></tr>
 <tr><td><code>external.graphite.interval</code></td><td>duration</td><td><code>10s</code></td><td>the interval at which metrics are pushed to Graphite (if enabled)</td></tr>
@@ -18,6 +19,7 @@
 <tr><td><code>kv.allocator.range_rebalance_threshold</code></td><td>float</td><td><code>0.05</code></td><td>minimum fraction away from the mean a store's range count can be before it is considered overfull or underfull</td></tr>
 <tr><td><code>kv.bulk_io_write.max_rate</code></td><td>byte size</td><td><code>1.0 TiB</code></td><td>the rate limit (bytes/sec) to use for writes to disk on behalf of bulk io ops</td></tr>
 <tr><td><code>kv.closed_timestamp.follower_reads_enabled</code></td><td>boolean</td><td><code>true</code></td><td>allow (all) replicas to serve consistent historical reads based on closed timestamp information</td></tr>
+<tr><td><code>kv.protectedts.reconciliation.interval</code></td><td>duration</td><td><code>5m0s</code></td><td>the frequency for reconciling jobs with protected timestamp records</td></tr>
 <tr><td><code>kv.rangefeed.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, rangefeed registration is enabled</td></tr>
 <tr><td><code>kv.replication_reports.interval</code></td><td>duration</td><td><code>1m0s</code></td><td>the frequency for generating the replication_constraint_stats, replication_stats_report and replication_critical_localities reports (set to 0 to disable)</td></tr>
 <tr><td><code>kv.snapshot_rebalance.max_rate</code></td><td>byte size</td><td><code>8.0 MiB</code></td><td>the rate limit (bytes/sec) to use for rebalance and upreplication snapshots</td></tr>
@@ -41,6 +43,7 @@
 <tr><td><code>sql.distsql.max_running_flows</code></td><td>integer</td><td><code>500</code></td><td>maximum number of concurrent flows that can be run on a node</td></tr>
 <tr><td><code>sql.distsql.temp_storage.joins</code></td><td>boolean</td><td><code>true</code></td><td>set to true to enable use of disk for distributed sql joins. Note that disabling this can have negative impact on memory usage and performance.</td></tr>
 <tr><td><code>sql.distsql.temp_storage.sorts</code></td><td>boolean</td><td><code>true</code></td><td>set to true to enable use of disk for distributed sql sorts. Note that disabling this can have negative impact on memory usage and performance.</td></tr>
+<tr><td><code>sql.log.slow_query.latency_threshold</code></td><td>duration</td><td><code>0s</code></td><td>when set to non-zero, log statements whose service latency exceeds the threshold to a secondary logger on each node</td></tr>
 <tr><td><code>sql.metrics.statement_details.dump_to_logs</code></td><td>boolean</td><td><code>false</code></td><td>dump collected statement statistics to node logs when periodically cleared</td></tr>
 <tr><td><code>sql.metrics.statement_details.enabled</code></td><td>boolean</td><td><code>true</code></td><td>collect per-statement query statistics</td></tr>
 <tr><td><code>sql.metrics.statement_details.plan_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>periodically save a logical plan for each fingerprint</td></tr>
@@ -61,6 +64,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>19.2-11</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>19.2-14</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
 </tbody>
 </table>
