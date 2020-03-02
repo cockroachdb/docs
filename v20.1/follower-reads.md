@@ -10,7 +10,7 @@ To reduce latency for read queries, you can use the follower reads feature, whic
 The follower reads feature is an [enterprise-only](enterprise-licensing.html) feature. For insight into how to use this feature to get low latency, historical reads in multi-region deployments, see the [Follower Reads](topology-follower-reads.html) topology pattern.
 {{site.data.alerts.end}}
 
-## What are Follower reads?
+## What are follower reads?
 
 Follower reads are a mechanism to let any replica of a range serve a read request, but are only available for read queries that are sufficiently in the past, i.e., using `AS OF SYSTEM TIME`. Currently, follower reads are available for any read operation at least 48 seconds in the past, though there is active work to reduce that window.
 
@@ -44,7 +44,7 @@ You should not use follower reads when you need up-to-date data.
 
 ### Make follower read-compatible queries
 
-Any `SELECT` statement with an `AS OF SYSTEM TIME` value at least 48 seconds in the past can be served by any replica (i.e., can be a Follower Read).
+Any `SELECT` statement with an `AS OF SYSTEM TIME` value at least 48 seconds in the past can be served by any replica (i.e., can be a follower read).
 
 To simplify this calculation, we've added a convenience function that will always set the `AS OF SYSTEM TIME` value to the minimum required for follower reads, `experimental_follower_read_timestamp()`:
 
@@ -114,3 +114,4 @@ COMMIT;
 
 - [Cluster Settings Overview](cluster-settings.html)
 - [Load-Based Splitting](load-based-splitting.html)
+- [Network Latency Page](admin-ui-network-latency-page.html)

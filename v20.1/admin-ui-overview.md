@@ -24,6 +24,7 @@ Area | Description
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
 [Statements Details](admin-ui-statements-page.html) | Identify frequently executed or high latency [SQL statements](sql-statements.html)
+[Network Latency](admin-ui-network-latency-page.html) | View latencies and lost connections between all nodes in your cluster.
 [Jobs Details](admin-ui-jobs-page.html) | View details of jobs running in the cluster.
 [Advanced Debugging Pages](admin-ui-debug-pages.html) | View advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
 

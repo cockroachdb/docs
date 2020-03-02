@@ -1969,6 +1969,12 @@
             ]
           },
           {
+            "title": "Network Latency Page",
+            "urls": [
+              "/${VERSION}/admin-ui-network-latency-page.html"
+            ]
+          },
+          {
             "title": "Jobs Page",
             "urls": [
               "/${VERSION}/admin-ui-jobs-page.html"

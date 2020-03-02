@@ -27,7 +27,7 @@ For a comprehensive list of tuning recommendations, only some of which are demon
    - roachprod stage <yourname>-tuning release v2.1.0-beta.20181008
 3. Start the cluster in us-east1-b: roachprod start <yourname>-tuning:1-3
 4. You'll need the addresses of all instances later, so list and record them somewhere: roachprod list -d <yourname>-tuning
-5. Import the Movr dataset:
+5. Import the MovR dataset:
    - SSH onto instance 4: roachprod run <yourname>-tuning:4
    - Run the SQL commands in Step 4 below.
 8. Install the Python client:
@@ -51,7 +51,7 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
     - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
-    - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
+    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
 2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
@@ -208,7 +208,7 @@ On accessing the Admin UI in a later step, your browser will consider the Cockro
 
 {% include {{ page.version.version }}/performance/start-cluster.md %}
 
-### Step 4. Load the Movr dataset
+### Step 4. Load the MovR dataset
 
 
 {% include {{ page.version.version }}/performance/import-movr.md %}
@@ -1151,7 +1151,7 @@ You created all instanced up front, so no need to add more now.
    - Run the SQL commands in Step 15 below. You'll need to SSH to instance 8 or 12 as suggested.
 -->
 
-Given that Movr is active on both US coasts, you'll now scale the cluster into two new regions, `us-west1-a` and `us-west2-a`, each with 3 nodes and an extra instance for simulating regional client traffic.
+Given that MovR is active on both US coasts, you'll now scale the cluster into two new regions, `us-west1-a` and `us-west2-a`, each with 3 nodes and an extra instance for simulating regional client traffic.
 
 ### Step 8. Create more instances
 
@@ -1159,7 +1159,7 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
     - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
-    - To apply the Web UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
+    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
 2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
@@ -1263,4 +1263,5 @@ In each of the new zones, SSH to the instance not running a CockroachDB node, an
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html)
+- [Network Latency Page](admin-ui-network-latency-page.html)
 - [Production Checklist](recommended-production-settings.html)
