@@ -33,8 +33,6 @@ ifeq ($(SHELL),)
 $(error bash is required)
 endif
 
-export ALGOLIA_API_KEY := $(ALGOLIA_DOCS_STAGING)
-
 .PHONY: all
 all: bootstrap
 
@@ -65,10 +63,7 @@ cockroachcloud: cockroachcloud-build
 
 .PHONY: algolia
 algolia: bootstrap
-	echo "Algolia keys"
-	echo $(ALGOLIA_DOCS_STAGING)
-	echo $(ALGOLIA_API_KEY)
-	bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
+	ALGOLIA_API_KEY=$(ALGOLIA_DOCS_STAGING) bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
 
 .PHONY: test
 test:
