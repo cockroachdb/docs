@@ -126,6 +126,12 @@
         "urls": [
           "/${VERSION}/cockroachcloud-cluster-management.html"
         ]
+      },
+      {
+        "title": "Upgrade Your Cluster",
+        "urls": [
+          "/${VERSION}/cockroachcloud-upgrade-policy.html"
+        ]
       }
     ]
   },
