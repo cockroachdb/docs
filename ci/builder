@@ -31,6 +31,7 @@ case "$command" in
       --user "$(id -u):$(id -g)" \
       --env AWS_ACCESS_KEY_ID \
       --env AWS_SECRET_ACCESS_KEY \
+      --env ALGOLIA_DOCS_STAGING \
       --volume="$repo_root:/docs" \
       "$image:$version" "$@"
     ;;
