@@ -39,4 +39,4 @@ In addition to various updates, enhancements, and bug fixes, this beta release i
 
 - Added language-specific connection string examples to the [Connect to your cluster](../v19.2/cockroachcloud-connect-to-your-cluster.html#use-a-postgres-driver-or-orm) document.
 - Added a tutorial on [streaming an enterprise changefeed from CockroachCloud to Snowflake](../v19.2/stream-changefeed-to-snowflake-aws.html).
-- Added a tutorial on [developing and deploying a multi-region web application](../v19.2/multi-region-overview.html).
+- Added a tutorial on [developing and deploying a multi-region web application](https://www.cockroachlabs.com/docs/v19.2/multi-region-overview.html).
