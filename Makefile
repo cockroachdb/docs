@@ -65,6 +65,9 @@ cockroachcloud: cockroachcloud-build
 
 .PHONY: algolia
 algolia: bootstrap
+	echo "Algolia keys"
+	echo $(ALGOLIA_DOCS_STAGING)
+	echo $(ALGOLIA_API_KEY)
 	bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
 
 .PHONY: test
