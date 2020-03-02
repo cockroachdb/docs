@@ -10,6 +10,7 @@ For instructions showing how to do a specific task, see the links below.
 
 ## Common Tasks
 
+- [Install a Postgres Client](install-client-drivers.html)
 - [Connect to the Database](connect-to-the-database.html)
 - [Insert Data](insert-data.html)
 - [Query Data](query-data.html)
