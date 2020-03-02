@@ -22,14 +22,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 "Major" version releases contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v19.2.x → v20.1.x).
 
-If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. From the notification email, you will be able to perform one of the following actions:
-
-Action | Description
-----------|------------
-`Upgrade my cluster` | Your cluster will be upgraded to the latest major version within three business days.
-`Remind me later` | Your cluster will not be upgraded to the latest major version. You will receive a follow-up email in 7 days with the same options.
-`Okay, got it` | Your cluster will not be upgraded to the latest major version. You will receive a reminder email to upgrade before the [End-of-Life date](#auto-upgrades-after-current-version-eol) for your current CockroachDB version.
-`Wait for point release` | Your cluster will be upgraded when the first minor release is available.
+If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. The email will have instructions on how to opt-in to have your clusters upgraded to the new version.
 
 ### Auto-upgrades after current version EOL
 

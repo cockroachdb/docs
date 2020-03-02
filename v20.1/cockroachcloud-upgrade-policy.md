@@ -10,9 +10,9 @@ This page describes the upgrade policy for CockroachCloud.
 CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
 ## Minor Version Upgrades
-"Minor" versions (or "point" releases) are stable, backward-compatible improvements to the GA versions of CockroachDB.
+"Minor" versions (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB.
 
-CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2) within the 2 business days after a minor version release. Starting April, the [CockroachCloud Admin(s)](cockroachcloud-console-access-management.html#console-admin) will be notified via email before and after their clusters are upgraded to the latest minor version.
+CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2) within the 2 business days after a minor version release. Starting April, the [CockroachCloud Admin(s)](cockroachcloud-console-access-management.html#console-admin) will be notified before and after their clusters are upgraded to the latest minor version.
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
@@ -22,19 +22,12 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 "Major" version releases contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v19.2.x → v20.1.x).
 
-If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notifying you that a new major release is available. From the notification email, you will be able to perform one of the following actions:
-
-Action | Description
-----------|------------
-`Upgrade my cluster` | Your cluster will be upgraded to the latest major version within three business days.
-`Remind me later` | Your cluster will not be upgraded to the latest major version. You will receive a follow-up email in 7 days with the same options.
-`Okay, got it` | Your cluster will not be upgraded to the latest major version. You will receive a reminder email to upgrade before the [End-of-Life date](#auto-upgrades-after-current-version-eol) for your current CockroachDB version.
-`Wait for point release` | Your cluster will be upgraded when the first minor release is available.
+If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. The email will have instructions on how to opt-in to have your clusters upgraded to the new version.
 
 ### Auto-upgrades after current version EOL
 
-As CockroachDB introduces new major versions, older versions reach their End of Life (EOL) on CockroachCloud. If you are running older, supported versions of CockroachDB, you will be notified no later than 1 month before the older version’s EOL that your clusters will be auto-upgraded on the EOL date. You should request an upgrade to the latest during this timeframe to avoid being force-upgraded.
+As CockroachDB introduces new major versions, older versions reach their End of Life (EOL) on CockroachCloud. If you are running a CockroachDB version nearing EOL, you will be notified at least one month before that version’s EOL that your clusters will be auto-upgraded on the EOL date. You should request an upgrade to a newer CockroachDB version during this timeframe to avoid being force-upgraded.
 
-## Rollback support
+### Rollback support
 
-The finalization period for each major upgrade is 7 days from upgrade completion. You can request a rollback of a major upgrade via a [support ticket](https://support.cockroachlabs.com/hc/en-us).
+The default finalization period for each major upgrade is 7 days from upgrade completion. You can request a rollback of a major upgrade via a [support ticket](https://support.cockroachlabs.com/hc/en-us).
