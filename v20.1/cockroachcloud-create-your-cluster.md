@@ -25,8 +25,8 @@ The choice of the cloud provider decides the price per node. For pricing compari
 
 Hardware configuration	| GCP Pricing (per node, per month)	| AWS Pricing (per node, per month)
 ----------|------------|------------
-Small (2 vCPU, 60 GB disk) |	$0.11	| $0.48
-Medium (4 vCPU, 150 GB disk) | $0.69	| $0.83
+`Option 1` (2 vCPU, 60 GB disk) |	$0.11	| $0.48
+`Option 2` (4 vCPU, 150 GB disk) | $0.69	| $0.83
 
 ## Step 3. Select the region and number of nodes
 
@@ -67,7 +67,7 @@ Capacity | Total raw data size you expect to store without replication.
 Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
 Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
-Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence a Small node (2vCPUs) can handle 2000 transactions per second and a Medium (4vCPUs) node can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence an `Option 1` node (2vCPUs) can handle 2000 transactions per second and an `Option 2` node (4vCPUs) can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 To change the hardware configuration after the cluster is created, you will have to [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
@@ -104,9 +104,9 @@ Let's consider a storage buffer of 50% to account for overhead and data growth. 
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 Medium nodes.
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 `Option 2` nodes.
 
-Let's verify if 9 Medium nodes meet our performance requirements of 2000 TPS. 9 Medium nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 Medium nodes can meet our performance requirements.
+Let's verify if 9 `Option 2` nodes meet our performance requirements of 2000 TPS. 9 `Option 2` nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 `Option 2` nodes can meet our performance requirements.
 
 Thus our final configuration is as follows:
 
@@ -115,7 +115,7 @@ Component | Selection
 Cloud provider | GCP
 Region | us-east1
 Number of nodes | 9
-Size | Medium
+Size | `Option 2`
 
 <!--
 ### [WIP] Select hardware configuration based on performance requirements
@@ -126,7 +126,7 @@ One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximate
 
 With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
 
-So for a workload resembling TPC-C, we want to build out your cluster with "medium" nodes, and you'll only use 1/3 of the storage.
+So for a workload resembling TPC-C, we want to build out your cluster with "`Option 2`" nodes, and you'll only use 1/3 of the storage.
 
 <Need numbers from the perf tests>
 -->
