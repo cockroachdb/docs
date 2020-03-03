@@ -22,7 +22,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. The email will have instructions on how to opt in to have your clusters upgraded to the new version.
 
-### Auto-upgrades after current version EOL
+### Auto-upgrades after CockroachDB version EOL
 
 As CockroachDB releases new major versions, older versions reach their End of Life (EOL) on CockroachCloud. A CockroachDB version reaches EOL on CockroachCloud when it is 2 major versions behind the latest version (for example, CockroachDB 19.1 reaches EOL when CockroachDB 20.1 is released).
 
