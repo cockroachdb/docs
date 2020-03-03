@@ -21,7 +21,6 @@
 # is where Homebrew will install a more up-to-date version of Ruby on macOS.
 export GEM_HOME := vendor
 export PATH := $(GEM_HOME)/bin:/usr/local/opt/ruby/bin:$(PATH)
-
 # HACK: Make has a fast path and a slow path for command execution,
 # but the fast path uses the PATH variable from when make was started,
 # not the one we set on the previous line. In order for the above
@@ -61,6 +60,10 @@ cockroachcloud-build: bootstrap
 .PHONY: cockroachcloud
 cockroachcloud: jekyll-action := serve --port 4001
 cockroachcloud: cockroachcloud-build
+
+.PHONY: algolia
+algolia: bootstrap
+	ALGOLIA_API_KEY=$(ALGOLIA_DOCS_STAGING) bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
 
 .PHONY: test
 test:
