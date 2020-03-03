@@ -84,4 +84,4 @@ run vale --no-wrap v19.2 || true
 run htmltest --skip-external
 
 # Step 7. Run algolia with staging index
-run make algolia
+# run make algolia

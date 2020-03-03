@@ -11,3 +11,12 @@ build _config_cockroachcloud.yml
 
 cp _site/docs/_redirects _site/_redirects
 cat _site/docs/cockroachcloud/_redirects >> _site/_redirects
+
+# Run Algolia
+echo "Our branch is"
+echo $BRANCH
+echo "The context is "
+echo $CONTEXT
+# if [[ "$BRANCH" = "peter-add-algolia" ]]; then
+# 	ALGOLIA_API_KEY=$(STAGING_ALGOLIA_API_KEY) bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
+# fi;
