@@ -10,7 +10,7 @@ This page describes the upgrade policy for CockroachCloud.
 CockroachCloud supports the [latest major version](https://www.cockroachlabs.com/docs/stable/) of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
 ## Minor Version Upgrades
-["Minor" versions](https://www.cockroachlabs.com/docs/releases/#testing-releases) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2).
+[Minor versions](https://www.cockroachlabs.com/docs/releases/#testing-releases) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2).
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
@@ -18,7 +18,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 ## Major Version Upgrades
 
-["Major" version releases](https://www.cockroachlabs.com/docs/releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v19.2.x → v20.1.x).
+[Major version releases](https://www.cockroachlabs.com/docs/releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v19.2.x → v20.1.x).
 
 If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. The email will have instructions on how to opt in to have your clusters upgraded to the new version.
 
