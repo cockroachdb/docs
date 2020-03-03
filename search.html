@@ -114,7 +114,7 @@ build_for: [cockroachdb, cockroachcloud]
           hit =>
             `<div class="search-item">
   			  <div class="search-title">
-  			    <a href="/docs${hit.url}">${hit.title}</a>
+  			    <a href="${hit.url}">${hit.title}</a>
   			  </div>
   			  <div class="search-snippet">${hit._highlightResult.content.value}</div>
   			  <div class="search-link">${hit.doc_type}</div>

@@ -98,9 +98,9 @@ module Jekyll
         if context.config['cockroachcloud']
           record[:doc_type] = 'cockroachcloud'
           record[:url] = "https://www.cockroachlabs.com/docs/cockroachcloud#{record[:url]}"
-          record[:canonical] = "https://www.cockroachlabs.com/docs/cockroachcloud#{record[:url]}"
+          # record[:canonical] = "/cockroachcloud#{record[:url]}"
         else
-          record[:url] = "https://www.cockroachlabs.com/docs/#{record[:url]}"
+          record[:url] = "https://www.cockroachlabs.com/docs#{record[:url]}"
           record[:doc_type]  = 'cockroachdb'
         end
         record
