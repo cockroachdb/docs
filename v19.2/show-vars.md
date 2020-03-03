@@ -66,13 +66,13 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
-               variable               |                                                          value
-+-------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
+               variable               |                                         value
++-------------------------------------+---------------------------------------------------------------------------------------+
   application_name                    | $ cockroach demo
   bytea_output                        | hex
   client_encoding                     | UTF8
   client_min_messages                 | notice
-  crdb_version                        | CockroachDB OSS v19.2.0
+  crdb_version                        | CockroachDB OSS v19.2.4
   database                            | movr
   datestyle                           | ISO, MDY
   default_int_size                    | 8
@@ -82,6 +82,7 @@ Special syntax cases supported for compatibility:
   distsql                             | auto
   enable_zigzag_join                  | on
   experimental_force_split_at         | off
+  experimental_optimizer_foreign_keys | off
   experimental_serial_normalization   | rowid
   extra_float_digits                  | 2
   force_savepoint_restart             | off
@@ -90,10 +91,10 @@ Special syntax cases supported for compatibility:
   intervalstyle                       | postgres
   locality                            | region=us-east1,az=b
   lock_timeout                        | 0
+  max_identifier_length               | 128
   max_index_keys                      | 32
   node_id                             | 1
   optimizer                           | on
-  optimizer_foreign_keys              | off
   reorder_joins_limit                 | 4
   results_buffer_size                 | 16384
   row_security                        | off
@@ -114,7 +115,7 @@ Special syntax cases supported for compatibility:
   transaction_status                  | NoTxn
   vectorize                           | auto
   vectorize_row_count_threshold       | 1000
-(46 rows)
+(47 rows)
 ~~~
 
 ## See also

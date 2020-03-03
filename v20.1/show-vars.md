@@ -66,13 +66,13 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
-               variable               |                                                          value
-+-------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
+               variable               |                                                value
++-------------------------------------+-----------------------------------------------------------------------------------------------------+
   application_name                    | $ cockroach demo
   bytea_output                        | hex
   client_encoding                     | UTF8
   client_min_messages                 | notice
-  crdb_version                        | CockroachDB OSS v19.2.0
+  crdb_version                        | CockroachDB OSS v20.1.0
   database                            | movr
   datestyle                           | ISO, MDY
   default_int_size                    | 8
@@ -81,7 +81,9 @@ Special syntax cases supported for compatibility:
   default_transaction_read_only       | off
   distsql                             | auto
   enable_zigzag_join                  | on
+  experimental_enable_temp_tables     | off
   experimental_force_split_at         | off
+  experimental_optimizer_foreign_keys | off
   experimental_serial_normalization   | rowid
   extra_float_digits                  | 2
   force_savepoint_restart             | off
@@ -90,10 +92,10 @@ Special syntax cases supported for compatibility:
   intervalstyle                       | postgres
   locality                            | region=us-east1,az=b
   lock_timeout                        | 0
+  max_identifier_length               | 128
   max_index_keys                      | 32
   node_id                             | 1
   optimizer                           | on
-  optimizer_foreign_keys              | off
   reorder_joins_limit                 | 4
   results_buffer_size                 | 16384
   row_security                        | off
@@ -101,6 +103,7 @@ Special syntax cases supported for compatibility:
   server_encoding                     | UTF8
   server_version                      | 9.5.0
   server_version_num                  | 90500
+  session_id                          | 15f5357f608545d80000000000000001
   session_user                        | root
   sql_safe_updates                    | on
   standard_conforming_strings         | on
@@ -114,7 +117,7 @@ Special syntax cases supported for compatibility:
   transaction_status                  | NoTxn
   vectorize                           | auto
   vectorize_row_count_threshold       | 1000
-(46 rows)
+(49 rows)
 ~~~
 
 ## See also
