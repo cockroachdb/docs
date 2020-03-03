@@ -19,6 +19,6 @@ echo "The HEAD is "
 echo $HEAD
 echo "The context is "
 echo $CONTEXT
-# if [[ "$BRANCH" = "peter-add-algolia" ]]; then
-# 	ALGOLIA_API_KEY=$(STAGING_ALGOLIA_API_KEY) bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
-# fi;
+if [[ "$BRANCH" = "pull/6692/head" ]]; then
+	ALGOLIA_API_KEY=$(STAGING_ALGOLIA_API_KEY) bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
+fi;
