@@ -49,7 +49,7 @@ module Jekyll
         #We want to include the rease files
         return false if filepath.start_with?('release')
 
-        # We exclude from index if its not the stable versior of if its dev
+        # We exclude from index if its not the stable version or if its dev
         # version with different content
         versions = Configurator.config['versions']
         stable_version = versions['stable']
@@ -59,19 +59,17 @@ module Jekyll
           # If is stable we want to include
           false
         elsif filepath.start_with?(dev_version)
-          # Won't be indexed if is identical than stable version
-          same_as_version?(filepath, dev_version, stable_version)
+          # Won't be indexed if stable version exists
+          has_stable_version?(filepath, dev_version, stable_version)
         else
           # Exclude from index other versions
           true
         end
       end
 
-      def self.same_as_version?(filepath, current_version, new_version)
+      def self.has_stable_version?(filepath, dev_version, stable_version)
         begin
-          content = File.read(filepath)
-          version_content = File.read(filepath.sub(current_version, new_version))
-          content == version_content.gsub(new_version, current_version)
+          File.file?(filepath.sub(dev_version, stable_version))
         rescue StandardError
           false
         end
