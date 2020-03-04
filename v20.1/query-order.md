@@ -39,6 +39,8 @@ the sorting key as-is, and thus is meaningless.
 The optional keyword `DESC` inverts the direction of the column(s)
 selected by the selection that immediately precedes.
 
+<span class="version-tag">New in v20.1:</span> `NULLS FIRST`/`NULLS LAST` is supported in `ORDER BY` clauses for compatibility with [PostgreSQL row-sorting syntax](https://www.postgresql.org/docs/current/queries-order.html).
+
 ## Order preservation
 
 In general, the order of the intermediate results of a query is not guaranteed,
