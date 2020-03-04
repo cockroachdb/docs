@@ -103,6 +103,20 @@ build_for: [cockroachdb, cockroachcloud]
     searchClient
   });
 
+  const addToResultsIfPresent = (match) => {
+    if(match && match.matchLevel && match.matchLevel !== 'none' && match.value) {
+      return (match.value || '') + '<br>';
+    }
+    return '';
+  }
+
+  const showResult = ({content, tags, title, html}) => {
+    if(content && content.value) {
+      return content.value
+    }
+    return addToResultsIfPresent(title) + addToResultsIfPresent(tags);
+  }
+
   // Create the render function
   const renderHits = (renderOptions, isFirstRender) => {
     const { hits, widgetParams } = renderOptions;
@@ -116,7 +130,7 @@ build_for: [cockroachdb, cockroachcloud]
   			  <div class="search-title">
   			    <a href="${hit.url}">${hit.title}</a>
   			  </div>
-  			  <div class="search-snippet">${hit._highlightResult.content.value}</div>
+  			  <div class="search-snippet">${showResult(hit._highlightResult)}</div>
   			  <div class="search-link">${hit.doc_type}</div>
   			</div>`
         )
