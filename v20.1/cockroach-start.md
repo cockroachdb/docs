@@ -111,7 +111,17 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 --locality=region=us,datacenter=us-west
 ~~~
 
-### Store
+### Storage
+
+#### Storage engine
+
+<span class="version-tag">New in v20.1:</span> The `--storage-engine` flag is used to choose the storage engine used by the node.  Supported options:
+
+- `rocksdb`: Uses the [RocksDB](https://rocksdb.org) storage engine.  This is the default if nothing is specified.
+- `pebble`: Uses the experimental [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bug-for-bug compatible with RocksDB, able to read and write the same data files.  Pebble differs from RocksDB in that it is written in Go and implements a subset of RocksDB's large feature set.  For more information, see [Pebble vs RocksDB: Implementation Differences](https://github.com/cockroachdb/pebble/blob/master/docs/rocksdb.md)
+- `default`: Checks which engine type was last used for this node's store directory (Pebble or RocksDB), and uses that engine.  If the check fails for any reason, RocksDB is used.
+
+#### Store
 
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
