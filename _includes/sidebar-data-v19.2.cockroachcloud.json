@@ -146,6 +146,12 @@
     "is_top_level": true,
     "items":  [
       {
+        "title": "Build an app with Django and CockroachDB",
+        "urls": [
+          "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
+        ]
+      },
+      {
         "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
         "urls": [
           "/${VERSION}/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
