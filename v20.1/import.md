@@ -27,7 +27,7 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 
 ## Synopsis
 
-**Import a table from CSV**
+**Import a table from CSV or Avro**
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/import_csv.html %}
