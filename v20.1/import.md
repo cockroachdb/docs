@@ -27,7 +27,7 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 
 ## Synopsis
 
-**Import a table from CSV**
+**Import a table from CSV or Avro**
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/import_csv.html %}
@@ -98,12 +98,12 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
 `fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
-`strict_validation`    | `AVRO DATA`    | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatype]; otherwise, it will report an error.
-`records_terminated_by` | `AVRO DATA`   | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. **Default:** `\n`
+`strict_validation`    | `AVRO DATA`    | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatypes]; otherwise, it will report an error.
+`records_terminated_by` | `AVRO DATA`   | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. <br><br>**Default:** `\n`
 `data_as_binary_records` | `AVRO DATA`  | Use when [importing a binary file containing Avro records](migrate-from-avro.html#mport-binary-or-json-records).  The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#mport-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
-`schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file.
-`schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file.
+`schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
+`schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -993,4 +993,4 @@ For more detailed information about importing data from Avro and examples, see [
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [csv]: migrate-from-csv.html
-[datatypes]: migrate-from-avro#data-type-mapping
+[datatypes]: migrate-from-avro.html#data-type-mapping

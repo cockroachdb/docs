@@ -152,11 +152,19 @@ For example, to import the data from `simple-schema.json` into an `simple` table
   CREATE USING
 	  's3://[bucket-placeholder]/simple-schema.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
   AVRO DATA (
-		's3://<bucket>/simple-sorted.json?AWS_ACCESS_KEY_ID=<access_key>&AWS_SECRET_ACCESS_KEY=<secret_key>'
+		's3://[bucket-placeholder]/simple-sorted.json?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
 	)
   WITH
 	   data_as_json_records,
-	   schema_uri = 's3://[bucket-placeholder]/simple-schema.json?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+	   schema = '{ "type": "record",
+  "name": "simple",
+  "fields":
+    [
+      { "name": "i", "type": "int" },
+      { "name": "s", "type": "string" },
+      { "name": "b", "type": ["null", "bytes"] }
+    ]
+}';
 ~~~
 
 ~~~
