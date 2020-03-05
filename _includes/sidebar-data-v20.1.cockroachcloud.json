@@ -94,7 +94,13 @@
             "urls": [
               "/${VERSION}/migrate-from-csv.html"
             ]
-          }
+          },
+          {
+            "title": "Migrate from Avro",
+            "urls": [
+              "/${VERSION}/migrate-from-avro.html"
+            ]
+          },
         ]
       },
       {
