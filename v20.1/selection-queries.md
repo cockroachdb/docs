@@ -504,6 +504,12 @@ EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/overview.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
 {{site.data.alerts.end}}
 
+## Row-level locking for concurrency control with `SELECT FOR UPDATE`
+
+{% include {{page.version.version}}/sql/select-for-update-overview.md %}
+
+For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-update.html).
+
 ## Composability
 
 [Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions](table-expressions.html) are defined in the context of the `FROM` sub-clause of [`SELECT`](select-clause.html). Nevertheless, they can be integrated with one another to form more complex queries or statements.
@@ -612,6 +618,7 @@ For example:
 ## See also
 
 - [Simple `SELECT` Clause](select-clause.html)
+- [`SELECT FOR UPDATE`](select-for-update.html)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](query-order.html)
 - [Limiting Query Results](limit-offset.html)

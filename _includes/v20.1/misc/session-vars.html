@@ -97,6 +97,18 @@
 
   <tr>
    <td>
+    <code>enable_implicit_select_for_update</code>
+   </td>
+   <td><span class="version-tag">New in v20.1</span>: Indicates whether <a href="update.html"><code>UPDATE</code></a> statements acquire locks using the <code>FOR UPDATE</code> locking mode during their initial row scan, which improves performance for contended workloads.  For more information about how <code>FOR UPDATE</code> locking works, see the documentation for <a href="select-for-update.html"><code>SELECT FOR UPDATE</code></a>.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>enable_zig_zag_join</code>
    </td>
    <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. </td>
