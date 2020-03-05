@@ -48,10 +48,6 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 
 Intervals are stored with microsecond precision instead of nanoseconds, and it is no longer possible to create intervals with nanosecond precision.  As a result, parsing from a [string](string.html) or converting from a [float](float.html) or [decimal](decimal.html) will round to the nearest microsecond, as will any arithmetic [operation](functions-and-operators.html#supported-operations) (add, sub, mul, div) on intervals. CockroachDB rounds (instead of truncating) to match the behavior of Postgres.
 
-{{site.data.alerts.callout_danger}}
-When upgrading to 19.1, existing intervals with nanoseconds will no longer be able to return their nanosecond part. An existing table `t` with nanoseconds in intervals of column `s` can round them to the nearest microsecond with `UPDATE t SET s = s + '0s'`. Note that this could cause uniqueness problems if the interval is being used as a [primary key](primary-key.html).
-{{site.data.alerts.end}}
-
 ## Example
 
 {% include copy-clipboard.html %}
@@ -65,10 +61,10 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 ~~~
 
 ~~~
- column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
--------------+-----------+-------------+----------------+-----------------------+-----------+-----------
- a           | INT8      | f           |                |                       | {primary} | f
- b           | INTERVAL  | t           |                |                       | {}        | f
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8      |    false    | NULL           |                       | {primary} |   false
+  b           | INTERVAL  |    true     | NULL           |                       | {}        |   false
 (2 rows)
 ~~~
 
@@ -87,11 +83,11 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 ~~~
 
 ~~~
- a |               b               
----+-------------------------------
- 1 | 1 year 2 mons 3 days 04:05:06
- 2 | 1 year 2 mons 3 days 04:05:06
- 3 | 1 year 2 mons 3 days 04:05:06
+  a |               b
+----+--------------------------------
+  1 | 1 year 2 mons 3 days 04:05:06
+  2 | 1 year 2 mons 3 days 04:05:06
+  3 | 1 year 2 mons 3 days 04:05:06
 (3 rows)
 ~~~
 
