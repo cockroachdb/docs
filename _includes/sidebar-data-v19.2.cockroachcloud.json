@@ -34,6 +34,17 @@
         ]
       },
       {
+        "title": "Build a 'Hello World' app",
+        "items": [
+          {
+            "title": "Python",
+            "urls": [
+              "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Secure Your Cluster",
         "items": [
           {
@@ -145,12 +156,6 @@
     "title": "Tutorials",
     "is_top_level": true,
     "items":  [
-      {
-        "title": "Build an app with Django and CockroachDB",
-        "urls": [
-          "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
-        ]
-      },
       {
         "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
         "urls": [
