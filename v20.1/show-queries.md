@@ -11,6 +11,7 @@ The `SHOW QUERIES` [statement](sql-statements.html) lists details about currentl
 - The SQL query itself
 - How long the query has been running
 - The client address, application name, and user that issued the query
+- <span class="version-tag">New in v20.1:</span> The ID for the current session
 
 These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled](cancel-query.html) to prevent unwanted resource consumption.
 
@@ -38,12 +39,13 @@ The following fields are returned for each query:
 Field | Description
 ------|------------
 `query_id` | The ID of the query.
-`node_id` | The ID of the node connected to.
+`node_id` | The ID of the node.
+`session_id` | The ID of the session.
 `user_name` | The username of the connected user.
 `start` | The timestamp at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](cockroach-sql.html), this will be `cockroach`.
+`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](cockroach-sql.html), this will be `$ cockroach sql`.
 `distributed` | If `true`, the query is being executed by the Distributed SQL (DistSQL) engine. If `false`, the query is being executed by the standard "local" SQL engine. If `NULL`, the query is being prepared and it's not yet known which execution engine will be used.
 `phase` | The phase of the query's execution. If `preparing`, the statement is being parsed and planned. If `executing`, the statement is being executed.
 
@@ -57,20 +59,12 @@ Field | Description
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |                   query                   |   client_address    | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-| 14db657443230c3e0000000000000001 |       1 | root      | 2017-08-16 18:00:50.675151+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
-| 14db657443b68c7d0000000000000001 |       1 | root      | 2017-08-16 18:00:50.684818+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
-| 14db65744382c2340000000000000001 |       1 | root      | 2017-08-16 18:00:50.681431+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
-| 14db657443c9dc660000000000000001 |       1 | root      | 2017-08-16 18:00:50.686083+00:00 | SHOW CLUSTER QUERIES                      | 192.168.12.56:54108 | cockroach        | NULL        | preparing |
-| 14db657443e30a850000000000000003 |       3 | root      | 2017-08-16 18:00:50.68774+00:00  | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54118 | test_app         | false       | executing |
-| 14db6574439f477d0000000000000003 |       3 | root      | 2017-08-16 18:00:50.6833+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54122 | test_app         | false       | executing |
-| 14db6574435817d20000000000000002 |       2 | root      | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
-| 14db6574433c621f0000000000000002 |       2 | root      | 2017-08-16 18:00:50.676813+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54124 | test_app         | false       | executing |
-| 14db6574436f71d50000000000000002 |       2 | root      | 2017-08-16 18:00:50.680165+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54117 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-(9 rows)
+              query_id             | node_id |            session_id            | user_name |              start               |                                 query                                 | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+----------------------------------+-----------------------------------------------------------------------+-----------------+------------------+-------------+-----------+
+  15f92b12b2fb95b00000000000000002 |       2 | 15f92b10b92ed4080000000000000002 | root      | 2020-03-04 17:48:23.309592+00:00 | SELECT city, id FROM vehicles WHERE city = $1                         | 127.0.0.1:65092 |                  |    false    | executing
+  15f92b12b2ea5f700000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:23.3085+00:00   | SHOW CLUSTER QUERIES                                                  | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
+  15f92b12b2ffeb100000000000000003 |       3 | 15f92b0e4ea399680000000000000003 | root      | 2020-03-04 17:48:23.30989+00:00  | UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4) | 127.0.0.1:65088 |                  |    NULL     | preparing
+(3 rows)
 ~~~
 
 Alternatively, you can use `SHOW QUERIES` to receive the same response.
@@ -83,15 +77,11 @@ Alternatively, you can use `SHOW QUERIES` to receive the same response.
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |                   query                   |   client_address    | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-| 14db657cd9005cb90000000000000001 |       1 | root      | 2017-08-16 18:01:27.5492+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
-| 14db657cd8d7d9a50000000000000001 |       1 | root      | 2017-08-16 18:01:27.546538+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
-| 14db657cd8e966c40000000000000001 |       1 | root      | 2017-08-16 18:01:27.547696+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
-| 14db657cd92ad8f80000000000000001 |       1 | root      | 2017-08-16 18:01:27.551986+00:00 | SHOW LOCAL QUERIES                        | 192.168.12.56:54122 | cockroach        | NULL        | preparing |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-(4 rows)
+              query_id             | node_id |            session_id            | user_name |              start               |                           query                            | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+----------------------------------+------------------------------------------------------------+-----------------+------------------+-------------+-----------+
+  15f92b15bece88900000000000000001 |       1 | 15f92aefb240d2980000000000000001 | root      | 2020-03-04 17:48:36.392919+00:00 | INSERT INTO user_promo_codes VALUES ($1, $2, $3, now(), 1) | 127.0.0.1:65044 |                  |    false    | executing
+  15f92b15bed80a280000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:36.393495+00:00 | SHOW LOCAL QUERIES                                         | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
+(2 rows)
 ~~~
 
 ### Filter for specific queries
@@ -107,30 +97,10 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |                   query                   |   client_address    | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-| 14db6574435817d20000000000000002 |       2 | root      | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
-| 14db6574433c621f0000000000000002 |       2 | root      | 2017-08-16 18:00:50.676813+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54124 | test_app         | false       | executing |
-| 14db6574436f71d50000000000000002 |       2 | root      | 2017-08-16 18:00:50.680165+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54117 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-(3 rows)
-~~~
-
-#### Show all queries that have been running for more than 3 hours
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE start < (now() - INTERVAL '3 hours');
-~~~
-
-~~~
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |              query               |   client_address   | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-| 14dacc1f9a781e3d0000000000000001 |       2 | mroach    | 2017-08-10 11:34:32.778412+00:00 | SELECT * FROM test.kv ORDER BY k | 192.168.0.72:56194 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
+              query_id             | node_id |            session_id            | user_name |              start               |                                 query                                 | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+----------------------------------+-----------------------------------------------------------------------+-----------------+------------------+-------------+-----------+
+  15f92b1cb931f6900000000000000002 |       2 | 15f92b10b92ed4080000000000000002 | root      | 2020-03-04 17:49:06.363515+00:00 | UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4) | 127.0.0.1:65092 |                  |    NULL     | preparing
+(1 row)
 ~~~
 
 #### Show all queries from a specific address and user
@@ -138,42 +108,33 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE client_address = '192.168.0.72:56194'
-          AND username = 'mroach';
+      WHERE client_address = '127.0.0.1:65196' AND user_name = 'maxroach';
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |              query               |   client_address   | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-| 14dacc1f9a781e3d0000000000000001 |       2 | mroach    | 2017-08-10 14:08:22.878113+00:00 | SELECT * FROM test.kv ORDER BY k | 192.168.0.72:56194 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
+              query_id             | node_id |            session_id            | user_name |              start               |                     query                     | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+----------------------------------+-----------------------------------------------+-----------------+------------------+-------------+-----------+
+  15f92bf4b27f0b480000000000000002 |       2 | 15f92b7dc85b7ba80000000000000002 | maxroach  | 2020-03-04 18:04:33.964083+00:00 | SELECT city, id FROM vehicles WHERE city = $1 | 127.0.0.1:65196 |                  |    false    | executing
+(1 row)
 ~~~
 
 #### Exclude queries from the built-in SQL client
 
-To exclude queries from the [built-in SQL client](cockroach-sql.html), filter for queries that do not show `cockroach` as the `application_name`:
+To exclude queries from the [built-in SQL client](cockroach-sql.html), filter for queries that do not show `$ cockroach sql` as the `application_name`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER QUERIES]
-      WHERE application_name != 'cockroach';
+      WHERE application_name != '$ cockroach sql';
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |                   query                   |   client_address    | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-| 14db657443230c3e0000000000000001 |       1 | root      | 2017-08-16 18:00:50.675151+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54119 | test_app         | false       | executing |
-| 14db657443b68c7d0000000000000001 |       1 | root      | 2017-08-16 18:00:50.684818+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54123 | test_app         | false       | executing |
-| 14db65744382c2340000000000000001 |       1 | root      | 2017-08-16 18:00:50.681431+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.56:54103 | test_app         | false       | executing |
-| 14db657443e30a850000000000000003 |       3 | root      | 2017-08-16 18:00:50.68774+00:00  | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54118 | test_app         | false       | executing |
-| 14db6574439f477d0000000000000003 |       3 | root      | 2017-08-16 18:00:50.6833+00:00   | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.58:54122 | test_app         | false       | executing |
-| 14db6574435817d20000000000000002 |       2 | root      | 2017-08-16 18:00:50.678629+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54121 | test_app         | false       | executing |
-| 14db6574433c621f0000000000000002 |       2 | root      | 2017-08-16 18:00:50.676813+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54124 | test_app         | false       | executing |
-| 14db6574436f71d50000000000000002 |       2 | root      | 2017-08-16 18:00:50.680165+00:00 | UPSERT INTO test.kv(k, v) VALUES ($1, $2) | 192.168.12.57:54117 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+-------------------------------------------+---------------------+------------------+-------------+-----------+
-(8 rows)
+              query_id             | node_id |            session_id            | user_name |              start               |                                 query                                 | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+----------------------------------+-----------------------------------------------------------------------+-----------------+------------------+-------------+-----------+
+  15f92c0dd24bec200000000000000003 |       3 | 15f92b0e4ea399680000000000000003 | root      | 2020-03-04 18:06:21.871708+00:00 | SELECT city, id FROM vehicles WHERE city = $1                         | 127.0.0.1:65088 |                  |    false    | executing
+  15f92c0dd26655d80000000000000001 |       1 | 15f92be36964ac800000000000000001 | root      | 2020-03-04 18:06:21.873515+00:00 | UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4) | 127.0.0.1:65240 |                  |    false    | executing
+  15f92c0dd25882c80000000000000001 |       1 | 15f92aefb240d2980000000000000001 | root      | 2020-03-04 18:06:21.872608+00:00 | UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4) | 127.0.0.1:65044 |                  |    false    | executing
+  15f92c0dd262cb980000000000000002 |       2 | 15f92b7dc85b7ba80000000000000002 | maxroach  | 2020-03-04 18:06:21.873286+00:00 | SELECT city, id FROM vehicles WHERE city = $1                         | 127.0.0.1:65196 |                  |    false    | executing
 ~~~
 
 ### Cancel a query
@@ -189,18 +150,17 @@ For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have 
 ~~~
 
 ~~~
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-|             query_id             | node_id | user_name |              start               |              query               |   client_address   | application_name | distributed |   phase   |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-| 14dacc1f9a781e3d0000000000000001 |       2 | mroach    | 2017-08-10 11:34:32.778412+00:00 | SELECT * FROM test.kv ORDER BY k | 192.168.0.72:56194 | test_app         | false       | executing |
-+----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
+              query_id             | node_id |            session_id            | user_name |              start              |        query        | client_address  | application_name | distributed |   phase
++----------------------------------+---------+----------------------------------+-----------+---------------------------------+---------------------+-----------------+------------------+-------------+-----------+
+  15f92c745fe203600000000000000001 |       1 | 15f92c63d4b393b80000000000000001 | root      | 2020-03-04 18:13:42.33385+00:00 | SELECT * FROM rides | 127.0.0.1:65287 | $ cockroach sql  |    true     | executing
+(1 row)
 ~~~
 
 To cancel this long-running query, and stop it from consuming resources, you note the `query_id` and use it with the `CANCEL QUERY` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
+> CANCEL QUERY '15f92c745fe203600000000000000001';
 ~~~
 
 ## See also
