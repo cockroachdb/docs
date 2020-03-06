@@ -76,3 +76,4 @@ algolia:
     - index.html
     - index.md
     - search.html
+    - "**/training/*.*"
