@@ -108,26 +108,6 @@
     position: relative;
     @include groovy(all);
     margin-right: 15px;
-
-    &:before, &:after {
-      content: '';
-      position: absolute;
-      height: 2px;
-      width: 5px;
-      top: 50%;
-      right: -12px;
-      background: #6fc42d;
-      -webkit-transform: rotate(45deg);
-              transform: rotate(45deg);
-    }
-
-    &:after {
-      -webkit-transform: rotate(-40deg);
-              transform: rotate(-40deg);
-      width: 15px;
-      margin-top: -2px;
-      right: -24px;
-    }
   }
 
   .comparison-chart__cockroach {

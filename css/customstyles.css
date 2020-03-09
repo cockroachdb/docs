@@ -3065,22 +3065,6 @@ p .version-tag, .clickable-header .version-tag {
     -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
     margin-right: 15px; }
-    .comparison-chart .comparison-chart__link:before, .comparison-chart .comparison-chart__link:after {
-      content: '';
-      position: absolute;
-      height: 2px;
-      width: 5px;
-      top: 50%;
-      right: -12px;
-      background: #6fc42d;
-      -webkit-transform: rotate(45deg);
-      transform: rotate(45deg); }
-    .comparison-chart .comparison-chart__link:after {
-      -webkit-transform: rotate(-40deg);
-      transform: rotate(-40deg);
-      width: 15px;
-      margin-top: -2px;
-      right: -24px; }
   .comparison-chart .comparison-chart__cockroach {
     margin-right: 10px; }
 
