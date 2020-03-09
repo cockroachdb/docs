@@ -6,6 +6,7 @@ toc: true
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
+- <span class="version-tag">New in v20.1:</span> [Avro][avro]
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
@@ -26,7 +27,7 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 
 ## Synopsis
 
-**Import a table from CSV**
+**Import a table from CSV or Avro**
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/import_csv.html %}
@@ -40,13 +41,13 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 
 ## Parameters
 
-### For import from CSV
+### For import from CSV or Avro
 
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create.
 `table_elem_list` | The table schema you want to use.  
-`CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-urls) of a CSV file containing the table schema.
+`CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-urls) of a SQL file containing the table schema.
 `file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
@@ -82,7 +83,7 @@ You can control the `IMPORT` process's behavior using any of the following optio
 
 <a name="delimiter"></a>
 
-Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Value                                                                                                                             |
+Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             |
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**.
 `comment`              | `CSV DATA `     | The unicode character that identifies rows to skip.
@@ -97,6 +98,12 @@ Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
 `fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
+`strict_validation`    | `AVRO DATA`    | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatypes]; otherwise, it will report an error.
+`records_terminated_by` | `AVRO DATA`   | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. <br><br>**Default:** `\n`
+`data_as_binary_records` | `AVRO DATA`  | Use when [importing a binary file containing Avro records](migrate-from-avro.html#import-binary-or-json-records).  The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
+`data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
+`schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
+`schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -178,7 +185,7 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 ### Import a table from a CSV file
 
-To manually specify the table schema:
+To specify the table schema in-line:
 
 Amazon S3:
 
@@ -887,6 +894,85 @@ CSV DATA ('nodelocal://2/customers.csv')
 ;
 ~~~
 
+### Import a table from an Avro file
+
+<span class="version-tag">New in v20.1:</span> [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('s3://acme-co/customers.avro?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
+;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('azure://acme-co/customer-import-data.avro?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('gs://acme-co/customers.avro')
+;
+~~~
+
+To use a file to specify the table schema:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+AVRO DATA ('s3://acme-co/customers.avro?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+AVRO DATA ('azure://acme-co/customer-import-data.avro?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'gs://acme-co/customers-create-table.sql'
+AVRO DATA ('gs://acme-co/customers.avro')
+;
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+
 ## Known limitation
 
 {% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}
@@ -898,10 +984,13 @@ CSV DATA ('nodelocal://2/customers.csv')
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [Migrate from CSV][csv]
+- [Migrate from Avro][avro]
 - [`IMPORT INTO`](import-into.html)
 
 <!-- Reference Links -->
 
+[avro]: migrate-from-avro.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [csv]: migrate-from-csv.html
+[datatypes]: migrate-from-avro.html#data-type-mapping
