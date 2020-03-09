@@ -63,6 +63,16 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 
 A `TIMETZ` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
+## Precision
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports precisions from 0 (seconds) to 6 (microseconds) for `TIME`/`TIMETZ` values. By default, `TIME`/`TIMETZ` values have a precision of 6 (microseconds).
+
+For example, specifying a `TIME` value as `TIME(3)` truncates the time precision to milliseconds.
+
+{{site.data.alerts.callout_info}}
+If you downgrade to a version of CockroachDB that does not support precision for `TIME`/`TIMETZ` values, all `TIME`/`TIMETZ` values previously specified with precision will be stored with full precision.
+{{site.data.alerts.end}}
+
 ## Example
 
 {% include copy-clipboard.html %}

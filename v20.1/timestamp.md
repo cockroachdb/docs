@@ -4,7 +4,7 @@ summary: The TIMESTAMP and TIMESTAMPTZ data types stores a date and time pair in
 toc: true
 ---
 
-The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) stores a date and time pair in UTC.
+The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) store a date and time pair in UTC.
 
 ## Variants
 
@@ -69,6 +69,16 @@ A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIM
 ## Size
 
 A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
+
+## Precision
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports precisions from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
+
+For example, specifying a `TIMESTAMP` value as `TIMESTAMP(3)` truncates the time component to milliseconds.
+
+{{site.data.alerts.callout_info}}
+If you downgrade to a version of CockroachDB that does not support precision for `TIMESTAMP`/`TIMESTAMPTZ` values, all `TIMESTAMP`/`TIMESTAMPTZ` values previously specified with precision will be stored with full precision.
+{{site.data.alerts.end}}
 
 ## Examples
 
