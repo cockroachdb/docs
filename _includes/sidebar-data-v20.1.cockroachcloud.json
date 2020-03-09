@@ -100,7 +100,7 @@
             "urls": [
               "/${VERSION}/migrate-from-avro.html"
             ]
-          },
+          }
         ]
       },
       {
