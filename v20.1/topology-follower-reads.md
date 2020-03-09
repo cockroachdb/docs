@@ -7,7 +7,7 @@ toc: true
 In a multi-region deployment, the follower reads pattern is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
-- Reads can be historical (48 seconds or more in the past).
+- Reads can be historical (a few seconds in the past, as defined by the [follower reads timestamp](follower-reads.html#experimental-follower-read-timestamp)).
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies (e.g., a reference table).
 - Table data must remain available during a region failure.
 
@@ -33,7 +33,7 @@ Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/ge
 
 ### Summary
 
-Using this pattern, you configure your application to use the [follower reads](follower-reads.html) feature by adding an `AS OF SYSTEM TIME` clause when reading from the table. This tells CockroachDB to read slightly historical data (at least 48 seconds in the past) from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
+Using this pattern, you configure your application to use the [follower reads](follower-reads.html) feature by adding an `AS OF SYSTEM TIME` clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
 
 ### Steps
 
@@ -105,7 +105,7 @@ For example, in the animation below:
 1. The read request in `us-central` reaches the regional load balancer.
 2. The load balancer routes the request to a gateway node.
 3. The gateway node routes the request to the closest replica for the table. In this case, the replica is *not* the leaseholder.
-4. The replica retrieves the results as of at least 48 seconds in the past and returns to the gateway node.
+4. The replica retrieves the results as of the [follower read timestamp](follower-reads.html#experimental-follower-read-timestamp) in the past and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v20.1/topology-patterns/topology_follower_reads_reads.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" />
