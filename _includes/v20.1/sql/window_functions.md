@@ -320,3 +320,4 @@
 <tr><td><a name="row_number"></a><code>row_number() &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of the current row within its partition, counting from 1.</p>
 </span></td></tr></tbody>
 </table>
+
