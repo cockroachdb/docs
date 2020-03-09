@@ -37,7 +37,7 @@
     line-height: 28px; // vertical spacing
     color: $cl_green;
     text-align: center;
-    padding: 20px 0;
+    padding: 20px;
 
     @include at-query($min, $screen-sm) {
       font-size: 17px;

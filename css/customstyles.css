@@ -3005,7 +3005,7 @@ p .version-tag, .clickable-header .version-tag {
     line-height: 28px;
     color: #54B30E;
     text-align: center;
-    padding: 20px 0; }
+    padding: 20px; }
     @media screen and (min-width: 768px) {
       .comparison-chart th {
         font-size: 17px; } }
