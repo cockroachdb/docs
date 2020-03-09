@@ -215,4 +215,4 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to 
 [mysql]: migrate-from-mysql.html
 [import]: import.html
 [option]: import.html#import-options
-[datatypes]: migrate-from-avro#data-type-mapping
+[datatypes]: migrate-from-avro.html#data-type-mapping
