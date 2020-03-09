@@ -63,7 +63,7 @@ Flag | Description
 `--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `25%` <span class="version-tag">Changed in v20.1</span><br><br>The default SQL memory size is suitable for production deployments but can be raised to increase the number of simultaneous client connections the node allows as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For local development clusters with memory-intensive workloads, reduce this value to, for example, `128MiB` to prevent out of memory errors.
 `--pid-file` | The file to which the node's process ID will be written as soon as the node is ready to accept connections. When `--background` is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
-`--temp-dir` | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
+`--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Networking
 
@@ -111,7 +111,19 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 --locality=region=us,datacenter=us-west
 ~~~
 
-### Store
+### Storage
+
+#### Storage engine
+
+<span class="version-tag">New in v20.1:</span> The `--storage-engine` flag is used to choose the storage engine used by the node.  Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
+
+Supported options:
+
+- `default`: Checks which engine type was last used for this node's [store directory](#store) (Pebble or RocksDB), and uses that engine.  If more than one store is specified, the previous engine type of the first store is used. If the check fails for any reason, or if the store directory does not exist yet, RocksDB is used.
+- `rocksdb`: Uses the [RocksDB](https://rocksdb.org) storage engine.
+- `pebble`: Uses the experimental [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it is written in Go and implements a subset of RocksDB's large feature set.
+
+#### Store
 
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
