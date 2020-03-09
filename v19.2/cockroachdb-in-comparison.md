@@ -47,13 +47,13 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
       <span class="support" data-dbs='["Oracle"]'>Add On Configuration</span>
       <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, Automated read scale, limited write</span>
-      <span class="support" data-dbs='["Casandra"]'>Node based, Automated for both reads and writes</span>
+      <span class="support" data-dbs='["Cassandra"]'>Node based, Automated for both reads and writes</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
       <span class="support" data-dbs='["Oracle"]'>Add On Configuration</span>
       <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, Automated read scale, limited write</span>
-      <span class="support" data-dbs='["Casandra"]'>Node based, Automated for both reads and writes</span>
+      <span class="support" data-dbs='["Cassandra"]'>Node based, Automated for both reads and writes</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-scale">Node based, Automated for both reads and writes</a></td>
   </tr>
@@ -68,7 +68,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
       <span class="support" data-dbs='["AWS Aurora"]'>None and Full copies across regions</span>
-      <span class="support" data-dbs='["Casandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
+      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
