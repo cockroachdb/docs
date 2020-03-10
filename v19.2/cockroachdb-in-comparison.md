@@ -148,7 +148,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
       <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
       <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
@@ -215,12 +215,12 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Yes</span>
-      <span class="support gray" data-dbs='["MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>No</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes - with limitations</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Yes</span>
-      <span class="support gray" data-dbs='["MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>No</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes - with limitations</span>
     </td>
     <td><a class="comparison-chart__link" href="frequently-asked-questions.html#why-is-cockroachdb-sql">Yes - wire compatible with PostgreSQL</a></td>
@@ -252,15 +252,15 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
-      <span class="support gray" data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
       <span class="support " data-dbs='["Spanner"]'>?</span>
-      <span class="support gray" data-dbs='["Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
-      <span class="support gray" data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
       <span class="support " data-dbs='["Spanner"]'>?</span>
-      <span class="support gray" data-dbs='["Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td><a class="comparison-chart__link" href="****************">Yes</a></td>
   </tr>
@@ -276,13 +276,13 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora","MongoDB"]'>No</span>
       <span class="support " data-dbs='[ "Cassandra"]'>Yes, Object Level</span>
       <span class="support " data-dbs='["Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora","MongoDB"]'>No</span>
       <span class="support " data-dbs='[ "Cassandra"]'>Yes, Object Level</span>
       <span class="support " data-dbs='["Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td><a class="comparison-chart__link" href="****************">Yes, Row level</a></td>
   </tr>
@@ -333,11 +333,11 @@ This page shows you how key features of CockroachDB stack up against other datab
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
       <span class="support " data-dbs='["Cassandra"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
       <span class="support " data-dbs='["Cassandra"]'>Yes</span>
     </td>
     <td><a class="comparison-chart__link" href="****************">Yes</a></td>
