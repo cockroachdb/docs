@@ -184,6 +184,29 @@ To view a table's comments:
 (6 rows)
 ~~~
 
+<span class="version-tag">New in v20.1:</span> You can also view comments on a table with [`SHOW CREATE`](show-create.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                             create_statement
+-------------+---------------------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | );
+             | COMMENT ON TABLE users IS 'This table contains information about users.'
+(1 row)
+~~~
+
 For more information, see [`COMMENT ON`](comment-on.html).
 
 ### Show virtual tables with comments

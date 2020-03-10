@@ -132,6 +132,38 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 (1 row)
 ~~~
 
+### Show the `CREATE TABLE` statement for a table with a comment
+
+<span class="version-tag">New in v20.1:</span> If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will display the comment.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> COMMENT ON TABLE users IS 'This table contains information about users.';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                             create_statement
+-------------+---------------------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | );
+             | COMMENT ON TABLE users IS 'This table contains information about users.'
+(1 row)
+~~~
+
+For more information, see [`COMMENT ON`](comment-on.html).
+
 ## See also
 
 - [`CREATE TABLE`](create-table.html)

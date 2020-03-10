@@ -82,6 +82,34 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 (6 rows)
 ~~~
 
+<span class="version-tag">New in v20.1:</span> You can also view comments on a table with [`SHOW CREATE`](show-create.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles;
+~~~
+
+~~~
+  table_name |                                          create_statement
+-------------+------------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     type VARCHAR NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status VARCHAR NULL,
+             |     current_location VARCHAR NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | );
+             | COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.'
+(1 row)
+~~~
+
 ### Add a comment to a column
 
 To add a comment to a column:
