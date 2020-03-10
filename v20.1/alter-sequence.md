@@ -29,10 +29,11 @@ table td:first-child {
 `IF EXISTS` | Modify the sequence only if it exists; if it does not exist, do not return an error.
 `sequence_name` | The name of the sequence you want to modify.
 `INCREMENT` | The new value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
-`MINVALUE` | The new minimum value of the sequence. <br><br>Default: `1`
-`MAXVALUE` | The new maximum value of the sequence. <br><br>Default: `9223372036854775807`
+`MINVALUE` | The new minimum value of the sequence. <br><br>**Default:** `1`
+`MAXVALUE` | The new maximum value of the sequence. <br><br>**Default:** `9223372036854775807`
 `START` | The value the sequence starts at if you `RESTART` or if the sequence hits the `MAXVALUE` and `CYCLE` is set. <br><br>`RESTART` and `CYCLE` are not implemented yet.
 `CYCLE` | The sequence will wrap around when the sequence value hits the maximum or minimum value. If `NO CYCLE` is set, the sequence will not wrap.
+`OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br><br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 
 ## Examples
 
