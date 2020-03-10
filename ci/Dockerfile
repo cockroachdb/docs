@@ -1,6 +1,7 @@
 FROM alpine:3.10
 
 COPY Gemfile Gemfile.lock /tmp/bundler/
+COPY /jekyll-algolia-dev /tmp/bundler/jekyll-algolia-dev
 
 RUN apk add --update \
     bash \
