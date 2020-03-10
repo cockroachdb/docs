@@ -1,0 +1,9 @@
+# definitions (use for tables and tooltips)
+
+round-trip-latency: "Round-trip latency includes the return time of a packet."
+
+locality: "Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. See [Locality](cockroach-start.html#locality)."
+
+# guidance (use in body text and callouts. do not use for tooltips, because these snippets may already contain tooltips)
+
+network-partition: "A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when whitelisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.<br><br>The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether <a href='#' data-toggle=tooltip data-original-title='{{site.data.glossary.locality}}'>localities</a> are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability."
