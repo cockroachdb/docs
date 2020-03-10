@@ -68,7 +68,7 @@ If the graph shows excessive aborts or rollbacks, it might indicate issues with 
 
 The **SQL** dashboard shows other time series graphs that are important for CockroachDB developers:
 
-- Execution Latency
+- KV Execution Latency
 - Active Distributed SQL Queries
 - Active Flows for Distributed SQL Queries
 - Service Latency: DistSQL

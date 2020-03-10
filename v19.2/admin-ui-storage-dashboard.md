@@ -54,8 +54,9 @@ The **Storage** dashboard shows other time series graphs that are important for 
 - Live Bytes
 - Log Commit Latency
 - Command Commit Latency
-- RocksDB Read Amplification
-- RocksDB SSTables
+- Read Amplification
+- SSTables
+- Compactions/Flushes
 - Time Series Writes
 - Time Series Bytes Written
 
