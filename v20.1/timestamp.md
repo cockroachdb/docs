@@ -72,7 +72,7 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 ## Precision
 
-<span class="version-tag">New in v20.1:</span> CockroachDB supports precisions from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
+<span class="version-tag">New in v20.1:</span> CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
 
 For example, specifying a `TIMESTAMP` value as `TIMESTAMP(3)` truncates the time component to milliseconds.
 
@@ -81,6 +81,8 @@ If you downgrade to a version of CockroachDB that does not support precision for
 {{site.data.alerts.end}}
 
 ## Examples
+
+### Create a table with a `TIMESTAMPTZ`-typed column
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -115,6 +117,44 @@ If you downgrade to a version of CockroachDB that does not support precision for
 +---+---------------------------+
   1 | 2016-03-26 15:10:10+00:00
   2 | 2016-03-26 00:00:00+00:00
+(2 rows)
+~~~
+
+### Create a table with a `TIMESTAMP`-typed column, with precision
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP(4));
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM timestamps;
+~~~
+
+~~~
+  column_name |  data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+--------------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8         |    false    | NULL           |                       | {primary} |   false
+  b           | TIMESTAMP(4) |    true     | NULL           |                       | {}        |   false
+(2 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO timestamps VALUES (1, TIMESTAMP '2020-03-25 12:00:00.123456'), (2, TIMESTAMP '2020-03-26 4:00:00.123456');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM timestamps;
+~~~
+
+~~~
+  a |               b
+----+---------------------------------
+  1 | 2020-03-25 12:00:00.1235+00:00
+  2 | 2020-03-26 04:00:00.1235+00:00
 (2 rows)
 ~~~
 
