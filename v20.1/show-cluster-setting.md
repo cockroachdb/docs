@@ -37,11 +37,9 @@ Parameter | Description
 ~~~
 
 ~~~
-+-------------------------------+
-| diagnostics.reporting.enabled |
-+-------------------------------+
-|             true              |
-+-------------------------------+
+  diagnostics.reporting.enabled
+---------------------------------
+              true
 (1 row)
 ~~~
 
@@ -53,15 +51,13 @@ Parameter | Description
 ~~~
 
 ~~~
-+------------------------------------------------------+-----------+--------------+--------------------------------------------------------------------------+
-|                       variable                       |   value   | setting_type |                               description                                |
-+------------------------------------------------------+-----------+--------------+--------------------------------------------------------------------------+
-| cloudstorage.gs.default.key                          |           | s            | if set, JSON key to use during Google Cloud Storage operations           |
-| cloudstorage.http.custom_ca                          |           | s            | custom root CA (appended to system's default CAs) for verifying          |
-|                                                      |           |              | certificates when interacting with HTTPS storage                         |
-| cloudstorage.timeout                                 | 10m0s     | d            | the timeout for import/export storage operations                         |
-...
-+-------------------------------+---------------+------+--------------------------------------------------------+
+                variable                |     value      | setting_type | public |                                                   description
+----------------------------------------+----------------+--------------+--------+-------------------------------------------------------------------------------------------------------------------
+  changefeed.experimental_poll_interval | 1s             | d            | false  | polling interval for the table descriptors
+  cloudstorage.gs.default.key           |                | s            |  true  | if set, JSON key to use during Google Cloud Storage operations
+  cloudstorage.http.custom_ca           |                | s            |  true  | custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage
+  cloudstorage.timeout                  | 10m0s          | d            |  true  | the timeout for import/export storage operations
+  ...
 ~~~
 
 ## See also
