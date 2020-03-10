@@ -73,7 +73,9 @@ For example, specifying a `TIME` value as `TIME(3)` truncates the time precision
 If you downgrade to a version of CockroachDB that does not support precision for `TIME`/`TIMETZ` values, all `TIME`/`TIMETZ` values previously specified with precision will be stored with full precision.
 {{site.data.alerts.end}}
 
-## Example
+## Examples
+
+### Create a table with a `TIME`-typed column
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -128,6 +130,44 @@ Comparing `TIME` values:
 +----------+
     true
 (1 row)
+~~~
+
+### Create a table with a `TIME`-typed column, with precision
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME(4));
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM time;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
+  time_val    | TIME(4)   |    true     | NULL           |                       | {}        |   false
+(2 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO time VALUES (1, TIME '05:40:00.123456'), (2, TIME '05:41:39.12345');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM time;
+~~~
+
+~~~
+  time_id |            time_val
+----------+---------------------------------
+        1 | 0000-01-01 05:40:00.1235+00:00
+        2 | 0000-01-01 05:41:39.1235+00:00
+(2 rows)
 ~~~
 
 ## Supported casting & conversion
