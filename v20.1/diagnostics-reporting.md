@@ -33,18 +33,23 @@ To make sure that absolutely no diagnostic details are shared, you can set the e
 
 ### After cluster initialization
 
-To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](cockroach-sql.html) to execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) statement, which switches the `diagnostics.reporting.enabled` [cluster setting](cluster-settings.html) to `false`:
+To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client](cockroach-sql.html) to execute the following [`SET CLUSTER SETTING`](set-cluster-setting.html) statements, which switch the `diagnostics.reporting.enabled` and `diagnostics.reporting.send_crash_reports` [cluster settings](cluster-settings.html) to `false`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
 ~~~
 
-This change will not be instantaneous, as it must be propagated to other nodes in the cluster.
+{% include copy-clipboard.html %}
+~~~ sql
+>  SET CLUSTER SETTING diagnostics.reporting.send_crash_reports = false;
+~~~
+
+These changes will not be instantaneous, as they must be propagated to other nodes in the cluster.
 
 ## Check the state of diagnostics reporting
 
-To check the state of diagnostics reporting, [use the built-in SQL client](cockroach-sql.html) to execute the following [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement:
+To check the state of diagnostics reporting, [use the built-in SQL client](cockroach-sql.html) to execute the following [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statements:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -53,12 +58,24 @@ To check the state of diagnostics reporting, [use the built-in SQL client](cockr
 
 ~~~
   diagnostics.reporting.enabled
-+-------------------------------+
+---------------------------------
               false
 (1 row)
 ~~~
 
-If the setting is `false`, diagnostics reporting is off; if the setting is `true`, diagnostics reporting is on.
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING diagnostics.reporting.send_crash_reports;
+~~~
+
+~~~
+  diagnostics.reporting.send_crash_reports
+--------------------------------------------
+                   false
+(1 row)
+~~~
+
+If the settings are `false`, diagnostics reporting is off; if the settings are `true`, diagnostics reporting is on.
 
 ## See also
 

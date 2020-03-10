@@ -58,15 +58,32 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 
 {% include copy-clipboard.html %}
 ~~~ sql
+>  SET CLUSTER SETTING diagnostics.reporting.send_crash_reports = false;
+~~~
+
+Check that the changes were made: 
+
+{% include copy-clipboard.html %}
+~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
 
 ~~~
-+-------------------------------+
-| diagnostics.reporting.enabled |
-+-------------------------------+
-| false                         |
-+-------------------------------+
+  diagnostics.reporting.enabled
+---------------------------------
+              false
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING diagnostics.reporting.send_crash_reports;
+~~~
+
+~~~
+  diagnostics.reporting.send_crash_reports
+--------------------------------------------
+                   false
 (1 row)
 ~~~
 
