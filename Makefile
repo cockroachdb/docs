@@ -43,19 +43,19 @@ jekyll-action := build
 
 .PHONY: cockroachdb-build
 cockroachdb-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
+	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: cockroachdb
 cockroachdb: jekyll-action := serve --port 4000
 cockroachdb: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
+	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
 standard: cockroachdb
 
 .PHONY: cockroachcloud-build
 cockroachcloud-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --config _config_base.yml,_config_cockroachcloud.yml$(extra-config) $(JEKYLLFLAGS)
+	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachcloud.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: cockroachcloud
 cockroachcloud: jekyll-action := serve --port 4001
