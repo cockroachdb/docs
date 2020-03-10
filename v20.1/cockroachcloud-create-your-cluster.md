@@ -126,7 +126,7 @@ One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximate
 
 With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
 
-So for a workload resembling TPC-C, we want to build out your cluster with "`Option 2`" nodes, and you'll only use 1/3 of the storage.
+So for a workload resembling TPC-C, we want to build out your cluster with `Option 2` nodes, and you'll only use 1/3 of the storage.
 
 <Need numbers from the perf tests>
 -->
