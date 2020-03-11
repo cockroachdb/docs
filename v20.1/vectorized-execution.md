@@ -46,6 +46,12 @@ For information about vectorized execution in the context of the CockroachDB arc
 
 For detailed examples of vectorized query execution for hash and merge joins, see the blog posts [40x faster hash joiner with vectorized execution](https://www.cockroachlabs.com/blog/vectorized-hash-joiner/) and [Vectorizing the merge joiner in CockroachDB](https://www.cockroachlabs.com/blog/vectorizing-the-merge-joiner-in-cockroachdb/).
 
+## Disk-spilling operations
+
+Global sorts and merge and hash joins are memory-intensive operations. If there is not enough memory allocated for a sort or a join, CockroachDB will spill intermediate execution results to disk.
+
+You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity.
+
 ## Known limitations
 
 Vectorized execution is not as extensively tested as CockroachDB's existing row-oriented execution engine. In addition, some data types are not supported, and support for some operations is experimental.
@@ -77,13 +83,11 @@ For example, `SELECT x IS NOT NULL FROM t` is supported, but `SELECT x + NULL FR
 
 For more information, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41001).
 
-### Disk-spilling operations
+## Window functions
 
-Support for vectorized execution is experimental for the following memory-intensive operations:
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for [window functions](https://www.cockroachlabs.com/docs/stable/window-functions.html).
 
-{% include {{page.version.version}}/sql/disk-spilling-ops.md %}
-
-You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity.
+To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
 
 ## See also
 
