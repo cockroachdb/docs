@@ -136,11 +136,9 @@ The table below lists the experimental SQL functions and operators available in 
 | [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
 | [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
 
-## Vectorized execution on disk-spilling operations
+## Vectorized execution on window functions
 
-[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [disk-spilling operations](vectorized-execution.html#disk-spilling-operations):
-
-{% include {{page.version.version}}/sql/disk-spilling-ops.md %}
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for [window functions](https://www.cockroachlabs.com/docs/stable/window-functions.html).
 
 To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
 
