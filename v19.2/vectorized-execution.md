@@ -12,18 +12,18 @@ Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_pla
 
 By default, vectorized execution is enabled in CockroachDB for [all operations that are guaranteed to execute in memory](#disk-spilling-operations), on tables with [supported data types](#supported-data-types).
 
-You can turn vectorized execution on or off for all operations with the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) or the `vectorize` [session variable](set-vars.html). The following options are supported for both the cluster setting and session variable:
+You can turn vectorized execution on or off for all operations in the current session with the `vectorize` [session variable](set-vars.html). The following options are supported:
 
 Option | Description
 ----------|------------
 `auto` | Instructs CockroachDB to use the vectorized execution engine on operations that always execute in memory, without the need to spill intermediate results to disk.<br><br>**Default:** `vectorize=auto`
-`experimental_on` | Turns on vectorized execution for all operations. We do not recommend using this setting in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
+`experimental_on` | Turns on vectorized execution for all operations. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
 `off` | Turns off vectorized execution for all operations.
 
-For information about configuring cluster settings, see [Cluster Settings](cluster-settings.html).<br>For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
+For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
 
 {{site.data.alerts.callout_success}}
-To see if CockroachDB will use the vectorized execution engine for a query, run a simple [`EXPLAIN`](explain.html) statement on the query. If the `vectorize` property is `true`, the query will be executed with the vectorized engine. If it is `false`, the row-oriented execution engine is used instead.
+To see if CockroachDB will use the vectorized execution engine for a query, run a simple [`EXPLAIN`](explain.html) statement on the query. If `vectorize` is `true`, the query will be executed with the vectorized engine. If it is `false`, the row-oriented execution engine is used instead.
 {{site.data.alerts.end}}
 
 ### Setting the row threshold for vectorized execution
@@ -32,7 +32,7 @@ The efficiency of vectorized execution increases with the number of rows process
 
 By default, vectorized execution is enabled for queries on tables of 1000 rows or more. If the number of rows in a table falls below 1000, CockroachDB uses the row-oriented execution engine instead.
 
-For performance tuning, you can change the minimum number of rows required to use the vectorized engine to execute a query plan with the `vectorize_row_count_threshold` [cluster setting](cluster-settings.html). This setting is ignored if `vectorize=experimental_on`.
+For performance tuning, you can change the minimum number of rows required to use the vectorized engine to execute a query plan in the current session with the `vectorize_row_count_threshold` [session variable](set-vars.html). This variable is ignored if `vectorize=experimental_on`.
 
 
 ## How vectorized execution works
@@ -47,10 +47,10 @@ For information about vectorized execution in the context of the CockroachDB arc
 
 For detailed examples of vectorized query execution for hash and merge joins, see the blog posts [40x faster hash joiner with vectorized execution](https://www.cockroachlabs.com/blog/vectorized-hash-joiner/) and [Vectorizing the merge joiner in CockroachDB](https://www.cockroachlabs.com/blog/vectorizing-the-merge-joiner-in-cockroachdb/).
 
-## Known Limitations
+## Known limitations
 
 Vectorized execution is not as extensively tested as CockroachDB's existing row-oriented execution engine. In addition, some data types are not supported, and support for some operations is experimental.
-
+Fi
 ### Supported data types
 
 Vectorized execution is supported for the following [data types](data-types.html) and their aliases:
@@ -64,7 +64,9 @@ Vectorized execution is supported for the following [data types](data-types.html
 - [`TIMESTAMP`](timestamp.html)
 - [`UUID`](uuid.html)
 
-In all [`vectorize` modes](#configuring-vectorized-execution), queries on tables that contain unsupported data types are executed with the row-oriented execution engine. Using [`EXPLAIN(VEC)`](explain.html#vec-option) on queries of tables that include unsupported data types will return an unhandled data type error.
+{{site.data.alerts.callout_info}}
+CockroachDB uses the vectorized engine to execute queries on columns with supported data types, even if a column's parent table includes unused columns with unsupported data types.
+{{site.data.alerts.end}}
 
 ### Queries with constant `NULL` arguments
 
@@ -85,8 +87,5 @@ You can configure a node's budget for in-memory query processing at node startup
 ## See also
 
 - [SQL Layer](architecture/sql-layer.html)
-- [Cluster Settings](cluster-settings.html)
-- [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [`SET` &lt;session variable&gt;](set-vars.html)
 - [`SHOW` &lt;session variable&gt;](show-vars.html)
