@@ -132,7 +132,7 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 ## Functions and Operators
 
-The table below lists the experimental SQL functions and operators available in CockroachDB 2.1.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
+The table below lists the experimental SQL functions and operators available in CockroachDB.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
 
 | Function                                                                         | Description                                     |
 |----------------------------------------------------------------------------------+-------------------------------------------------|

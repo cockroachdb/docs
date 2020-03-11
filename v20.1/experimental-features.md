@@ -127,7 +127,7 @@ The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows informat
 
 ## Functions and Operators
 
-The table below lists the experimental SQL functions and operators available in CockroachDB 2.1.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
+The table below lists the experimental SQL functions and operators available in CockroachDB.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
 
 | Function                                                                         | Description                                     |
 |----------------------------------------------------------------------------------+-------------------------------------------------|
@@ -141,10 +141,7 @@ The table below lists the experimental SQL functions and operators available in 
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-To turn vectorized execution on for all operations, do one of the following:
-
-- Set the `sql.defaults.vectorize` [cluster setting](cluster-settings.html) to `experimental_on`.
-- Set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
+To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
 
 ## See Also
 
