@@ -17,44 +17,44 @@ If you have an [Enterprise license](enterprise-licensing.html), you can use the 
 
 ### Manual full backups
 
-In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of each database in your cluster:
+In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE <database_name> TO '<full_backup_location>';
+> BACKUP TO '<full_backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE <database_name> FROM '<full_backup_location>';
+> RESTORE FROM '<full_backup_location>';
 ~~~
 
 ### Manual full and incremental backups
 
-If a database increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger databases.
+If your cluster increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faßster than full backups for larger clusters.
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE <database_name> TO '<full_backup_location>';
+> BACKUP TO '<full_backup_location>';
 ~~~
 
 Then create nightly incremental backups based off of the full backups you've already created.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE <database_name> TO 'incremental_backup_location'
-INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
+> BACKUP  TO '<incremental_backup_location>'
+    INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE <database_name> FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
+> RESTORE FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -89,7 +89,7 @@ In the sample script, configure the day of the week for which you want to create
     # recently created backups in a file to pass as the base for incremental backups.
 
     full_day="<day_of_the_week>"                      # Must match (including case) the output of `LC_ALL=C date +%A`.
-    what="DATABASE <database_name>"                   # The name of the database you want to back up.
+    what=""                                           # Leave empty for full cluster backup, or add "DATABASE database_name" to backup a database.
     base="<storage_URL>/backups"                      # The URL where you want to store the backup.
     extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI (e.g., AWS key params).
     recent=recent_backups.txt                         # File in which recent backups are tracked.
@@ -123,7 +123,7 @@ In the sample script, configure the day of the week for which you want to create
     Variable | Description
     -----|------------
     `full_day` | The day of the week on which you want to take a full backup.
-    `what` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).
+    `what` | Leave empty for a full cluster backup. Otherwise, add `DATABASE <db_name>` to back up a database (i.e., create backups of all tables and views in the database).
     `base` | The URL where you want to store the backup.<br/><br/>URL format: `[scheme]://[host]/[path]` <br/><br/>For information about the components of the URL, see [Backup File URLs](backup.html#backup-file-urls).
     `extra`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
     `backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.
@@ -173,41 +173,39 @@ For example, to create a locality-aware backup where nodes with the locality `re
 
 {% include copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE foo TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+BACKUP TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
 To restore the backup created above, run the statement below. Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE foo FROM ('s3://us-east-bucket', 's3://us-west-bucket');
+RESTORE FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 A list of multiple URIs (surrounded by parentheses) specifying a locality-aware backup can also be used in place of any incremental backup URI in [`RESTORE`][restore]. If the original backup was an incremental backup, it can be restored using:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE foo FROM 's3://other-full-backup-uri', ('s3://us-east-bucket', 's3://us-west-bucket');
+RESTORE FROM 's3://other-full-backup-uri', ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 For more detailed examples, see [Create locality-aware backups](backup.html#create-locality-aware-backups) and [Restore from a locality-aware backup based on node locality](restore.html#restore-from-a-locality-aware-backup).
 
 {{site.data.alerts.callout_info}}
-The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) as shown below.
-
-[`RESTORE`][restore] is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen because [`BACKUP`][backup] does not back up [zone configurations](configure-replication-zones.html), so [`RESTORE`][restore] has no way of knowing how to take node localities into account when restoring data from a backup.
+The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
 {{site.data.alerts.end}}
 
 ## Perform Core backup and restore
 
-In case you do not have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
+If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore a database from a Core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
+To restore a database from a core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
 
 {% include copy-clipboard.html %}
 ~~~ shell
