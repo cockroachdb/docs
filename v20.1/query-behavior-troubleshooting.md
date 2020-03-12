@@ -20,9 +20,11 @@ To detect whether your cluster has slow queries, check the [service latency grap
 
 Once you determine that you do have slow queries in your cluster, use the [Statements page](admin-ui-statements-page.html) to identify the high latency [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
 
-You can then use the [Statements Details](admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements. You can also use [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
+You can then use the [Statement Details](admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements and [activate diagnostics](admin-ui-statements-page.html#diagnostics) for the statement that you can send to our [support team](support-resources.html) for analysis.
 
-If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, [contact us](file-an-issue.html).
+You can also use [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
+
+If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, [contact us](support-resources.html).
 
 ## Query is sometimes slow
 
@@ -30,7 +32,7 @@ If the query performance is irregular:
 
 1.  Run [`SHOW TRACE`](show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
 
-2.  [Contact us](file-an-issue.html) to analyze the outputs of the `SHOW TRACE` command.
+2.  [Contact us](support-resources.html) to analyze the outputs of the `SHOW TRACE` command.
 
 ## Cancelling running queries
 
@@ -44,7 +46,7 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 - CPU usage: [CPU percent](admin-ui-hardware-dashboard.html#cpu-percent)
 
-- Network latency: [Service latency SQL 99th percentile](admin-ui-overview-dashboard.html#service-latency-sql-99th-percentile)
+- Network latency: [Network Latency page](admin-ui-network-latency-page.html)
 
 ## Single hot node
 
