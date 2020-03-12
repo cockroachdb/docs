@@ -3,7 +3,10 @@ title: Build a Python App with CockroachDB and Django
 summary: Learn how to use CockroachDB from a simple Django application.
 toc: true
 twitter: false
+build_for: [cockroachdb, cockroachcloud]
 ---
+
+{% unless site.cockroachcloud %}
 
 <div class="filters filters-big clearfix">
     <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 22%" class="filter-button">Use <strong>psycopg2</strong></button></a>
@@ -12,13 +15,19 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
 </div>
 
+{% endunless %}
+
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
 CockroachDB supports Django versions 2 and 3.
 
+{% unless site.cockroachcloud %}
+
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
+
+{% endunless %}
 
 {{site.data.alerts.callout_info}}
 The example code and instructions on this page use Python 3 and Django 3.
@@ -75,6 +84,8 @@ $ pip install django-cockroachdb==3.0a1
 Successfully installed django-cockroachdb-3.0a1 psycopg2-2.8.4
 ~~~
 {{site.data.alerts.end}}
+
+{% unless site.cockroachcloud %}
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -154,6 +165,42 @@ Exit the SQL shell:
 
 </section>
 
+{% endunless %}
+
+{% if site.cockroachcloud %}
+
+## Step 2: Connect to your CockroachCloud cluster and create the `django` user and `bank` database
+
+Connect to your CockroachCloud cluster using the [SQL shell](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client).
+
+In the SQL shell, issue the following statements to create the `django` user and `bank` database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER IF NOT EXISTS django WITH PASSWORD 'password';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE bank;
+~~~
+
+Give the `django` user the necessary permissions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON DATABASE bank TO django;
+~~~
+
+Exit the SQL shell:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \q
+~~~
+
+{% endif %}
+
 ## Step 3. Create a Django project
 
 In the directory where you'd like to store your code, use the [`django-admin` command-line tool](https://docs.djangoproject.com/en/3.0/ref/django-admin/) to create an application project:
@@ -188,6 +235,8 @@ INSTALLED_APPS = [
 ~~~
 
 The other installed applications listed are added to all starter Django applications by default.
+
+{% unless site.cockroachcloud %}
 
 In `myproject/myproject/settings.py`, change `DATABASES` to the following:
 
@@ -225,6 +274,28 @@ DATABASES = {
 ~~~
 
 </section>
+
+{% endunless %}
+
+{% if site.cockroachcloud %}
+
+In the CockroachCloud console, generate the [connection parameters](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method). Then in `myproject/myproject/settings.py`, change `DATABASES` to the following:
+
+{% include copy-clipboard.html %}
+~~~ python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_cockroachdb',
+        'NAME': 'bank',
+        'USER': 'django',
+        'PASSWORD': 'password',
+        'HOST': '<host>',
+        'PORT': '26257',
+    }
+}
+~~~
+
+{% endif %}
 
 ## Step 4. Write the application logic
 
@@ -320,6 +391,8 @@ $ python3 manage.py migrate
 
 This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
 
+{% unless site.cockroachcloud %}
+
 <section class="filter-content" markdown="1" data-scope="secure">
 
 To verify that the migration succeeded, open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
@@ -341,6 +414,14 @@ $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 </section>
+
+{% endunless %}
+
+{% if site.cockroachcloud %}
+
+To verify that the migration succeeded, connect to your CockroachCloud cluster using the [SQL shell](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and issue the following statements:
+
+{% endif %}
 
 {% include copy-clipboard.html %}
 ~~~ sql

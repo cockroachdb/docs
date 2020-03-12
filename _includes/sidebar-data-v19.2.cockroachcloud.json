@@ -37,7 +37,7 @@
         "title": "Build a 'Hello World' app",
         "items": [
           {
-            "title": "Python",
+            "title": "Django",
             "urls": [
               "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
             ]
