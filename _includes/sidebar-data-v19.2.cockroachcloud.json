@@ -34,6 +34,17 @@
         ]
       },
       {
+        "title": "Build a 'Hello World' app",
+        "items": [
+          {
+            "title": "Django",
+            "urls": [
+              "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Secure Your Cluster",
         "items": [
           {
