@@ -12,13 +12,11 @@ For information about temporarily stopping a node (e.g., for planned maintenance
 
 ### How it works
 
-When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all **range replicas** and **range leases** off the node so that it can be safely shut down.
+When you decommission a node, all range replicas on the node are transferred to other nodes. For any leaseholder replicas, those leases are transferred as well.
 
-Basic terms:
+During and after decommissioning, the node continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. For this reason, the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so load balancers can continue directing traffic to the node.
 
-- **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
-- **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+After decommissioning, it's typical to [shut down](cockroach-quit.html) the node, at which point new SQL connections are rejected and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status response code so load balancers stop directing traffic to the node.
 
 ### Considerations
 
@@ -36,7 +34,7 @@ If you try to decommission a node, the process will hang indefinitely because th
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-The decommissioning node will be marked as **Suspect** in the Admin UI. 
+The decommissioning node will be marked as **Suspect** in the Admin UI.
 
 {{site.data.alerts.callout_info}}
 Adding a 4th node to the cluster at this point will neither enable the decommissioning process to complete nor change the **Suspect** node status. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
@@ -66,7 +64,7 @@ If you try to decommission a node, the cluster will successfully rebalance all r
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-The decommissioning node will be marked as **Suspect** in the Admin UI. 
+The decommissioning node will be marked as **Suspect** in the Admin UI.
 
 {{site.data.alerts.callout_info}}
 Adding a 6th node to the cluster at this point will neither enable the decommissioning process to complete nor change the **Suspect** node status. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
