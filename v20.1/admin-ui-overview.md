@@ -1,6 +1,7 @@
 ---
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
+toc: true
 redirect_from: explore-the-admin-ui.html
 key: explore-the-admin-ui.html
 ---
@@ -19,7 +20,7 @@ Area | Description
 [SQL Performance](admin-ui-sql-dashboard.html) | View metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 [Storage Utilization](admin-ui-storage-dashboard.html) | View metrics about storage capacity and file descriptors.
 [Replication Details](admin-ui-replication-dashboard.html) | View metrics about how data is replicated across the cluster, such as range status, replicas per store, and replica quiescence.
-[Changefeed Details](admin-ui-cdc-dashboard.html) | View metrics about the [changefeeds](change-data-capture.html) created across your cluster. 
+[Changefeed Details](admin-ui-cdc-dashboard.html) | View metrics about the [changefeeds](change-data-capture.html) created across your cluster.
 [Nodes Details](admin-ui-access-and-navigate.html#summary-panel) | View details of live, dead, and decommissioned nodes.
 [Events](admin-ui-access-and-navigate.html#events-panel) | View a list of recent cluster events.
 [Database Details](admin-ui-databases-page.html) | View details about the system and user databases in the cluster.
@@ -43,7 +44,7 @@ The default `root` user is a member of the `admin` role.
 Secure area | Privileged information
 -----|-----
 [Node Map](enable-node-map.html) | Database and table names
-[Database Details](admin-ui-databases-page.html) | Stored table data	
+[Database Details](admin-ui-databases-page.html) | Stored table data
 [Statements Details](admin-ui-statements-page.html) | SQL statements
 [Advanced Debugging Pages](admin-ui-debug-pages.html) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
 
