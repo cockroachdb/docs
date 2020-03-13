@@ -8,7 +8,6 @@ Despite CockroachDB's various [built-in safeguards against failure](frequently-a
 
 This page explains available monitoring tools and critical events and metrics to alert on.
 
-
 ## Monitoring tools
 
 ### Admin UI
@@ -94,8 +93,14 @@ Otherwise, it returns an HTTP `200 OK` status response code with details about t
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is being [decommissioned](remove-nodes.html) or in the process of [shutting down](cockroach-quit.html) and is therefore not able to accept SQL connections and execute queries. This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
-    {{site.data.alerts.callout_success}}If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the <code>server.shutdown.drain_wait</code> <a href="cluster-settings.html">cluster setting</a> to cause a node to return <code>503 Service Unavailable</code> even before it has started shutting down.{{site.data.alerts.end}}
+- The node is not able to accept SQL connections and execute queries because it is in the process of being [shut down](cockroach-quit.html). This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+
+    {{site.data.alerts.callout_success}}
+    If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
+    {{site.data.alerts.end}}
+
+    <span class="version-tag">Changed in v20.1:</span> In previous releases, nodes in the process of [decommissioning](remove-nodes.html) or already fully decommissioned would be considered unready and return `503 Service Unavailable`. This is no longer the case. Although such nodes no longer store replicas and leases after decommissioning, they can still function as gateways to route SQL connections to relevant data.  
+
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
 {% include copy-clipboard.html %}
