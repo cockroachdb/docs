@@ -38,6 +38,16 @@
 
   <tr>
    <td>
+    <code>crdb_version</code>
+   </td>
+   <td>The version of CockroachDB.</td>
+   <td>`CockroachDB OSS <i>version</i>`</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>database</code>
    </td>
    <td>The <a href="sql-name-resolution.html#current-database">current database</a>.</td>
@@ -171,6 +181,19 @@
    <td>The default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can also be set for all connections using the 'sql.defaults.results_buffer_size' <a href="cluster-settings.html">cluster setting</a>. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Setting to 0 disables any buffering.
    <td>
     <code>16384</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>require_explicit_primary_keys</code>
+   </td>
+   <td><span class="version-tag">New in v20.1</span>: If <code>on</code>, CockroachDB throws on error for all tables created without an explicit primary key defined.
+   </td>
+   <td>
+    <code>off</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
@@ -338,6 +361,19 @@
    </td>
    <td>
     <code>auto</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>vectorize_row_count_threshold</code>
+   </td>
+   <td>The minimum number of rows required to use the vectorized engine to execute a query plan.
+   </td>
+   <td>
+    <code>1000</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>

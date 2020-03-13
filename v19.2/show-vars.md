@@ -33,6 +33,8 @@ The variable name is case insensitive. It may be enclosed in double quotes; this
 
 {% include {{ page.version.version }}/misc/session-vars.html %}
 
+For session variables on experimental features, see [Experimental Features](experimental-features.html).
+
 Special syntax cases supported for compatibility:
 
  Syntax | Equivalent to
