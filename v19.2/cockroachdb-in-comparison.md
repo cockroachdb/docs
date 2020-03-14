@@ -55,7 +55,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, Automated read scale, limited write</span>
       <span class="support" data-dbs='["Cassandra"]'>Node based, Automated for both reads and writes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-scale">Node based, Automated for both reads and writes</a></td>
+    <td>Node based, Automated for both reads and writes</a></td>
   </tr>
 
   <tr>
@@ -75,7 +75,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["AWS Aurora"]'>None and Full copies across regions</span>
       <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
     </td>
-    <td><a class="comparison-chart__link" href="*****************">Detailed options to optimize storage, compute and latency</a></td>
+    <td>Detailed options to optimize storage, compute and latency</td>
   </tr>
 
   <tr>
@@ -97,7 +97,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["MongoDB", "Cassandra"]'>Automated for reads, limited guarantees for writes</span>
       <span class="support" data-dbs='["Spanner", "Yugabyte"]'>Fully automated for both reads and writes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-survive-failures">Fully automated for both reads and writes</a></td>
+    <td>Fully automated for both reads and writes</td>
   </tr>
 
   <tr>
@@ -119,7 +119,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & Automated Repair RPO &lt;1 min</span>
       <span class="support" data-dbs='["Spanner", "Yugabyte]'>"Automated Repair RPO &lt;10 sec"</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-survive-failures">Automated Repair RPO &lt;10 sec</a></td>
+    <td>Automated Repair RPO &lt;10 sec</td>
   </tr>
 
   <tr>
@@ -137,7 +137,7 @@ This page shows you how key features of CockroachDB stack up against other datab
           <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - Asynchronous</span>
       <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Cassandra", "Spanner", "Yugabyte"]'>Yes</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes</a></td>
+    <td>Yes</td>
   </tr>
 
   <tr>
@@ -157,7 +157,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
       <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes</a></td>
+    <td>Yes</td>
   </tr>
 
   <tr>
@@ -179,7 +179,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["Cassandra"]'>Eventual Consistent, No Transaction Isolation Guarantees</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Default: Snapshot Highest: Serializable</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Guaranteed Consistent Default: Serializable Highest: Serializable</a></td>
+    <td>Guaranteed Consistent Default: Serializable Highest: Serializable</td>
   </tr>
 
   <tr>
@@ -203,7 +203,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["Spanner"]'>None</span>
       <span class="support " data-dbs='["Yugabyte"]'>Phantom Reads, Non-repeatable reads</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">None</a></td>
+    <td>None</td>
   </tr>
 
   <tr>
@@ -223,7 +223,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["MongoDB", "Cassandra"]'>No</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes - with limitations</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#why-is-cockroachdb-sql">Yes - wire compatible with PostgreSQL</a></td>
+    <td>Yes - wire compatible with PostgreSQL</td>
   </tr>
 
   <tr>
@@ -240,7 +240,7 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-two">
     </td>
-    <td><a class="comparison-chart__link" href="****************">Online, Active, Dynamic</a></td>
+    <td>Online, Active, Dynamic</td>
   </tr>
 
   <tr>
@@ -262,7 +262,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["Spanner"]'>?</span>
       <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes</a></td>
+    <td>Yes</td>
   </tr>
 
   <tr>
@@ -284,7 +284,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["Spanner"]'>Yes</span>
       <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes, Row level</a></td>
+    <td>Yes, Row level</td>
   </tr>
 
   <tr>
@@ -302,7 +302,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora"]'>Offline</span>
       <span class="support " data-dbs='[ "MongoDB", "Cassandra","Spanner","Yugabyte"]'>Online, Rolling</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Online, Rolling</a></td>
+    <td>Online, Rolling</td>
   </tr>
 
   <tr>
@@ -322,7 +322,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='[ "AWS Aurora", "MongoDB", "Spanner", "Yugabyte"]'>Yes, but not for writes</span>
       <span class="support " data-dbs='[ "Cassandra"]'>Yes, for reads and writes</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes for both reads and writes</a></td>
+    <td>Yes for both reads and writes</td>
   </tr>
 
   <tr>
@@ -340,7 +340,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
       <span class="support " data-dbs='["Cassandra"]'>Yes</span>
     </td>
-    <td><a class="comparison-chart__link" href="****************">Yes</a></td>
+    <td>Yes</td>
   </tr>
 
 </table>
