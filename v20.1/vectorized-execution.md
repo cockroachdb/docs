@@ -17,7 +17,7 @@ You can turn vectorized execution on or off for all operations in the current se
 Option | Description
 ----------|------------
 `auto` | Instructs CockroachDB to use the vectorized execution engine on operations that always execute in memory, without the need to spill intermediate results to disk.<br><br>**Default:** `vectorize=auto`
-`experimental_on` | Turns on vectorized execution for all operations. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
+`full` | Turns on vectorized execution for all operations. We do not recommend using this option in production environments, as it can lead to memory issues.
 `off` | Turns off vectorized execution for all operations.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
@@ -85,9 +85,10 @@ For more information, see the [tracking issue](https://github.com/cockroachdb/co
 
 ## Window functions
 
-[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for [window functions](https://www.cockroachlabs.com/docs/stable/window-functions.html).
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for unordered [`DISTINCT` subclauses]() and
+the `percent_rank` and `cume_dist` [window functions](https://www.cockroachlabs.com/docs/stable/window-functions.html).
 
-To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `experimental_on`.
+To turn vectorized execution on for all operations, set the `vectorize` [session variable](set-vars.html) to `full`.
 
 ## See also
 

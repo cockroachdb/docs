@@ -58,6 +58,10 @@ all the results computed by `SELECT`.
 With `ON`, two rows are considered duplicates if they are equal only
 using the [scalar expressions](scalar-expressions.html) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`](query-order.html) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
 
+{{site.data.alerts.callout_info}}
+
+{{site.data.alerts.end}}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}

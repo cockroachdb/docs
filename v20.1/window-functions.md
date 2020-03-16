@@ -12,6 +12,10 @@ For a complete list of supported window functions, see [Functions and Operators]
 All [aggregate functions][aggregate-functions] can also be used as [window functions][window-functions]. For more information, see the [Examples](#examples) below.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+[Vectorized execution](vectorized-execution.html) is experimental in queries that call the `percent_rank` and `cume_dist` window functions.
+{{site.data.alerts.end}}
+
 ## Window definitions
 
 Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [`WINDOW` clauses](sql-grammar.html#window_clause).
