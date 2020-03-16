@@ -93,6 +93,12 @@ To run it:
     $ gradle run
     ~~~
 
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+
+`git clone https://github.com/cockroachlabs/hello-world-java-hibernate/`
+{{site.data.alerts.end}}
+
 The contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/hibernate-basic-sample/Sample.java):
 
 {% include copy-clipboard.html %}
@@ -174,7 +180,13 @@ It does all of the above using the practices we recommend for using Hibernate (a
 
 To run it:
 
-1. Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/hibernate-basic-sample/hibernate-basic-sample.tgz). The settings in [`hibernate.cfg.xml`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/hibernate-basic-sample/hibernate.cfg.xml) specify how to connect to the database.
+1. Clone the `hello-world-java-hibernate` repo to your machine:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    git clone https://github.com/cockroachlabs/hello-world-java-hibernate/
+    ~~~
+
 2. Compile and run the code using [`build.gradle`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/hibernate-basic-sample/build.gradle), which will also download the dependencies.
 
     {% include copy-clipboard.html %}

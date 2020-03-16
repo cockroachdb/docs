@@ -52,6 +52,12 @@ Now that you have a database and a user, you'll run the code shown below to:
 - Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that we [handle transaction retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 - Finally, we delete the accounts from the table before exiting so we can re-run the example code.
 
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+
+`git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/`
+{{site.data.alerts.end}}
+
 Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/basic-sample.py" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
@@ -93,18 +99,23 @@ Now that you have a database and a user, you'll run the code shown below to:
 - Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that we [handle transaction retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 - Finally, we delete the accounts from the table before exiting so we can re-run the example code.
 
-Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/basic-sample.py" download>download it directly</a>.
+To get the code below, clone the `hello-world-python-psycopg2` repo to your machine:
+
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/insecure/basic-sample.py %}
 ~~~
 
-Then run the code:
+Change to the directory where you cloned the repo and run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python basic-sample.py
+$ python example.py
 ~~~
 
 The output should show the account balances before and after the funds transfer:
