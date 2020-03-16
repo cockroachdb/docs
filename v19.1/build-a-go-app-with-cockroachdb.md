@@ -46,6 +46,11 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that connects to insecure clusters and lives in one `main.go` file, run:
+`git clone https://github.com/cockroachlabs/hello-world-go-pq/`
+{{site.data.alerts.end}}
+
 ### Basic statements
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
@@ -141,6 +146,11 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 ## Step 3. Run the Go code
 
 Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that lives in one `main.go` file, run:
+`git clone https://github.com/cockroachlabs/hello-world-go-pq/`
+{{site.data.alerts.end}}
 
 ### Basic statements
 
