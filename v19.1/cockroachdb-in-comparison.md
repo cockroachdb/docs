@@ -16,12 +16,10 @@ This page shows you how key features of CockroachDB stack up against other datab
         <option value="MySQL">MySQL</option>
         <option value="PostgreSQL">PostgreSQL</option>
         <option value="Oracle">Oracle</option>
-        <option value="SQL Server">SQL Server</option>
         <option value="Cassandra">Cassandra</option>
-        <option value="HBase">HBase</option>
         <option value="MongoDB" selected>MongoDB</option>
-        <option value="DynamoDB">DynamoDB</option>
         <option value="Spanner">Spanner</option>
+        <option value="Spanner">Yugabyte</option>
       </select>
     </th>
     <th class="comparison-chart__column-two">
@@ -29,230 +27,325 @@ This page shows you how key features of CockroachDB stack up against other datab
         <option value="MySQL">MySQL</option>
         <option value="PostgreSQL" selected>PostgreSQL</option>
         <option value="Oracle">Oracle</option>
-        <option value="SQL Server">SQL Server</option>
         <option value="Cassandra">Cassandra</option>
-        <option value="HBase">HBase</option>
         <option value="MongoDB">MongoDB</option>
-        <option value="DynamoDB">DynamoDB</option>
         <option value="Spanner">Spanner</option>
+        <option value="Spanner">Yugabyte</option>
       </select>
     </th>
     <th>CockroachDB</th>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Automated Scaling
-      <a href="#" data-toggle="tooltip" title="Automatic and continuous rebalancing of data between the nodes of a cluster.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Database Horizontal Scale
+      <a href="#" data-toggle="tooltip" title="Increase capacity of the database by adding more instances/nodes">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
+      <span class="support" data-dbs='["Oracle"]'>Add On Configuration</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, Automated read scale, limited write</span>
+      <span class="support" data-dbs='["Cassandra"]'>Node based, Automated for both reads and writes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
+      <span class="support" data-dbs='["Oracle"]'>Add On Configuration</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, Automated read scale, limited write</span>
+      <span class="support" data-dbs='["Cassandra"]'>Node based, Automated for both reads and writes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-scale">Yes</a></td>
+    <td>Node based, Automated for both reads and writes</a></td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Automated Failover
-      <a href="#" data-toggle="tooltip" title="Uninterrupted availability of data through small- and large-scale failures, from server restarts to datacenter outages.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Database Load Balancing (internal)
+      <a href="#" data-toggle="tooltip" title="Locate data across multiple instances/nodes based on optimiaztion criteria for balancing load">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Optional</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>None and Full copies across regions</span>
+      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>Optional</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+          <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>None and Full copies across regions</span>
+      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-survive-failures">Yes</a></td>
+    <td>Detailed options to optimize storage, compute and latency</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Automated Repair
-      <a href="#" data-toggle="tooltip" title="Automatic repair of missing data after failures, using unaffected replicas as sources.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Failover
+      <a href="#" data-toggle="tooltip" title="Provide access to backup data upon failure">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>Automated for reads, limited for writes to one region</span>
+      <span class="support" data-dbs='["MongoDB", "Cassandra"]'>Automated for reads, limited guarantees for writes</span>
+      <span class="support" data-dbs='["Spanner", "Yugabyte"]'>Fully automated for both reads and writes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server"]'>No</span>
-      <span class="support" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+          <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>Automated for reads, limited for writes to one region</span>
+      <span class="support" data-dbs='["MongoDB", "Cassandra"]'>Automated for reads, limited guarantees for writes</span>
+      <span class="support" data-dbs='["Spanner", "Yugabyte"]'>Fully automated for both reads and writes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-does-cockroachdb-survive-failures">Yes</a></td>
+    <td>Fully automated for both reads and writes</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Strongly Consistent Replication
-      <a href="#" data-toggle="tooltip" title="Once a transaction is committed, all reads are guaranteed to see it.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Automated Repair and RPO
+      <a href="#" data-toggle="tooltip" title="Repair the database after failure and the time it takes for the db to come back online">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "Cassandra"]'>Optional</span>
-      <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual Repair RPO ~1-60 mins</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>Automated RPO ~1 -5 mins</span>
+      <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & Automated Repair RPO &lt;1 min</span>
+      <span class="support" data-dbs='["Spanner", "Yugabyte]'>"Automated Repair RPO &lt;10 sec"</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "HBase", "MongoDB"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "Cassandra"]'>Optional</span>
-      <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
+          <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual Repair RPO ~1-60 mins</span>
+      <span class="support" data-dbs='["AWS Aurora"]'>Automated RPO ~1 -5 mins</span>
+      <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & Automated Repair RPO &lt;1 min</span>
+      <span class="support" data-dbs='["Spanner", "Yugabyte]'>"Automated Repair RPO &lt;10 sec"</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent">Yes</a></td>
+    <td>Automated Repair RPO &lt;10 sec</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Consensus-Based Replication
-      <a href="#" data-toggle="tooltip" title="Guarantee that progress can be made as long as any majority of nodes is available (e.g., 3 of 5).">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Distributed Reads
+      <a href="#" data-toggle="tooltip" title="Reliably read data in any instance/node of the database">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
-      <span class="support" data-dbs='["Cassandra"]'>Optional</span>
-      <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - Asynchronous</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Cassandra", "Spanner", "Yugabyte"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "HBase", "MongoDB"]'>No</span>
-      <span class="support" data-dbs='["Cassandra"]'>Optional</span>
-      <span class="support" data-dbs='["DynamoDB", "Spanner"]'>Yes</span>
+          <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - Asynchronous</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Cassandra", "Spanner", "Yugabyte"]'>Yes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent">Yes</a></td>
+    <td>Yes</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
       Distributed Transactions
-      <a href="#" data-toggle="tooltip" title="Correctly committed transactions across a distributed cluster, whether it’s a few nodes in a single location or many nodes in multiple datacenters.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      <a href="#" data-toggle="tooltip" title="Allow for acid writes across multiple instances/nodes">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["DynamoDB"]'>No*</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support gray" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["DynamoDB"]'>No*</span>
+          <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#does-cockroachdb-support-distributed-transactions">Yes</a></td>
+    <td>Yes</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      ACID Semantics
-      <a href="#" data-toggle="tooltip" title="Guarantee that every transaction provides atomicity, consistency, isolation, and durability.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Database Isolation Levels
+      <a href="#" data-toggle="tooltip" title="Transaction isolation levels allowed for writes in the database">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["Cassandra"]'>No</span>
-      <span class="support" data-dbs='["HBase"]'>Row-only</span>
-      <span class="support" data-dbs='["DynamoDB"]'>Row-only*</span>
-      <span class="support" data-dbs='["MongoDB"]'>Document-only</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Single Region Consistent Default: Snapshot Highest: Serializable</span>
+      <span class="support " data-dbs='["MongoDB"]'>Eventual Consistent Default: Read Uncommited Highest: Snapshot Read</span>
+      <span class="support " data-dbs='["Cassandra"]'>Eventual Consistent, No Transaction Isolation Guarantees</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Default: Snapshot Highest: Serializable</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Spanner"]'>Yes</span>
-      <span class="support gray" data-dbs='["Cassandra"]'>No</span>
-      <span class="support" data-dbs='["HBase"]'>Row-only</span>
-      <span class="support" data-dbs='["DynamoDB"]'>Row-only*</span>
-      <span class="support" data-dbs='["MongoDB"]'>Document-only</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Single Region Consistent Default: Snapshot Highest: Serializable</span>
+      <span class="support " data-dbs='["MongoDB"]'>Eventual Consistent Default: Read Uncommited Highest: Snapshot Read</span>
+      <span class="support " data-dbs='["Cassandra"]'>Eventual Consistent, No Transaction Isolation Guarantees</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Default: Snapshot Highest: Serializable</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#do-transactions-in-cockroachdb-guarantee-acid-semantics">Yes</a></td>
+    <td>Guaranteed Consistent Default: Serializable Highest: Serializable</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Eventually Consistent Reads
-      <a href="#" data-toggle="tooltip" title="Optionally allows reading from replicas that do not have the most recently written data.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Potential data issues (default)
+      <a href="#" data-toggle="tooltip" title="Possible data inconsistency issues at default isolation level">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Phantom Reads, Non-repeatable reads, Wite skew</span>
+      <span class="support " data-dbs='["MongoDB"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write skew</span>
+      <span class="support " data-dbs='["Cassandra"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write conflicts</span>
+      <span class="support " data-dbs='["Spanner"]'>None</span>
+      <span class="support " data-dbs='["Yugabyte"]'>Phantom Reads, Non-repeatable reads</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Phantom Reads, Non-repeatable reads, Wite skew</span>
+      <span class="support " data-dbs='["MongoDB"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write skew</span>
+      <span class="support " data-dbs='["Cassandra"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write conflicts</span>
+      <span class="support " data-dbs='["Spanner"]'>None</span>
+      <span class="support " data-dbs='["Yugabyte"]'>Phantom Reads, Non-repeatable reads</span>
     </td>
-    <td><span class="gray comparison-chart__cockroach">No</span></td>
+    <td>None</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
       SQL
-      <a href="#" data-toggle="tooltip" title="Developer endpoint is based on the SQL database query language standard.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      <a href="#" data-toggle="tooltip" title="Compliance with standard SQL">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "Spanner", "SQL Server"]'>Yes</span>
-      <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Yes</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes - with limitations</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "Spanner", "SQL Server"]'>Yes</span>
-      <span class="support gray" data-dbs='["Cassandra", "HBase", "MongoDB", "DynamoDB"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Yes</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes - with limitations</span>
     </td>
-    <td><a class="comparison-chart__link" href="frequently-asked-questions.html#why-is-cockroachdb-sql">Yes</a></td>
+    <td>Yes - wire compatible with PostgreSQL</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Open Source
-      <a href="#" data-toggle="tooltip" title="Source code of the database is freely available for study, change, and distribution to anyone and for any purpose.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Database Schema Change
+      <a href="#" data-toggle="tooltip" title="Modify database schema across all tables">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>Yes</span>
-      <span class="support gray" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, Dynamic</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>Yes</span>
-      <span class="support gray" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, Dynamic</span>
     </td>
-    <td><a class="comparison-chart__link" href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB" target="_blank">Yes</a></td>
+    <td>Online, Active, Dynamic</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Commercial Version
-      <a href="#" data-toggle="tooltip" title="Enterprise or expanded version of the database available to paying customers.">
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Cost Based Optimization
+      <a href="#" data-toggle="tooltip" title="Optimize exectuion of queries based on trabsaction analytics">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "Cassandra", "HBase", "MongoDB"]'>Optional</span>
-      <span class="support gray" data-dbs='["PostgreSQL"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["Spanner"]'>?</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "Cassandra", "HBase", "MongoDB"]'>Optional</span>
-      <span class="support gray" data-dbs='["PostgreSQL"]'>No</span>
-      <span class="support" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>Yes</span>
+          <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>No</span>
+      <span class="support " data-dbs='["Spanner"]'>?</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
-    <td><span class="comparison-chart__cockroach">Optional</span></td>
+    <td>Yes</td>
   </tr>
+
   <tr>
     <td class="comparison-chart__feature">
-      Support
-      <a href="#" data-toggle="tooltip" title='Guidance on database usage and troubleshooting, either "Limited" (free, community-based) or "Full" (paid, 24/7 access to dedicated staff).'>
-        <img src="{{ 'images/v19.1/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      Data Geo-partitoning
+      <a href="#" data-toggle="tooltip" title="Tie data to an instance/node to complu with regulations or optimize access latency">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Full</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora","MongoDB"]'>No</span>
+      <span class="support " data-dbs='[ "Cassandra"]'>Yes, Object Level</span>
+      <span class="support " data-dbs='["Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
-      <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle", "SQL Server", "Cassandra", "HBase", "MongoDB", "DynamoDB", "Spanner"]'>Full</span>
+          <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora","MongoDB"]'>No</span>
+      <span class="support " data-dbs='[ "Cassandra"]'>Yes, Object Level</span>
+      <span class="support " data-dbs='["Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
-    <td><a class="comparison-chart__link" href="https://www.cockroachlabs.com/pricing/">Full</a></td>
+    <td>Yes, Row level</td>
   </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      Upgrade Method
+      <a href="#" data-toggle="tooltip" title="Upgrade the database software">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      </a>
+    </td>
+    <td class="comparison-chart__column-one">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora"]'>Offline</span>
+      <span class="support " data-dbs='[ "MongoDB", "Cassandra","Spanner","Yugabyte"]'>Online, Rolling</span>
+    </td>
+    <td class="comparison-chart__column-two">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora"]'>Offline</span>
+      <span class="support " data-dbs='[ "MongoDB", "Cassandra","Spanner","Yugabyte"]'>Online, Rolling</span>
+    </td>
+    <td>Online, Rolling</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      Multi-region
+      <a href="#" data-toggle="tooltip" title="Deploy a single database across multiple regions">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      </a>
+    </td>
+    <td class="comparison-chart__column-one">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes - Manual</span>
+      <span class="support " data-dbs='[ "AWS Aurora", "MongoDB", "Spanner", "Yugabyte"]'>Yes, but not for writes</span>
+      <span class="support " data-dbs='[ "Cassandra"]'>Yes, for reads and writes</span>
+    </td>
+    <td class="comparison-chart__column-two">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes - Manual</span>
+      <span class="support " data-dbs='[ "AWS Aurora", "MongoDB", "Spanner", "Yugabyte"]'>Yes, but not for writes</span>
+      <span class="support " data-dbs='[ "Cassandra"]'>Yes, for reads and writes</span>
+    </td>
+    <td>Yes for both reads and writes</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      Multi-cloud
+      <a href="#" data-toggle="tooltip" title="Deploy a single database across multiple cloud providers or on-prem">
+        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+      </a>
+    </td>
+    <td class="comparison-chart__column-one">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Cassandra"]'>Yes</span>
+    </td>
+    <td class="comparison-chart__column-two">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Cassandra"]'>Yes</span>
+    </td>
+    <td>Yes</td>
+  </tr>
+
 </table>
 
 <div style="display:none;" class="footnote">* In DynamoDB, distributed transactions and ACID semantics across all data in the database, not just per row, requires an additional <a href="https://aws.amazon.com/blogs/aws/dynamodb-transaction-library/">transaction library</a>.</div>
