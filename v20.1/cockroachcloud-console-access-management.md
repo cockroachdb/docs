@@ -97,3 +97,11 @@ As a Console Admin, you can set up and manage billing for the Organization.
 1. On the **Billing** page, click the pen icon for the **Billing email address** field.
 2. On the **Edit payment method** page, enter the new email address at which you want get invoices for the Organization.
 3. Click **Add card**.
+
+#### Check validity of trial codes
+
+If you had used a CockroachCloud trial code while [creating a cluster](cockroachcloud-create-your-cluster.html#step-6-enter-your-billing-details), you can check the code expiration details on the **Billing page**.
+
+{{site.data.alerts.callout_info}}
+Make sure that you [delete your trial cluster](cockroachcloud-cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
+{{site.data.alerts.end}}
