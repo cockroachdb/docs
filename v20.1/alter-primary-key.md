@@ -8,15 +8,13 @@ toc: true
 
  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
 
-{{site.data.alerts.callout_info}}
-`ALTER PRIMARY KEY` is currently an experimental feature. The interface and output are subject to change.
+## Details
 
-To enable online primary key changes, set the `experimental_enable_primary_key_changes` [session variable](experimental-features.html#session-variables) to `true`.
-{{site.data.alerts.end}}
+- You cannot change the primary key of a table that is currently undergoing a primary key change.
 
-{{site.data.alerts.callout_danger}}
-`ALTER PRIMARY KEY` can be an expensive operation, as it might require rewrites of multiple indexes.
-{{site.data.alerts.end}}
+- Primary key changes on a table must be in a separate transaction from that table's [`CREATE TABLE`](create-table.html) statement.
+
+- `ALTER PRIMARY KEY` might need to rewrite multiple indexes, which can make it an expensive operation.
 
 ## Synopsis
 
@@ -61,11 +59,6 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN id UUID NOT NULL DEFAULT gen_random_uuid();
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET experimental_enable_primary_key_changes=true;
 ~~~
 
 {% include copy-clipboard.html %}
