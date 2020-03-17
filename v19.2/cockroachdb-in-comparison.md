@@ -238,6 +238,11 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, Dynamic</span>
     </td>
+    <td class="comparison-chart__column-two">
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
+      <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, Dynamic</span>
+    </td>
     <td>Online, Active, Dynamic</td>
   </tr>
 
