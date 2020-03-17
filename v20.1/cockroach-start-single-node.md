@@ -165,7 +165,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Create the certificate and key pair for the your node:
+3. Create the certificate and key pair for the node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
