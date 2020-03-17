@@ -16,6 +16,14 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 ### Restore targets
 
+You can restore:
+
+- <span class="version-tag">New in v20.1</span> [A full cluster](#full-cluster)
+- [Databases](#databases)
+- [Tables](#tables)
+
+#### Full cluster
+
 <span class="version-tag">New in v20.1</span> You can restore a full cluster, which includes:
 
 - All user tables
@@ -26,9 +34,20 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 Because this process is designed for disaster recovery, a full cluster restore can only be run on a target cluster with no databases or tables.
 
-You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the [target database](#target-database). Restoring a database will restore all of its tables and views, but does not create the database. For more information, see [Target Database](#target-database).
+#### Databases
 
-To restore individual tables, the tables can not already exist in the [target database](#target-database). This means the target database must have not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
+To restore a database, the database cannot already exist in the target cluster. Restoring a database will create the database and restore all of its tables and views. By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
+
+- You can choose to [change the target database](#into_db).
+- If it no longer exists, you must [create the target database](create-database.html).
+
+The target database must have not have tables or views with the same name as the tables or views you're restoring.
+
+#### Tables
+
+You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the [target database](#databases).
+
+To restore individual tables, the tables can not already exist in the [target database](#databases). This means the target database must not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
@@ -36,15 +55,6 @@ To restore individual tables, the tables can not already exist in the [target da
 {{site.data.alerts.callout_info}}
 `RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
 {{site.data.alerts.end}}
-
-#### Target database
-
-By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
-
-- You can choose to [change the target database](#into_db).
-- If it no longer exists, you must [create the target database](create-database.html).
-
-The target database must have not have tables or views with the same name as the tables or views you're restoring.
 
 ### Object dependencies
 
@@ -59,9 +69,9 @@ Table with a [sequence](create-sequence.html) | The sequence.
 
 ### Users and privileges
 
-To restore your users and privilege [grants](grant.html), do a full cluster backup and restore the cluster to a fresh cluster with no user data.
+To restore your users and privilege [grants](grant.html), you can do a full cluster backup and restore the cluster to a fresh cluster with no user data.
 
-You can also backup the `system.users` table, and then [restore users and their passwords](#restoring-users-from-system-users-backup).
+If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
 
 ### Restore types
 
@@ -82,7 +92,7 @@ If you do not specify a point-in-time, the data will be restored to the backup t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+> RESTORE FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '2017-02-26 10:00:00';
 ~~~
 
@@ -203,8 +213,8 @@ Restoring from incremental backups requires previous full and incremental backup
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
+> RESTORE FROM \
+'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
 AS OF SYSTEM TIME '2017-02-28 10:00:00';
 ~~~
 
@@ -271,7 +281,7 @@ For example, a backup created with
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank TO
+> BACKUP TO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
@@ -279,7 +289,7 @@ can be restored by running:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank FROM ('s3://us-east-bucket', 's3://us-west-bucket');
+> RESTORE FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
@@ -292,7 +302,7 @@ For example, an incremental locality-aware backup created with
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank TO
+> BACKUP TO
 	  ('s3://us-east-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=region%3Dus-west')
   INCREMENTAL FROM
 	  's3://us-east-bucket/database-bank-2019-10-07-weekly';
@@ -302,7 +312,7 @@ can be restored by running:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank FROM
+> RESTORE FROM
   	('s3://us-east-bucket/database-bank-2019-10-07-weekly', 's3://us-west-bucket/database-bank-2019-10-07-weekly'),
 	  ('s3://us-east-bucket/database-bank-2019-10-08-nightly', 's3://us-west-bucket/database-bank-2019-10-08-nightly');
 ~~~

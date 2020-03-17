@@ -33,7 +33,7 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 
 ### Manual full and incremental backups
 
-If your cluster increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faßster than full backups for larger clusters.
+If your cluster increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
 
@@ -46,7 +46,7 @@ Then create nightly incremental backups based off of the full backups you've alr
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP  TO '<incremental_backup_location>'
+> BACKUP TO '<incremental_backup_location>'
     INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
 ~~~
 
