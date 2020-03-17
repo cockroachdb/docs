@@ -15,9 +15,20 @@ Use the **Cluster Overview** panel to quickly assess the capacity and health of 
 
 Metric | Description
 --------|----
-Capacity Usage | <ul><li>Used capacity: The total disk space in use by CockroachDB data across all nodes. This is also shown as a percentage of the total usable capacity across all nodes, and excludes the disk space used by the Cockroach binary, operating system, and other system files.</li><li>Usable capacity: The total disk space reserved for CockroachDB data. This is defined by [`--store`](cockroach-start.html#store) and is distinct from the total disk size of your machines.</li></ul>
+Capacity Usage | See [Capacity metrics](#capacity-metrics).<br><br><ul><li>Used: The total disk space in use by CockroachDB data across all nodes. This excludes the disk space used by the Cockroach binary, operating system, and other system files.</li><li>Usable: The total disk space usable by CockroachDB data across all nodes. This cannot exceed the store size, which may be set per node using [`--store`](cockroach-start.html#store).</li></ul>
 Node Status | <ul><li>The number of `LIVE` nodes in the cluster.</li><li>The number of `SUSPECT` nodes in the cluster. A node is considered suspect if its [liveness status is unavailable](cluster-setup-troubleshooting.html#node-liveness-issues) or the node is in the process of [decommissioning](#decommissioned-nodes).</li><li>The number of `DEAD` nodes in the cluster.</li>
 Replication Status | <ul><li>The total number of [ranges](architecture/overview.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
+
+### Capacity metrics
+
+The Cluster Overview, Node List, and Node Map display **Capacity Usage** by the CockroachDB [store](architecture/storage-layer.html) (the directory on each node where CockroachDB reads and writes its data) as a percentage of the disk space that is **usable** on the cluster, locality, or node.
+
+Usable disk space is constrained by the following:
+
+- The maximum store size, if one was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes. This value is displayed on the Capacity graph in the [Storage dashboard](admin-ui-storage-dashboard.html#capacity).
+- Any disk space occupied by non-CockroachDB data. This may include the operating system and other system files, as well as the Cockroach binary itself.
+
+The Admin UI thus calculates **usable** disk space as the sum of empty disk space, up to the value of the maximum store size, and disk space that is already being **used** by CockroachDB data.
 
 ## Node List
 
@@ -60,7 +71,7 @@ Node Count | Number of nodes in the locality.
 Nodes | Nodes are grouped by locality and displayed with their address. Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log ([requires `admin` privileges](admin-ui-overview.html#admin-ui-access) on secure clusters).
 Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
-Capacity Usage | Disk space used by CockroachDB data as a percentage of the usable capacity on the node or in the locality.
+Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on the node or in the locality. See [Capacity metrics](#capacity-metrics).
 Memory Usage | Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.
 CPUs | Number of vCPUs on the machine.
 Version | Build tag of the CockroachDB version installed on the node.
@@ -87,7 +98,9 @@ The Node Map is populated with **locality components** and **node components**, 
 
 ### Locality component
 
-The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., datacenter).
+The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., datacenter). 
+
+For details on **Capacity Usage**, see [Capacity metrics](#capacity-metrics).
 
 <img src="{{ 'images/v20.1/admin-ui-region-component.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
@@ -97,7 +110,9 @@ On multi-core systems, the displayed CPU usage can be greater than 100%. Full ut
 
 ### Node component
 
-Node components are accessed by clicking on the **Node Count** of the lowest-level locality component. 
+Node components are accessed by clicking on the **Node Count** of the lowest-level [locality component](#locality-component). 
+
+For details on **Capacity Usage**, see [Capacity metrics](#capacity-metrics).
 
 <img src="{{ 'images/v20.1/admin-ui-node-components.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
