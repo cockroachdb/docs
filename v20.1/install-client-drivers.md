@@ -129,6 +129,19 @@ $ python3 -m pip install pony
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
 
+### peewee
+
+**Support level:** Full
+
+To install peewee:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 -m pip install peewee
+~~~
+
+For instructions on using peewee with CockroachDB, see the [CockroachDatabase peewee extension documentation](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database).
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
