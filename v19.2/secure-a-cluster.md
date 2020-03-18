@@ -271,7 +271,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
    {% include copy-clipboard.html %}
     ~~~ sql
     $ cockroach quit --certs-dir=certs --host=localhost:26257
-    ~~~   
+    ~~~
 
 9. Start the node from the previous step:
 
