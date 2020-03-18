@@ -53,8 +53,10 @@ To install SQLAlchemy and a [CockroachDB Python package](https://github.com/cock
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install sqlalchemy cockroachdb
+$ pip install sqlalchemy cockroachdb psycopg2
 ~~~
+
+You may substitute psycopg for other environments that may not support psycopg2 if required.
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
