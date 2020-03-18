@@ -266,6 +266,13 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     > \q
     ~~~
 
+8. Restart a node for changes to take effect:
+
+   {% include copy-clipboard.html %}
+    ~~~ sql
+    $ cockroach quit --certs-dir=certs --host=localhost:26257
+    ~~~   
+
 ## Step 4. Run a sample workload
 
 CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
