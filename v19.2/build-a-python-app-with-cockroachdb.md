@@ -10,6 +10,7 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button">Use <strong>Django</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
+    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver.
