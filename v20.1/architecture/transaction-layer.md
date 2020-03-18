@@ -24,9 +24,13 @@ Because CockroachDB enables transactions that can span your entire cluster (incl
 
 #### Writing
 
-When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates two things that help it mediate a distributed transaction:
+When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates several things that help it mediate a distributed transaction:
 
-- **Write intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the transaction record stored on the cluster.
+- **Locks** for all of a transaction’s writes, which represent a provisional, uncommitted state. CockroachDB has several different types of locking:
+
+  - **Unreplicated Locks** which are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery. These locks are not replicated via [Raft](replication-layer.html#raft).
+
+  - **Write intents**, which are replicated via [Raft](replication-layer.html#raft), and act as exclusive locks. They are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster.
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
@@ -137,9 +141,11 @@ The transaction record for a committed transaction remains until all its write i
 
 ### Write intents
 
-Values in CockroachDB are not written directly to the storage layer; instead everything is written in a provisional state known as a "write intent." These are essentially MVCC records with an additional value added to them which identifies the transaction record to which the value belongs.
+Values in CockroachDB are not written directly to the storage layer; instead values are written in a provisional state known as a "write intent." These are essentially MVCC records with an additional value added to them which identifies the transaction record to which the value belongs.They can be thought of as replicated, exclusive locks.
 
 Whenever an operation encounters a write intent (instead of an MVCC value), it looks up the status of the transaction record to understand how it should treat the write intent value. If the transaction record is missing, the operation checks the write intent's timestamp and evaluates whether or not it is considered expired.
+
+<span class="version-tag">New in v20.1:</span> CockroachDB manages concurrency control using a per-node, in-memory lock table which holds a collection of locks acquired by in-progress transactions, and incorporates information about write intents as they are discovered during evaluation. For more information, see the section below on [Concurrency control](#concurrency-control).
 
 #### Resolving write intents
 
@@ -150,6 +156,51 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
 - `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction’s record. If the coordinator is still heartbeating the record, the operation should wait. For more information, see [Parallel Commits](#parallel-commits).
 - _Record does not exist_: If the write intent was created within the transaction liveness threshold, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
+
+### Concurrency control
+
+<span class="version-tag">New in v20.1:</span> The *concurrency manager* sequences incoming requests and provides isolation between requests that intend to perform conflicting operations. This activity is also known as [concurrency control](https://en.wikipedia.org/wiki/Concurrency_control).
+
+The concurrency manager operates on a *lock table*: a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. To ensure compatibility with the existing system of [write intents](#write-intents) (a.k.a. replicated, exclusive locks), it pulls in information about these external locks as necessary when they are discovered in the course of evaluating requests.
+
+The concurrency manager enables support for pessimistic locking via [SQL](sql-layer.html) using the [`SELECT FOR UPDATE`](../select-for-update.html) statement. This statement can be used to increase throughput and decrease tail latency for contended operations.
+
+For more details about how the concurrency manager and lock table work, see the sections below:
+
+- [Concurrency manager](#concurrency-manager)
+- [Lock table](#lock-table)
+
+#### Concurrency manager
+
+<span class="version-tag">New in v20.1:</span> The concurrency manager is a structure that sequences incoming requests and provides isolation between requests that intend to perform conflicting operations. During sequencing, conflicts are discovered and any found are resolved through a combination of passive queuing and active pushing. Once a request has been sequenced, it is free to evaluate without concerns of conflicting with other in-flight requests due to the isolation provided by the manager. This isolation is guaranteed for the lifetime of the request but terminates once the request completes.
+
+Transactions require isolation both within requests and across requests. The manager accommodates this by allowing transactional requests to acquire locks, which outlive the requests themselves. Locks extend the duration of the isolation provided over specific keys to the lifetime of the lock-holder transaction itself. They are (typically) only released when the transaction commits or aborts. Other requests that find these locks while being sequenced wait on them to be released in a queue before proceeding. Because locks are checked during sequencing, requests are guaranteed access to all declared keys after they have been sequenced. In other words, locks don't need to be checked again during evaluation.
+
+However, at the time of writing, not all locks are stored directly under the manager's control, so not all locks are discoverable during sequencing. Specifically, write intents (replicated, exclusive locks) are stored inline in the MVCC keyspace, so they are not detectable until request evaluation time. To accommodate this form of lock storage, the manager integrates information about external locks with the concurrency manager structure.
+
+{{site.data.alerts.callout_info}}
+Currently, the concurrency manager operates on an unreplicated lock table structure. In the future, we intend to pull all locks, including those associated with [write intents](#write-intents), into the concurrency manager directly through a replicated lock table structure.
+{{site.data.alerts.end}}
+
+Fairness is ensured between requests. In general, if any two requests conflict then the request that arrived first will be sequenced first. As such, sequencing guarantees FIFO semantics. The primary exception to this is that a request that is part of a transaction which has already acquired a lock does not need to wait on that lock during sequencing, and can therefore ignore any queue that has formed on the lock. For other exceptions to this sequencing guarantee, see the [lock table](#lock-table) section below.
+
+#### Lock table
+
+<span class="version-tag">New in v20.1:</span> The lock table is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. Each lock in the table has a possibly-empty lock wait-queue associated with it, where conflicting transactions can queue while waiting for the lock to be released.  Items in the locally stored lock wait-queue are propagated as necessary (via RPC) to the existing [`TxnWaitQueue`](#txnwaitqueue), which is stored on the leader of the range's Raft group that contains the [transaction record](#transaction-records).
+
+The database is read and written using "requests". Transactions are composed of one or more requests. Isolation is needed across requests. Additionally, since transactions represent a group of requests, isolation is needed across such groups. Part of this isolation is accomplished by maintaining multiple versions and part by allowing requests to acquire locks. Even the isolation based on multiple versions requires some form of mutual exclusion to ensure that a read and a conflicting lock acquisition do not happen concurrently. The lock table provides both locking and sequencing of requests (in concert with the use of latches). The lock table sequences both transactional and non-transactional requests, but the latter cannot acquire locks.
+
+Locks outlive the requests themselves and thereby extend the duration of the isolation provided over specific keys to the lifetime of the lock-holder transaction itself. They are (typically) only released when the transaction commits or aborts. Other requests that find these locks while being sequenced wait on them to be released in a queue before proceeding. Because locks are checked during sequencing, requests are guaranteed access to all declared keys after they have been sequenced. In other words, locks don't need to be checked again during evaluation.
+
+{{site.data.alerts.callout_info}}
+Currently, not all locks are stored directly under lock table control. Some locks are stored as [write intents](#write-intents) in the MVCC layer, and are thus not discoverable during sequencing. Specifically, write intents (replicated, exclusive locks) are stored inline in the MVCC keyspace, so they are often not detectable until request evaluation time. To accommodate this form of lock storage, the lock table adds information about these locks as they are encountered during evaluation. In the future, we intend to pull all locks, including those associated with write intents, into the lock table directly.
+{{site.data.alerts.end}}
+
+The lock table also provides fairness between requests. If two requests conflict then the request that arrived first will typically be sequenced first. There are some exceptions:
+
+- A request that is part of a transaction which has already acquired a lock does not need to wait on that lock during sequencing, and can therefore ignore any queue that has formed on the lock.
+
+- Contending requests that encounter different levels of contention may be sequenced in non-FIFO order. This is to allow for greater concurrency. For example, if requests *R1* and *R2* contend on key *K2*, but *R1* is also waiting at key *K1*, *R2* may slip past *R1* and evaluate.
 
 ### Isolation levels
 
