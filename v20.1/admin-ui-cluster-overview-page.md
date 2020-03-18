@@ -25,7 +25,7 @@ The Cluster Overview, Node List, and Node Map display **Capacity Usage** by the 
 
 Usable disk space is constrained by the following:
 
-- The maximum store size, if one was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes. This value is displayed on the Capacity graph in the [Storage dashboard](admin-ui-storage-dashboard.html#capacity).
+- The maximum store size, which may be specified using the [`--store`](cockroach-start.html#store) flag when starting nodes. If no store size has been explicitly set, the actual disk capacity is used as the limit. This value is displayed on the Capacity graph in the [Storage dashboard](admin-ui-storage-dashboard.html#capacity).
 - Any disk space occupied by non-CockroachDB data. This may include the operating system and other system files, as well as the Cockroach binary itself.
 
 The Admin UI thus calculates **usable** disk space as the sum of empty disk space, up to the value of the maximum store size, and disk space that is already being **used** by CockroachDB data.
