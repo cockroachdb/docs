@@ -48,19 +48,24 @@ The timeseries data used to power the graphs in the Admin UI is stored within th
 
 <img src="{{ 'images/v20.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Capacity** graph to determine when additional storage is needed.
-
-- In the node view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB for the selected node.
-
-- In the cluster view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB across all nodes in the cluster.
-
-On hovering over the graph, the values for the following metrics are displayed:
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by scaling your cluster). 
 
 Metric | Description
---------|----
-**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](cockroach-start.html#store).
-**Available** | The free storage capacity available to CockroachDB.
-**Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
+--------|--------
+**Capacity** | The maximum store size. This value may be set per node using [`--store`](cockroach-start.html#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
+**Available** | The free disk space available to CockroachDB data.
+**Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
+
+### Capacity metrics
+
+The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store](architecture/storage-layer.html) size, which is determined as follows:
+
+- If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
+
+The **available** capacity thus equals the amount of empty disk space, up to the value of the maximum store size. The **used** capacity refers only to disk space occupied by CockroachDB data, which resides in the store directory on each node.
+
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Capacity** graph.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}

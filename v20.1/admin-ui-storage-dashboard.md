@@ -43,13 +43,15 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB. 
 
+<img src="{{ 'images/v20.1/admin_ui_live_bytes.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+
 Metric | Description
 --------|--------
 **Live** | Number of logical bytes stored in live [key-value pairs](distribution-layer.html#table-data). Live data excludes historical and deleted data.
 **System** | Number of physical bytes stored in [system key-value pairs](distribution-layer.html#meta-ranges).
 
 {{site.data.alerts.callout_info}}
-Logical bytes reflect the approximate number of bytes stored in the database. This value may deviate from the number of physical bytes on disk, due to factors such as compression and [write amplification](https://en.wikipedia.org/wiki/Write_amplification) affecting the latter.
+{% include {{ page.version.version }}/admin-ui/logical-bytes.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors

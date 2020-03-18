@@ -4,7 +4,9 @@ summary: The Replication dashboard lets you monitor the replication metrics for 
 toc: true
 ---
 
-The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Replication**.
+The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. 
+
+To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
 
 ## Review of CockroachDB terminology
 
@@ -40,6 +42,18 @@ Lease Holders | The number of ranges that have leases.
 Leaders w/o Leases | The number of Raft leaders without leases. If the number if non-zero for a long time, troubleshoot your cluster.
 Unavailable | The number of unavailable ranges. If the number if non-zero for a long time, troubleshoot your cluster.
 Under-replicated | The number of under-replicated ranges.
+
+## Logical Bytes per Store
+
+<img src="{{ 'images/v20.1/admin_ui_logical_bytes_per_store.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+
+Metric | Description
+--------|--------
+**Logical Bytes per Store** | Number of logical bytes stored in [key-value pairs](distribution-layer.html#table-data) on each node. This includes historical and deleted data.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/admin-ui/logical-bytes.md %}
+{{site.data.alerts.end}}
 
 ## Replicas Per Store
 
@@ -86,7 +100,6 @@ The **Replication** dashboard shows other time series graphs that are important 
 
 - Leaseholders per Store
 - Average Queries per Store
-- Logical Bytes per Store
 - Range Operations
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
