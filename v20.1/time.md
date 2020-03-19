@@ -22,6 +22,8 @@ The `TIMETZ` data type stores a time of day with a time zone offset from UTC.
 
     [Like Postgres](https://www.postgresql.org/docs/current/static/datatype-datetime.html), we implement the `TIMETZ` variant for [SQL standards compliance](sql-feature-support.html). We also implement the `TIMETZ` variant for compatibility with ORMs, like [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
+You can use the [`timezone()`](functions-and-operators.html#date-and-time-functions) and [`AT TIME ZONE`](functions-and-operators.html#special-syntax-forms) functions to convert a `TIMETZ` into a `TIME` at a specified timezone, or to convert a `TIME` into a `TIMETZ` at a specified timezone.
+
 {{site.data.alerts.callout_success}}
 We recommend always using `TIME` instead of `TIMETZ`. Convert UTC values to the appropriate time zone on the client side.
 {{site.data.alerts.end}}
