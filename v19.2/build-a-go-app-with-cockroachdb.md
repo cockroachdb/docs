@@ -235,7 +235,13 @@ You may need to drop the table before executing the code:
 $ cockroach sql --certs-dir=certs --host=localhost:26257 --execute="DROP TABLE IF EXISTS bank.accounts;"
 ~~~
 
-will produce an application context in the Admin UI Statements page specific to the app at hand. We can login to the Admin UI page by navigating to https://localhost:8080, entering `maxroach` and `roach` for username and password, respectively. Then navigating to the Statements page, selecting the app specific context, in our case `samplego`, which will present everything the Go app had executed, including the `CREATE`, `INSERT` and `SELECT` statements.
+Will produce an application context in the Admin UI Statements page specific to the app at hand. We can login to the Admin UI page by navigating to https://localhost:8080, entering `maxroach` and `roach` for username and password, respectively. Then navigating to the Statements page.
+
+![context_menu](https://user-images.githubusercontent.com/461296/77086122-b42db180-69d7-11ea-8d9a-91a41b5b6850.png)
+
+Selecting the app specific context, in our case `samplego`, will present everything the Go app had executed, including the `CREATE`, `INSERT` and `SELECT` statements.
+
+![statements_page](https://user-images.githubusercontent.com/461296/77086114-b09a2a80-69d7-11ea-9265-8c10accf5fb3.png)
 
 ### Transaction (with retry logic)
 
