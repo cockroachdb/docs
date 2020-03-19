@@ -16,7 +16,49 @@ We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) enough to
 
 ## Before you begin
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+Start the [built-in SQL shell](cockroach-sql.html):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --certs-dir=certs
+~~~
+
+In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER IF NOT EXISTS maxroach WITH PASSWORD 'roach';
+~~~
+
+We need [a user with a password](create-user.html#create-a-user-with-a-password) to access the Admin UI:
+
+On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
+
+    Assign `maxroach` to the `admin` role:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'maxroach', true)
+    ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE bank;
+~~~
+
+Give the `maxroach` user the necessary permissions:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+~~~
+
+Exit the SQL shell:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \q
+~~~
 
 ## Step 1. Install the Go pq driver
 
@@ -31,7 +73,7 @@ $ go get -u github.com/lib/pq
 
 ## Step 2. Create the `maxroach` user and `bank` database
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+
 
 ## Step 3. Generate a certificate for the `maxroach` user
 
@@ -167,6 +209,33 @@ Initial balances:
 1 1000
 2 250
 ~~~
+
+## Using additional connection parameters
+
+[Additional connection parameters](connection-parameters.html#additional-connection-parameters) can be used to pass as part of URL:
+
+Changing the URL in the above basic-sample.go app to the following:
+
+{% include copy-clipboard.html %}
+~~~ go
+"postgresql://maxroach@localhost:26257/bank?application_name=samplego&ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key&sslcert=certs/client.maxroach.crt")
+~~~
+
+Then executing the code again:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go run basic-sample.go
+~~~
+
+You may need to drop the table before executing the code:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --certs-dir=certs --host=localhost:26257 --execute="DROP TABLE IF EXISTS bank.accounts;"
+~~~
+
+will produce an application context in the Admin UI Statements page specific to the app at hand. We can login to the Admin UI page by navigating to https://localhost:8080, entering `maxroach` and `roach` for username and password, respectively. Then navigating to the Statements page, selecting the app specific context, in our case `samplego`, which will present everything the Go app had executed, including the `CREATE`, `INSERT` and `SELECT` statements.
 
 ### Transaction (with retry logic)
 
