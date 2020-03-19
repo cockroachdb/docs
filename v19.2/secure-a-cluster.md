@@ -256,7 +256,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true)
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
     ~~~
 
 7. Exit the SQL shell on node 2:
