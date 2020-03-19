@@ -68,7 +68,7 @@ You can add number of rows and the schema of the backed up table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS 'nodelocal:///extern/employee.sql';
+> SHOW BACKUP SCHEMAS 'nodelocal://1/extern/employee.sql';
 ~~~
 
 ~~~

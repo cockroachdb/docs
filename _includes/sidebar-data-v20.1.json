@@ -1821,6 +1821,12 @@
             ]
           },
           {
+            "title": "<code>cockroach nodelocal upload</code>",
+            "urls": [
+              "/${VERSION}/cockroach-nodelocal-upload.html"
+            ]
+          },
+          {
             "title": "<code>cockroach dump</code>",
             "urls": [
               "/${VERSION}/cockroach-dump.html"
