@@ -100,8 +100,8 @@ As a Console Admin, you can set up and manage billing for the Organization.
 
 #### Check trial code details
 
-If you had used a CockroachCloud trial code while [creating a cluster](cockroachcloud-create-your-cluster.html#step-6-enter-your-billing-details), you can check the code expiration details on the **Billing page**.
+If you had used a CockroachCloud trial code while [creating a cluster](cockroachcloud-create-your-cluster.html#step-6-enter-your-billing-details), you can check the trial expiration details on the **Billing page**.
 
 {{site.data.alerts.callout_info}}
-Make sure that you [delete your trial cluster](cockroachcloud-cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
+Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
 {{site.data.alerts.end}}
