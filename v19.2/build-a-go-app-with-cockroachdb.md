@@ -52,6 +52,10 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
+{{site.data.alerts.callout_info}}
+The connection string in the code includes the `application_name` [connection parameter](connection-parameters.html#additional-connection-parameters), which makes it possible to view statement statistics specific to this app in the Admin UI in a later step. In some cases, you can use a [session variable](set-vars.html) in place of a connection parameter.
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/basic-sample.go %}
@@ -130,6 +134,8 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 (2 rows)
 ~~~
 
+## Step 4. View app statistics in the Admin UI
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
@@ -147,6 +153,10 @@ Now that you have a database and a user, you'll run code to create a table and i
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
+
+{{site.data.alerts.callout_info}}
+The connection string in the code includes the `application_name` [connection parameter](connection-parameters.html#additional-connection-parameters), which makes it possible to view statement statistics specific to this app in the Admin UI in a later step. In some cases, you can use a [session variable](set-vars.html) in place of a connection parameter.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ go
@@ -217,6 +227,8 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 +----+---------+
 (2 rows)
 ~~~
+
+## Step 4. View app statistics in the Admin UI
 
 </section>
 
