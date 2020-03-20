@@ -39,7 +39,7 @@ For security reasons, non-admin users access only the data over which they have 
 {{site.data.alerts.callout_info}}
 The default `root` user is a member of the `admin` role, but on CockroachDB clusters prior to v20.1, the Admin UI cannot be accessed by `root`. To access the secure Admin UI areas, [grant a user membership to the `admin` role](grant-roles.html) using an [enterprise license](enterprise-licensing.html#obtain-a-license) (a trial license can be used).
 
-If you don't have an enterprise license, use this command to manually create a secondary `admin` user: <code style="white-space:pre-wrap">INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', '\<sql_user\>', true)</code>
+If you don't have an enterprise license, use this command to manually create a secondary `admin` user: <code style="white-space:pre-wrap">INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', '\<sql_user\>', true);</code>
 {{site.data.alerts.end}}
 
 Secure area | Privileged information

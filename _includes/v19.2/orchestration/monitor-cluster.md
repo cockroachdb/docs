@@ -26,6 +26,8 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password you created earlier.
 
+    {% include {{ page.version.version }}/misc/chrome-localhost.md %}
+
 {% else %}
 
 2. Go to <a href="http://localhost:8080/" data-proofer-ignore>http://localhost:8080</a>.

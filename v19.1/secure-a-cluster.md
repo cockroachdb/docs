@@ -218,13 +218,14 @@ Finally, [create a user with a password](create-user.html#create-a-user-with-a-p
 > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
-On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
 
 Assign `max` to the `admin` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true)
+> INSERT INTO system.role_members (role, member, "isAdmin")
+    VALUES ('admin', 'max', true);
 ~~~
 
 Exit the SQL shell on node 2:
@@ -234,11 +235,39 @@ Exit the SQL shell on node 2:
 > \q
 ~~~
 
+## Step 5. Access the Admin UI
+
+The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+
+1. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+
+    {% include {{ page.version.version }}/misc/chrome-localhost.md %}
+
+2. Log in with the username and password you created earlier (`max`/`roach`).
+
+3. On the [**Cluster Overview**](admin-ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+
+    <img src="{{ 'images/v20.1/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+    This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.    
+
+    {{site.data.alerts.callout_info}}
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
+    {{site.data.alerts.end}}
+
+4. Click [**Metrics**](admin-ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+
+    <img src="{{ 'images/v20.1/admin_ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+5. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+
 ## Step 5. Monitor the cluster
 
-Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
-Log in with the username and password created in the [Test the cluster](#step-4-test-the-cluster) step. Then click **Metrics** on the left-hand navigation bar.
+{% include {{ page.version.version }}/misc/chrome-localhost.md %}
+
+Log in with the username and password created earlier (`max`/`roach`). Then click **Metrics** on the left-hand navigation bar.
 
 <img src="{{ 'images/v19.1/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
