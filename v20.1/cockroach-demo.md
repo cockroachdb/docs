@@ -8,30 +8,35 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
-
 Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour.
 
 ## Synopsis
 
-Start an interactive SQL shell:
+Start an in-memory cluster and open an interactive SQL shell:
 
 ~~~ shell
 $ cockroach demo <flags>
 ~~~
 
-Load a sample dataset and start an interactive SQL shell:
+Start an in-memory cluster with a preloaded dataset and open an interactive SQL shell:
 
 ~~~ shell
 $ cockroach demo <dataset> <flags>
 ~~~
 
-Execute SQL from the command line:
+Start an in-memory cluster in secure mode and open an interactive SQL shell:
+
+~~~ shell
+$ cockroach demo --insecure=false <other flags>
+~~~
+
+Execute SQL from the command line against an in-memory cluster:
 
 ~~~ shell
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
 ~~~
 
-Exit the interactive SQL shell:
+Exit the interactive SQL shell and stop the in-memory cluster:
 
 ~~~ shell
 $ \q
@@ -73,11 +78,12 @@ Flag | Description
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](cockroach-sql.html#client-side-options) for use in interactive sessions.
 `--geo-partitioned-replicas` | Start a 9-node demo cluster with the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern applied to the [`movr`](movr.html) database.
+`--insecure` | <span class="version-tag">New in v20.1:</span> Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` also creates a password (`admin`) for the `root` user for logging into the Admin UI.
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
 `--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](cockroach-sql.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--set` | Set a [client-side option](cockroach-sql.html#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
-`--with-load` |  Run a demo [`movr`](movr.html) workload against the preloaded `movr` database.
+`--with-load` |  Run a demo [`movr`](movr.html) workload against the preloaded `movr` database.<br><br><span class="version-tag">New in v20.1:</span> When running a multi-node demo cluster, load is balanced across all nodes.
 
 ## Logging
 
@@ -129,7 +135,7 @@ Command | Description
 
 For examples, see [Shut down and restart nodes](cockroach-demo.html#shut-down-and-restart-nodes).
 
-## Example
+## Examples
 
 In these examples, we demonstrate how to start a shell with `cockroach demo`. For more SQL shell features, see the [`cockroach sql` examples](cockroach-sql.html#examples).
 
@@ -249,10 +255,12 @@ INSERT 1
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --with-load
+$ cockroach demo --nodes=3 --with-load
 ~~~
 
 This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [Admin UI](admin-ui-overview-dashboard.html#sql-queries).
+
+<span class="version-tag">New in v20.1:</span> When running a multi-node demo cluster, load is balanced across all nodes.
 
 ### Run `cockroach demo` with geo-partitioned replicas
 
