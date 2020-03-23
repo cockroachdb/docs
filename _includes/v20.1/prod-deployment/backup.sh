@@ -18,19 +18,9 @@ runsql() { cockroach sql --insecure -e "$1"; }
 
 destination="${base}/$(date +"%Y%m%d-%H%M")${extra}"
 
-prev=
-while read -r line; do
-    [[ "$prev" ]] && prev+=", "
-    prev+="'$line'"
-done < "$recent"
+current=$(tail -1 "$recent")
 
-if [[ "$(LC_ALL=C date +%A)" = "$full_day" || ! "$prev" ]]; then
-    runsql "BACKUP $what TO '$destination' AS OF SYSTEM TIME '-1m' $backup_parameters"
-    echo "$destination" > "$recent"
-else
-    destination="${base}/$(date +"%Y%m%d-%H%M")-inc${extra}"
-    runsql "BACKUP $what TO '$destination' AS OF SYSTEM TIME '-1m' INCREMENTAL FROM $prev $backup_parameters"
-    echo "$destination" >> "$recent"
-fi
+runsql "BACKUP $what TO '$destination' AS OF SYSTEM TIME '-1m' $backup_parameters"
+echo "$destination" > "$recent"
 
 echo "backed up to ${destination}"
