@@ -250,7 +250,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     > CREATE USER max WITH PASSWORD 'roach';
     ~~~
 
-6. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+6. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
 
     Assign `max` to the `admin` role:
 
@@ -303,7 +303,9 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. Go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+1. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+
+    {% include {{ page.version.version }}/misc/chrome-localhost.md %}
 
 2. Log in with the username and password you created earlier (`max`/`roach`).
 

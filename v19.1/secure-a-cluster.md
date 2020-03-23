@@ -218,7 +218,7 @@ Finally, [create a user with a password](create-user.html#create-a-user-with-a-p
 > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
-On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users. 
+On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
 
 Assign `max` to the `admin` role:
 
@@ -238,11 +238,39 @@ Exit the SQL shell on node 2:
     You may need to restart a node for new `admin` roles to take effect.
     {{site.data.alerts.end}}
 
-## Step 5. Monitor the cluster
+## Step 5. Access the Admin UI
 
-Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-Log in with the username and password created in the [Test the cluster](#step-4-test-the-cluster) step. Then click **Metrics** on the left-hand navigation bar.
+1. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+
+    {% include {{ page.version.version }}/misc/chrome-localhost.md %}
+
+2. Log in with the username and password you created earlier (`max`/`roach`).
+
+3. On the [**Cluster Overview**](admin-ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+
+    <img src="{{ 'images/v20.1/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+    This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.    
+
+    {{site.data.alerts.callout_info}}
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
+    {{site.data.alerts.end}}
+
+4. Click [**Metrics**](admin-ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+
+    <img src="{{ 'images/v20.1/admin_ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+5. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+
+## Step 6. Monitor the cluster
+
+Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+
+{% include {{ page.version.version }}/misc/chrome-localhost.md %}
+
+Log in with the username and password created earlier (`max`/`roach`). Then click **Metrics** on the left-hand navigation bar.
 
 <img src="{{ 'images/v19.1/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -256,7 +284,7 @@ The replica count on each node is identical, indicating that all data in the clu
 
 {{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
-## Step 6. Stop the cluster
+## Step 7. Stop the cluster
 
 Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL-C** to stop the node.
 
@@ -299,7 +327,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 $ rm -rf cockroach-data node2 node3
 ~~~
 
-## Step 7. Restart the cluster
+## Step 8. Restart the cluster
 
 If you decide to use the cluster for further testing, you'll need to restart at least 2 of your 3 nodes from the directories containing the nodes' data stores.
 

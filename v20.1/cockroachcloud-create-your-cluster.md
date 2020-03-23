@@ -88,8 +88,12 @@ After entering the cluster name, click **Continue to Payment**.
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
 3. Add your preferred [payment method](cockroachcloud-console-access-management.html#manage-billing-for-the-organization).
-4. Check the **I agree to Cockroach Labs Terms of Service and Privacy Policy** box.
-5. Click **Create cluster**.
+4. (Optional) If you have received a trial code, enter the code in the **Trial code** box.
+      {{site.data.alerts.callout_info}}
+      Make sure that you [delete your trial cluster](cockroachcloud-cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
+      {{site.data.alerts.end}}
+5. Check the **I agree to Cockroach Labs Terms of Service and Privacy Policy** box.
+6. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.
 

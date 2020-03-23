@@ -53,8 +53,12 @@ To install SQLAlchemy and a [CockroachDB Python package](https://github.com/cock
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install sqlalchemy cockroachdb
+$ pip install sqlalchemy cockroachdb psycopg2
 ~~~
+
+{{site.data.alerts.callout_success}}
+You can substitute psycopg2 for other alternatives that include the psycopg python package.
+{{site.data.alerts.end}}
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
@@ -128,6 +132,19 @@ $ python3 -m pip install pony
 ~~~
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
+
+### peewee
+
+**Support level:** Full
+
+To install peewee:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 -m pip install peewee
+~~~
+
+For instructions on using peewee with CockroachDB, see the [CockroachDatabase peewee extension documentation](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database).
 
 </section>
 

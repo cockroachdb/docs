@@ -10,6 +10,7 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button current">Use <strong>SQLAlchemy</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button">Use <strong>Django</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
+    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
@@ -32,8 +33,12 @@ To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install sqlalchemy cockroachdb
+$ pip install sqlalchemy cockroachdb psycopg2
 ~~~
+
+{{site.data.alerts.callout_success}}
+You can substitute psycopg2 for other alternatives that include the psycopg python package.
+{{site.data.alerts.end}}
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 

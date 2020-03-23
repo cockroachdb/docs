@@ -12,13 +12,11 @@ For information about temporarily stopping a node (e.g., for planned maintenance
 
 ### How it works
 
-When you decommission a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all **range replicas** and **range leases** off the node so that it can be safely shut down.
+When you decommission a node, all range replicas on the node are transferred to other nodes.
 
-Basic terms:
+During and after decommissioning, the node continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. However, note that the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) considers the node "unready" and returns a `503 Service Unavailable` status response code so load balancers stop directing traffic to the node. This behavior has been fixed in v20.1.
 
-- **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
-- **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+After decommissioning, it's typical to stop the node via a process manager or orchestration tool, or by sending `SIGTERM` manually, at which point the node is drained of in-flight SQL connections and new SQL connections are rejected.
 
 ### Considerations
 
