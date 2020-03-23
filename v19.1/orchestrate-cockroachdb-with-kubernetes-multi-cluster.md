@@ -351,7 +351,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true)
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true);
     ~~~
 
 5. Exit the SQL shell and pod:

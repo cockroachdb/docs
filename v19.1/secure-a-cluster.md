@@ -224,7 +224,7 @@ Assign `max` to the `admin` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true)
+> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
 ~~~
 
 Exit the SQL shell on node 2:
@@ -233,6 +233,10 @@ Exit the SQL shell on node 2:
 ~~~ sql
 > \q
 ~~~
+
+    {{site.data.alerts.callout_info}}
+    You may need to restart a node for new `admin` roles to take effect.
+    {{site.data.alerts.end}}
 
 ## Step 5. Monitor the cluster
 
@@ -252,7 +256,7 @@ The replica count on each node is identical, indicating that all data in the clu
 
 {{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
-## Step 6.  Stop the cluster
+## Step 6. Stop the cluster
 
 Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL-C** to stop the node.
 

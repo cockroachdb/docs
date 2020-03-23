@@ -243,12 +243,7 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mkdir certs
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir my-safe-directory
+    $ mkdir certs my-safe-directory
     ~~~
 
     Directory | Description
