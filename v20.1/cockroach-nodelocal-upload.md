@@ -4,12 +4,14 @@ summary: Upload a file to a node's local file system.
 toc: true
 ---
 
-<span class="version-tag">New in v20.1:</span> The `cockroach nodelocal upload` [command](cockroach-commands.html) uploads a file to a node's (by default, node 1) local file system. This is done through a SQL connection.
+<span class="version-tag">New in v20.1:</span> The `cockroach nodelocal upload` [command](cockroach-commands.html) uploads a file to a node's (the gateway node, by default) local file system.
 
-Probably some explanation of how it works is helpful, so that if they SSH they aren’t totally freaked if they don’t see the file there
+This command takes in a source file to upload and a destination filename. It will
+then use a SQL connection to upload the file to the node's local file system, at `externalIODir/destination/filename`.
 
-When a file is upload, it is only uploaded to one node, not all of the nodes.
-
+{{site.data.alerts.callout_info}}
+The source file is only uploaded to one node, not all of the nodes.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -40,40 +42,44 @@ $ cockroach nodelocal upload --help
 
 ### Upload a file
 
-To upload a file to the default node (i.e., node 1):
+To upload a file to the default node (i.e., the gateway node):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach nodelocal upload ./grants.txt test/grants.txt --certs-dir=certs
+$ cockroach nodelocal upload ./grants.csv test/grants.csv --certs-dir=certs
 ~~~
 
 ~~~
-successfully uploaded to nodelocal://1/test/grants.txt
+successfully uploaded to nodelocal://1/test/grants.csv
 ~~~
 
-### Upload a file to a different node
+Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-into.html) data.
+
+### Upload a file to a specific node
 
 To upload a file to a specific node (e.g., node 2), use the `--host` flag:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach nodelocal upload ./grants.txt grants.txt --host=localhost:26259 --insecure
+$ cockroach nodelocal upload ./grants.csv grants.csv --host=localhost:26259 --insecure
 ~~~
 
 ~~~
-successfully uploaded to nodelocal://2/grants.txt
+successfully uploaded to nodelocal://2/grants.csv
 ~~~
 
 Or, use the `--url` flag:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach nodelocal upload ./grants.txt grants.txt --url=postgresql://root@localhost:26258?sslmode=disable --insecure
+$ cockroach nodelocal upload ./grants.csv grants.csv --url=postgresql://root@localhost:26258?sslmode=disable --insecure
 ~~~
 
 ~~~
-successfully uploaded to nodelocal://3/grants.txt
+successfully uploaded to nodelocal://3/grants.csv
 ~~~
+
+Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-into.html) data.
 
 ## See also
 
@@ -81,3 +87,4 @@ successfully uploaded to nodelocal://3/grants.txt
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Import Data](import-data.html)
 - [`IMPORT`](import.html)
+- [`IMPORT INTO`](import-into.html)
