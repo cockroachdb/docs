@@ -22,7 +22,7 @@ Once you determine that you do have slow queries in your cluster, use the [State
 
 You can then use the [Statement Details](admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements and [activate diagnostics](admin-ui-statements-page.html#diagnostics) for the statement that you can send to our [support team](support-resources.html) for analysis.
 
-You can also use [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
+You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
 If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, [contact us](support-resources.html).
 
