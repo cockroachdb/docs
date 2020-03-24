@@ -4,7 +4,13 @@ summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
 toc: true
 ---
 
-The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes Check and Foreign Key constraints from columns.
+The `DROP CONSTRAINT` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and removes [`CHECK`](check.html) and [`FOREIGN KEY`](foreign-key.html) constraints from columns.
+
+<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+
+{{site.data.alerts.callout_success}}
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use `DROP CONSTRAINT`/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 For information about removing other constraints, see [Constraints: Remove Constraints](constraints.html#remove-constraints).
@@ -31,42 +37,110 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Example
+## Examples
+
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
+### Drop a foreign key constraint
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CONSTRAINTS FROM orders;
-~~~
-~~~
-+--------+---------------------------+-------------+-----------+----------------+
-| Table  |           Name            |    Type     | Column(s) |    Details     |
-+--------+---------------------------+-------------+-----------+----------------+
-| orders | fk_customer_ref_customers | FOREIGN KEY | customer  | customers.[id] |
-| orders | primary                   | PRIMARY KEY | id        | NULL           |
-+--------+---------------------------+-------------+-----------+----------------+
+> SHOW CONSTRAINTS FROM vehicles;
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE orders DROP CONSTRAINT fk_customer_ref_customers;
 ~~~
-~~~
-ALTER TABLE
+  table_name |  constraint_name  | constraint_type |                         details                         | validated
+-------------+-------------------+-----------------+---------------------------------------------------------+------------
+  vehicles   | fk_city_ref_users | FOREIGN KEY     | FOREIGN KEY (city, owner_id) REFERENCES users(city, id) |   true
+  vehicles   | primary           | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC)                          |   true
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CONSTRAINTS FROM orders;
-~~~
-~~~
-+--------+---------+-------------+-----------+---------+
-| Table  |  Name   |    Type     | Column(s) | Details |
-+--------+---------+-------------+-----------+---------+
-| orders | primary | PRIMARY KEY | id        | NULL    |
-+--------+---------+-------------+-----------+---------+
+> ALTER TABLE vehicles DROP CONSTRAINT fk_city_ref_users;
 ~~~
 
-{{site.data.alerts.callout_info}}You cannot drop the <code>primary</code> constraint, which indicates your table's <a href="primary-key.html">Primary Key</a>.{{site.data.alerts.end}}
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CONSTRAINTS FROM vehicles;
+~~~
+
+~~~
+  table_name | constraint_name | constraint_type |            details             | validated
+-------------+-----------------+-----------------+--------------------------------+------------
+  vehicles   | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+(1 row)
+~~~
+
+### Drop and add a primary key constraint
+
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index when changing a primary key, you can use `DROP CONSTRAINT`/[`ADD CONSTRAINT`](add-constraint.html) instead.
+
+Suppose that you want to add `name` to the composite primary key of the `users` table.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                      create_statement
+-------------+--------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
+(1 row)
+~~~
+
+First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN name SET NOT NULL;
+~~~
+
+Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](add-constraint.html) the new one:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+> ALTER TABLE users DROP CONSTRAINT "primary";
+> ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
+> COMMIT;
+~~~
+
+~~~
+NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                          create_statement
+-------------+---------------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NOT NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
+(1 row)
+~~~
+
+Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
 ## See also
 
@@ -78,3 +152,4 @@ ALTER TABLE
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- ['ALTER PRIMARY KEY'](alter-primary-key.html)
