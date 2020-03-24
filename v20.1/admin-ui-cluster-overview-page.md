@@ -53,14 +53,14 @@ Locality Status | Description
 
 Node Status | Description
 -------|------------
-`LIVE` | Node is online and responding.
+`LIVE` | Node is online and updating its liveness record.
 `SUSPECT` | Node has an [unavailable liveness status](cluster-setup-troubleshooting.html#node-liveness-issues).
 `DECOMMISSIONING` | Node is in the [process of decommissioning](remove-nodes.html#how-it-works).
 `DECOMMISSIONED` | Node has been decommissioned for permanent removal from the cluster.
-`DEAD` | Node has not responded for 5 minutes.
+`DEAD` | Node has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
 
 {{site.data.alerts.callout_info}}
-Nodes are considered dead once they have not responded for a certain amount of time (5 minutes by default). At this point, the [automated repair process](cockroach-quit.html#how-it-works) starts, wherein CockroachDB rebalances replicas from dead nodes to live nodes, using the unaffected replicas as sources. 
+Nodes are considered dead once they have not [updated their liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for a certain amount of time (5 minutes by default). At this point, the [automated repair process](cockroach-quit.html#how-it-works) starts, wherein CockroachDB rebalances replicas from dead nodes to live nodes, using the unaffected replicas as sources. 
 {{site.data.alerts.end}}
 
 ### Node details
@@ -82,7 +82,7 @@ Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned Nodes
 
-Nodes that have been decommissioned for permanent removal from the cluster are listed in the table of **Recently Decommissioned Nodes**. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
+Nodes that have recently been decommissioned for permanent removal from the cluster are listed in the table of **Recently Decommissioned Nodes**. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
 
 <img src="{{ 'images/v20.1/admin-ui-decommissioned-nodes.png' | relative_url }}" alt="CockroachDB Admin UI node list" style="border:1px solid #eee;max-width:100%" />
 
@@ -102,7 +102,7 @@ The Node Map is populated with **locality components** and **node components**, 
 
 ### Locality component
 
-The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., datacenter). 
+The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., availability zone). 
 
 For details on **Capacity Usage**, see [Capacity metrics](#capacity-metrics).
 
