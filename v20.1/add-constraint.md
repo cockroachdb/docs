@@ -8,11 +8,20 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 
 - [`UNIQUE`](#add-the-unique-constraint)
 - [`CHECK`](#add-the-check-constraint)
-- [Foreign key](#add-the-foreign-key-constraint-with-cascade)
+- [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)
+
+
+<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added with `ADD CONSTRAINT` if a [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT` statement in the same transaction, or if the current [primary key is on `rowid`](indexes.html#creation).
 
 {{site.data.alerts.callout_info}}
-The [`PRIMARY KEY`](primary-key.html) can only be applied through [`CREATE TABLE`](create-table.html). The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-column.html).
+[`ALTER TABLE ... ADD PRIMARY KEY`](alter-primary-key.html) is an alias for `ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`.
 {{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](drop-constraint.html)/`ADD CONSTRAINT` to change the primary key.
+{{site.data.alerts.end}}
+
+The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-column.html).
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
@@ -40,13 +49,15 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Add the `UNIQUE` constraint
 
 Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
+> ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
 
 ### Add the `CHECK` constraint
@@ -55,7 +66,7 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT check_id_non_zero CHECK (id > 0);
+> ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
 
 Check constraints can be added to columns that were created earlier in the transaction. For example:
@@ -63,8 +74,8 @@ Check constraints can be added to columns that were created earlier in the trans
 {% include copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
-> ALTER TABLE customers ADD COLUMN gdpr_status STRING;
-> ALTER TABLE customers ADD CONSTRAINT check_gdpr_status CHECK (gdpr_status IN ('yes', 'no', 'unknown'));
+> ALTER TABLE users ADD COLUMN is_owner STRING;
+> ALTER TABLE users ADD CONSTRAINT check_is_owner CHECK (is_owner IN ('yes', 'no', 'unknown'));
 > COMMIT;
 ~~~
 
@@ -86,42 +97,48 @@ The entire transaction will be rolled back, including any new columns that were 
 
 To add a foreign key constraint, use the steps shown below.
 
-Given two tables, `customers` and `orders`:
+Given two tables, `users` and `vehicles`, without foreign key constraints:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE customers;
+> SHOW CREATE users;
 ~~~
 
 ~~~
- table_name |                  create_statement
-------------+----------------------------------------------------
- customers  | CREATE TABLE customers (                          +
-            |         id INT8 NOT NULL,                         +
-            |         name STRING NOT NULL,                     +
-            |         address STRING NULL,                      +
-            |         CONSTRAINT "primary" PRIMARY KEY (id ASC),+
-            |         FAMILY "primary" (id, name, address)      +
-            | )
+  table_name |                      create_statement
+-------------+--------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
 (1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE orders;
+> SHOW CREATE vehicles;
 ~~~
 
 ~~~
- table_name |                                                create_statement
-------------+----------------------------------------------------------------------------------------------------------------
- orders     | CREATE TABLE orders (                                                                                         +
-            |         id INT8 NOT NULL,                                                                                     +
-            |         customer_id INT8 NULL,                                                                                +
-            |         status STRING NOT NULL,                                                                               +
-            |         CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                            +
-            |         FAMILY "primary" (id, customer_id, status),                                                           +
-            |         CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))+
-            | )
+  table_name |                                       create_statement
+-------------+------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     type VARCHAR NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status VARCHAR NULL,
+             |     current_location VARCHAR NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
 (1 row)
 ~~~
 
@@ -135,28 +152,99 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
+> ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
 
 An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. You can see it using [`SHOW INDEXES`](show-index.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEXES FROM orders;
+> SHOW INDEXES FROM vehicles;
 ~~~
 
 ~~~
- table_name |          index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit
-------------+-------------------------------+------------+--------------+-------------+-----------+---------+----------
- orders     | primary                       | f          |            1 | id          | ASC       | f       | f
- orders     | orders_auto_index_customer_fk | t          |            1 | customer_id | ASC       | f       | f
- orders     | orders_auto_index_customer_fk | t          |            2 | id          | ASC       | f       | t
-(3 rows)
+  table_name |          index_name          | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+------------------------------+------------+--------------+-------------+-----------+---------+-----------
+  vehicles   | primary                      |   false    |            1 | city        | ASC       |  false  |  false
+  vehicles   | primary                      |   false    |            2 | id          | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_users_fk |    true    |            1 | city        | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_users_fk |    true    |            2 | owner_id    | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_users_fk |    true    |            3 | id          | ASC       |  false  |   true
+(5 rows)
 ~~~
 
 {{site.data.alerts.callout_info}}
 Adding a foreign key for a non-empty table without an appropriate index will fail, since foreign key columns must be indexed. For more information about the requirements for creating foreign keys, see [Rules for creating foreign keys](foreign-key.html#rules-for-creating-foreign-keys).
 {{site.data.alerts.end}}
+
+### Drop and add the primary key constraint
+
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`](drop-constraint.html)/`ADD CONSTRAINT` instead.
+
+Suppose that you want to add `name` to the composite primary key of the `users` table.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                      create_statement
+-------------+--------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
+(1 row)
+~~~
+
+First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN name SET NOT NULL;
+~~~
+
+Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"` constraint and `ADD` the new one:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+> ALTER TABLE users DROP CONSTRAINT "primary";
+> ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
+> COMMIT;
+~~~
+
+~~~
+NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                          create_statement
+-------------+---------------------------------------------------------------------
+  users      | CREATE TABLE users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NOT NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
+(1 row)
+~~~
+
+Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
 ## See also
 
@@ -170,3 +258,4 @@ Adding a foreign key for a non-empty table without an appropriate index will fai
 - [`CREATE TABLE`](create-table.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- ['ALTER PRIMARY KEY'](alter-primary-key.html)

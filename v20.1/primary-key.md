@@ -10,6 +10,8 @@ Unlike other constraints which have very specific uses, the `PRIMARY KEY` constr
 
 A table's primary key can be specified in the [`CREATE TABLE`](create-table.html) statement, or using [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), after the table is created.
 
+<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added to existing tables with [`ADD CONSTRAINT`](add-constraint.html) if a [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT` statement in the same transaction, or if the current [primary key is on `rowid`](indexes.html#creation). For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+
 ## Details
 
 - Tables can only have one primary key.
