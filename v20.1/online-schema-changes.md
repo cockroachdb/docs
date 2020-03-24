@@ -21,6 +21,10 @@ Schema changes consume additional resources, and if they are run when the cluste
 Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+{{site.data.alerts.end}}
+
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
