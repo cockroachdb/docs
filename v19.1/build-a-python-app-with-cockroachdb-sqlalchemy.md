@@ -77,6 +77,12 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 Copy the code below or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/sqlalchemy-basic-sample.py">download it directly</a>.
 
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+
+`git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/`
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
@@ -175,19 +181,23 @@ It does all of the above using the practices we recommend for using SQLAlchemy w
 You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
-Copy the code below or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/sqlalchemy-basic-sample.py">download it directly</a>.
+To get the code below, clone the `hello-world-python-sqlalchemy` repo to your machine:
+
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
-Then run the code:
+Change to the directory where you cloned the repo and run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 sqlalchemy-basic-sample.py
+$ python3 example.py
 ~~~
 
 The output should look something like the following:

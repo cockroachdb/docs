@@ -63,6 +63,11 @@ The following code uses the [GORM](http://gorm.io) ORM to map Go-specific object
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-sample.go" download>download it directly</a>.
 
+{{site.data.alerts.callout_success}}
+To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+`git clone https://github.com/cockroachlabs/hello-world-go-gorm/`
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/gorm-sample.go %}
@@ -103,19 +108,23 @@ The following code uses the [GORM](http://gorm.io) ORM to map Go-specific object
 - `db.Find(&accounts)` selects from the table so that balances can be printed.
 - The funds transfer occurs in `transferFunds()`. To ensure that we [handle retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another error, it sleeps again for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
-Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/gorm-sample.go" download>download it directly</a>.
+To get the code below, clone the `hello-world-go-gorm` repo to your machine:
+
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/hello-world-go-gorm/
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/insecure/gorm-sample.go %}
 ~~~
 
-Then run the code:
+Change to the directory where you cloned the repo and run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ go run gorm-sample.go
+$ go run main.go
 ~~~
 
 The output should show the account balances before and after the funds transfer:
