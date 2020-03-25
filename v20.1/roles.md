@@ -6,10 +6,10 @@ toc: true
 
 Roles are SQL groups that contain any number of users and roles as members. To create and manage your cluster's roles, use the following statements:
 
-- [`CREATE ROLE` (Enterprise)](create-role.html)
-- [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`CREATE ROLE`](create-role.html)
+- [`DROP ROLE`](drop-role.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
@@ -32,7 +32,7 @@ Indirect member | A user or role that is a member of the role by association. <b
 
 ## Example
 
-For the purpose of this example, you need an [enterprise license](enterprise-licensing.html) and one CockroachDB node running in insecure mode:
+For the purpose of this example, you need one CockroachDB node running in insecure mode:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -245,9 +245,9 @@ $ cockroach start \
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](authorization.html#create-and-manage-users)
 - [Privileges](authorization.html#assign-privileges)

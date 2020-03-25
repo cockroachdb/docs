@@ -6,7 +6,9 @@ toc: true
 
 The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
 
-{{site.data.alerts.callout_info}}<code>GRANT &lt;roles&gt;</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: The <code>GRANT &lt;roles&gt;</code> statement is now freely available in the core version of CockroachDB and no longer requires an enterprise license.
+{{site.data.alerts.end}}
 
 
 ## Synopsis
@@ -15,7 +17,7 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](autho
 
 ## Required privileges
 
-The user granting role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
+The user granting role membership must be a [role admin](authorization.html#role-admin) (i.e., members with the `ADMIN OPTION`) or a member of the [`admin` role](authorization.html#admin-role).
 
 ## Considerations
 
@@ -80,7 +82,7 @@ Parameter | Description
 ## See also
 
 - [Authorization](authorization.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)

@@ -150,8 +150,8 @@ Parameter | Description
 ## See also
 
 - [Authorization](authorization.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)

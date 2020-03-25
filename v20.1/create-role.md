@@ -1,13 +1,14 @@
 ---
-title: CREATE ROLE (Enterprise)
+title: CREATE ROLE
 summary: The CREATE ROLE statement creates SQL roles, which are groups containing any number of roles and users as members.
 toc: true
 ---
 
 The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
-{{site.data.alerts.callout_info}}<code>CREATE ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
-
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: The <code>CREATE ROLE</code> statement is now freely available in the core version of CockroachDB and no longer requires an enterprise license.
+{{site.data.alerts.end}}
 
 ## Considerations
 
@@ -53,11 +54,11 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 ## See also
 
 - [Authorization](authorization.html)
-- [`DROP ROLE` (Enterprise)](drop-role.html)
+- [`DROP ROLE`](drop-role.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`SHOW USERS`](show-users.html)
 - [`SHOW GRANTS`](show-grants.html)

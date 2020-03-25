@@ -6,9 +6,9 @@ toc: true
 
 The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-user.html) password.
 
-## Considerations
+Password creation and alteration is supported only in secure clusters.
 
-- Password creation and alteration is supported only in secure clusters for non-`root` users.
+<span class="version-tag">New in v20.1</span>: You can assign a password to the `root` user, set a password expiration date for a user or role, and revoke a user or role's ability to log in using a password.
 
 ## Required privileges
 
@@ -30,6 +30,7 @@ Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password you want to create or add.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged.
+<!--- Need to update this table after updating the SQL diagram for password expiration date -->
 
 ## Examples
 
@@ -66,6 +67,27 @@ To preserve case in a password specified using identifier syntax, use double quo
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
+~~~
+
+### Set password expiration date
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl VALID UNTIL 'Mar 22 2022';
+~~~
+
+### Revoke a user's ability to log in using a password
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl WITH PASSWORD NULL;
+~~~
+
+### Assign a password to the `root` user
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER root WITH PASSWORD ilov3beefjerky;
 ~~~
 
 ## See also
