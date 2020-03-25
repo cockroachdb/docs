@@ -8,7 +8,7 @@ Amazon                                                      | `s3`        | Buck
 Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
 Google Cloud&nbsp;[<sup>2</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS`
 HTTP&nbsp;[<sup>3</sup>](#considerations)                   | `http`      | Remote host                                      | N/A
-NFS/Local&nbsp;[<sup>4</sup>](#considerations)              | `nodelocal` | Empty or `nodeID` [<sup>5</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
+NFS/Local&nbsp;[<sup>4</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>5</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services&nbsp;[<sup>6</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>7</sup>](#considerations) (optional), `AWS_ENDPOINT`
 
 {{site.data.alerts.callout_info}}
@@ -29,7 +29,7 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 - <sup>4</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-- <sup>5</sup>  <span class="version-tag">New in v20.1:</span> If a `nodeID` is provided, the data files will be in the `extern` directory of the specified node. Currently, using a `nodeID` is optional but strongly encouraged. If you do not specify a `nodeID` when using `nodelocal` storage, the individual data files will be in the `extern` directories of arbitrary nodes and will likely not work as intended; to work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
+- <sup>5</sup>  <span class="version-tag">New in v20.1:</span> Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. Use `self` if you do not want to specify a `nodeID`, and the individual data files will be in the `extern` directories of arbitrary nodes; however, to work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
 
 - <sup>6</sup> A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
 
@@ -43,4 +43,4 @@ Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCE
 Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
-NFS/Local    | `nodelocal:///path/employees`, `nodelocal://2/path/employees`&nbsp;[<sup>5</sup>](#considerations)
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)

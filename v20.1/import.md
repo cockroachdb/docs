@@ -159,7 +159,7 @@ To import a local file, you have the following options:
 - Option 2. Make the file accessible from each local node's store:
     1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](cockroach-start.html#general), but will look something like `/path/to/cockroach-data/extern/`.
     2. Copy the file to each node's `extern` directory.
-    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal:///data.sql'`.
+    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal://1/data.sql'`.
 
 ### Table users and privileges
 
