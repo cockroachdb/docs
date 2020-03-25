@@ -38,6 +38,7 @@ table td:first-child {
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
 `NO CYCLE` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 `OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
+`opt_temp` | <span class="version-tag">New in v20.1:</span> Defines the view as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
 
 <!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
 `CACHE <seq_value>` | The number of sequence values to allocate in memory for faster access. Currently, you can only `CACHE 1` or leave unspecified.-->
@@ -51,25 +52,58 @@ We support the following [SQL sequence functions](functions-and-operators.html):
 - `lastval()`
 - `setval('seq_name', value, is_called)`
 
-## Examples
+## Temporary sequences
 
-### List all sequences
+<span class="version-tag">New in v20.1:</span> CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables](temporary-tables.html).
+
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Temporary tables must be enabled in order to use temporary sequences. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
+
+### Details
+
+- Temporary sequences are automatically dropped at the end of the session.
+- A temporary sequence can only be accessed from the session in which it was created.
+- Temporary sequences persist across transactions in the same session.
+- Temporary sequences cannot be converted to persistent sequences.
+
+{{site.data.alerts.callout_info}}
+Like [temporary tables](temporary-tables.html), temporary sequences are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
+{{site.data.alerts.end}}
+
+### Usage
+
+To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to the beginning of a `CREATE SEQUENCE` statement.
+
+For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
+> SET experimental_enable_temp_tables=on;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TEMP SEQUENCE temp_seq START 1 INCREMENT 1;
 ~~~
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-| def              | test_db         | customer_seq       | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
-| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
-| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-(4 rows)
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE temp_seq;
 ~~~
+
+~~~
+  table_name |                                     create_statement
+-------------+--------------------------------------------------------------------------------------------
+  temp_seq   | CREATE TEMP SEQUENCE temp_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1
+(1 row)
+~~~
+
+## Examples
 
 ### Create a sequence with default settings
 
@@ -86,12 +120,9 @@ In this example, we create a sequence with default settings.
 ~~~
 
 ~~~
-+--------------+--------------------------------------------------------------------------+
-|  table_name  |                             create_statement                             |
-+--------------+--------------------------------------------------------------------------+
-| customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807     |
-|              | INCREMENT 1 START 1                                                      |
-+--------------+--------------------------------------------------------------------------+
+   table_name  |                                     create_statement
+---------------+-------------------------------------------------------------------------------------------
+  customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1
 (1 row)
 ~~~
 
@@ -110,12 +141,9 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 ~~~
 
 ~~~
-+--------------------+--------------------------------------------------------------------------+
-|     table_name     |                             create_statement                             |
-+--------------------+--------------------------------------------------------------------------+
-| desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808         |
-|                    | MAXVALUE -1 INCREMENT -2 START -1                                        |
-+--------------------+--------------------------------------------------------------------------+
+      table_name     |                                          create_statement
+---------------------+-----------------------------------------------------------------------------------------------------
+  desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
 (1 row)
 ~~~
 
@@ -149,13 +177,12 @@ Insert a few records to see the sequence.
 ~~~
 
 ~~~
-+----+----------+--------------------+
-| id | customer |      address       |
-+----+----------+--------------------+
-|  1 | Lauren   | 123 Main Street    |
-|  2 | Jesse    | 456 Broad Ave      |
-|  3 | Amruta   | 9876 Green Parkway |
-+----+----------+--------------------+
+  id | customer |      address
+-----+----------+---------------------
+   1 | Lauren   | 123 Main Street
+   2 | Jesse    | 456 Broad Ave
+   3 | Amruta   | 9876 Green Parkway
+(3 rows)
 ~~~
 
 ### View the current value of a sequence
@@ -168,11 +195,10 @@ To view the current value without incrementing the sequence, use:
 ~~~
 
 ~~~
-+------------+---------+-----------+
-| last_value | log_cnt | is_called |
-+------------+---------+-----------+
-|          3 |       0 |   true    |
-+------------+---------+-----------+
+  last_value | log_cnt | is_called
+-------------+---------+------------
+           3 |       0 |   true
+(1 row)
 ~~~
 
 {{site.data.alerts.callout_info}}The <code>log_cnt</code> and <code>is_called</code> columns are returned only for PostgreSQL compatibility; they are not stored in the database.{{site.data.alerts.end}}
@@ -184,14 +210,30 @@ If a value has been obtained from the sequence in the current session, you can a
 ~~~
 
 ~~~
-+---------+
-| currval |
-+---------+
-|       3 |
-+---------+
+  currval
+-----------
+        3
+(1 row)
+~~~
+
+### List all sequences
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM information_schema.sequences;
+~~~
+
+~~~
+  sequence_catalog |        sequence_schema        |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option
+-------------------+-------------------------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+---------------
+  movr             | pg_temp_1585153897131110000_1 | temp_seq           | bigint    |                64 |                       2 |             0 | 1           | 1                    | 9223372036854775807 | 1         | NO
+  movr             | public                        | customer_seq       | bigint    |                64 |                       2 |             0 | 1           | 1                    | 9223372036854775807 | 1         | NO
+  movr             | public                        | desc_customer_list | bigint    |                64 |                       2 |             0 | -1          | -9223372036854775808 | -1                  | -2        | NO
+(3 rows)
 ~~~
 
 ## See also
+
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)

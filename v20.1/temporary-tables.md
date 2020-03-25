@@ -6,6 +6,8 @@ toc: true
 
 <span class="version-tag">New in v20.1:</span> CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables](create-table.html), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.
 
+CockroachDB also supports [temporary views](views.html#temporary-views) and [temporary sequences](create-sequence.html#temporary-sequences).
+
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 {{site.data.alerts.end}}
@@ -24,15 +26,16 @@ By default, temp tables are disabled in CockroachDB. To enable temp tables, set 
 
 ## Temporary schemas
 
-Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
+Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
 
 ## Syntax
 
-To create a temp table, add the following [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp_create_table) clause to the beginning of a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement:
+To create a temp table, add the following [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp_create_table) to the beginning of a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement:
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
 </div>
+
 
 ## Example
 

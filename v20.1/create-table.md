@@ -88,7 +88,7 @@ Parameter | Description
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
-`opt_temp_create_table` | Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temp-tables.html).<br>**Support for temp tables is experimental**. The interface and output are subject to change.
+`opt_temp_create_table` | Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 
 ## Table-level replication
 
