@@ -19,7 +19,7 @@ Only members of the `admin` role can run `cockroach nodelocal upload`. By defaul
 
 ## Considerations
 
-The node you're uploading to must not have external-io disabled.
+The [`--external-io`](cockroach-start.html#general) flag on the node you're uploading to **cannot** be set to `disabled`.
 
 ## Synopsis
 
