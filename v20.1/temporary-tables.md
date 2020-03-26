@@ -26,6 +26,8 @@ CockroachDB also supports [temporary views](views.html#temporary-views) and [tem
 - Temp tables can reference persistent tables, but persistent tables cannot reference temp tables.
 - Temp tables cannot be converted to persistent tables.
 
+By default, every 30 minutes CockroachDB cleans up all temporary objects that are not tied to an active session. You can change how often the cleanup job runs with the `sql.temp_object_cleaner.cleanup_interval` [cluster setting](cluster-setting.html).
+
 ## Temporary schemas
 
 Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
