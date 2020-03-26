@@ -11,15 +11,11 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 - [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)
 
 
-<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added with `ADD CONSTRAINT` if a [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT` statement in the same transaction, or if the current [primary key is on `rowid`](indexes.html#creation).
+<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added with `ADD CONSTRAINT ... PRIMARY KEY` or [`ADD PRIMARY KEY`](alter-table.html) if one of the following is true:
 
-{{site.data.alerts.callout_info}}
-[`ALTER TABLE ... ADD PRIMARY KEY`](alter-primary-key.html) is an alias for `ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](drop-constraint.html)/`ADD CONSTRAINT` to change the primary key.
-{{site.data.alerts.end}}
+  - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For more details and an example, see [Drop and add the primary key constraint](#drop-and-add-the-primary-key-constraint) below.
+  - The current [primary key is on `rowid`](indexes.html#creation).
+  - The `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement follows a [`CREATE TABLE`](create-table.html) statement with no primary key and is part of the same transaction.
 
 The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-column.html).
 
