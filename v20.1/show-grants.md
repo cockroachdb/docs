@@ -5,7 +5,7 @@ keywords: reflection
 toc: true
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users.
+The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users and roles.
 
 ## Synopsis
 
