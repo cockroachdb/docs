@@ -20,7 +20,7 @@ Type | Description | Example | [Vectorized Execution](vectorized-execution.html)
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number.  | `1.2345` | Supported
 [`INET`](inet.html) | An IPv4 or IPv6 address.  | `192.168.0.1` | Not supported
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345` | Supported
-[`INTERVAL`](interval.html) | A span of time.  | `INTERVAL '2h30m30s'` | Not supported
+[`INTERVAL`](interval.html) | A span of time.  | `INTERVAL '2h30m30s'` | Supported
 [`JSONB`](jsonb.html) | JSON (JavaScript Object Notation) data.  | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'` | Not supported
 [`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html).  | `148591304110702593` | Not supported
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'` | Supported
