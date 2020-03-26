@@ -147,4 +147,3 @@ Support for [temporary tables](temporary-tables.html), [temporary views](views.h
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
-- [Vectorized Query Execution](vectorized-execution.html)
