@@ -10,12 +10,7 @@ The `INTERVAL` [data type](data-types.html) stores a value that represents a spa
 
 ## Aliases
 
-- `INTERVAL(6)`
-{{site.data.alerts.callout_info}}
-`INTERVAL(6)` is supported as an alias for compatibility purposes only. This alias does not determine [the size of an `INTERVAL` value](#size).
-{{site.data.alerts.end}}
-
-CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
+CockroachDB supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
 
 ## Syntax
 
@@ -31,7 +26,7 @@ type `INTERVAL` or
 
 Format | Description
 -------|--------
-SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>`Y-M D`: Using a single value defines days only; using two values defines years and months. Values must be integers.<br><br>`H:M:S`: Using a single value defines seconds only; using two values defines hours and minutes. Values can be integers or floats.<br><br>Note that each side is optional.
+SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>`Y-M D`: Using a single value defines days only; using two values defines years and months. Values must be integers.<br><br>`H:M:S`: Using a single value defines seconds only; using two values defines hours and minutes, unless specified otherwise by a [duration field](#duration-fields). Hours and minutes must be integers, and seconds can be integers or floats. If the first element is specified as a float, the interval is parsed as `D:H:M`.<br><br>Note that each side of the interval input is optional.
 ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
 Traditional PostgreSQL | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`
 Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
@@ -46,7 +41,22 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 
 ## Precision
 
-Intervals are stored with microsecond precision instead of nanoseconds, and it is no longer possible to create intervals with nanosecond precision.  As a result, parsing from a [string](string.html) or converting from a [float](float.html) or [decimal](decimal.html) will round to the nearest microsecond, as will any arithmetic [operation](functions-and-operators.html#supported-operations) (add, sub, mul, div) on intervals. CockroachDB rounds (instead of truncating) to match the behavior of Postgres.
+<span class="version-tag">New in v20.1:</span> CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `INTERVAL` values. Precision in time values specifies the number of fractional digits retained in the seconds field.  By default, `INTERVAL` values have a precision of 6 (microseconds).
+
+For example, specifying a `INTERVAL` value as `INTERVAL(3)` truncates the time precision to milliseconds.
+
+{{site.data.alerts.callout_info}}
+If you downgrade to a version of CockroachDB that does not support precision for `INTERVAL` values, all `INTERVAL` values previously specified with precision will be stored with full precision (microseconds).
+{{site.data.alerts.end}}
+
+## Duration fields
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports duration fields for `INTERVAL` values. You can specify `SECOND`, `MINUTE`, `HOUR`, or `DAY` units of duration in the form `INTERVAL ... <unit>` or `INTERVAL ... <unit> TO <unit>`.
+
+Specifying a single duration field truncates the interval at the unit specified. For example, `INTERVAL '1 2:03:04' HOUR` truncates the input to an exact hour, and displays the interval as `1 day 02:00:00`.
+
+If the interval input is ambiguous, specifying two duration fields stores the interval in the units specified. For example, `INTERVAL '02:03' MINUTE TO SECOND` displays the interval in minutes and seconds, `00:02:03`. Without `MINUTE TO SECOND`, the input would be stored as `02:03:00`.
+
 
 ## Example
 
