@@ -19,7 +19,7 @@ The same as for other [selection queries](selection-queries.html).
 
 ### Enforce transaction order when updating the same rows
 
-In this example, we'll use `SELECT ... FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
+In this example, we'll use `SELECT FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
 
 This example assumes you are running a [local unsecured cluster](start-a-local-cluster.html).
 
@@ -70,7 +70,7 @@ BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;
 ~~~
 
-Hit enter twice to send the input so far to be evaluated. Because Terminal 1 has already locked this row, the `SELECT ... FOR UPDATE` statement from Terminal 2 will appear to "wait".
+Hit enter twice to send the input so far to be evaluated. Because Terminal 1 has already locked this row, the `SELECT FOR UPDATE` statement from Terminal 2 will appear to "wait".
 
 Back in Terminal 1, let's update the row and commit the transaction:
 

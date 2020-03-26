@@ -106,7 +106,7 @@ table tr td:nth-child(2) {
  `UPSERT` | ✓ | PostgreSQL, MSSQL Extension | [`UPSERT` documentation](upsert.html)
  `EXPLAIN` | ✓ | Common Extension | [`EXPLAIN` documentation](explain.html)
  `SELECT INTO` | Alternative | Common Extension | You can replicate similar functionality using [`CREATE TABLE`](create-table.html) and then `INSERT INTO ... SELECT ...`.
- `SELECT ... FOR UPDATE` | ✓ | Common Extension | [`SELECT FOR UPDATE` documentation](select-for-update.html)
+ `SELECT FOR UPDATE` | ✓ | Common Extension | <span class="version-tag">New in v20.1:</span> [`SELECT FOR UPDATE` documentation](select-for-update.html)
 
 ### Clauses
 

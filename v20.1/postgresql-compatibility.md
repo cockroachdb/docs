@@ -113,9 +113,10 @@ SELECT 1::int << (x % 64)
 
 ### Locking and `FOR UPDATE`
 
-Because CockroachDB only supports [`SERIALIZABLE` isolation](architecture/transaction-layer.html#isolation-levels), locking is not required to order concurrent transactions relative to each other. The `FOR UPDATE` [locking clause](sql-grammar.html#for_locking_clause) is supported in [selection queries](selection-queries.html#parameters) for database migration compatibility only. As a no-op clause, `FOR UPDATE` does not provide stronger, PostgreSQL-compatible locking guarantees for uses unrelated to performance, such as applications that require locks to protect data from concurrent access altogether.
+<span class="version-tag">New in v20.1:</span>: CockroachDB supports the `SELECT FOR UPDATE` statement, which is used to order transactions by controlling concurrent access to one or more rows of a table.
 
-CockroachDB uses a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
+For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
+
 
 ###SQL Compatibility
 Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).
