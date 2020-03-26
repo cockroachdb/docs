@@ -1,12 +1,14 @@
 ---
-title: DROP ROLE (Enterprise)
+title: DROP ROLE
 summary: The DROP ROLE statement removes one or more SQL roles.
 toc: true
 ---
 
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
-{{site.data.alerts.callout_info}}<code>DROP ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span> <code>DROP ROLE</code> is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
+{{site.data.alerts.end}}
 
 
 ## Considerations
@@ -63,7 +65,7 @@ DROP ROLE 1
 ## See also
 
 - [Authorization](authorization.html)
-- [`CREATE ROLE` (Enterprise)](create-role.html)
+- [`CREATE ROLE`](create-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)

@@ -5,7 +5,7 @@ toc: true
 redirect_from: create-and-manage-users.html
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, if you have an [Enterprise license](get-started-with-enterprise-trial.html), you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 ## SQL users
 
@@ -27,7 +27,7 @@ The `root` user is created by default for each cluster. The `root` user is assig
 ## Roles
 
 {{site.data.alerts.callout_info}}
-Role-based access management is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/).
+<span class="version-tag">New in v20.1</span> Role-based access management is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
 Roles enable you to group users and other roles and grant or revoke privileges to the group as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
@@ -42,17 +42,17 @@ To create and manage your cluster's roles, use the following statements:
 
 Statement | Description
 ----------|------------
-[`CREATE ROLE` (Enterprise)](create-role.html) | Create SQL roles.
-[`DROP ROLE` (Enterprise)](drop-role.html) | Remove one or more SQL roles.
-[`GRANT <roles>` (Enterprise)](grant-roles.html) | Add a role or user as a member to a role.
-[`REVOKE <roles>` (Enterprise)](revoke-roles.html) | Revoke a role or user's membership to a role.
+[`CREATE ROLE`](create-role.html) | Create SQL roles.
+[`DROP ROLE`](drop-role.html) | Remove one or more SQL roles.
+[`GRANT <roles>`](grant-roles.html) | Add a role or user as a member to a role.
+[`REVOKE <roles>`](revoke-roles.html) | Revoke a role or user's membership to a role.
 [`GRANT <privileges>`](grant.html) | Manage each role or user's SQL privileges for interacting with specific databases and tables.
 [`REVOKE <privileges>`](revoke.html) | Revoke privileges from users and/or roles.
 [`SHOW ROLES`](show-roles.html) | List the roles for all databases.
 [`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
 
 ### Default roles
-The `admin` and `public` roles exist by default for Core as well as Enterprise clusters.
+The `admin` and `public` roles exist by default.
 
 #### `admin` role
 The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
@@ -91,7 +91,7 @@ When a user connects to a database, either via the built-in SQL client or a clie
 
 ### Assign privileges
 
-Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) to manage privileges for users and roles (for enterprise customers).
+Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) to manage privileges for users and roles.
 
 Take the following points into consideration while granting privileges to roles and users:
 
@@ -121,18 +121,18 @@ You can manage the following privileges for databases and tables:
 
 We recommend the following best practices to set up access control for your clusters:
 
-- Use the `root` user only for database administration tasks such as creating and managing other users, creating and managing roles (for enterprise customers), and creating and managing databases. Do not use the `root` user for applications; instead, create users with specific privileges based on your application’s access requirements.
-- Enterprise customers: Create roles with specific privileges, create users, and then add the users to the relevant roles.
+- Use the `root` user only for database administration tasks such as creating and managing other users, creating and managing roles, and creating and managing databases. Do not use the `root` user for applications; instead, create users with specific privileges based on your application’s access requirements.
+- Create roles with specific privileges, create users, and then add the users to the relevant roles.
 - Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
 
 ## Example
 
 <div class="filters clearfix">
-  <button style="width: 30%" class="filter-button" data-scope="core">Users & Privileges (Core)</button>
-  <button style="width: 30%" class="filter-button" data-scope="enterprise">RBAC (Enterprise)</button>
+  <button style="width: 30%" class="filter-button" data-scope="users">Users & Privileges</button>
+  <button style="width: 30%" class="filter-button" data-scope="rbac">RBAC</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="core">
+<section class="filter-content" markdown="1" data-scope="users">
 
 The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
 
@@ -246,7 +246,7 @@ Let's say we want to create the following access control setup for the `movr` da
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="enterprise">
+<section class="filter-content" markdown="1" data-scope="rbac">
 
 The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
 
@@ -262,8 +262,6 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~ shell
     $ cockroach demo
     ~~~
-
-    Each `cockroach demo` instance comes with a temporary enterprise license which enables you to try out enterprise features such as [role-based access management](#create-and-manage-roles). The license expires after an hour.
 
 2. Create the database admin role (named `db_admin_role`) whose members can perform all database operations for existing tables as well as for tables added in the future:
 
@@ -493,7 +491,7 @@ Let's say we want to create the following access control setup for the `movr` da
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)

@@ -129,7 +129,7 @@ For more details, see [Privileges](authorization.html#assign-privileges) and [`G
 
 ### Using roles
 
-Role-based access control is an Enterprise feature available to all CockroachCloud clusters that lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
+Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
 - To create a role, use the [`CREATE ROLE`](create-role.html) statement:
 
