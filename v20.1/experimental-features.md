@@ -144,4 +144,3 @@ The table below lists the experimental SQL functions and operators available in 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
-- [Vectorized Query Execution](vectorized-execution.html)

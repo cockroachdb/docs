@@ -10,15 +10,15 @@ Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_pla
 
 ## Configuring vectorized execution
 
-By default, vectorized execution is enabled in CockroachDB for [all operations that are guaranteed to execute in memory](#disk-spilling-operations), on tables with [supported data types](#supported-data-types).
+By default, vectorized execution is enabled in CockroachDB for [all queries that are guaranteed to execute in memory](#disk-spilling-operations), on tables with [supported data types](#supported-data-types).
 
-You can turn vectorized execution on or off for all operations in the current session with the `vectorize` [session variable](set-vars.html). The following options are supported:
+You can turn vectorized execution on or off for all queries in the current session with the `vectorize` [session variable](set-vars.html). The following options are supported:
 
 Option | Description
 ----------|------------
-`auto` | Instructs CockroachDB to use the vectorized execution engine on operations that always execute in memory, without the need to spill intermediate results to disk.<br><br>**Default:** `vectorize=auto`
-`experimental_on` | Turns on vectorized execution for all operations. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
-`off` | Turns off vectorized execution for all operations.
+`auto` | Instructs CockroachDB to use the vectorized execution engine on queries that always execute in memory, without the need to spill intermediate results to disk.<br><br>**Default:** `vectorize=auto`
+`experimental_on` | Turns on vectorized execution for all queries. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
+`off` | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
 
@@ -82,7 +82,7 @@ Support for vectorized execution is experimental for the following memory-intens
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-You can configure a node's budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If a SQL query exceeds the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity.
+You can configure a node's total budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If the queries running on the node exceed the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity. If the maximum on-disk storage capacity is reached, the query will return an error during execution.
 
 ## See also
 
