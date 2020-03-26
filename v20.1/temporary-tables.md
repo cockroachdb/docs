@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v20.1:</span> CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables](create-table.html), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.
 
-CockroachDB also supports [temporary views](views.html#temporary-views) and [temporary sequences](create-sequence.html#temporary-sequences).
+To create a temp table, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp_create_table) to a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement. For full syntax details, see the [`CREATE TABLE`](create-table.html#synopsis) and [`CREATE TABLE AS`](create-table-as.html#synopsis) pages. For example usage, see [Examples](#examples).
 
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
@@ -16,47 +16,47 @@ CockroachDB also supports [temporary views](views.html#temporary-views) and [tem
 By default, temp tables are disabled in CockroachDB. To enable temp tables, set the `experimental_enable_temp_tables` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
+CockroachDB also supports [temporary views](views.html#temporary-views) and [temporary sequences](create-sequence.html#temporary-sequences).
+
 ## Details
 
 - Temp tables are automatically dropped at the end of the session.
 - A temp table can only be accessed from the session in which it was created.
 - Temp tables persist across transactions in the same session.
-- Persistent tables cannot reference temp tables, but temp tables can reference persistent tables.
+- Temp tables can reference persistent tables, but persistent tables cannot reference temp tables.
 - Temp tables cannot be converted to persistent tables.
 
 ## Temporary schemas
 
 Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
 
-## Syntax
+{{site.data.alerts.callout_info}}
+Because the [`SHOW TABLES`](show-tables.html) statement defaults to the `public` schema (which doesn't include temp tables), using `SHOW TABLES` without specifying a schema won't return any temp tables.
+{{site.data.alerts.end}}
 
-To create a temp table, add the following [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp_create_table) to the beginning of a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement:
+## Examples
 
-<div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
-</div>
-
-
-## Example
-
-To turn on temp tables:
+To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_temp_tables=on;
 ~~~
 
-To create a temp table:
+### Create a temp table
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP TABLE users (
-        id UUID PRIMARY KEY,
+        id UUID,
         city STRING,
         name STRING,
-        address STRING
+        address STRING,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
 );
 ~~~
+
+You can use [`SHOW CREATE`](show-create.html) to view temp tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -71,7 +71,7 @@ To create a temp table:
              |     city STRING NULL,
              |     name STRING NULL,
              |     address STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
              |     FAMILY "primary" (id, city, name, address)
              | )
 (1 row)
@@ -94,6 +94,7 @@ To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.ht
   public
 ~~~
 
+### Create a temp table that references another temp table
 
 To create another temp table that references `users`:
 
@@ -106,7 +107,7 @@ To create another temp table that references `users`:
         owner_id UUID,
         creation_time TIMESTAMP,
         CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC)
+        CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id)
 );
 ~~~
 
@@ -116,8 +117,8 @@ To create another temp table that references `users`:
 ~~~
 
 ~~~
-  table_name |                             create_statement
--------------+----------------------------------------------------------------------------
+  table_name |                                     create_statement
+-------------+--------------------------------------------------------------------------------------------
   vehicles   | CREATE TEMP TABLE vehicles (
              |     id UUID NOT NULL,
              |     city STRING NOT NULL,
@@ -125,11 +126,14 @@ To create another temp table that references `users`:
              |     owner_id UUID NULL,
              |     creation_time TIMESTAMP NULL,
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
              |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
              |     FAMILY "primary" (id, city, type, owner_id, creation_time)
              | )
 (1 row)
 ~~~
+
+### Show all temp tables in a session
 
 To show all temp tables in a session's temporary schema, use `SHOW TABLES FROM pg_temp`:
 
@@ -148,9 +152,7 @@ To show all temp tables in a session's temporary schema, use `SHOW TABLES FROM p
 
 You can also use the full name of the temporary schema in the `SHOW` statement (e.g., `SHOW TABLES FROM pg_temp_1584540651942455000_1`).
 
-{{site.data.alerts.callout_info}}
-The [`SHOW TABLES`](show-tables.html) statement defaults to the `public` schema, which doesn't include temp tables. As a result, using `SHOW TABLES` without specifying a schema won't return any temp tables.
-{{site.data.alerts.end}}
+### Show temp tables in `information_schema`
 
 Although temp tables are not included in the `public` schema, metadata for temp tables is included in the [`information_schema`](information-schema.html) and `pg_catalog` schemas.
 
@@ -168,6 +170,8 @@ For example, the [`information_schema.tables`](information-schema.html#tables) t
   defaultdb     | pg_temp_1584540651942455000_1 | vehicles   | LOCAL TEMPORARY | YES                |       1
 (2 rows)
 ~~~
+
+### Cancel a session
 
 If you end the session, all temp tables are lost.
 
@@ -209,3 +213,5 @@ SQLSTATE: 42P01
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE TABLE AS`](create-table-as.html)
 - [`SHOW CREATE TABLE`](show-create-table.html)
+- [Temporary views](views.html#temporary-views)
+- [Temporary sequences](create-sequence.html#temporary-sequences).

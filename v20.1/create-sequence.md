@@ -38,7 +38,7 @@ table td:first-child {
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
 `NO CYCLE` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 `OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
-`opt_temp` | <span class="version-tag">New in v20.1:</span> Defines the view as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
+`opt_temp` | <span class="version-tag">New in v20.1:</span> Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
 
 <!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
 `CACHE <seq_value>` | The number of sequence values to allocate in memory for faster access. Currently, you can only `CACHE 1` or leave unspecified.-->
@@ -77,7 +77,7 @@ Like [temporary tables](temporary-tables.html), temporary sequences are not in t
 
 ### Usage
 
-To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to the beginning of a `CREATE SEQUENCE` statement.
+To create a temporary sequence, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to a `CREATE SEQUENCE` statement.
 
 For example:
 

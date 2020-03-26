@@ -366,7 +366,7 @@ Like [temporary tables](temporary-tables.html), temporary views are not in the `
 
 ### Usage
 
-To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) clause to the beginning of a [`CREATE VIEW`](create-view.html) statement.
+To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to a [`CREATE VIEW`](create-view.html) statement.
 
 For example:
 
