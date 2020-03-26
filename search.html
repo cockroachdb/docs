@@ -63,7 +63,7 @@ build_for: [cockroachdb, cockroachcloud]
       const { query = "", page } = qsModule.parse(location.search.slice(1));
 
       return {
-        query: decodeURIComponent(query),
+        query,
         page
       };
     }
