@@ -6,7 +6,7 @@ toc: true
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
-- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
+- All [schema changes](online-schema-changes.html)
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 - The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`.
@@ -138,6 +138,8 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 +---------------+-----------------+----------------------------------------------------+...
  27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
 ~~~
+
+<span class="version-tag">New in v20.1</span>: [Scheme change](online-schema-changes.html) jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
 ### Show job when complete
 
