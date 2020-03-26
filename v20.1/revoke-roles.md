@@ -10,7 +10,6 @@ The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](a
 <span class="version-tag">New in v20.1</span> <code>REVOKE &lt;roles&gt;</code> is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
-
 ## Synopsis
 
 <div>

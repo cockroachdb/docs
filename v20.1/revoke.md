@@ -8,7 +8,6 @@ The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](
 
 For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
-
 ## Synopsis
 
 <div>
@@ -17,7 +16,9 @@ For the list of privileges that can be granted to and revoked from users and rol
 
 ## Required privileges
 
-The user revoking privileges must have the [`GRANT`](grant.html) privilege on the target databases or tables.
+The user revoking privileges must have the `GRANT` privilege on the target databases or tables.
+
+<span class="version-tag">New in v20.1</span> In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target database or tables. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
 ## Parameters
 

@@ -10,7 +10,6 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](autho
 <span class="version-tag">New in v20.1</span> <code>GRANT &lt;roles&gt;</code> is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
-
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/grant_roles.html %}</section>
