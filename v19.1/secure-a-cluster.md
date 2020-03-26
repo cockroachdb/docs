@@ -224,8 +224,7 @@ Assign `max` to the `admin` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO system.role_members (role, member, "isAdmin")
-    VALUES ('admin', 'max', true);
+> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
 ~~~
 
 Exit the SQL shell on node 2:
@@ -234,6 +233,10 @@ Exit the SQL shell on node 2:
 ~~~ sql
 > \q
 ~~~
+
+    {{site.data.alerts.callout_info}}
+    You may need to restart a node for new `admin` roles to take effect.
+    {{site.data.alerts.end}}
 
 ## Step 5. Access the Admin UI
 
@@ -261,7 +264,7 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 5. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
-## Step 5. Monitor the cluster
+## Step 6. Monitor the cluster
 
 Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
@@ -281,7 +284,7 @@ The replica count on each node is identical, indicating that all data in the clu
 
 {{site.data.alerts.callout_success}}For more insight into how CockroachDB automatically replicates and rebalances data, and tolerates and recovers from failures, see our <a href="demo-data-replication.html">replication</a>, <a href="demo-automatic-rebalancing.html">rebalancing</a>, <a href="demo-fault-tolerance-and-recovery.html">fault tolerance</a> demos.{{site.data.alerts.end}}
 
-## Step 6.  Stop the cluster
+## Step 7. Stop the cluster
 
 Once you're done with your test cluster, switch to the terminal running the first node and press **CTRL-C** to stop the node.
 
@@ -324,7 +327,7 @@ If you do not plan to restart the cluster, you may want to remove the nodes' dat
 $ rm -rf cockroach-data node2 node3
 ~~~
 
-## Step 7. Restart the cluster
+## Step 8. Restart the cluster
 
 If you decide to use the cluster for further testing, you'll need to restart at least 2 of your 3 nodes from the directories containing the nodes' data stores.
 

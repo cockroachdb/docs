@@ -52,7 +52,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Create the certificate and key pair for the your nodes:
+3. Create the certificate and key pair for your nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -256,8 +256,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin")
-        VALUES ('admin', 'max', true);
+    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
     ~~~
 
 7. Exit the SQL shell on node 2:
@@ -266,6 +265,10 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     ~~~ sql
     > \q
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    You may need to [restart a node](#step-6-simulate-node-failure) for new `admin` roles to take effect.
+    {{site.data.alerts.end}}
 
 ## Step 4. Run a sample workload
 

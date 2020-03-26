@@ -243,14 +243,9 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mkdir certs
+    $ mkdir certs my-safe-directory
     ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir my-safe-directory
-    ~~~
-
+    
     Directory | Description
     ----------|------------
     `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
