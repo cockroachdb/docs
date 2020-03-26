@@ -86,7 +86,7 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
 (1 row)
 ~~~
 
-Note that the old primary key index becomes a secondary index, in this case, `users_name_key`.
+Note that the old primary key index becomes a secondary index, in this case, `users_name_key`. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`](drop-constraint.html)/[`ADD CONSTRAINT`](add-constraint.html) instead.
 
 ### Make a single-column primary key composite for geo-partitioning
 
@@ -102,7 +102,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-Now suppose that you want to expand your business from a single region into multiple regions. After you [deploy your application in multiple regions](topology-patterns.html), you consider [geo-partitioning your data](topology-geo-partitioned-replicas.html) to minimize latency and optimize performance. In order to geo-partition the `user` database, you need to add a column specifies the location of the data (e.g., `region`):
+Now suppose that you want to expand your business from a single region into multiple regions. After you [deploy your application in multiple regions](topology-patterns.html), you consider [geo-partitioning your data](topology-geo-partitioned-replicas.html) to minimize latency and optimize performance. In order to geo-partition the `user` database, you need to add a column specifying the location of the data (e.g., `region`):
 
 {% include copy-clipboard.html %}
 ~~~ sql

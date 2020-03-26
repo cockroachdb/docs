@@ -106,6 +106,8 @@ CockroachDB allows [enterprise users](enterprise-licensing.html) to [define tabl
 
 In this example, we create the `users` table with a single [primary key](primary-key.html) column defined. In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
+ <span class="version-tag">New in v20.1:</span> If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY`](add-constraint.html)/[`ADD PRIMARY KEY`](add-primary-key.html) or [`ALTER PRIMARY KEY`](alter-primary-key.html) as long as the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement and is part of the same transaction.
+
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
