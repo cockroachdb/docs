@@ -11,6 +11,10 @@ This page provides best practices for optimizing SQL performance in CockroachDB.
 For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html). For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+{{site.data.alerts.end}}
+
 ## Multi-row DML best practices
 
 ### Use multi-row DML instead of multiple single-row DMLs

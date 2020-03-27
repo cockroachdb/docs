@@ -22,11 +22,21 @@ For production clusters, the best way to log all queries is to turn on the [clus
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
 
-With this setting on, each node of the cluster writes all SQL queries it executes to a separate log file `cockroach-sql-exec.log`. When you no longer need to log queries, you can turn the setting back off:
+With this setting on, each node of the cluster writes all SQL queries it executes to a separate `cockroach-sql-exec` log file. When you no longer need to log queries, you can turn the setting back off:
 
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
 ~~~
+
+Another useful cluster setting is `sql.log.slow_query.latency_threshold`, which is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
+
+~~~ sql
+> SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
+~~~
+
+Each node that serves as a gateway will then record slow SQL queries to a `cockroach-sql-slow` log file. For more details on logging slow queries, see [Slow query log](query-behavior-troubleshooting.html#slow-query-log).
+
+Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
 ### Per-node execution logs
 
@@ -58,7 +68,7 @@ This will result in the following output:
 (1 row)
 ~~~
 
-Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the [CockroachDB log file](debug-and-error-logs.html) as follows:
+Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the primary [CockroachDB log file](debug-and-error-logs.html) as follows:
 
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
