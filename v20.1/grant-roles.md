@@ -16,7 +16,9 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](autho
 
 ## Required privileges
 
-The user granting role membership must be a role admin (i.e., members with the `ADMIN OPTION`) or a superuser (i.e., a member of the `admin` role).
+The user granting role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role.
+
+To grant membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
 
 ## Considerations
 

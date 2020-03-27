@@ -70,7 +70,7 @@ All new users and roles belong to the `public` role by default. You can grant an
 A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
-The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users.
+The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users. This applies to the `admin` role as well - only admin users with the `WITH ADMIN OPTION` can add or remove other users from the `admin` role.
 {{site.data.alerts.end}}
 
 #### Direct member
