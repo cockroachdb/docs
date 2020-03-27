@@ -1,9 +1,9 @@
 ---
-title: Advanced Debugging Page
+title: Advanced Debug Page
 toc: true
 ---
 
-The **Advanced Debugging** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view the **Advanced Debugging** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click the gear icon on the left-hand navigation bar.
+The **Advanced Debug** page of the Admin UI provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Advanced Debug** in the left-hand navigation.
 
 {{site.data.alerts.callout_info}}
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
@@ -32,6 +32,10 @@ Localities | Check node localities for your cluster. | [`admin` users only on se
 ## Even More Advanced Debugging
 
 The **Even More Advanced Debugging** section of the page lists additional reports that are largely internal and intended for use by CockroachDB developers. You can ignore this section while monitoring and troubleshooting CockroachDB. Alternatively, if you want to learn how to use these pages, feel free to contact us through [these channels](https://www.cockroachlabs.com/community/).
+
+## Raw Status Endpoints (JSON)
+
+The endpoints listed in this section provide access to [log files](debug-and-error-logs.html#write-to-file), node status, and hot ranges, depending on your [access level](admin-ui-overview.html#admin-ui-access).
 
 ## See also
 

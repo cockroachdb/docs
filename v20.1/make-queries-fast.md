@@ -10,6 +10,10 @@ This page describes how to get good SQL query performance from CockroachDB. To g
 - [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating "hotspots".
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
+{{site.data.alerts.callout_info}}
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+{{site.data.alerts.end}}
+
 ## SQL query performance
 
 To get good SQL query performance, follow the rules below (in approximate order of importance):
@@ -458,6 +462,7 @@ Specific tasks:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Hello World Example apps](hello-world-example-apps.html)
 

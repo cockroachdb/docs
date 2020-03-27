@@ -7,7 +7,7 @@ toc: true
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
 {{site.data.alerts.callout_success}}
-For detailed information about queries being executed against your system, see [SQL Audit Logging](sql-audit-logging.html).
+CockroachDB also generates secondary logs for queries being executed against your system. See [SQL logging](query-behavior-troubleshooting.html#sql-logging) for details on obtaining these logs.
 {{site.data.alerts.end}}
 
 
@@ -52,7 +52,7 @@ Based on the command's flags and the message's [severity level](#severity-levels
 
 #### Write to file
 
-CockroachDB can write messages to log files.  The files are named using the following format:
+CockroachDB can write messages to log files. The files are named using the following format:
 
 ~~~
 cockroach.[host].[user].[start timestamp in UTC].[process ID].log
@@ -64,7 +64,9 @@ For example:
 cockroach.richards-mbp.rloveland.2018-03-15T15_24_10Z.024338.log
 ~~~
 
-{{site.data.alerts.callout_info}}All log file timestamps are in UTC because CockroachDB is designed to be deployed in a distributed cluster.  Nodes may be located in different time zones, and using UTC makes it easy to correlate log messages from those nodes no matter where they are located.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+All log file timestamps are in UTC because CockroachDB is designed to be deployed in a distributed cluster.  Nodes may be located in different time zones, and using UTC makes it easy to correlate log messages from those nodes no matter where they are located.
+{{site.data.alerts.end}}
 
 Property | `cockroach start` | All other commands
 ---------|-------------------|-------------------
@@ -75,7 +77,13 @@ Default Severity Level Threshold | `INFO` | *N/A*
 Change Severity Threshold | `--log-file-verbosity=[severity level]` | `--log-file-verbosity=[severity level]`
 Disabled by | `--log-dir=""`<sup>1</sup> | Default
 
-{{site.data.alerts.callout_info}}<sup>1</sup> If the <code>cockroach</code> process does not have access to on-disk storage, <code>cockroach start</code> does not write messages to log files; instead it prints all messages to <code>stderr</code>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<sup>1</sup> If the `cockroach` process does not have access to on-disk storage, `cockroach start` does not write messages to log files; instead it prints all messages to `stderr`.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{{site.data.alerts.end}}
 
 #### Print to `stderr`
 
@@ -98,9 +106,12 @@ By default, commands besides `cockroach start` discard messages with the `INFO` 
 
 ## Flags
 
+These logging flags are used with [`cockroach` commands](cockroach-commands.html).
+
 {% include {{ page.version.version }}/misc/logging-flags.md %}
 
 ## See also
 
+- [SQL logging](query-behavior-troubleshooting.html#sql-logging)
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Support Resources](support-resources.html)

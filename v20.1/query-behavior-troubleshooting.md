@@ -4,7 +4,58 @@ summary: Learn how to troubleshoot issues with specific SQL statements with Cock
 toc: true
 ---
 
-If a SQL statement returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
+If a [SQL statement](sql-statements.html) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
+
+{{site.data.alerts.callout_success}}
+For a developer-centric walkthrough of optimizing SQL query performance, see [Make Queries Fast](make-queries-fast.html).
+{{site.data.alerts.end}}
+
+## Identify slow queries
+
+Use the [slow query log](#slow-query-log) or [Admin UI](#admin-ui) to detect slow queries in your cluster.
+
+### Slow query log
+
+The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary `cockroach-sql-slow` log file in the [log directory](debug-and-error-logs.html#write-to-file).
+
+{{site.data.alerts.callout_info}}
+Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.
+{{site.data.alerts.end}}
+
+1. Run the [`cockroach sql`](cockroach-sql.html) command against one of your nodes. This opens the interactive SQL shell. 
+
+2. Set the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) to a threshold of your choosing. For example, 100 milliseconds represents [the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/).
+
+	{% include copy-clipboard.html %}
+	~~~ sql
+	> SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
+	~~~
+
+3. Each node's slow query log is written by default in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file). 
+
+4. When you open a slow query log, look for a line that corresponds to your earlier [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+
+	~~~
+	I200325 19:24:10.079675 380825 sql/exec_log.go:193  [n1,client=127.0.0.1:49712,hostnossl,user=root] 1532 9.217ms exec "$ cockroach sql" {} "SET CLUSTER SETTING \"sql.log.slow_query.latency_threshold\" = '100ms'" {} 0 "" 0
+	~~~
+
+	Slow queries will be logged after this line. 
+
+5. The slow query log generally shares the [SQL audit log file format](experimental-audit.html#audit-log-file-format). One exception is that service latency is found between the log entry counter and log message. 
+
+	For example, the below query was logged with a service latency of 166.807 milliseconds:
+
+	~~~
+	I200325 21:57:08.733963 388888 sql/exec_log.go:193  [n1,client=127.0.0.1:53663,hostnossl,user=root] 400 166.807ms exec "" {} "UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4)" {$1:"'washington dc'", $2:"'c9e93223-fb27-4014-91ce-c60758476580'", $3:"-29.0", $4:"45.0"} 1 "" 0
+	~~~
+
+{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+
+### Admin UI
+
+High latency SQL statements are displayed on the [**Statements page**](admin-ui-statements-page.html) of the Admin UI. To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** on the left.
+
+You can also check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
 ## `SELECT` statement performance issues
 
@@ -16,15 +67,11 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 ## Query is always slow
 
-To detect whether your cluster has slow queries, check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent). If the graphs show latency spikes or CPU usage spikes, it might indicate slow queries in your cluster.
+If you have consistently slow queries in your cluster, use the [Statement Details](admin-ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](admin-ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
 
-Once you determine that you do have slow queries in your cluster, use the [Statements page](admin-ui-statements-page.html) to identify the high latency [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
+You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans can be used to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
-You can then use the [Statement Details](admin-ui-statements-page.html#statement-details-page) page to drill down to individual statements and [activate diagnostics](admin-ui-statements-page.html#diagnostics) for the statement that you can send to our [support team](support-resources.html) for analysis.
-
-You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
-
-If you need help interpreting the output of the `EXPLAIN ANALYZE` statement, [contact us](support-resources.html).
+We recommend sending either the diagnostics bundle or the `EXPLAIN ANALYZE` output to our [support team](support-resources.html) for analysis.
 
 ## Query is sometimes slow
 
