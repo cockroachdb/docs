@@ -4,11 +4,11 @@ summary: The SHOW ROLES statement lists the roles for all databases.
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.1</span>: Since the keywords "roles" and "users" can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
-{{site.data.alerts.end}}
-
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
+{{site.data.alerts.end}}
 
 ## Synopsis
 

@@ -8,7 +8,7 @@ redirect_from: create-and-manage-users.html
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.1</span>: For enhanced Postgres compatibility, the keywords "roles" and "users" can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
+<span class="version-tag">New in v20.1</span>: Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
 {{site.data.alerts.end}}
 
 ## SQL users
@@ -128,8 +128,8 @@ We recommend the following best practices to set up access control for your clus
 ## Example
 
 <div class="filters clearfix">
-  <button style="width: 30%" class="filter-button" data-scope="users">Users & Privileges</button>
-  <button style="width: 30%" class="filter-button" data-scope="rbac">RBAC</button>
+  <button style="width: 30%" class="filter-button" data-scope="users">Users-based Privileges</button>
+  <button style="width: 30%" class="filter-button" data-scope="rbac">Roles-based Privileges</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="users">
@@ -276,11 +276,12 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            role_name    
-    +---------------+
-      admin          
-      db_admin_role  
-    (2 rows)
+            username    |  options   | member_of
+    ----------------+------------+------------
+      admin         | CREATEROLE | {}
+      db_admin_role | NOLOGIN    | {}
+      root          | CREATEROLE | {admin}
+    (3 rows)
     ~~~
 
     {% include copy-clipboard.html %}
@@ -299,20 +300,20 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |    grantee    | privilege_type  
-    +---------------+--------------------+---------------+----------------+
-      movr          | crdb_internal      | admin         | ALL             
-      movr          | crdb_internal      | db_admin_role | ALL             
-      movr          | crdb_internal      | root          | ALL             
-      movr          | information_schema | admin         | ALL             
-      movr          | information_schema | db_admin_role | ALL             
-      movr          | information_schema | root          | ALL             
-      movr          | pg_catalog         | admin         | ALL             
-      movr          | pg_catalog         | db_admin_role | ALL             
-      movr          | pg_catalog         | root          | ALL             
-      movr          | public             | admin         | ALL             
-      movr          | public             | db_admin_role | ALL             
-      movr          | public             | root          | ALL             
+          database_name |    schema_name     |    grantee    | privilege_type
+    ----------------+--------------------+---------------+-----------------
+      movr          | crdb_internal      | admin         | ALL
+      movr          | crdb_internal      | db_admin_role | ALL
+      movr          | crdb_internal      | root          | ALL
+      movr          | information_schema | admin         | ALL
+      movr          | information_schema | db_admin_role | ALL
+      movr          | information_schema | root          | ALL
+      movr          | pg_catalog         | admin         | ALL
+      movr          | pg_catalog         | db_admin_role | ALL
+      movr          | pg_catalog         | root          | ALL
+      movr          | public             | admin         | ALL
+      movr          | public             | db_admin_role | ALL
+      movr          | public             | root          | ALL
     (12 rows)
     ~~~
 
@@ -346,12 +347,15 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            role_name    
-    +---------------+
-      admin          
-      app_user_role  
-      db_admin_role  
-    (3 rows)
+            username    |  options   |    member_of
+    ----------------+------------+------------------
+      admin         | CREATEROLE | {}
+      app_user_role | NOLOGIN    | {}
+      db_admin_1    |            | {db_admin_role}
+      db_admin_2    |            | {db_admin_role}
+      db_admin_role | NOLOGIN    | {}
+      root          | CREATEROLE | {admin}
+    (6 rows)
     ~~~
 
     {% include copy-clipboard.html %}
@@ -365,15 +369,15 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |    grantee    | privilege_type  
-    +---------------+-------------+------------+---------------+----------------+
-      movr          | public      | vehicles   | admin         | ALL             
-      movr          | public      | vehicles   | app_user_role | DELETE          
-      movr          | public      | vehicles   | app_user_role | INSERT          
-      movr          | public      | vehicles   | app_user_role | SELECT          
-      movr          | public      | vehicles   | app_user_role | UPDATE          
-      movr          | public      | vehicles   | db_admin_role | ALL             
-      movr          | public      | vehicles   | root          | ALL             
+          database_name | schema_name | table_name |    grantee    | privilege_type
+    ----------------+-------------+------------+---------------+-----------------
+      movr          | public      | vehicles   | admin         | ALL
+      movr          | public      | vehicles   | app_user_role | DELETE
+      movr          | public      | vehicles   | app_user_role | INSERT
+      movr          | public      | vehicles   | app_user_role | SELECT
+      movr          | public      | vehicles   | app_user_role | UPDATE
+      movr          | public      | vehicles   | db_admin_role | ALL
+      movr          | public      | vehicles   | root          | ALL
     (7 rows)
     ~~~
 
@@ -412,13 +416,19 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-             role_name      
-    +------------------+
-      admin             
-      app_user_role     
-      db_admin_role     
-      report_user_role  
-    (4 rows)
+              username     |  options   |    member_of
+    -------------------+------------+------------------
+      admin            | CREATEROLE | {}
+      app_user_1       |            | {app_user_role}
+      app_user_2       |            | {app_user_role}
+      app_user_3       |            | {app_user_role}
+      app_user_role    | NOLOGIN    | {}
+      db_admin_1       |            | {db_admin_role}
+      db_admin_2       |            | {db_admin_role}
+      db_admin_role    | NOLOGIN    | {}
+      report_user_role | NOLOGIN    | {}
+      root             | CREATEROLE | {admin}
+    (10 rows)
     ~~~
 
     {% include copy-clipboard.html %}
@@ -432,16 +442,16 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |     grantee      | privilege_type  
-    +---------------+-------------+------------+------------------+----------------+
-      movr          | public      | vehicles   | admin            | ALL             
-      movr          | public      | vehicles   | app_user_role    | DELETE          
-      movr          | public      | vehicles   | app_user_role    | INSERT          
-      movr          | public      | vehicles   | app_user_role    | SELECT          
-      movr          | public      | vehicles   | app_user_role    | UPDATE          
-      movr          | public      | vehicles   | db_admin_role    | ALL             
-      movr          | public      | vehicles   | report_user_role | SELECT          
-      movr          | public      | vehicles   | root             | ALL             
+          database_name | schema_name | table_name |     grantee      | privilege_type
+    ----------------+-------------+------------+------------------+-----------------
+      movr          | public      | vehicles   | admin            | ALL
+      movr          | public      | vehicles   | app_user_role    | DELETE
+      movr          | public      | vehicles   | app_user_role    | INSERT
+      movr          | public      | vehicles   | app_user_role    | SELECT
+      movr          | public      | vehicles   | app_user_role    | UPDATE
+      movr          | public      | vehicles   | db_admin_role    | ALL
+      movr          | public      | vehicles   | report_user_role | SELECT
+      movr          | public      | vehicles   | root             | ALL
     (8 rows)
     ~~~
 
