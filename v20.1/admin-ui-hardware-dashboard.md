@@ -94,7 +94,7 @@ Metric | Description
 
 ### Capacity metrics
 
-The **available** disk capacity equals the amount of empty disk space that can be occupied by CockroachDB data. This value cannot exceed the store size, which is determined as follows:
+The **available** disk capacity equals the amount of empty disk space, up to the value of the maximum store size. The store size is determined as follows:
 
 - If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
 - If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
