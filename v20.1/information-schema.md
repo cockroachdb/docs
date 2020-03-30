@@ -269,7 +269,7 @@ Column | Description
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
 `table_name` | Name of the constrained table.
-`constraint_type` | Type of [constraint](constraints.html): `CHECK`, foreign key, `PRIMARY KEY`, or `UNIQUE`.
+`constraint_type` | Type of [constraint](constraints.html): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.<br>`NOT NULL` constraints appear as `CHECK` constraints in this column.
 `is_deferrable` | `YES` if the constraint can be deferred; `NO` if not.
 `initially_deferred` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 
@@ -343,20 +343,33 @@ Column | Description
 ~~~
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
-+--------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+--------------------+
+---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
   movr               | public            | primary                      | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
+  movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
   movr               | public            | fk_city_ref_users            | movr          | public       | vehicles                   | FOREIGN KEY     | NO            | NO
+  movr               | public            | 3426283741_54_1_not_null     | movr          | public       | vehicles                   | CHECK           | NO            | NO
+  movr               | public            | 3426283741_54_2_not_null     | movr          | public       | vehicles                   | CHECK           | NO            | NO
   movr               | public            | primary                      | movr          | public       | rides                      | PRIMARY KEY     | NO            | NO
   movr               | public            | fk_city_ref_users            | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
   movr               | public            | fk_vehicle_city_ref_vehicles | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
   movr               | public            | check_vehicle_city_city      | movr          | public       | rides                      | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | vehicle_location_histories | PRIMARY KEY     | NO            | NO
+  movr               | public            | 3426283741_55_1_not_null     | movr          | public       | rides                      | CHECK           | NO            | NO
+  movr               | public            | 3426283741_55_2_not_null     | movr          | public       | rides                      | CHECK           | NO            | NO
   movr               | public            | fk_city_ref_rides            | movr          | public       | vehicle_location_histories | FOREIGN KEY     | NO            | NO
+  movr               | public            | primary                      | movr          | public       | vehicle_location_histories | PRIMARY KEY     | NO            | NO
+  movr               | public            | 3426283741_56_1_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
+  movr               | public            | 3426283741_56_2_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
+  movr               | public            | 3426283741_56_3_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
   movr               | public            | primary                      | movr          | public       | promo_codes                | PRIMARY KEY     | NO            | NO
-  movr               | public            | fk_city_ref_users            | movr          | public       | user_promo_codes           | FOREIGN KEY     | NO            | NO
+  movr               | public            | 3426283741_57_1_not_null     | movr          | public       | promo_codes                | CHECK           | NO            | NO
   movr               | public            | primary                      | movr          | public       | user_promo_codes           | PRIMARY KEY     | NO            | NO
-(12 rows)
+  movr               | public            | fk_city_ref_users            | movr          | public       | user_promo_codes           | FOREIGN KEY     | NO            | NO
+  movr               | public            | 3426283741_58_1_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
+  movr               | public            | 3426283741_58_2_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
+  movr               | public            | 3426283741_58_3_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
+(25 rows)
 ~~~
 
 ### Retrieve specific columns from an information schema table
@@ -367,20 +380,33 @@ Column | Description
 ~~~
 ~~~
           table_name         |       constraint_name
-+----------------------------+------------------------------+
+-----------------------------+-------------------------------
   users                      | primary
+  users                      | 3426283741_53_1_not_null
+  users                      | 3426283741_53_2_not_null
   vehicles                   | primary
   vehicles                   | fk_city_ref_users
+  vehicles                   | 3426283741_54_1_not_null
+  vehicles                   | 3426283741_54_2_not_null
   rides                      | primary
   rides                      | fk_city_ref_users
   rides                      | fk_vehicle_city_ref_vehicles
   rides                      | check_vehicle_city_city
-  vehicle_location_histories | primary
+  rides                      | 3426283741_55_1_not_null
+  rides                      | 3426283741_55_2_not_null
   vehicle_location_histories | fk_city_ref_rides
+  vehicle_location_histories | primary
+  vehicle_location_histories | 3426283741_56_1_not_null
+  vehicle_location_histories | 3426283741_56_2_not_null
+  vehicle_location_histories | 3426283741_56_3_not_null
   promo_codes                | primary
-  user_promo_codes           | primary
+  promo_codes                | 3426283741_57_1_not_null
   user_promo_codes           | fk_city_ref_users
-(12 rows)
+  user_promo_codes           | primary
+  user_promo_codes           | 3426283741_58_1_not_null
+  user_promo_codes           | 3426283741_58_2_not_null
+  user_promo_codes           | 3426283741_58_3_not_null
+(25 rows)
 ~~~
 
 ## See also
