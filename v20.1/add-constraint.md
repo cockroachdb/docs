@@ -10,12 +10,7 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 - [`CHECK`](#add-the-check-constraint)
 - [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)
 
-
-<span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added with `ADD CONSTRAINT ... PRIMARY KEY` or [`ADD PRIMARY KEY`](alter-table.html) if one of the following is true:
-
-  - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For more details and an example, see [Drop and add the primary key constraint](#drop-and-add-the-primary-key-constraint) below.
-  - The current [primary key is on `rowid`](indexes.html#creation).
-  - The `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement follows a [`CREATE TABLE`](create-table.html) statement with no primary key and is part of the same transaction.
+To add a primary key constraint to a table, you should explicitly define the primary key at [table creation](create-table.html). To replace an existing primary key, you can use `ADD CONSTRAINT ... PRIMARY KEY`. For details, see [Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`](#changing-primary-keys-with-add-constraint-primary-key).
 
 The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-column.html).
 
@@ -42,6 +37,19 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`
+
+<span class="version-tag">New in v20.1:</span> When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the old primary index without creating a secondary index.
+
+`ADD CONSTRAINT ... PRIMARY KEY` can be used to add a primary key to an existing table if one of the following is true:
+
+  - No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
+  - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint) below.
+
+{{site.data.alerts.callout_info}}
+`ALTER TABLE ... ADD PRIMARY KEY` is an alias for `ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`.
+{{site.data.alerts.end}}
 
 ## Examples
 
@@ -173,11 +181,9 @@ An index on the referencing columns is automatically created for you when you ad
 Adding a foreign key for a non-empty table without an appropriate index will fail, since foreign key columns must be indexed. For more information about the requirements for creating foreign keys, see [Rules for creating foreign keys](foreign-key.html#rules-for-creating-foreign-keys).
 {{site.data.alerts.end}}
 
-### Drop and add the primary key constraint
+### Drop and add a primary key constraint
 
-When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`](drop-constraint.html)/`ADD CONSTRAINT` instead.
-
-Suppose that you want to add `name` to the composite primary key of the `users` table.
+Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
 
 {% include copy-clipboard.html %}
 ~~~ sql

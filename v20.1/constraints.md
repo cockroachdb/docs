@@ -61,7 +61,7 @@ How you add constraints depends on the number of columns you want to constrain, 
   - <span class="version-tag">New in v20.1:</span> [`PRIMARY KEY`](primary-key.html) constraints can be added with [`ADD CONSTRAINT`](add-constraint.html)/[`ADD PRIMARY KEY`](alter-table.html) in the following circumstances:
 
       - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
-      - The current [primary key is on `rowid`](indexes.html#creation).
+      - The current [primary key is on `rowid`](indexes.html#creation), the default primary key created if none is explicitly defined at table creation.
       - The `ADD CONSTRAINT`/`ADD PRIMARY KEY` is in the same transaction as a `CREATE TABLE` statement with no primary key defined.
 
 #### Order of constraints

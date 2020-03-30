@@ -6,15 +6,17 @@ toc: true
 
  <span class="version-tag">New in v20.1:</span> The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
 
- When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](drop-constraint.html)/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
-
 ## Details
 
 - You cannot change the primary key of a table that is currently undergoing a primary key change, or any other [schema change](online-schema-changes.html).
 
-- Primary key changes on a table must be in a separate transaction from that table's [`CREATE TABLE`](create-table.html) statement.
-
 - `ALTER PRIMARY KEY` might need to rewrite multiple indexes, which can make it an expensive operation.
+
+-  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+
+  {{site.data.alerts.callout_info}}
+  The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key) to change an existing primary key without creating a secondary index. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+  {{site.data.alerts.end}}
 
 ## Synopsis
 
