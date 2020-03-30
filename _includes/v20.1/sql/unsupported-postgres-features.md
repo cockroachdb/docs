@@ -8,5 +8,4 @@
 - XML Functions
 - Savepoints
 - Column-level privileges
-- CREATE TEMPORARY TABLE syntax
 - XA syntax

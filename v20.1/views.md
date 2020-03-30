@@ -32,13 +32,11 @@ Let's say you're using our [sample `startrek` database](cockroach-gen.html#gener
 ~~~
 
 ~~~
-+--------+----------+
-| season | count(*) |
-+--------+----------+
-|      2 |       76 |
-|      3 |       46 |
-|      1 |       78 |
-+--------+----------+
+  season | count
+---------+--------
+       1 |    78
+       2 |    76
+       3 |    46
 (3 rows)
 ~~~
 
@@ -66,13 +64,11 @@ Then, executing the query is as easy as `SELECT`ing from the view:
 ~~~
 
 ~~~
-+--------+--------+
-| season | quotes |
-+--------+--------+
-|      2 |     76 |
-|      3 |     46 |
-|      1 |     78 |
-+--------+--------+
+  season | quotes
+---------+---------
+       1 |     78
+       2 |     76
+       3 |     46
 (3 rows)
 ~~~
 
@@ -90,15 +86,13 @@ Let's say you have a `bank` database containing an `accounts` table:
 ~~~
 
 ~~~
-+----+----------+---------+-----------------+
-| id |   type   | balance |      email      |
-+----+----------+---------+-----------------+
-|  1 | checking |    1000 | max@roach.com   |
-|  2 | savings  |   10000 | max@roach.com   |
-|  3 | checking |   15000 | betsy@roach.com |
-|  4 | checking |    5000 | lilly@roach.com |
-|  5 | savings  |   50000 | ben@roach.com   |
-+----+----------+---------+-----------------+
+  id |   type   | balance |      email
+-----+----------+---------+------------------
+   1 | checking |    1000 | max@roach.com
+   2 | savings  |   10000 | max@roach.com
+   3 | checking |   15000 | betsy@roach.com
+   4 | checking |    5000 | lilly@roach.com
+   5 | savings  |   50000 | ben@roach.com
 (5 rows)
 ~~~
 
@@ -123,12 +117,10 @@ You then make sure `bob` does not have privileges on the underlying `bank.accoun
 ~~~
 
 ~~~
-+----------+------+------------+
-|  Table   | User | Privileges |
-+----------+------+------------+
-| accounts | root | ALL        |
-| accounts | toti | SELECT     |
-+----------+------+------------+
+  database_name | schema_name | table_name | grantee | privilege_type
+----------------+-------------+------------+---------+-----------------
+  bank          | public      | accounts   | admin   | ALL
+  bank          | public      | accounts   | root    | ALL
 (2 rows)
 ~~~
 
@@ -156,15 +148,13 @@ pq: user bob does not have SELECT privilege on table accounts
 ~~~
 
 ~~~
-+----------+-----------------+
-|   type   |      email      |
-+----------+-----------------+
-| checking | max@roach.com   |
-| savings  | max@roach.com   |
-| checking | betsy@roach.com |
-| checking | lilly@roach.com |
-| savings  | ben@roach.com   |
-+----------+-----------------+
+    type   |      email
+-----------+------------------
+  checking | max@roach.com
+  savings  | max@roach.com
+  checking | betsy@roach.com
+  checking | lilly@roach.com
+  savings  | ben@roach.com
 (5 rows)
 ~~~
 
@@ -199,13 +189,11 @@ Once created, views are listed alongside regular tables in the database:
 ~~~
 
 ~~~
-+---------------+
-|     Table     |
-+---------------+
-| accounts      |
-| user_accounts |
-+---------------+
-(2 rows)
+   table_name
+-----------------
+  accounts
+  user_accounts
+(3 rows)
 ~~~
 
 To list just views, you can query the `views` table in the [Information Schema](information-schema.html):
@@ -221,17 +209,9 @@ To list just views, you can query the `views` table in the [Information Schema](
 ~~~
 
 ~~~
-+---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| table_catalog |   table_schema    |      table_name      |            view_definition                  | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
-+---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| bank          | public            | user_accounts        | SELECT type, email FROM bank.accounts       | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-+---------------+-------------------+----------------------+---------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-(1 row)
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| table_catalog |   table_schema    |      table_name      |                                                                              view_definition                                                                              | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
-| startrek      | public            | quotes_per_season    | SELECT startrek.episodes.season, count(*) FROM startrek.quotes JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season | NULL         | NULL         | NULL               | NULL                 | NULL                 | NULL                       |
-+---------------+-------------------+----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+----------------------------+
+  table_catalog | table_schema |  table_name   |               view_definition                | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into
+----------------+--------------+---------------+----------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+-----------------------------
+  bank          | public       | user_accounts | SELECT type, email FROM bank.public.accounts | NULL         | NO           | NO                 | NO                   | NO                   | NO
 (1 row)
 ~~~
 
@@ -245,15 +225,13 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 ~~~
 
 ~~~
-+----------+-----------------+
-|   type   |      email      |
-+----------+-----------------+
-| checking | max@roach.com   |
-| savings  | max@roach.com   |
-| checking | betsy@roach.com |
-| checking | lilly@roach.com |
-| savings  | ben@roach.com   |
-+----------+-----------------+
+    type   |      email
+-----------+------------------
+  checking | max@roach.com
+  savings  | max@roach.com
+  checking | betsy@roach.com
+  checking | lilly@roach.com
+  savings  | ben@roach.com
 (5 rows)
 ~~~
 
@@ -265,11 +243,9 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 ~~~
 
 ~~~
-+--------------------+---------------------------------------------------------------------------+
-| table_name         | create_statement                                                          |
-+--------------------+---------------------------------------------------------------------------+
-| bank.user_accounts | CREATE VIEW "bank.user_accounts" AS SELECT type, email FROM bank.accounts |
-+--------------------+---------------------------------------------------------------------------+
+         table_name         |                                    create_statement
+----------------------------+------------------------------------------------------------------------------------------
+  bank.public.user_accounts | CREATE VIEW user_accounts (type, email) AS SELECT type, email FROM bank.public.accounts
 (1 row)
 ~~~
 
@@ -281,11 +257,9 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 ~~~
 
 ~~~
-+----------------------------------------+
-|             view_definition            |
-+----------------------------------------+
-| SELECT type, email FROM bank.accounts  |
-+----------------------------------------+
+                view_definition
+------------------------------------------------
+  SELECT type, email FROM bank.public.accounts
 (1 row)
 ~~~
 
@@ -363,6 +337,61 @@ To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 ~~~
 DROP VIEW
+~~~
+
+## Temporary views
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables](temporary-tables.html).
+
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Temporary tables must be enabled in order to use temporary views. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
+
+### Details
+
+- Temporary views are automatically dropped at the end of the session.
+- A temporary view can only be accessed from the session in which it was created.
+- Temporary views persist across transactions in the same session.
+- Temporary views cannot be converted to persistent views.
+- Temporary views can be created on both persistent tables and [temporary tables](temporary-tables.html).
+- When you create a view on a temporary table, the view automatically becomes temporary.
+
+{{site.data.alerts.callout_info}}
+Like [temporary tables](temporary-tables.html), temporary views are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
+{{site.data.alerts.end}}
+
+### Usage
+
+To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to a [`CREATE VIEW`](create-view.html) statement.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TEMP VIEW temp_view (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM temp_view;
+~~~
+
+~~~
+  season | quotes
+---------+---------
+       1 |     78
+       2 |     76
+       3 |     46
+(3 rows)
 ~~~
 
 ## See also

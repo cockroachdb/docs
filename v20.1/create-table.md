@@ -29,6 +29,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
+**opt_temp_create_table ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
+</div>
+
 **column_def ::=**
 
 <div>
@@ -82,6 +88,7 @@ Parameter | Description
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+`opt_temp_create_table` | <span class="version-tag">New in v20.1:</span> Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 
 ## Table-level replication
 
@@ -158,7 +165,7 @@ In this example, we create secondary and inverted indexes during table creation.
         current_location STRING,
         ext JSONB,
         CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+        INDEX index_status (status),
         INVERTED INDEX ix_vehicle_ext (ext),
         FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
 );
@@ -170,16 +177,16 @@ In this example, we create secondary and inverted indexes during table creation.
 ~~~
 
 ~~~
-  table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
-+------------+---------------------------------------+------------+--------------+-------------+-----------+---------+----------+
-  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext                        |    true    |            1 | ext         | ASC       |  false  |  false
-  vehicles   | ix_vehicle_ext                        |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext                        |    true    |            3 | id          | ASC       |  false  |   true
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+----------------+------------+--------------+-------------+-----------+---------+-----------
+  vehicles   | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            1 | status      | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            2 | city        | ASC       |  false  |   true
+  vehicles   | index_status   |    true    |            3 | id          | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            1 | ext         | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext |    true    |            2 | city        | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            3 | id          | ASC       |  false  |   true
 (8 rows)
 ~~~
 
