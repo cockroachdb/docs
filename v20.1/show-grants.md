@@ -5,7 +5,7 @@ keywords: reflection
 toc: true
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users.
+The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users and roles.
 
 ## Synopsis
 
@@ -250,9 +250,9 @@ SHOW GRANTS ON ROLE FOR carl;
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -943,7 +943,7 @@
                 ]
               },
               {
-                "title": "<code>CREATE ROLE</code> (Enterprise)",
+                "title": "<code>CREATE ROLE</code>",
                 "urls": [
                   "/${VERSION}/create-role.html"
                 ]
@@ -1015,7 +1015,7 @@
                 ]
               },
               {
-                "title": "<code>DROP ROLE</code> (Enterprise)",
+                "title": "<code>DROP ROLE</code>",
                 "urls": [
                   "/${VERSION}/drop-role.html"
                 ]
@@ -1075,7 +1075,7 @@
                 ]
               },
               {
-                "title": "<code>GRANT &lt;roles&gt;</code> (Enterprise)",
+                "title": "<code>GRANT &lt;roles&gt;</code>",
                 "urls": [
                   "/${VERSION}/grant-roles.html"
                 ]
@@ -1183,7 +1183,7 @@
                 ]
               },
               {
-                "title": "<code>REVOKE &lt;roles&gt;</code> (Enterprise)",
+                "title": "<code>REVOKE &lt;roles&gt;</code>",
                 "urls": [
                   "/${VERSION}/revoke-roles.html"
                 ]

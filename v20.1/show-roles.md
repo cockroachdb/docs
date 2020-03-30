@@ -6,6 +6,10 @@ toc: true
 
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -35,10 +39,10 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 ## See also
 
 - [Authorization](authorization.html)
-- [`CREATE ROLE` (Enterprise)](create-role.html)
-- [`DROP ROLE` (Enterprise)](drop-role.html)
+- [`CREATE ROLE`](create-role.html)
+- [`DROP ROLE`](drop-role.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges`](revoke.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles`](revoke-roles.html)
 - [Manage Users](authorization.html#create-and-manage-users)

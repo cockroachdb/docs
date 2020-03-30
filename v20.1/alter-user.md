@@ -6,6 +6,10 @@ toc: true
 
 The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-user.html) password.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for `ALTER ROLE`.
+{{site.data.alerts.end}}
+
 ## Considerations
 
 - Password creation and alteration is supported only in secure clusters for non-`root` users.

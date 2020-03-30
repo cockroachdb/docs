@@ -16,6 +16,8 @@ For privileges required by specific statements, see the documentation for the re
 
 The user granting privileges must have the `GRANT` privilege on the target databases or tables.
 
+<span class="version-tag">New in v20.1</span> In addition to the `GRANT` privilege, the user granting privileges must have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+
 ## Supported privileges
 
 Roles and users can be granted the following privileges. Some privileges are applicable both for databases and tables, while other are applicable only for tables (see **Levels** in the table below).
@@ -150,8 +152,8 @@ Parameter | Description
 ## See also
 
 - [Authorization](authorization.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)

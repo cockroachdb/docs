@@ -6,6 +6,10 @@ toc: true
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1</span>: Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE USER` is now an alias for [`CREATE ROLE`](create-role.html).
+{{site.data.alerts.end}}
+
 ## Considerations
 
 - Usernames:
