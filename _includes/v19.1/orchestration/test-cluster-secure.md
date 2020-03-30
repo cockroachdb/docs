@@ -86,7 +86,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true);
+    > GRANT admin TO roach;
     ~~~
 
 6. Exit the SQL shell and pod:
@@ -198,7 +198,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'roach', true);
+    > GRANT admin TO roach;
     ~~~
 
 6. Exit the SQL shell and pod:

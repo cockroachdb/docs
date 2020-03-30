@@ -224,7 +224,7 @@ Assign `max` to the `admin` role:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
+> GRANT admin TO max;
 ~~~
 
 Exit the SQL shell on node 2:
