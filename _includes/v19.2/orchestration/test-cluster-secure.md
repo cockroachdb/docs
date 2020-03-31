@@ -103,10 +103,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~ sql
     > \q
     ~~~
-
-    {{site.data.alerts.callout_info}}
-    You may need to [restart a node](orchestrate-cockroachdb-with-kubernetes.html#step-5-simulate-node-failure) for new `admin` roles to take effect.
-    {{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -215,10 +211,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~ sql
     > \q
     ~~~
-
-    {{site.data.alerts.callout_info}}
-    You may need to [restart a node](orchestrate-cockroachdb-with-kubernetes.html#step-5-simulate-node-failure) for new `admin` roles to take effect.
-    {{site.data.alerts.end}}
 </section>
 
 {{site.data.alerts.callout_success}}

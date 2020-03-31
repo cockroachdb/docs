@@ -266,10 +266,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     > \q
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    You may need to [restart a node](#step-6-simulate-node-failure) for new `admin` roles to take effect.
-    {{site.data.alerts.end}}
-
 ## Step 4. Run a sample workload
 
 CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).

@@ -234,10 +234,6 @@ Exit the SQL shell on node 2:
 > \q
 ~~~
 
-    {{site.data.alerts.callout_info}}
-    You may need to restart a node for new `admin` roles to take effect.
-    {{site.data.alerts.end}}
-
 ## Step 5. Access the Admin UI
 
 The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
