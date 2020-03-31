@@ -11,13 +11,15 @@ The **Statements** page helps you identify frequently executed or high latency [
 
 To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** in the left-hand navigation.
 
-## Filter by application
+## Search and filter by application
 
 By default, the page shows SQL statements from all applications running on the cluster, and hides internal CockroachDB queries.
 
 Use the **App** menu to filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters). If you haven't set `application_name` in the client connection string, it appears as `unset`. 
 
 CockroachDB's internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+
+You can also search for statements using the search bar.
 
 ## Understanding the Statements page
 
