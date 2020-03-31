@@ -1,10 +1,10 @@
 ---
 title: Foreign Key Constraint
-summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
+summary: The `FOREIGN KEY` constraint specifies a column can contain only values exactly matching existing values from the column it references.
 toc: true
 ---
 
-A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. The purpose of foreign keys is to enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
+A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
 
 For example, given an `orders` table and a `customers` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
 
@@ -18,21 +18,35 @@ For example, given an `orders` table and a `customers` table, if you create a co
 **Foreign Key Columns**
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
-- Each column cannot belong to more than 1 Foreign Key constraint.
-- Cannot be a [computed column](computed-columns.html).
+- Each column cannot belong to more than 1 `FOREIGN KEY` constraint.
+- A foreign key column cannot be a [computed column](computed-columns.html).
 - Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
-    - To meet this requirement when creating a new table, there are a few options:
-        - <span class="version-tag">New in v19.1</span>: An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
-        - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
-        - Rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
-        - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
-        - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
+
+    If you are adding the `FOREIGN KEY` constraint to an existing table, and the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the `FOREIGN KEY` constraint to the columns.
+
+    If you are creating a new table, there are a number of ways that you can meet the indexing requirement:
+
+      - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
+      - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
+      - <span class="version-tag">New in v19.1</span>: If you add a foreign key constraint to an empty table, and an index on the referencing columns does not already exist, CockroachDB automatically creates one. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade). It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
+
+      {{site.data.alerts.callout_success}}
+      Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+      {{site.data.alerts.end}}
 
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
-- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
+- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
+- Referenced columns must be [indexed](indexes.html). There are a number of ways to meet this requirement:
+
+    - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
+    - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
+    - <span class="version-tag">New in v19.1</span>: If an index on the referenced column does not already exist, CockroachDB automatically creates one. It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
+
+    {{site.data.alerts.callout_success}}
+    Using the referenced columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key that references the columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+    {{site.data.alerts.end}}
 
 ### Null values
 
@@ -45,7 +59,7 @@ Multiple-column (composite) foreign keys only accept null values in the followin
 
 For more information about composite foreign keys, see the [composite foreign key matching](#composite-foreign-key-matching) section.
 
-Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint](not-null.html) on foreign keys when [creating your tables](create-table.html). 
+Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint](not-null.html) on foreign keys when [creating your tables](create-table.html).
 
 {{site.data.alerts.callout_info}}
 A `NOT NULL` constraint cannot be added to existing tables.
@@ -118,7 +132,7 @@ You can improve the performance of some statements that use foreign keys by also
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level
