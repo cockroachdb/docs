@@ -6,15 +6,17 @@ toc: true
 
  <span class="version-tag">New in v20.1:</span> The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
 
- When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
-
 ## Details
 
-- You cannot change the primary key of a table that is currently undergoing a primary key change.
-
-- Primary key changes on a table must be in a separate transaction from that table's [`CREATE TABLE`](create-table.html) statement.
+- You cannot change the primary key of a table that is currently undergoing a primary key change, or any other [schema change](online-schema-changes.html).
 
 - `ALTER PRIMARY KEY` might need to rewrite multiple indexes, which can make it an expensive operation.
+
+-  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+
+  {{site.data.alerts.callout_info}}
+  The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key) to change an existing primary key without creating a secondary index. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+  {{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -86,7 +88,7 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
 (1 row)
 ~~~
 
-Note that the old primary key index becomes a secondary index, in this case, `users_name_key`.
+Note that the old primary key index becomes a secondary index, in this case, `users_name_key`. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`](drop-constraint.html)/[`ADD CONSTRAINT`](add-constraint.html) instead.
 
 ### Make a single-column primary key composite for geo-partitioning
 
@@ -102,7 +104,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-Now suppose that you want to expand your business from a single region into multiple regions. After you [deploy your application in multiple regions](topology-patterns.html), you consider [geo-partitioning your data](topology-geo-partitioned-replicas.html) to minimize latency and optimize performance. In order to geo-partition the `user` database, you need to add a column specifies the location of the data (e.g., `region`):
+Now suppose that you want to expand your business from a single region into multiple regions. After you [deploy your application in multiple regions](topology-patterns.html), you consider [geo-partitioning your data](topology-geo-partitioned-replicas.html) to minimize latency and optimize performance. In order to geo-partition the `user` database, you need to add a column specifying the location of the data (e.g., `region`):
 
 {% include copy-clipboard.html %}
 ~~~ sql

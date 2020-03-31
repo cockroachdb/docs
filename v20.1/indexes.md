@@ -82,6 +82,7 @@ When designing indexes, it's important to consider which columns you index and t
 - Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 - Indexes of the same columns in different orders can produce different results for each query. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
 - Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices), or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid creating secondary indexes that you do not need, as they can slow down write performance and take up node memory. For example, if you want to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html), which creates a secondary index from the old primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
 ### Storing columns
 
