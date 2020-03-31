@@ -58,7 +58,10 @@ The following statements cannot be represented by the same fingerprint:
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)</code>
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)</code>
 
-Statements with the same fingerprint that are executed by different apps will not be aggregated. It is possible to see the same fingerprint multiple times if each is associated with a different [`application_name`](show-vars.html#supported-variables).
+It is possible to see the same fingerprint listed multiple times in the following scenarios:
+
+- Statements with this fingerprint were executed by more than one [`application_name`](show-vars.html#supported-variables).
+- Statements with this fingerprint were executed both successfully and unsuccessfully.
 {{site.data.alerts.end}}
 
 Parameter | Description
