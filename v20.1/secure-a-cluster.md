@@ -256,7 +256,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO system.role_members (role, member, "isAdmin") VALUES ('admin', 'max', true);
+    > GRANT admin TO max;
     ~~~
 
 7. Exit the SQL shell on node 2:
@@ -265,10 +265,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     ~~~ sql
     > \q
     ~~~
-
-    {{site.data.alerts.callout_info}}
-    You may need to [restart a node](#step-6-simulate-node-failure) for new `admin` roles to take effect.
-    {{site.data.alerts.end}}
 
 ## Step 4. Run a sample workload
 
