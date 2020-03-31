@@ -34,6 +34,10 @@ You can restore:
 
 Because this process is designed for disaster recovery, a full cluster restore can only be run on a target cluster with no databases or tables.
 
+{{site.data.alerts.callout_info}}
+When you do a full cluster restore, it will restore the [enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](enterprise-licensing.html#set-a-license).
+{{site.data.alerts.end}}
+
 #### Databases
 
 To restore a database, the database cannot already exist in the target cluster. Restoring a database will create the database and restore all of its tables and views. By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
