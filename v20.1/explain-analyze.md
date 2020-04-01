@@ -52,6 +52,7 @@ Out | The output columns.
 @&lt;n&gt; | The index of the column relative to the input.
 Render | The stage that renders the output.
 unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order.
+&lt;data type&gt; | <span class="version-tag">New in v20.1:</span> If [`EXPLAIN(DISTSQL, TYPES)`](explain.html#distsql-option) is specified, lists the data types of the input columns.
 left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join.
 rows read | The number of rows read by the processor.
 stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time).
@@ -69,7 +70,7 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE` executes a query and generates a link to a physical query plan with execution statistics:
+The following `EXPLAIN ANALYZE` statement executes a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster, and then generates a link to a physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -78,7 +79,7 @@ Any or all of the above fields may display for a given query plan.
 
 ~~~
   automatic |                      url                      
-+-----------+----------------------------------------------+
+------------+-----------------------------------------------
     true    | https://cockroachdb.github.io/distsqlplan...
 ~~~
 

@@ -69,7 +69,7 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE` executes a query and generates a link to a physical query plan with execution statistics:
+The following `EXPLAIN ANALYZE` statement executes a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster, and then generates a link to a physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql

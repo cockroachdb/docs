@@ -409,6 +409,8 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
 
+For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
@@ -423,6 +425,24 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
 
 <img src="{{ 'images/v20.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
+<span class="version-tag">New in v20.1:</span> To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+~~~
+
+~~~
+ automatic |                      url
+-----------+----------------------------------------------
+   true    | https://cockroachdb.github.io/distsqlplan...
+~~~
+
+To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
+
+<img src="{{ 'images/v20.1/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
 
 ### Find the indexes and key ranges a query uses
 

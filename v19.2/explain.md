@@ -409,6 +409,8 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
 
+For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
