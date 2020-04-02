@@ -8,11 +8,17 @@ toc: true
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
 {{site.data.alerts.end}}
 
-The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The Node Map also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
+The **Node Map** is useful for:
+
+- Visualizing the geographic configuration of a multi-region cluster on a world map.
+- Viewing real-time cluster metrics.
+- Drilling down to individual nodes for monitoring health and performance.
 
 This page walks you through the process of setting up and enabling the Node Map.
 
-{{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/get-cockroachdb/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature. However, you can [request a trial license](https://www.cockroachlabs.com/get-cockroachdb/) to try it out. 
+{{site.data.alerts.end}}
 
 <img src="{{ 'images/v20.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -175,7 +181,7 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 
 {% include {{ page.version.version }}/known-limitations/node-map.md %}
 
-### Displayed **Used Capacity** value exceeds configured Capacity
+### Displayed **Used Capacity** value is more than configured Capacity
 
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 

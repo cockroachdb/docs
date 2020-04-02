@@ -99,7 +99,7 @@ The **available** disk capacity equals the amount of empty disk space, up to the
 - If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
 - If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
 
-This disk space is not used by the Cockroach binary, operating system, and other system files.
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Available Disk Capacity** graph.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}

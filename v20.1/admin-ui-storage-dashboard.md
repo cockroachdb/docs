@@ -14,7 +14,7 @@ The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
 
-You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by scaling your cluster). 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
 
 <img src="{{ 'images/v20.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
@@ -35,7 +35,7 @@ The **available** capacity thus equals the amount of empty disk space, up to the
 
 The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Capacity** graph.
 
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 

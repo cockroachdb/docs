@@ -48,7 +48,7 @@ The timeseries data used to power the graphs in the Admin UI is stored within th
 
 <img src="{{ 'images/v20.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by scaling your cluster). 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
 
 Metric | Description
 --------|--------
