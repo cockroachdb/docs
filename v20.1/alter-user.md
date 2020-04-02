@@ -4,7 +4,7 @@ summary: The ALTER USER statement can be used to add or change a user's password
 toc: true
 ---
 
-The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password.
+The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the login privileges for a user or role.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.1</span>: Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
@@ -16,7 +16,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or
 
 ## Required privileges
 
-The user must have the `INSERT`, `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
+The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -34,6 +34,7 @@ Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password you want to create or add.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-user-from-using-password-authentication).
+`login`/`nologin` | The `login` parameter allows a user to login using either password or certificate-based client authentication. Setting the parameter to `nologin` prevents the user from logging in using any authentication method.
 
 ## Examples
 
@@ -79,6 +80,22 @@ The following statement prevents the user from using password authentication and
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD NULL;
+~~~
+
+### Change login privileges for a user
+
+The following statement prevents the user from logging in using the password authentication and certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl NOLOGIN;
+~~~
+
+The following statement allows the user to log in using either password authentication or certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl LOGIN;
 ~~~
 
 ## See also
