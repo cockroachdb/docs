@@ -4,7 +4,7 @@ summary: The ALTER USER statement can be used to add or change a user's password
 toc: true
 ---
 
-The `ALTER USER` [statement](sql-statements.html) can be used to add or change a [user's](create-user.html) password.
+The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.1</span>: Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
@@ -16,7 +16,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add or change a
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
+The user must have the `INSERT`, `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -33,7 +33,7 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password you want to create or add.
-`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged.
+`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-user-from-using-password-authentication).
 
 ## Examples
 
@@ -70,6 +70,15 @@ To preserve case in a password specified using identifier syntax, use double quo
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
+~~~
+
+### Prevent user from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl WITH PASSWORD NULL;
 ~~~
 
 ## See also
