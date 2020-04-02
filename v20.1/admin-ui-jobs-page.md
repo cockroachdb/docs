@@ -3,31 +3,78 @@ title: Jobs Page
 toc: true
 ---
 
-The **Jobs** page of the Admin UI provides details about backup/restore jobs, schema changes, [user-created table statistics](create-statistics.html) and [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, and changefeeds. All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster. To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Jobs** on the left-hand navigation bar.
+The **Jobs** page of the Admin UI provides details about long-running tasks your cluster has performed. These can include:
 
+- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
+- [`IMPORT`](import.html).
+- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
+- [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
+- [Automatic table statistics](cost-based-optimizer.html#table-statistics).
+- [Changefeeds](change-data-capture.html).
 
-## Job details
+{{site.data.alerts.callout_success}}
+All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster. 
+{{site.data.alerts.end}}
 
-The **Jobs** table displays the ID, description, user, creation time, and status of backup and restore jobs, schema changes, user-created table statistics and automatic table statistics jobs, and changefeeds. To view the job's full description, click the drop-down arrow in the first column.
+To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Jobs** in the left-hand navigation.
+
+## Filter jobs
+
+Use the **Status** menu to filter jobs by [job status](#job-status).
+
+Use the **Type** menu to filter jobs by type.
+
+You can toggle between showing the latest 50 jobs or all jobs on the cluster.
+
+{{site.data.alerts.callout_info}}
+Jobs are deleted every 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html). 
+
+If you need a historical record of all jobs you have run, you should log this information externally. 
+{{site.data.alerts.end}}
+
+## Jobs list
+
+Use the **Jobs** list to see your recently created and completed jobs.
+
+- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](change-data-capture.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+
+- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Automatic-Statistics Creation** as described [above](#filter-jobs).
+
+- To view [job details](#job-details), click on the job description.
 
 <img src="{{ 'images/v20.1/admin_ui_jobs_page_new.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
-For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](change-data-capture.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
-
-The automatic table statistics jobs are not displayed even when the **TYPE** drop-down is set to **All**. To view the automatic statistics creation jobs, filter the results to **Automatic-Statistics Creation** as described in the [Filtering results](#filtering-results) section.
-
-## Filtering results
-
-You can filter the results based on the status of the jobs or the type of jobs (backups, restores, schema changes, changefeeds, user-created table statistics, and automatic table statistics). You can also choose to view either the latest 50 jobs or all the jobs across all nodes.
-
-Filter By | Description
+Parameter | Description
 ----------|------------
-Job Status | From the **Status** menu, select the required status filter.
-Job Type | From the **Type** menu, select **Backups**, **Restores**, **Imports**, **Schema Changes**, **Changefeed**, **Statistics Creation**, or **Auto-Statistics Creation**.
-Jobs Shown | From the **Show** menu, select **First 50** or **All**.
+Description | SQL statement that created the job.
+Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
+Users | User that created the job.
+Creation Time | Date and time the job was created.
+Status | Current [job status](#job-status) or completion progress. Status can be `PENDING`, `PAUSED`, `FAILED`, `SUCCEEDED`, or `CANCELED`.
+
+### Job status
+
+Status | Description
+-------|------------
+`PENDING` | Job is created but still pending.
+`PAUSED` | Job is [paused](pause-job.html).
+`FAILED` | Job failed to complete.
+`SUCCEEDED` | Job successfully completed.
+`CANCELED` | Job was [cancelled](cancel-job.html).
+
+A job that is currently running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
+
+## Job details
+
+Click any description on the [job list](#job-list) to see the full SQL statement that created the job.
+
+The job ID, creation time, users, and status are also shown.
+
+<img src="{{ 'images/v20.1/admin_ui_jobs_page_details.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
+- [`SHOW JOBS`](show-jobs.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Support Resources](support-resources.html)
 - [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
