@@ -4,7 +4,7 @@ summary: The ALTER ROLE statement can be used to add or change a role's password
 toc: true
 ---
 
-The `ALTER ROLE` [statement](sql-statements.html) can be used to add or change a [role's](create-role.html) password.
+The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.1</span>: Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
@@ -16,7 +16,7 @@ The `ALTER ROLE` [statement](sql-statements.html) can be used to add or change a
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
+The role must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
@@ -33,7 +33,9 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the role whose password you want to create or add.
-`password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged.
+`password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
+`valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`login`/`nologin` | The `login` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `nologin`](#change-login-privileges-for-a-role) prevents the role from logging in using any authentication method.
 
 ## Examples
 
@@ -70,6 +72,68 @@ To preserve case in a password specified using identifier syntax, use double quo
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER ROLE carl WITH PASSWORD "ThereIsNoTomorrow";
+~~~
+
+### Set password validity
+
+The following statement sets the date and time after which the password is not valid:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER ROLE carl VALID UNTIL '2021-01-01';
+~~~
+
+### Prevent a role from using password authentication
+
+The following statement prevents the role from using password authentication and mandates certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER ROLE carl WITH PASSWORD NULL;
+~~~
+
+### Change login privileges for a role
+
+The following statement prevents the role from logging in with any [client authentication method](authentication.html#client-authentication):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER ROLE carl NOLOGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ROLES;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
+~~~
+
+The following statement allows the role to log in with one of the client authentication methods:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER ROLE carl LOGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ROLES;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     |            | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
 ~~~
 
 ## See also

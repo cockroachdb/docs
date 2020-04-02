@@ -40,11 +40,13 @@ table td:first-child {
  Parameter | Description
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters. 
+`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
+`valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`login`/`nologin` | The `login` parameter allows a user to login with one of the [user authentication methods](#user-authentication). [Setting the parameter to `nologin`](#set-login-privileges-for-a-user) prevents the user from logging in using any authentication method. <br><br>By default, the parameter is set to `login` for the `CREATE USER` statement.
 
 ## User authentication
 
-Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
+Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers three methods for this:
 
 - [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
@@ -53,6 +55,8 @@ Secure clusters require users to authenticate their access to databases and tabl
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
     Password creation is supported only in secure clusters.
+
+- [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
 ## Examples
 
@@ -75,6 +79,15 @@ After creating users, you must:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
+~~~
+
+### Set password validity
+
+The following statement sets the date and time after which the password is not valid:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER carl VALID UNTIL '2021-01-01';
 ~~~
 
 ### Manage users
@@ -121,6 +134,50 @@ $ cockroach sql --insecure --user=jpointsman
 ~~~
 
 </div>
+
+### Set login privileges for a user
+
+The following statement prevents the user from logging in using any [user authentication method](user-authentication):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER carl NOLOGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW USERS;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
+~~~
+
+To allow the user to log in using one of the user authentication methods, use the `ALTER USER` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER USER carl LOGIN;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW USERS;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     |            | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
+~~~
 
 ## See also
 
