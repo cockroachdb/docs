@@ -10,7 +10,7 @@ build_for: [cockroachcloud]
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
 - Free trials of CockroachCloud are now available. [Contact us](mailto:sales@cockroachlabs.com) to request a trial code.
-- CockroachCloud now supports VPC peering for clusters running on GCP. [Contact us](support.cockroachlabs.com) to set up a VPC peering-enabled CockroachCloud cluster.
+- CockroachCloud now supports VPC peering for clusters running on GCP. [Contact us](https://support.cockroachlabs.com/hc/en-us) to set up a VPC peering-enabled CockroachCloud cluster.
 
 ### Security updates
 
