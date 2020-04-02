@@ -6,7 +6,7 @@ toc: true
 
 <span class="version-tag">New in v1.1:</span> The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
 
-- Schema changes through `ALTER TABLE`.j
+- Schema changes through `ALTER TABLE`.
 - [`IMPORT`](import.html).
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 

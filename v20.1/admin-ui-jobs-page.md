@@ -66,7 +66,7 @@ A job that is currently running will be displayed with its percent completion an
 
 ## Job details
 
-Click any description on the [job list](#job-list) to see the full SQL statement that created the job.
+Click any description on the [jobs list](#jobs-list) to see the full SQL statement that created the job.
 
 The job ID, creation time, users, and status are also shown.
 
