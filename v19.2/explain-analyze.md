@@ -40,7 +40,7 @@ Successful `EXPLAIN ANALYZE` statements return a table with the following column
 **automatic** | If `true`, the query is distributed. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 **url** | The URL generated for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
 
-#### DistSQL Plan Viewer
+## DistSQL Plan Viewer
 
 The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics:
 
