@@ -3,7 +3,12 @@ title: Cluster Overview Page
 toc: true
 ---
 
-The **Cluster Overview** page of the Admin UI displays key metrics about your cluster and individual nodes. These include liveness status, replication status, uptime, and hardware usage.
+The **Cluster Overview** page of the Admin UI displays key metrics about your cluster and individual nodes. These include: 
+
+- Liveness status
+- Replication status
+- Uptime
+- Hardware usage
 
 If you have an [enterprise license](enterprise-licensing.html), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
 
