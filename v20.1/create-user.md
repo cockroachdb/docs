@@ -40,7 +40,7 @@ table td:first-child {
  Parameter | Description
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
+`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
 
 ## User authentication
 
@@ -48,7 +48,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 - [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
+- [Password authentication](#secure-clusters-with-passwords), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
@@ -76,8 +76,6 @@ After creating users, you must:
 ~~~ sql
 > CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
 ~~~
-
-Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
 ### Manage users
 
