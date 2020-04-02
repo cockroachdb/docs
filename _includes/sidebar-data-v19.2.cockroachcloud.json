@@ -185,6 +185,12 @@
         "urls": [
           "/releases/cockroachcloud-03022020.html"
         ]
+      },
+      {
+        "title": "April 2020",
+        "urls": [
+          "/releases/cockroachcloud-04062020.html"
+        ]
       }
     ]
   }
