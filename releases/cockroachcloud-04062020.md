@@ -9,12 +9,12 @@ build_for: [cockroachcloud]
 
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
-- Free trials of CockroachCloud are now available. [Contact us](mailto:sales@cockroachlabs.com) to request a trial code.
+- Free trials of CockroachCloud are now available. [Contact us](https://www.cockroachlabs.com/contact-sales/) to request a trial code.
 - CockroachCloud now supports VPC peering for clusters running on GCP. [Contact us](https://support.cockroachlabs.com/hc/en-us) to set up a VPC peering-enabled CockroachCloud cluster.
 
 ### Security updates
 
-CockroachCloud now requires a user to create a CockroachCloud account before accepting an invite to join an Organization.
+CockroachCloud now requires a user to have a CockroachCloud account before accepting an invite to join an Organization.
 
 ### General changes
 
