@@ -16,7 +16,7 @@ Use the [slow query log](#slow-query-log) or [Admin UI](#admin-ui) to detect slo
 
 ### Slow query log
 
-The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary `cockroach-sql-slow` log file in the [log directory](debug-and-error-logs.html#write-to-file).
+The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary log file `cockroach-sql-slow.log` in the [log directory](debug-and-error-logs.html#write-to-file).
 
 {{site.data.alerts.callout_info}}
 Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.

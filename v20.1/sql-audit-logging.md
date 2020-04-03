@@ -106,7 +106,7 @@ Now let's verify that our customers were added successfully:
 
 ## Step 4. Check the audit log
 
-By default, the active audit log file is prefixed `cockroach-sql-audit` and is stored in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](cockroach-start.html).  Like the other log files, it's rotated according to the `--log-file-max-size` setting.
+By default, the active audit log file is prefixed `cockroach-sql-audit` and is stored in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](cockroach-start.html).  Like the other log files, it's rotated according to the [`--log-file-max-size` setting](cockroach-start.html#logging).
 
 When we look at the audit log for this example, we see the following lines showing every command we've run so far, as expected.
 
