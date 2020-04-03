@@ -35,7 +35,15 @@ The **Even More Advanced Debugging** section of the page lists additional report
 
 ## Raw Status Endpoints (JSON)
 
-The endpoints listed in this section provide access to [log files](debug-and-error-logs.html#write-to-file), node status, and hot ranges, depending on your [access level](admin-ui-overview.html#admin-ui-access).
+Depending on your [access level](admin-ui-overview.html#admin-ui-access), the endpoints listed here provide access to:
+
+- [Log files](debug-and-error-logs.html#write-to-file)
+- Node status
+- Hot ranges
+- Node-specific metrics
+- Session data
+- Cluster-wide range data
+- Allocator runs
 
 ## See also
 

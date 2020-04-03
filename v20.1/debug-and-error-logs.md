@@ -52,7 +52,9 @@ Based on the command's flags and the message's [severity level](#severity-levels
 
 #### Write to file
 
-CockroachDB can write messages to log files. The files are named using the following format:
+CockroachDB can write messages to a log file `cockroach.log`. 
+
+Each node also has its own log file, which is named using the following format:
 
 ~~~
 cockroach.[host].[user].[start timestamp in UTC].[process ID].log
