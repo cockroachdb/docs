@@ -18,7 +18,7 @@ The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or
 
 The role must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
-To alter other roles, the role must have the [`createrole`](create-role.html##allow-the-role-to-create-other-roles) parameter set.
+To alter other roles, the role must have the [`createrole`](create-role.html#allow-the-role-to-create-other-roles) parameter set.
 
 ## Synopsis
 
