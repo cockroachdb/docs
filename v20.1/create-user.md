@@ -147,7 +147,7 @@ $ cockroach sql --insecure --user=carl
 
 ### Set login privileges for a user
 
-The following statement prevents the user from logging in using any [user authentication method](user-authentication):
+The following statement prevents the user from logging in using any [user authentication method](#user-authentication):
 
 {% include copy-clipboard.html %}
 ~~~ sql
