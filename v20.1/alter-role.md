@@ -38,6 +38,7 @@ Parameter | Description
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier), although this is discouraged. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
 `valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
 `login`/`nologin` | The `login` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `nologin`](#change-login-privileges-for-a-role) prevents the role from logging in using any authentication method.
+`createrole`/`nocreaterole` | Allow or disallow the role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `nocreaterole` for all non-admin and non-root roles.
 
 ## Examples
 
