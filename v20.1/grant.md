@@ -42,6 +42,7 @@ Privilege | Levels
 `INSERT` | Table
 `DELETE` | Table
 `UPDATE` | Table
+<span class="version-tag">New in v20.1</span> `ZONECONFIG` | Database, Table
 
 ## Parameters
 
@@ -148,6 +149,14 @@ Parameter | Description
 (3 rows)
 ~~~
 
+### Grant `ZONECONFIG` privilege on a database or table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ZONECONFIG ON TABLE mytable TO myuser;
+~~~
+
+The user `myuser` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to to add, modify, reset, or remove replication zones for the table `mytable`.
 
 ## See also
 
@@ -157,4 +166,5 @@ Parameter | Description
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
+- [`CONFIGURE ZONE`](configure-zone.html)
 - [Manage Users](authorization.html#create-and-manage-users)
