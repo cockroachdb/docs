@@ -29,6 +29,8 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 Roles can only be created by superusers, i.e., members of the `admin` role. The `admin` role exists by default with `root` as the member.
 
+To create other roles, the role must have the [`createrole`](#allow-the-role-to-create-other-roles) parameter set.
+
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_role.html %}</section>
@@ -40,7 +42,8 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 `name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
 `password` | Let the role [authenticate their access to a secure cluster](#client-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
 `valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`login`/`nologin` | The `login` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). <br><br>By default, the parameter is set to `nologin` for the `CREATE ROLE` statement.
+`login`/`nologin` | Allow or disallow a role to login with one of the [client authentication methods](authentication.html#client-authentication). <br><br>By default, the parameter is set to `nologin` for the `CREATE ROLE` statement.
+`createrole`/`nocreaterole` | Allow or disallow the new role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `nocreaterole` for all non-admin and non-root users.
 
 ## Examples
 
@@ -53,6 +56,13 @@ CREATE ROLE 1
 ~~~
 
 After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
+
+### Allow the role to create other roles
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE ROLE dev with CREATEROLE;
+~~~
 
 ## See also
 

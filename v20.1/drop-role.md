@@ -19,6 +19,8 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 Roles can only be dropped by super users, i.e., members of the `admin` role.
 
+To drop other non-admin roles, the role must have the [`createrole`](create-role.html#allow-the-user-to-create-other-roles) parameter set.
+
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/drop_role.html %}</section>

@@ -18,6 +18,8 @@ The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or
 
 The role must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
+To alter other roles, the role must have the [`createrole`](create-role.html##allow-the-role-to-create-other-roles) parameter set.
+
 ## Synopsis
 
 <div>{% include {{ page.version.version }}/sql/diagrams/alter_role.html %}</div>
@@ -135,6 +137,42 @@ The following statement allows the role to log in with one of the client authent
   root     | CREATEROLE | {admin}
 (3 rows)
 ~~~
+
+### Allow the role to create other roles
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ROLES;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     |            | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER ROLE carl with CREATEROLE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ROLES;
+~~~
+
+~~~
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | CREATEROLE | {}
+  root     | CREATEROLE | {admin}
+(3 rows)
+~~~
+
 
 ## See also
 
