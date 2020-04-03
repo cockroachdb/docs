@@ -25,6 +25,8 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
+To create other users, the user must have the [`createrole`](#allow-the-user-to-create-other-users) parameter set.
+
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
@@ -43,6 +45,7 @@ table td:first-child {
 `password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
 `valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
 `login`/`nologin` | The `login` parameter allows a user to login with one of the [user authentication methods](#user-authentication). [Setting the parameter to `nologin`](#set-login-privileges-for-a-user) prevents the user from logging in using any authentication method. <br><br>By default, the parameter is set to `login` for the `CREATE USER` statement.
+`createrole`/`nocreaterole` | Allow or disallow the new user to create, alter, and drop other users. <br><br>By default, the parameter is set to `nocreaterole` for all non-admin and non-root users.
 
 ## User authentication
 
@@ -66,7 +69,7 @@ Usernames are case-insensitive; must start with a letter, number, or underscore;
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER jpointsman;
+> CREATE USER carl;
 ~~~
 
 After creating users, you must:
@@ -74,11 +77,18 @@ After creating users, you must:
 - [Grant them privileges to databases](grant.html).
 - For secure clusters, you must also [create their client certificates](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client).
 
+### Allow the user to create other users
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER carl with CREATEROLE;
+~~~
+
 ### Create a user with a password
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
+> CREATE USER carl WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
 ### Set password validity
@@ -110,7 +120,7 @@ All users can authenticate their access to a secure cluster using [a client cert
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --user=carl
 ~~~
 
 #### Secure clusters with passwords
@@ -121,7 +131,7 @@ If we cannot find client certificate and key files matching the user, we fall ba
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --user=jpointsman
+$ cockroach sql --user=carl
 ~~~
 
 </div>
@@ -130,7 +140,7 @@ $ cockroach sql --user=jpointsman
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --user=jpointsman
+$ cockroach sql --insecure --user=carl
 ~~~
 
 </div>

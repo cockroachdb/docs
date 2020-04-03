@@ -18,6 +18,8 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or
 
 The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
+To alter other users, the user must have the [`createrole`](create-user.html#allow-the-user-to-create-other-users) parameter set.
+
 ## Synopsis
 
 <div>{% include {{ page.version.version }}/sql/diagrams/alter_user_password.html %}</div>
