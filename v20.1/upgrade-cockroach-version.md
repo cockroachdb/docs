@@ -25,19 +25,25 @@ Before starting the upgrade, complete the following steps.
 
 1. Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
 
-2. Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
-    - To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
-
-3. Verify the overall health of your cluster using the [Admin UI](admin-ui-access-and-navigate.html). On the **Cluster Overview**:
+2. Verify the overall health of your cluster using the [Admin UI](admin-ui-access-and-navigate.html). On the **Cluster Overview**:
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
     - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
     - In the **Node List**:
         - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
 
-4. Capture the cluster's current state by running the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs to troubleshoot the issues.
+3. Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
+    - To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
-5. [Back up the cluster](backup-and-restore.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
+    {{site.data.alerts.callout_info}}
+    For schema changes in particular, if any are still in progress when you start the upgrade, they will be automatically paused until the upgrade has been finalized and then automatically restarted and run to completion.
+    {{site.data.alerts.end}}
+
+4. During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references, no-op schema change statements that use `IF NOT EXISTS`, and schema changes running in the same [transaction](transactions.html) that created the table. Update your application or tooling to prevent disallowed schema changes during the upgrade process.
+
+5. Capture the cluster's current state by running the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs to troubleshoot the issues.
+
+6. [Back up the cluster](backup-and-restore.html). If the upgrade does not go according to plan, you can use the data to restore your cluster to its previous state.
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -68,20 +74,14 @@ TBD
 
 ## Step 4. Perform the rolling upgrade
 
-For each node in your cluster, complete the following steps.
+For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
-{{site.data.alerts.callout_info}}
-These steps apply to manual deployments. If you are running CockroachDB on Kubernetes, read our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments of CockroachDB.
+{{site.data.alerts.callout_danger}}
+During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references, no-op schema change statements that use `IF NOT EXISTS`, and schema changes running in the same [transaction](transactions.html) that created the table. Be sure to update your application or tooling to prevent disallowed schema changes during the upgrade process.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-We recommend creating scripts to perform these steps instead of performing them manually.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_danger}}
-Upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
-
-Also, refrain from starting [schema changes](online-schema-changes.html) during the upgrade process. Schema changes are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
+We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
 1. Connect to the node.
@@ -219,9 +219,10 @@ This step is relevant only when upgrading from v19.2.x to v20.1. For upgrades wi
 
 If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
-Once you are satisfied with the new version, re-enable auto-finalization:
+Once you are satisfied with the new version:
 
 1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+
 2. Re-enable auto-finalization:
 
     {% include copy-clipboard.html %}
@@ -229,17 +230,14 @@ Once you are satisfied with the new version, re-enable auto-finalization:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-## Post-upgrade checklist
-
-After you finish upgrading your cluster, check the following [cluster settings](cluster-settings.html), as you might have set them to work around some limitations that were resolved in the latest release:
-
-TBD
+3. Update your application or tooling to re-enable schema changes that were disallowed during the upgrade process.
 
 ## Troubleshooting
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 
 1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
+
 2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
