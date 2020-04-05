@@ -1,11 +1,15 @@
 /* Feedback question and buttons */
 
 #feedback-prompt {
-  display: inline-block;
+  // display: inline-block;
+  bottom: 0px;
+  position: fixed;
+  right: 20px;
+  z-index: 100;
   padding: 25px;
   background-color: $cl_green_light;
   font-size: 17px;
-  line-height: 1;
+  // line-height: 1;
 
   form {
     display: inline-block;
@@ -15,16 +19,16 @@
 
 #feedback-prompt p {
   margin-bottom: 18px;
-  line-height: 0;
+  // line-height: 0;
 }
 
 .feedback-question {
   display: block;
-  line-height: 0;
+  // line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
   @include avenir_r(17px);
-  line-height: 30px;
+  // line-height: 30px;
 
   @include at-query($min, $screen-xsm) { display: inline-block; }
 }

@@ -955,21 +955,9 @@ section.footer {
   .version-nav__link {
     display: flex;
     align-items: center;
-    margin-right: 30px;
-    position: relative;
-    height: 100% }
+    margin-right: 30px; }
     .version-nav__link:hover, .version-nav__link--active {
-      color: #3A7DE1;
-    }
-    .version-nav__link:hover:after, .version-nav__link--active:after {
-    content:"";
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:4px;
-    background:#3A7DE1;
-    border-radius: 3px 3px 0 0;
-    }
+      color: #3A7DE1; }
       .version-nav__link:hover .version-nav__link-icon--standard, .version-nav__link--active .version-nav__link-icon--standard {
         display: none; }
       .version-nav__link:hover .version-nav__link-icon--hover, .version-nav__link--active .version-nav__link-icon--hover {
@@ -1061,8 +1049,7 @@ section.footer {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 25px;
-  margin-bottom: 5px;
-  text-transform: uppercase; }
+  margin-bottom: 5px; }
 
 .search-snippet {
   font-family: 'Graphik-Regular', sans-serif;
@@ -1952,30 +1939,29 @@ polygon.regexp {
 
 /* Feedback question and buttons */
 #feedback-prompt {
-  display: inline-block;
+  bottom: 0px;
+  position: fixed;
+  right: 20px;
+  z-index: 100;
   padding: 25px;
   background-color: #F0FFE8;
-  font-size: 17px;
-  line-height: 1; }
+  font-size: 17px; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
 
 #feedback-prompt p {
-  margin-bottom: 18px;
-  line-height: 0; }
+  margin-bottom: 18px; }
 
 .feedback-question {
   display: block;
-  line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 17px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  -moz-osx-font-smoothing: grayscale; }
   @media screen and (min-width: 544px) {
     .feedback-question {
       display: inline-block; } }
@@ -3781,45 +3767,4 @@ a.accordion-toggle {
   display: flex;
   flex-direction: column; }
 
-/* Search results highlight */
-#search-hits mark {
-  background: none;
-  font-weight: bold;
-}
-
-#search-stats {
-  margin-top: -10px;
-}
-
-#search-pages .ais-Pagination {
-  margin: 45px 0;
-}
-
-#search-pages .ais-Pagination-list {
-  padding: 0;
-}
-
-#search-pages .ais-Pagination-item {
-  display: inline;
-}
-
-#search-pages .ais-Pagination-item.ais-Pagination-item--previousPage a,
-#search-pages .ais-Pagination-item.ais-Pagination-item--nextPage a {
-  color: #192847;
-  font-size: 15px;
-}
-
-#search-pages .ais-Pagination-item a {
-  font-size: 16px;
-  line-height: 46px;
-  text-align: center;
-  letter-spacing: -0.0941177px;
-  color: #192847;
-  padding: 4px;
-}
-
-#search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
-  color: #497EDA;
-  font-weight: 900;
-}
 /*# sourceMappingURL=customstyles.css.map */
