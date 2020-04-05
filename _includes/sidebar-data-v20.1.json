@@ -530,7 +530,7 @@
         "title": "Maintain",
         "items": [
           {
-            "title": "Upgrade to CockroachDB v19.2",
+            "title": "Upgrade to CockroachDB v20.1",
             "urls": [
               "/${VERSION}/upgrade-cockroach-version.html"
             ]
