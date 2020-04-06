@@ -34,6 +34,10 @@ You can restore:
 
 Because this process is designed for disaster recovery, a full cluster restore can only be run on a target cluster with no databases or tables.
 
+{{site.data.alerts.callout_info}}
+When you do a full cluster restore, it will restore the [enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](enterprise-licensing.html#set-a-license) _after_ the restore is complete.
+{{site.data.alerts.end}}
+
 #### Databases
 
 To restore a database, the database cannot already exist in the target cluster. Restoring a database will create the database and restore all of its tables and views. By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
@@ -84,7 +88,9 @@ Full backup + <br>incremental backups | If the full backup and incremental backu
 
 ### Point-in-time restore
 
-If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup.
+If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
+
+<span class="version-tag">New in v20.1</span> Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html). 
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
@@ -130,7 +136,7 @@ If initiated correctly, the statement returns when the restore is finished or if
  `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup.html#backups-with-revision-history).
  `kv_option_list` | Control your backup's behavior with [these options](#options).
- 
+
 {{site.data.alerts.callout_info}}
 The `RESTORE` statement cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
