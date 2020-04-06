@@ -47,8 +47,8 @@ The **Live Bytes** graph displays the amount of data that can be read by applica
 
 Metric | Description
 --------|--------
-**Live** | Number of logical bytes stored in live [key-value pairs](distribution-layer.html#table-data). Live data excludes historical and deleted data.
-**System** | Number of physical bytes stored in [system key-value pairs](distribution-layer.html#meta-ranges). This includes historical and deleted data that has not been [garbage collected](architecture/storage-layer.html#garbage-collection).
+**Live** | Number of logical bytes stored in live [key-value pairs](architecture/distribution-layer.html#table-data). Live data excludes historical and deleted data.
+**System** | Number of physical bytes stored in [system key-value pairs](architecture/distribution-layer.html#meta-ranges). This includes historical and deleted data that has not been [garbage collected](architecture/storage-layer.html#garbage-collection).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/admin-ui/logical-bytes.md %}

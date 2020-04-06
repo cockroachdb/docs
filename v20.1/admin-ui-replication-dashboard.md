@@ -49,7 +49,7 @@ Under-replicated | The number of under-replicated ranges.
 
 Metric | Description
 --------|--------
-**Logical Bytes per Store** | Number of logical bytes stored in [key-value pairs](distribution-layer.html#table-data) on each node. This includes historical and deleted data.
+**Logical Bytes per Store** | Number of logical bytes stored in [key-value pairs](architecture/distribution-layer.html#table-data) on each node. This includes historical and deleted data.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/admin-ui/logical-bytes.md %}
