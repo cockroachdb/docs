@@ -18,13 +18,13 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 You can restore:
 
-- <span class="version-tag">New in v20.1</span> [A full cluster](#full-cluster)
+- <span class="version-tag">New in v20.1:</span> [A full cluster](#full-cluster)
 - [Databases](#databases)
 - [Tables](#tables)
 
 #### Full cluster
 
-<span class="version-tag">New in v20.1</span> You can restore a full cluster, which includes:
+<span class="version-tag">New in v20.1:</span> You can restore a full cluster, which includes:
 
 - All user tables
 - Relevant system tables
@@ -90,7 +90,7 @@ Full backup + <br>incremental backups | If the full backup and incremental backu
 
 If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
 
-<span class="version-tag">New in v20.1</span> Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html). 
+<span class="version-tag">New in v20.1:</span> Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html).
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
@@ -161,12 +161,13 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
+`encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](backup.html#encrypted-backups) | <span class="version-tag">New in v20.1:</span> The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](backup.html#encrypted-backups) statement.
 
 ## Examples
 
 ### Restore a cluster
 
-<span class="version-tag">New in v20.1</span> To restore a full cluster:
+<span class="version-tag">New in v20.1:</span> To restore a full cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -198,7 +199,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 ### Restore from incremental backups
 
-<span class="version-tag">New in v20.1</span> Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+<span class="version-tag">New in v20.1:</span> Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -321,6 +322,34 @@ can be restored by running:
 > RESTORE FROM
   	('s3://us-east-bucket/database-bank-2019-10-07-weekly', 's3://us-west-bucket/database-bank-2019-10-07-weekly'),
 	  ('s3://us-east-bucket/database-bank-2019-10-08-nightly', 's3://us-west-bucket/database-bank-2019-10-08-nightly');
+~~~
+
+### Restore from an encrypted backup
+
+<span class="version-tag">New in v20.1:</span> To decrypt an [encrypted backup](backup.html#encrypted-backups), use the `encryption_passphrase` and the same passphrase that was used to create the backup.
+
+For example, an encrypted backup created with:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP TO \
+'gs://acme-co-backup/test-cluster' \
+WITH encryption_passphrase = 'password123';
+~~~
+
+Can be restored with:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM \
+'gs://acme-co-backup/test-cluster' \
+WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
 ~~~
 
 ## See also
