@@ -46,6 +46,7 @@ CockroachDB supports explicit type conversions using the following methods:
 
 - Other [built-in conversion functions](functions-and-operators.html) when the type is not a SQL type, for example `from_ip()`, `to_ip()` to convert IP addresses between `STRING` and `BYTES` values.
 
+<span class="version-tag">New in v20.1:</span> CockroachDB also supports implicit casting from string literals to `INT` and `DECIMAL` [`ARRAY`](array.html)s, where appropriate. For an example, see [Implicit casting to `INT` and `DECIMAL` `ARRAY`s](array.html#implicit-casting-to-int-and-decimal-arrays).
 
 You can find each data type's supported conversion and casting on its
 respective page in its section **Supported casting & conversion**.

@@ -67,13 +67,11 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 ~~~
 
 ~~~
-+-------------+---------------+-------------+----------------+-----------------------+-------------+
-| column_name |   data_type   | is_nullable | column_default | generation_expression |   indices   |
-+-------------+---------------+-------------+----------------+-----------------------+-------------+
-| a           | DECIMAL       |    false    | NULL           |                       | {"primary"} |
-| b           | DECIMAL(10,5) |    true     | NULL           |                       | {}          |
-| c           | DECIMAL       |    true     | NULL           |                       | {}          |
-+-------------+---------------+-------------+----------------+-----------------------+-------------+
+  column_name |   data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+---------------+-------------+----------------+-----------------------+-----------+------------
+  a           | DECIMAL       |    false    | NULL           |                       | {primary} |   false
+  b           | DECIMAL(10,5) |    true     | NULL           |                       | {}        |   false
+  c           | DECIMAL       |    true     | NULL           |                       | {}        |   false
 (3 rows)
 ~~~
 
@@ -88,15 +86,13 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 ~~~
 
 ~~~
-+------------------------+---------+-----------------------+
-|           a            |    b    |         c             |
-+------------------------+---------+-----------------------+
-| 1.01234567890123456789 | 1.01235 | 1.0123456789012346789 |
-+------------------------+---------+-----------------------+
-# The value in "a" matches what was inserted exactly.
-# The value in "b" has been rounded to the column's scale.
-# The value in "c" is handled like "a" because NUMERIC is an alias.
+            a            |    b    |           c
+-------------------------+---------+-------------------------
+  1.01234567890123456789 | 1.01235 | 1.01234567890123456789
+(1 row)
 ~~~
+
+The value in column `a` matches what was inserted exactly. The value in column `b` has been rounded to the column's scale. The value in column `c` is handled like the value in column `a` because `NUMERIC` is an alias for `DECIMAL`.
 
 ## Supported casting and conversion
 
