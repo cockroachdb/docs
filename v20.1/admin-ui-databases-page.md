@@ -39,8 +39,8 @@ Click any table name in [Tables](#tables-view) view to display details for that 
 	- **Size** is the approximate disk size of all replicas of this table on the cluster.
 	- **Ranges** is the numbers of ranges in this table.
 	- **Replicas** is the number of replicas of this table on the cluster.
-- **Statements** displays SQL statements that have been run against the table. 
-	- The parameters in this section are identical to those on the [Statements page](admin-ui-statements-page.html).
+<!-- - **Statements** displays SQL statements that have been run against the table. 
+	- The parameters in this section are identical to those on the [Statements page](admin-ui-statements-page.html). -->
 - **Grants** displays the [grants](#grants-view) associated with the table.
 
 ## Grants view
