@@ -141,7 +141,7 @@ The following statements fail due to [limited support for schema changes within 
   BEGIN;
   SAVEPOINT cockroach_restart;
   CREATE INDEX foo_idx ON foo (id, name);
-  SELECT * from foo_idx;
+  SELECT * from foo@foo_idx;
   RELEASE SAVEPOINT cockroach_restart;
   COMMIT;
 ~~~
