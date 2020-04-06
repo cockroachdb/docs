@@ -4,7 +4,9 @@ summary: The Hardware dashboard lets you monitor CPU usage, disk throughput, net
 toc: true
 ---
 
-The **Hardware** dashboard lets you monitor CPU usage, disk throughput, network traffic, storage capacity, and memory. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and then select **Dashboard** > **Hardware**.
+The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory. 
+
+To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
@@ -86,9 +88,18 @@ For Mac OS, this graph is not populated and shows zero disk IOPS in progress. Th
 
 <img src="{{ 'images/v20.1/admin_ui_available_disk_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Disk Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the available storage capacity for the selected node.
+Metric | Description
+--------|--------
+**Available Disk Capacity** | Free disk space available to CockroachDB data on each node.
 
-- In the cluster view, the graph shows the available storage capacity across all nodes in the cluster.
+### Capacity metrics
+
+The **available** disk capacity equals the amount of empty disk space, up to the value of the maximum store size. The store size is determined as follows:
+
+- If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
+
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Available Disk Capacity** graph.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}

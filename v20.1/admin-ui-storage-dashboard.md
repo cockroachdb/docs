@@ -1,10 +1,12 @@
 ---
 title: Storage Dashboard
-summary: The Storage dashboard lets you monitor the storage utilization for your cluster.
+summary: The Storage dashboard lets you monitor the storage utilization of your cluster.
 toc: true
 ---
 
-The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Storage**.
+The **Storage** dashboard lets you monitor the storage utilization of your cluster. 
+
+To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
@@ -12,24 +14,44 @@ The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
+
 <img src="{{ 'images/v20.1/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Capacity** graph to determine when additional storage is needed.
-
-- In the node view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB for the selected node.
-
-- In the cluster view, the graph shows the maximum allocated capacity, available storage capacity, and capacity used by CockroachDB across all nodes in the cluster.
-
-On hovering over the graph, the values for the following metrics are displayed:
-
 Metric | Description
---------|----
-**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](cockroach-start.html#store).
-**Available** | The free storage capacity available to CockroachDB.
-**Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
+--------|--------
+**Capacity** | The maximum store size. This value may be set per node using [`--store`](cockroach-start.html#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
+**Available** | The free disk space available to CockroachDB data.
+**Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
+
+### Capacity metrics
+
+The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store](architecture/storage-layer.html) size, which is determined as follows:
+
+- If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
+
+The **available** capacity thus equals the amount of empty disk space, up to the value of the maximum store size. The **used** capacity refers only to disk space occupied by CockroachDB data, which resides in the store directory on each node.
+
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Capacity** graph.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
+{{site.data.alerts.end}}
+
+## Live Bytes
+
+The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB. 
+
+<img src="{{ 'images/v20.1/admin_ui_live_bytes.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+
+Metric | Description
+--------|--------
+**Live** | Number of logical bytes stored in live [key-value pairs](architecture/distribution-layer.html#table-data). Live data excludes historical and deleted data.
+**System** | Number of physical bytes stored in [system key-value pairs](architecture/distribution-layer.html#meta-ranges). This includes historical and deleted data that has not been [garbage collected](architecture/storage-layer.html#garbage-collection).
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/admin-ui/logical-bytes.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors
@@ -52,7 +74,6 @@ For Windows systems, you can ignore the File Descriptors graph because the conce
 
 The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
 
-- Live Bytes
 - Log Commit Latency
 - Command Commit Latency
 - Read Amplification
