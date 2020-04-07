@@ -38,7 +38,7 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
 {{site.data.alerts.callout_info}}
-If a schema change fails, the schema change job will be cleaned up automatically. However, there are problems with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
 ## Examples

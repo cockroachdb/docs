@@ -8,5 +8,5 @@ Within a single [transaction](transactions.html):
 - As of v19.1, some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
 
 {{site.data.alerts.callout_info}}
-If a schema change within a transaction fails, manual intervention may be needed to determine which has failed. After determining which scheme change(s) failed, you can then retry the schema changes.
+If a schema change within a transaction fails, manual intervention may be needed to determine which has failed. After determining which schema change(s) failed, you can then retry the schema changes.
 {{site.data.alerts.end}}

@@ -6,7 +6,7 @@ toc: true
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
-- All [schema changes](online-schema-changes.html)
+- Most [schema changes](online-schema-changes.html)
 - Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 - The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`.
@@ -21,6 +21,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 - For jobs older than 12 hours, query the `crdb_internal.jobs` table.
 - Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
+- <span class="version-tag">New in v20.1:</span> Garbage collection jobs are created for [dropped tables](drop-table.html) and [dropped indexes](drop-index.html), and will execute after the [GC TTL](configure-replication-zones.html#replication-zone-variables) has elapsed (default is 25 hours). These jobs cannot be canceled.
 
 ## Required privileges
 
@@ -139,7 +140,7 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
  27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
 ~~~
 
-<span class="version-tag">New in v20.1</span>: [Scheme change](online-schema-changes.html) jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
+<span class="version-tag">New in v20.1:</span> [Scheme change](online-schema-changes.html) jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
 ### Show job when complete
 
