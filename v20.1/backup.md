@@ -334,15 +334,6 @@ WITH encryption_passphrase = 'password123';
 (1 row)
 ~~~
 
-Encrypted file:
-
-~~~
-encrypt�H�"�o�"�������>�꣆"�$�hG��t~�8�/
-�����z��z�H�-X���/�k]{�2[�!��x�3��x|��mn
-3D�Or�9p6Oq2S�j�,��s���f6�_��.�kZ�/M��"zs���h�-6��0
-...
-~~~
-
 To [restore](restore.html), use the same `encryption_passphrase`:
 
 {% include copy-clipboard.html %}
