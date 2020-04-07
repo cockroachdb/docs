@@ -31,7 +31,7 @@ At a high level, online schema changes are accomplished by using a bridging stra
 
 1. A user initiates a schema change by executing [`ALTER TABLE`][alter-table], [`CREATE INDEX`][create-index], [`TRUNCATE`][truncate], etc.
 
-2. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs].
+2. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs], and can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
 This approach allows the schema change engine to roll out a new schema while the previous version is still in use. It then backfills or deletes the underlying table data as needed in the background, while the cluster is still running and servicing reads and writes from your application.
 
@@ -40,6 +40,10 @@ During the backfilling process, the schema change engine updates the underlying 
 Once backfilling is complete, all nodes will switch over to the new schema, and will allow reads and writes of the table using the new schema.
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
+
+{{site.data.alerts.callout_info}}
+If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+{{site.data.alerts.end}}
 
 ## Examples
 
@@ -112,6 +116,8 @@ You can check on the status of the schema change jobs on your system at any time
 +--------------------+---------------+-----------------------------------------------------------------------------+-----------+-----------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------+
 (1 row)
 ~~~
+
+All schema change jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
 ## Limitations
 
