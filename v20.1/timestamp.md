@@ -24,7 +24,7 @@ You can use the [`timezone()`](functions-and-operators.html#date-and-time-functi
 
 ## Best practices
 
-We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid setting a session time for your database.
+We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid [setting a session time zone offset](set-vars.html#set-time-zone) for your database.
 
 ## Aliases
 
@@ -72,9 +72,9 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 ## Precision
 
-<span class="version-tag">New in v20.1:</span> CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
+<span class="version-tag">New in v20.1:</span> CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIMESTAMPTZ` value as `TIMESTAMPTZ(3)` truncates the time component to milliseconds. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
 
-For example, specifying a `TIMESTAMP` value as `TIMESTAMP(3)` truncates the time component to milliseconds.
+You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 
 {{site.data.alerts.callout_info}}
 If you downgrade to a version of CockroachDB that does not support precision for `TIMESTAMP`/`TIMESTAMPTZ` values, all `TIMESTAMP`/`TIMESTAMPTZ` values previously specified with precision will be stored with full precision.
@@ -124,7 +124,7 @@ If you downgrade to a version of CockroachDB that does not support precision for
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP(4));
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP(3));
 ~~~
 
 {% include copy-clipboard.html %}
@@ -136,7 +136,7 @@ If you downgrade to a version of CockroachDB that does not support precision for
   column_name |  data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+--------------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8         |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMP(4) |    true     | NULL           |                       | {}        |   false
+  b           | TIMESTAMP(3) |    true     | NULL           |                       | {}        |   false
 (2 rows)
 ~~~
 
@@ -152,10 +152,74 @@ If you downgrade to a version of CockroachDB that does not support precision for
 
 ~~~
   a |               b
-----+---------------------------------
-  1 | 2020-03-25 12:00:00.1235+00:00
-  2 | 2020-03-26 04:00:00.1235+00:00
+----+--------------------------------
+  1 | 2020-03-25 12:00:00.123+00:00
+  2 | 2020-03-26 04:00:00.123+00:00
 (2 rows)
+~~~
+
+To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMP(4);
+~~~
+
+~~~
+ALTER TABLE
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM timestamps;
+~~~
+
+~~~
+  column_name |  data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+--------------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8         |    false    | NULL           |                       | {primary} |   false
+  b           | TIMESTAMP(4) |    true     | NULL           |                       | {}        |   false
+(2 rows)
+~~~
+
+When changing precision level, `TIMESTAMP` can be changed to `TIMESTAMPTZ`, and `TIMESTAMPTZ` can be changed to `TIMESTAMP`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMPTZ(5);
+~~~
+
+~~~
+ALTER TABLE
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM timestamps;
+~~~
+
+~~~
+  column_name |   data_type    | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+----------------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8           |    false    | NULL           |                       | {primary} |   false
+  b           | TIMESTAMPTZ(5) |    true     | NULL           |                       | {}        |   false
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+If a non-default precision level has already been specified, you cannot change the precision to a lower level.
+{{site.data.alerts.end}}
+
+In this case, the `b` column, which is of type `TIMESTAMPTZ(5)`, cannot be changed to a precision level below `5`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMPTZ(3);
+~~~
+
+~~~
+ERROR: unimplemented: type conversion from TIMESTAMPTZ(5) to TIMESTAMPTZ(3) requires overwriting existing values which is not yet implemented
+SQLSTATE: 0A000
 ~~~
 
 ## Supported casting and conversion
@@ -166,7 +230,7 @@ Type | Details
 -----|--------
 `DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`TIME` | Converts to the time portion (HH:MM:SS) of the timestamp
+`TIME` | Converts to the time portion (HH:MM:SS) of the timestamp.
 `INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `DATE` | --
 `STRING` | --
