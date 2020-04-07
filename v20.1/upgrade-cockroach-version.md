@@ -36,10 +36,10 @@ Before starting the upgrade, complete the following steps.
     - To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
     {{site.data.alerts.callout_info}}
-    For schema changes in particular, if any are still in progress when you start the upgrade, they will be automatically paused until the upgrade has been finalized and then automatically restarted and run to completion.
+    Once you start the upgrade, any schema changes still running will stop making progress, but `SHOW JOBS` and the **Jobs** page in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via `PAUSE JOB`/`RESUME JOB`/`CANCEL JOB` statements. Once the upgrade has been finalized, these schema changes will run to completion. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
     {{site.data.alerts.end}}
 
-4. During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references, no-op schema change statements that use `IF NOT EXISTS`, and schema changes running in the same [transaction](transactions.html) that created the table. Update your application or tooling to prevent disallowed schema changes during the upgrade process.
+4. During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 
 5. Capture the cluster's current state by running the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster. If the upgrade does not go according to plan, the captured details will help you and Cockroach Labs to troubleshoot the issues.
 
@@ -77,7 +77,7 @@ TBD
 For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
 {{site.data.alerts.callout_danger}}
-During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references, no-op schema change statements that use `IF NOT EXISTS`, and schema changes running in the same [transaction](transactions.html) that created the table. Be sure to update your application or tooling to prevent disallowed schema changes during the upgrade process.
+During the upgrade process, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Be sure to update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -230,7 +230,7 @@ Once you are satisfied with the new version:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-3. Update your application or tooling to re-enable schema changes that were disallowed during the upgrade process.
+3. Update your application or tooling to re-enable schema changes that were disallowed during the upgrade process. **Note that this applies only to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 
 ## Troubleshooting
 
