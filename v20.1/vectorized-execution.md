@@ -16,8 +16,7 @@ You can turn vectorized execution on or off for all queries in the current sessi
 
 Option | Description
 ----------|------------
-`auto` | Instructs CockroachDB to use the vectorized execution engine on all queries except those with unordered [`DISTINCT` subclauses](select-clause.html#eliminate-duplicate-rows) or the `percent_rank` or `cume_dist` [window functions](window-functions.html).<br><br>**Default:** `vectorize=auto`
-`192auto` | Instructs CockroachDB to use the vectorized execution engine on all queries and data types supported in version 19.2.<br><br>For more details, see [Known limitations in CockroachDB v19.2](../v19.2/vectorized-execution.html#known-limitations).
+`auto` | Instructs CockroachDB to use the vectorized execution engine on all queries except those with unordered [`DISTINCT` subclauses](select-clause.html#eliminate-duplicate-rows), the `percent_rank` or `cume_dist` [window functions](window-functions.html), and [disk-spilling operations](#disk-spilling-operations).<br><br>**Default:** `vectorize=auto`
 `on` | Turns on vectorized execution for all queries. We do not recommend using this option in production environments.
 `off` | Turns off vectorized execution for all queries.
 
@@ -48,6 +47,8 @@ For information about vectorized execution in the context of the CockroachDB arc
 For detailed examples of vectorized query execution for hash and merge joins, see the blog posts [40x faster hash joiner with vectorized execution](https://www.cockroachlabs.com/blog/vectorized-hash-joiner/) and [Vectorizing the merge joiner in CockroachDB](https://www.cockroachlabs.com/blog/vectorizing-the-merge-joiner-in-cockroachdb/).
 
 ## Disk-spilling operations
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports vectorized execution for disk-spilling operations. By default, vectorized execution is disabled for disk-spilling operations. To turn on vectorized execution for disk-spilling operations, set the `vectorize` [session variable](set-vars.html) is set to `on`.
 
 Global sorts and merge and hash joins are memory-intensive operations. If there is not enough memory allocated for a sort or a join, CockroachDB will spill intermediate execution results to disk. By default, the limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
 

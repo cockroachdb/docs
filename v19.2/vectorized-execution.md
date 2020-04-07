@@ -16,8 +16,8 @@ You can turn vectorized execution on or off for all queries in the current sessi
 
 Option | Description
 ----------|------------
-`auto` | Instructs CockroachDB to use the vectorized execution engine on queries that always execute in memory, without the need to spill intermediate results to disk.<br><br>**Default:** `vectorize=auto`
-`experimental_on` | Turns on vectorized execution for all queries. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known Limitations](#known-limitations) for more information.
+`auto` | Instructs CockroachDB to use the vectorized execution engine on most queries that execute in memory, without the need to spill intermediate results to disk. See [Known limitations](#known-limitations) for more information.<br><br>**Default:** `vectorize=auto`
+`experimental_on` | Turns on vectorized execution for all queries. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known limitations](#known-limitations) for more information.
 `off` | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
@@ -82,7 +82,7 @@ Support for vectorized execution is experimental for the following memory-intens
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-You can configure a node's total budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If the queries running on the node exceed the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity. If the maximum on-disk storage capacity is reached, the query will return an error during execution.
+Executing these queries with the vectorized execution engine (i.e., with the `vectorize` [session variable](set-vars.html) set to `experimental_on`) can cause CockroachDB nodes to run out of memory and crash.
 
 ## See also
 
