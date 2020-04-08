@@ -84,7 +84,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
     Another exception is the [fast path delete optimization](#fast-path-deletes), which is available if you set up your tables according to certain criteria.
 
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-variables) (64MB by default), the interleaved optimizations will be diminished.
+- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-variables) (512 MiB by default), the interleaved optimizations will be diminished.
 
     For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 

@@ -59,7 +59,7 @@ CockroachDB starts running on machines with two commands:
 
 Once the `cockroach` process is running, developers interact with CockroachDB through a SQL API, which we've modeled after PostgreSQL. Thanks to the symmetrical behavior of all nodes, you can send SQL requests to any of them; this makes CockroachDB really easy to integrate with load balancers.
 
-After receiving SQL RPCs, nodes convert them into operations that work with our distributed key-value store. As these RPCs start filling your cluster with data, CockroachDB algorithmically starts distributing your data among your nodes, breaking the data up into 64MiB chunks that we call ranges. Each range is replicated to at least 3 nodes to ensure survivability. This way, if nodes go down, you still have copies of the data which can be used for reads and writes, as well as replicating the data to other nodes.
+After receiving SQL RPCs, nodes convert them into operations that work with our distributed key-value store. As these RPCs start filling your cluster with data, CockroachDB algorithmically starts distributing your data among your nodes, breaking the data up into 512 MiB chunks that we call ranges. Each range is replicated to at least 3 nodes to ensure survivability. This way, if nodes go down, you still have copies of the data which can be used for reads and writes, as well as replicating the data to other nodes.
 
 If a node receives a read or write request it cannot directly serve, it simply finds the node that can handle the request, and communicates with it. This way you do not need to know where your data lives, CockroachDB tracks it for you, and enables symmetric behavior for each node.
 

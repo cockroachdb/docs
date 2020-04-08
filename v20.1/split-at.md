@@ -31,7 +31,7 @@ The user must have the `INSERT` [privilege](authorization.html#assign-privileges
 ## Why manually split a range?
 
 CockroachDB breaks data into ranges. By default, CockroachDB attempts to keep ranges below
-a size of 64MiB. To do this, the system will automatically [split](architecture/distribution-layer.html#range-splits)
+a size of 512 MiB. To do this, the system will automatically [split](architecture/distribution-layer.html#range-splits)
 a range if it grows larger than this limit. For most use cases, this automatic
 range splitting is sufficient, and you should never need to worry about
 when or where the system decides to split ranges.
