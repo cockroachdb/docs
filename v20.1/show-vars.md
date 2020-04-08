@@ -68,14 +68,14 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
-                  variable                 |                  value
--------------------------------------------+-------------------------------------------
-  application_name                         | $ cockroach sql
+                  variable                 |                                                      value
+-------------------------------------------+------------------------------------------------------------------------------------------------------------------
+  application_name                         | $ cockroach demo
   bytea_output                             | hex
   client_encoding                          | UTF8
   client_min_messages                      | notice
   crdb_version                             | CockroachDB OSS v20.1.0
-  database                                 | defaultdb
+  database                                 | movr
   datestyle                                | ISO, MDY
   default_int_size                         | 8
   default_tablespace                       |
@@ -87,7 +87,6 @@ Special syntax cases supported for compatibility:
   enable_zigzag_join                       | on
   experimental_enable_hash_sharded_indexes | off
   experimental_enable_temp_tables          | off
-  experimental_optimizer_foreign_keys      | on
   experimental_serial_normalization        | rowid
   extra_float_digits                       | 2
   force_savepoint_restart                  | off
@@ -100,6 +99,7 @@ Special syntax cases supported for compatibility:
   max_index_keys                           | 32
   node_id                                  | 1
   optimizer                                | on
+  optimizer_foreign_keys                   | on
   reorder_joins_limit                      | 4
   require_explicit_primary_keys            | off
   results_buffer_size                      | 16384
@@ -108,7 +108,7 @@ Special syntax cases supported for compatibility:
   server_encoding                          | UTF8
   server_version                           | 9.5.0
   server_version_num                       | 90500
-  session_id                               | 15fb05bc954327500000000000000001
+  session_id                               | 16016feed4d6ae800000000000000001
   session_user                             | root
   sql_safe_updates                         | on
   standard_conforming_strings              | on
