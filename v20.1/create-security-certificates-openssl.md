@@ -68,20 +68,16 @@ Note the following:
 
 ## Examples
 
-### Create the CA key and certificate pair
+### Step 1. Create the CA key and certificate pair
 
-1. Create two directories:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
+1. Create three directories:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mkdir my-safe-directory
+    $ mkdir node-certs client-certs my-safe-directory
     ~~~
-    - `certs`: Create your CA certificate and all node and client certificates and keys in this directory and then upload the relevant files to the nodes and clients.
+    - `node-certs`: Create your CA certificate and all node certificates and keys in this directory and then upload the relevant files to the nodes.
+    - `client-certs`: Copy your CA certificate to this folder and create all client certificates and keys in this directory and then upload the relevant files to the clients.
     - `my-safe-directory`: Create your CA key in this directory and then reference the key when generating node and client certificates. After that, keep the key safe and secret; do not upload it to your nodes or clients.
 
 2. Create the `ca.cnf` file and copy the following configuration into it.
@@ -154,7 +150,7 @@ Note the following:
     -x509 \
     -config ca.cnf \
     -key my-safe-directory/ca.key \
-    -out certs/ca.crt \
+    -out node-certs/ca.crt \
     -days 3660 \
     -batch
     ~~~
@@ -174,7 +170,7 @@ Note the following:
     $ echo '01' > serial.txt
     ~~~
 
-### Create the certificate and key pairs for nodes
+### Step 2. Create the certificate and key pairs for nodes
 
 In the following steps, replace the placeholder text in the code with the actual username and node address.
 
@@ -190,24 +186,23 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
-    # Required value for commonName, do not change.
-    commonName = node
+    commonName = DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
 
     [ extensions ]
     subjectAltName = DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. It is also required that <code>commonName</code> be set to <code>node</code>. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
 
 2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out certs/node.key 2048
+    $ openssl genrsa -out node-certs/node.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 certs/node.key
+    $ chmod 400 node-certs/node.key
     ~~~
 
 3. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -217,7 +212,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config node.cnf \
-    -key certs/node.key \
+    -key node-certs/node.key \
     -out node.csr \
     -batch
     ~~~
@@ -231,11 +226,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
-    -cert certs/ca.crt \
+    -cert node-certs/ca.crt \
     -policy signing_policy \
     -extensions signing_node_req \
-    -out certs/node.crt \
-    -outdir certs/ \
+    -out node-certs/node.crt \
+    -outdir node-certs/ \
     -in node.csr \
     -days 1830 \
     -batch
@@ -245,35 +240,42 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ssh <username>@<node1 address> "mkdir certs"
+    $ ssh <username>@<node1 address> "mkdir node-certs"
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ scp certs/ca.crt \
-    certs/node.crt \
-    certs/node.key \
-    <username>@<node1 address>:~/certs
+    $ scp node-certs/ca.crt \
+    node-certs/node.crt \
+    Node-certs/node.key \
+    <username>@<node1 address>:~/node-certs
     ~~~
 
 6. Delete the local copy of the first node's certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ rm certs/node.crt certs/node.key
+    $ rm node-certs/node.crt node-certs/node.key
     ~~~
 
     {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code>.{{site.data.alerts.end}}
 
 7. Repeat steps 1 - 6 for each additional node.
 
-8. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+8. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-### Create the certificate and key pair for a client
+### Step 3. Create the certificate and key pair for a client
 
 In the following steps, replace the placeholder text in the code with the actual username.
 
-1. Create the `client.cnf` file for the first client and copy the following configuration into it:
+1. Copy the `ca.crt` from the `node-certs` directory to the `client-certs` directory
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp node-certs/ca.crt client-certs
+    ~~~
+
+2. Create the `client.cnf` file for the first client and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -286,17 +288,17 @@ In the following steps, replace the placeholder text in the code with the actual
     commonName = <username>
     ~~~
 
-    {{site.data.alerts.callout_info}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
 
 2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out certs/client.<username>.key 2048
+    $ openssl genrsa -out client-certs/client.<username>.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 certs/client.<username>.key
+    $ chmod 400 client-certs/client.<username>.key
     ~~~
 
 3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -306,7 +308,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config client.cnf \
-    -key certs/client.<username>.key \
+    -key client-certs/client.<username>.key \
     -out client.<username>.csr \
     -batch
     ~~~
@@ -318,11 +320,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
-    -cert certs/ca.crt \
+    -cert client-certs/ca.crt \
     -policy signing_policy \
     -extensions signing_client_req \
-    -out certs/client.<username>.crt \
-    -outdir certs/ \
+    -out client-certs/client.<username>.crt \
+    -outdir client-certs/ \
     -in client.<username>.csr \
     -days 1830 \
     -batch
@@ -332,7 +334,23 @@ In the following steps, replace the placeholder text in the code with the actual
 
 6. Repeat steps 1 - 5 for each additional client.
 
-7. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+
+### Step 4. Start a local cluster and connect using the SQL client
+
+1. Start a single-node cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=node.crdb.io:node --background
+    ~~~
+
+2. Connect to the cluster using the built-in SQL client:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=client-certs
+    ~~~
 
 ## See also
 
