@@ -61,6 +61,12 @@
       "urls": [
         "/advisories/index.html"
       ]
+    },
+    {
+      "title": "EOL/EOSL Policy",
+      "urls": [
+        "/releases/eol-policy.html"
+      ]
     }
   ]
 }
