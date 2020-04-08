@@ -140,7 +140,7 @@ Lookup joins are performed on two tables as follows:
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
-The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
 ## `LATERAL` joins
 
