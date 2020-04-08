@@ -8,6 +8,10 @@ toc: true
 
 Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
 
+{{site.data.alerts.callout_success}}
+CockroachDB does not support vectorized execution for all data types. For details, see [supported data types](#supported-data-types).
+{{site.data.alerts.end}}
+
 ## Configuring vectorized execution
 
 By default, vectorized execution is enabled in CockroachDB for [all queries that are guaranteed to execute in memory](#disk-spilling-operations), on tables with [supported data types](#supported-data-types).
@@ -16,11 +20,15 @@ You can turn vectorized execution on or off for all queries in the current sessi
 
 Option | Description
 ----------|------------
-`auto` | Instructs CockroachDB to use the vectorized execution engine on most queries that execute in memory, without the need to spill intermediate results to disk. See [Known limitations](#known-limitations) for more information.<br><br>**Default:** `vectorize=auto`
+`auto` | Instructs CockroachDB to use the vectorized execution engine on most queries that execute in memory, without the need to spill intermediate results to disk. See [Disk-spilling operations](#disk-spilling-operations) for more information.<br><br>**Default:** `vectorize=auto`
 `experimental_on` | Turns on vectorized execution for all queries. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known limitations](#known-limitations) for more information.
 `off` | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
+
+{{site.data.alerts.callout_success}}
+CockroachDB supports vectorized execution on columns with [supported data types](#supported-data-types) only. Setting the `vectorize` session variable to `on` does not turn vectorized execution on for queries on columns with unsupported data types.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 To see if CockroachDB will use the vectorized execution engine for a query, run a simple [`EXPLAIN`](explain.html) statement on the query. If `vectorize` is `true`, the query will be executed with the vectorized engine. If it is `false`, the row-oriented execution engine is used instead.
