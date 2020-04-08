@@ -21,7 +21,7 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 Parameter | Description
 ----------|------------
 `location` | The location of the backup to inspect. For more details, see [Backup File URLs](backup.html#backup-file-urls).
-`WITH privileges` | List which users and roles had which privileges on each database and table in the backup.
+`WITH privileges` | <span class="version-tag">New in v20.1:</span> List which users and roles had which privileges on each database and table in the backup.
 
 ## Response
 
@@ -35,7 +35,7 @@ Field | Description
 `end_time` | The time at which the backup was completed.
 `size_bytes` | The size of the backup, in bytes.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
-`is_full_cluster` | Whether the backup is of a full cluster or not.
+`is_full_cluster` | <span class="version-tag">New in v20.1:</span> Whether the backup is of a full cluster or not.
 
 ## Example
 
@@ -108,6 +108,8 @@ You can add number of rows and the schema of the backed up table.
 ~~~
 
 ### Show a backup with privileges
+
+<span class="version-tag">New in v20.1:</span>  To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [parameter](#parameters):
 
 {% include copy-clipboard.html %}
 ~~~ sql
