@@ -12,6 +12,10 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create ful
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
+{{site.data.alerts.callout_info}}
+To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+{{site.data.alerts.end}}
+
 ## Functional details
 
 ### Backup targets
@@ -356,6 +360,7 @@ WITH encryption_passphrase = 'password123';
 
 ## See also
 
+- [`SHOW BACKUP`](show-backup.html)
 - [`RESTORE`](restore.html)
 - [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
