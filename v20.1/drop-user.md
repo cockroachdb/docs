@@ -12,9 +12,7 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 
 ## Required privileges
 
-The user must have the `DELETE` [privilege](authorization.html#assign-privileges) on the `system.users` table.
-
-To drop other non-admin users, the user must have the [`createrole`](create-user.html#allow-the-user-to-create-other-users) parameter set.
+<span class="version-tag">New in v20.1:</span> To drop other non-admin users, the user must have the [`CREATEROLE`](create-user.html#allow-the-user-to-create-other-users) parameter set.
 
 ## Synopsis
 
