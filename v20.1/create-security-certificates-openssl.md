@@ -115,7 +115,7 @@ Note the following:
     # Common policy for nodes and users.
     [ signing_policy ]
     organizationName = supplied
-    commonName = supplied
+    commonName = optional
 
     # Used to sign node certificates.
     [ signing_node_req ]
@@ -186,13 +186,12 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
-    commonName = DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
 
     [ extensions ]
-    subjectAltName = DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
+    subjectAltName = critical,DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>subjectAltName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>subjectAltName</code> parameter.  {{site.data.alerts.end}}
 
 2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -264,9 +263,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 8. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-### Step 3. Create the certificate and key pair for a client
-
-In the following steps, replace the placeholder text in the code with the actual username.
+### Step 3. Create the certificate and key pair for the `root` user
 
 1. Copy the `ca.crt` from the `node-certs` directory to the `client-certs` directory
 
@@ -275,7 +272,100 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cp node-certs/ca.crt client-certs
     ~~~
 
-2. Create the `client.cnf` file for the first client and copy the following configuration into it:
+2. Create the `client.cnf` file for the `root` user and copy the following configuration into it:
+
+    {% include copy-clipboard.html %}
+    ~~~
+    [ req ]
+    prompt=no
+    distinguished_name = distinguished_name
+
+    [ distinguished_name ]
+    organizationName = Cockroach
+    commonName = root
+    ~~~
+
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
+
+2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl genrsa -out client-certs/client.root.key 2048
+    ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ chmod 400 client-certs/client.root.key
+    ~~~
+
+3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl req \
+    -new \
+    -config client.cnf \
+    -key client-certs/client.root.key \
+    -out client.root.csr \
+    -batch
+    ~~~
+
+4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl ca \
+    -config ca.cnf \
+    -keyfile my-safe-directory/ca.key \
+    -cert client-certs/ca.crt \
+    -policy signing_policy \
+    -extensions signing_client_req \
+    -out client-certs/client.root.crt \
+    -outdir client-certs/ \
+    -in client.root.csr \
+    -days 1830 \
+    -batch
+    ~~~    
+
+5. Upload certificates to the first client using your preferred method.
+
+6. Repeat steps 1 - 5 for each additional client.
+
+7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+
+### Step 4. Start a local cluster and connect using the SQL client
+
+1. Start a single-node cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node --background
+    ~~~
+
+2. Connect to the cluster using the built-in SQL client:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=client-certs
+    ~~~
+
+3. Create a SQL user:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > create user <username>;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+
+### Step 5. Create the certificate and key pair for a client
+
+In the following steps, replace the placeholder text in the code with the actual username.
+
+1. Create the `client.cnf` file for the client and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -335,22 +425,6 @@ In the following steps, replace the placeholder text in the code with the actual
 6. Repeat steps 1 - 5 for each additional client.
 
 7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
-
-### Step 4. Start a local cluster and connect using the SQL client
-
-1. Start a single-node cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node --background
-    ~~~
-
-2. Connect to the cluster using the built-in SQL client:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --certs-dir=client-certs
-    ~~~
 
 ## See also
 
