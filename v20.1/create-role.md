@@ -15,7 +15,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 - Role names:
     - Are case-insensitive
     - Must start with either a letter or underscore
-    - Must contain only letters, numbers, or underscores
+    - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
 - After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
@@ -37,7 +37,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 | Parameter | Description |
 ------------|--------------
-`name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
+`name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
 `VALID UNTIL` | <span class="version-tag">New in v20.1:</span>  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
 `LOGIN`/`NOLOGIN` | <span class="version-tag">New in v20.1:</span> Allow or disallow a role to login with one of the [client authentication methods](authentication.html#client-authentication). <br><br>By default, the parameter is set to `nologin` for the `CREATE ROLE` statement.
