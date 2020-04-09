@@ -23,9 +23,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
-
-To create other users, the user must have the [`createrole`](#allow-the-user-to-create-other-users) parameter set.
+<span class="version-tag">New in v20.1:</span> To create other users, the user must have the [`CREATEROLE`](#allow-the-user-to-create-other-users) parameter set.
 
 ## Synopsis
 
@@ -43,9 +41,9 @@ table td:first-child {
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 `password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters.
-`valid until` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`login`/`nologin` | The `login` parameter allows a user to login with one of the [user authentication methods](#user-authentication). [Setting the parameter to `nologin`](#set-login-privileges-for-a-user) prevents the user from logging in using any authentication method. <br><br>By default, the parameter is set to `login` for the `CREATE USER` statement.
-`createrole`/`nocreaterole` | Allow or disallow the new user to create, alter, and drop other users. <br><br>By default, the parameter is set to `nocreaterole` for all non-admin and non-root users.
+`VALID UNTIL` | <span class="version-tag">New in v20.1:</span> The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`LOGIN`/`NOLOGIN` | <span class="version-tag">New in v20.1:</span> The `LOGIN` parameter allows a user to login with one of the [user authentication methods](#user-authentication). [Setting the parameter to `NOLOGIN`](#set-login-privileges-for-a-user) prevents the user from logging in using any authentication method. <br><br>By default, the parameter is set to `LOGIN` for the `CREATE USER` statement.
+`CREATEROLE`/`NOCREATEROLE` | <span class="version-tag">New in v20.1:</span> Allow or disallow the new user to create, alter, and drop other users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin and non-root users.
 
 ## User authentication
 
@@ -102,7 +100,7 @@ The following statement sets the date and time after which the password is not v
 
 ### Manage users
 
-After creating a user, you can use the [`ALTER USER`](alter-user.html) statement to add or change the user's password and the [`DROP USER`](drop-user.html) statement to the remove users.
+After creating a user, you can use the [`ALTER USER`](alter-user.html) statement to add or change the user's password, update role options, and the [`DROP USER`](drop-user.html) statement to the remove users.
 
 ### Authenticate as a specific user
 

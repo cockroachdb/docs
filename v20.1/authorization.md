@@ -17,7 +17,7 @@ A SQL user can interact with a CockroachDB database using the [built-in SQL shel
 
 ### Create and manage users
 
-Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password, the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
+Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
 
 A new user must be granted the required privileges for each database and table that the user needs to access.
 
@@ -28,7 +28,7 @@ By default, a new user belongs to the `public` role and has no privileges other 
 ### `root` user
 The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
 
-For secure clusters, in addition to [generating the client certificate](authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement. 
+For secure clusters, in addition to [generating the client certificate](authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement.
 
 ## Roles
 

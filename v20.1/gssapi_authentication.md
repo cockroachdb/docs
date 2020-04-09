@@ -143,7 +143,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     ~~~
 
       Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) cluster setting to this particular value makes it mandatory for all non-`root` users to authenticate using GSSAPI. The `root` user is always an exception and remains able to authenticate using a valid client cert or a user password.
-      
+
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
       The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
