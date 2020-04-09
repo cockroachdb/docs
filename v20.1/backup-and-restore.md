@@ -1,67 +1,96 @@
 ---
 title: Back up and Restore Data
-summary: Learn how to back up and restore a CockroachDB database.
+summary: Learn how to back up and restore a CockroachDB cluster.
 toc: true
 redirect_from:
 - back-up-data.html
 - restore-data.html
 ---
 
-Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.
+Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
-Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to back up and restore your cluster's data: Enterprise and Core.
+Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
 
 ## Perform Enterprise backup and restore
 
 If you have an [Enterprise license](enterprise-licensing.html), you can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
 
-### Manual full backups
+{{site.data.alerts.callout_success}}
+We recommend [automating daily backups of your cluster](#automated-full-and-incremental-backups). To automate backups, you must have a client send the `BACKUP` statement to the cluster. Once the backup is complete, your client will receive a `BACKUP` response.
+{{site.data.alerts.end}}
 
-In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of your cluster:
+### Full backups
+
+In most cases, **it's recommended to take full nightly backups of your cluster**. A full cluster backup allows you to do the following:
+
+- Restore table(s) from the cluster
+- Restore database(s) from the cluster
+- Restore a full cluster
+
+To do a full cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO '<full_backup_location>';
+> BACKUP TO '<backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster:
+If it's ever necessary, you can use the [`RESTORE`] statement to restore a table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '<full_backup_location>';
+> RESTORE TABLE bank.customers FROM '<backup_location>';
 ~~~
 
-### Manual full and incremental backups
+Or to restore a  database:
 
-If your cluster increases to a size where it is no longer feasible to take nightly full backups, you might want to consider taking periodic full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE bank FROM '<backup_location>';
+~~~
+
+Or to restore your full cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM '<backup_location>';
+~~~
+
+{{site.data.alerts.callout_info}}
+A full cluster restore can only be run on a target cluster that has _never_ had user-created databases or tables.
+{{site.data.alerts.end}}
+
+### Full and incremental backups
+
+If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO '<full_backup_location>';
+> BACKUP TO '<backup_location>';
 ~~~
 
-Then create nightly incremental backups based off of the full backups you've already created.
+Then, create nightly incremental backups based off of the full backups you've already created. If you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup in a subdirectory:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO '<incremental_backup_location>'
-    INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
+> BACKUP TO '<backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
-~~~
-
-{{site.data.alerts.callout_success}}
-[Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups.
+{{site.data.alerts.callout_info}}
+For an example on how to specify the destination of an incremental backup, see [Backup and Restore - Advanced Options](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations)
 {{site.data.alerts.end}}
 
-### Automated full and incremental backups
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the automatically appended incremental backups (that are stored as subdirectories, like in the example above):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM '<backup_location>';
+~~~
+
+### Examples
+
+#### Automated full and incremental backups
 
 You can automate your backups using scripts and your preferred method of automation, such as cron jobs.
 
@@ -148,64 +177,28 @@ In the sample script, configure the day of the week for which you want to create
 If you miss an incremental backup, delete the `recent_backups.txt` file and run the script. It'll take a full backup for that day and incremental backups for subsequent days.
 {{site.data.alerts.end}}
 
-### Locality-aware backup and restore
+#### Advanced examples
 
-You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](cockroach-start.html).
-
-This is useful for:
-
-- Reducing cloud storage data transfer costs by keeping data within cloud regions.
-- Helping you comply with data domiciling requirements.
-
-#### How it works
-
-A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. Given a list of URIs that together contain the locations of all of the files for a single locality-aware backup, [`RESTORE`][restore] can read in that backup.
-
-During locality-aware backups, backup file placement is determined by leaseholder placement, as each node is responsible for backing up the ranges for which it is the leaseholder.  Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy.  If there is no match, the `default` locality is used.
-
-{{site.data.alerts.callout_info}}
-The list of URIs passed to [`RESTORE`][restore] may be different from the URIs originally passed to [`BACKUP`][backup]. This is because the files of a locality-aware backup can be moved to different locations, or even consolidated into the same location. The only restriction is that all the files originally written to the same location must remain together. In order for [`RESTORE`][restore] to succeed, all of the files originally written during [`BACKUP`][backup] must be accounted for in the list of location URIs provided.
-{{site.data.alerts.end}}
-
-#### Usage
-
-For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
-
-{% include copy-clipboard.html %}
-~~~ sql
-BACKUP TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
-~~~
-
-To restore the backup created above, run the statement below. Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
-
-{% include copy-clipboard.html %}
-~~~ sql
-RESTORE FROM ('s3://us-east-bucket', 's3://us-west-bucket');
-~~~
-
-A list of multiple URIs (surrounded by parentheses) specifying a locality-aware backup can also be used in place of any incremental backup URI in [`RESTORE`][restore]. If the original backup was an incremental backup, it can be restored using:
-
-{% include copy-clipboard.html %}
-~~~ sql
-RESTORE FROM 's3://other-full-backup-uri', ('s3://us-east-bucket', 's3://us-west-bucket');
-~~~
-
-For more detailed examples, see [Create locality-aware backups](backup.html#create-locality-aware-backups) and [Restore from a locality-aware backup based on node locality](restore.html#restore-from-a-locality-aware-backup).
-
-{{site.data.alerts.callout_info}}
-The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 ## Perform Core backup and restore
 
-If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
+If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (e.g., `backup.sql`):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore a database from a core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
+To restore a database from a core backup, use the [`IMPORT PGDUMP`](import.html#import-a-cockroachdb-dump-file) statement:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --execute="IMPORT PGDUMP 's3://your-external-storage/backup.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'" \
+ <flags>
+~~~
+
+You can also [use the `cockroach sql` command](cockroach-dump.html#restore-a-table-from-a-backup-file) to execute the [`CREATE  TABLE`](create-table.html) and [`INSERT`](insert.html) statements in the backup file:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -213,11 +206,12 @@ $ cockroach sql --database=[database name] < backup.sql
 ~~~
 
 {{site.data.alerts.callout_success}}
-If you created a backup from another database and want to import it into CockroachDB, see [Import data](import-data.html).
+If you created a backup from another database and want to import it into CockroachDB, see the [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 ## See also
 
+- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
 - [`SQL DUMP`](cockroach-dump.html)
