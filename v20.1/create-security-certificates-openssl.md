@@ -342,7 +342,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=node.crdb.io:node --background
+    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node --background
     ~~~
 
 2. Connect to the cluster using the built-in SQL client:
