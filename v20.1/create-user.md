@@ -15,7 +15,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 - Usernames:
     - Are case-insensitive
     - Must start with a letter, number, or underscore
-    - Must contain only letters, numbers, or underscores
+    - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
@@ -63,7 +63,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 ### Create a user
 
-Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
 {% include copy-clipboard.html %}
 ~~~ sql

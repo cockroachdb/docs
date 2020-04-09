@@ -18,7 +18,7 @@ The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databa
 
 ## Required privileges
 
-The role must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the `system.users` table.
+The role must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 
