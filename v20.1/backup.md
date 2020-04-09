@@ -12,6 +12,10 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create ful
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
+{{site.data.alerts.callout_info}}
+To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+{{site.data.alerts.end}}
+
 ## Functional details
 
 ### Backup targets
@@ -100,12 +104,17 @@ Once the backup is complete, your client will receive a `BACKUP` response.
 
 ## Viewing and controlling backups jobs
 
-After CockroachDB successfully initiates a backup, it registers the backup as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates a backup, it registers the backup as a job, and you can do the following:
 
-After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+- View the backup status with [`SHOW JOBS`](show-jobs.html)
+- Pause the backup with [`PAUSE JOB`](pause-job.html)
+- Resume the backup with [`RESUME JOB`](resume-job.html)
+- Cancel the backup [`CANCEL JOB`](cancel-job.html)
+
+The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-If initiated correctly, the statement returns when the backup is finished or if it encounters an error. In some cases, the backup can continue after an error has been returned (the error message will tell you that the backup has resumed in background).
+The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -351,6 +360,7 @@ WITH encryption_passphrase = 'password123';
 
 ## See also
 
+- [`SHOW BACKUP`](show-backup.html)
 - [`RESTORE`](restore.html)
 - [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
