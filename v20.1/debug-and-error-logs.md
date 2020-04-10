@@ -52,9 +52,7 @@ Based on the command's flags and the message's [severity level](#severity-levels
 
 #### Write to file
 
-CockroachDB can write messages to a log file `cockroach.log`. 
-
-Each node also has its own log file, which is named using the following format:
+CockroachDB can write messages to log files. The files are named using the following format:
 
 ~~~
 cockroach.[host].[user].[start timestamp in UTC].[process ID].log
@@ -65,6 +63,8 @@ For example:
 ~~~
 cockroach.richards-mbp.rloveland.2018-03-15T15_24_10Z.024338.log
 ~~~
+
+To make it easier to watch a log without knowing the full filename, a [symlink](https://en.wikipedia.org/wiki/Symbolic_link) with the short filename `cockroach.log` is also created. This symlink points to the most recent log.
 
 {{site.data.alerts.callout_info}}
 All log file timestamps are in UTC because CockroachDB is designed to be deployed in a distributed cluster.  Nodes may be located in different time zones, and using UTC makes it easy to correlate log messages from those nodes no matter where they are located.

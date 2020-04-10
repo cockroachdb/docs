@@ -22,7 +22,7 @@ For production clusters, the best way to log all queries is to turn on the [clus
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
 
-With this setting on, each node of the cluster writes all SQL queries it executes to a secondary log file `cockroach-sql-exec.log`. When you no longer need to log queries, you can turn the setting back off:
+With this setting on, each node of the cluster writes all SQL queries it executes to a secondary `cockroach-sql-exec` log file. Use the symlink `cockroach-sql-exec.log` to open the most recent log. When you no longer need to log queries, you can turn the setting back off:
 
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
@@ -34,7 +34,7 @@ Another useful cluster setting is `sql.log.slow_query.latency_threshold`, which 
 > SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
 ~~~
 
-Each node that serves as a gateway will then record slow SQL queries to a `cockroach-sql-slow` log file. For more details on logging slow queries, see [Slow query log](query-behavior-troubleshooting.html#slow-query-log).
+Each node that serves as a gateway will then record slow SQL queries to a `cockroach-sql-slow` log file. Use the symlink `cockroach-sql-slow.log` to open the most recent log. For more details on logging slow queries, see [Slow query log](query-behavior-troubleshooting.html#slow-query-log).
 
 Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
