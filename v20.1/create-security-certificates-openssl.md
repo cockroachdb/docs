@@ -463,7 +463,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=client-certs --user=roach
+    $ cockroach sql --certs-dir=client-certs --user=<username>
     ~~~
 
 8. Repeat steps 1 - 7 for each additional client.
