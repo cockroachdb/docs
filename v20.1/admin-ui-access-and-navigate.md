@@ -80,7 +80,7 @@ The **Summary** panel provides the following metrics:
 Metric | Description
 --------|----
 Total Nodes | The total number of nodes in the cluster. <a href='admin-ui-cluster-overview-page.html#decommissioned-nodes'>Decommissioned nodes</a> are not included in the Total Nodes count. <br><br>You can further drill down into the nodes details by clicking on [**View nodes list**](admin-ui-cluster-overview-page.html#node-list).
-Dead Nodes | The number of [dead nodes](admin-ui-cluster-overview-page.html#dead-nodes) in the cluster.
+Dead Nodes | The number of dead nodes in the cluster.
 Capacity Used | The storage capacity used as a percentage of total storage capacity allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second across the cluster.
