@@ -7,7 +7,7 @@ toc: true
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
 {{site.data.alerts.end}}
 
-The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html), view SQL statement [details](#statement-details), and download SQL statement [diagnostics](#diagnostics) for troubleshooting.
+The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html), view SQL statement [details](#statement-details-page), and download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** in the left-hand navigation.
 
@@ -74,7 +74,7 @@ Retries | Cumulative number of [retries](transactions.html#transaction-retries) 
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
 Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
-Diagnostics | <span class="version-tag">New in v20.1:</span> Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
+Diagnostics | <span class="version-tag">New in v20.1:</span> Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
 
 ## Statement Details page
 
@@ -110,7 +110,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 The **Diagnostics** section of the Statement Details page allows you to activate and view diagnostics for the SQL statement fingerprint.
 
-When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement. 
+When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement, a physical query plan, execution statistics, and other information about the query. For more details on the contents, see [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html).
 
 {{site.data.alerts.callout_success}}
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
