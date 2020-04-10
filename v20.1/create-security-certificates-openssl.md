@@ -155,7 +155,7 @@ Note the following:
     -batch
     ~~~
 
-5. Reset database and index files.
+6. Reset database and index files.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -235,7 +235,20 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-5. Upload certificates to the first node:
+5. Verify the values in the `Subject Alternative Name` field in the certificate:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl x509 -in node-certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
+    ~~~
+
+    Example output:
+    ~~~
+    X509v3 Subject Alternative Name: critical
+                DNS:localhost, DNS:node.example.io, IP Address:127.0.0.1
+    ~~~
+
+6. Upload certificates to the first node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -250,7 +263,7 @@ In the following steps, replace the placeholder text in the code with the actual
     <username>@<node1 address>:~/node-certs
     ~~~
 
-6. Delete the local copy of the first node's certificate and key:
+7. Delete the local copy of the first node's certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -259,9 +272,9 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code>.{{site.data.alerts.end}}
 
-7. Repeat steps 1 - 6 for each additional node.
+8. Repeat steps 1 - 6 for each additional node.
 
-8. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+9. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ### Step 3. Create the certificate and key pair for the `root` user
 
@@ -287,7 +300,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
 
-2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+3. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -298,7 +311,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 client-certs/client.root.key
     ~~~
 
-3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+4. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -310,7 +323,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
+5. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -327,9 +340,19 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~    
 
-5. Upload certificates to the first client using your preferred method.
+6. Verify the values in the `CN` field in the certificate:
 
-6. Repeat steps 1 - 5 for each additional client.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl x509 -in client-certs/client.root.crt -text | grep CN=
+    ~~~
+
+    Output:
+
+    ~~~
+    Issuer: O=Cockroach, CN=Cockroach CA
+        Subject: O=Cockroach, CN=root
+    ~~~
 
 7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
@@ -361,11 +384,11 @@ In the following steps, replace the placeholder text in the code with the actual
     > \q
     ~~~
 
-### Step 5. Create the certificate and key pair for a client
+### Step 5. Create the certificate and key pair for a non-`root` client
 
 In the following steps, replace the placeholder text in the code with the actual username.
 
-1. Create the `client.cnf` file for the client and copy the following configuration into it:
+1. Edit the `client.cnf` file for the client and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -420,11 +443,32 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~    
 
-5. Upload certificates to the first client using your preferred method.
+5. Verify the values in the `CN` field in the certificate:
 
-6. Repeat steps 1 - 5 for each additional client.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ openssl x509 -in client-certs/client.<username>.crt -text | grep CN=
+    ~~~
 
-7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+    Example output:
+
+    ~~~
+    Issuer: O=Cockroach, CN=Cockroach CA
+        Subject: O=Cockroach, CN=roach
+    ~~~
+
+6. Upload certificates to the client using your preferred method.
+
+7. Connect to the SQL client using the client certificate:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=client-certs --user=roach
+    ~~~
+
+8. Repeat steps 1 - 7 for each additional client.
+
+9. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ## See also
 
