@@ -70,7 +70,21 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v19.2 to v20.1, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TBD
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../v20.1/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](../v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
+
+- **Additional authentication methods:** After finalization, it will be possible to set the `server.host_based_authentication.configuration` [cluster setting](../v20.1/cluster-settings.html) to `trust` or `reject` to unconditionally allow or deny matching connection attempts.
+
+- **Password for the `root` user**: After finalization, it will be possible to use [`ALTER USER root WITH PASSWORD`](../v20.1/alter-user.html) to set a password for the `root` user.
+
+- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](../v20.1/foreign-key.html#rules-for-creating-foreign-keys).
+
+- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes](../v20.1/create-index.html#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes.
+
+- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to allow or disallow a user or role to create, alter, or drop other roles via the `CREATEROLE` or `NOCREATEROLE` privilege.
+
+- **Custom-named savepoints:** After finalization, it will be possible to use custom-named `SAVEPOINT`s for nested transactions or for transaction retries in ORMs that require specific savepoint names.
+
+- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](../v20.1/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
 
 ## Step 4. Perform the rolling upgrade
 
