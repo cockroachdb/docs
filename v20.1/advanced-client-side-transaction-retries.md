@@ -55,7 +55,7 @@ A retryable transaction goes through the process described below, which maps to 
 For examples showing how to use [`SAVEPOINT`](savepoint.html) and the other statements described on this page to implement library support for a programming language, see the following:
 
 - [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html), in particular the logic in the `runSQL` method.
-- The source code of the [cockroachdb-python](https://github.com/cockroachdb/cockroachdb-python) adapter for SQLAlchemy.
+- The source code of the [sqlalchemy-cockroachdb](https://github.com/cockroachdb/sqlalchemy-cockroachdb) adapter for SQLAlchemy.
 
 ## See also
 

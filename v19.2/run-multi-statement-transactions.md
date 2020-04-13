@@ -63,7 +63,7 @@ For complete examples showing how to write and use such wrapper methods, see [Bu
 
 The best way to run a multi-statement transaction from Python code is to use one of the following approaches:
 
-- Use the [cockroachdb-python](https://github.com/cockroachdb/cockroachdb-python) SQLAlchemy dialect, which automatically handles transaction retry errors if they occur, as shown in [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+- Use the [sqlalchemy-cockroachdb](https://github.com/cockroachdb/sqlalchemy-cockroachdb) SQLAlchemy dialect, which automatically handles transaction retry errors if they occur, as shown in [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
 
 - Write your own retry loop wrapper, as shown in [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb.html).
 
