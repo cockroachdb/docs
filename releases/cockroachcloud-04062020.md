@@ -12,6 +12,21 @@ In addition to various updates, this beta release includes the following major h
 - Free trials of CockroachCloud are now available. [Contact us](https://www.cockroachlabs.com/contact-sales/) to request a trial code.
 - CockroachCloud now supports VPC peering for clusters running on GCP. [Contact us](https://support.cockroachlabs.com/hc/en-us) to set up a VPC peering-enabled CockroachCloud cluster.
 
+Get future release notes emailed to you:
+
+<div class="hubspot-install-form install-form-1 clearfix">
+    <script>
+        hbspt.forms.create({
+            css: '',
+            cssClass: 'install-form',
+            portalId: '1753393',
+            formId: '39686297-81d2-45e7-a73f-55a596a8d5ff',
+            formInstanceId: 1,
+            target: '.install-form-1'
+        });
+    </script>
+</div>
+
 ### Security updates
 
 CockroachCloud now requires a user to have a CockroachCloud account before accepting an invite to join an Organization.
