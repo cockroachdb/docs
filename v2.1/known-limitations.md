@@ -134,14 +134,6 @@ This conversion is currently only well defined for a small range of integers, i.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
 
-### Cannot decommission nodes
-
-The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.
-
-Example: decommissioning a node in a three node cluster will not work because ranges would become under-replicated.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
-
 ### Importing data using the PostgreSQL COPY protocol
 
 Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
