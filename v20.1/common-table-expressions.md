@@ -51,7 +51,7 @@ For example:
 
 ~~~
                    id                  |     city      |       name       |            address             | credit_card |                  id                  |     city      | vehicle_city  |               rider_id               |              vehicle_id              |           start_address           |        end_address        |        start_time         |         end_time          | revenue
-+--------------------------------------+---------------+------------------+--------------------------------+-------------+--------------------------------------+---------------+---------------+--------------------------------------+--------------------------------------+-----------------------------------+---------------------------+---------------------------+---------------------------+---------+
+---------------------------------------+---------------+------------------+--------------------------------+-------------+--------------------------------------+---------------+---------------+--------------------------------------+--------------------------------------+-----------------------------------+---------------------------+---------------------------+---------------------------+----------
   ae147ae1-47ae-4800-8000-000000000022 | amsterdam     | Tyler Dalton     | 88194 Angela Gardens Suite 94  | 4443538758  | bbe76c8b-4395-4000-8000-00000000016f | amsterdam     | amsterdam     | ae147ae1-47ae-4800-8000-000000000022 | aaaaaaaa-aaaa-4800-8000-00000000000a | 45295 Brewer View Suite 52        | 62188 Jade Causeway       | 2018-12-17 03:04:05+00:00 | 2018-12-17 13:04:05+00:00 |   99.00
   c7ae147a-e147-4000-8000-000000000027 | paris         | Tina Miller      | 97521 Mark Extensions          | 8880478663  | d5810624-dd2f-4800-8000-0000000001a1 | paris         | paris         | c7ae147a-e147-4000-8000-000000000027 | cccccccc-cccc-4000-8000-00000000000c | 47713 Reynolds Mountains Suite 39 | 1417 Stephanie Villages   | 2018-12-17 03:04:05+00:00 | 2018-12-18 22:04:05+00:00 |   99.00
   75c28f5c-28f5-4400-8000-000000000017 | san francisco | William Wood     | 36021 Steven Cove Apt. 89      | 5669281259  | 8ac08312-6e97-4000-8000-00000000010f | san francisco | san francisco | 75c28f5c-28f5-4400-8000-000000000017 | 77777777-7777-4800-8000-000000000007 | 84407 Tony Crest                  | 55336 Jon Manors          | 2018-12-10 03:04:05+00:00 | 2018-12-11 13:04:05+00:00 |   99.00
@@ -115,10 +115,14 @@ closest to the table expression. For example:
 In this example, the inner subquery `SELECT * FROM v` will select from
 table `vehicles` (closest `WITH` clause), not from table `users`.
 
-## Data modifying statements
+{{site.data.alerts.callout_info}}
+CockroachDB does not support nested `WITH` clauses containing [data-modifying statements](#data-modifying-statements). `WITH` clauses containing data-modifying statements must be at the top level of the query.
+{{site.data.alerts.end}}
+
+## Data-modifying statements
 
 It is possible to use a [data-modifying statement](sql-statements.html#data-manipulation-statements) (`INSERT`, `DELETE`,
-etc.) as a common table expression.
+etc.) as a common table expression, as long as the `WITH` clause containing the data-modifying statement is at the top level of the query.
 
 For example:
 
@@ -137,6 +141,22 @@ For example:
   {"type": "percent_discount", "value": "50%"}
   {"type": "percent_discount", "value": "100%"}
 (2 rows)
+~~~
+
+If the `WITH` clause containing the data-modifying statement is at a lower level, the statement results in an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT (WITH final_code AS
+  (INSERT INTO promo_codes(code, description, rules)
+  VALUES ('half_off', 'Half-price ride!', '{"type": "percent_discount", "value": "50%"}'), ('free_ride', 'Free ride!', '{"type": "percent_discount", "value": "100%"}')
+  returning rules)
+  SELECT rules FROM final_code);
+~~~
+
+~~~
+ERROR: WITH clause containing a data-modifying statement must be at the top level
+SQLSTATE: 0A000
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -287,6 +307,36 @@ While this practice works for testing and debugging, we do not recommend it in p
 {{site.data.alerts.callout_info}}
 CockroachDB does not currently support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
 {{site.data.alerts.end}}
+
+## Known limitations
+
+### Correlated common table expressions
+
+CockroachDB does not support correlated common table expressions. This means that a CTE cannot refer to a variable defined outside the scope of that CTE.
+
+For example, the following query returns an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT *
+FROM users
+WHERE id =
+    (SELECT
+       (WITH rides_home AS
+          (SELECT revenue
+           FROM rides
+           WHERE end_address = address) SELECT rider_id
+        FROM rides_home));
+~~~
+
+~~~
+ERROR: CTEs may not be correlated
+SQLSTATE: 0A000
+~~~
+
+This query returns an error because the `WITH rides_home` clause references a column (`address`) returned by the `SELECT` statement at the top level of the query, outside the `rides_home` CTE definition.
+
+For details, see the tracking issue: [cockroachdb/cockroach#42540](https://github.com/cockroachdb/cockroach/issues/42540).
 
 ## See also
 
