@@ -298,7 +298,7 @@ In the following steps, replace the placeholder text in the code with the actual
     subjectAltName = DNS:root
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> or modify the <code>subjectAltName</code> parameters. {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter or modify the <code>subjectAltName</code> parameter. {{site.data.alerts.end}}
 
 3. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -361,7 +361,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node --background
+    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
     ~~~
 
 2. Connect to the cluster using the built-in SQL client:
