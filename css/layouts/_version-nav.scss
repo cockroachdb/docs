@@ -64,7 +64,7 @@
       }
       &--managed {
         &:after {
-          content: 'CRC';
+          content: 'CC';
 
           @include at-query($min, $screen-sm) {
             content: 'CockroachCloud';
