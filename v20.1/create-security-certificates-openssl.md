@@ -82,7 +82,7 @@ Note the following:
 
 2. Create the `ca.cnf` file and copy the following configuration into it.
 
-    You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 3660 days.
+    You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 365 days.
 
     {% include copy-clipboard.html %}
     ~~~
@@ -91,7 +91,7 @@ Note the following:
     default_ca = CA_default
 
     [ CA_default ]
-    default_days = 3660
+    default_days = 365
     database = index.txt
     serial = serial.txt
     default_md = sha256
@@ -151,7 +151,7 @@ Note the following:
     -config ca.cnf \
     -key my-safe-directory/ca.key \
     -out node-certs/ca.crt \
-    -days 3660 \
+    -days 365 \
     -batch
     ~~~
 
@@ -218,8 +218,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 4. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    You can set the node certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the node certificate expiration period, which is 1830 days.
-
     {% include copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
@@ -231,7 +229,6 @@ In the following steps, replace the placeholder text in the code with the actual
     -out node-certs/node.crt \
     -outdir node-certs/ \
     -in node.csr \
-    -days 1830 \
     -batch
     ~~~
 
@@ -259,7 +256,7 @@ In the following steps, replace the placeholder text in the code with the actual
     ~~~ shell
     $ scp node-certs/ca.crt \
     node-certs/node.crt \
-    Node-certs/node.key \
+    node-certs/node.key \
     <username>@<node1 address>:~/node-certs
     ~~~
 
@@ -276,7 +273,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 9. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-### Step 3. Create the certificate and key pair for the `root` user
+### Step 3. Create the certificate and key pair for the first user
 
 1. Copy the `ca.crt` from the `node-certs` directory to the `client-certs` directory
 
@@ -285,7 +282,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cp node-certs/ca.crt client-certs
     ~~~
 
-2. Create the `client.cnf` file for the `root` user and copy the following configuration into it:
+2. Create the `client.cnf` file for the first user and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -295,20 +292,23 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
-    commonName = root
+    commonName = <username_1>
+
+    [ extensions ]
+    subjectAltName = DNS:root
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> or modify the <code>subjectAltName</code> parameters. {{site.data.alerts.end}}
 
 3. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out client-certs/client.root.key 2048
+    $ openssl genrsa -out client-certs/client.<username_1>.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 client-certs/client.root.key
+    $ chmod 400 client-certs/client.<username_1>.key
     ~~~
 
 4. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -318,12 +318,12 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config client.cnf \
-    -key client-certs/client.root.key \
-    -out client.root.csr \
+    -key client-certs/client.<username_1>.key \
+    -out client.<username_1>.csr \
     -batch
     ~~~
 
-5. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
+5. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -333,10 +333,9 @@ In the following steps, replace the placeholder text in the code with the actual
     -cert client-certs/ca.crt \
     -policy signing_policy \
     -extensions signing_client_req \
-    -out client-certs/client.root.crt \
+    -out client-certs/client.<username_1>.crt \
     -outdir client-certs/ \
-    -in client.root.csr \
-    -days 1830 \
+    -in client.<username_1>.csr \
     -batch
     ~~~    
 
@@ -344,19 +343,19 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in client-certs/client.root.crt -text | grep CN=
+    $ openssl x509 -in client-certs/client.<username_1>.crt -text | grep CN=
     ~~~
 
     Output:
 
     ~~~
     Issuer: O=Cockroach, CN=Cockroach CA
-        Subject: O=Cockroach, CN=root
+        Subject: O=Cockroach, CN=<username_1>
     ~~~
 
 7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-### Step 4. Start a local cluster and connect using the SQL client
+### Step 4. Start a local cluster and connect using the built-in SQL client
 
 1. Start a single-node cluster:
 
@@ -372,11 +371,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cockroach sql --certs-dir=client-certs
     ~~~
 
-3. Create a SQL user:
+3. Create a new SQL user:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > create user <username>;
+    > create user <username_2>;
     ~~~
 
     {% include copy-clipboard.html %}
@@ -384,7 +383,7 @@ In the following steps, replace the placeholder text in the code with the actual
     > \q
     ~~~
 
-### Step 5. Create the certificate and key pair for a non-`root` client
+### Step 5. Create the certificate and key pair for a client
 
 In the following steps, replace the placeholder text in the code with the actual username.
 
@@ -398,7 +397,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
-    commonName = <username>
+    commonName = <username_2>
     ~~~
 
     {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
@@ -407,11 +406,11 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out client-certs/client.<username>.key 2048
+    $ openssl genrsa -out client-certs/client.<username_2>.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 client-certs/client.<username>.key
+    $ chmod 400 client-certs/client.<username_2>.key
     ~~~
 
 3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -421,12 +420,12 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config client.cnf \
-    -key client-certs/client.<username>.key \
-    -out client.<username>.csr \
+    -key client-certs/client.<username_2>.key \
+    -out client.<username_2>.csr \
     -batch
     ~~~
 
-4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command. You can set the client certificate expiration period using the `days` flag. We recommend using the CockroachDB default value of the client certificate expiration period, which is 1830 days.
+4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -436,10 +435,9 @@ In the following steps, replace the placeholder text in the code with the actual
     -cert client-certs/ca.crt \
     -policy signing_policy \
     -extensions signing_client_req \
-    -out client-certs/client.<username>.crt \
+    -out client-certs/client.<username_2>.crt \
     -outdir client-certs/ \
-    -in client.<username>.csr \
-    -days 1830 \
+    -in client.<username_2>.csr \
     -batch
     ~~~    
 
@@ -447,7 +445,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in client-certs/client.<username>.crt -text | grep CN=
+    $ openssl x509 -in client-certs/client.<username_2>.crt -text | grep CN=
     ~~~
 
     Example output:
@@ -463,7 +461,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=client-certs --user=<username>
+    $ cockroach sql --certs-dir=client-certs --user=<username_2>
     ~~~
 
 8. Repeat steps 1 - 7 for each additional client.
