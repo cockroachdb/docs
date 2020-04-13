@@ -226,7 +226,6 @@ When moving from Oracle to CockroachDB data types, consider the following:
 - [Silent validation error with `DECIMAL` values](known-limitations.html#silent-validation-error-with-decimal-values)
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-schema-changes-between-executions-of-prepared-statements)
-- [Write and update limits for a single statement](known-limitations.html#write-and-update-limits-for-a-single-statement)
 - If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).
 - Max size of a single column family (64 MiB by default).
 
