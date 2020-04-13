@@ -33,6 +33,14 @@ pq: check constraint violated
 
 ## Unresolved limitations
 
+### Enterprise `BACKUP` does not capture database/table/column comments
+
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+
+As a workaround, use the [`cockroach dump`](cockroach-dump.html) command, which emits `COMMENT ON` statements alongside `CREATE` statements.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
+
 ### Adding stores to a node
 
 {% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
@@ -188,14 +196,6 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
 
-### Cannot decommission nodes
-
-The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/cockroach-node.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.
-
-Example: decommissioning a node in a three node cluster will not work because ranges would become under-replicated.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
-
 ### Importing data using the PostgreSQL COPY protocol
 
 Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
@@ -228,24 +228,36 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-### Adding a column with certain `DEFAULT` values
+### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> CREATE TABLE t (x INT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> CREATE SEQUENCE s;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+~~~
+
+~~~
+ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
 ### Available capacity metric in the Admin UI
 
@@ -268,14 +280,6 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
-
-### Write and update limits for a single statement
-
-A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. Currently, `INSERT INTO ... SELECT FROM` and `CREATE TABLE AS SELECT` queries may encounter these limits.
-
-To increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
-
-In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted any more, large transactions can have performance implications on the cluster.
 
 ### Using `\|` to perform a large input in the SQL shell
 
