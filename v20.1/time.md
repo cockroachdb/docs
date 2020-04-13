@@ -6,7 +6,7 @@ toc: true
 
 The `TIME` [data type](data-types.html) stores the time of day in UTC.
 
-The `TIMETZ` data type stores a time of day with a time zone offset from UTC.
+<span class="version-tag">New in v20.1:</span> The `TIMETZ` data type stores a time of day with a time zone offset from UTC.
 
 {% include {{page.version.version}}/sql/vectorized-support.md %}
 
