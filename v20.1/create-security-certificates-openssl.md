@@ -239,7 +239,8 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl x509 -in node-certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
     ~~~
 
-    Example output:
+    Sample output:
+
     ~~~
     X509v3 Subject Alternative Name: critical
                 DNS:localhost, DNS:node.example.io, IP Address:127.0.0.1
@@ -289,6 +290,7 @@ In the following steps, replace the placeholder text in the code with the actual
     [ req ]
     prompt=no
     distinguished_name = distinguished_name
+    req_extensions = extensions
 
     [ distinguished_name ]
     organizationName = Cockroach
@@ -346,11 +348,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl x509 -in client-certs/client.<username_1>.crt -text | grep CN=
     ~~~
 
-    Output:
+    Sample Output:
 
     ~~~
     Issuer: O=Cockroach, CN=Cockroach CA
-        Subject: O=Cockroach, CN=<username_1>
+        Subject: O=Cockroach, CN=maxroach
     ~~~
 
 7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
@@ -448,7 +450,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl x509 -in client-certs/client.<username_2>.crt -text | grep CN=
     ~~~
 
-    Example output:
+    Sample output:
 
     ~~~
     Issuer: O=Cockroach, CN=Cockroach CA
