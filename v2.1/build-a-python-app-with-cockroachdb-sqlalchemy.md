@@ -19,7 +19,7 @@ We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) and [SQLAlc
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
 {{site.data.alerts.callout_danger}}
-**Upgrading from CockroachDB 2.0 to 2.1?** If you used SQLAlchemy with your 2.0 cluster, you must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB 2.1.
+**Upgrading from CockroachDB 2.0 to 2.1?** If you used SQLAlchemy with your 2.0 cluster, you must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB 2.1.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -28,7 +28,7 @@ The example code on this page uses Python 3.
 
 ## Step 1. Install SQLAlchemy
 
-To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
+To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -71,7 +71,7 @@ Specifically, the script:
 It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code below or
@@ -115,7 +115,7 @@ The output should look something like the following:
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance 
+2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
 FROM accounts
 WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
@@ -143,7 +143,7 @@ Then, issue the following statement:
 ~~~
 
 ~~~
- count 
+ count
 -------
    100
 (1 row)
@@ -172,7 +172,7 @@ Specifically, it:
 It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code below or
@@ -216,8 +216,8 @@ The output should look something like the following:
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
 2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance 
-FROM accounts 
+2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
+FROM accounts
 WHERE accounts.id = %(id_1)s
 2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
 2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
@@ -244,7 +244,7 @@ Then, issue the following statement:
 ~~~
 
 ~~~
- count 
+ count
 -------
    100
 (1 row)
@@ -256,7 +256,7 @@ Then, issue the following statement:
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`cockroachdb.sqlalchemy.run_transaction()`](https://github.com/cockroachdb/cockroachdb-python/blob/master/cockroachdb/sqlalchemy/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`cockroachdb.sqlalchemy.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/cockroachdb/sqlalchemy/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 
@@ -272,7 +272,7 @@ In general, this is in line with the recommendations of the [SQLAlchemy FAQs](ht
 
 > As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.
 
-and 
+and
 
 > Keep the lifecycle of the session (and usually the transaction) **separate and external**.
 

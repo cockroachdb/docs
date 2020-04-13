@@ -24,7 +24,7 @@ For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms
 
 ## Step 1. Install the SQLAlchemy ORM
 
-To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
+To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -58,7 +58,7 @@ The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/late
 ])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
 
 {{site.data.alerts.callout_info}}
-The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
+The <a href="https://github.com/cockroachdb/sqlalchemy-cockroachdb">sqlalchemy-cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code or
@@ -121,7 +121,7 @@ The following code uses the [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/late
 ])` inserts rows into the table, and `session.query(Account)` selects from the table so that balances can be printed.
 
 {{site.data.alerts.callout_info}}
-The <a href="https://github.com/cockroachdb/cockroachdb-python">cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
+The <a href="https://github.com/cockroachdb/sqlalchemy-cockroachdb">sqlalchemy-cockroachdb python package</a> installed earlier is triggered by the <code>cockroachdb://</code> prefix in the engine URL. Using <code>postgres://</code> to connect to your cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code or

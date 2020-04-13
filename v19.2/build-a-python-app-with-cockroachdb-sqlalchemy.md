@@ -29,7 +29,7 @@ SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to genera
 
 ## Step 1. Install SQLAlchemy
 
-To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
+To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -72,7 +72,7 @@ Specifically, the script:
 It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 Copy the code below or
@@ -179,7 +179,7 @@ Specifically, it:
 It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python") dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 To get the code below, clone the `hello-world-python-sqlalchemy` repo to your machine:
@@ -267,7 +267,7 @@ Then, issue the following statement:
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`cockroachdb.sqlalchemy.run_transaction()`](https://github.com/cockroachdb/cockroachdb-python/blob/master/cockroachdb/sqlalchemy/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`cockroachdb.sqlalchemy.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/cockroachdb/sqlalchemy/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 

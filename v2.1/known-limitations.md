@@ -65,9 +65,7 @@ CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING`
 
 ### Using SQLAlchemy with CockroachDB
 
-Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/cockroachdb-python) before upgrading to CockroachDB 2.1.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28772)
+Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB 2.1.
 
 ### Admin UI: CPU percentage calculation
 
