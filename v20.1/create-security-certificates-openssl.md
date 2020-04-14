@@ -70,14 +70,13 @@ Note the following:
 
 ### Step 1. Create the CA key and certificate pair
 
-1. Create three directories:
+1. Create two directories:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mkdir node-certs client-certs my-safe-directory
+    $ mkdir certs my-safe-directory
     ~~~
-    - `node-certs`: Create your CA certificate and all node certificates and keys in this directory and then upload the relevant files to the nodes.
-    - `client-certs`: Copy your CA certificate to this folder and create all client certificates and keys in this directory and then upload the relevant files to the clients.
+    - `certs`: Create your CA certificate and all node and client certificates and keys in this directory and then upload the relevant files to the nodes and clients.
     - `my-safe-directory`: Create your CA key in this directory and then reference the key when generating node and client certificates. After that, keep the key safe and secret; do not upload it to your nodes or clients.
 
 2. Create the `ca.cnf` file and copy the following configuration into it.
@@ -150,7 +149,7 @@ Note the following:
     -x509 \
     -config ca.cnf \
     -key my-safe-directory/ca.key \
-    -out node-certs/ca.crt \
+    -out certs/ca.crt \
     -days 365 \
     -batch
     ~~~
@@ -197,11 +196,11 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out node-certs/node.key 2048
+    $ openssl genrsa -out certs/node.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 node-certs/node.key
+    $ chmod 400 certs/node.key
     ~~~
 
 3. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -211,7 +210,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config node.cnf \
-    -key node-certs/node.key \
+    -key certs/node.key \
     -out node.csr \
     -batch
     ~~~
@@ -223,11 +222,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
-    -cert node-certs/ca.crt \
+    -cert certs/ca.crt \
     -policy signing_policy \
     -extensions signing_node_req \
-    -out node-certs/node.crt \
-    -outdir node-certs/ \
+    -out certs/node.crt \
+    -outdir certs/ \
     -in node.csr \
     -batch
     ~~~
@@ -236,7 +235,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in node-certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
+    $ openssl x509 -in certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
     ~~~
 
     Sample output:
@@ -246,18 +245,11 @@ In the following steps, replace the placeholder text in the code with the actual
                 DNS:localhost, DNS:node.example.io, IP Address:127.0.0.1
     ~~~
 
-6. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+6. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ### Step 3. Create the certificate and key pair for the first user
 
-1. Copy the `ca.crt` from the `node-certs` directory to the `client-certs` directory
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cp node-certs/ca.crt client-certs
-    ~~~
-
-2. Create the `client.cnf` file for the first user and copy the following configuration into it:
+1. Create the `client.cnf` file for the first user and copy the following configuration into it:
 
     {% include copy-clipboard.html %}
     ~~~
@@ -276,50 +268,50 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter or modify the <code>subjectAltName</code> parameter. {{site.data.alerts.end}}
 
-3. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out client-certs/client.<username_1>.key 2048
+    $ openssl genrsa -out certs/client.<username_1>.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 client-certs/client.<username_1>.key
+    $ chmod 400 certs/client.<username_1>.key
     ~~~
 
-4. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
     -config client.cnf \
-    -key client-certs/client.<username_1>.key \
+    -key certs/client.<username_1>.key \
     -out client.<username_1>.csr \
     -batch
     ~~~
 
-5. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
+4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
-    -cert client-certs/ca.crt \
+    -cert certs/ca.crt \
     -policy signing_policy \
     -extensions signing_client_req \
-    -out client-certs/client.<username_1>.crt \
-    -outdir client-certs/ \
+    -out certs/client.<username_1>.crt \
+    -outdir certs/ \
     -in client.<username_1>.csr \
     -batch
     ~~~    
 
-6. Verify the values in the `CN` field in the certificate:
+5. Verify the values in the `CN` field in the certificate:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in client-certs/client.<username_1>.crt -text | grep CN=
+    $ openssl x509 -in certs/client.<username_1>.crt -text | grep CN=
     ~~~
 
     Sample Output:
@@ -329,7 +321,7 @@ In the following steps, replace the placeholder text in the code with the actual
         Subject: O=Cockroach, CN=maxroach
     ~~~
 
-7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+6. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ### Step 4. Start a local cluster and connect using a connection URL
 
@@ -337,14 +329,14 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
+    $ cockroach start-single-node --certs-dir=certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
     ~~~
 
 2. Connect to the cluster using a connection URL:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=client-certs/ca.crt&sslcert=client-certs/client.<username_1>.crt&sslkey=client-certs/client.<username_1>.key&sslmode=verify-full'
+    $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_1>.crt&sslkey=certs/client.<username_1>.key&sslmode=verify-full'
     ~~~
 
 3. Create a new SQL user:
@@ -382,11 +374,11 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out client-certs/client.<username_2>.key 2048
+    $ openssl genrsa -out certs/client.<username_2>.key 2048
     ~~~
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chmod 400 client-certs/client.<username_2>.key
+    $ chmod 400 certs/client.<username_2>.key
     ~~~
 
 3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
@@ -396,7 +388,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl req \
     -new \
     -config client.cnf \
-    -key client-certs/client.<username_2>.key \
+    -key certs/client.<username_2>.key \
     -out client.<username_2>.csr \
     -batch
     ~~~
@@ -408,11 +400,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ openssl ca \
     -config ca.cnf \
     -keyfile my-safe-directory/ca.key \
-    -cert client-certs/ca.crt \
+    -cert certs/ca.crt \
     -policy signing_policy \
     -extensions signing_client_req \
-    -out client-certs/client.<username_2>.crt \
-    -outdir client-certs/ \
+    -out certs/client.<username_2>.crt \
+    -outdir certs/ \
     -in client.<username_2>.csr \
     -batch
     ~~~    
@@ -421,7 +413,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in client-certs/client.<username_2>.crt -text | grep CN=
+    $ openssl x509 -in certs/client.<username_2>.crt -text | grep CN=
     ~~~
 
     Sample output:
@@ -435,10 +427,10 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=client-certs --user=<username_2>
+    $ cockroach sql --url='postgres://<username_2>@<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_2>.crt&sslkey=certs/client.<username_2>.key&sslmode=verify-full'
     ~~~
 
-7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+7. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 For each node in your deployment, repeat [Step 2](#step-2-create-the-certificate-and-key-pairs-for-nodes) and upload the CA certificate and node key and certificate to the node. For each client, repeat [Step 5](#step-5-create-the-certificate-and-key-pair-for-a-client) and upload the CA certificate and client key and certificate to the client.
 
