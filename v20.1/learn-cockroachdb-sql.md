@@ -3,7 +3,10 @@ title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
 build_for: [cockroachdb, cockroachcloud]
+no_sidebar: true
 ---
+
+<iframe height="400px" width="100%" src="https://crdb-demo.jseldess.repl.run/" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
 
 {% unless site.cockroachcloud %}
 
