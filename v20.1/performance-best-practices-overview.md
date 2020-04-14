@@ -135,15 +135,15 @@ To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that th
 ~~~
 
 ~~~
-   tree   | field |          description          |          columns           |    ordering
-+---------+-------+-------------------------------+----------------------------+-----------------+
-  revscan |       |                               | (username, post_timestamp) | -post_timestamp
-          | table | posts@posts_pk                |                            |
-          | spans | /"alyssa"-/"alyssa"/PrefixEnd |                            |
-          | limit | 10                            |                            |
-(4 rows)
-
-Time: 818µs
+   tree   |    field    |          description          |                      columns                      |    ordering
+----------+-------------+-------------------------------+---------------------------------------------------+------------------
+          | distributed | false                         |                                                   |
+          | vectorized  | false                         |                                                   |
+  revscan |             |                               | (username, post_timestamp, post_id, post_content) | -post_timestamp
+          | table       | posts@posts_pk                |                                                   |
+          | spans       | /"alyssa"-/"alyssa"/PrefixEnd |                                                   |
+          | limit       | 10                            |                                                   |
+(6 rows)
 ~~~
 
 Note that the above query also follows the [indexing best practice](indexes.html#best-practices) of indexing all columns in the `WHERE` clause.

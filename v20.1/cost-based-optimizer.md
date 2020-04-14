@@ -309,12 +309,14 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree | field |      description
-+------+-------+----------------------+
-  scan |       |
-       | table | postal_codes@primary
-       | spans | /1-/1/#
-(3 rows)
+  tree |    field    |     description
+-------+-------------+-----------------------
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | postal_codes@primary
+       | spans       | /1-/1/#
+(5 rows)
 ~~~
 
 As expected, the node in the EU uses the `idx_eu` index.
@@ -325,12 +327,14 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree | field |     description
-+------+-------+---------------------+
-  scan |       |
-       | table | postal_codes@idx_eu
-       | spans | /1-/2
-(3 rows)
+  tree |    field    |     description
+-------+-------------+----------------------
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | postal_codes@idx_eu
+       | spans       | /1-/2
+(5 rows)
 ~~~
 
 As expected, the node in APAC uses the `idx_apac` index.
@@ -341,12 +345,14 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree | field |      description
-+------+-------+-----------------------+
-  scan |       |
-       | table | postal_codes@idx_apac
-       | spans | /1-/2
-(3 rows)
+  tree |    field    |      description
+-------+-------------+------------------------
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | postal_codes@idx_apac
+       | spans       | /1-/2
+(5 rows)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
@@ -563,15 +569,15 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West
 ~~~
 
 ~~~
-    tree    | field |                                        description
-+-----------+-------+-------------------------------------------------------------------------------------------+
-  render    |       |
-   └── scan |       |
-            | table | token@token_id_west_idx
-            | spans | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
-(4 rows)
-
-Time: 787µs
+    tree    |    field    |                                        description
+------------+-------------+--------------------------------------------------------------------------------------------
+            | distributed | false
+            | vectorized  | false
+  render    |             |
+   └── scan |             |
+            | table       | token@token_id_east_idx
+            | spans       | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
+(6 rows)
 ~~~
 
 Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
@@ -593,15 +599,15 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 ~~~
 
 ~~~
-    tree    | field |                                        description
-+-----------+-------+-------------------------------------------------------------------------------------------+
-  render    |       |
-   └── scan |       |
-            | table | token@token_id_east_idx
-            | spans | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
-(4 rows)
-
-Time: 619µs
+    tree    |    field    |                                        description
+------------+-------------+--------------------------------------------------------------------------------------------
+            | distributed | false
+            | vectorized  | false
+  render    |             |
+   └── scan |             |
+            | table       | token@token_id_east_idx
+            | spans       | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
+(6 rows)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.

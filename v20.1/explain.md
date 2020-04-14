@@ -85,7 +85,7 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
    │        | order       | +season
    └── scan |             |
             | table       | episodes@primary
-            | spans       | ALL
+            | spans       | FULL SCAN
             | filter      | season > 3
 (8 rows)
 ~~~
@@ -102,7 +102,7 @@ The `field` and `description` columns describe a set of properties, some global 
   <br>The sort will be ordered ascending on the `season` column.
 - `table`:`episodes@primary`
   <br>The table is scanned on the `primary` index.
-- `spans`:`ALL`
+- `spans`:`FULL SCAN`
   <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 - `filter`: `season > 3`
   <br>The scan filters on the `season` column.
@@ -126,10 +126,10 @@ JOIN episodes AS e ON q.episode = e.id;
    │        | right cols are key |
    ├── scan |                    |
    │        | table              | quotes@primary
-   │        | spans              | ALL
+   │        | spans              | FULL SCAN
    └── scan |                    |
             | table              | episodes@primary
-            | spans              | ALL
+            | spans              | FULL SCAN
 (12 rows)
 ~~~
 
@@ -151,7 +151,7 @@ JOIN episodes AS e ON q.episode = '2';
         │              | type        | cross
         ├── scan       |             |
         │              | table       | episodes@primary
-        │              | spans       | ALL
+        │              | spans       | FULL SCAN
         └── index-join |             |
              │         | table       | quotes@primary
              │         | key columns | rowid
@@ -179,37 +179,24 @@ ORDER BY e.stardate ASC;
 The output of [`EXPLAIN`](explain.html#verbose-option) also shows whether `equality cols are key` for [lookup joins](joins.html#lookup-joins), which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
 ~~~
-            tree           |         field         |        description        |                                         columns                                         | ordering
----------------------------+-----------------------+---------------------------+-----------------------------------------------------------------------------------------+------------
-                           | distributed           | true                      |                                                                                         |
-                           | vectorized            | false                     |                                                                                         |
-  render                   |                       |                           | (quote, characters, stardate, episode, id, season, num, title, stardate)                | +stardate
-   │                       | render 0              | quote                     |                                                                                         |
-   │                       | render 1              | characters                |                                                                                         |
-   │                       | render 2              | stardate                  |                                                                                         |
-   │                       | render 3              | episode                   |                                                                                         |
-   │                       | render 4              | id                        |                                                                                         |
-   │                       | render 5              | season                    |                                                                                         |
-   │                       | render 6              | num                       |                                                                                         |
-   │                       | render 7              | title                     |                                                                                         |
-   │                       | render 8              | stardate                  |                                                                                         |
-   └── lookup-join         |                       |                           | (id, season, num, title, stardate, episode, rowid[hidden], quote, characters, stardate) | +stardate
-        │                  | table                 | quotes@primary            |                                                                                         |
-        │                  | type                  | inner                     |                                                                                         |
-        │                  | equality              | (rowid) = (rowid)         |                                                                                         |
-        │                  | equality cols are key |                           |                                                                                         |
-        │                  | parallel              |                           |                                                                                         |
-        └── lookup-join    |                       |                           | (id, season, num, title, stardate, episode, rowid[hidden])                              | +stardate
-             │             | table                 | quotes@quotes_episode_idx |                                                                                         |
-             │             | type                  | inner                     |                                                                                         |
-             │             | equality              | (id) = (episode)          |                                                                                         |
-             └── sort      |                       |                           | (id, season, num, title, stardate)                                                      | +stardate
-                  │        | order                 | +stardate                 |                                                                                         |
-                  └── scan |                       |                           | (id, season, num, title, stardate)                                                      |
-                           | table                 | episodes@primary          |                                                                                         |
-                           | spans                 | ALL                       |                                                                                         |
-                           | filter                | season = 1                |                                                                                         |
-(28 rows)
+       tree      |       field        |   description    |                                 columns                                  | ordering
+-----------------+--------------------+------------------+--------------------------------------------------------------------------+------------
+                 | distributed        | true             |                                                                          |
+                 | vectorized         | false            |                                                                          |
+  sort           |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) | +stardate
+   │             | order              | +stardate        |                                                                          |
+   └── hash-join |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) |
+        │        | type               | inner            |                                                                          |
+        │        | equality           | (episode) = (id) |                                                                          |
+        │        | right cols are key |                  |                                                                          |
+        ├── scan |                    |                  | (quote, characters, stardate, episode)                                   |
+        │        | table              | quotes@primary   |                                                                          |
+        │        | spans              | FULL SCAN        |                                                                          |
+        └── scan |                    |                  | (id, season, num, title, stardate)                                       |
+                 | table              | episodes@primary |                                                                          |
+                 | spans              | FULL SCAN        |                                                                          |
+                 | filter             | season = 1       |                                                                          |
+(15 rows)
 ~~~
 
 ### `TYPES` option
@@ -230,7 +217,7 @@ The `TYPES` mode includes the types of the values used in the query plan. It als
    │        | order       | +season                          |                                                               |
    └── scan |             |                                  | (id int, season int, num int, title string, stardate decimal) |
             | table       | episodes@primary                 |                                                               |
-            | spans       | ALL                              |                                                               |
+            | spans       | FULL SCAN                        |                                                               |
             | filter      | ((season)[int] > (3)[int])[bool] |                                                               |
 (8 rows)
 ~~~
@@ -457,18 +444,17 @@ The `VEC` option shows details about the [vectorized execution plan](vectorized-
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VEC) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (VEC) SELECT * FROM episodes WHERE season > 3;
 ~~~
 
 ~~~
-                  text
------------------------------------------
+                 text
+---------------------------------------
   │
   └ Node 1
-    └ *colexec.sortOp
-      └ *colexec.selGTInt64Int64ConstOp
-        └ *colexec.colBatchScan
-(5 rows)
+    └ *colexec.selGTInt64Int64ConstOp
+      └ *colexec.colBatchScan
+(4 rows)
 ~~~
 
 The output shows the different internal functions that will be used to process each batch of column-oriented data.
@@ -539,7 +525,7 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
        | vectorized  | false
   scan |             |
        | table       | kv@primary
-       | spans       | ALL
+       | spans       | FULL SCAN
        | filter      | (v >= 4) AND (v <= 5)
 (6 rows)
 ~~~
