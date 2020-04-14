@@ -246,33 +246,7 @@ In the following steps, replace the placeholder text in the code with the actual
                 DNS:localhost, DNS:node.example.io, IP Address:127.0.0.1
     ~~~
 
-6. Upload certificates to the first node:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ssh <username>@<node1 address> "mkdir node-certs"
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ scp node-certs/ca.crt \
-    node-certs/node.crt \
-    node-certs/node.key \
-    <username>@<node1 address>:~/node-certs
-    ~~~
-
-7. Delete the local copy of the first node's certificate and key:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ rm node-certs/node.crt node-certs/node.key
-    ~~~
-
-    {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code>.{{site.data.alerts.end}}
-
-8. Repeat steps 1 - 6 for each additional node.
-
-9. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+6. Remove the `.pem` files in the `node-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ### Step 3. Create the certificate and key pair for the first user
 
@@ -357,7 +331,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-### Step 4. Start a local cluster and connect using the built-in SQL client
+### Step 4. Start a local cluster and connect using a connection URL
 
 1. Start a single-node cluster:
 
@@ -366,11 +340,11 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cockroach start-single-node --certs-dir=node-certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
     ~~~
 
-2. Connect to the cluster using the built-in SQL client:
+2. Connect to the cluster using a connection URL:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --certs-dir=client-certs
+    $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=client-certs/ca.crt&sslcert=client-certs/client.<username_1>.crt&sslkey=client-certs/client.<username_1>.key&sslmode=verify-full'
     ~~~
 
 3. Create a new SQL user:
@@ -457,18 +431,16 @@ In the following steps, replace the placeholder text in the code with the actual
         Subject: O=Cockroach, CN=roach
     ~~~
 
-6. Upload certificates to the client using your preferred method.
-
-7. Connect to the SQL client using the client certificate:
+6. Connect to the SQL client using the client certificate:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=client-certs --user=<username_2>
     ~~~
 
-8. Repeat steps 1 - 7 for each additional client.
+7. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
-9. Remove the `.pem` files in the `client-certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
+For each node in your deployment, repeat [Step 2](#step-2-create-the-certificate-and-key-pairs-for-nodes) and upload the CA certificate and node key and certificate to the node. For each client, repeat [Step 5](#step-5-create-the-certificate-and-key-pair-for-a-client) and upload the CA certificate and client key and certificate to the client.
 
 ## See also
 
