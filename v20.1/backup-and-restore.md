@@ -21,18 +21,42 @@ We recommend [automating daily backups of your cluster](#automated-full-and-incr
 
 ### Full backups
 
-In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of your cluster:
+In most cases, **it's recommended to take full nightly backups of your cluster**. A full cluster backup allows you to do the following:
+
+- Restore a full cluster
+- Restore database(s) from the cluster
+- Restore table(s) from the cluster
+
+To do a full cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO '<backup_location>';
 ~~~
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster:
+If it's ever necessary, you can use the [`RESTORE`][restore] statement to restore your full cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM '<backup_location>';
+~~~
+
+{{site.data.alerts.callout_info}}
+Note that a full cluster restore can only be run on a target cluster with no databases or tables.
+{{site.data.alerts.end}}
+
+Or to restore a  database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE bank FROM '<backup_location>';
+~~~
+
+Or to restore a table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE TABLE bank.customers FROM '<backup_location>';
 ~~~
 
 ### Full and incremental backups
@@ -57,7 +81,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 If you backup to a destination already containing a backup, an incremental backup will be produced in a subdirectory with a date-based name (e.g., `destination/day/time_1`, `destination/day/time_2`). For an example on how to explicitly specify the destination of an incremental backup, see [Backup and Restore - Advanced Options](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations)
 {{site.data.alerts.end}}
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster. [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
 
 {% include copy-clipboard.html %}
 ~~~ sql
