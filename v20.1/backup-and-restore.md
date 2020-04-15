@@ -42,7 +42,7 @@ If it's ever necessary, you can use the [`RESTORE`][restore] statement to restor
 ~~~
 
 {{site.data.alerts.callout_info}}
-Note that a full cluster restore can only be run on a target cluster with no databases or tables.
+A full cluster restore can only be run on a target cluster with no user-created databases or tables.
 {{site.data.alerts.end}}
 
 Or to restore a  database:

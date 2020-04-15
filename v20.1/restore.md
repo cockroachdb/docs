@@ -73,7 +73,7 @@ You can restore:
 
 #### Full cluster
 
-<span class="version-tag">New in v20.1:</span> A full cluster restore can only be run on a target cluster with no databases or tables. Restoring a full cluster includes:
+<span class="version-tag">New in v20.1:</span> A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
 
 - All user tables
 - Relevant system tables
