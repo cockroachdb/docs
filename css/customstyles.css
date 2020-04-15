@@ -3406,9 +3406,8 @@ pre, code {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 25px;
+  max-height: 320px;
   background-color: #F7F7F7;
-  font-size: 14px;
-  line-height: 25px;
   color: #152849;
   hyphens: none; }
 
@@ -3753,9 +3752,16 @@ a.accordion-toggle {
   max-width: 800px; }
 
 ::-webkit-scrollbar {
-  width: 0px;
-  /* remove scrollbar space */
-  background: transparent; }
+    -webkit-appearance: none;
+    width: 7px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
 
 /* Docs landing page */
 .landing-column-title {
