@@ -127,7 +127,9 @@ Note the following:
     extendedKeyUsage = clientAuth
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration and you can add additional usages, but do not omit <code>keyUsage</code> and <code>extendedkeyUsage</code> parameters or remove the listed usages. {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    The `keyUsage` and `extendedkeyUsage` parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration and you can add additional usages, but do not omit `keyUsage` and `extendedkeyUsage` parameters or remove the listed usages.
+    {{site.data.alerts.end}}
 
 3. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -154,7 +156,7 @@ Note the following:
     -batch
     ~~~
 
-6. Reset database and index files.
+6. Reset database and index files:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -190,7 +192,9 @@ In the following steps, replace the placeholder text in the code with the actual
     subjectAltName = critical,DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>subjectAltName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>subjectAltName</code> parameter.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    The `subjectAltName` parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `subjectAltName` parameter.
+    {{site.data.alerts.end}}
 
 2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -245,9 +249,9 @@ In the following steps, replace the placeholder text in the code with the actual
                 DNS:localhost, DNS:node.example.io, IP Address:127.0.0.1
     ~~~
 
-6. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
-
 ### Step 3. Create the certificate and key pair for the first user
+
+In the following steps, replace the placeholder text in the code with the actual username.
 
 1. Create the `client.cnf` file for the first user and copy the following configuration into it:
 
@@ -266,7 +270,9 @@ In the following steps, replace the placeholder text in the code with the actual
     subjectAltName = DNS:root
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter or modify the <code>subjectAltName</code> parameter. {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    The `commonName` and `subjectAltName` parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `commonName` parameter or modify the `subjectAltName` parameter.
+    {{site.data.alerts.end}}
 
 2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -321,8 +327,6 @@ In the following steps, replace the placeholder text in the code with the actual
         Subject: O=Cockroach, CN=maxroach
     ~~~
 
-6. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
-
 ### Step 4. Start a local cluster and connect using a connection URL
 
 1. Start a single-node cluster:
@@ -368,7 +372,8 @@ In the following steps, replace the placeholder text in the code with the actual
     commonName = <username_2>
     ~~~
 
-    {{site.data.alerts.callout_danger}}The <code>commonName</code> parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> parameter.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    The `commonName` parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `commonName` parameter.  {{site.data.alerts.end}}
 
 2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
@@ -430,9 +435,9 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cockroach sql --url='postgres://<username_2>@<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_2>.crt&sslkey=certs/client.<username_2>.key&sslmode=verify-full'
     ~~~
 
-7. Remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
-
 For each node in your deployment, repeat [Step 2](#step-2-create-the-certificate-and-key-pairs-for-nodes) and upload the CA certificate and node key and certificate to the node. For each client, repeat [Step 5](#step-5-create-the-certificate-and-key-pair-for-a-client) and upload the CA certificate and client key and certificate to the client.
+
+After you have uploaded all the keys and certificates to the corresponding nodes and clients, remove the `.pem` files in the `certs` directory. These files are unnecessary duplicates of the `.crt` files that CockroachDB requires.
 
 ## See also
 
