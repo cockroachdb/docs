@@ -19,7 +19,7 @@ The table below lists the experimental session settings that are available.  For
 
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `experimental_enable_hash_sharded_indexes`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables hash-sharded indexes with `USING HASH`.                                                                                                                                                                                   |
+| `experimental_enable_hash_sharded_indexes`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables [hash-sharded indexes](#hash-sharded-indexes) with `USING HASH`.                                                                                                                                                                                   |
 | `experimental_enable_temp_tables`       | `'off'`       | <span class="version-tag">New in v20.1:</span> If set to `'on'`, enables [temporary objects](#temporary-objects), including [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences).                                                                                                                                                                                   |
 | `experimental_serial_normalization` | `'rowid'`     | If set to `'virtual_sequence'`, make the [`SERIAL`](serial.html) pseudo-type optionally auto-create a sequence for [better compatibility with Hibernate sequences](https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/).                    |
 
@@ -145,7 +145,11 @@ To turn vectorized execution on for all operations, set the `vectorize` [session
 
 ## Temporary objects
 
-Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+<span class="version-tag">New in v20.1:</span> Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+
+## Hash-sharded indexes
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](indexes.html#hash-sharded-indexes).
 
 ## See Also
 
