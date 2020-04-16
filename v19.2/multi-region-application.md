@@ -76,7 +76,7 @@ movr
 
 Object Relational Mappers (ORMs) map classes to tables, class instances to rows, and class methods to transactions on the rows of a table. The `sqlalchemy` package includes some base classes and methods that you can use to connect to your database's server from a Python application, and then map tables in that database to Python classes.
 
-In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/en/13/dialects/). The `cockroachdb` package includes some functions that help you handle [transactions](transactions.html) in a running CockroachDB cluster.
+In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/en/13/dialects/). The package includes some functions that help you handle [transactions](transactions.html) in a running CockroachDB cluster.
 
 ### Mappings
 
@@ -193,7 +193,7 @@ After you create a class for each table in the database, you can start defining 
 
 #### The SQLAlchemy CockroachDB dialect
 
-The [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python/tree/master/cockroachdb) Python library handles transactions in SQLAlchemy with the `run_transaction()` function. This function takes a `transactor`, which can be an [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine), [`Connection`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Connection), or [`sessionmaker`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.sessionmaker) object, and a callback function. It then uses the `transactor` to connect to the database, and executes the callback as a database transaction. For some examples of `run_transaction()` usage, see [Transaction callback functions](multi-region-application.html#transaction-callback-functions) below.
+The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/tree/master/cockroachdb) Python library handles transactions in SQLAlchemy with the `run_transaction()` function. This function takes a `transactor`, which can be an [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine), [`Connection`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Connection), or [`sessionmaker`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.sessionmaker) object, and a callback function. It then uses the `transactor` to connect to the database, and executes the callback as a database transaction. For some examples of `run_transaction()` usage, see [Transaction callback functions](multi-region-application.html#transaction-callback-functions) below.
 
 `run_transaction()` abstracts the details of [transaction retries](transactions.html#client-side-intervention) away from your application code. Transactions may require retries if they experience deadlock or read/write contention with other concurrent transactions that cannot be resolved without allowing potential serializable anomalies. As a result, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
@@ -331,7 +331,7 @@ class MovR:
         self.engine = create_engine(conn_string, convert_unicode=True)
 ~~~
 
-`movr.py` first imports the transaction callback functions that we defined in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). It then imports the `run_transaction()` function from the `cockroachdb` Python library. The `MovR` class methods call `run_transaction()` to execute the transaction callback functions as transactions.
+`movr.py` first imports the transaction callback functions that we defined in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). It then imports the `run_transaction()` function. The `MovR` class methods call `run_transaction()` to execute the transaction callback functions as transactions.
 
 The file also imports some `sqlalchemy` libraries to create instances of the `Engine` and `Session` classes, and to [register the CockroachDB as a dialect](https://docs.sqlalchemy.org/en/13/core/connections.html#registering-new-dialects).
 

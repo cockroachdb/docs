@@ -19,7 +19,7 @@ class Account(Base):
 # "cockroachdb://" prefix for the engine URL indicates that we are
 # connecting to CockroachDB using the 'cockroachdb' dialect.
 # For more information, see
-# https://github.com/cockroachdb/cockroachdb-python.
+# https://github.com/cockroachdb/sqlalchemy-cockroachdb.
 
 secure_cluster = True           # Set to False for insecure clusters
 connect_args = {}

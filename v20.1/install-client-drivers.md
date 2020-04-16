@@ -49,11 +49,11 @@ For a simple but complete "Hello World" example app, see [Build a Python App wit
 
 **Support level:** Full
 
-To install SQLAlchemy and a [CockroachDB Python package](https://github.com/cockroachdb/cockroachdb-python) that accounts for some differences between CockroachDB and PostgreSQL:
+To install SQLAlchemy and a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install sqlalchemy cockroachdb psycopg2
+$ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
 
 {{site.data.alerts.callout_success}}

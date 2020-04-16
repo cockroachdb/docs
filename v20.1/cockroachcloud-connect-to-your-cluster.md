@@ -211,7 +211,7 @@ conn = psycopg2.connect(
 #### SQLAlchemy ORM
 
 {{site.data.alerts.callout_info}}
-You must replace the `postgres://` prefix with `cockroachdb://` in the connection string passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/cockroachdb-python%22) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must replace the `postgres://` prefix with `cockroachdb://` in the connection string passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
