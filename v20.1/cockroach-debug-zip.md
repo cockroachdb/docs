@@ -17,6 +17,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Stack traces
 - Range lists
 - A list of databases and tables
+- Jobs (in hex format)
 - [Cluster Settings](cluster-settings.html)
 - [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
 - Alerts
