@@ -1,15 +1,19 @@
 ---
 title: Foreign Key Constraint
-summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
+summary: The `FOREIGN KEY` constraint specifies a column can contain only values exactly matching existing values from the column it references.
 toc: true
 ---
 
-A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. The purpose of foreign keys is to enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
+A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
 
 For example, given an `orders` table and a `customers` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
 
 - Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1:</span> A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+{{site.data.alerts.end}}
 
 ## Details
 
@@ -18,21 +22,42 @@ For example, given an `orders` table and a `customers` table, if you create a co
 **Foreign Key Columns**
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
-- Each column cannot belong to more than 1 Foreign Key constraint.
-- Cannot be a [computed column](computed-columns.html).
-- Foreign key columns must be [indexed](indexes.html). This is required because updates and deletes on the referenced table will need to search the referencing table for any matching records to ensure those operations would not violate existing references. In practice, such indexes are likely also needed by applications using these tables, since finding all records which belong to some entity, for example all orders for a given customer, is very common.
-    - To meet this requirement when creating a new table, there are a few options:
-        - An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
-        - Create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
-        - Rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
-        - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
-        - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
+- A foreign key column cannot be a [computed column](computed-columns.html).
+- Foreign key columns must be [indexed](indexes.html).
+
+    If you are adding the `FOREIGN KEY` constraint to an existing table, and the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the `FOREIGN KEY` constraint to the columns.
+
+    If you are creating a new table, there are a number of ways that you can meet the indexing requirement:
+
+      - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
+      - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
+      - If you add a foreign key constraint to an empty table, and an index on the referencing columns does not already exist, CockroachDB automatically creates one. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade). It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
+
+    {{site.data.alerts.callout_success}}
+    Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_info}}
+    <span class="version-tag">New in v20.1:</span> You can drop the index on foreign key columns if another index exists on the same columns and fulfills the indexing requirement described above.
+    {{site.data.alerts.end}}
 
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
-- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the Foreign Key constraint and the referenced table's primary key must contain the same number of columns.
+- In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
+- Referenced columns must be [indexed](indexes.html). There are a number of ways to meet this requirement:
+
+    - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
+    - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
+    - If an index on the referenced column does not already exist, CockroachDB automatically creates one. It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
+
+    {{site.data.alerts.callout_success}}
+    Using the referenced columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key that references the columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_info}}
+    <span class="version-tag">New in v20.1:</span> You can drop the index on the referenced columns if another index exists on the same columns and fulfills the indexing requirement described above.
+    {{site.data.alerts.end}}
 
 ### Null values
 
@@ -53,14 +78,9 @@ A `NOT NULL` constraint cannot be added to existing tables.
 
 ### Composite foreign key matching
 
-By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as Postgres). `MATCH FULL` is available if specified.
+By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as Postgres). `MATCH FULL` is available if specified. You can specify both `MATCH FULL` and `MATCH SIMPLE`.
 
-In versions 2.1 and earlier, the only option for composite foreign key matching was an incorrect implementation of `MATCH FULL`. This allowed null values in the referencing key columns to correspond to null values in the referenced key columns. This was incorrect in two ways:
-
-1. `MATCH FULL` should not allow mixed null and non-null values. See below for more details on the differences between comparison methods.
-2. Null values cannot ever be compared to each other.
-
-To correct these issues, all composite key matches defined prior to version 19.1 will now use the `MATCH SIMPLE` comparison method. We have also added the ability to specify both `MATCH FULL` and `MATCH SIMPLE`. If you had a composite foreign key constraint and have just upgraded to version 19.1, then please check that `MATCH SIMPLE` works for your schema and consider replacing that foreign key constraint with a `MATCH FULL` one.
+All composite key matches defined prior to version 19.1 use the `MATCH SIMPLE` comparison method. If you had a composite foreign key constraint and have just upgraded to version 19.1, then please check that `MATCH SIMPLE` works for your schema and consider replacing that foreign key constraint with a `MATCH FULL` one.
 
 #### How it works
 
@@ -107,6 +127,10 @@ Parameter | Description
 `ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
 `ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`](not-null.html) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1:</span> If a foreign key column has multiple constraints that reference the same column, the foreign key action that is specified by the first foreign key takes precedence. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+{{site.data.alerts.end}}
+
 ### Performance
 
 Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
@@ -118,7 +142,7 @@ You can improve the performance of some statements that use foreign keys by also
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the Foreign Key constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level
@@ -696,6 +720,114 @@ Deleting and updating values in the `customers_5` table sets the referenced valu
 (4 rows)
 ~~~
 
+### Add multiple foreign key constraints to a single column
+
+<span class="version-tag">New in v20.1:</span> You can add more than one foreign key constraint to a single column.
+
+For example, if you create the following tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    name STRING,
+    email STRING
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    customer_id INT UNIQUE,
+    item_number INT
+ );
+~~~
+
+You can create a table with a column that references columns in both the `customers` and `orders` tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE shipments (
+    tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    carrier STRING,
+    status STRING,
+    customer_id INT,
+    CONSTRAINT fk_customers FOREIGN KEY (customer_id) REFERENCES customers(id),
+    CONSTRAINT fk_orders FOREIGN KEY (customer_id) REFERENCES orders(customer_id)
+  );
+~~~
+
+Inserts into the `shipments` table must fulfill both foreign key constraints on `customer_id` (`fk_customers` and `fk_customers_2`).
+
+Let's insert a record into each table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
+~~~
+
+The last statement succeeds because `1001` matches a unique `id` value in the `customers` table and a unique `customer_id` value in the `orders` table. If `1001` was in neither of the referenced columns, or in just one of them, the statement would return an error.
+
+For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
+~~~
+
+~~~
+ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
+SQLSTATE: 23503
+DETAIL: Key (customer_id)=(2000) is not present in table "customers".
+~~~
+
+CockroachDB allows you to add multiple foreign key constraints on the same column, that reference the same column:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CONSTRAINTS FROM shipments;
+~~~
+
+~~~
+  table_name | constraint_name | constraint_type |                               details                                | validated
+-------------+-----------------+-----------------+----------------------------------------------------------------------+------------
+  shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
+  shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
+  shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
+  shipments  | primary         | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
+(4 rows)
+~~~
+
+There are now two foreign key constraints on `customer_id` that reference the `customers(id)` column (i.e., `fk_customers` and `fk_customers_2`).
+
+In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM orders WHERE customer_id = 1001;
+~~~
+
+~~~
+ERROR: delete on table "orders" violates foreign key constraint "fk_orders" on table "shipments"
+SQLSTATE: 23503
+DETAIL: Key (customer_id)=(1001) is still referenced from table "shipments".
+~~~
 
 ### Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`
 

@@ -1,6 +1,6 @@
 Schema change [DDL](https://en.wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`](commit-transaction.html) time, even if other statements in the transaction succeed.  This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
 
-<span class="version-tag">New in v19.2:</span> If such a failure occurs, CockroachDB will emit a new CockroachDB-specific error code, `XXA00`, and the following error message:
+If such a failure occurs, CockroachDB will emit a new CockroachDB-specific error code, `XXA00`, and the following error message:
 
 ```
 transaction committed but schema change aborted with error: <description of error>

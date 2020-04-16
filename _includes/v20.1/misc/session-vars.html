@@ -119,7 +119,7 @@
 
   <tr>
    <td>
-    <code>enable_zig_zag_join</code>
+    <code>enable_zigzag_join</code>
    </td>
    <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. </td>
    <td>
@@ -171,6 +171,17 @@
     <br />This variable is particularly useful for verifying load balanced connections.</td>
    <td>Node-dependent</td>
    <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>optimizer_foreign_keys</code>
+   </td>
+   <td><span class="version-tag">New in v20.1:</span> If <code>off</code>, disables <a href="cost-based-optimizer.html">optimizer-driven</a> foreign key checks.
+   </td>
+   <td><code>on</code></td>
+   <td>Yes</td>
    <td>Yes</td>
   </tr>
 

@@ -957,23 +957,21 @@ section.footer {
     align-items: center;
     margin-right: 30px;
     position: relative;
-    height: 100% }
+    height: 100%; }
     .version-nav__link:hover, .version-nav__link--active {
-      color: #3A7DE1;
-    }
-    .version-nav__link:hover:after, .version-nav__link--active:after {
-    content:"";
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:4px;
-    background:#3A7DE1;
-    border-radius: 3px 3px 0 0;
-    }
+      color: #3A7DE1; }
       .version-nav__link:hover .version-nav__link-icon--standard, .version-nav__link--active .version-nav__link-icon--standard {
         display: none; }
       .version-nav__link:hover .version-nav__link-icon--hover, .version-nav__link--active .version-nav__link-icon--hover {
         display: inline-block; }
+    .version-nav__link:hover:after, .version-nav__link--active:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 4px;
+      background: #3A7DE1;
+      border-radius: 3px 3px 0 0; }
     .version-nav__link-text {
       margin-top: 3px;
       font-family: 'AvenirLTStd-Black', serif;
@@ -996,7 +994,7 @@ section.footer {
           .version-nav__link-text--crdb:after {
             content: 'CockroachDB'; } }
       .version-nav__link-text--managed:after {
-        content: 'CRC'; }
+        content: 'CC'; }
         @media screen and (min-width: 768px) {
           .version-nav__link-text--managed:after {
             content: 'CockroachCloud'; } }
@@ -1061,8 +1059,7 @@ section.footer {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 25px;
-  margin-bottom: 5px;
-  text-transform: uppercase; }
+  margin-bottom: 5px; }
 
 .search-snippet {
   font-family: 'Graphik-Regular', sans-serif;
@@ -3784,30 +3781,24 @@ a.accordion-toggle {
 /* Search results highlight */
 #search-hits mark {
   background: none;
-  font-weight: bold;
-}
+  font-weight: bold; }
 
 #search-stats {
-  margin-top: -10px;
-}
+  margin-top: -10px; }
 
 #search-pages .ais-Pagination {
-  margin: 45px 0;
-}
+  margin: 45px 0; }
 
 #search-pages .ais-Pagination-list {
-  padding: 0;
-}
+  padding: 0; }
 
 #search-pages .ais-Pagination-item {
-  display: inline;
-}
+  display: inline; }
 
 #search-pages .ais-Pagination-item.ais-Pagination-item--previousPage a,
 #search-pages .ais-Pagination-item.ais-Pagination-item--nextPage a {
   color: #192847;
-  font-size: 15px;
-}
+  font-size: 15px; }
 
 #search-pages .ais-Pagination-item a {
   font-size: 16px;
@@ -3815,11 +3806,10 @@ a.accordion-toggle {
   text-align: center;
   letter-spacing: -0.0941177px;
   color: #192847;
-  padding: 4px;
-}
+  padding: 4px; }
 
 #search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
   color: #497EDA;
-  font-weight: 900;
-}
+  font-weight: 900; }
+
 /*# sourceMappingURL=customstyles.css.map */

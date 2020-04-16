@@ -203,13 +203,11 @@ To disable encryption, specify `key=plain`. The data keys will be stored in plai
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
 
+## Encrypted backups (Enterprise)
+
+{% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
+
 ## Encryption caveats
-
-### Unencrypted backups
-
-Backups taken with the `BACKUP` statement are not encrypted even if Encryption at Rest is enabled. Encryption at Rest only applies to the CockroachDB node's data on the local disk. If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
-
-A workaround for the issue is to use a cloud storage provider that is configured to transparently encrypt your data (e.g., AWS S3 default encryption).
 
 ### Higher CPU utilization
 

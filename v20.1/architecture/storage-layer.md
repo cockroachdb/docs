@@ -57,7 +57,24 @@ Using these tools, you can get consistent data from your database as far back as
 
 ### Garbage collection
 
-CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. The garbage collection period can be set at the cluster, database, or table level by configuring the [`gc.ttlseconds` replication zone variable](../configure-replication-zones.html#gc-ttlseconds).  For more information about replication zones, see [Configure Replication Zones](../configure-replication-zones.html).
+CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. The garbage collection period can be set at the cluster, database, or table level by configuring the [`gc.ttlseconds` replication zone variable](../configure-replication-zones.html#gc-ttlseconds). For more information about replication zones, see [Configure Replication Zones](../configure-replication-zones.html).
+
+#### Protected timestamps
+
+<span class="version-tag">New in v20.1:</span> Garbage collection can only run on MVCC values which are not covered by a *protected timestamp*. The protected timestamp subsystem exists to ensure the safety of operations that rely on historical data, such as:
+
+- [Imports](../import.html), including [`IMPORT INTO`](../import-into.html)
+- [Backups](../backup.html)
+- [Change data capture (CDC)](../change-data-capture.html) (a.k.a. [changefeeds](../create-changefeed.html))
+- [Online schema changes](../online-schema-changes.html)
+
+Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs](../configure-replication-zones.html#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer](sql-layer.html) has to scan over previous MVCC values to find the current value of a row.
+
+##### How protected timestamps work
+
+Protected timestamps work by creating *protection records*, which are stored in an internal system table. When a long-running job such as a backup wants to protect data at a certain timestamp from being garbage collected, it creates a protection record associated with that data and timestamp.
+
+Upon successful creation of a protection record, the MVCC values for the specified data at timestamps less than or equal to the protected timestamp will not be garbage collected. When the job that created the protection record finishes its work, it removes the record, allowing the garbage collector to run on the formerly protected values.
 
 ## Interactions with other layers
 

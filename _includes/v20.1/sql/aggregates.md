@@ -43,7 +43,11 @@
 </span></td></tr>
 <tr><td><a name="bit_and"></a><code>bit_and(arg1: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the bitwise AND of all non-null input values, or null if none.</p>
 </span></td></tr>
+<tr><td><a name="bit_and"></a><code>bit_and(arg1: varbit) &rarr; varbit</code></td><td><span class="funcdesc"><p>Calculates the bitwise AND of all non-null input values, or null if none.</p>
+</span></td></tr>
 <tr><td><a name="bit_or"></a><code>bit_or(arg1: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the bitwise OR of all non-null input values, or null if none.</p>
+</span></td></tr>
+<tr><td><a name="bit_or"></a><code>bit_or(arg1: varbit) &rarr; varbit</code></td><td><span class="funcdesc"><p>Calculates the bitwise OR of all non-null input values, or null if none.</p>
 </span></td></tr>
 <tr><td><a name="bool_and"></a><code>bool_and(arg1: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Calculates the boolean value of <code>AND</code>ing all selected values.</p>
 </span></td></tr>
@@ -64,6 +68,8 @@
 <tr><td><a name="count"></a><code>count(arg1: anyelement) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of selected elements.</p>
 </span></td></tr>
 <tr><td><a name="count_rows"></a><code>count_rows() &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of rows.</p>
+</span></td></tr>
+<tr><td><a name="every"></a><code>every(arg1: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Calculates the boolean value of <code>AND</code>ing all selected values.</p>
 </span></td></tr>
 <tr><td><a name="json_agg"></a><code>json_agg(arg1: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Aggregates values as a JSON or JSONB array.</p>
 </span></td></tr>
@@ -148,6 +154,12 @@
 <tr><td><a name="stddev"></a><code>stddev(arg1: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the standard deviation of the selected values.</p>
 </span></td></tr>
 <tr><td><a name="stddev"></a><code>stddev(arg1: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the standard deviation of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="stddev_samp"></a><code>stddev_samp(arg1: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the standard deviation of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="stddev_samp"></a><code>stddev_samp(arg1: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the standard deviation of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="stddev_samp"></a><code>stddev_samp(arg1: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the standard deviation of the selected values.</p>
 </span></td></tr>
 <tr><td><a name="string_agg"></a><code>string_agg(arg1: <a href="bytes.html">bytes</a>, arg2: <a href="bytes.html">bytes</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Concatenates all selected values using the provided delimiter.</p>
 </span></td></tr>
