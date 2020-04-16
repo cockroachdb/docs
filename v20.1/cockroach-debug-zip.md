@@ -24,6 +24,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Problem ranges
 - Sessions
 - Queries
+- Thread stack traces (Linux only)
 
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
