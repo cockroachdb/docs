@@ -6,7 +6,82 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
+## New limitations
+
+### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
+
+Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:   
+
+~~~ sql
+> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
+~~~
+
+~~~
+ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://github.com/cockroachdb/cockroach/issues/46414
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46414)
+
+### Column name from an outer column inside a subquery differs from PostgreSQL
+
+CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
+
+~~~ sql
+> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
+~~~
+
+CockroachDB:
+
+~~~
+  ?column?
+------------
+         1
+~~~
+
+PostgreSQL:
+
+~~~
+ x
+---
+ 1
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+
+### Privileges required to access to certain virtual tables differs from PostgreSQL
+
+Access to certain virtual tables in the `pg_catalog` and `information_schema` schemas require more privileges than in PostgreSQL. For example, in CockroachDB, access to `pg_catalog.pg_types` requires the `SELECT` privilege on the current database, whereas this privilege is not required in PostgreSQL.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/43177)
+
+### Concurrent SQL shells overwrite each other's history
+
+The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine, therefore, each shell's command history can get overwritten in unexpected ways.
+
+As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
+~~~
+
 ## Unresolved limitations
+
+### Enterprise `BACKUP` does not capture database/table/column comments
+
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+
+As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
 ### Adding stores to a node
 
@@ -33,7 +108,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+  [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Cold starts of large clusters may require manual intervention
 
@@ -126,33 +201,11 @@ For multi-core systems, the user CPU percent can be greater than 100%. Full util
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
-### `GROUP BY` referring to `SELECT` aliases
-
-Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28059)
-
 ### `TRUNCATE` does not behave like `DELETE`
 
 `TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
-
-### Using columns in `SELECT` not listed in `GROUP BY`
-
-Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
-
-To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list (e.g., `SELECT a GROUP BY b, a`), or `DISTINCT` should also be used (e.g., `SELECT DISTINCT a GROUP BY b`).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
-
-### Cannot `DELETE` multiple rows with self-referencing FKs
-
-Because CockroachDB checks foreign keys eagerly (i.e., per row), it cannot trivially delete multiple rows from a table with a self-referencing foreign key.
-
-To successfully delete multiple rows with self-referencing foreign keys, you need to ensure they're deleted in an order that doesn't violate the foreign key constraint.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/25809)
 
 ### `DISTINCT` operations cannot operate over JSON values
 
@@ -160,21 +213,13 @@ CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT`
 
 As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g., `SELECT DISTINCT col->>'field'...`.
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/24436)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
 ### Current sequence value not checked when updating min/max value
 
 Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/23719)
-
-### Using common table expressions in `VALUES` and `UNION` clauses
-
-When the [cost-based optimizer](cost-based-optimizer.html) is disabled, or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
-
-This limitation will be lifted when the cost-based optimizer covers all queries. Until then, applications can work around this limitation by including the entire CTE query in the place where it is used.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
 
 ### Using `default_int_size` session variable in batch of statements
 
@@ -183,14 +228,6 @@ When setting the `default_int_size` [session variable](set-vars.html) in a batch
 As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
-
-### Cannot decommission nodes
-
-The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/cockroach-node.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.
-
-Example: decommissioning a node in a three node cluster will not work because ranges would become under-replicated.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
 
 ### Importing data using the PostgreSQL COPY protocol
 
@@ -224,24 +261,36 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-### Adding a column with certain `DEFAULT` values
+### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> CREATE TABLE t (x INT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> CREATE SEQUENCE s;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+~~~
+
+~~~
+ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
 ### Available capacity metric in the Admin UI
 
@@ -264,14 +313,6 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
-
-### Write and update limits for a single statement
-
-A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. Currently, `INSERT INTO ... SELECT FROM` and `CREATE TABLE AS SELECT` queries may encounter these limits.
-
-To increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
-
-In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted any more, large transactions can have performance implications on the cluster.
 
 ### Using `\|` to perform a large input in the SQL shell
 

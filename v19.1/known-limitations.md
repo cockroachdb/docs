@@ -6,6 +6,16 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
+## New limitations
+
+### Enterprise `BACKUP` does not capture database/table/column comments
+
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+
+As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](sql-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
+
 ## Unresolved limitations
 
 ### Adding stores to a node
@@ -169,14 +179,6 @@ This conversion is currently only well defined for a small range of integers, i.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
 
-### Cannot decommission nodes
-
-The [`cockroach node decommission`](https://www.cockroachlabs.com/docs/stable/view-node-details.html#subcommands) command will hang when used to target a set of nodes that cannot be removed without breaking the configured replication rules.
-
-Example: decommissioning a node in a three node cluster will not work because ranges would become under-replicated.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/18029)
-
 ### Importing data using the PostgreSQL COPY protocol
 
 Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
@@ -224,24 +226,36 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-### Adding a column with certain `DEFAULT` values
+### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> CREATE TABLE t (x INT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> CREATE SEQUENCE s;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+~~~
+
+~~~
+ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
 ### Available capacity metric in the Admin UI
 
