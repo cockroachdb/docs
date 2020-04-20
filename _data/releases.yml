@@ -1,4 +1,4 @@
-- title: Production Releases
+- title: Production releases
   releases:
     - date: Apr 13, 2020
       version: v19.2.6
@@ -156,7 +156,7 @@
     - date: May 10, 2017
       version: v1.0
       no_windows: true
-- title: Testing Releases
+- title: Testing releases
   releases:
     - date: Apr 14, 2020
       version: v20.1.0-rc.1
