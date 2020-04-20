@@ -6,7 +6,7 @@ toc: true
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
-- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html)
+{% include {{ page.version.version }}/sql/schema-changes.md %}
 - [`IMPORT`](import.html)
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)

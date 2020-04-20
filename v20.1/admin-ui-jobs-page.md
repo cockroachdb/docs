@@ -3,9 +3,9 @@ title: Jobs Page
 toc: true
 ---
 
-The **Jobs** page of the Admin UI provides details about long-running tasks your cluster has performed. These can include:
+The **Jobs** page of the Admin UI provides details about long-running tasks performed by your cluster. These can include:
 
-- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html).
+{% include {{ page.version.version }}/sql/schema-changes.md %}.
 - [`IMPORT`](import.html).
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
@@ -29,7 +29,7 @@ You can toggle between showing the latest 50 jobs or all jobs on the cluster.
 {{site.data.alerts.callout_info}}
 Jobs are deleted every 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html). 
 
-If you need a historical record of all jobs you have run, you should log this information externally. 
+The Jobs list is designed for you to manage pending work. It is not intended to display the canonical record of all jobs that have run. If you need a historical record of all jobs you have run, you should log this information externally. 
 {{site.data.alerts.end}}
 
 ## Jobs list
@@ -50,13 +50,13 @@ Description | SQL statement that created the job.
 Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
 Users | User that created the job.
 Creation Time | Date and time the job was created.
-Status | Current [job status](#job-status) or completion progress. Status can be `PENDING`, `PAUSED`, `FAILED`, `SUCCEEDED`, or `CANCELED`.
+Status | Current [job status](#job-status) or completion progress.
 
 ### Job status
 
 Status | Description
 -------|------------
-`PENDING` | Job is created but still pending.
+`PENDING` | Job is created but has not started running.
 `PAUSED` | Job is [paused](pause-job.html).
 `FAILED` | Job failed to complete.
 `SUCCEEDED` | Job successfully completed.
