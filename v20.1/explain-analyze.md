@@ -124,7 +124,7 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+> EXPLAIN ANALYZE (DEBUG) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
 ~~~
