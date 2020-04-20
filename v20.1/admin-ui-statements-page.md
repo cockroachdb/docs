@@ -7,135 +7,179 @@ toc: true
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
 {{site.data.alerts.end}}
 
-The **Statements** page helps you identify frequently executed or high latency [SQL statements](sql-statements.html). The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+The **Statements** page helps you:
 
-To view the **Statements** page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click **Statements** on the left.
+- Identify frequently executed or high latency [SQL statements](sql-statements.html).
+- View SQL statement [details](#statement-details-page).
+- Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
+
+To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** in the left-hand navigation.
+
+## Search and filter by application
+
+By default, this page shows SQL statements from all applications running on the cluster, and hides internal CockroachDB queries.
+
+To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`. 
+
+CockroachDB's internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+
+You can also search for statements using the search bar.
+
+## Understand the Statements page
+
+Use this page to identify SQL statements that you may want to [troubleshoot](query-behavior-troubleshooting.html). This might include statements that are experiencing high latencies, multiple [retries](transactions.html#transaction-retries), or execution failures. You can optionally create and retrieve [diagnostics](#diagnostics) for these statements.
+
+{{site.data.alerts.callout_success}}
+If you haven't yet executed any queries in the cluster as a user, this page will initially be blank.
+{{site.data.alerts.end}}
 
 <img src="{{ 'images/v20.1/admin-ui-statements-page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
 
-## Limitation
-
-The **Statements** page displays the details of the SQL statements executed within a specified time interval. At the end of the interval, the display is wiped clean, and you'll not see any statements on the page until the next set of statements is executed. By default, the time interval is set to one hour; however, you can customize the interval using the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
-
-## Filtering by application
-
-If you have multiple applications running on the cluster, the **Statements** page shows the statements from all of the applications by default. To view the statements pertaining to a particular application, select the [application name](connection-parameters.html#additional-connection-parameters) from the **App** dropdown menu. If you haven't set the application name in the connection string, it appears as `unset` in the dropdown menu.
-
-## Understanding the Statements page
-
-### SQL statement fingerprint
-
-The **Statements** page displays the details of SQL statement fingerprints instead of individual SQL statements.
-
-A statement fingerprint is a grouping of similar SQL statements in their abstracted form by replacing the literal values with underscores (`_`). Grouping similar SQL statements as fingerprints helps you quickly identify frequently executed SQL statements and their latencies.
-
-A statement fingerprint is generated when two or more statements are the same after any literal values in them (e.g.,numbers and strings) are replaced with underscores. For example, the following statements have the same once their numbers have been replaced with underscores:
-
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)`
-
-Thus, they can have the same fingerprint:
-
-`INSERT INTO new_order(product_id, customer_id, no_w_id) VALUES (_, _, _)`
-
-The following statements are different enough to not have the same fingerprint:
-
-- `INSERT INTO orders(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
-
-### Parameters
-
-The **Statements** page displays the time, execution count, number of [retries](transactions.html#transaction-retries), number of rows affected, and latency for each statement fingerprint. By default, the statement fingerprints are sorted by time; however, you can sort the table by execution count, retries, rows affected, and latency.
-
-The following details are provided for each statement fingerprint:
-
 Parameter | Description
 -----|------------
-Statement | The SQL statement or the fingerprint of similar SQL statements.<br><br>To view additional details of a statement fingerprint, click on the statement fingerprint in the **Statement** column to see the [**Statement Details** page](#statement-details-page).
-TXN Type | The type of transaction (implicit or explicit). Explicit transactions refer to the statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.
-Time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Execution Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed within the last hour or the [specified time interval](#limitation). <br><br>The execution count is displayed in numerical value as well as in the form of a horizontal bar. The bar is color-coded to indicate the ratio of runtime success (indicated by blue) to runtime failure (indicated by red) of the execution count for the fingerprint. The bar also helps you compare the execution count across all SQL fingerprints in the table. <br><br>You can sort the table by count.
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Rows Affected | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The number of rows returned are represented in two ways: The numerical value shows the number of rows returned, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of the number of rows returned). The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows returned.
-Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency). The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
+Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](#statement-details-page).
+Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. 
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Diagnostics | <span class="version-tag">New in v20.1:</span> Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
+
+### Time interval
+
+By default, the Statements page displays all SQL statements executed within a one-hour time interval. The display is cleared at the end of each interval. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+
+### SQL statement fingerprints
+
+The Statements page displays SQL statement *fingerprints*. 
+
+A statement fingerprint represents one or more SQL statements by replacing literal values (e.g., numbers and strings) with underscores (`_`). This can help you quickly identify frequently executed SQL statements and their latencies.
+
+For multiple SQL statements to be represented by a fingerprint, they must be identical aside from their literal values:
+
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)</code>
+
+The above SQL statements have the fingerprint: 
+
+<code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, no_w_id) VALUES (_, _, _)</code>
+
+The following statements cannot be represented by the same fingerprint:
+
+- <code style="white-space:pre-wrap">INSERT INTO orders(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)</code>
+- <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)</code>
+
+It is possible to see the same fingerprint listed multiple times in the following scenarios:
+
+- Statements with this fingerprint were executed by more than one [`application_name`](show-vars.html#supported-variables).
+- Statements with this fingerprint were executed both successfully and unsuccessfully.
 
 ## Statement Details page
 
-The **Statement Details** page displays the logical plan as well as the details of the time, execution count, retries, rows returned, and latency by phase and by gateway node for the selected statement fingerprint.
+Click on a SQL statement fingerprint to open **Statement Details**. For each statement fingerprint, the details include:
+
+- [Overview](#overview)
+- [Diagnostics](#diagnostics)
+- [Logical plan](#logical-plan)
+- [Statistics](#execution-stats)
 
 <img src="{{ 'images/v20.1/admin_ui_statements_details_page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
 
-### Logical plan
+### Overview
 
-The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](https://www.cockroachlabs.com/docs/stable/sql-grammar.html#preparable_stmt). You can then use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](https://www.cockroachlabs.com/docs/stable/explain.html).
+The **Overview** section displays the SQL statement fingerprint and essential statistics on the right-hand side of the page:
 
-By default, the logical plan for each fingerprint is sampled every 5 minutes. You can use the `sql.metrics.statement_details.plan_collection.period` [cluster setting](cluster-settings.html) to change this time interval. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+- **Total Time** is the cumulative time taken to execute statements with this fingerprint within the [specified time interval](#time-interval).
+- **Mean Service Latency** is the average service latency of statements with this fingerprint within the [specified time interval](#time-interval).
+- **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
+- **Transaction Type** displays the type of transaction (implicit or explicit).
+- **Distributed execution?** indicates whether the execution was distributed.
+- **Used cost-based optimizer?** indicates whether the execution used the [cost-based optimizer](cost-based-optimizer.html).
+- **Failed?** indicates whether the execution was successful.
+
+**Execution Count** displays execution statistics for the SQL statement fingerprint.
+
+- **First Attempts** is the cumulative number of first attempts at executing statements with this fingerprint within the [specified time interval](#time-interval).
+- **Retries** is the cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the [specified time interval](#time-interval).
+- **Max Retries** is the highest number of retries of a single statement with this fingerprint within the [specified time interval](#time-interval). For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+- **Total** is the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
+
+**Rows Affected** displays statistics on rows returned for the SQL statement fingerprint.
+
+- **Mean Rows** is the average number of rows returned while executing statements with this fingerprint within the [specified time interval](#time-interval).
+- **Standard Deviation** is the value of one standard deviation of the mean.
+
+### Diagnostics
+
+The **Diagnostics** section of the Statement Details page allows you to activate and view diagnostics for the SQL statement fingerprint.
+
+When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement, a physical query plan, execution statistics, and other information about the query. For more details on the contents, see [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html).
+
+{{site.data.alerts.callout_success}}
+Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
+{{site.data.alerts.end}}
+
+<img src="{{ 'images/v20.1/admin_ui_statements_diagnostics.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+
+- Click the **Activate** button to begin collecting diagnostics for the fingerprint. This will open the list of **Statement diagnostics** with a status next to each activated diagnostic.
+	- `WAITING FOR QUERY` indicates that a SQL statement matching the fingerprint has not yet been recorded.
+	- `ERROR` indicates that the attempt at diagnostics collection failed.
+	- `READY` indicates that the diagnostics have run and can be downloaded. A download link will appear beside the status.
+- For any row with a `READY` status, click **Bundle (.zip)** to retrieve the diagnostics.
+
+After downloading the statement diagnostics, you will have a JSON file that represents transaction events across nodes for the SQL statement. The information collected here can be used to diagnose problematic SQL statements, such as [slow queries](query-behavior-troubleshooting.html#query-is-always-slow).
+
+We currently recommend that you share the diagnostics with our [support team](support-resources.html), which can help you interpret the results.
+
+{{site.data.alerts.callout_info}}
+This is different from the output of [`SHOW TRACE FOR SESSION`](show-trace.html), which returns messages and timing information for all statements recorded during a session.
+{{site.data.alerts.end}}
+
+Click **All statement diagnostics** to view a complete history of your collected diagnostics, each of which can be downloaded. Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. If you need to access diagnostics that were collected for a fingerprint not present in the past [interval](#time-interval), you can find the bundle here.
+
+### Logical Plan
+
+The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](explain.html).
+
+<img src="{{ 'images/v20.1/admin_ui_statements_logical_plan.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+
+By default, the logical plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
 ~~~
 
-### Latency by Phase
+### Execution Stats
 
-The **Latency by Phase** table provides the mean value and one standard deviation of the mean value of the overall service latency as well as latency for each execution phase (parse, plan, run) for the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as color-coded bar graphs: blue indicates the mean value and yellow indicates one standard deviation of the mean value of latency.
+**Execution Latency by Phase** displays the service latency of statements matching this fingerprint, broken down by [phase](architecture/sql-layer.html#sql-parser-planner-executor) (parse, plan, run, overhead), as well as the overall service latency. The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
-### Statistics by Gateway Node
+{{site.data.alerts.callout_success}}
+"Overhead" comprises the statements that remain after subtracting parse, plan, and run latencies from the overall latency. These might include fetching table descriptors that were not cached, or other background tasks required to execute the query.
+{{site.data.alerts.end}}
 
-The **Statistics by Gateway Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. For each gateway node, the table also provides the following details:
+{{site.data.alerts.callout_info}}
+Service latency can be affected by network latency, which is displayed for your cluster on the [Network Latency](admin-ui-network-latency-page.html) page.
+{{site.data.alerts.end}}
 
-Parameter | Description
------|------------
-Node | The ID of the gateway node.
-Time | The cumulative time taken to execute the statement within the last hour or the [specified time interval](#limitation).
-Execution Count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed.
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Rows Affected | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The number of rows returned are represented in two ways: The numerical value shows the number of rows returned, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value of the number of rows returned). The bar helps you compare the mean rows across all SQL fingerprints in the table. <br><br>You can sort the table by rows returned.
-Latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation). <br><br>The latency is represented in two ways: The numerical value shows the mean latency, while the horizontal bar is color-coded (blue indicates the mean value and yellow indicates one standard deviation of the mean value). The bar also helps you compare the mean latencies across all SQL fingerprints in the table. <br><br>You can sort the table by latency.
-
-### Execution Count
-
-The **Execution Count** table provides information about the following parameters in numerical values as well as bar graphs:
+The **Statistics by Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast](make-queries-fast.html#cluster-topology)).
 
 Parameter | Description
 -----|------------
-First Attempts | The cumulative number of first attempts to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Retries | The cumulative number of retries to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Max Retries | The highest number of retries for a single SQL statement with this fingerprint within the last hour or the [specified time interval](#limitation). <br><br>For example, if three statements having the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
-Total | The total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and cumulative retries.
-
-### Row Count
-
-The **Row Count** table provides the mean value and one standard deviation of the mean value of cumulative count of rows returned by the SQL statement (or multiple statements having the same fingerprint). The table provides the service latency details in numerical values as well as a bar graph.
-
-### Statistics
-
-The statistics box on the right-hand side of the **Statements Details** page provides the following details for the statement fingerprint:
-
-Parameter | Description
------|------------
-Total time | The cumulative time taken to execute the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Execution count | The total number of times the SQL statement (or multiple statements having the same fingerprint) is executed within the last hour or the [specified time interval](#limitation).
-Executed without retry | The percentage of successful executions of the SQL statement (or multiple statements having the same fingerprint) on the first attempt within the last hour or the [specified time interval](#limitation).
-Mean service latency | The average service latency of the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-Mean number of rows | The average number of rows returned while executing the SQL statement (or multiple statements having the same fingerprint) within the last hour or the [specified time interval](#limitation).
-
-The table below the statistics box provides the following details:
-
-Parameter | Description
------|------------
-App | Name of the application specified by the [`application_name`](https://www.cockroachlabs.com/docs/dev/show-vars.html#supported-variables) session setting. The **Statements Details** page shows the details for this application.
-Transaction Type | The type of transaction (implicit or explicit). Explicit transactions refer to the statements that are wrapped by `BEGIN` and `COMMIT` statements by the client. For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.
-Distributed execution? | Indicates whether the statement execution was distributed.
-Used cost-based optimizer? | Indicates whether the statement (or multiple statements having the same fingerprint) were executed using the [cost-based optimizer](cost-based-optimizer.html).
-Failed? | Indicate if the statement (or multiple statements having the same fingerprint) were executed successfully.
+Node | ID of the gateway node.
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
+Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
+- [Troubleshoot Query Behavior](query-behavior-troubleshooting.html)
+- [Transaction retries](transactions.html#transaction-retries)
+- [Make Queries Fast](make-queries-fast.html)
 - [Support Resources](support-resources.html)
 - [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
