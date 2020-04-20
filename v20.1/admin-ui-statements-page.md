@@ -117,7 +117,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 The **Diagnostics** section of the Statement Details page allows you to activate and view diagnostics for the SQL statement fingerprint.
 
-When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement, a physical query plan, execution statistics, and other information about the query. For more details on the contents, see [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html).
+When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement, a physical query plan, execution statistics, and other information about the query. For more details on the contents, see [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
 
 {{site.data.alerts.callout_success}}
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
