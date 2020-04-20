@@ -94,7 +94,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Connecting to the demo cluster
 
-When the SQL shell connects to the demo cluster at startup, it prints a welcome text with some tips and CockroachDB version and cluster details. Most of these details resemble the [welcome text](cockroach-sql.html#welcome-message) that is printed when connecting `cockroach sql` to a permanent cluster. `cockroach demo` also includes some URLs to connect to the [Admin UI](admin-ui-overview.html) with a web browser, or directly to the cluster with a URL [connection parameter](cockroach-sql.html#connection-parameters).
+When the SQL shell connects to the demo cluster at startup, it prints a welcome text with some tips and cluster details. Most of these details resemble the [welcome text](cockroach-sql.html#welcome-message) that is printed when connecting `cockroach sql` to a permanent cluster. `cockroach demo` also includes some URLs to connect to the [Admin UI](admin-ui-overview.html) with a web browser, or directly to the cluster with a URL [connection parameter](connection-parameters.html) across a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) or a standard TCP connection.
 
 ~~~ shell
 #
@@ -113,7 +113,7 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 ...
 ~~~
 
-To return the client connection URLs for all nodes in a demo cluster from within the SQL shell, use the client-side `\demo ls` command:
+<span class="version-tag">New in v20.1:</span> To return the client connection URLs for all nodes in a demo cluster from within the SQL shell, use the client-side `\demo ls` command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -145,17 +145,13 @@ The `\demo ls` command is **experimental feature**. The interface and output are
 
 ### Admin UI
 
-`cockroach demo` serves a local [Admin UI](admin-ui-overview.html) at the **console** link. For the duration of the cluster, you can navigate to this link to monitor the cluster's activity in the Admin UI. To login, you can use the `root` user with password `admin`:
-
-<img src="{{ 'images/v20.1/cockroach-demo-admin-ui-login.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
-
-<img src="{{ 'images/v20.1/cockroach-demo-admin-ui-databases.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+`cockroach demo` serves a local [Admin UI](admin-ui-overview.html) at the **console** link. For the duration of the cluster, you can navigate to this link to monitor the cluster's activity in the Admin UI. To login, you can use the `root` user with password `admin`.
 
 ### URL connection parameters
 
-You can connect to the demo cluster with a connection parameter (e.g., using the [`cockroach sql --url` flag](cockroach-sql.html#client-connection)) at the **sql** (for [Unix domain socket connections](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections)) or **sql** (for standard TCP connections) URLs.
+You can connect to the demo cluster using a URL connection parameter (e.g., with the [`cockroach sql --url`](cockroach-sql.html#client-connection) command). To establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine, use the **sql** URL . For standard TCP connections, use the **sql/tcp** URL.
 
-{{site.data.alerts.callout_note}}
+{{site.data.alerts.callout_info}}
 You do not need to create or specify node and client certificates in the connection URL to a secure demo cluster.
 {{site.data.alerts.end}}
 
