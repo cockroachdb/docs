@@ -56,6 +56,7 @@ Flag | Description
 -----|-----------
 `--listen-addr` | The IP address/hostname and port to listen on for connections from clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>**Default:** Listen on all IP addresses on port `26257`
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
+`--socket-dir` | The directory path on which to listen for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections.
 
 ### Security
 
