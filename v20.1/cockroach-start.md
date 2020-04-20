@@ -74,6 +74,7 @@ Flag | Description
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
 `--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](cockroach-init.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.<br><br><span class="version-tag">Changed in v19.2:</span> Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
+`--socket-dir` | The directory path on which to listen for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
 `--host` | **Deprecated.** Use `--listen-addr` instead.
 `--port`<br>`-p` | **Deprecated.** Specify port in `--advertise-addr` and/or `--listen-addr` instead.
@@ -211,6 +212,11 @@ Field | Description
 To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
+{{site.data.alerts.callout_success}}
+Before starting the cluster, [`cockroach cert`](cockroach-cert.html) to generate node and client certificates for a secure cluster connection.
+{{site.data.alerts.end}}
+
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \

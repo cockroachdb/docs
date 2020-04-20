@@ -770,6 +770,41 @@ $ cockroach sql --insecure \
 
 In this example, the statement is executed every minute. We let the process run for a couple minutes before killing it with Ctrl+C.
 
+### Connect to a cluster listening for Unix domain socket connections
+
+To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](#example-uri-for-a-Unix-domain-socket) with the `--url` connection parameter.
+
+For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start-single-node --certs-dir=certs --socket-dir=.
+~~~
+
+~~~
+CockroachDB node starting at 2020-04-20 18:22:57.269724 +0000 UTC (took 0.6s)
+build:               CCL v20.1.0 @ 2020/04/20 16:18:41 (go1.13.4)
+webui:               https://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --certs-dir=certs
+socket:              .s.PGSQL.26257
+logs:                /cockroachdb/cockroach/cockroach-data/logs
+temp dir:            /cockroachdb/cockroach/cockroach-data/cockroach-temp662180780
+external I/O path:   /cockroachdb/cockroach/cockroach-data/extern
+store[0]:            path=/cockroachdb/cockroach/cockroach-data
+storage engine:      rocksdb
+status:              initialized new cluster
+clusterID:           4a392d66-332f-4027-9c06-6e86e17b9758
+nodeID:              1
+~~~
+
+To connect to this cluster with a socket:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --url='postgres://user:password@?host=/cockroachdb/cockroach&port=26257'
+~~~
+
 ## See also
 
 - [Client Connection Parameters](connection-parameters.html)
