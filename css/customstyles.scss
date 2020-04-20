@@ -580,3 +580,45 @@ a.accordion-toggle {
   display: flex;
   flex-direction: column;
 }
+
+/* Search results highlight */
+#search-hits mark {
+  background: none;
+  font-weight: bold;
+}
+
+#search-stats {
+  margin-top: -10px;
+}
+
+#search-pages .ais-Pagination {
+  margin: 45px 0;
+}
+
+#search-pages .ais-Pagination-list {
+  padding: 0;
+}
+
+#search-pages .ais-Pagination-item {
+  display: inline;
+}
+
+#search-pages .ais-Pagination-item.ais-Pagination-item--previousPage a,
+#search-pages .ais-Pagination-item.ais-Pagination-item--nextPage a {
+  color: #192847;
+  font-size: 15px;
+}
+
+#search-pages .ais-Pagination-item a {
+  font-size: 16px;
+  line-height: 46px;
+  text-align: center;
+  letter-spacing: -0.0941177px;
+  color: #192847;
+  padding: 4px;
+}
+
+#search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
+  color: #497EDA;
+  font-weight: 900;
+}

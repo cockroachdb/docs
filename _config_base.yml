@@ -38,17 +38,17 @@ release_info:
     build_time: 2020/02/11 14:48:26 (go1.11.6)
     start_time: 2020-02-11 15:10:52.34274101 +0000 UTC
   v19.2:
-    name: v19.2.5
-    version: v19.2.5
+    name: v19.2.6
+    version: v19.2.6
     docker_image: cockroachdb/cockroach
-    build_time: 2020/03/23 11:00:26 (go1.12.12)
-    start_time: 2020-03-23 11:01:26.34274101 +0000 UTC
+    build_time: 2020/04/13 11:00:26 (go1.12.12)
+    start_time: 2020-04-13 11:01:26.34274101 +0000 UTC
   v20.1:
     name: v20.1.0
-    version: v20.1.0-beta.4
+    version: v20.1.0-rc.1
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2020/03/30 11:00:26 (go1.13.4)
-    start_time: 2020-03-30 11:01:26.34274101 +0000 UTC
+    build_time: 2020/04/14 11:00:26 (go1.13.4)
+    start_time: 2020-04-14 11:01:26.34274101 +0000 UTC
 
 include: ["_redirects"]
 exclude:
@@ -70,7 +70,7 @@ defaults:
 
 algolia:
   application_id: 7RXZLDVR5F
-  search_api_key: d3908f7681c855f6ba95c2a14d063d89
+  search_api_key: 372a10456f4ed7042c531ff3a658771b
   index_name: cockroachcloud_docs
   files_to_exclude:
     - index.html

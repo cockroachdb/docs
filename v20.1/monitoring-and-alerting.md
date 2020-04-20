@@ -55,7 +55,7 @@ CockroachDB provides two HTTP endpoints for checking the health of individual no
 
 #### /health
 
-If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connnection refused` error:
+If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -66,28 +66,15 @@ $ curl http://localhost:8080/health
 curl: (7) Failed to connect to localhost port 8080: Connection refused
 ~~~
 
-Otherwise, it returns an HTTP `200 OK` status response code with details about the node:
+Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 
 ~~~
 {
-  "nodeId": 1,
-  "address": {
-    "networkField": "tcp",
-    "addressField": "JESSEs-MBP:26257"
-  },
-  "buildInfo": {
-    "goVersion": "go1.9",
-    "tag": "v2.0-alpha.20180212-629-gf1271b232-dirty",
-    "time": "2018/02/21 04:09:53",
-    "revision": "f1271b2322a4a1060461707bdccd77b6d5a1843e",
-    "cgoCompiler": "4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.39.2)",
-    "platform": "darwin amd64",
-    "distribution": "CCL",
-    "type": "development",
-    "dependencies": null
-  }
+
 }
 ~~~
+
+<span class="version-tag">Changed in v20.1:</span> The `/health` endpoint no longer returns details about the node such as its private IP address. These details could be considered privileged information in some deployments. If you need to retrieve node details, you can use the `/_status/details` endpoint along with a valid authentication cookie.
 
 #### /health?ready=1
 

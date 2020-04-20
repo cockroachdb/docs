@@ -280,7 +280,7 @@ DATABASES = {
 
 {% if site.cockroachcloud %}
 
-In the CockroachCloud console, generate the [connection parameters](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method). Then in `myproject/myproject/settings.py`, change `DATABASES` to the following:
+In the CockroachCloud Console, generate the [connection parameters](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method). Then in `myproject/myproject/settings.py`, change `DATABASES` to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python

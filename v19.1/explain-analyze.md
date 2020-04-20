@@ -63,7 +63,7 @@ Any or all of the above fields may display for a given query plan.
 
 ## Example
 
-`EXPLAIN ANALYZE` executes a query and generate a link to a physical query plan with execution statistics:
+`EXPLAIN ANALYZE` executes a query and generates a link to a physical query plan, with execution statistics.
 
 {% include copy-clipboard.html %}
 ~~~ sql

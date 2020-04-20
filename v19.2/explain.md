@@ -69,7 +69,8 @@ The following examples use the [`startrek` example dataset](cockroach-demo.html#
 
 ### Default query plans
 
-By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query:
+
+By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -90,9 +91,76 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 (8 rows)
 ~~~
 
-The `tree` column shows the tree structure of the query plan. In the `field` and `description` columns, a set of properties is shown for each node in the tree. Most importantly, for scans, the `table` property shows you which index is scanned (`primary` in this case) and the `spans` property shows you what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+The `tree` column of the output shows the tree structure of the query plan, in this case a `sort` and then a `scan`.
 
-With the `distributed` property, the output also shows you that the query plan will be distributed to multiple nodes on the cluster. The `vectorized` property shows that the plan will be executed with the row-oriented execution engine, and not the [vectorized engine](vectorized-execution.html).
+The `field` and `description` columns describe a set of properties, some global to the query, and some specific to an operation listed in the `tree` column (in this case, `sort` or `scan`):
+
+- `distributed`:`true`
+  <br>The query plan will be distributed to multiple nodes on the cluster.
+- `vectorized`:`false`
+  <br>The plan will be executed with the row-oriented execution engine, and not the [vectorized engine](vectorized-execution.html).
+- `order`:`+season`
+  <br>The sort will be ordered ascending on the `season` column.
+- `table`:`episodes@primary`
+  <br>The table is scanned on the `primary` index.
+- `spans`:`ALL`
+  <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+- `filter`: `season > 3`
+  <br>The scan filters on the `season` column.
+
+If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM quotes AS q
+JOIN episodes AS e ON q.episode = e.id;
+~~~
+
+~~~
+    tree    |       field        |   description
++-----------+--------------------+------------------+
+            | distributed        | true
+            | vectorized         | false
+  hash-join |                    |
+   │        | type               | inner
+   │        | equality           | (episode) = (id)
+   │        | right cols are key |
+   ├── scan |                    |
+   │        | table              | quotes@primary
+   │        | spans              | ALL
+   └── scan |                    |
+            | table              | episodes@primary
+            | spans              | ALL
+(12 rows)
+~~~
+
+And the following output shows that the query will perform a simple cross join:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM quotes AS q
+JOIN episodes AS e ON q.episode = '2';
+~~~
+
+~~~
+          tree         |    field    |        description
++----------------------+-------------+---------------------------+
+                       | distributed | true
+                       | vectorized  | false
+  render               |             |
+   └── cross-join      |             |
+        │              | type        | cross
+        ├── scan       |             |
+        │              | table       | episodes@primary
+        │              | spans       | ALL
+        └── index-join |             |
+             │         | table       | quotes@primary
+             │         | key columns | rowid
+             └── scan  |             |
+                       | table       | quotes@quotes_episode_idx
+                       | spans       | /2-/3
+(14 rows)
+~~~
 
 ### `VERBOSE` option
 
@@ -293,7 +361,7 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 (1 row)
 ~~~
 
-<span class="version-tag">New in v19.1:</span> The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
+The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
 
 Note that the data is processed in the local browser session and is never sent out over the network. Keep in mind that if you are using any browser extensions, they may be able to access the data locally.
 
@@ -408,6 +476,8 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
+
+For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql

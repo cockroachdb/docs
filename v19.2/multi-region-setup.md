@@ -96,7 +96,7 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/en/latest/install/#install
     [dev-packages]
 
     [packages]
-    cockroachdb = "*"
+    sqlalchemy-cockroachdb = "*"
     psycopg2-binary = "*"
     SQLAlchemy = "*"
     SQLAlchemy-Utils = "*"

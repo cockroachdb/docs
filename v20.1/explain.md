@@ -69,7 +69,7 @@ The following examples use the [`startrek` example dataset](cockroach-demo.html#
 
 ### Default query plans
 
-By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query:
+By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -78,7 +78,7 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 
 ~~~
     tree    |    field    |   description
-+-----------+-------------+------------------+
+------------+-------------+-------------------
             | distributed | true
             | vectorized  | false
   sort      |             |
@@ -90,9 +90,76 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 (8 rows)
 ~~~
 
-The `tree` column shows the tree structure of the query plan. In the `field` and `description` columns, a set of properties is shown for each node in the tree. Most importantly, for scans, the `table` property shows you which index is scanned (`primary` in this case) and the `spans` property shows you what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+The `tree` column of the output shows the tree structure of the query plan, in this case a `sort` and then a `scan`.
 
-With the `distributed` property, the output also shows you that the query plan will be distributed to multiple nodes on the cluster. The `vectorized` property shows that the plan will be executed with the row-oriented execution engine, and not the [vectorized engine](vectorized-execution.html).
+The `field` and `description` columns describe a set of properties, some global to the query, and some specific to an operation listed in the `tree` column (in this case, `sort` or `scan`):
+
+- `distributed`:`true`
+  <br>The query plan will be distributed to multiple nodes on the cluster.
+- `vectorized`:`false`
+  <br>The plan will be executed with the row-oriented execution engine, and not the [vectorized engine](vectorized-execution.html).
+- `order`:`+season`
+  <br>The sort will be ordered ascending on the `season` column.
+- `table`:`episodes@primary`
+  <br>The table is scanned on the `primary` index.
+- `spans`:`ALL`
+  <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+- `filter`: `season > 3`
+  <br>The scan filters on the `season` column.
+
+If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM quotes AS q
+JOIN episodes AS e ON q.episode = e.id;
+~~~
+
+~~~
+    tree    |       field        |   description
+------------+--------------------+-------------------
+            | distributed        | true
+            | vectorized         | false
+  hash-join |                    |
+   │        | type               | inner
+   │        | equality           | (episode) = (id)
+   │        | right cols are key |
+   ├── scan |                    |
+   │        | table              | quotes@primary
+   │        | spans              | ALL
+   └── scan |                    |
+            | table              | episodes@primary
+            | spans              | ALL
+(12 rows)
+~~~
+
+And the following output shows that the query will perform a simple cross join:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM quotes AS q
+JOIN episodes AS e ON q.episode = '2';
+~~~
+
+~~~
+          tree         |    field    |        description
+-----------------------+-------------+----------------------------
+                       | distributed | true
+                       | vectorized  | false
+  render               |             |
+   └── cross-join      |             |
+        │              | type        | cross
+        ├── scan       |             |
+        │              | table       | episodes@primary
+        │              | spans       | ALL
+        └── index-join |             |
+             │         | table       | quotes@primary
+             │         | key columns | rowid
+             └── scan  |             |
+                       | table       | quotes@quotes_episode_idx
+                       | spans       | /2-/3
+(14 rows)
+~~~
 
 ### `VERBOSE` option
 
@@ -109,11 +176,11 @@ WHERE e.season = '1'
 ORDER BY e.stardate ASC;
 ~~~
 
-The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show whether `equality cols are key` for [lookup joins](joins.html#lookup-joins), which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+The output of [`EXPLAIN`](explain.html#verbose-option) also shows whether `equality cols are key` for [lookup joins](joins.html#lookup-joins), which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
 ~~~
             tree           |         field         |        description        |                                         columns                                         | ordering
-+--------------------------+-----------------------+---------------------------+-----------------------------------------------------------------------------------------+-----------+
+---------------------------+-----------------------+---------------------------+-----------------------------------------------------------------------------------------+------------
                            | distributed           | true                      |                                                                                         |
                            | vectorized            | false                     |                                                                                         |
   render                   |                       |                           | (quote, characters, stardate, episode, id, season, num, title, stardate)                | +stardate
@@ -131,6 +198,7 @@ The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show 
         │                  | type                  | inner                     |                                                                                         |
         │                  | equality              | (rowid) = (rowid)         |                                                                                         |
         │                  | equality cols are key |                           |                                                                                         |
+        │                  | parallel              |                           |                                                                                         |
         └── lookup-join    |                       |                           | (id, season, num, title, stardate, episode, rowid[hidden])                              | +stardate
              │             | table                 | quotes@quotes_episode_idx |                                                                                         |
              │             | type                  | inner                     |                                                                                         |
@@ -141,7 +209,7 @@ The output of [`EXPLAIN`](explain.html#verbose-option) has been updated to show 
                            | table                 | episodes@primary          |                                                                                         |
                            | spans                 | ALL                       |                                                                                         |
                            | filter                | season = 1                |                                                                                         |
-(27 rows)
+(28 rows)
 ~~~
 
 ### `TYPES` option
@@ -155,7 +223,7 @@ The `TYPES` mode includes the types of the values used in the query plan. It als
 
 ~~~
     tree    |    field    |           description            |                            columns                            | ordering
-+-----------+-------------+----------------------------------+---------------------------------------------------------------+----------+
+------------+-------------+----------------------------------+---------------------------------------------------------------+-----------
             | distributed | true                             |                                                               |
             | vectorized  | false                            |                                                               |
   sort      |             |                                  | (id int, season int, num int, title string, stardate decimal) | +season
@@ -178,7 +246,7 @@ The `OPT` option displays the query plan tree generated by the [cost-based optim
 
 ~~~
             text
-+---------------------------+
+-----------------------------
   sort
    └── select
         ├── scan episodes
@@ -197,11 +265,11 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
 ~~~
 
 ~~~
-              text
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+                                                                                                                                     text
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   sort
    ├── columns: id:1 season:2 num:3 title:4 stardate:5
-   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+   ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
    ├── cost: 98.6419109
    ├── key: (1)
    ├── fd: (1)-->(2-5)
@@ -210,7 +278,7 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
    ├── interesting orderings: (+1)
    └── select
         ├── columns: id:1 season:2 num:3 title:4 stardate:5
-        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+        ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
         ├── cost: 95.62
         ├── key: (1)
         ├── fd: (1)-->(2-5)
@@ -227,7 +295,7 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
         │    ├── prune: (1-5)
         │    └── interesting orderings: (+1)
         └── filters
-             └── season > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
+             └── season:2 > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
 (29 rows)
 ~~~
 
@@ -241,11 +309,11 @@ To include cost and type details, use `OPT, TYPES`:
 ~~~
 
 ~~~
-                                                                                  text
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+                                                                                                                                     text
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   sort
    ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-   ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+   ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
    ├── cost: 98.6419109
    ├── key: (1)
    ├── fd: (1)-->(2-5)
@@ -254,7 +322,7 @@ To include cost and type details, use `OPT, TYPES`:
    ├── interesting orderings: (+1)
    └── select
         ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-        ├── stats: [rows=26.3333333, distinct(1)=26.3333333, null(1)=0, distinct(2)=1, null(2)=0]
+        ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
         ├── cost: 95.62
         ├── key: (1)
         ├── fd: (1)-->(2-5)
@@ -272,7 +340,7 @@ To include cost and type details, use `OPT, TYPES`:
         │    └── interesting orderings: (+1)
         └── filters
              └── gt [type=bool, outer=(2), constraints=(/2: [/4 - ]; tight)]
-                  ├── variable: season [type=int]
+                  ├── variable: season:2 [type=int]
                   └── const: 3 [type=int]
 (31 rows)
 ~~~
@@ -287,20 +355,24 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 ~~~
 
 ~~~
-                                                                                                                                                                                                                                                                                                                                                                                                                           text                                                                                                                                                                                                                                                                                                                                                                                                                            
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  https://cockroachdb.github.io/text/decode.html#eJzEVcFum0wQPmefYsQl9v8DYQl1bCJVImTT0mIcwTatFUWIwLZZBbMWLE2jqlIewsc-nZ-kwjGUXNIeGpkDEt_HNzP7DTNcsLLiorDBFeltKZL05vQEXNeHr3iim7qhlamOYfBtPIpHlpYslznTsqS84wW2VLiueS7BNPDkABsH2AI8ts2xbVoqfBFYx6b-aoiQGxKHEqDOiU-ALXklMlbBAO3xDLyAjiGYUQg--L6K9iqWVKLYwo9QUS-ePEsucwYRDb3gTSeTSZklksEpcb2p47e4OwsiGjpeQEFZlnyRlPcKnIfe1Ann8J7MYcAzcCJ3qKK9M2fq-fPeewOeqfBYkApFvVBhk1qFNtsQDY8RcnxKwu3pGkaW7FZf1tc5T_XutF7wjrgUIupQL6KeG8H-JQIA-L65N5eSirxeFJViw2UHbgieKR1wpfYEJUsky-JEKjYoTRs0jDXDAoxt07TNkW5aE-PI_N8wbMNQesqMV5IXqYxTUReN-mjSY294JUWcijyW90vWxG787-uLZLHB4zippYjjJ1yd511co0eU4q6Xb4P_UP_ahMdGvLgRh8_6sGMPinrx4gaYz38JO3ZgM4G7noZdT8J2_by8DaN_b4P1BxvQ1f4xQuTTue94AQxm51QFElwMISJ-s0H_g7NwNv39G_n4loRku6XhNRzCLDwlIZzMW8yJ3GOkaZqGKlFKBOvVar16WK8eoGI5S-W2nPXqZwunSdHF79hW9JnnkpVVvyP9iG0Z6FcAAAD__yq9370=  
+              text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  https://cockroachdb.github.io/text/decode.html#eJzEVcFum0oUXWe-4opN7PeAgCFOTKQnEULe4xXjCGhaK4rQGCb2NMBYw5A0qSrlI7zs1_lLKhzbJYumXTQyCyTOuefOnTNzL4oCl4RXlJUWOCy95Qyns7NTcBwf7nqaqquaMiECq6bS03VlOtB7Az07xFiDzufjftI3FTyf50TJML-npT5QDVWTYVLTXEBP62kHmnFg6KD3Lb1vGYYMU6aruqGaXYQUBThhPCM8-cRoWSU5LaiAGa5AzAhk5AbXuYA7nNfEArOJJyWe5CR5pNNHPF2pfhbOyiaezQUt6CPhyQ3jhE7L5JY8VK9okBO6duxCbJ_6LpA5rVhGKuigPZqBF8THEIxiCN77voz2KoIrVq7hZ6isixffgoqcQBSHXvDvViYwz7AgcOY63tD2N7gzCqI4tL0gBmnOaYH5gwQXoTe0wzG8c8fQoRnYkdOV0d65PfT8cSuuQzMZnguSoawLGVZLy7BZrYu6JwjZfuyG6901jODkVp3Xk5ym6na3XvC_68QQxXbsRbHnRLB_hQAAvqzezSOlLK-LspIsuNqCK4Jm0ha4llsCTrAgWYKFZIHU3A1FMxVNB_3IMvuWcajqes8wj__WNEvTpJYyo5WgZSqSlNVloz4atNgZrQRLUpYn4mFOmtyN_219iYsVniS4FixJXnB1nm_zai2Cs_vWeiv8q_zbJjwfxJsbYbzqw449KOvizQ3ovX4TduzAqgN33Q277oT1-Hl7G_p_3gbzFzag6_0ThNyPF77tBdAZXcQyuMFlFyLXbyboX3AejoY_fiMf_nNDdz2l4R8wYBSeuSGcjjeYHTknSFEUBVWMCwTLxWK5eFounqAiOUnFupzl4tsGTnG5zb9lN6IbmgvCq_aJtDNuykDfAwAA__-U4RrF
 (1 row)
 ~~~
 
-<span class="version-tag">New in v19.1:</span> The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
+The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
 
 Note that the data is processed in the local browser session and is never sent out over the network. Keep in mind that if you are using any browser extensions, they may be able to access the data locally.
 
 When you visit the URL above you should see the following output in your browser.
 
 ~~~
-Version: CockroachDB CCL v19.2.0-rc.1 (x86_64-apple-darwin14, built 2019/10/14 18:28:24, go1.12.5)
+-- Version: CockroachDB CCL v20.1.0 (x86_64-apple-darwin19.3.0, built 2020/03/31 16:16:33, go1.13.4)
+
+-- reorder_joins_limit has the default value: 4
+-- enable_zigzag_join has the default value: on
+-- optimizer_foreign_keys has the default value: on
 
 CREATE TABLE episodes (
 	id INT8 NOT NULL,
@@ -317,7 +389,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "id"
         ],
-        "created_at": "2019-11-04 11:22:26.249072+00:00",
+        "created_at": "2020-04-01 17:46:35.112348+00:00",
         "distinct_count": 79,
         "histo_col_type": "INT8",
         "name": "__auto__",
@@ -328,7 +400,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "season"
         ],
-        "created_at": "2019-11-04 11:22:26.249072+00:00",
+        "created_at": "2020-04-01 17:46:35.112348+00:00",
         "distinct_count": 3,
         "histo_col_type": "",
         "name": "__auto__",
@@ -339,7 +411,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "num"
         ],
-        "created_at": "2019-11-04 11:22:26.249072+00:00",
+        "created_at": "2020-04-01 17:46:35.112348+00:00",
         "distinct_count": 29,
         "histo_col_type": "",
         "name": "__auto__",
@@ -350,7 +422,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "title"
         ],
-        "created_at": "2019-11-04 11:22:26.249072+00:00",
+        "created_at": "2020-04-01 17:46:35.112348+00:00",
         "distinct_count": 79,
         "histo_col_type": "",
         "name": "__auto__",
@@ -361,7 +433,7 @@ ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
         "columns": [
             "stardate"
         ],
-        "created_at": "2019-11-04 11:22:26.249072+00:00",
+        "created_at": "2020-04-01 17:46:35.112348+00:00",
         "distinct_count": 76,
         "histo_col_type": "",
         "name": "__auto__",
@@ -390,7 +462,7 @@ The `VEC` option shows details about the [vectorized execution plan](vectorized-
 
 ~~~
                   text
-+---------------------------------------+
+-----------------------------------------
   │
   └ Node 1
     └ *colexec.sortOp
@@ -409,6 +481,8 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
 
+For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
@@ -423,6 +497,24 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
 
 <img src="{{ 'images/v20.1/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
+<span class="version-tag">New in v20.1:</span> To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+~~~
+
+~~~
+ automatic |                      url
+-----------+----------------------------------------------
+   true    | https://cockroachdb.github.io/distsqlplan...
+~~~
+
+To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
+
+<img src="{{ 'images/v20.1/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
 
 ### Find the indexes and key ranges a query uses
 
@@ -442,7 +534,7 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 
 ~~~
   tree |    field    |      description
-+------+-------------+-----------------------+
+-------+-------------+------------------------
        | distributed | true
        | vectorized  | false
   scan |             |
@@ -466,7 +558,7 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 
 ~~~
   tree |    field    | description
-+------+-------------+-------------+
+-------+-------------+--------------
        | distributed | false
        | vectorized  | false
   scan |             |

@@ -64,7 +64,8 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
 ### Default query plans
 
-By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query:
+
+By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -83,7 +84,18 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 (6 rows)
 ~~~
 
-The first column shows the tree structure of the query plan; a set of properties is displayed for each node in the tree. Most importantly, for scans, you can see the index that is scanned (`primary` in this case) and what key ranges of the index you are scanning (in this case, a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+The `tree` column of the output shows the tree structure of the query plan, in this case a `sort` and then a `scan`.
+
+The `field` and `description` columns describe a set of properties specific to an operation listed in the `tree` column (in this case, `sort` or `scan`):
+
+- `order`:`+season`
+  <br>The sort will be ordered ascending on the `season` column.
+- `table`:`episodes@primary`
+  <br>The table is scanned on the `primary` index.
+- `spans`:`ALL`
+  <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+- `filter`: `season > 3`
+  <br>The scan filters on the `season` column.
 
 ### `VERBOSE` option
 

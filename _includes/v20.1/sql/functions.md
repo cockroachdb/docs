@@ -450,18 +450,6 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="timeofday"></a><code>timeofday() &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the current system time on one of the cluster nodes as a string.</p>
 </span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(time: <a href="time.html">time</a>, timezone: <a href="string.html">string</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Treat given time without time zone as located in the specified time zone
-This is deprecated in favor of timezone(str, time)</p>
-</span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(timestamp: <a href="timestamp.html">timestamp</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Treat given time stamp without time zone as located in the specified time zone.
-This is deprecated in favor of timezone(str, timestamp)</p>
-</span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(timestamptz: <a href="timestamp.html">timestamptz</a>, timezone: <a href="string.html">string</a>) &rarr; <a href="timestamp.html">timestamp</a></code></td><td><span class="funcdesc"><p>Convert given time stamp with time zone to the new time zone, with no time zone designation
-This is deprecated in favor of timezone(str, timestamptz)</p>
-</span></td></tr>
-<tr><td><a name="timezone"></a><code>timezone(timetz: timetz, timezone: <a href="string.html">string</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Convert given time with time zone to the new time zone
-This is deprecated in favor of timezone(str, timetz)</p>
-</span></td></tr>
 <tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, time: <a href="time.html">time</a>) &rarr; timetz</code></td><td><span class="funcdesc"><p>Treat given time without time zone as located in the specified time zone.</p>
 </span></td></tr>
 <tr><td><a name="timezone"></a><code>timezone(timezone: <a href="string.html">string</a>, timestamp: <a href="timestamp.html">timestamp</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Treat given time stamp without time zone as located in the specified time zone.</p>
@@ -624,13 +612,17 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="cbrt"></a><code>cbrt(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cube root (∛) of <code>val</code>.</p>
 </span></td></tr>
-<tr><td><a name="ceil"></a><code>ceil(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer greater than <code>val</code>.</p>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
 </span></td></tr>
-<tr><td><a name="ceil"></a><code>ceil(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer greater than <code>val</code>.</p>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
 </span></td></tr>
-<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer greater than <code>val</code>.</p>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
 </span></td></tr>
-<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer greater than <code>val</code>.</p>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="cos"></a><code>cos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cosine of <code>val</code>.</p>
 </span></td></tr>
@@ -659,6 +651,8 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="floor"></a><code>floor(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="floor"></a><code>floor(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="floor"></a><code>floor(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="fnv32"></a><code>fnv32(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1 hash value of a set of values.</p>
 </span></td></tr>
@@ -829,9 +823,11 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tbody>
 <tr><td><a name="ascii"></a><code>ascii(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the character code of the first character in <code>val</code>. Despite the name, the function supports Unicode too.</p>
 </span></td></tr>
-<tr><td><a name="bit_length"></a><code>bit_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits in <code>val</code>.</p>
+<tr><td><a name="bit_length"></a><code>bit_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits used to represent <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="bit_length"></a><code>bit_length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits used to represent <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="bit_length"></a><code>bit_length(val: varbit) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits used to represent <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="btrim"></a><code>btrim(input: <a href="string.html">string</a>, trim_chars: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Removes any characters included in <code>trim_chars</code> from the beginning or end of <code>input</code> (applies recursively).</p>
 <p>For example, <code>btrim('doggie', 'eod')</code> returns <code>ggi</code>.</p>
@@ -865,6 +861,10 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="from_uuid"></a><code>from_uuid(val: <a href="bytes.html">bytes</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the byte string representation of a UUID to its character string representation.</p>
 </span></td></tr>
+<tr><td><a name="get_bit"></a><code>get_bit(bit_string: varbit, index: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts a bit at given index in the bit array.</p>
+</span></td></tr>
+<tr><td><a name="get_bit"></a><code>get_bit(byte_string: <a href="bytes.html">bytes</a>, index: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Extracts a bit at given index in the byte array.</p>
+</span></td></tr>
 <tr><td><a name="initcap"></a><code>initcap(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Capitalizes the first letter of <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="left"></a><code>left(input: <a href="bytes.html">bytes</a>, return_set: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the first <code>return_set</code> bytes from <code>input</code>.</p>
@@ -874,6 +874,8 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="length"></a><code>length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes in <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="length"></a><code>length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of characters in <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="length"></a><code>length(val: varbit) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits in <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="lower"></a><code>lower(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts all characters in <code>val</code> to their lower-case equivalents.</p>
 </span></td></tr>
@@ -890,9 +892,11 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="md5"></a><code>md5(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Calculates the MD5 hash value of a set of values.</p>
 </span></td></tr>
-<tr><td><a name="octet_length"></a><code>octet_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes in <code>val</code>.</p>
+<tr><td><a name="octet_length"></a><code>octet_length(val: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes used to represent <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="octet_length"></a><code>octet_length(val: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bytes used to represent <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="octet_length"></a><code>octet_length(val: varbit) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the number of bits used to represent <code>val</code>.</p>
 </span></td></tr>
 <tr><td><a name="overlay"></a><code>overlay(input: <a href="string.html">string</a>, overlay_val: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Replaces characters in <code>input</code> with <code>overlay_val</code> starting at <code>start_pos</code> (begins at 1).</p>
 <p>For example, <code>overlay('doggie', 'CAT', 2)</code> returns <code>dCATie</code>.</p>
@@ -1007,6 +1011,10 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="rtrim"></a><code>rtrim(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Removes all spaces from the end (right-hand side) of <code>val</code>.</p>
 </span></td></tr>
+<tr><td><a name="set_bit"></a><code>set_bit(bit_string: varbit, index: <a href="int.html">int</a>, to_set: <a href="int.html">int</a>) &rarr; varbit</code></td><td><span class="funcdesc"><p>Updates a bit at given index in the bit array.</p>
+</span></td></tr>
+<tr><td><a name="set_bit"></a><code>set_bit(byte_string: <a href="bytes.html">bytes</a>, index: <a href="int.html">int</a>, to_set: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Updates a bit at given index in the byte array.</p>
+</span></td></tr>
 <tr><td><a name="sha1"></a><code>sha1(<a href="bytes.html">bytes</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Calculates the SHA1 hash value of a set of values.</p>
 </span></td></tr>
 <tr><td><a name="sha1"></a><code>sha1(<a href="string.html">string</a>...) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Calculates the SHA1 hash value of a set of values.</p>
@@ -1022,8 +1030,16 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="split_part"></a><code>split_part(input: <a href="string.html">string</a>, delimiter: <a href="string.html">string</a>, return_index_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Splits <code>input</code> on <code>delimiter</code> and return the value in the <code>return_index_pos</code>  position (starting at 1).</p>
 <p>For example, <code>split_part('123.456.789.0','.',3)</code>returns <code>789</code>.</p>
 </span></td></tr>
+<tr><td><a name="strpos"></a><code>strpos(input: <a href="bytes.html">bytes</a>, find: <a href="bytes.html">bytes</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the position where the byte subarray <code>find</code> begins in <code>input</code>.</p>
+</span></td></tr>
 <tr><td><a name="strpos"></a><code>strpos(input: <a href="string.html">string</a>, find: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the position where the string <code>find</code> begins in <code>input</code>.</p>
 <p>For example, <code>strpos('doggie', 'gie')</code> returns <code>4</code>.</p>
+</span></td></tr>
+<tr><td><a name="strpos"></a><code>strpos(input: varbit, find: varbit) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the position where the bit subarray <code>find</code> begins in <code>input</code>.</p>
+</span></td></tr>
+<tr><td><a name="substr"></a><code>substr(input: <a href="bytes.html">bytes</a>, start_pos: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a byte subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1).</p>
+</span></td></tr>
+<tr><td><a name="substr"></a><code>substr(input: <a href="bytes.html">bytes</a>, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a byte subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
 </span></td></tr>
 <tr><td><a name="substr"></a><code>substr(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> that matches the regular expression <code>regex</code>.</p>
 </span></td></tr>
@@ -1033,6 +1049,14 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><a name="substr"></a><code>substr(input: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
 </span></td></tr>
+<tr><td><a name="substr"></a><code>substr(input: varbit, start_pos: <a href="int.html">int</a>) &rarr; varbit</code></td><td><span class="funcdesc"><p>Returns a bit subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1).</p>
+</span></td></tr>
+<tr><td><a name="substr"></a><code>substr(input: varbit, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; varbit</code></td><td><span class="funcdesc"><p>Returns a bit subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
+</span></td></tr>
+<tr><td><a name="substring"></a><code>substring(input: <a href="bytes.html">bytes</a>, start_pos: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a byte subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1).</p>
+</span></td></tr>
+<tr><td><a name="substring"></a><code>substring(input: <a href="bytes.html">bytes</a>, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns a byte subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
+</span></td></tr>
 <tr><td><a name="substring"></a><code>substring(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> that matches the regular expression <code>regex</code>.</p>
 </span></td></tr>
 <tr><td><a name="substring"></a><code>substring(input: <a href="string.html">string</a>, regex: <a href="string.html">string</a>, escape_char: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> that matches the regular expression <code>regex</code> using <code>escape_char</code> as your escape character instead of <code>\</code>.</p>
@@ -1040,6 +1064,10 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="substring"></a><code>substring(input: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> starting at <code>start_pos</code> (count starts at 1).</p>
 </span></td></tr>
 <tr><td><a name="substring"></a><code>substring(input: <a href="string.html">string</a>, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a substring of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
+</span></td></tr>
+<tr><td><a name="substring"></a><code>substring(input: varbit, start_pos: <a href="int.html">int</a>) &rarr; varbit</code></td><td><span class="funcdesc"><p>Returns a bit subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1).</p>
+</span></td></tr>
+<tr><td><a name="substring"></a><code>substring(input: varbit, start_pos: <a href="int.html">int</a>, length: <a href="int.html">int</a>) &rarr; varbit</code></td><td><span class="funcdesc"><p>Returns a bit subarray of <code>input</code> starting at <code>start_pos</code> (count starts at 1) and including up to <code>length</code> characters.</p>
 </span></td></tr>
 <tr><td><a name="to_english"></a><code>to_english(val: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>This function enunciates the value of its argument using English cardinals.</p>
 </span></td></tr>
@@ -1102,6 +1130,8 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 <tr><td><a name="crdb_internal.no_constant_folding"></a><code>crdb_internal.no_constant_folding(input: anyelement) &rarr; anyelement</code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.node_executable_version"></a><code>crdb_internal.node_executable_version() &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the version of CockroachDB this node is running.</p>
+</span></td></tr>
+<tr><td><a name="crdb_internal.notice"></a><code>crdb_internal.notice(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.num_inverted_index_entries"></a><code>crdb_internal.num_inverted_index_entries(val: anyelement[]) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>

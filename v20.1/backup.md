@@ -12,11 +12,15 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create ful
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
+{{site.data.alerts.callout_info}}
+To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+{{site.data.alerts.end}}
+
 ## Functional details
 
 ### Backup targets
 
-<span class="version-tag">New in v20.1</span> You can backup a full cluster, which includes:
+<span class="version-tag">New in v20.1:</span> You can backup a full cluster, which includes:
 
 - All user tables
 - Relevant system tables
@@ -55,13 +59,15 @@ Full backups contain an unreplicated copy of your data and can always be used to
 
 #### Incremental backups
 
-Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](backup.html#backups-with-revision-history).
+Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](#backups-with-revision-history).
 
 {{site.data.alerts.callout_danger}}
 Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
 
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html).
 {{site.data.alerts.end}}
+
+For an example of an incremental backup, see the [Create incremental backups](#create-incremental-backups) section.
 
 ### Backups with revision history
 
@@ -71,6 +77,10 @@ You can create full or incremental backups [with revision history](#with-revisio
 - Taking incremental backups with revision history allows you to back up every change made since the last backup and within the garbage collection period leading up to and including the given timestamp. You can take incremental backups with revision history even when your previous full or incremental backups were taken without revision history.
 
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history.
+
+### Encrypted backups
+
+{% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
 
 ## Performance
 
@@ -94,12 +104,17 @@ Once the backup is complete, your client will receive a `BACKUP` response.
 
 ## Viewing and controlling backups jobs
 
-After CockroachDB successfully initiates a backup, it registers the backup as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates a backup, it registers the backup as a job, and you can do the following:
 
-After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+- View the backup status with [`SHOW JOBS`](show-jobs.html)
+- Pause the backup with [`PAUSE JOB`](pause-job.html)
+- Resume the backup with [`RESUME JOB`](resume-job.html)
+- Cancel the backup [`CANCEL JOB`](cancel-job.html)
+
+The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-If initiated correctly, the statement returns when the backup is finished or if it encounters an error. In some cases, the backup can continue after an error has been returned (the error message will tell you that the backup has resumed in background).
+The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -115,14 +130,21 @@ If initiated correctly, the statement returns when the backup is finished or if 
 `table_pattern` | The table(s) or [view(s)](views.html) you want to back up.
 `database_name` | The name of the database(s) you want to back up (i.e., create backups of all tables and views in the database).|
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
-`AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
-`INCREMENTAL FROM full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups).
 `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
-`WITH revision_history`<a name="with-revision-history"></a> | Create a backup with full [revision history](#backups-with-revision-history), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
+`kv_option_list` | Control the backup behavior with [these options](#options).
 
 {{site.data.alerts.callout_info}}
 The `BACKUP` statement cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
+
+## Options
+
+ Option                                                          | Value                   | Description
+-----------------------------------------------------------------+-------------------------+------------------------------
+`revision_history`<a name="with-revision-history"></a>           | N/A                     | Create a backup with full [revision history](#backups-with-revision-history), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to encrypt the files (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](restore.html).
 
 ## Required privileges
 
@@ -140,7 +162,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a cluster
 
-<span class="version-tag">New in v20.1</span> To backup a full cluster:
+<span class="version-tag">New in v20.1:</span> To backup a full cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -187,7 +209,7 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 ### Create incremental backups
 
-<span class="version-tag">New in v20.1</span> If you backup to a destination already containing a backup, an incremental backup will be produced in a subdirectory with a date-based name (e.g., `destination/day/time_1`, `destination/day/time_2`):
+<span class="version-tag">New in v20.1:</span> If you backup to a destination already containing a backup, an incremental backup will be produced in a subdirectory with a date-based name (e.g., `destination/day/time_1`, `destination/day/time_2`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -304,8 +326,41 @@ INCREMENTAL FROM
 Note that only the backup URIs you set as the `default` when you created the previous backup(s) are needed in the `INCREMENTAL FROM` clause of your incremental `BACKUP` statement (as shown in the example). This is because the `default` destination for a locality-aware backup contains a manifest file that contains all the metadata required to create additional incremental backups based on it.
 {{site.data.alerts.end}}
 
+### Create an encrypted backup
+
+<span class="version-tag">New in v20.1:</span> To create an [encrypted backup](#encrypted-backups), use the `encryption_passphrase` option:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP TO \
+'gs://acme-co-backup/test-cluster' \
+WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
+To [restore](restore.html), use the same `encryption_passphrase`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM \
+'gs://acme-co-backup/test-cluster' \
+WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
 ## See also
 
+- [`SHOW BACKUP`](show-backup.html)
 - [`RESTORE`](restore.html)
 - [Backup and Restore Data](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
