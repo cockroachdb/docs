@@ -106,7 +106,7 @@ Now let's verify that our customers were added successfully:
 
 ## Step 4. Check the audit log
 
-By default, the active audit log file is named `cockroach-sql-audit.log` and is stored in CockroachDB's standard log directory.  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](cockroach-start.html).  Like the other log files, it's rotated according to the `--log-file-max-size` setting.
+By default, the active audit log file is prefixed `cockroach-sql-audit` and is stored in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).  To store the audit log files in a specific directory, pass the `--sql-audit-dir` flag to [`cockroach start`](cockroach-start.html).  Like the other log files, it's rotated according to the [`--log-file-max-size` setting](cockroach-start.html#logging).
 
 When we look at the audit log for this example, we see the following lines showing every command we've run so far, as expected.
 
@@ -119,6 +119,10 @@ I180321 20:54:39.377395 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user
 
 {{site.data.alerts.callout_info}}
 For reference documentation of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
 {{site.data.alerts.end}}
 
 ## Step 5. Populate the `orders` table
@@ -177,6 +181,10 @@ I180321 21:04:08.730379 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user
 For reference documentation of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
@@ -184,3 +192,4 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 - [SQL FAQ - generating unique row IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [SQL Feature Support](sql-feature-support.html)
+- [Slow query log](query-behavior-troubleshooting.html#slow-query-log)

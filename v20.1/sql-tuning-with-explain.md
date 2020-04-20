@@ -4,7 +4,7 @@ summary: How to use `EXPLAIN to identify and resolve SQL performance issues
 toc: true
 ---
 
-This tutorial walks you through the common reasons for slow SQL statements and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
+This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-queries) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
 
 The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
@@ -475,4 +475,5 @@ Time: 993µs
 ## See also
 
 - [SQL Best Practices](performance-best-practices-overview.html)
-- [SQL Troubleshooting](query-behavior-troubleshooting.html)
+- [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
+- [Make Queries Fast](make-queries-fast.html)

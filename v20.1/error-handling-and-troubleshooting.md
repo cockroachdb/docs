@@ -10,13 +10,17 @@ This page has instructions for handling errors and troubleshooting problems that
 
 If you are not satisfied with your SQL query performance, follow the instructions in [Make Queries Fast][fast] to be sure you are avoiding common performance problems like full table scans, missing indexes, etc.
 
-If you have already optimized your SQL queries as described in [Make Queries Fast][fast] and are still having issues such as
+If you have already optimized your SQL queries as described in [Make Queries Fast][fast] and are still having issues such as:
 
 - Hanging or "stuck" queries
 - Queries that are slow some of the time (but not always)
 - Low throughput of queries
 
-take a look at [Query Behavior Troubleshooting](query-behavior-troubleshooting.html).
+Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
+
+{{site.data.alerts.callout_info}}
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+{{site.data.alerts.end}}
 
 ## Transaction retry errors
 
@@ -82,6 +86,7 @@ Other common tasks:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
 - [Make Queries Fast][fast]
 - [Hello World Example apps](hello-world-example-apps.html)
 
