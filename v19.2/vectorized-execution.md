@@ -90,7 +90,7 @@ Support for vectorized execution is experimental for the following memory-intens
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 
-Executing these queries with the vectorized execution engine (i.e., with the `vectorize` [session variable](set-vars.html) set to `experimental_on`) can cause CockroachDB nodes to run out of memory and crash.
+We do not recommend using vectorized execution in production environments for memory-intensive queries that cannot spill to disk. Executing these queries with the vectorized execution engine (i.e., with the `vectorize` [session variable](set-vars.html) set to `experimental_on`) can cause CockroachDB nodes to run out of memory and crash.
 
 ## See also
 
