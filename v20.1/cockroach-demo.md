@@ -4,7 +4,7 @@ summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, singl
 toc: true
 ---
 
-The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster, a preloaded dataset, and opens an [interactive SQL shell](cockroach-sql.html) to the cluster.
+The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster, a preloaded dataset, and opens an [interactive SQL shell](cockroach-sql.html) to the cluster. All [SQL shell commands, client-side options, help, and shortcuts](cockroach-sql.html#sql-shell) supported by the `cockroach sql` command are also supported by the `cockroach demo` command.
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
@@ -79,7 +79,7 @@ Flag | Description
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](cockroach-sql.html#client-side-options) for use in interactive sessions.
 `--geo-partitioned-replicas` | Start a 9-node demo cluster with the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern applied to the [`movr`](movr.html) database.
-`--insecure` | <span class="version-tag">New in v20.1:</span> Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the Admin UI.
+`--insecure` | <span class="version-tag">New in v20.1:</span> Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the Admin UI.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
 `--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](cockroach-sql.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
@@ -92,30 +92,72 @@ By default, the `demo` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
 
-## SQL shell
+## Connecting to the demo cluster
 
-All [SQL shell commands, client-side options, help, and shortcuts](cockroach-sql.html#sql-shell) supported by the `cockroach sql` command are also supported by the `cockroach demo` command.
-
-## Web UI
-
-When the SQL shell connects to the in-memory cluster, it prints a welcome text with some tips and CockroachDB version and cluster details. Most of these details resemble the [welcome text](cockroach-sql.html#welcome-message) that gets printed when connecting `cockroach sql` to a permanent cluster. However, one unique detail to note is the **Web UI** link. For the duration of the cluster, you can open the Web UI for the cluster at this link.
+When the SQL shell connects to the demo cluster at startup, it prints a welcome text with some tips and CockroachDB version and cluster details. Most of these details resemble the [welcome text](cockroach-sql.html#welcome-message) that is printed when connecting `cockroach sql` to a permanent cluster. `cockroach demo` also includes some URLs to connect to the [Admin UI](admin-ui-overview.html) with a web browser, or directly to the cluster with a URL [connection parameter](cockroach-sql.html#connection-parameters).
 
 ~~~ shell
 #
 # Welcome to the CockroachDB demo database!
 #
-# You are connected to a temporary, in-memory CockroachDB
-# instance. Your changes will not be saved!
+...
 #
-# Web UI: http://127.0.0.1:60105
+# Connection parameters:
+#   (console) http://127.0.0.1:53538
+#   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fpg%2FT%2Fdemo282557495&port=26257
+#   (sql/tcp) postgres://root:admin@127.0.0.1:53540?sslmode=require
 #
-# Server version: CockroachDB CCL v2.1.0-alpha.20180702-281-g07a11b8e8c-dirty (x86_64-apple-darwin17.6.0, built 2018/07/08 14:00:29, go1.10.1) (same version as client)
-# Cluster ID: 61b41af6-fb2c-4d9a-8a91-0a31933b3d31
 #
-# Enter \? for a brief introduction.
+# The user "root" with password "admin" has been created. Use it to access the Web UI!
 #
-root@127.0.0.1:60104/defaultdb>
+...
 ~~~
+
+To return the client connection URLs for all nodes in a demo cluster from within the SQL shell, use the client-side `\demo ls` command:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo ls
+~~~
+
+~~~
+node 1:
+  (console) http://127.0.0.1:53538
+  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fpg%2FT%2Fdemo282557495&port=26257
+  (sql/tcp) postgres://root:admin@127.0.0.1:53540?sslmode=require
+
+node 2:
+  (console) http://127.0.0.1:53783
+  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fpg%2FT%2Fdemo282557495&port=26258
+  (sql/tcp) postgres://root:admin@127.0.0.1:53785?sslmode=require
+
+node 3:
+  (console) http://127.0.0.1:53789
+  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fpg%2FT%2Fdemo282557495&port=26259
+  (sql/tcp) postgres://root:admin@127.0.0.1:53791?sslmode=require
+
+...
+~~~
+
+{{site.data.alerts.callout_info}}
+The `\demo ls` command is **experimental feature**. The interface and output are subject to change.
+{{site.data.alerts.end}}
+
+### Admin UI
+
+`cockroach demo` serves a local [Admin UI](admin-ui-overview.html) at the **console** link. For the duration of the cluster, you can navigate to this link to monitor the cluster's activity in the Admin UI. To login, you can use the `root` user with password `admin`:
+
+<img src="{{ 'images/v20.1/cockroach-demo-admin-ui-login.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
+<img src="{{ 'images/v20.1/cockroach-demo-admin-ui-databases.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+
+### URL connection parameters
+
+You can connect to the demo cluster with a connection parameter (e.g., using the [`cockroach sql --url` flag](cockroach-sql.html#client-connection)) at the **sql** (for [Unix domain socket connections](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections)) or **sql** (for standard TCP connections) URLs.
+
+{{site.data.alerts.callout_note}}
+You do not need to create or specify node and client certificates in the connection URL to a secure demo cluster.
+{{site.data.alerts.end}}
 
 ## Diagnostics reporting
 
