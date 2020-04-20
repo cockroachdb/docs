@@ -69,7 +69,7 @@ Workload | Description
 [`ycsb`](#ycsb-workload) | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 {{site.data.alerts.callout_info}}
-`cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used.
+<span class="version-tag">New in v20.1:</span> `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used.
 {{site.data.alerts.end}}
 
 ## Flags

@@ -772,7 +772,7 @@ In this example, the statement is executed every minute. We let the process run 
 
 ### Connect to a cluster listening for Unix domain socket connections
 
-To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](#example-uri-for-a-Unix-domain-socket) with the `--url` connection parameter.
+<span class="version-tag">New in v20.1:</span> To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-Unix-domain-socket) with the `--url` connection parameter.
 
 For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
