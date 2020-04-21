@@ -192,4 +192,4 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 - [SQL FAQ - generating unique row IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [SQL Feature Support](sql-feature-support.html)
-- [Slow query log](query-behavior-troubleshooting.html#slow-query-log)
+- [Slow query log](query-behavior-troubleshooting.html#slow-query-logs)
