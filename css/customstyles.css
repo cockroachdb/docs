@@ -2715,7 +2715,7 @@ img.mfp-img {
   line-height: 40px;
   padding: 0;
   margin-top: 9px;
-  margin-right: 2px;
+  margin-right: 72px;
   text-align: center; }
   .contribute .btn-contribute:focus {
     color: #54B30E; }
@@ -2726,7 +2726,7 @@ img.mfp-img {
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1); }
   @media screen and (min-width: 571px) {
     .contribute .dropdown-menu {
-      left: -60px; } }
+      left: 1px; } }
 .contribute .dropdown-menu > li > a {
   font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
