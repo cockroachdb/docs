@@ -50,6 +50,7 @@ Parameter | Description
 `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html).
 `USING HASH WITH BUCKET COUNT` | <span class="version-tag">New in v20.1:</span> Creates a [hash-sharded index](indexes.html#hash-sharded-indexes) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
+`CONCURRENTLY` | <span class="version-tag">New in v20.1:</span> Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
 
 ## Viewing schema changes
 
