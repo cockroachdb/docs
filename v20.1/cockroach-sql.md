@@ -788,10 +788,10 @@ webui:               https://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
 RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --certs-dir=certs
 socket:              .s.PGSQL.26257
-logs:                /cockroachdb/cockroach/cockroach-data/logs
-temp dir:            /cockroachdb/cockroach/cockroach-data/cockroach-temp662180780
-external I/O path:   /cockroachdb/cockroach/cockroach-data/extern
-store[0]:            path=/cockroachdb/cockroach/cockroach-data
+logs:                /directory/path/cockroach-data/logs
+temp dir:            /directory/path/cockroach-data/cockroach-temp662180780
+external I/O path:   /directory/path/cockroach-data/extern
+store[0]:            path=/directory/path/cockroach-data
 storage engine:      rocksdb
 status:              initialized new cluster
 clusterID:           4a392d66-332f-4027-9c06-6e86e17b9758
@@ -802,7 +802,7 @@ To connect to this cluster with a socket:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --url='postgres://user:password@?host=/cockroachdb/cockroach&port=26257'
+$ cockroach sql --url='postgres://user:password@?host=/directory/path&port=26257'
 ~~~
 
 ## See also
