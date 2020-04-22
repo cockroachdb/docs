@@ -9,6 +9,7 @@ key: debug-zip.html
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
+- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#slow-query-log))
 - Cluster events
 - Schema change events
 - Node liveness
@@ -16,6 +17,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Stack traces
 - Range lists
 - A list of databases and tables
+- Jobs
 - [Cluster Settings](cluster-settings.html)
 - [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
 - Alerts
@@ -23,6 +25,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Problem ranges
 - Sessions
 - Queries
+- Thread stack traces (Linux only)
 
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
@@ -44,7 +47,7 @@ There are two scenarios in which `debug zip` is useful:
 
 When you issue the `debug zip` command, the node that receives the request connects to each other node in the cluster. Once it's connected, the node requests the content of all log files stored on the node, the location of which is determined by the `--log-dir` value when you [started the node](cockroach-start.html).
 
-Because `debug zip` relies on CockroachDB's distributed architecture, this means that nodes not currently connected to the cluster cannot respond to the request, so their log files *are not* included.
+Because `debug zip` relies on CockroachDB's distributed architecture, this means that nodes not currently connected to the cluster cannot respond to the request, so their log files *are not* included. In such situations, we recommend using the [`--host` flag](#general) to point `debug zip` at individual nodes until data has been gathered for the entire cluster.
 
 After receiving the log files from all of the active nodes, the requesting node aggregates the files and writes them to an archive file you specify.
 
@@ -94,19 +97,13 @@ If you need to troubleshoot this command's behavior, you can also change its [lo
 {% include copy-clipboard.html %}
 ~~~ shell
 # Generate the debug zip file for an insecure cluster:
-$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # Generate the debug zip file for a secure cluster:
-$ cockroach debug zip ./cockroach-data/logs/debug.zip
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-# Generate the debug zip file from a remote machine:
-$ cockroach debug zip ./crdb-debug.zip --host=200.100.50.25
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 ~~~
 
 {{site.data.alerts.callout_info}}Secure examples assume you have the appropriate certificates in the default certificate directory, <code>${HOME}/.cockroach-certs/</code>.{{site.data.alerts.end}}
