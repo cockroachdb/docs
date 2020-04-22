@@ -43,7 +43,8 @@ Statement | Usage
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
-[`ALTER USER`](alter-user.html) | Add or change a user's password.
+[`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
+[`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.

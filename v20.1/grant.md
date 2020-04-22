@@ -14,9 +14,7 @@ For privileges required by specific statements, see the documentation for the re
 
 ## Required privileges
 
-The user granting privileges must have the `GRANT` privilege on the target databases or tables.
-
-<span class="version-tag">New in v20.1</span> In addition to the `GRANT` privilege, the user granting privileges must have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+<span class="version-tag">New in v20.1</span> The user granting privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
 ## Supported privileges
 
@@ -149,7 +147,7 @@ Parameter | Description
 (3 rows)
 ~~~
 
-### Grant `ZONECONFIG` privilege on a database or table
+### Grant the privilege to manage the replication zones for a database or table
 
 {% include copy-clipboard.html %}
 ~~~ sql
