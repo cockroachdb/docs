@@ -304,9 +304,6 @@ Column | Description
 
 `user_privileges` identifies global [privileges](authorization.html#assign-privileges).
 
-{{site.data.alerts.callout_info}}Currently, CockroachDB does not support global privileges for non-<code>root</code> users. Therefore, this view contains global privileges only for <code>root</code>.
-{{site.data.alerts.end}}
-
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.

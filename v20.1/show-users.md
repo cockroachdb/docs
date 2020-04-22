@@ -18,7 +18,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Required privileges
 
-The user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
+The user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 
@@ -28,12 +28,13 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 ~~~
 
 ~~~
-  user_name
-+------------+
-  jpointsman
-  maxroach
-  root
-(3 rows)
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  petee    |            | {}
+  root     | CREATEROLE | {admin}
+(4 rows)
 ~~~
 
 Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](cockroach-sql.html#commands):
@@ -44,12 +45,13 @@ Alternatively, within the built-in SQL shell, you can use the `\du` [shell comma
 ~~~
 
 ~~~
-  user_name
-+------------+
-  jpointsman
-  maxroach
-  root
-(3 rows)
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  petee    |            | {}
+  root     | CREATEROLE | {admin}
+(4 rows)
 ~~~
 
 ## See also
