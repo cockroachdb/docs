@@ -45,12 +45,12 @@ Make sure there are no [bulk imports](import.html) or [schema changes](online-sc
 To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
 {{site.data.alerts.callout_info}}
-Once all nodes have been upgraded to v20.1, any schema changes still running will stop making progress, but [`SHOW JOBS`](show-jobs.html) and the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](pause-job.html)/[`RESUME JOB`](resume-job.html)/[`CANCEL JOB`](cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
+Once all nodes are running v20.1 but before the upgrade has been finalized, any schema changes still running will stop making progress, but [`SHOW JOBS`](show-jobs.html) and the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](pause-job.html)/[`RESUME JOB`](resume-job.html)/[`CANCEL JOB`](cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 {{site.data.alerts.end}}
 
 ### Prevent new schema changes
 
-Once all nodes have been upgraded to v20.1, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
+Once all nodes are running v20.1, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 
 ### Prepare for unexpected problems
 
@@ -106,7 +106,7 @@ When upgrading from v19.2 to v20.1, certain features and performance improvement
 For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
 {{site.data.alerts.callout_danger}}
-Once all nodes have been upgraded to v20.1, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Be sure to update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
+Once all nodes are running v20.1, but before the upgrade has been finalized, new [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Be sure to update your application or tooling to prevent disallowed schema changes during the upgrade process. **Note that this behavior is specific to upgrades from 19.2 to 20.1. It does not apply to other upgrades.**
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
