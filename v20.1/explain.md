@@ -569,6 +569,47 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 
 Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6. Also note that this query plan is not distributed across nodes on the cluster.
 
+### Find out if a statement is using `SELECT FOR UPDATE` locking
+
+<span class="version-tag">New in v20.1:</span> CockroachDB has support for ordering transactions by controlling concurrent access to one or more rows of a table using locks. This "`SELECT FOR UPDATE` locking" can result in improved performance for contended operations. It applies to the following statements:
+
+- [`SELECT FOR UPDATE`](select-for-update.html)
+- [`UPDATE`](update.html)
+
+To see whether a SQL query using one of these statements is using this feature, check the output of `EXPLAIN` for a `locking strength` field as shown below. If the `locking strength` field does not appear, then the statement is not using this feature.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS kv (k INT PRIMARY KEY, v INT);
+UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN UPDATE kv SET v = 100 WHERE k = 1;
+~~~
+
+~~~
+         tree         |      field       | description
+----------------------+------------------+--------------
+                      | distributed      | false
+                      | vectorized       | false
+  count               |                  |
+   └── update         |                  |
+        │             | table            | kv
+        │             | set              | v
+        │             | strategy         | updater
+        │             | auto commit      |
+        └── render    |                  |
+             └── scan |                  |
+                      | table            | kv@primary
+                      | spans            | /1-/1/#
+                      | locking strength | for update
+(13 rows)
+~~~
+
+By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` statements.  To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
+
 ## See also
 
 - [`ALTER TABLE`](alter-table.html)
