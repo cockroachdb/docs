@@ -841,6 +841,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER ROLE</code>",
+                "urls": [
+                  "/${VERSION}/alter-role.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
                   "/${VERSION}/alter-sequence.html"
