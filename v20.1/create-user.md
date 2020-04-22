@@ -82,7 +82,7 @@ After creating users, you must:
 > CREATE USER carl with CREATEROLE;
 ~~~
 
-### Create a user with a password using a string literal
+### Create a user with a password 
 
 {% include copy-clipboard.html %}
 ~~~ sql
