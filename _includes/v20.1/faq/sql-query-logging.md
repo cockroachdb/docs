@@ -12,8 +12,8 @@ There are several ways to log SQL queries. The type of logging you use will depe
 SQL audit logging is useful if you want to log all queries that are run against specific tables.
 
 - For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
-
 - For SQL reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+- Note that SQL audit logs perform one disk I/O per event and will impact performance.
 
 ### Cluster-wide execution logs
 
@@ -57,18 +57,15 @@ SQL client connections can be logged by turning on the `server.auth_log.sql_conn
 > SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
 ~~~
 
-This will log *connection established* and *connection terminated* events to a `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
+This will log connection established and connection terminated events to a `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
 
 {{site.data.alerts.callout_info}}
 In addition to SQL sessions, connection events can include SQL-based liveness probe attempts, as well as attempts to use the [PostgreSQL cancel protocol](https://www.postgresql.org/docs/current/protocol-flow.html#id-1.10.5.7.9).
 {{site.data.alerts.end}}
 
-Example log:
+This example log shows both types of connection events over a `hostssl` (TLS certificate over TCP) connection:
 
 ~~~
-I200219 05:02:18.147679 1036 sql/pgwire/server.go:445  [n1,client] 16 received connection
-I200219 05:02:18.155284 1036 sql/pgwire/server.go:453  [n1,client,local] 21 disconnected; duration: 7.612943ms
-
 I200219 05:08:43.083907 5235 sql/pgwire/server.go:445  [n1,client=[::1]:34588] 22 received connection
 I200219 05:08:44.171384 5235 sql/pgwire/server.go:453  [n1,client=[::1]:34588,hostssl] 26 disconnected; duration: 1.087489893s
 ~~~
@@ -80,9 +77,9 @@ Along with the above, SQL client authenticated sessions can be logged by turning
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
 
-This logs *authentication method selection*, *authentication method application*, *authentication method result*, and *session termination* events to the `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
+This logs authentication method selection, authentication method application, authentication method result, and session termination events to the `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
 
-Example authentication success log (TLS certificate over TCP):
+This example log shows authentication success over a `hostssl` (TLS certificate over TCP) connection:
 
 ~~~
 I200219 05:08:43.089501 5149 sql/pgwire/auth.go:327  [n1,client=[::1]:34588,hostssl,user=root] 23 connection matches HBA rule:
@@ -92,7 +89,7 @@ I200219 05:08:43.091045 5149 sql/pgwire/auth.go:327  [n1,client=[::1]:34588,host
 I200219 05:08:44.169684 5235 sql/pgwire/conn.go:216  [n1,client=[::1]:34588,hostssl,user=root] 25 session terminated; duration: 1.080240961s
 ~~~
 
-Example authentication failure log (password over Unix socket):
+This example log shows authentication failure log over a `local` (password over Unix socket) connection:
 
 ~~~
 I200219 05:02:18.148961 1037 sql/pgwire/auth.go:327  [n1,client,local,user=root] 17 connection matches HBA rule:
@@ -103,7 +100,9 @@ I200219 05:02:18.152863 1037 sql/pgwire/auth.go:327  [n1,client,local,user=root]
 I200219 05:02:18.154168 1036 sql/pgwire/conn.go:216  [n1,client,local,user=root] 20 session terminated; duration: 5.261538ms
 ~~~
 
-We recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled` for complete logging of client connections. For more details on authentication and certificates, see [Authentication](authentication.html).
+For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`. Note that both logs perform one disk I/O per event and will impact performance.
+
+For more details on authentication and certificates, see [Authentication](authentication.html).
 
 Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
