@@ -264,12 +264,31 @@ Now suppose you want to delete the two users named "Jon Snow". You can use the [
 ~~~
 
 ~~~
-                                 text
-+---------------------------------------------------------------------+
+                                     text
+-------------------------------------------------------------------------------
   delete users
-   └── scan users@users_name_city_idx
-        └── constraint: /8/7/6: [/'Jon Snow' - /'Jon Snow']
-(3 rows)
+   ├── scan users@users_name_city_idx
+   │    └── constraint: /8/7/6: [/'Jon Snow' - /'Jon Snow']
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (hash)
+        │         ├── with-scan &1
+        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
+        │         └── filters
+        │              ├── city = vehicles.city
+        │              └── id = owner_id
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (hash)
+                  ├── with-scan &1
+                  ├── scan user_promo_codes
+                  └── filters
+                       ├── city = user_promo_codes.city
+                       └── id = user_id
+(22 rows)
 ~~~
 
 The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the delete. This makes sense, as you are performing a delete based on the `name` column.
@@ -282,14 +301,31 @@ Now suppose that instead you want to perform a delete, but using the `id` column
 ~~~
 
 ~~~
-                                                  text
-+-------------------------------------------------------------------------------------------------------+
   delete users
-   └── select
-        ├── scan users@users_name_city_idx
-        └── filters
-             └── id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
-(5 rows)
+   ├── select
+   │    ├── scan users@users_name_city_idx
+   │    └── filters
+   │         └── users.id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (hash)
+        │         ├── with-scan &1
+        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
+        │         └── filters
+        │              ├── city = vehicles.city
+        │              └── id = owner_id
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (hash)
+                  ├── with-scan &1
+                  ├── scan user_promo_codes
+                  └── filters
+                       ├── city = user_promo_codes.city
+                       └── id = user_id
+(24 rows)
 ~~~
 
 The optimizer still scans the newly-created `users_name_city_idx` index when performing the delete. Although scanning the table on this index could still be the most efficient, you may want to assess the performance difference between using `users_name_city_idx` and an index on the `id` column, as you are performing a delete with a filter on the `id` column.
@@ -302,15 +338,34 @@ If you provide an index hint (i.e. force the index selection) to use the primary
 ~~~
 
 ~~~
-                                                  text
-+-------------------------------------------------------------------------------------------------------+
+                                                     text
+---------------------------------------------------------------------------------------------------------------
   delete users
-   └── select
-        ├── scan users
-        │    └── flags: force-index=primary
-        └── filters
-             └── id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
-(6 rows)
+   ├── select
+   │    ├── scan users
+   │    │    └── flags: force-index=primary
+   │    └── filters
+   │         └── users.id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (hash)
+        │         ├── with-scan &1
+        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
+        │         └── filters
+        │              ├── city = vehicles.city
+        │              └── id = owner_id
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (hash)
+                  ├── with-scan &1
+                  ├── scan user_promo_codes
+                  └── filters
+                       ├── city = user_promo_codes.city
+                       └── id = user_id
+(25 rows)
 ~~~
 
 ## See also

@@ -202,15 +202,18 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  tree | field |  description
-+------+-------+---------------+
-  scan |       |
-       | table | users@primary
-       | spans | ALL
-(3 rows)
+  tree |    field    |         description
+-------+-------------+------------------------------
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | users@primary
+       | spans       | FULL SCAN
+       | filter      | name = 'Natalie Cunningham'
+(6 rows)
 ~~~
 
-The row with `spans | ALL` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+The row with `spans | FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 #### Filtering by a secondary index
 
@@ -260,15 +263,17 @@ $ cockroach sql \
 ~~~
 
 ~~~
-     tree    | field |                      description
-+------------+-------+-------------------------------------------------------+
-  index-join |       |
-   ├── scan  |       |
-   │         | table | users@users_name_idx
-   │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-   └── scan  |       |
-             | table | users@primary
-(6 rows)
+     tree    |    field    |                      description
+-------------+-------------+--------------------------------------------------------
+             | distributed | false
+             | vectorized  | false
+  index-join |             |
+   │         | table       | users@primary
+   │         | key columns | city, id
+   └── scan  |             |
+             | table       | users@users_name_idx
+             | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+(8 rows)
 ~~~
 
 This shows you that CockroachDB starts with the secondary index (`table | users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
@@ -314,15 +319,17 @@ $ cockroach sql \
 ~~~
 
 ~~~
-     tree    | field |                      description
-+------------+-------+-------------------------------------------------------+
-  index-join |       |
-   ├── scan  |       |
-   │         | table | users@users_name_idx
-   │         | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-   └── scan  |       |
-             | table | users@primary
-(6 rows)
+     tree    |    field    |                      description
+-------------+-------------+--------------------------------------------------------
+             | distributed | false
+             | vectorized  | false
+  index-join |             |
+   │         | table       | users@primary
+   │         | key columns | city, id
+   └── scan  |             |
+             | table       | users@users_name_idx
+             | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+(8 rows)
 ~~~
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
@@ -357,12 +364,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  tree | field |                      description
-+------+-------+-------------------------------------------------------+
-  scan |       |
-       | table | users@users_name_idx
-       | spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-(3 rows)
+  tree |    field    |                      description
+-------+-------------+--------------------------------------------------------
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | users@users_name_idx
+       | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
+(5 rows)
 ~~~
 
 This results in even faster performance, reducing latency from 1.77ms (index without storing) to 0.99ms (index with storing):
@@ -433,25 +442,28 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 ~~~
 
 ~~~
-         tree         |    field    |     description
-+---------------------+-------------+----------------------+
+         tree         |    field    |                                         description
+----------------------+-------------+----------------------------------------------------------------------------------------------
+                      | distributed | true
+                      | vectorized  | false
   group               |             |
    │                  | aggregate 0 | count(DISTINCT id)
    │                  | scalar      |
    └── render         |             |
-        └── join      |             |
+        └── hash-join |             |
              │        | type        | inner
-             │        | equality    | (id) = (rider_id)
+             │        | equality    | (rider_id) = (id)
              ├── scan |             |
-             │        | table       | users@users_name_idx
-             │        | spans       | ALL
+             │        | table       | rides@primary
+             │        | spans       | FULL SCAN
+             │        | filter      | (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')
              └── scan |             |
-                      | table       | rides@primary
-                      | spans       | ALL
-(13 rows)
+                      | table       | users@users_name_idx
+                      | spans       | FULL SCAN
+(16 rows)
 ~~~
 
-Reading from bottom up, you can see that CockroachDB does a full table scan (`spans    | ALL`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
+Reading from bottom up, you can see that CockroachDB does a full table scan (`spans | FULL SCAN`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
 
 Given that the `rides` table is large, its data is split across several ranges. Each range is replicated and has a leaseholder. At least some of these leaseholders are likely located on different nodes. This means that the full table scan of `rides` involves several network hops to various leaseholders before finally going to the leaseholder for `users` to do a full table scan there.
 
@@ -552,21 +564,23 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 
 ~~~
          tree         |    field    |                      description
-+---------------------+-------------+-------------------------------------------------------+
+----------------------+-------------+--------------------------------------------------------
+                      | distributed | true
+                      | vectorized  | false
   group               |             |
    │                  | aggregate 0 | count(DISTINCT id)
    │                  | scalar      |
    └── render         |             |
-        └── join      |             |
+        └── hash-join |             |
              │        | type        | inner
-             │        | equality    | (id) = (rider_id)
+             │        | equality    | (rider_id) = (id)
              ├── scan |             |
-             │        | table       | users@users_name_idx
-             │        | spans       | ALL
+             │        | table       | rides@rides_start_time_idx
+             │        | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
              └── scan |             |
-                      | table       | rides@rides_start_time_idx
-                      | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
-(13 rows)
+                      | table       | users@users_name_idx
+                      | spans       | FULL SCAN
+(15 rows)
 ~~~
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
@@ -653,29 +667,33 @@ GROUP BY vehicle_id;"
 ~~~
 
 ~~~
-              tree              |    field    |                     description
-+-------------------------------+-------------+-----------------------------------------------------+
-  group                         |             |
-   │                            | aggregate 0 | vehicle_id
-   │                            | aggregate 1 | max(end_time)
-   │                            | group by    | @1
-   └── join                     |             |
-        │                       | type        | semi
-        │                       | equality    | (vehicle_id) = (vehicle_id)
-        ├── scan                |             |
-        │                       | table       | rides@primary
-        │                       | spans       | ALL
-        └── limit               |             |
-             └── sort           |             |
-                  │             | order       | -agg0
-                  └── group     |             |
-                       │        | aggregate 0 | vehicle_id
-                       │        | aggregate 1 | count_rows()
-                       │        | group by    | @1
-                       └── scan |             |
-                                | table       | rides@rides_auto_index_fk_vehicle_city_ref_vehicles
-                                | spans       | ALL
-(20 rows)
+              tree              |       field        |                     description
+--------------------------------+--------------------+------------------------------------------------------
+                                | distributed        | true
+                                | vectorized         | false
+  group                         |                    |
+   │                            | aggregate 0        | vehicle_id
+   │                            | aggregate 1        | max(end_time)
+   │                            | group by           | vehicle_id
+   └── hash-join                |                    |
+        │                       | type               | semi
+        │                       | equality           | (vehicle_id) = (vehicle_id)
+        │                       | right cols are key |
+        ├── scan                |                    |
+        │                       | table              | rides@primary
+        │                       | spans              | FULL SCAN
+        └── limit               |                    |
+             │                  | count              | 5
+             └── sort           |                    |
+                  │             | order              | -count_rows
+                  └── group     |                    |
+                       │        | aggregate 0        | vehicle_id
+                       │        | aggregate 1        | count_rows()
+                       │        | group by           | vehicle_id
+                       └── scan |                    |
+                                | table              | rides@rides_auto_index_fk_vehicle_city_ref_vehicles
+                                | spans              | FULL SCAN
+(24 rows)
 ~~~
 
 This is a complex query plan, but the important thing to note is the full table scan of `rides@primary` above the `subquery`. This shows you that, after the subquery returns the IDs of the top 5 vehicles, CockroachDB scans the entire primary index to find the rows with `max(end_time)` for each `vehicle_id`, although you might expect CockroachDB to more efficiently use the secondary index on `vehicle_id` (CockroachDB is working to remove this limitation in a future version).
