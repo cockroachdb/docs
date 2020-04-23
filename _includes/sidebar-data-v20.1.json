@@ -570,12 +570,6 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
-          },
-          {
-            "title": "Query Replication Reports",
-            "urls": [
-              "/${VERSION}/query-replication-reports.html"
-            ]
           }
         ]
       },
@@ -610,6 +604,12 @@
             "title": "Understand Debug Logs",
             "urls": [
               "/${VERSION}/debug-and-error-logs.html"
+            ]
+          },
+          {
+            "title": "Replication Reports",
+            "urls": [
+              "/${VERSION}/query-replication-reports.html"
             ]
           },
           {
