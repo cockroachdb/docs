@@ -8,19 +8,19 @@ toc: true
 
 Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
 
-{{site.data.alerts.callout_success}}
+{{site.data.alerts.callout_info}}
 CockroachDB does not support vectorized execution for all data types. For details, see [supported data types](#supported-data-types).
 {{site.data.alerts.end}}
 
 ## Configuring vectorized execution
 
-By default, vectorized execution is enabled in CockroachDB for [all queries that are guaranteed to execute in memory](#disk-spilling-operations), on tables with [supported data types](#supported-data-types).
+By default, vectorized execution is enabled in CockroachDB for [all queries that are guaranteed to execute in memory](#memory-intensive-operations), on tables with [supported data types](#supported-data-types).
 
 You can turn vectorized execution on or off for all queries in the current session with the `vectorize` [session variable](set-vars.html). The following options are supported:
 
 Option | Description
 ----------|------------
-`auto` | Instructs CockroachDB to use the vectorized execution engine on most queries that execute in memory, without the need to spill intermediate results to disk. See [Disk-spilling operations](#disk-spilling-operations) for more information.<br><br>**Default:** `vectorize=auto`
+`auto` | Instructs CockroachDB to use the vectorized execution engine on most queries that execute in memory, without the need to spill intermediate results to disk. See [Memory-intensive operations](#memory-intensive-operations) for more information.<br><br>**Default:** `vectorize=auto`
 `experimental_on` | Turns on vectorized execution for all supported queries. We do not recommend using this option in production environments, as it can lead to memory issues.<br/>See [Known limitations](#known-limitations) for more information.
 `off` | Turns off vectorized execution for all queries.
 
@@ -84,7 +84,7 @@ For example, `SELECT x IS NOT NULL FROM t` is supported, but `SELECT x + NULL FR
 
 For more information, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41001).
 
-### Disk-spilling operations
+### Memory-intensive operations
 
 Support for vectorized execution is experimental for the following memory-intensive operations:
 

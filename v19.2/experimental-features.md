@@ -134,9 +134,9 @@ The table below lists the experimental SQL functions and operators available in 
 | [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
 | [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
 
-## Vectorized execution on disk-spilling operations
+## Vectorized execution on memory-intensive operations
 
-[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [disk-spilling operations](vectorized-execution.html#disk-spilling-operations):
+[Vectorized query execution](vectorized-execution.html) in CockroachDB is experimental for the following [memory-intensive operations](vectorized-execution.html#memory-intensive-operations):
 
 {% include {{page.version.version}}/sql/disk-spilling-ops.md %}
 

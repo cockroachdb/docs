@@ -8,7 +8,7 @@ CockroachDB supports [column-oriented](https://en.wikipedia.org/wiki/Column-orie
 
 Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
 
-{{site.data.alerts.callout_success}}
+{{site.data.alerts.callout_info}}
 CockroachDB does not support vectorized execution for all data types. For details, see [supported data types](#supported-data-types).
 {{site.data.alerts.end}}
 
@@ -66,7 +66,7 @@ By default, vectorized execution is disabled for the following memory-intensive 
 
 To turn vectorized execution on for these operations, set the `vectorize` [session variable](set-vars.html) to `on`.
 
-These operations require [memory buffering](https://en.wikipedia.org/wiki/Data_buffer) during execution. If there is not enough memory allocated for an operation, CockroachDB will spill the intermediate execution results to disk. By default, the memory limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
+<span class="version-tag">New in v20.1:</span> These operations require [memory buffering](https://en.wikipedia.org/wiki/Data_buffer) during execution. If there is not enough memory allocated for an operation, CockroachDB will spill the intermediate execution results to disk. By default, the memory limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
 
 You can also configure a node's total budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If the queries running on the node exceed the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity. If the maximum on-disk storage capacity is reached, the query will return an error during execution.
 
@@ -98,7 +98,6 @@ The vectorized execution engine does not support queries that contain constant `
 For example, `SELECT x IS NOT NULL FROM t` is supported, but `SELECT x + NULL FROM t` returns an `unable to vectorize execution plan` error.
 
 For more information, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41001).
-
 
 ## See also
 
