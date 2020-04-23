@@ -61,6 +61,7 @@ In MIT KDC, you can't map a service principal to an SPN with a different usernam
 {% include copy-clipboard.html %}
 ~~~ shell
 $ create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -81,7 +82,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-2. [Create certificates](cockroach-cert.html) for internode and `root` user authentication:
+2. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -148,7 +149,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
       The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
 
-8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
+8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos users has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
