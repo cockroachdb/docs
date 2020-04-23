@@ -183,14 +183,22 @@ If you miss an incremental backup, delete the `recent_backups.txt` file and run 
 
 ## Perform Core backup and restore
 
-If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
+If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (e.g., `backup.sql`):
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
-To restore a database from a core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
+To restore a database from a core backup, use the [`IMPORT PGDUMP`](import.html#import-a-cockroachdb-dump-file) statement:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --execute="IMPORT PGDUMP 's3://your-external-storage/backup.sqlAWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'" \
+ <flags>
+~~~
+
+You can also [use the `cockroach sql` command](cockroach-dump.html#restore-a-table-from-a-backup-file) to execute the [`CREATE  TABLE`](create-table.html) and [`INSERT`](insert.html) statements in the backup file:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -198,7 +206,7 @@ $ cockroach sql --database=[database name] < backup.sql
 ~~~
 
 {{site.data.alerts.callout_success}}
-If you created a backup from another database and want to import it into CockroachDB, see [Import data](import-data.html).
+If you created a backup from another database and want to import it into CockroachDB, see the [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 ## See also

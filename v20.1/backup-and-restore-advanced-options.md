@@ -222,23 +222,37 @@ Note that only the backup URIs you set as the `default` when you created the pre
 
 ### Manually restore zone configurations from a locality-aware backup
 
-During a [locality-aware restore](#restore-from-a-locality-aware-backup), some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can manually restore from a locality-aware backup:
+During a [locality-aware restore](#restore-from-a-locality-aware-backup), some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you need to manually restore [zone configurations](configure-replication-zones.html) first:
 
-Once the restore has started, [pause the restore](pause-job.html):
+Once the locality-aware restore has started, [pause the restore](pause-job.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
 
-Manually restore the zone configurations:
+The `system.zones` table stores your cluster's [zone configurations](configure-replication-zones.html), which will prevent the data from rebalancing. To restore them, you must restore the `system.zones` table into a new database because you cannot drop the existing `system.zones` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE system.zones;
+> RESTORE system.zones \
+FROM 'azure://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
+WITH into_db = 'newdb';
 ~~~
 
-Restoring zone configurations will prevent the data from rebalancing.
+After it's restored into a new database, you can write the restored `zones` table data to the cluster's existing `system.zones` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO system.zones SELECT * FROM newdb.zones;
+~~~
+
+Then drop the temporary table you created:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP TABLE newdb.zones;
+~~~
 
 Then, [resume the restore](resume-job.html):
 
