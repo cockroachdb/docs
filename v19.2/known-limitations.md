@@ -29,7 +29,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ## Unresolved limitations
 
@@ -39,7 +39,7 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 
 As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
 ### Adding stores to a node
 
@@ -59,7 +59,7 @@ Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashb
 
 Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [`range_max_bytes`](configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to `range_max_bytes` in a development environment before making changes on production.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
 ### Requests to restarted node in need of snapshots may hang
 
