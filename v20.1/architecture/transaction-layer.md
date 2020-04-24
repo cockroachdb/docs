@@ -34,7 +34,7 @@ When the transaction layer executes write operations, it doesn't directly write 
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
-As write intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing write intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
+As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents for the same keys exist, it is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 

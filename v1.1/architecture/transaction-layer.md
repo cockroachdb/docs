@@ -29,7 +29,7 @@ When the Transaction Layer executes write operations, it doesn't directly write 
 
 - **Write Intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the Transaction Record stored on the cluster.
 
-As Write Intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing Write Intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
+As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents for the same keys exist, it is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 
