@@ -1357,6 +1357,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW SAVEPOINT STATUS</code>",
+                "urls": [
+                  "/${VERSION}/show-savepoint-status.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW TABLES</code>",
                 "urls": [
                   "/${VERSION}/show-tables.html"
