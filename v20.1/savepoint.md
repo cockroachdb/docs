@@ -6,6 +6,8 @@ toc: true
 
 A savepoint is a marker that defines the beginning of a [nested transaction](transactions.html#nested-transactions). This marker can be later used to commit or roll back just the effects of the nested transaction without affecting the progress of the enclosing transaction.
 
+<span class="version-tag">New in v20.1:</span> CockroachDB supports [general purpose savepoints for nested transactions](#savepoints-for-nested-transactions), in addition to continued support for [special-purpose retry savepoints](#savepoints-for-client-side-transaction-retries).
+
 {% include {{page.version.version}}/sql/savepoint-ddl-rollbacks.md %}
 
 ## Synopsis

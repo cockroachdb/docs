@@ -4,7 +4,7 @@ summary: Commit a nested transaction.
 toc: true
 ---
 
-The `RELEASE SAVEPOINT` statement commits the [nested transaction](transactions.html#nested-transactions) starting at the corresponding `SAVEPOINT` statement using the same savepoint name, including all its nested sub-transactions.
+<span class="version-tag">New in v20.1:</span> The `RELEASE SAVEPOINT` statement commits the [nested transaction](transactions.html#nested-transactions) starting at the corresponding `SAVEPOINT` statement using the same savepoint name, including all its nested sub-transactions.  This is in addition to continued support for working with [retry savepoints](savepoint.html#savepoints-for-client-side-transaction-retries).
 
 ## Synopsis
 

@@ -91,7 +91,7 @@ Statement | Usage
 ----------|------------
 [`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
 [`COMMIT`](commit-transaction.html) | Commit the current [transaction](transactions.html).
-[`SAVEPOINT`](savepoint.html) | Start a [nested transaction](transactions.html#nested-transactions).
+[`SAVEPOINT`](savepoint.html) | <span class="version-tag">New in v20.1:</span> Start a [nested transaction](transactions.html#nested-transactions).
 [`RELEASE SAVEPOINT`](release-savepoint.html) | Commit a [nested transaction](transactions.html#nested-transactions).
 [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) | Roll back and restart the [nested transaction](transactions.html#nested-transactions) started at the corresponding `SAVEPOINT` statement.
 [`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
