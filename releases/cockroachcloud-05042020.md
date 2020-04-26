@@ -25,5 +25,5 @@ Get future release notes emailed to you:
 ### General changes
 
 - Updated the layout of the [Sign up](https://cockroachlabs.cloud/signup) page.
-- [CockroachCloud Console Admins](../v19.2/cockroachcloud-console-access-management.html#console-admin) can now update their [CockroachCloud Organization](../v19.2/cockroachcloud-console-access-management.html#organization) name.
-- [CockroachCloud Console Admins](../v19.2/cockroachcloud-console-access-management.html#console-admin) can now delete their [CockroachCloud Organization](../v19.2/cockroachcloud-console-access-management.html#organization).
+- [CockroachCloud Console Admins](../v20.1/cockroachcloud-console-access-management.html#console-admin) can now update their [CockroachCloud Organization](../v20.1/cockroachcloud-console-access-management.html#organization) name.
+- [CockroachCloud Console Admins](../v20.1/cockroachcloud-console-access-management.html#console-admin) can now delete their [CockroachCloud Organization](../v20.1/cockroachcloud-console-access-management.html#organization).

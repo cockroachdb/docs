@@ -146,8 +146,19 @@
       },
       {
         "title": "Upgrade Your Cluster",
-        "urls": [
-          "/${VERSION}/cockroachcloud-upgrade-policy.html"
+        "items": [
+          {
+            "title": "Upgrade Policy",
+            "urls": [
+              "/${VERSION}/cockroachcloud-upgrade-policy.html"
+            ]
+          },
+          {
+            "title": "Upgrade to v20.1",
+            "urls": [
+              "/${VERSION}/cockroachcloud-upgrade-to-v20.1.html"
+            ]
+          }
         ]
       }
     ]
