@@ -85,7 +85,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	  ~~~ shell
 	  $ cockroach gen haproxy --insecure \
 	  --host=<address of any node> \
-	  --port=26257 \
+	  --port=26257
 	  ~~~
 
       {% include {{ page.version.version }}/misc/haproxy.md %}
