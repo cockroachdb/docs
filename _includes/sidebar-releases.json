@@ -39,15 +39,15 @@
       ]
     },
     {
-      "title": "All Production Releases",
+      "title": "All Releases",
       "urls": [
         "/releases/"
       ]
     },
     {
-      "title": "Testing Releases (Alphas & Betas)",
+      "title": "Release Support Policy",
       "urls": [
-        "/releases/#testing-releases"
+        "/releases/release-support-policy.html"
       ]
     },
     {
