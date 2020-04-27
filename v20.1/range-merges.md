@@ -24,11 +24,11 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_merge.que
 
 ### Overview
 
-CockroachDB splits your cluster's data into many ranges (64MiB by default), which are defined by the range of keys they contain. For example, your cluster might have a range for customers whose IDs are between `[1000, 2000)`. If that range grows beyond 64MiB of data, the range is split into two 32MiB ranges.
+CockroachDB splits your cluster's data into many ranges (512 MiB by default), which are defined by the range of keys they contain. For example, your cluster might have a range for customers whose IDs are between `[1000, 2000)`. If that range grows beyond 512 MiB of data, the range is split into two smaller ranges.
 
 However, as you delete data from your cluster, a range might contain far less data. Over the lifetime of a cluster, this could lead to a number of small ranges.
 
-To reduce the number of small ranges, your cluster can have any range below a certain threshold (16MiB by default) try to merge with its "right-hand neighbor", i.e. the range that starts where this range ends. Using our example above, this might be the range for customers whose IDs are between `[2000, 3000)`.
+To reduce the number of small ranges, your cluster can have any range below a certain threshold (128 MiB by default) try to merge with its "right-hand neighbor", i.e. the range that starts where this range ends. Using our example above, this might be the range for customers whose IDs are between `[2000, 3000)`.
 
 If the combined size of the small range and its neighbor is less than the maximum range size, the ranges merge into a single range. In our example, this would create a new range of keys `[1000, 3000)`.
 
