@@ -12,9 +12,9 @@ For a developer-centric walkthrough of optimizing SQL query performance, see [Ma
 
 ## Identify slow queries
 
-Use the [slow query log](#slow-query-log) or [Admin UI](#admin-ui) to detect slow queries in your cluster.
+Use the [slow query log](#using-the-slow-query-log) or [Admin UI](#using-the-admin-ui) to detect slow queries in your cluster.
 
-### Slow query log
+### Using the slow query log
 
 The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary log file `cockroach-sql-slow.log` in the [log directory](debug-and-error-logs.html#write-to-file).
 
@@ -51,7 +51,7 @@ Service latency is the time taken to execute a query once it is received by the 
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
 
-### Admin UI
+### Using the Admin UI
 
 High latency SQL statements are displayed on the [**Statements page**](admin-ui-statements-page.html) of the Admin UI. To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** on the left.
 
