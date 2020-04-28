@@ -26,7 +26,7 @@ module Jekyll
     # config - A hash of Jekyll config option (merge of _config.yml options and
     # options passed on the command line)
     #
-    # The gist of the plugin works by instanciating a Jekyll site,
+    # The gist of the plugin works by instantiating a Jekyll site,
     # monkey-patching its `write` method and building it.
     def self.init(config = {})
       # Monkey patch Jekyll and external plugins
@@ -61,7 +61,7 @@ module Jekyll
 
     # Public: Run the main Algolia module
     #
-    # Actually "process" the site, which will acts just like a regular `jekyll
+    # Actually "process" the site, which will act just like a regular `jekyll
     # build` except that our monkey patched `write` method will be called
     # instead.
     #

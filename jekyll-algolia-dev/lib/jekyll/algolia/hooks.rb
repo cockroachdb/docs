@@ -46,23 +46,31 @@ module Jekyll
       # but a custom hook like this one can allow more fine-grained
       # customisation.
       def self.should_be_excluded?(filepath)
-        #We want to include the rease files
+        # We want to include release files
         return false if filepath.start_with?('release')
 
-        # We exclude from index if its not the stable version or if its dev
-        # version with different content
         versions = Configurator.config['versions']
         stable_version = versions['stable']
         dev_version = versions['dev']
 
+        # Index formatted tables if they are part of stable version
+        # includePath = "_includes/".dup
+        # includePath.concat(stable_version)
+        # includePath.concat('/sql')
+
+        # return false if filepath.start_with?(includePath)
+
+        # Exclude from index if files are not part of stable version.
+        # If valid stable version does not exist, index dev version.
         if filepath.start_with?(stable_version)
-          # If is stable we want to include
+          # Do not exclude from index if files are part of stable version
           false
         elsif filepath.start_with?(dev_version)
-          # Won't be indexed if stable version exists
+          # Do exclude dev version from index if a stable version exists
           has_stable_version?(filepath, dev_version, stable_version)
         else
-          # Exclude from index other versions
+          # For all cases that do not fall into the above two categories,
+          # do exclude
           true
         end
       end
