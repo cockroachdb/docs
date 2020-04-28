@@ -112,7 +112,7 @@
 <tr><td>timetz <code>-</code> <a href="interval.html">interval</a></td><td>timetz</td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code>-></code></td><td>Return</td></tr>
+<tr><td><a name="operator-get-object-field"></a><code>-></code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td>jsonb <code>-></code> <a href="int.html">int</a></td><td>jsonb</td></tr>
 <tr><td>jsonb <code>-></code> <a href="string.html">string</a></td><td>jsonb</td></tr>
@@ -144,7 +144,7 @@
 <tr><td><a href="int.html">int</a> <code>//</code> <a href="int.html">int</a></td><td><a href="int.html">int</a></td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code><</code></td><td>Return</td></tr>
+<tr><td><a name="operator-less-than"></a><code><</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="bool.html">bool</a> <code><</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code><</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
@@ -201,7 +201,7 @@
 <tr><td>varbit <code><<</code> <a href="int.html">int</a></td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code><=</code></td><td>Return</td></tr>
+<tr><td><a name="operator-less-than-or-equal"></a><code><=</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="bool.html">bool</a> <code><=</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code><=</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
@@ -251,13 +251,13 @@
 <tr><td>varbit <code><=</code> varbit</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code><@</code></td><td>Return</td></tr>
+<tr><td><a name="operator-is-contained-by"><code><@</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td>anyelement <code><@</code> anyelement</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td>jsonb <code><@</code> jsonb</td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code>=</code></td><td>Return</td></tr>
+<tr><td><a name="operator-equals"></a><code>=</code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td><a href="bool.html">bool</a> <code>=</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code>=</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
@@ -329,7 +329,7 @@
 <tr><td>jsonb <code>?|</code> <a href="string.html">string[]</a></td><td><a href="bool.html">bool</a></td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><code>@></code></td><td>Return</td></tr>
+<tr><td><a name="operator-contains"></a><code>@></code></td><td>Return</td></tr>
 </thead><tbody>
 <tr><td>anyelement <code>@></code> anyelement</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td>jsonb <code>@></code> jsonb</td><td><a href="bool.html">bool</a></td></tr>
