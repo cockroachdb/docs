@@ -12,9 +12,9 @@ module Jekyll
       ALGOLIA_DEFAULTS = {
         'extensions_to_index' => nil,
         'files_to_exclude' => nil,
-        'nodes_to_index' => 'p',
+        'nodes_to_index' => 'p,td',
         'indexing_batch_size' => 1000,
-        'max_record_size' => 10_000,
+        'max_record_size' => 20_000,
         'settings' => {
           # Searchable attributes
           'searchableAttributes' => %w[
