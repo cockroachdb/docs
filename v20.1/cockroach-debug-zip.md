@@ -9,7 +9,7 @@ key: debug-zip.html
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
-- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#slow-query-log))
+- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log))
 - Cluster events
 - Schema change events
 - Node liveness

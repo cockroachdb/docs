@@ -193,4 +193,4 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [SQL Feature Support](sql-feature-support.html)
 - [Authentication logs](query-behavior-troubleshooting.html#authentication-logs)
-- [Slow query logs](query-behavior-troubleshooting.html#slow-query-logs)
+- [Slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log)

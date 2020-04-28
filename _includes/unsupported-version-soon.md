@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_danger}}
-Cockroach Labs will stop providing **Assistance Support** for this version on **July 1, 2020**. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, see the [Release Support Policy](release-support-policy.html).
+Cockroach Labs will stop providing <strong>Assistance Support</strong> for this version on <strong>July 1, 2020</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, see the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
 {{site.data.alerts.end}}
