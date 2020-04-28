@@ -35,7 +35,7 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 
 ### Slow query logs
 
-Another useful [cluster setting](cluster-settings.html) is `sql.log.slow_query.latency_threshold`, which is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
+<span class="version-tag">New in v20.1:</span> Another useful [cluster setting](cluster-settings.html) is `sql.log.slow_query.latency_threshold`, which is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -57,7 +57,7 @@ SQL client connections can be logged by turning on the `server.auth_log.sql_conn
 > SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
 ~~~
 
-This will log connection established and connection terminated events to a `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
+This will log connection established and connection terminated events to a `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log.
 
 {{site.data.alerts.callout_info}}
 In addition to SQL sessions, connection events can include SQL-based liveness probe attempts, as well as attempts to use the [PostgreSQL cancel protocol](https://www.postgresql.org/docs/current/protocol-flow.html#id-1.10.5.7.9).
@@ -77,7 +77,7 @@ Along with the above, SQL client authenticated sessions can be logged by turning
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
 
-This logs authentication method selection, authentication method application, authentication method result, and session termination events to the `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log. 
+This logs authentication method selection, authentication method application, authentication method result, and session termination events to the `cockroach-auth` log file. Use the symlink `cockroach-auth.log` to open the most recent log.
 
 This example log shows authentication success over a `hostssl` (TLS certificate over TCP) connection:
 

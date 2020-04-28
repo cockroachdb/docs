@@ -16,13 +16,13 @@ Use the [slow query log](#using-the-slow-query-log) or [Admin UI](#using-the-adm
 
 ### Using the slow query log
 
-The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary log file `cockroach-sql-slow.log` in the [log directory](debug-and-error-logs.html#write-to-file).
+<span class="version-tag">New in v20.1:</span> The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary log file `cockroach-sql-slow.log` in the [log directory](debug-and-error-logs.html#write-to-file).
 
 {{site.data.alerts.callout_info}}
 Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.
 {{site.data.alerts.end}}
 
-1. Run the [`cockroach sql`](cockroach-sql.html) command against one of your nodes. This opens the interactive SQL shell. 
+1. Run the [`cockroach sql`](cockroach-sql.html) command against one of your nodes. This opens the interactive SQL shell.
 
 2. Set the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) to a threshold of your choosing. For example, 100 milliseconds represents [the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/).
 
@@ -31,7 +31,7 @@ Service latency is the time taken to execute a query once it is received by the 
 	> SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
 	~~~
 
-3. Each node's slow query log is written by default in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file). 
+3. Each node's slow query log is written by default in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
 4. When you open a slow query log, look for a line that corresponds to your earlier [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
@@ -39,9 +39,9 @@ Service latency is the time taken to execute a query once it is received by the 
 	I200325 19:24:10.079675 380825 sql/exec_log.go:193  [n1,client=127.0.0.1:49712,hostnossl,user=root] 1532 9.217ms exec "$ cockroach sql" {} "SET CLUSTER SETTING \"sql.log.slow_query.latency_threshold\" = '100ms'" {} 0 "" 0
 	~~~
 
-	Slow queries will be logged after this line. 
+	Slow queries will be logged after this line.
 
-5. The slow query log generally shares the [SQL audit log file format](experimental-audit.html#audit-log-file-format). One exception is that service latency is found between the log entry counter and log message. 
+5. The slow query log generally shares the [SQL audit log file format](experimental-audit.html#audit-log-file-format). One exception is that service latency is found between the log entry counter and log message.
 
 	For example, the below query was logged with a service latency of 166.807 milliseconds:
 
