@@ -2,7 +2,6 @@
 title: Cluster Upgrades
 summary: Learn about the CockroachCloud upgrade policy.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page describes the upgrade policy for CockroachCloud.

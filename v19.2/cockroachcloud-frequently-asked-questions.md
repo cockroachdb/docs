@@ -2,7 +2,6 @@
 title: Frequently Asked Questions
 summary: CockroachCloud FAQs
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page answers the frequently asked questions.

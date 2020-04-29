@@ -2,7 +2,6 @@
 title: Create Your CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page walks you through the process of creating a CockroachCloud cluster.
