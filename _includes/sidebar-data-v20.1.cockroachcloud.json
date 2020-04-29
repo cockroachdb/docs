@@ -187,6 +187,12 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "May 2020",
+        "urls": [
+          "/releases/cockroachcloud-05042020.html"
+        ]
+      },
+      {
         "title": "April 2020",
         "urls": [
           "/releases/cockroachcloud-04062020.html"
