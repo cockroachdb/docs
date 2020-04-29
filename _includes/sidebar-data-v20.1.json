@@ -560,6 +560,12 @@
             ]
           },
           {
+            "title": "Back up and Restore Data - Advanced Options",
+            "urls": [
+              "/${VERSION}/backup-and-restore-advanced-options.html"
+            ]
+          },
+          {
             "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
             "urls": [
               "/${VERSION}/create-a-file-server.html"
