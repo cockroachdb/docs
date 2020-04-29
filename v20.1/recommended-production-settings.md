@@ -47,7 +47,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - Avoid using shared storage such as NFS, CIFS, and CEPH storage.
 
-- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB.
+- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB. Some users have reported success with larger volumes of data per node; for more information, see [Recommended capacity per node](#recommended-capacity-per-node).
 
     Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
@@ -110,6 +110,14 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 - `nobarrier` can be used with SSDs, but only if it has battery-backed write cache. Without one, data can be corrupted in the event of a crash.
 
     Cockroach Labs conducts most of our [internal performance tests](https://www.cockroachlabs.com/blog/2018_cloud_report/) using `nobarrier` to demonstrate the best possible performance, but understand that not all use cases can support this option.
+
+## Recommended capacity per node
+
+We have reports of users successfully storing up to 1 TB of data per node, or about 15,000 replicas.
+
+It's possible to store more data in a cluster by increasing the number of nodes. However, you may encounter issues when the total number of ranges exceeds 100,000.
+
+If you are running a cluster with a large amount of data and encounter an issue, please [reach out for support](support-resources.html).
 
 ## Security
 
