@@ -57,7 +57,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 - The `cockroach user` CLI command has been removed. It was previously deprecated in CockroachDB v19.2. Note that a v19.2 client (supporting `cockroach user`) can still operate user accounts in a v20.1 server.
 
-- The [`GRANT`](../v20.1/grant.html) and [`REVOKE`](../v20.1/revoke.html) statements now require that the requesting user already have the target privileges themselves. For example, `GRANT SELECT ON t TO foo` requires that the requesting user already have the `SELECT` privilege on `t`.
+- The [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements now require that the requesting user already have the target privileges themselves. For example, `GRANT SELECT ON t TO foo` requires that the requesting user already have the `SELECT` privilege on `t`.
 
 ### Let ongoing bulk operations finish
 
