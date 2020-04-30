@@ -7,7 +7,7 @@
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 {% endif %}
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
-{% if page.block_search or page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1'%}
+{% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains ' v19.1' %}
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
 <meta name="robots" content="noarchive">
