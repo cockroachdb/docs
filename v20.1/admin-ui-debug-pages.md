@@ -38,7 +38,7 @@ The **Even More Advanced Debugging** section of the page lists additional report
 Depending on your [access level](admin-ui-overview.html#admin-ui-access), the endpoints listed here provide access to:
 
 - [Log files](debug-and-error-logs.html#write-to-file)
-- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#slow-query-log))
+- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log), [authentication logs](query-behavior-troubleshooting.html#authentication-logs))
 - Node status
 - Hot ranges
 - Node-specific metrics

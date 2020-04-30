@@ -219,6 +219,31 @@ See also:
 
 The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
 
+### Error messages and `SQLSTATE` codes
+
+When CockroachDB encounters a SQL error, it returns the following information to the client (whether `cockroach sql` or another [client application](developer-guide-overview.html)):
+
+1. An error message, prefixed with [the "Severity" field of the PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol-error-fields.html). For example, `ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"`.
+2. A [5-digit `SQLSTATE` error code](https://en.wikipedia.org/wiki/SQLSTATE) as defined by the SQL standard. For example, `SQLSTATE: 23503`.
+
+For example, the following query (taken from [this example of adding multiple foreign key constraints](foreign-key.html#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
+~~~
+
+~~~
+ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
+SQLSTATE: 23503
+DETAIL: Key (customer_id)=(2000) is not present in table "customers".
+~~~
+
+The [`SQLSTATE` code](https://en.wikipedia.org/wiki/SQLSTATE) in particular can be helpful in the following ways:
+
+- It is a standard SQL error code that you can look up in documentation and search for on the web. For any given error state, CockroachDB tries to produce the same `SQLSTATE` code as PostgreSQL.
+- If you are developing automation that uses the CockroachDB SQL shell, it is more reliable to check for `SQLSTATE` values than for error message strings, which are likely to change.
+
 ## Examples
 
 ### Start a SQL shell
@@ -769,6 +794,41 @@ $ cockroach sql --insecure \
 ~~~
 
 In this example, the statement is executed every minute. We let the process run for a couple minutes before killing it with Ctrl+C.
+
+### Connect to a cluster listening for Unix domain socket connections
+
+<span class="version-tag">New in v20.1:</span> To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
+
+For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start-single-node --insecure --socket-dir=/tmp
+~~~
+
+~~~
+CockroachDB node starting at 2020-04-22 15:07:17.232326 +0000 UTC (took 0.9s)
+build:               CCL v20.1.0 @ 2020/04/22 13:54:06 (go1.13.4)
+webui:               http://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslmode=disable
+RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --insecure
+socket:              /tmp/.s.PGSQL.26257
+logs:                /path/cockroach/cockroach-data/logs
+temp dir:            /path/cockroach/cockroach-data/cockroach-temp919020614
+external I/O path:   /path/cockroach/cockroach-data/extern
+store[0]:            path=/path/cockroach/cockroach-data
+storage engine:      rocksdb
+status:              restarted pre-existing node
+clusterID:           9ce204b4-4b79-4809-83b5-2dc54c190cb2
+nodeID:              1
+~~~
+
+To connect to this cluster with a socket:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --url='postgres://@?host=/tmp&port=26257'
+~~~
 
 ## See also
 

@@ -61,6 +61,7 @@ In MIT KDC, you can't map a service principal to an SPN with a different usernam
 {% include copy-clipboard.html %}
 ~~~ shell
 $ create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -81,7 +82,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 ## Configuring the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-2. [Create certificates](cockroach-cert.html) for internode and `root` user authentication:
+2. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -142,13 +143,13 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
 
-      Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
+      Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) to this particular value makes it mandatory for all non-`root` users to authenticate using GSSAPI. The `root` user is always an exception and remains able to authenticate using a valid client cert or a user password.
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as a whitelist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
       The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
 
-8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
+8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos users has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
     {% include copy-clipboard.html %}
     ~~~ sql

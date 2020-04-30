@@ -122,8 +122,6 @@ To exit this state, you should:
 
 Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](admin-ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
 
-Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [`range_max_bytes`](configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to `range_max_bytes` in a development environment before making changes on production.
-
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
 ### Requests to restarted node in need of snapshots may hang
@@ -374,7 +372,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Max size of a single column family
 
-When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (64MiB by default) for the table, the operation may fail, or cluster performance may suffer.
+When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (512 MiB by default) for the table, the operation may fail, or cluster performance may suffer.
 
 As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
 
@@ -395,3 +393,5 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
+
+{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}

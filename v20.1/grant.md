@@ -14,9 +14,7 @@ For privileges required by specific statements, see the documentation for the re
 
 ## Required privileges
 
-The user granting privileges must have the `GRANT` privilege on the target databases or tables.
-
-<span class="version-tag">New in v20.1</span> In addition to the `GRANT` privilege, the user granting privileges must have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+<span class="version-tag">New in v20.1</span> The user granting privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
 ## Supported privileges
 
@@ -42,6 +40,7 @@ Privilege | Levels
 `INSERT` | Table
 `DELETE` | Table
 `UPDATE` | Table
+<span class="version-tag">New in v20.1</span> `ZONECONFIG` | Database, Table
 
 ## Parameters
 
@@ -148,6 +147,14 @@ Parameter | Description
 (3 rows)
 ~~~
 
+### Grant the privilege to manage the replication zones for a database or table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ZONECONFIG ON TABLE mytable TO myuser;
+~~~
+
+The user `myuser` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to to add, modify, reset, or remove replication zones for the table `mytable`.
 
 ## See also
 
@@ -157,4 +164,5 @@ Parameter | Description
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
+- [`CONFIGURE ZONE`](configure-zone.html)
 - [Manage Users](authorization.html#create-and-manage-users)

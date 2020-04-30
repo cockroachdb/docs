@@ -25,6 +25,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's `primary` index.
  `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. `CASCADE` does not list objects it drops, so should be used cautiously.<br><br> To drop an index created with [`CREATE UNIQUE INDEX`](create-index.html#unique-indexes), you do not need to use `CASCADE`.
  `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
+ `CONCURRENTLY` | <span class="version-tag">New in v20.1:</span> Optional, no-op syntax for PostgreSQL compatibility. All indexes are dropped concurrently in CockroachDB.
 
 ## Viewing schema changes
 

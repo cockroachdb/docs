@@ -50,7 +50,7 @@ CockroachDB offers three methods for client authentication:
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
 
-- **Password authentication**, which is available to non-`root` users who you've created passwords for. Password creation is supported only in secure clusters.
+- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
 
    Example:
    {% include copy-clipboard.html %}

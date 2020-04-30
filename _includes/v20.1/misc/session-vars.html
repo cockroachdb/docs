@@ -107,6 +107,7 @@
 
   <tr>
    <td>
+    <a name="enable-implicit-select-for-update"></a>
     <code>enable_implicit_select_for_update</code>
    </td>
    <td><span class="version-tag">New in v20.1</span>: Indicates whether <a href="update.html"><code>UPDATE</code></a> statements acquire locks using the <code>FOR UPDATE</code> locking mode during their initial row scan, which improves performance for contended workloads.  For more information about how <code>FOR UPDATE</code> locking works, see the documentation for <a href="select-for-update.html"><code>SELECT FOR UPDATE</code></a>.</td>
@@ -367,7 +368,7 @@
    <td>
     <code>vectorize</code>
    </td>
-   <td>The vectorized execution engine mode. Options include <code>auto</code>, <code>experimental_on</code>, and <code>off</code>.
+   <td>The vectorized execution engine mode. Options include <code>auto</code>, <code>on</code>, and <code>off</code>.
      For more details, see <a href="vectorized-execution.html#configuring-vectorized-execution">Configuring vectorized execution for CockroachDB</a>.
    </td>
    <td>

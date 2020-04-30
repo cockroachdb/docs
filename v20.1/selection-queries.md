@@ -468,19 +468,20 @@ EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
 ~~~
 
 ~~~
-    tree    |    field    |    description
-+-----------+-------------+-------------------+
+    tree    |    field    |         description
+------------+-------------+------------------------------
             | distributed | true
-            | vectorized  | true
+            | vectorized  | false
   limit     |             |
    │        | offset      | 200024
    └── scan |             |
-            | table       | employees@primary
-            | spans       | ALL
+            | table       | employees@idx_17110_primary
+            | spans       | LIMITED SCAN
             | limit       | 200049
+(8 rows)
 ~~~
 
-The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a full table scan (see `spans` = `ALL` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049.
+The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans` = `LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049.
 
 Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans` = `300026-` + 25 below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
 
@@ -490,14 +491,15 @@ EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
 
 ~~~
-  tree |    field    |    description
-+------+-------------+-------------------+
+  tree |    field    |         description
+-------+-------------+------------------------------
        | distributed | false
        | vectorized  | false
   scan |             |
-       | table       | employees@primary
+       | table       | employees@idx_17110_primary
        | spans       | /300026-
        | limit       | 25
+(6 rows)
 ~~~
 
 {{site.data.alerts.callout_danger}}

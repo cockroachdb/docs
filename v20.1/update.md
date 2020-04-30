@@ -520,14 +520,14 @@ Now suppose you want to update a couple rows in the table, based on their conten
 
 ~~~
                                       text
-+-------------------------------------------------------------------------------+
+---------------------------------------------------------------------------------
   update users
    └── project
         ├── index-join users
         │    └── scan users@users_name_city_idx
         │         └── constraint: /8/7/6: [/'Michael Brown' - /'Michael Brown']
         └── projections
-             └── const: 'Michael Brown (there are two)'
+             └── 'Michael Brown (there are two)'
 (7 rows)
 ~~~
 
@@ -541,8 +541,8 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 ~~~
 
 ~~~
-                          text
-+-------------------------------------------------------+
+                       text
+--------------------------------------------------
   update users
    └── project
         ├── select
@@ -551,7 +551,7 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
         │    └── filters
         │         └── name = 'Michael Brown'
         └── projections
-             └── const: 'Michael Brown (there are two)'
+             └── 'Michael Brown (there are two)'
 (9 rows)
 ~~~
 

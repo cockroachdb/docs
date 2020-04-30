@@ -198,7 +198,7 @@ We also have other resources on indexes:
 
 There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
 
-- Foreign key columns must be [indexed](indexes.html) when creating the table using `INDEX`, `PRIMARY KEY`, or `UNIQUE`.
+- Foreign key columns must be [indexed](indexes.html). If no index is defined in the `CREATE TABLE` statement using `INDEX`, `PRIMARY KEY`, or `UNIQUE`, a secondary index is automatically created on the foreign key columns.
 
 - Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
 

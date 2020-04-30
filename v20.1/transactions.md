@@ -14,21 +14,19 @@ For a detailed discussion of CockroachDB transaction semantics, see [How Cockroa
 
 Each of the following SQL statements control transactions in some way.
 
-| Statement                                            | Function                                                                                                                                                                                                      |
-|------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`BEGIN`](begin-transaction.html)                    | Initiate a transaction, as well as control its [priority](#transaction-priorities).                                                                                                                           |
-| [`SET TRANSACTION`](set-transaction.html)            | Control a transaction's [priority](#transaction-priorities).                                                                                                                                                  |
-| [`COMMIT`](commit-transaction.html)                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol](advanced-client-side-transaction-retries.html).                                      |
-| [`ROLLBACK`](rollback-transaction.html)              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                                                     |
-| [`SHOW`](show-vars.html)                             | Display the current transaction settings.                                                                                                                                                                     |
-| [`SAVEPOINT`](savepoint.html)                        | (**Advanced**) Used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), which can improve performance and avoid starvation when transactions are retried. |
-| [`RELEASE SAVEPOINT`](release-savepoint.html)        | (**Advanced**) Commit a [retryable transaction](advanced-client-side-transaction-retries.html).                                                                                                               |
-| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | (**Advanced**) Handle [retry errors](#error-handling) by rolling back a transaction's changes and increasing its priority.                                                                                    |
+| Statement                                            | Function                                                                                                                                                                 |
+|------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`BEGIN`](begin-transaction.html)                    | Initiate a transaction, as well as control its [priority](#transaction-priorities).                                                                                      |
+| [`SET TRANSACTION`](set-transaction.html)            | Control a transaction's [priority](#transaction-priorities).                                                                                                             |
+| [`COMMIT`](commit-transaction.html)                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol](advanced-client-side-transaction-retries.html). |
+| [`ROLLBACK`](rollback-transaction.html)              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                |
+| [`SHOW`](show-vars.html)                             | Display the current transaction settings.                                                                                                                                |
+| [`SAVEPOINT`](savepoint.html)                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html).  |
+| [`RELEASE SAVEPOINT`](release-savepoint.html)        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions](advanced-client-side-transaction-retries.html).                             |
+| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors](advanced-client-side-transaction-retries.html).              |
 
 {{site.data.alerts.callout_info}}
-The **Advanced** statements above are used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), and are mostly of use to driver and ORM authors.
-
-Application developers who are using a framework or library that does not have advanced retry logic built in should implement an application-level retry loop with exponential backoff as shown in [Client-side intervention](#client-side-intervention).
+Application developers who are using a framework or library that does not have [advanced retry logic](advanced-client-side-transaction-retries.html) built in should implement an application-level retry loop with exponential backoff as shown in [Client-side intervention](#client-side-intervention).
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -62,7 +60,7 @@ Type | Description
 -----|------------
 **Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client as described in [client-side intervention](#client-side-intervention).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
-**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`][commit] or [`ROLLBACK`][rollback] to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
+**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`](commit-transaction.html) or [`ROLLBACK`](rollback-transaction.html) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction retries
 
@@ -156,7 +154,7 @@ To handle these types of errors you have the following options:
    - **Python** developers can use [SQLAlchemy](https://www.sqlalchemy.org) with the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For more information, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
    - **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can re-use the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
 2. **Most users, such as application authors**: Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. For an example, see the [Client-side intervention example](#client-side-intervention-example).
-3. **Advanced users, such as library authors**: Use the [`SAVEPOINT`](savepoint.html) statement to create retryable transactions. Retryable transactions can improve performance because their priority is increased each time they are retried, making them more likely to succeed the longer they're in your system. For instructions showing how to do this, see [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
+3. **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
 
 {% include {{page.version.version}}/misc/mitigate-contention-note.md %}
 
@@ -169,6 +167,23 @@ To handle these types of errors you have the following options:
 Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
 
 For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+## Nested transactions
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports the nesting of transactions using [savepoints](savepoint.html).  These nested transactions are also known as sub-transactions.  Nested transactions can be rolled back without discarding the state of the entire surrounding transaction.
+
+This can be useful in applications that abstract database access using an application development framework or [ORM](install-client-drivers.html).  Different components of the application can operate on different sub-transactions without having to know about each others' internal operations, while trusting that the database will maintain isolation between sub-transactions and preserve data integrity.
+
+Just as [`COMMIT`](commit-transaction.html) and [`ROLLBACK`](rollback-transaction.html) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`](release-savepoint.html) and [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the table below:
+
+| Statement                                                                          | Effect                                                |
+|------------------------------------------------------------------------------------+-------------------------------------------------------|
+| [`COMMIT`](commit-transaction.html)                                                | Commit an entire transaction.                         |
+| [`ROLLBACK`](rollback-transaction.html)                                            | Discard an entire transaction.                        |
+| [`RELEASE SAVEPOINT`](release-savepoint.html)                                      | Commit (really, forget) the named nested transaction. |
+| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) | Discard the changes in the named nested transaction.  |
+
+For more information, including examples showing how to use savepoints to create nested transactions, see [the savepoints documentation](savepoint.html#examples).
 
 ## Transaction priorities
 
@@ -228,8 +243,3 @@ For more information about the relationship between these levels, see [this pape
 - [`SHOW`](show-vars.html)
 - [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
-
-<!-- Reference Links -->
-
-[commit]: commit-transaction.html
-[rollback]: rollback-transaction.html

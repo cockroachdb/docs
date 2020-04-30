@@ -190,7 +190,7 @@ LIMIT
 
 ~~~
               tree              |    field    |                                         description
-+-------------------------------+-------------+---------------------------------------------------------------------------------------------+
+--------------------------------+-------------+----------------------------------------------------------------------------------------------
                                 | distributed | true
                                 | vectorized  | false
   limit                         |             |
@@ -207,14 +207,15 @@ LIMIT
                        │        | equality    | (rider_id) = (id)
                        ├── scan |             |
                        │        | table       | rides@primary
-                       │        | spans       | ALL
+                       │        | spans       | FULL SCAN
                        │        | filter      | (start_time >= '2018-12-31 00:00:00+00:00') AND (start_time <= '2019-01-01 00:00:00+00:00')
                        └── scan |             |
-                                | table       | users@primary
-                                | spans       | ALL
+                                | table       | users@users_name_city_idx
+                                | spans       | FULL SCAN
+(21 rows)
 ~~~
 
-The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | ALL`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | FULL SCAN`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
 Therefore, we need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
 
@@ -310,7 +311,7 @@ As you can see, this query is no longer scanning the entire (larger) `rides` tab
 
 ~~~
               tree              |    field    |                      description
-+-------------------------------+-------------+-------------------------------------------------------+
+--------------------------------+-------------+--------------------------------------------------------
                                 | distributed | true
                                 | vectorized  | false
   limit                         |             |
@@ -324,13 +325,14 @@ As you can see, this query is no longer scanning the entire (larger) `rides` tab
              └── render         |             |
                   └── hash-join |             |
                        │        | type        | inner
-                       │        | equality    | (id) = (rider_id)
+                       │        | equality    | (rider_id) = (id)
                        ├── scan |             |
-                       │        | table       | users@primary
-                       │        | spans       | ALL
+                       │        | table       | rides@rides_start_time_idx
+                       │        | spans       | /2018-12-31T00:00:00Z-/2019-01-01T00:00:00.000000001Z
                        └── scan |             |
-                                | table       | rides@rides_start_time_idx
-                                | spans       | /2018-12-31T00:00:00Z-/2019-01-01T00:00:00.000000001Z
+                                | table       | users@users_name_city_idx
+                                | spans       | FULL SCAN
+(20 rows)
 ~~~
 
 

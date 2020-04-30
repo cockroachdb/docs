@@ -36,30 +36,18 @@ To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
 ~~~
 
 ~~~
-  tree | field |  description
-+------+-------+---------------+
-  scan |       |
-       | table | users@primary
-       | spans | ALL
-(3 rows)
+  tree |    field    |       description
+-------+-------------+--------------------------
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | users@primary
+       | spans       | FULL SCAN
+       | filter      | name = 'Cheyenne Smith'
+(6 rows)
 ~~~
 
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                text                 
-+-----------------------------------+
-  select                             
-   ├── scan users                    
-   └── filters                       
-        └── name = 'Cheyenne Smith'  
-(4 rows)
-
-Time: 2.633ms
-~~~
--->
-
-The row with `table | users@primary` indicates the index used (`primary`) to scan the table (`users`). The row with `spans | ALL` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+The row with `table | users@primary` indicates the index used (`primary`) to scan the table (`users`). The row with `spans | FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 ### Solution: Filter by a secondary index
 
@@ -94,33 +82,22 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
 ~~~
 
 ~~~
-     tree    | field |                      description
-+------------+-------+-------------------------------------------------------+
-  index-join |       |
-   ├── scan  |       |
-   │         | table | users@users_name_idx
-   │         | spans | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
-   └── scan  |       |
-             | table | users@primary
-(6 rows)
+     tree    |    field    |                  description
+-------------+-------------+------------------------------------------------
+             | distributed | false
+             | vectorized  | false
+  index-join |             |
+   │         | table       | users@primary
+   │         | key columns | city, id
+   └── scan  |             |
+             | table       | users@users_name_idx
+             | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
+(8 rows)
 ~~~
-
-<!--Output of EXPLAIN for reference
-~~~
-                                  text                                   
-+-----------------------------------------------------------------------+
-  index-join users                                                       
-   └── scan users@users_name_idx                                         
-        └── constraint: /3/2/1: [/'Cheyenne Smith' - /'Cheyenne Smith']  
-(3 rows)
-
-Time: 2.054ms
-~~~
--->
 
 This shows you that CockroachDB starts with the secondary index (`users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`/'Cheyenne Smith' - /'Cheyenne Smith'`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
 
-Because the `users` table is small (under 64 MiB), the primary index and all secondary indexes are contained in a single range with a single leaseholder. If the table were bigger, however, the primary index and secondary index could reside in separate ranges, each with its own leaseholder. In this case, if the leaseholders were on different nodes, the query would require more network hops, further increasing latency.
+Because the `users` table is under 512 MiB, the primary index and all secondary indexes are contained in a single range with a single leaseholder. If the table were bigger, however, the primary index and secondary index could reside in separate ranges, each with its own leaseholder. In this case, if the leaseholders were on different nodes, the query would require more network hops, further increasing latency.
 
 ### Solution: Filter by a secondary index storing additional columns
 
@@ -151,30 +128,18 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
 
 ~~~
-     tree    | field |                      description
-+------------+-------+-------------------------------------------------------+
-  index-join |       |
-   ├── scan  |       |
-   │         | table | users@users_name_idx
-   │         | spans | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
-   └── scan  |       |
-             | table | users@primary
-(6 rows)
+     tree    |    field    |                  description
+-------------+-------------+------------------------------------------------
+             | distributed | false
+             | vectorized  | false
+  index-join |             |
+   │         | table       | users@primary
+   │         | key columns | city, id
+   └── scan  |             |
+             | table       | users@users_name_idx
+             | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
+(8 rows)
 ~~~
-
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                                  text                                   
-+-----------------------------------------------------------------------+
-  index-join users                                                       
-   └── scan users@users_name_idx                                         
-        └── constraint: /3/2/1: [/'Cheyenne Smith' - /'Cheyenne Smith']  
-(3 rows)
-
-Time: 1.398ms
-~~~
--->
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
 
@@ -196,25 +161,15 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 ~~~
 
 ~~~
-  tree | field |                      description
-+------+-------+-------------------------------------------------------+
-  scan |       |
-       | table | users@users_name_idx
-       | spans | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
-(3 rows)
+  tree |    field    |                  description
+-------+-------------+------------------------------------------------
+       | distributed | false
+       | vectorized  | false
+  scan |             |
+       | table       | users@users_name_idx
+       | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
+(5 rows)
 ~~~
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                                text                                
-+------------------------------------------------------------------+
-  scan users@users_name_idx                                         
-   └── constraint: /3/2/1: [/'Cheyenne Smith' - /'Cheyenne Smith']  
-(2 rows)
-
-Time: 4.093ms
-~~~
--->
 
 This results in even faster performance:
 
@@ -267,46 +222,26 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
 ~~~
 
 ~~~
-         tree         |    field    |     description
-+---------------------+-------------+----------------------+
+         tree         |    field    |                                         description
+----------------------+-------------+----------------------------------------------------------------------------------------------
+                      | distributed | true
+                      | vectorized  | false
   group               |             |
    │                  | aggregate 0 | count(DISTINCT id)
    │                  | scalar      |
    └── render         |             |
-        └── join      |             |
+        └── hash-join |             |
              │        | type        | inner
-             │        | equality    | (id) = (rider_id)
+             │        | equality    | (rider_id) = (id)
              ├── scan |             |
-             │        | table       | users@users_name_idx
-             │        | spans       | ALL
+             │        | table       | rides@primary
+             │        | spans       | FULL SCAN
+             │        | filter      | (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')
              └── scan |             |
-                      | table       | rides@primary
-                      | spans       | ALL
-(13 rows)
+                      | table       | users@users_name_idx
+                      | spans       | FULL SCAN
+(16 rows)
 ~~~
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                                                       text                                                        
-+-----------------------------------------------------------------------------------------------------------------+
-  scalar-group-by                                                                                                  
-   ├── inner-join                                                                                                  
-   │    ├── select                                                                                                 
-   │    │    ├── scan rides                                                                                        
-   │    │    └── filters                                                                                           
-   │    │         └── (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')  
-   │    ├── scan users                                                                                             
-   │    └── filters                                                                                                
-   │         └── rider_id = users.id                                                                               
-   └── aggregations                                                                                                
-        └── count                                                                                                  
-             └── agg-distinct                                                                                      
-                  └── variable: users.id                                                                           
-(13 rows)
-
-Time: 1.671ms
-~~~
--->
 
 Reading from bottom up, you can see that CockroachDB does a full table scan first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
 
@@ -346,43 +281,24 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
 
 ~~~
          tree         |    field    |                      description
-+---------------------+-------------+-------------------------------------------------------+
+----------------------+-------------+--------------------------------------------------------
+                      | distributed | true
+                      | vectorized  | false
   group               |             |
    │                  | aggregate 0 | count(DISTINCT id)
    │                  | scalar      |
    └── render         |             |
-        └── join      |             |
+        └── hash-join |             |
              │        | type        | inner
-             │        | equality    | (id) = (rider_id)
+             │        | equality    | (rider_id) = (id)
              ├── scan |             |
-             │        | table       | users@users_name_idx
-             │        | spans       | ALL
+             │        | table       | rides@rides_start_time_idx
+             │        | spans       | /2018-12-20T00:00:00Z-/2018-12-21T00:00:00.000000001Z
              └── scan |             |
-                      | table       | rides@rides_start_time_idx
-                      | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
-(13 rows)
+                      | table       | users@users_name_idx
+                      | spans       | FULL SCAN
+(15 rows)
 ~~~
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                                                text                                                 
-+---------------------------------------------------------------------------------------------------+
-  scalar-group-by                                                                                    
-   ├── inner-join                                                                                    
-   │    ├── scan rides@rides_start_time_idx                                                          
-   │    │    └── constraint: /13/7/6: [/'2018-12-20 00:00:00+00:00' - /'2018-12-21 00:00:00+00:00']  
-   │    ├── scan users                                                                               
-   │    └── filters                                                                                  
-   │         └── rider_id = users.id                                                                 
-   └── aggregations                                                                                  
-        └── count                                                                                    
-             └── agg-distinct                                                                        
-                  └── variable: users.id                                                             
-(11 rows)
-
-Time: 2.996ms
-~~~
--->
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
 
@@ -394,43 +310,28 @@ For the following query, the cost-based optimizer can’t perform a lookup join 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM VEHICLES JOIN rides on rides.vehicle_id = vehicles.id limit 1;
+> EXPLAIN SELECT * FROM vehicles JOIN rides on rides.vehicle_id = vehicles.id limit 1;
 ~~~
 
 ~~~
-         tree         |  field   |     description      
-+---------------------+----------+---------------------+
-  render              |          |                      
-   └── limit          |          |                      
-        │             | count    | 1                    
-        └── hash-join |          |                      
-             │        | type     | inner                
-             │        | equality | (vehicle_id) = (id)  
-             ├── scan |          |                      
-             │        | table    | rides@primary        
-             │        | spans    | ALL                  
-             └── scan |          |                      
-                      | table    | vehicles@primary     
-                      | spans    | ALL                  
-(12 rows)
+         tree         |    field    |     description
+----------------------+-------------+----------------------
+                      | distributed | true
+                      | vectorized  | false
+  render              |             |
+   └── limit          |             |
+        │             | count       | 1
+        └── hash-join |             |
+             │        | type        | inner
+             │        | equality    | (vehicle_id) = (id)
+             ├── scan |             |
+             │        | table       | rides@primary
+             │        | spans       | FULL SCAN
+             └── scan |             |
+                      | table       | vehicles@primary
+                      | spans       | FULL SCAN
+(14 rows)
 ~~~
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                   text
-+-----------------------------------------+
-  limit
-   ├── inner-join
-   │    ├── scan rides
-   │    ├── scan vehicles
-   │    └── filters
-   │         └── vehicle_id = vehicles.id
-   └── const: 1
-(7 rows)
-
-Time: 914µs
-~~~
--->
 
 ### Solution: Provide primary key to allow lookup join
 
@@ -442,35 +343,25 @@ To speed up the query, you can provide the primary key to allow the cost-based o
 ~~~
 
 ~~~
-        tree       | field |   description     
-+------------------+-------+------------------+
-  limit            |       |                   
-   │               | count | 1                 
-   └── lookup-join |       |                   
-        │          | table | rides@primary     
-        │          | type  | inner             
-        │          | pred  | @13 = @1          
-        └── scan   |       |                   
-                   | table | vehicles@primary  
-                   | spans | ALL               
-(9 rows)
+         tree         |       field        |           description
+----------------------+--------------------+----------------------------------
+                      | distributed        | true
+                      | vectorized         | false
+  render              |                    |
+   └── limit          |                    |
+        │             | count              | 1
+        └── hash-join |                    |
+             │        | type               | inner
+             │        | equality           | (vehicle_id, city) = (id, city)
+             │        | right cols are key |
+             ├── scan |                    |
+             │        | table              | rides@primary
+             │        | spans              | FULL SCAN
+             └── scan |                    |
+                      | table              | vehicles@primary
+                      | spans              | FULL SCAN
+(15 rows)
 ~~~
-
-<!--Output of EXPLAIN (OPT) for reference
-~~~
-                   text
-+-----------------------------------------+
-  limit
-   ├── inner-join (lookup rides)
-   │    ├── scan vehicles
-   │    └── filters
-   │         └── vehicle_id = vehicles.id
-   └── const: 1
-(6 rows)
-
-Time: 993µs
-~~~
--->
 
 ## See also
 

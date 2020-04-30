@@ -560,6 +560,12 @@
             ]
           },
           {
+            "title": "Back up and Restore Data - Advanced Options",
+            "urls": [
+              "/${VERSION}/backup-and-restore-advanced-options.html"
+            ]
+          },
+          {
             "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
             "urls": [
               "/${VERSION}/create-a-file-server.html"
@@ -569,12 +575,6 @@
             "title": "Rotate Security Certificates",
             "urls": [
               "/${VERSION}/rotate-certificates.html"
-            ]
-          },
-          {
-            "title": "Query Replication Reports",
-            "urls": [
-              "/${VERSION}/query-replication-reports.html"
             ]
           }
         ]
@@ -610,6 +610,12 @@
             "title": "Understand Debug Logs",
             "urls": [
               "/${VERSION}/debug-and-error-logs.html"
+            ]
+          },
+          {
+            "title": "Replication Reports",
+            "urls": [
+              "/${VERSION}/query-replication-reports.html"
             ]
           },
           {
@@ -838,6 +844,12 @@
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
                   "/${VERSION}/alter-range.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER ROLE</code>",
+                "urls": [
+                  "/${VERSION}/alter-role.html"
                 ]
               },
               {
@@ -1348,6 +1360,12 @@
                 "title": "<code>SHOW STATISTICS</code>",
                 "urls": [
                   "/${VERSION}/show-statistics.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SAVEPOINT STATUS</code>",
+                "urls": [
+                  "/${VERSION}/show-savepoint-status.html"
                 ]
               },
               {

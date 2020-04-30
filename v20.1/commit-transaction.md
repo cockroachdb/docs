@@ -81,3 +81,4 @@ If you are using transactions that CockroachDB will [automatically retry](transa
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`ROLLBACK`](rollback-transaction.html)
 - [`SAVEPOINT`](savepoint.html)
+- [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html)

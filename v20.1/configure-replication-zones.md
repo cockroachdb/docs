@@ -130,6 +130,10 @@ Constraint Scope | Description | Syntax
 
 See [Cluster Topography](recommended-production-settings.html#topology) recommendations for production deployments.
 
+### Troubleshooting zone constraint violations
+
+To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports](query-replication-reports.html).
+
 ## View replication zones
 
 Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
@@ -686,3 +690,4 @@ There's no need to make zone configuration changes; by default, the cluster is c
 - [`SHOW PARTITIONS`](show-partitions.html)
 - [SQL Statements](sql-statements.html)
 - [Table Partitioning](partitioning.html)
+- [Replication Reports](query-replication-reports.html)

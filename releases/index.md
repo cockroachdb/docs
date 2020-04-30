@@ -5,7 +5,8 @@ toc: true
 redirect_from: /releases.html
 ---
 
-After downloading your desired release, learn how to [Install CockroachDB](../stable/install-cockroachdb.html).
+After downloading your desired release, learn how to [Install CockroachDB](../stable/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
+
 
 {% for section in site.data.releases %}
 ## {{section.title}}
@@ -71,3 +72,15 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
 </tbody>
 </table>
 {% endfor %}
+
+## Release naming
+
+Cockroach Labs uses a three-component calendar versioning scheme to name [production releases](#production-releases) of CockroachDB. The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates release with “1” for Spring and “2” for Fall, and `PP` indicates the patch release version. Example: Version 20.1.1 (abbreviated v20.1.1).
+
+{{site.data.alerts.callout_info}}
+This calendar versioning scheme began with v19.1. Prior releases use a different versioning scheme.
+{{site.data.alerts.end}}
+
+- A major release is produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
+
+- A patch (or maintenance) release is produced to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.

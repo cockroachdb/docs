@@ -486,6 +486,18 @@ To view command commit latency:
 
 **Expected values for a healthy cluster**: On SSDs, this should be between 1 and 100 milliseconds.  On HDDs, this should be no more than 1 second.  Note that we [strongly recommend running CockroachDB on SSDs](recommended-production-settings.html#storage).
 
+## Check for under-replicated or unavailable data
+
+To see if any data is under-replicated or unavailable in your cluster, use the `system.replication_stats` report as described in [Replication Reports](query-replication-reports.html).
+
+## Check for replication zone constraint violations
+
+To see if any of your cluster's [data placement constraints](configure-replication-zones.html#replication-constraints) are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports](query-replication-reports.html).
+
+## Check for critical localities
+
+To see which of your [localities](cockroach-start.html#locality) (if any) are critical, use the `system.replication_critical_localities` report as described in [Replication Reports](query-replication-reports.html). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+
 ## Something else?
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:

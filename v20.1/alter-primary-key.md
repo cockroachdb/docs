@@ -12,11 +12,15 @@ toc: true
 
 - `ALTER PRIMARY KEY` might need to rewrite multiple indexes, which can make it an expensive operation.
 
--  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+-  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a [`UNIQUE`](unique.html) secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
 
-  {{site.data.alerts.callout_info}}
-  The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key) to change an existing primary key without creating a secondary index. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
-  {{site.data.alerts.end}}
+- `ALTER PRIMARY KEY` does not alter the [partitions](partitioning.html) on a table or its indexes, even if a partition is defined on [a column in the original primary key](partitioning.html#partition-using-primary-key). If you alter the primary key of a partitioned table, you must update the table partition accordingly.
+
+- The secondary index created by `ALTER PRIMARY KEY` will not be partitioned, even if a partition is defined on [a column in the original primary key](partitioning.html#partition-using-primary-key). To ensure that the table is partitioned correctly, you must create a partition on the secondary index, or drop the secondary index.
+
+{{site.data.alerts.callout_success}}
+To change an existing primary key without creating a secondary index from that primary key, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key). For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -144,7 +148,86 @@ The order of the primary key columns is important when geo-partitioning. For per
 
 Note that the old primary key index on `id` is now the secondary index `users_id_key`.
 
-With the primary key now on `region` and `id`, the table is ready to be [geo-partitioned](topology-geo-partitioned-replicas.html).
+With the new primary key on `region` and `id`, the table is ready to be [geo-partitioned](topology-geo-partitioned-replicas.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users PARTITION BY LIST (region) (
+    PARTITION us_west VALUES IN ('us_west'),
+    PARTITION us_east VALUES IN ('us_east')
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER PARTITION us_west OF INDEX users@primary
+    CONFIGURE ZONE USING constraints = '[+region=us-west1]';
+  ALTER PARTITION us_east OF INDEX users@primary
+    CONFIGURE ZONE USING constraints = '[+region=us-east1]';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW PARTITIONS FROM TABLE users;
+~~~
+
+~~~
+  database_name | table_name | partition_name | parent_partition | column_names |  index_name   | partition_value |            zone_config             |          full_zone_config
+----------------+------------+----------------+------------------+--------------+---------------+-----------------+------------------------------------+--------------------------------------
+  movr          | users      | us_west        | NULL             | region       | users@primary | ('us_west')     | constraints = '[+region=us-west1]' | range_min_bytes = 134217728,
+                |            |                |                  |              |               |                 |                                    | range_max_bytes = 536870912,
+                |            |                |                  |              |               |                 |                                    | gc.ttlseconds = 90000,
+                |            |                |                  |              |               |                 |                                    | num_replicas = 3,
+                |            |                |                  |              |               |                 |                                    | constraints = '[+region=us-west1]',
+                |            |                |                  |              |               |                 |                                    | lease_preferences = '[]'
+  movr          | users      | us_east        | NULL             | region       | users@primary | ('us_east')     | constraints = '[+region=us-east1]' | range_min_bytes = 134217728,
+                |            |                |                  |              |               |                 |                                    | range_max_bytes = 536870912,
+                |            |                |                  |              |               |                 |                                    | gc.ttlseconds = 90000,
+                |            |                |                  |              |               |                 |                                    | num_replicas = 3,
+                |            |                |                  |              |               |                 |                                    | constraints = '[+region=us-east1]',
+                |            |                |                  |              |               |                 |                                    | lease_preferences = '[]'
+(2 rows)
+~~~
+
+The table is now geo-partitioned on the `region` column.
+
+You now need to geo-partition any secondary indexes in the table. In order to geo-partition an index, the index must be prefixed by a column that can be used as a partitioning identifier (in this case, `region`). Currently, neither of the secondary indexes (i.e., `users_id_key` and `users_name_idx`) are prefixed by the `region` column, so they can't be meaningfully geo-partitioned. Any secondary indexes that you want to keep must be dropped, recreated, and then partitioned.
+
+Start by dropping both indexes:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP INDEX users_id_key CASCADE;
+  DROP INDEX users_name_idx CASCADE;
+~~~
+
+You don't need to recreate the index on `id` with `region`. Both columns are already indexed by the new primary key.
+
+Add `region` to the index on `name`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX ON users(region, name);
+~~~
+
+Then geo-partition the index:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX users_region_name_idx PARTITION BY LIST (region) (
+    PARTITION us_west VALUES IN ('us_west'),
+    PARTITION us_east VALUES IN ('us_east')
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER PARTITION us_west OF INDEX users@users_region_name_idx
+    CONFIGURE ZONE USING constraints = '[+region=us-west1]';
+  ALTER PARTITION us_east OF INDEX users@users_region_name_idx
+    CONFIGURE ZONE USING constraints = '[+region=us-east1]';
+~~~
+
 
 ## See also
 

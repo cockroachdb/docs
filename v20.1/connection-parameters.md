@@ -43,6 +43,12 @@ A connection URL has the following format:
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
 
+<span class="version-tag">New in v20.1:</span> `cockroach` client commands also support [UNIX domain socket URIs](https://en.wikipedia.org/wiki/Unix_domain_socket) of the following form:
+
+~~~
+postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
+~~~
+
  Component      | Description                                                                                                                                                                                               | Required
 ----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------
  `<username>`   | The [SQL user](create-user.html) that will own the client session.                                                                                                                            | ✗
@@ -50,7 +56,9 @@ postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
  `<host>`       | The host name or address of a CockroachDB node or load balancer.                                                                                                                                          | Required by most client drivers.
  `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt.                                           | Required by most client drivers.
  `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`.                                                                                         | ✗
+ `<directory-path>` | <span class="version-tag">New in v20.1:</span> The directory path to the client listening for a socket connection.                                                                                             | Required when specifying a Unix domain socket URI.
  `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings.                                                                                            | ✗
+
 
 {{site.data.alerts.callout_info}}
 For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.
@@ -133,6 +141,16 @@ This uses the following components:
 For details about how to create and manage SSL/TLS certificates, see
 [Create Security Certificates](cockroach-cert.html) and
 [Rotate Certificates](rotate-certificates.html).
+
+### Example URI for a Unix domain socket
+
+<span class="version-tag">New in v20.1:</span> The following URI is suitable to connect to a CockroachDB cluster listening for Unix domain socket connections at `/path/to/client`:
+
+~~~
+postgres://root@?host=/path/to/client&port=26257
+~~~
+
+This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag](cockroach-start.html#networking)) at `/path/to/client`, and on port 26257.
 
 ## Connect using discrete parameters
 

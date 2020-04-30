@@ -35,7 +35,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - To optimize for throughput, use larger nodes, up to 32 vCPUs. Based on internal testing results, 32 vCPUs is the sweet spot for OLTP workloads. For RAM, aim for a ratio of 2 GB per vCPU.
 
-    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications.
+    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications.
 
 - To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
 

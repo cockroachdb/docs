@@ -63,6 +63,10 @@ Service latency is calculated as the time between when the cluster receives a qu
 
 If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL queries. In that case, re-examine queries to lower contention.
 
+Additionally, per-application average transaction times are displayed for each node, at the 90th and 99th percentiles.
+
+<img src="{{ 'images/v19.2/admin_ui_transaction_latency.png' | relative_url }}" alt="CockroachDB Admin UI Transaction Latencies" style="border:1px solid #eee;max-width:100%" />
+
 ## Other graphs
 
 The **SQL** dashboard shows other time series graphs that are important for CockroachDB developers:

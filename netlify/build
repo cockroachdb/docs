@@ -12,8 +12,8 @@ build _config_cockroachcloud.yml
 cp _site/docs/_redirects _site/_redirects
 cat _site/docs/cockroachcloud/_redirects >> _site/_redirects
 
-# Run Algolia
-# if [[ "$CONTEXT" = "production" ]]; then
+# Run Algolia if building master
+if [[ "$CONTEXT" = "production" ]]; then
 	echo "Building Algolia index..."
 	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml,_config_cockroachcloud.yml
-# fi;
+fi;

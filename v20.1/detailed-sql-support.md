@@ -486,7 +486,7 @@ To understand the extent to which we support the standard SQL features, use the 
 |  T241 | START TRANSACTION statement | Yes |
 |  T251 | SET TRANSACTION statement: LOCAL option | No |
 |  T261 | Chained transactions | No |
-|  T271 | Savepoints | No |
+|  T271 | Savepoints | Yes |
 |  T272 | Enhanced savepoint management | No |
 |  T281 | SELECT privilege with column granularity | No |
 |  T285 | Enhanced derived column names | No |
