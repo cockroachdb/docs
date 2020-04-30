@@ -22,7 +22,7 @@ The advanced options covered in this doc are included in [`BACKUP`](backup.html)
 
 ## Incremental backups with explicitly specified destinations
 
-To explicitly control where your incremental backups go, use the [`INCREMENTAL FROM`](backup.html) syntax:
+To explicitly control where your incremental backups go, use the [`INCREMENTAL FROM`](backup.html#synopsis) syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql

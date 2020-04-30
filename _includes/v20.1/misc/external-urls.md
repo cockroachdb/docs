@@ -17,6 +17,8 @@ The location parameters often contain special characters that need to be URI-enc
 
 {{site.data.alerts.callout_info}}
 If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB.
+
+<span class="version-tag">New in v20.1:</span> If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when performing bulk operations (e.g., `BACKUP`, `RESTORE`, etc.) by using the [`--external-io-disable-http` flag](cockroach-start.html#security). You can also disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>

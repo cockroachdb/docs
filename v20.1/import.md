@@ -856,7 +856,7 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 ### Import a table from a local file
 
-<span class="version-tag">New in v20.1:</span>If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
+If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
 
 ~~~
 $ cd node2
@@ -893,6 +893,8 @@ Then, specify which node to access by including the `nodeID` in the `IMPORT` sta
 CSV DATA ('nodelocal://2/customers.csv')
 ;
 ~~~
+
+<span class="version-tag">New in v20.1:</span> You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
 
 ### Import a table from an Avro file
 

@@ -18,6 +18,10 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+## Required privileges
+
+Only members of the `admin` role can run `RESTORE`. By default, the `root` user belongs to the `admin` role.
+
 ## Synopsis
 
 <div>
@@ -39,16 +43,6 @@ You can restore:
 The `RESTORE` statement cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
 
-## Required privileges
-
-Only members of the `admin` role can run `RESTORE`. By default, the `root` user belongs to the `admin` role.
-
-### Backup file URLs
-
-The URL for your backup's locations must use the following format:
-
-{% include {{ page.version.version }}/misc/external-urls.md %}
-
 ### Options
 
 You can include the following options as key-value pairs in the `kv_option_list` to control the restore process's behavior:
@@ -60,6 +54,12 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) | <span class="version-tag">New in v20.1:</span> The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) statement.
+
+### Backup file URLs
+
+The URL for your backup's locations must use the following format:
+
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ## Functional details
 
@@ -199,13 +199,17 @@ To restore multiple tables:
 > RESTORE FROM 'gs://acme-co-backup/test-cluster';
 ~~~
 
-To explicitly point to where your incremental backups are, use the `INCREMENTAL FROM` syntax. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you are restoring from HTTP storage, provide the previous full and incremental backup locations in a comma-separated list. You cannot use the simplified syntax.
+{{site.data.alerts.end}}
 
 ### Advanced examples
 
