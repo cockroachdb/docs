@@ -95,7 +95,7 @@ When upgrading from v19.2 to v20.1, certain features and performance improvement
 
 - **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to allow or disallow a user or role to create, alter, or drop other roles via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
-- **User-defined savepoints:** After finalization, it will be possible to use user-defined [`SAVEPOINT`s](savepoint.html) for nested transactions or for transaction retries in ORMs that require specific savepoint names. Previously, only the CockroachDB-defined `cockroach-restart` savepoint was supported.
+- **Nested transactions:** After finalization, it will be possible to create [nested transactions](transactions.html#nested-transactions) using [`SAVEPOINT`s](savepoint.html).
 
 - **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](../v20.1/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
 
