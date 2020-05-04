@@ -33,8 +33,8 @@ To create and manage your cluster's roles, use the following statements:
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
@@ -80,6 +80,12 @@ To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statem
 ~~~
 
 ## Example
+
+{{site.data.alerts.callout_info}}
+The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/). 
+
+Note that [`GRANT <roles>`](grant-roles.html) does not require an enterprise license.
+{{site.data.alerts.end}}
 
 For the purpose of this example, you need an [enterprise license](enterprise-licensing.html) and one CockroachDB node running in insecure mode:
 
@@ -296,7 +302,7 @@ $ cockroach start \
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)

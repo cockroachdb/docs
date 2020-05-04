@@ -36,7 +36,7 @@ For secure clusters, in addition to [generating the client certificate](authenti
 <span class="version-tag">New in v20.1</span> Role-based access management is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
-A role is a group of users for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
+A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 ### Create and manage roles
 

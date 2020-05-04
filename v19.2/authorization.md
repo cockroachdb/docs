@@ -30,7 +30,7 @@ The `root` user is created by default for each cluster. The `root` user is assig
 [`CREATE ROLE`](create-role.html) is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/).
 {{site.data.alerts.end}}
 
-A role is a group of users for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
+A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 {{site.data.alerts.callout_info}}
 PostgreSQL uses the term "role" to mean either a database user or a group of database users. CockroachDB, however, uses the term "user" to mean an individual database user and "role" to mean a group of database users.
