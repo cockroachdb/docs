@@ -6,8 +6,6 @@ toc: true
 
 The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a database.
 
-{{site.data.alerts.callout_info}}It is not possible to rename a database referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_danger}}
 Database renames **are not transactional**. For more information, see [Database renaming considerations](#database-renaming-considerations).
 {{site.data.alerts.end}}
@@ -30,6 +28,8 @@ Parameter | Description
 
 ## Database renaming considerations
 
+### Database renames are not transactional
+
 Database renames are not transactional. There are two phases during a rename:
 
 1. The `system.namespace` table is updated. This phase is transactional, and will be rolled back if the transaction aborts.
@@ -40,9 +40,16 @@ This yields a surprising and undesirable behavior: when run inside a [`BEGIN`](b
 
 This is a [known limitation](known-limitations.html#database-and-table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
+### Other limitations
+
+It is not possible to rename a database if:
+
+- The database is referenced by a [view](views.html). For more details, see [View Dependencies](views.html#view-dependencies).
+- The database is explicitly specified in a reference to a [sequence](create-sequence.html). In this case, you can drop the column in the table that references the sequence, or you can modify the reference so that it does not specify the database name.
+
 ## Examples
 
-### Rename a Database
+### Rename a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
