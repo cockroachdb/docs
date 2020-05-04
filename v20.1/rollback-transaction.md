@@ -38,6 +38,10 @@ No [privileges](authorization.html#assign-privileges) are required to rollback a
 
 {% include {{page.version.version}}/sql/savepoints-and-row-locks.md %}
 
+## Savepoints and high priority transactions
+
+{% include {{page.version.version}}/sql/savepoints-and-high-priority-transactions.md %}
+
 ## Examples
 
 ### Rollback a transaction
