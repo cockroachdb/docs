@@ -8,7 +8,7 @@ redirect_from: create-and-manage-users.html
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.1</span>: Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
+<span class="version-tag">New in v20.1</span>: Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
 {{site.data.alerts.end}}
 
 ## SQL users
@@ -36,7 +36,7 @@ For secure clusters, in addition to [generating the client certificate](authenti
 <span class="version-tag">New in v20.1</span> Role-based access management is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
-Roles enable you to group users and other roles and grant or revoke privileges to the group as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
+A role is a group of users for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 ### Create and manage roles
 
@@ -93,7 +93,7 @@ When a user connects to a database, either via the built-in SQL client or a clie
 
 ### Assign privileges
 
-Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) to manage privileges for users and roles.
+Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage privileges for users and roles.
 
 Take the following points into consideration while granting privileges to roles and users:
 
@@ -123,7 +123,7 @@ You can manage the following privileges for databases and tables:
 
 We recommend the following best practices to set up access control for your clusters:
 
-- Use the `root` user only for database administration tasks such as creating and managing other users, creating and managing roles, and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific privileges based on your application’s access requirements.
+- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
 - Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
 
 ## Example
@@ -135,7 +135,7 @@ We recommend the following best practices to set up access control for your clus
 
 <section class="filter-content" markdown="1" data-scope="users">
 
-The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB [SQL statements](sql-statements.html). For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
 
 Let's say we want to create the following access control setup for the `movr` database:
 

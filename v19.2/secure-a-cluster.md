@@ -243,23 +243,14 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-5. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need in a later to access the Admin UI:
+5. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need to [access the Admin UI](#step-5-access-the-admin-ui):
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE USER max WITH PASSWORD 'roach';
     ~~~
 
-6. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
-
-    Assign `max` to the `admin` role:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > GRANT admin TO max;
-    ~~~
-
-7. Exit the SQL shell on node 2:
+6. Exit the SQL shell on node 2:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -299,13 +290,36 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
+
+    Run the [`cockroach sql`](cockroach-sql.html) command against node 1:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --host=localhost:26257
+    ~~~
+
+2.  Assign `max` to the `admin` role (you only need to do this once):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT admin TO max;
+    ~~~
+
+3. Exit the SQL shell:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+
+4. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
     {% include {{ page.version.version }}/misc/chrome-localhost.md %}
 
-2. Log in with the username and password you created earlier (`max`/`roach`).
+5. Log in with the username and password you created earlier (`max`/`roach`).
 
-3. On the [**Cluster Overview**](admin-ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+6. On the [**Cluster Overview**](admin-ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v19.2/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -315,11 +329,11 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
     {{site.data.alerts.end}}
 
-4. Click [**Metrics**](admin-ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+7. Click [**Metrics**](admin-ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v19.2/admin_ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-5. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+8. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6. Simulate node failure
 
