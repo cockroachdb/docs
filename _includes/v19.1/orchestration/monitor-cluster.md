@@ -4,7 +4,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
 
-    Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+    Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

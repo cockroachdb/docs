@@ -231,7 +231,7 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
 
-    Run the [`cockroach sql`](cockroach-sql.html) command against node 1:
+    Run the [`cockroach sql`](use-the-built-in-sql-client.html) command against node 1:
 
     {% include copy-clipboard.html %}
     ~~~ shell
