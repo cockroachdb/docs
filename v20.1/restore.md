@@ -199,13 +199,17 @@ To restore multiple tables:
 > RESTORE FROM 'gs://acme-co-backup/test-cluster';
 ~~~
 
-To explicitly point to where your incremental backups are, use the `INCREMENTAL FROM` syntax. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you are restoring from HTTP storage, provide the previous full and incremental backup locations in a comma-separated list. You cannot use the simplified syntax.
+{{site.data.alerts.end}}
 
 ### Advanced examples
 

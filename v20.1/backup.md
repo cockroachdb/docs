@@ -203,12 +203,12 @@ AS OF SYSTEM TIME '-10s';
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster' \
-AS OF SYSTEM TIME '-10s' WITH revision_history;
+AS OF SYSTEM TIME '-10s';
 ~~~
 
-This example shows incremental backups [with revision history](#with-revision-history).
-
-For an example on how to control where your incremental backup goes, see [Incremental backups with explicitly specified destinations](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations).
+{{site.data.alerts.callout_info}}
+This incremental backup syntax does not work for backups using HTTP storage; you must [explicitly control where your incremental backups go](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations) by using the [`INCREMENTAL FROM` syntax](#synopsis).
+{{site.data.alerts.end}}
 
 ### Advanced examples
 
