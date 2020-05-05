@@ -68,34 +68,22 @@ For a simple but complete "Hello World" example app, see [Build a Python App wit
 
 **Support level:** Full
 
-To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb):
+CockroachDB supports Django versions 2.2 and 3.0.
+
+To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb) for Python 3:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django
+$ python3 -m pip install django==3.0.*
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb
+$ python3 -m pip install django-cockroachdb==3.0.*
 ~~~
-
-These commands download and install the latest stable minor release of `django` and `django-cockroachdb`. At the time of writing this tutorial, the latest stable minor release of each module was 3.0.
 
 {{site.data.alerts.callout_info}}
 The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
-
-For example, if you install the latest minor release of `django` 2:
-
-~~~ shell
-$ python3 -m pip install django==2.*
-~~~
-
-You can also install the latest minor release of `django-cockroachdb` 2:
-
-~~~ sql
-python3 -m pip install django-cockroachdb==2.**
-~~~
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
