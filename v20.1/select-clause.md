@@ -38,9 +38,9 @@ Parameter | Description
 `DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions](scalar-expressions.html) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
 `target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row, or `*` to automatically retrieve all columns from the `FROM` clause.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
-`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
-`GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`.
+`GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function](functions-and-operators.html#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br><span class="version-tag">New in v20.1:</span> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br><span class="version-tag">New in v20.1:</span> If a selected column is in a [subquery](subqueries.html), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
 `WINDOW window_definition_list` | A list of [window definitions](window-functions.html#window-definitions).
 
@@ -352,7 +352,7 @@ You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter
 
 Instead of performing aggregate functions on an the entire set of retrieved rows, you can split the rows into groups and then perform the aggregate function on each of them.
 
-When creating aggregate groups, each column used as a `target_elem` must be included in `GROUP BY`.
+When creating aggregate groups, each column selected as a `target_elem` must be included in a `GROUP BY` clause.
 
 For example:
 
@@ -370,6 +370,10 @@ WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
   seattle  |      2029.00
 (3 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1:</span> If the group is created on a primary key column, any column in the table can be selected as a `target_elem`. If a selected column is in a [subquery](subqueries.html) that references a higher scope, a `GROUP BY` clause is not needed.
+{{site.data.alerts.end}}
 
 #### Filter aggregate groups
 
