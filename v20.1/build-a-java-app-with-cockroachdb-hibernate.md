@@ -14,6 +14,8 @@ twitter: false
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
 {{site.data.alerts.callout_success}}
+For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA](build-a-spring-app-with-cockroachdb-jpa.html).
+
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 

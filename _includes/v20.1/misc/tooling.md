@@ -38,7 +38,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Framework | Data access | Recommended version | Support level |
 |-----------+-------------+---------------------+---------------|
-| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>JPA (Hibernate)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
+| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
 
 ## Graphical user interfaces (GUIs)
 
