@@ -40,7 +40,7 @@ Parameter | Description
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
 `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br />**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
-`GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`.
+`GROUP BY a_expr` | When using [aggregate functions](functions-and-operators.html#aggregate-functions) in `target_elem` or `HAVING`, list the column groupings after `GROUP BY`.<br><span class="version-tag">New in v20.1:</span> If a selected column is in a [subquery](subqueries.html) that references a higher scope, a `GROUP BY` clause is not needed.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
 `WINDOW window_definition_list` | A list of [window definitions](window-functions.html#window-definitions).
 
@@ -370,6 +370,10 @@ WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
   seattle  |      2029.00
 (3 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1:</span> If a selected column is in a [subquery](subqueries.html) that references a higher scope, a `GROUP BY` clause is not needed.
+{{site.data.alerts.end}}
 
 #### Filter aggregate groups
 
