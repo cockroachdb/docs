@@ -109,9 +109,11 @@ The primary key discussed above has two drawbacks:
 - It does not enforce that the identifier column is globally unique.
 - It does not provide fast lookups on the identifier.
 
-To ensure uniqueness or fast lookups, create a unique, unpartitioned secondary index on the identifier.
+To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) on the identifier.
 
-Indexes can also be partitioned, but are not required to be.
+Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
+
+<span class="version-tag">New in v20.1:</span> When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
 #### Define partitions on interleaved tables
 
