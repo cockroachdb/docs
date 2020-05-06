@@ -7,7 +7,7 @@ build_for: [cockroachcloud]
 
 This page describes the upgrade policy for CockroachCloud.
 
-CockroachCloud supports the [latest major version](https://www.cockroachlabs.com/docs/stable/) of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
+CockroachCloud supports the [latest major version](https://www.cockroachlabs.com/docs/) of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
 ## Minor version upgrades
 [Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2).
