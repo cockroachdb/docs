@@ -22,14 +22,14 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 When you start the upgrade, it happens one node at a time without interrupting the cluster's overall health and availability. This "rolling upgrade" approach is possible due to CockroachDB's [multi-active availability](multi-active-availability.html) design.
 
-Approximately 24 hours after all nodes are running v20.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after all nodes are running v20.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 When you start the upgrade, the cluster will be briefly unavailable while the node is stopped and restarted with v20.1.
 
-Approximately 24 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 
@@ -103,7 +103,7 @@ As mentioned earlier, your single-node cluster will be briefly unavailable while
 
 ## Step 5. Monitor the upgrade
 
-Once your cluster is running v20.1, you will have approximately 24 hours before the upgrade is automatically finalized. During this time, it is important to monitor your application and respect temporary limitations.
+Once your cluster is running v20.1, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to monitor your application and respect temporary limitations.
 
 ### Monitor your application
 
