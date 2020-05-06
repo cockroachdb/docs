@@ -21,6 +21,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
   <button class="filter-button page-level" data-scope="clojure">Clojure</button>
   <button class="filter-button page-level" data-scope="php">PHP</button>
+  <button class="filter-button page-level" data-scope="rust">Rust</button>
   <button class="filter-button page-level" data-scope="typescript">TypeScript</button>
 </div>
 
@@ -425,6 +426,20 @@ For a simple but complete "Hello World" example app, see [Build a Closure App wi
 Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
 
 For a simple but complete "Hello World" example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="rust">
+
+## Drivers
+
+### postgres
+
+**Support level:** Beta
+
+Install the Rust Postgres driver as described in the [official documentation](https://crates.io/crates/postgres/).
+
+For a simple but complete "Hello World" example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
 
 </section>
 
