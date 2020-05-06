@@ -428,6 +428,20 @@ For a simple but complete "Hello World" example app, see [Build a PHP App with C
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="rust">
+
+## Drivers
+
+### postgres
+
+**Support level:** Beta
+
+Install the Rust Postgres driver as described in the [official documentation](https://crates.io/crates/postgres/).
+
+For a simple but complete "Hello World" example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
+
+</section>
+
 <section class="filter-content" markdown="1" data-scope="typescript">
 
 ## ORMs

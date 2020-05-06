@@ -13,11 +13,13 @@ We have tested the <a href="https://crates.io/crates/postgres/" data-proofer-ign
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-## Step 1. Install the Rust Postgres driver
-
-Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
-
 <section class="filter-content" markdown="1" data-scope="secure">
+
+## Step 1. Specify the Rust Postgres driver as a dependency
+
+Update your `Cargo.toml` file to specify a dependency on the Rust Postgres driver, as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+
+Additionally, include the <a href="https://crates.io/crates/openssl" data-proofer-ignore>OpenSSL bindings</a> and <a href="https://crates.io/crates/postgres-openssl/" data-proofer-ignore>Rust Postgres OpenSSL</a> crates as dependencies.
 
 ## Step 2. Create the `maxroach` users and `bank` database
 
@@ -82,6 +84,10 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
+
+## Step 1. Specify the Rust Postgres driver as a dependency
+
+Update your `Cargo.toml` file to specify a dependency on the Rust Postgres driver, as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
 ## Step 2. Create the `maxroach` users and `bank` database
 
