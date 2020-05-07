@@ -6,8 +6,6 @@ toc: true
 
 The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a database.
 
-{{site.data.alerts.callout_info}}It is not possible to rename a database referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_danger}}
 Database renames **are not transactional**. For more information, see [Database renaming considerations](#database-renaming-considerations).
 {{site.data.alerts.end}}
@@ -30,6 +28,8 @@ Parameter | Description
 
 ## Database renaming considerations
 
+### Database renames are not transactional
+
 Database renames are not transactional. There are two phases during a rename:
 
 1. The `system.namespace` table is updated. This phase is transactional, and will be rolled back if the transaction aborts.
@@ -40,9 +40,67 @@ This yields a surprising and undesirable behavior: when run inside a [`BEGIN`](b
 
 This is a [known limitation](known-limitations.html#database-and-table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
+### Other limitations
+
+It is not possible to rename a database if:
+
+- The database is referenced by a [view](views.html). For more details, see [View Dependencies](views.html#view-dependencies).
+- The database is explicitly specified in a reference to a [sequence](create-sequence.html). In this case, you can drop the column in the table that references the sequence, or you can modify the reference so that it does not specify the database name.
+
+    For example, suppose you create a database `db`, and in that database, a sequence `seq`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE db;
+      USE db;
+      CREATE SEQUENCE seq;
+    ~~~
+
+    Then you reference the sequence in a table `tab`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE tab (
+      id UUID DEFAULT gen_random_uuid(),
+      count INT DEFAULT nextval('db.seq')
+    );
+    ~~~
+
+    Attempting to rename the database will result in an error:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET sql_safe_updates=false;
+      ALTER DATABASE db RENAME TO mydb;
+    ~~~
+
+    ~~~
+    ERROR: cannot rename database because relation "db.public.tab" depends on relation "db.public.seq"
+    SQLSTATE: 2BP01
+    HINT: you can drop the column default "count" of "db.public.seq" referencing "db.public.tab" or modify the default to not reference the database name "db"
+    ~~~
+
+    In order to rename the database `db`, you need to drop or change the reference in the default value for the `seq` column to not explicitly name the database `db`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE tab ALTER COLUMN count SET DEFAULT nextval('seq');
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > USE defaultdb;
+      ALTER DATABASE db RENAME TO mydb;
+    ~~~
+
 ## Examples
 
-### Rename a Database
+### Rename a database
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE db1;
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -50,21 +108,19 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 ~~~
 
 ~~~
-+---------------+
-| database_name |
-+---------------+
-| db1           |
-| db2           |
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
+  database_name
+-----------------
+  db1
+  defaultdb
+  movr
+  postgres
+  system
 (5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER DATABASE db1 RENAME TO db3;
+> ALTER DATABASE db1 RENAME TO db2;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -73,15 +129,13 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 ~~~
 
 ~~~
-+---------------+
-| database_name |
-+---------------+
-| db2           |
-| db3           |
-| defaultdb     |
-| postgres      |
-| system        |
-+---------------+
+  database_name
+-----------------
+  db2
+  defaultdb
+  movr
+  postgres
+  system
 (5 rows)
 ~~~
 
@@ -89,11 +143,12 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER DATABASE db2 RENAME TO db3;
+> ALTER DATABASE db2 RENAME TO movr;
 ~~~
 
 ~~~
-pq: the new database name "db3" already exists
+ERROR: the new database name "movr" already exists
+SQLSTATE: 42P04
 ~~~
 
 ## See also
