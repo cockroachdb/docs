@@ -63,22 +63,16 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`](de
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| a           | INT       |    false    | NULL           |                       | {"primary"} |
-| b           | SMALLINT  |    true     | NULL           |                       | {}          |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-(3 rows)
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8      |    false    | NULL           |                       | {primary} |   false
+  b           | INT2      |    true     | NULL           |                       | {}        |   false
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ints VALUES (1, 32);
-~~~
-
-~~~
-INSERT 1
 ~~~
 
 {% include copy-clipboard.html %}
@@ -87,11 +81,9 @@ INSERT 1
 ~~~
 
 ~~~
-+---+----+
-| a | b  |
-+---+----+
-| 1 | 32 |
-+---+----+
+  a | b
+----+-----
+  1 | 32
 (1 row)
 ~~~
 

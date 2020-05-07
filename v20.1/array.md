@@ -241,6 +241,39 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 (1 row)
 ~~~
 
+### Implicit casting to `INT` and `DECIMAL` `ARRAY`s
+
+<span class="version-tag">New in v20.1:</span> CockroachDB supports implicit casting from string literals to [`INT`](int.html) and [`DECIMAL`](decimal.html) `ARRAY`s, where appropriate.
+
+For example, if you create a table with a column of type `INT[]`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE x (a UUID DEFAULT gen_random_uuid() PRIMARY KEY, b INT[]);
+~~~
+
+And then insert a string containing a comma-delimited set of integers contained in brackets:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO x(b) VALUES ('{1,2,3}'), (ARRAY[4,5,6]);
+~~~
+
+CockroachDB implicitly casts the string literal as an `INT[]`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM x;
+~~~
+
+~~~
+                   a                   |    b
+---------------------------------------+----------
+  2ec0ed91-8a82-4f2e-888e-ae86ece4fc60 | {4,5,6}
+  a521d6e9-3a2a-490d-968c-1365cace038a | {1,2,3}
+(2 rows)
+~~~
+
 ## See also
 
 [Data Types](data-types.html)
