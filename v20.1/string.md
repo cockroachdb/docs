@@ -165,4 +165,5 @@ A literal entered through a SQL client will be translated into a different value
 
 ## See also
 
-[Data Types](data-types.html)
+- [Data Types](data-types.html)
+- [String literal syntax](sql-constants.html#string-literals)
