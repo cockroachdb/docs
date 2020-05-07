@@ -4,10 +4,41 @@ summary: The SHOW CLUSTER SETTING statement displays the current cluster setting
 toc: true
 ---
 
-The `SHOW CLUSTER SETTING` [statement](sql-statements.html) can
-display the value of either one or all of the
-[cluster settings](cluster-settings.html). These can also be configured
-via [`SET CLUSTER SETTING`](set-cluster-setting.html).
+The `SHOW CLUSTER SETTING` [statement](sql-statements.html) displays the values of [cluster settings](cluster-settings.html).
+
+To configure cluster settings, use [`SET CLUSTER SETTING`](set-cluster-setting.html).
+
+{{site.data.alerts.callout_info}}
+The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
+{{site.data.alerts.end}}
+
+## Details
+
+- To display the value of a specific cluster setting, use the following syntax:
+
+    ~~~ sql
+    SHOW CLUSTER SETTING <setting>;
+    ~~~
+
+- To display the values of *public* cluster settings (i.e., cluster settings that are documented and for which tuning is supported), use one of the following:
+
+    ~~~ sql
+    SHOW CLUSTER SETTINGS;
+    ~~~
+    ~~~ sql
+    SHOW PUBLIC CLUSTER SETTINGS;
+    ~~~
+
+- <span class="version-tag">New in v20.1:</span> To display the values of all cluster settings use one of the following:
+
+    ~~~ sql
+    SHOW ALL CLUSTER SETTINGS;
+    ~~~
+    ~~~ sql
+    SHOW CLUSTER SETTING ALL;
+    ~~~
+
+    When you display all cluster settings, the table output includes a `public` column that denotes whether a setting is public or not.
 
 ## Required privileges
 
@@ -19,17 +50,29 @@ Only members of the `admin` role can display cluster settings. By default, the `
   {% include {{ page.version.version }}/sql/diagrams/show_cluster_setting.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SHOW</code> statement for cluster settings is unrelated to the other <code>SHOW</code> statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
-
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`any_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive).
+`var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive).
+`ALL` | Display all cluster settings.
+`PUBLIC` | Display only the public cluster settings.<br>By default, only public settings are listed by `SHOW CLUSTER SETTINGS`. `SHOW PUBLIC CLUSTER SETTINGS` and `SHOW CLUSTER SETTINGS` are equivalent.
+
+## Response
+
+When you query multiple cluster settings (e.g., with `SHOW CLUSTER SETTINGS`, or with `SHOW ALL CLUSTER SETTINGS`), the following fields are returned:
+
+Field | Description
+------|------------
+`variable` | The name of the cluster setting.
+`value` | The value of the cluster setting.
+`setting_type` | The type of the cluster setting.<br>Possible values for `setting_type` include:<ul><li>`b` (`true` or `false`)</li><li>`z` (size, in bytes)</li><li>`d` (duration)</li><li>`e` (one of a set of possible values)</li><li>`f` (floating-point value)</li><li>`i` (integer)</li><li>`s` (string)</li></ul>
+`description` | A brief description of the cluster setting, including possible values.
+`public` | `true` if the cluster setting is public.<br>This field is only included only if all cluster settings are displayed.
 
 ## Examples
 
-### Showing the value of a single cluster setting
+### Show the value of a single cluster setting
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -43,7 +86,23 @@ Parameter | Description
 (1 row)
 ~~~
 
-### Showing the value of all cluster settings
+### Show the values of all public cluster settings
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTINGS;
+~~~
+
+~~~
+              variable              |     value      | setting_type |                                                   description
+------------------------------------+----------------+--------------+-------------------------------------------------------------------------------------------------------------------
+  cloudstorage.gs.default.key       |                | s            | if set, JSON key to use during Google Cloud Storage operations
+  cloudstorage.http.custom_ca       |                | s            | custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage
+  cloudstorage.timeout              | 10m0s          | d            | the timeout for import/export storage operations
+  ...
+~~~
+
+### Show the values of all cluster settings
 
 {% include copy-clipboard.html %}
 ~~~ sql
