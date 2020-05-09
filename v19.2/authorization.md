@@ -22,6 +22,7 @@ By default, a new user belongs to the `public` role and has no privileges other 
 {{site.data.alerts.end}}
 
 ### `root` user
+
 The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
 
 ## Roles
@@ -52,12 +53,21 @@ Statement | Description
 [`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
 
 ### Default roles
+
 The `admin` and `public` roles exist by default for Core as well as Enterprise clusters.
 
 #### `admin` role
+
 The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
 An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](create-role.html) and [`DROP ROLE`](drop-role.html).
+
+To assign a user to the `admin` role:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT admin TO <username>;
+~~~
 
 #### `public` role
 
