@@ -75,6 +75,32 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ## Unresolved limitations
 
+### Filtering by `now()` results in a full table scan
+
+When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain the selected index. This results in a full table scan. For example:
+
+~~~ sql
+> CREATE TABLE bydate (a TIMESTAMP NOT NULL);
+~~~
+
+~~~ sql
+> EXPLAIN SELECT * FROM bydate WHERE a > (now() - '1h':::interval);
+~~~
+
+~~~
+  tree |    field    |       description
+-------+-------------+---------------------------
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | bydate@primary
+       | spans       | FULL SCAN
+       | filter      | a > (now() - '01:00:00')
+(6 rows)
+~~~
+
+As a workaround, pass the correct date into the query as a parameter to a prepared query with a placeholder, which will allow the optimizer to constrain the index correctly.
+
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
