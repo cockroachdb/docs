@@ -31,6 +31,7 @@ There will be a one-time extension of Assistance Support for v2.1 to **July 1, 2
 
 |Version | Release Date | Maintenance Support ends | Assistance Support ends (EOL Date)
 |--------|---------|-----------|-----------
+|[v20.1](v20.1.0.html) |5/12/20 |5/12/21 |11/12/21
 |[v19.2](v19.2.0.html) |11/12/19 |11/12/20 |5/12/21
 |[v19.1](v19.1.0.html) |4/30/19 |4/30/20 |11/1/20
 |[v2.1](v2.1.0.html) |11/19/18 |11/19/19  |7/1/20
