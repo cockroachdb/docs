@@ -14,8 +14,10 @@
     >
       <span class="version-nav__link-text version-nav__link-text--managed"></span>
     </a>
-    {% if page.version %}
-      {% include version-switcher.html %}
-    {% endif %}
+    {% unless site.cockroachcloud %}
+      {% if page.version %}
+        {% include version-switcher.html %}
+      {% endif %}
+    {% endunless %}
   </div>
 </div>
