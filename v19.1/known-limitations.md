@@ -193,16 +193,6 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 {% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
-### Silent validation error with `DECIMAL` values
-
-Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:
-
-1. A query uses placeholders (e.g., `$1`) to pass values to the server.
-2. A value of type [`DECIMAL`](decimal.html) is passed.
-3. The decimal value is encoded using the binary format.
-
-Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
-
 ### Import with a high amount of disk contention
 
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
