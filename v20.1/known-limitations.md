@@ -75,6 +75,7 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ## Unresolved limitations
 
+
 ### Filtering by `now()` results in a full table scan
 
 When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain an index on the filtered timestamp column. This results in a full table scan. For example:
@@ -276,6 +277,10 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 ### Dumping a table with no user-visible columns
 
 {% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
+
+### Dumping a table with collations
+
+{% include {{page.version.version}}/known-limitations/dump-table-with-collations.md %}
 
 ### Import with a high amount of disk contention
 
