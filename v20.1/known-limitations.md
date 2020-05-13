@@ -8,6 +8,14 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Primary key changes and zone configs
+
+When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
+
+As a workaround, recreate the zone configurations after changing the table's primary key.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/48254)
+
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
 Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:   
