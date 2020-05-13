@@ -75,6 +75,22 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ## Unresolved limitations
 
+### Subqueries in `SET` statements
+
+It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET application_name = (SELECT 'a' || 'b');
+~~~
+
+~~~
+ERROR: invalid value for parameter "application_name": "(SELECT 'a' || 'b')"
+SQLSTATE: 22023
+DETAIL: subqueries are not allowed in SET
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
 ### Filtering by `now()` results in a full table scan
 

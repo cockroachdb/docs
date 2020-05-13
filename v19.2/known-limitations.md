@@ -31,6 +31,27 @@ pq: check constraint violated
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
+### Subqueries in `SET` statements
+
+It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET application_name = (SELECT 'a' || 'b');
+~~~
+
+~~~
+*
+* ERROR: [n1,client=127.0.0.1:53279,user=root] Reported as error fab91916eda440cb9d85b4b91d49d3b1
+*
+*
+* ERROR: [n1,client=127.0.0.1:53279,user=root] Reported as error 271c8808b0e64bde95ba7e853fda9eb7
+*
+pq: internal error: invalid index 1 for "(SELECT 'ab')"
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
+
 ## Unresolved limitations
 
 ### Filtering by `now()` results in a full table scan
