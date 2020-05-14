@@ -229,6 +229,8 @@ This error indicates that the machine running the CockroachDB node is missing th
 
 To resolve this issue, install the `tzdata` library and keep it up-to-date. It's important for all nodes to have the same version, so when updating the library, do so as quickly as possible across all nodes.
 
+On Windows, even with this library installed, location-based time zone names may not resolve. For more details and workaround steps, see this [known limitation](known-limitations.html#location-based-time-zone-names-on-windows).
+
 For details about other libraries the CockroachDB binary for Linux depends on, see [Dependencies](recommended-production-settings.html#dependencies).
 
 ## Something else?

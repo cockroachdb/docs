@@ -57,6 +57,10 @@ This command starts a node in insecure mode, accepting most [`cockroach start`](
 - Node data is stored in the `cockroach-data` directory.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 
+{{site.data.alerts.callout_success}}
+If you get a time zone-related error when starting CockroachDB, see this <a href="common-errors.html#invalid-value-for-parameter-timezone">guidance</a>.
+{{site.data.alerts.end}}
+
 ## Step 2. Add nodes to the cluster
 
 At this point, your cluster is live and operational. With just one node, you can already connect a SQL client and start building out your database. In real deployments, however, you'll always want 3 or more nodes to take advantage of CockroachDB's [automatic replication](demo-data-replication.html), [rebalancing](demo-automatic-rebalancing.html), and [fault tolerance](demo-fault-tolerance-and-recovery.html) capabilities. This step helps you simulate a real deployment locally.

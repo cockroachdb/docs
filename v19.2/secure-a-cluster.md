@@ -101,6 +101,10 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     *
     ~~~
 
+    {{site.data.alerts.callout_success}}
+    If you get a time zone-related error when starting CockroachDB, see this <a href="common-errors.html#invalid-value-for-parameter-timezone">guidance</a>.
+    {{site.data.alerts.end}}
+
 2. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
     - The `--certs-dir` directory points to the directory holding certificates and keys.
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the Admin UI.

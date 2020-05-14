@@ -233,7 +233,7 @@ Library | Description
 -----------|------------
 [`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
 `libncurses` | Required by the [built-in SQL shell](cockroach-sql.html).
-[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br>When running CockroachDB on a Windows machine, install the Go toolchain to ensure that location-based time zone names resolve successfully. For more details, see this [known limitation](known-limitations.html#location-based-time-zone-names-on-windows).
+[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br>On Windows, even with this library installed, location-based time zone names may not resolve. For more details and workaround steps, see this [known limitation](known-limitations.html#location-based-time-zone-names-on-windows).
 
 These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date. For the `tzdata` library in particular, it's important for all nodes to have the same version; when updating the library, do so as quickly as possible across all nodes.
 

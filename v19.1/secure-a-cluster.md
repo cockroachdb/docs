@@ -16,7 +16,6 @@ Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple t
 Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html).
 {{site.data.alerts.end}}
 
-
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
@@ -104,6 +103,10 @@ This command starts a node in secure mode, accepting most [`cockroach start`](st
 - Since this is a purely local cluster, `--listen-addr=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 - Node data is stored in the `cockroach-data` directory.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
+
+{{site.data.alerts.callout_success}}
+If you get a time zone-related error when starting CockroachDB, see this <a href="common-errors.html#invalid-value-for-parameter-timezone">guidance</a>.
+{{site.data.alerts.end}}
 
 ## Step 3. Add nodes to the cluster
 
