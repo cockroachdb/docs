@@ -40,7 +40,7 @@ Parameter | Description
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
 `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 `WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
-`GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function](functions-and-operators.html#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br><span class="version-tag">New in v20.1:</span> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br><span class="version-tag">New in v20.1:</span> If a selected column is in a [subquery](subqueries.html), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
+`GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function](functions-and-operators.html#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br><span class="version-tag">New in v20.1:</span> You can group columns by an alias (i.e., a label assigned to the column with an `AS` clause) rather than the column name.<br><span class="version-tag">New in v20.1:</span> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br><span class="version-tag">New in v20.1:</span> If a selected column is in a [subquery](subqueries.html), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
 `WINDOW window_definition_list` | A list of [window definitions](window-functions.html#window-definitions).
 
@@ -486,6 +486,29 @@ If you include multiple aggregate functions in a single `SELECT` clause, you can
   seattle       | {91.00,99.00}                               | {91.00,99.00}
   washington dc | {93.00,94.00,96.00,96.00,97.00,97.00}       | {96.00,94.00,97.00,96.00,97.00,93.00}
 (12 rows)
+~~~
+
+### Group by an alias
+
+<span class="version-tag">New in v20.1:</span> If a query includes an alias (i.e., a [label assigned to the column with an `AS` clause](#rename-columns-in-output)), you can group the aggregations in the query by the alias rather than by the column name. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT city AS c, SUM(revenue) AS c_rev FROM rides GROUP BY c;
+~~~
+~~~
+        c       |  c_rev
+----------------+----------
+  amsterdam     | 2966.00
+  boston        | 3019.00
+  los angeles   | 2772.00
+  new york      | 2923.00
+  paris         | 2849.00
+  rome          | 2653.00
+  san francisco | 2857.00
+  seattle       | 2792.00
+  washington dc | 2797.00
+(9 rows)
 ~~~
 
 ### Select from a specific index
