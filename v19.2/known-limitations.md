@@ -137,11 +137,15 @@ Before increasing this value, however, verify that you will not end up saturatin
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
 
-### Location-based time zone names on Windows
+### Location-based time zone names
 
-Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
+When the machine running a CockroachDB node is missing time zone data, the node will be unable to resolve location-based time zone names.
 
-To work around this limitation, install the Go toolchain on the Windows machines running CockroachDB nodes. In this case, the CockroachDB nodes will use the timezone data from that toolchain.
+To resolve this issue on Linux, install the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`).
+
+To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://github.com/golang/go/raw/master/lib/time/zoneinfo.zip) and set the `ZONEINFO` environment variable to point to the zip file. For step-by-step guidance on setting environment variables on Windows, see this [external article](https://www.techjunkie.com/environment-variables-windows-10/).
+
+Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
 

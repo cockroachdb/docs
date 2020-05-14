@@ -19,7 +19,6 @@ This page helps you understand and resolve error messages written to `stderr` or
 | Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   |
 | Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       |
 | Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   |
-| Time zone data                         | [`invalid value for parameter "TimeZone"`](#invalid-value-for-parameter-timezone)                                                                                                                                                               |
 
 ## connection refused
 
@@ -222,14 +221,6 @@ idempotent. If your transaction is not idempotent, then you should
 decide whether to retry or not based on whether it would be better for
 your application to apply the transaction twice or return an error to
 the user.
-
-## invalid value for parameter "TimeZone"
-
-This error indicates that the machine running the CockroachDB node is missing the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`), which is required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers.
-
-To resolve this issue, install the `tzdata` library and keep it up-to-date. It's important for all nodes to have the same version, so when updating the library, do so as quickly as possible across all nodes.
-
-For details about other libraries the CockroachDB binary for Linux depends on, see [Dependencies](recommended-production-settings.html#dependencies).
 
 ## Something else?
 

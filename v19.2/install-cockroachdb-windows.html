@@ -33,6 +33,9 @@ key: install-cockroachdb.html
       <div class="highlight"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-{{ page.release_info.version }}.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
     </li>
     <li>
+      <p>To ensure that CockroachDB can use location-based names as time zone identifiers, download Go's official <a href="https://github.com/golang/go/raw/master/lib/time/zoneinfo.zip">zoneinfo.zip</a> and <a href="https://www.techjunkie.com/environment-variables-windows-10/">set the <code>ZONEINFO</code> environment variable</a> to point to the zip file.</p>
+    </li>
+    <li>
       <p>Keep up-to-date with CockroachDB releases and best practices:</p>
       <div class="hubspot-install-form install-form-8 clearfix">
         <script>
