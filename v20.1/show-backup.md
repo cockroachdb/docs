@@ -27,7 +27,7 @@ Parameter | Description
 
 Option       | Value | Description
 -------------+-------+-----------------------------------------------------
-`privileges` | N/A   | <span class="version-tag">New in v20.1:</span> List which users and roles had which privileges on each database and table in the backup.
+`privileges` | N/A   | <span class="version-tag">New in v20.1:</span> List which users and roles had which privileges on each table in the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
 
 ## Response
