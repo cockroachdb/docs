@@ -21,6 +21,10 @@ We offer the following levels of support with third-party tools:
 
 - [Intellij IDEA (Java)](intellij-idea.html) _(partial support)_
 
+## Schema Migration Tools
+
+- [Flyway](flyway.html) _(comprehensive support)_
+
 ## See Also
 
 - [Build an App with CockroachDB](build-an-app-with-cockroachdb.html)

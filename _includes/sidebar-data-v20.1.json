@@ -2093,6 +2093,12 @@
             ]
           },
           {
+            "title": "Flyway",
+            "urls": [
+              "/${VERSION}/flyway.html"
+            ]
+          },
+          {
             "title": "IntelliJ IDEA",
             "urls": [
               "/${VERSION}/intellij-idea.html"
