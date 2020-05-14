@@ -6,8 +6,7 @@ toc: true
 
 <span class="version-tag">New in v20.1:</span> The `cockroach nodelocal upload` [command](cockroach-commands.html) uploads a file to the external IO directory on a node's (the gateway node, by default) local file system.
 
-This command takes in a source file to upload and a destination filename. It will
-then use a SQL connection to upload the file to the node's local file system, at `externalIODir/destination/filename`.
+This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the node's local file system, at `externalIODir/destination/filename`.
 
 {{site.data.alerts.callout_info}}
 The source file is only uploaded to one node, not all of the nodes.
