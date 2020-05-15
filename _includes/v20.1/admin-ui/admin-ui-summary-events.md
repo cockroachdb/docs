@@ -8,8 +8,8 @@ A **Summary** panel of key metrics is displayed to the right of the timeseries g
 
 Metric | Description
 --------|----
-Total Nodes | The total number of nodes in the cluster. [Decommissioned nodes](remove-nodes.html) are not included in this count.
-Capacity Used | The storage capacity used as a percentage of [usable capacity](admin-ui-cluster-overview-page.html#capacity-metrics) allocated across all nodes.
+Total Nodes | The total number of nodes in the cluster. [Decommissioned nodes](../remove-nodes.html) are not included in this count.
+Capacity Used | The storage capacity used as a percentage of [usable capacity](../admin-ui-cluster-overview-page.html#capacity-metrics) allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second across the cluster.
 P99 Latency | The 99th percentile of service latency.
