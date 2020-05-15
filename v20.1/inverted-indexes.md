@@ -1,17 +1,21 @@
 ---
 title: Inverted Indexes
-summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data in a JSONB column.
+summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate data in JSONB or ARRAY columns.
 toc: true
 ---
 
-Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
+Inverted indexes store mappings from values within a container column (such as a [`JSONB`](jsonb.html) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". Inverted indexes are commonly used in [document retrieval systems](https://en.wikipedia.org/wiki/Document_retrieval).
+
+CockroachDB stores the contents of the following data types in inverted indexes:
+
+- [JSONB](jsonb.html)
+- <span class="version-tag">New in v20.1:</span> [Arrays](array.html)
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
-
 ## How do inverted indexes work?
 
-Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, schemaless data like [`JSONB`](jsonb.html) cannot be queried without a full table scan, since it does not adhere to ordinary value prefix comparison operators. `JSONB` needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
+Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`](jsonb.html) or [arrays](array.html) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
 
 Inverted indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
 
@@ -48,11 +52,11 @@ An inverted index for this object would have an entry per component, mapping it 
 "cars" : "Honda"
 ~~~
 
-This lets you to search based on subcomponents.
+This lets you search based on subcomponents.
 
 ### Creation
 
-You can use inverted indexes to improve the performance of queries using `JSONB` columns. You can create them:
+You can use inverted indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
 
 - At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes).
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
@@ -64,7 +68,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 
 ### Selection
 
-If a query contains a filter against an indexed `JSONB` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
+If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
@@ -83,7 +87,28 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
 
 ### Comparisons
-Currently, inverted indexes only support equality comparisons using the `=` operator. If you require comparisons using `>`, `<=`, etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+
+#### JSONB
+
+Inverted indexes on `JSONB` columns support the following comparison operators:
+
+- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
+- "contains": [`@>`](functions-and-operators.html#operator-contains)
+- "equals": [`=`](functions-and-operators.html#operator-equals), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#operator-get-object-field) operator.  For example:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM a WHERE j ->'foo' = '"1"';
+    ~~~
+
+    This is equivalent to using `@>`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM a WHERE j @> '{"foo": "1"}';
+    ~~~
+
+If you require comparisons using [`<`](functions-and-operators.html#operator-less-than)), [`<=`](functions-and-operators.html#operator-less-than-or-equal), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
 
 1. Create your table with a computed column: 
 
@@ -110,6 +135,13 @@ Currently, inverted indexes only support equality comparisons using the `=` oper
     > SELECT * FROM test where foo > 3;
     ~~~
 
+#### Arrays
+
+<span class="version-tag">New in v20.1:</span> Inverted indexes on [`ARRAY`](array.html) columns support the following comparison operators:
+
+- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
+- "contains": [`@>`](functions-and-operators.html#operator-contains)
+
 ## Example
 
 In this example, let's create a table with a `JSONB` column and an inverted index:
@@ -124,7 +156,7 @@ In this example, let's create a table with a `JSONB` column and an inverted inde
   );
 ~~~
 
-Then, insert a few rows a data:
+Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -185,10 +217,10 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-
 ## See also
 
 - [`JSONB`](jsonb.html)
+- [`ARRAY`](array.html)
 - [JSON tutorial](demo-json-support.html)
 - [Computed Columns](computed-columns.html)
 - [`CREATE INDEX`](create-index.html)

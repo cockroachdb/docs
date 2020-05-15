@@ -68,54 +68,22 @@ For a simple but complete "Hello World" example app, see [Build a Python App wit
 
 **Support level:** Full
 
+CockroachDB supports Django versions 2.2 and 3.0.
+
 To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django
+$ python3 -m pip install django==3.0.*
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb
+$ python3 -m pip install django-cockroachdb==3.0.*
 ~~~
-
-These commands download and install the latest stable minor release of `django` and `django-cockroachdb`. At the time of writing this tutorial, the latest stable minor release of each module was 3.0.
 
 {{site.data.alerts.callout_info}}
 The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
-
-For example, if you install the latest minor release of `django` 2:
-
-~~~ shell
-$ python3 -m pip install django==2.*
-~~~
-
-You can also install the latest minor release of `django-cockroachdb` 2:
-
-~~~ sql
-python3 -m pip install django-cockroachdb==2.**
-~~~
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-If alpha or beta releases exist for a version of `django-cockroachdb`, you might encounter an error when attempting to install the latest release of that version. To resolve this issue, specify the exact release that you want.
-
-For example, if `django-cockroachdb` 3.0 alpha 1 is available, and you want to install it, you could encounter an error:
-
-~~~ sql
-$ pip install django-cockroachdb==3.0.*
-ERROR: Could not find a version that satisfies the requirement
-django-cockroachdb==3.0.* (from versions: 3.0a1)
-~~~
-
-Instead, use the following command:
-
-~~~ sql
-$ pip install django-cockroachdb==3.0a1
-...
-Successfully installed django-cockroachdb-3.0a1 psycopg2-2.8.4
-~~~
 {{site.data.alerts.end}}
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and Django](build-a-python-app-with-cockroachdb-django.html).
@@ -425,6 +393,20 @@ For a simple but complete "Hello World" example app, see [Build a Closure App wi
 Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
 
 For a simple but complete "Hello World" example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="rust">
+
+## Drivers
+
+### postgres
+
+**Support level:** Beta
+
+Install the Rust Postgres driver as described in the [official documentation](https://crates.io/crates/postgres/).
+
+For a simple but complete "Hello World" example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
 
 </section>
 

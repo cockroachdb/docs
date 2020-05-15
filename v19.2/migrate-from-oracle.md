@@ -2,7 +2,6 @@
 title: Migrate from Oracle
 summary: Learn how to migrate data from Oracle into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 <span class="version-tag">New in v19.2:</span> This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
@@ -223,7 +222,6 @@ Use the table below for data type mappings:
 
 When moving from Oracle to CockroachDB data types, consider the following:
 
-- [Silent validation error with `DECIMAL` values](known-limitations.html#silent-validation-error-with-decimal-values)
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-schema-changes-between-executions-of-prepared-statements)
 - If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).

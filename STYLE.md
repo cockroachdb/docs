@@ -421,7 +421,7 @@ The following HTML formatting can be used within an HTML table:
 
 CockroachDB docs uses two types of lists:
 
-- **Numbered** (i.e., ordered list) - Use to list information that should appear in order, like steps.
+- **Numbered** (i.e., ordered list) - Use to list information that should appear in order, like tutorial steps.
 
     **Example:** [Start CockroachDB](https://www.cockroachlabs.com/docs/stable/deploy-a-test-cluster.html#step-1-start-cockroachdb) in the Deploy a Test Cluster doc
 
@@ -431,7 +431,7 @@ CockroachDB docs uses two types of lists:
 
 Lists should be introduced by a sentence and a colon. Use periods at the end of list items if it is a sentence or completes a sentence.
 
-For each item of a **numbered list**, use the step number followed by a period and a space, e.g., `1. This is a numbered list`.
+For each item of a **numbered list**, use `1.` followed by a period and a space, e.g., `1. This is a numbered list`. Markdown will render the steps in the correct order.
 
 For each item of a **bulleted list**, use one dash followed by one space to denote a list item, e.g., `- This is a bulleted list`.
 
@@ -445,7 +445,7 @@ To nest a list under a list item, start the list on the next line (no empty line
     - This is a bullet.
     - This is a bullet.
 
-2. This is a step.
+1. This is a step.
 ```
 
 #### Nesting paragraphs or code blocks
@@ -482,7 +482,7 @@ Similarly, to nest a paragraph or code block under a *nested* list item, insert 
         $ command
         ~~~
 
-2. This is a step.
+1. This is a step.
 ```
 
 ### Images

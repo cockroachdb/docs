@@ -8,6 +8,14 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Primary key changes and zone configs
+
+When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
+
+As a workaround, recreate the zone configurations after changing the table's primary key.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/48254)
+
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
 Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:   
@@ -74,6 +82,63 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 ~~~
 
 ## Unresolved limitations
+
+### Subqueries in `SET` statements
+
+It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET application_name = (SELECT 'a' || 'b');
+~~~
+
+~~~
+ERROR: invalid value for parameter "application_name": "(SELECT 'a' || 'b')"
+SQLSTATE: 22023
+DETAIL: subqueries are not allowed in SET
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
+
+### Filtering by `now()` results in a full table scan
+
+When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain an index on the filtered timestamp column. This results in a full table scan. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE bydate (a TIMESTAMP NOT NULL, INDEX (a));
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM bydate WHERE a > (now() - '1h'::interval);
+~~~
+
+~~~
+  tree |    field    |       description
+-------+-------------+---------------------------
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | bydate@primary
+       | spans       | FULL SCAN
+       | filter      | a > (now() - '01:00:00')
+(6 rows)
+~~~
+
+As a workaround, pass the correct date into the query as a parameter to a prepared query with a placeholder, which will allow the optimizer to constrain the index correctly:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PREPARE q AS SELECT * FROM bydate WHERE a > ($1::timestamp - '1h'::interval);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXECUTE q ('2020-05-12 00:00:00');
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/18836)
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
@@ -237,15 +302,9 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 {% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
 
-### Silent validation error with `DECIMAL` values
+### Dumping a table with collations
 
-Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:
-
-1. A query uses placeholders (e.g., `$1`) to pass values to the server.
-2. A value of type [`DECIMAL`](decimal.html) is passed.
-3. The decimal value is encoded using the binary format.
-
-Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
+{% include {{page.version.version}}/known-limitations/dump-table-with-collations.md %}
 
 ### Import with a high amount of disk contention
 

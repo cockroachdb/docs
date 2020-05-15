@@ -25,6 +25,7 @@ CockroachDB also supports [temporary views](views.html#temporary-views) and [tem
 - Temp tables persist across transactions in the same session.
 - Temp tables can reference persistent tables, but persistent tables cannot reference temp tables.
 - Temp tables cannot be converted to persistent tables.
+- For [PostgreSQL compatibility](https://www.postgresql.org/docs/current/sql-createtable.html), CockroachDB supports the clause `ON COMMIT PRESERVE ROWS` at the end of `CREATE TEMP TABLE` statements. CockroachDB only supports session-scoped temp tables, and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temp tables in PostgreSQL.
 
 By default, every 30 minutes CockroachDB cleans up all temporary objects that are not tied to an active session. You can change how often the cleanup job runs with the `sql.temp_object_cleaner.cleanup_interval` [cluster setting](cluster-settings.html).
 

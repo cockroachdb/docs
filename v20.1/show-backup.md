@@ -21,7 +21,14 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 Parameter | Description
 ----------|------------
 `location` | The location of the backup to inspect. For more details, see [Backup File URLs](backup.html#backup-file-urls).
-`WITH privileges` | <span class="version-tag">New in v20.1:</span> List which users and roles had which privileges on each database and table in the backup.
+`kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
+
+### Options
+
+Option       | Value | Description
+-------------+-------+-----------------------------------------------------
+`privileges` | N/A   | <span class="version-tag">New in v20.1:</span> List which users and roles had which privileges on each table in the backup.
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
 
 ## Response
 

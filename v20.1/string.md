@@ -115,6 +115,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 Type | Details
 -----|--------
+`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Limited to `ARRAY`s of type [`INT`](int.html) and [`DECIMAL`](decimal.html). 
 `BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'`.
 `BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
 `BYTES` | For more details, [see here](bytes.html#supported-conversions).
@@ -164,4 +165,5 @@ A literal entered through a SQL client will be translated into a different value
 
 ## See also
 
-[Data Types](data-types.html)
+- [Data Types](data-types.html)
+- [String literal syntax](sql-constants.html#string-literals)

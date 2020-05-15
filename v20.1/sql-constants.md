@@ -26,12 +26,13 @@ There are five categories of constants in CockroachDB:
 
 ## String literals
 
-CockroachDB supports two formats for string literals:
+CockroachDB supports the following formats for string literals:
 
 - [Standard SQL string literals](#standard-sql-string-literals).
 - [String literals with C escape sequences](#string-literals-with-character-escapes).
+- [Dollar-quoted string literals](#dollar-quoted-string-literals)
 
-These format also allow arbitrary Unicode characters encoded as UTF-8.
+These formats also allow arbitrary Unicode characters encoded as UTF-8.
 
 In any case, the actual data type of a string literal is determined
 using the context where it appears.
@@ -120,6 +121,34 @@ Escape Sequence | Interpretation
 For example, the `e'x61\141\u0061'` escape string represents the
 hexadecimal byte, octal byte, and 16-bit hexadecimal Unicode character
 values equivalent to the `'aaa'` string literal.
+
+### Dollar-quoted string literals
+
+<span class="version-tag">New in v20.1:</span> To make it easier to write certain types of string constants in SQL code, CockroachDB supports dollar-quoted string literals.  This is particularly useful for strings that need to contain lots of single quotes (`'`) or backslashes (`\`).
+
+At a high level, the dollar-quoting behavior works similarly to ["heredocs"](https://en.wikipedia.org/wiki/Here_document) as used in UNIX shells and some programming languages.
+
+Dollar-quoted strings have the form: `$` + (optional) tag + `$` + arbitrary text + `$` + (optional) tag + `$`
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT char_length($MyCoolString$
+You can put anything you want in this string -- for example, here's a Windows filesystem pathname: 'C:\Users\foo\Downloads\file.zip'
+
+You can even nest additional dollar-quoted strings inside each other.  For example, here is a regular expression using backticks: $myRegex$[foo\tbar]$myRegex$
+
+Finally, you can use $stand-alone dollar signs without the optional tag$.
+$MyCoolString$);
+~~~
+
+~~~
+  char_length
+---------------
+          369
+(1 row)
+~~~
 
 ## Numeric literals
 

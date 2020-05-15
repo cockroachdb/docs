@@ -18,6 +18,46 @@ As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](sql-dump.html)
 
 ## Unresolved limitations
 
+### Filtering by `now()` results in a full table scan
+
+When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain an index on the filtered timestamp column. This results in a full table scan. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE bydate (a TIMESTAMP NOT NULL, INDEX (a));
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT * FROM bydate WHERE a > (now() - '1h'::interval);
+~~~
+
+~~~
+  tree |    field    |       description
+-------+-------------+---------------------------
+       | distributed | true
+       | vectorized  | false
+  scan |             |
+       | table       | bydate@primary
+       | spans       | FULL SCAN
+       | filter      | a > (now() - '01:00:00')
+(6 rows)
+~~~
+
+As a workaround, pass the correct date into the query as a parameter to a prepared query with a placeholder, which will allow the optimizer to constrain the index correctly:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PREPARE q AS SELECT * FROM bydate WHERE a > ($1::timestamp - '1h'::interval);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXECUTE q ('2020-05-12 00:00:00');
+~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/18836)
+
 ### Adding stores to a node
 
 {% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
@@ -192,16 +232,6 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 ### Importing an interleaved table from a `cockroach dump` output
 
 {% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
-
-### Silent validation error with `DECIMAL` values
-
-Under the following conditions, the value received by CockroachDB will be different than that sent by the client and may cause incorrect data to be inserted or read from the database, without a visible error message:
-
-1. A query uses placeholders (e.g., `$1`) to pass values to the server.
-2. A value of type [`DECIMAL`](decimal.html) is passed.
-3. The decimal value is encoded using the binary format.
-
-Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
 
 ### Import with a high amount of disk contention
 

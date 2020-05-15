@@ -1,5 +1,5 @@
 ---
-title: Cluster Upgrades
+title: Upgrade Policy
 summary: Learn about the CockroachCloud upgrade policy.
 toc: true
 build_for: [cockroachcloud]
@@ -7,20 +7,20 @@ build_for: [cockroachcloud]
 
 This page describes the upgrade policy for CockroachCloud.
 
-CockroachCloud supports the [latest major version](https://www.cockroachlabs.com/docs/stable/) of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
+CockroachCloud supports the [latest major version](https://www.cockroachlabs.com/docs/) of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
-## Minor Version Upgrades
+## Minor version upgrades
 [Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. CockroachCloud automatically upgrades all clusters to the latest supported minor version (for example, v19.2.1 → v19.2.2).
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
 {{site.data.alerts.end}}
 
-## Major Version Upgrades
+## Major version upgrades
 
 [Major version releases](https://www.cockroachlabs.com/docs/releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v19.2.x → v20.1.x).
 
-If you are a [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin), you will receive an email notification for each major version release. The email will have instructions on how to opt in to have your clusters upgraded to the new version.
+When a new major version is available, [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin)s will be able to [start an upgrade directly from the CockroachCloud Console](cockroachcloud-upgrade-to-v20.1.html).
 
 ### Auto-upgrades after CockroachDB version EOL
 
@@ -30,4 +30,8 @@ If you are running a CockroachDB version nearing EOL, you will be notified at le
 
 ### Rollback support
 
-The default finalization period for each major upgrade is 7 days from upgrade completion. You can request a rollback of a major upgrade via a [support ticket](https://support.cockroachlabs.com/hc/en-us)  within the 7-day period.
+When you upgrade to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can trigger a rollback to the previous major version directly from the CockroachCloud Console. If you see problems after the upgrade has been finalized, it will not be possible to roll back via the CockroachCloud Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+
+## See also
+
+For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](cockroachcloud-upgrade-to-v20.1.html).

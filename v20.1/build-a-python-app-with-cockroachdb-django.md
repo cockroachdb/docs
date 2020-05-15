@@ -20,7 +20,7 @@ build_for: [cockroachdb, cockroachcloud]
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
-CockroachDB supports Django versions 2 and 3.
+CockroachDB supports Django versions 2.2 and 3.0.
 
 {% unless site.cockroachcloud %}
 
@@ -31,7 +31,7 @@ CockroachDB supports Django versions 2 and 3.
 {% endunless %}
 
 {{site.data.alerts.callout_info}}
-The example code and instructions on this page use Python 3 and Django 3.
+The example code and instructions on this page use Python 3 and Django 3.0.
 {{site.data.alerts.end}}
 
 ## Step 1. Install Django and the CockroachDB backend for Django
@@ -40,50 +40,16 @@ Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the 
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django
+$ python3 -m pip install django==3.0.*
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb
+$ python3 -m pip install django-cockroachdb==3.0.*
 ~~~
-
-These commands download and install the latest stable minor release of `django` and `django-cockroachdb`. At the time of writing this tutorial, the latest stable minor release of each module was 3.0.
 
 {{site.data.alerts.callout_info}}
 The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
-
-For example, if you install the latest minor release of `django` 2:
-
-~~~ shell
-$ python3 -m pip install django==2.*
-~~~
-
-You can also install the latest minor release of `django-cockroachdb` 2:
-
-~~~ sql
-python3 -m pip install django-cockroachdb==2.**
-~~~
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-If alpha or beta releases exist for a version of `django-cockroachdb`, you might encounter an error when attempting to install the latest release of that version. To resolve this issue, specify the exact release that you want.
-
-For example, if `django-cockroachdb` 3.0 alpha 1 is available, and you want to install it, you could encounter an error:
-
-~~~ sql
-$ pip install django-cockroachdb==3.0.*
-ERROR: Could not find a version that satisfies the requirement
-django-cockroachdb==3.0.* (from versions: 3.0a1)
-~~~
-
-Instead, use the following command:
-
-~~~ sql
-$ pip install django-cockroachdb==3.0a1
-...
-Successfully installed django-cockroachdb-3.0a1 psycopg2-2.8.4
-~~~
 {{site.data.alerts.end}}
 
 {% unless site.cockroachcloud %}
