@@ -16,7 +16,7 @@ The **Jobs** page of the Admin UI provides details about long-running tasks perf
 All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster. 
 {{site.data.alerts.end}}
 
-To view these details, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Jobs** in the left-hand navigation.
+To view these details, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Jobs** in the left-hand navigation.
 
 ## Filter jobs
 

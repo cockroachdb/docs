@@ -13,7 +13,7 @@ The **Databases** page of the Admin UI provides details of the following:
 - The tables in each database.
 - The grants assigned to each user. 
 
-To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Databases** in the left-hand navigation.
+To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Databases** in the left-hand navigation.
 
 ## Tables view
 

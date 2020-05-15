@@ -6,7 +6,7 @@ toc: true
 
 The **Storage** dashboard lets you monitor the storage utilization of your cluster. 
 
-To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
+To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
@@ -83,6 +83,8 @@ The **Storage** dashboard shows other time series graphs that are important for 
 - Time Series Bytes Written
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
+
+{% include {{ page.version.version }}/admin-ui/admin-ui-summary-events.md %}
 
 ## See also
 
