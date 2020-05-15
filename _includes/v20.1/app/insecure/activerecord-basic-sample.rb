@@ -1,8 +1,17 @@
+# Use bundler inline instead of using a Gemfile
+require 'bundler/inline'
+gemfile do
+  source 'https://rubygems.org'
+  gem 'pg'
+  gem 'activerecord', '5.2.0'
+  gem 'activerecord-cockroachdb-adapter', '5.2.0.beta2'
+end
+
+require 'pg'
 require 'active_record'
 require 'activerecord-cockroachdb-adapter'
-require 'pg'
 
-# Connect to CockroachDB through ActiveRecord.
+# Connect to CockroachDB using ActiveRecord.
 # In Rails, this configuration would go in config/database.yml as usual.
 ActiveRecord::Base.establish_connection(
   adapter:     'cockroachdb',
@@ -10,13 +19,13 @@ ActiveRecord::Base.establish_connection(
   database:    'bank',
   host:        'localhost',
   port:        26257,
+  sslmode:     'require',
   sslmode:     'disable'
 )
 
 # Define the Account model.
 # In Rails, this would go in app/models/ as usual.
 class Account < ActiveRecord::Base
-  validates :id, presence: true
   validates :balance, presence: true
 end
 
@@ -30,15 +39,15 @@ class Schema < ActiveRecord::Migration[5.0]
   end
 end
 
-# Run the schema migration by hand.
+# Run the schema migration programmatically.
 # In Rails, this would be done via rake db:migrate as usual.
 Schema.new.change()
 
 # Create two accounts, inserting two rows into the accounts table.
-Account.create(id: 1, balance: 1000)
-Account.create(id: 2, balance: 250)
+Account.create!(id: 1, balance: 1000)
+Account.create!(id: 2, balance: 250)
 
 # Retrieve accounts and print out the balances
 Account.all.each do |acct|
-  puts "#{acct.id} #{acct.balance}"
+  puts "account: #{acct.id} balance: #{acct.balance}"
 end
