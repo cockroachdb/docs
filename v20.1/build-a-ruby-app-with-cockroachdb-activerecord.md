@@ -12,7 +12,7 @@ twitter: false
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and ActiveRecord.
 
-CockroachDB provides an ActiveRecord adapter for CockroachDB as a RubyGem.
+CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter). 
 
 {{site.data.alerts.callout_success}}
 For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
