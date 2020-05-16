@@ -12,8 +12,10 @@ twitter: false
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and ActiveRecord.
 
+CockroachDB provides an ActiveRecord adapter for CockroachDB as a RubyGem.
+
 {{site.data.alerts.callout_success}}
-For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -78,12 +80,10 @@ Then, issue the following statement:
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
+  id | balance
+-----+----------
+   1 |    1000
+   2 |     250
 (2 rows)
 ~~~
 
@@ -138,12 +138,10 @@ Then, issue the following statement:
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
+  id | balance
+-----+----------
+   1 |    1000
+   2 |     250
 (2 rows)
 ~~~
 
@@ -151,6 +149,6 @@ Then, issue the following statement:
 
 ## What's next?
 
-Read more about using [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+Read more about using [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{page.version.version}}/app/see-also-links.md %}
