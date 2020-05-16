@@ -40,8 +40,8 @@ conn = PG.connect(
   port: 26257,
   sslmode: 'require',
   sslrootcert: 'certs/ca.crt',
-  sslkey:'certs/client.maxroach.key',
-  sslcert:'certs/client.maxroach.crt'
+  sslkey: 'certs/client.maxroach.key',
+  sslcert: 'certs/client.maxroach.crt'
 )
 
 run_transaction(conn) do |txn|
