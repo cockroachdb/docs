@@ -45,5 +45,5 @@ run_transaction(conn) do |txn|
   transfer_funds(txn, 1, 2, 100)
 end
 
-# Close communication with the database.
+# Close the database connection.
 conn.close()
