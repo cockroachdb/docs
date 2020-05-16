@@ -68,8 +68,8 @@ The output should be:
 
 ~~~
 Initial balances:
-{"id"=>"1", "balance"=>"1000"}
-{"id"=>"2", "balance"=>"250"}
+id: 1 balance: 1000
+id: 2 balance: 250
 ~~~
 
 ### Transaction (with retry logic)
@@ -150,8 +150,8 @@ The output should be:
 
 ~~~
 Initial balances:
-{"id"=>"1", "balance"=>"1000"}
-{"id"=>"2", "balance"=>"250"}
+id: 1 balance: 1000
+id: 2 balance: 250
 ~~~
 
 ### Transaction (with retry logic)
