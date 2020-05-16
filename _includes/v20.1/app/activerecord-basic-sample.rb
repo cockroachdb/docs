@@ -1,9 +1,11 @@
-# Use bundler inline instead of using a Gemfile
+# Use bundler inline - these would typically go in a Gemfile
 require 'bundler/inline'
 gemfile do
   source 'https://rubygems.org'
   gem 'pg'
   gem 'activerecord', '5.2.0'
+
+  # CockroachDB ActiveRecord adapter dependency
   gem 'activerecord-cockroachdb-adapter', '5.2.0.beta2'
 end
 
@@ -14,12 +16,16 @@ require 'activerecord-cockroachdb-adapter'
 # Connect to CockroachDB using ActiveRecord.
 # In Rails, this configuration would go in config/database.yml as usual.
 ActiveRecord::Base.establish_connection(
+
+  # Specify the CockroachDB ActiveRecord adapter
   adapter:     'cockroachdb',
   username:    'maxroach',
   database:    'bank',
   host:        'localhost',
   port:        26257,
   sslmode:     'require',
+
+  # These are the certificate files created in the previous step
   sslrootcert: 'certs/ca.crt',
   sslkey:      'certs/client.maxroach.key',
   sslcert:     'certs/client.maxroach.crt'
