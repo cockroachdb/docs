@@ -107,7 +107,7 @@ Copy the code or
 {% include {{page.version.version}}/app/insecure/activerecord-basic-sample.rb %}
 ~~~
 
-Then run the code:
+Then run the code (no need to run bundler first):
 
 {% include copy-clipboard.html %}
 ~~~ shell
