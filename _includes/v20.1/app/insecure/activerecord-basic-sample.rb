@@ -23,7 +23,6 @@ ActiveRecord::Base.establish_connection(
   database:    'bank',
   host:        'localhost',
   port:        26257,
-  sslmode:     'require',
   sslmode:     'disable'
 )
 
