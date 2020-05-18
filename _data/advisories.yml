@@ -1,3 +1,7 @@
+- advisory: 48860
+  summary: Data corruption/loss issue with snapshots and delete range
+  versions: 2.1.0-2.1.9, 19.1.0-19.1.8, 19.2.0-19.2.8
+  date: May 18, 2020
 - advisory: 44299
   summary: Schema changes may cause cluster unavailability
   versions: 19.1.0-19.1.7, 19.2.0-19.2.3
