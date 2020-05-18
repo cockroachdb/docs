@@ -34,7 +34,7 @@ To do a full cluster backup, use the [`BACKUP`](backup.html) statement:
 > BACKUP TO '<backup_location>';
 ~~~
 
-If it's ever necessary, you can use the [`RESTORE`] statement to restore a table:
+If it's ever necessary, you can use the [`RESTORE`][restore] statement to restore a table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
