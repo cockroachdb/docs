@@ -47,7 +47,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - Avoid using shared storage such as NFS, CIFS, and CEPH storage.
 
-- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB.
+- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300 GB - 2 TB.
 
     Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
