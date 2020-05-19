@@ -149,12 +149,12 @@ This page shows you how key features of CockroachDB stack up against other datab
     </td>
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
-      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transactions only</span>
       <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
-      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transations only</span>
+      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight Transactions only</span>
       <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
     </td>
     <td>Yes</td>
