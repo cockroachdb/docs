@@ -7,6 +7,8 @@ build_for: [cockroachcloud]
 
 Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](cockroachcloud-console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Step 1. Select your cluster size
 
 The upgrade process depends on the number of nodes in your cluster. Select whether your cluster has multiple nodes or a single node:
@@ -72,6 +74,14 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 {{site.data.alerts.end}}
 
 ### Review temporary limitations
+
+#### While the cluster is in a mixed-version state
+
+{% include {{ page.version.version }}/known-limitations/dropping-renaming-during-upgrade.md %}
+
+If your cluster gets into this state, rolling all nodes back to v19.2 will not resolve the issue. Instead, you must follow the steps in this [known limitation](known-limitations.html#dropping-and-renaming-objects-during-an-upgrade-to-v20-1-0).
+
+#### Once all nodes are running v20.1
 
 Once your cluster is running v20.1, but before the upgrade has been finalized:
 
