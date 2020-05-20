@@ -158,7 +158,7 @@ To serve a secure web application, you also need a public domain name!
     $ KUBECONFIG=~/mcikubeconfig gcloud container clusters get-credentials --zone=europe-west1-b movr-europe-west
     ~~~
 
-1. For each cluster context, create a secret for the connection string, Google Maps API, and the certs, and then create the k8s deployment and service using the `movr.yaml` manifest file. To get the context for the cluster, run `kubectl config get-contexts -o name`.
+1. For each cluster context, create a secret for the connection string, Google Maps API, and the certs, and then create the k8s deployment and service using the `movr.yaml` manifest file:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -169,8 +169,16 @@ To serve a secure web application, you also need a public domain name!
     kubectl create -f ~/movr-flask/movr.yaml
     ~~~
 
+    Where:
+    <ul>
+      <li>`<context-name>` is the cluster context for a regional deployment. To get the contexts for all deployments, run `$ kubectl config get-contexts -o name`.</li>
+      <li>`<full-path-to-cert>` is the full directory path to the certificates for [the multi-region CockroachCloud cluster](#multi-region-database-deployment). These certificates are available for download from the CockroachCloud console, and they are the same for all regions.</li>
+      <li>`<connection-string>` is the full connection string to the gateway node of [a regional CockroachCloud deployment](#multi-region-database-deployment). It should look something like:<br> `postgresql://user:password@region.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs-dir/movr-app-ca.crt`</li>
+      <li>`<APIkey>` is the API key for the [Google Maps Embed API](https://console.cloud.google.com/apis/library). This API key is *not* required to run the demo application. Not providing a Google Maps Embed API key will not break the application.</li>
+    </ul>
+
     {{site.data.alerts.callout_info}}
-    You need to do this for each cluster context!
+    Secrets must be generated for each cluster context!
     {{site.data.alerts.end}}
 
 1. Reserve a static IP address for the ingress.
@@ -178,6 +186,13 @@ To serve a secure web application, you also need a public domain name!
     {% include copy-clipboard.html %}
     ~~~ shell
     $ gcloud compute addresses create --global movr-ip
+    ~~~
+
+    To verify that you successfully created the new IP address, run the following command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud compute addresses list
     ~~~
 
 1. Download [`kubemci`](https://github.com/GoogleCloudPlatform/k8s-multicluster-ingress), and then make it executable:
