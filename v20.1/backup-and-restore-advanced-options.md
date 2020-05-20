@@ -131,20 +131,23 @@ Note that the list of URIs passed to [`RESTORE`][restore] may be different from 
 
 ### Create an incremental locality-aware backup
 
-To make an incremental locality-aware backup from a full locality-aware backup, the syntax is just like for [regular incremental backups](backup.html#create-incremental-backups):
+To create an incremental locality-aware backup from a full locality-aware backup, the syntax the same as it is for [regular incremental backups](backup.html#create-incremental-backups), i.e., if you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup in a subdirectory:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO \
-'gs://acme-co-backup/test-cluster' \
-AS OF SYSTEM TIME '-10s' WITH revision_history;
+> BACKUP TO
+	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
+
+{{site.data.alerts.callout_info}}
+It is recommend that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required. When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
+{{site.data.alerts.end}}
 
 And if you want to explicitly control where your incremental backups go, use the `INCREMENTAL FROM` syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-BACKUP TO (${uri_1}, ${uri_2}, ...) INCREMENTAL FROM ${full_backup_uri} ...;
+> BACKUP TO (${uri_1}, ${uri_2}, ...) INCREMENTAL FROM ${full_backup_uri} ...;
 ~~~
 
 For example, to create an incremental locality-aware backup from a previous full locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
@@ -182,6 +185,10 @@ can be restored by running:
   	('s3://us-east-bucket/database-bank-2019-10-07-weekly', 's3://us-west-bucket/database-bank-2019-10-07-weekly'),
 	  ('s3://us-east-bucket/database-bank-2019-10-08-nightly', 's3://us-west-bucket/database-bank-2019-10-08-nightly');
 ~~~
+
+{{site.data.alerts.callout_info}}
+When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.
+{{site.data.alerts.end}}
 
 ### Create an incremental locality-aware backup from a previous locality-aware backup
 
