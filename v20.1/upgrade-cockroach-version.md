@@ -56,6 +56,21 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 
 ### Review temporary limitations
 
+#### While the cluster is in a mixed-version state
+
+During the upgrade, while there is a mix of nodes running v19.2 and v20.1, do not drop, rename, or truncate tables, views, sequences, or databases on the v19.2 nodes. Specifically, avoid running the following operations against the v19.2 nodes:
+
+- [`DROP TABLE`](drop-table.html), [`TRUNCATE TABLE`](truncate.html), [`RENAME TABLE`](rename-table.html)
+- [`DROP VIEW`](drop-view.html)
+- [`DROP SEQUENCE`](drop-sequence.html), [`RENAME SEQUENCE`](rename-sequence.html)
+- [`DROP DATABASE`](drop-database.html), [`RENAME DATABASE`](rename-database.html)
+
+Performing any of these operations against v19.2 nodes will result in inconsistency between two internal tables, `system.namespace` and `system.namespace2`. This inconsistency will prevent you from being able to recreate the dropped or renamed objects; the returned error will be `ERROR: relation <name of dropped/renamed object> already exists`). In the case of a dropped or renamed database, [`SHOW DATABASES`](show-databases.html) will also return an error: `ERROR: internal error: "" is not a database`.
+
+If your cluster gets into this state, resolve the inconsistency as described in this [known limitation](known-limitations.html#dropping-and-renaming-objects-during-an-upgrade-to-v20-1-0).
+
+#### Once all nodes are running v20.1
+
 Once all nodes are running v20.1, but before the upgrade has been finalized:
 
 - New [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Update your application or tooling to prevent disallowed schema changes during this period. Once the upgrade has been finalized, new schema changes can resume.

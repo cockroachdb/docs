@@ -8,6 +8,59 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Dropping and renaming objects during an upgrade to v20.1.0
+
+{{site.data.alerts.callout_info}}
+This limitation applies only for upgrades to v20.1.0. Upgrades to v20.1.1 and later are not susceptible to this issue.
+{{site.data.alerts.end}}
+
+When [upgrading a cluster](upgrade-cockroach-version.html) to v20.1.0, while there is a mix of nodes running v19.2 and v20.1, it's important to avoid dropping, renaming, or truncating tables, views, sequences, or databases on the v19.2 nodes. Specifically, avoid running the following operations against the v19.2 nodes:
+
+- [`DROP TABLE`](drop-table.html), [`TRUNCATE TABLE`](truncate.html), [`RENAME TABLE`](rename-table.html)
+- [`DROP VIEW`](drop-view.html)
+- [`DROP SEQUENCE`](drop-sequence.html), [`RENAME SEQUENCE`](rename-sequence.html)
+- [`DROP DATABASE`](drop-database.html), [`RENAME DATABASE`](rename-database.html)
+
+Performing any of these operations against v19.2 nodes will result in inconsistency between two internal tables, `system.namespace` and `system.namespace2`. This inconsistency will prevent you from being able to recreate the dropped or renamed objects; the returned error will be `ERROR: relation <name of dropped/renamed object> already exists`). In the case of a dropped or renamed database, [`SHOW DATABASES`](show-databases.html) will also return an error: `ERROR: internal error: "" is not a database`.
+
+If your cluster gets into this state, resolve the inconsistency as follows:
+
+1. Using `root`, open the built-in SQL shell against a node running v20.1.
+
+1. Select all orphaned namespace rows:
+
+    ~~~ sql
+    > SELECT id, name
+      FROM system.namespace2
+      WHERE id != 29 AND id NOT IN (SELECT id FROM system.descriptor);
+    ~~~
+
+1. Manually verify that each of these IDs correspond to a table, view, sequence, or database that no longer exists.
+
+1. Grant node-level permissions to `root`:
+
+    ~~~ sql
+    > INSERT INTO system.users VALUES ('node', '', true);
+    ~~~
+
+    ~~~ sql
+    > GRANT node TO root;
+    ~~~
+
+1. For each ID returned by the first query, delete the orphaned namespace rows:
+
+    ~~~ sql
+    > DELETE FROM system.namespace2 WHERE id = <id>
+    ~~~
+
+1. Revoke node-level permissions:
+
+    ~~~ sql
+    > REVOKE node FROM root;
+    ~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49092)
+
 ### Primary key changes and zone configs
 
 When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
@@ -173,7 +226,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-  [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Cold starts of large clusters may require manual intervention
 
