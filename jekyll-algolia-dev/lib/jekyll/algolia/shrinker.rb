@@ -20,7 +20,8 @@ module Jekyll
       # - max_size: The max size to achieve in bytes
       #
       # The excerpts are the attributes most subject to being reduced. We'll go
-      # as far as removing them if there is no other choice.
+      # as far as removing them if there is no other choice. The last resort
+      # is to remove the html attribute.
       def self.fit_to_size(raw_record, max_size)
         return raw_record if size(raw_record) <= max_size
 
@@ -35,7 +36,7 @@ module Jekyll
         record[:excerpt_html] = record[:excerpt_text]
         return record if size(record) <= max_size
 
-        # We half the excerpts
+        # We halve the excerpts
         excerpt_words = record[:excerpt_text].split(/\s+/)
         shortened_excerpt = excerpt_words[0...excerpt_words.size / 2].join(' ')
         record[:excerpt_text] = shortened_excerpt
@@ -46,6 +47,12 @@ module Jekyll
         record.delete(:excerpt_text)
         record.delete(:excerpt_html)
         return record if size(record) <= max_size
+
+        # Remove html 
+        if raw_record.key?(:html)
+          record.delete(:html)
+          return record if size(record) <= max_size
+        end
 
         # Still too big, we fail
         stop_with_error(record)
