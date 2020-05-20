@@ -20,7 +20,8 @@ module Jekyll
       # - max_size: The max size to achieve in bytes
       #
       # The excerpts are the attributes most subject to being reduced. We'll go
-      # as far as removing them if there is no other choice.
+      # as far as removing them if there is no other choice. The last resort
+      # is to remove the html attribute.
       def self.fit_to_size(raw_record, max_size)
         return raw_record if size(raw_record) <= max_size
 

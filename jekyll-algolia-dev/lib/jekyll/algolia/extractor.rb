@@ -58,7 +58,7 @@ module Jekyll
           content,
           options: {
             css_selector: Configurator.algolia('nodes_to_index'),
-            tags_to_exclude: 'script,style,iframe,svg,pre'
+            tags_to_exclude: 'script,style,iframe,svg'
           }
         )
         # We remove objectIDs, as the will be added at the very end, after all
