@@ -13,8 +13,6 @@ The CockroachCloud offering provides a running CockroachDB cluster suitable to y
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-We are offering initial access to select organizations through our beta program. [Sign up here](https://www.cockroachlabs.com/product/cockroachcloud/) for early access to CockroachCloud.
-
 ## Create your CockroachCloud account
 
 To create your CockroachCloud account:
