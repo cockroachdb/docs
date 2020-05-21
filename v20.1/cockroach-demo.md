@@ -161,16 +161,16 @@ By default, `cockroach demo` shares anonymous usage details with Cockroach Labs.
 
 ## Shutting down and restarting nodes
 
-<span class="version-tag">New in v20.1:</span>  You can shut down and restart individual nodes in a multi-node demo cluster with the `\demo_node` SQL shell command.
+<span class="version-tag">New in v20.1:</span> You can shut down and restart individual nodes in a multi-node demo cluster with the `\demo` SQL shell command.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 Command | Description
 ----------------|------------
-`\demo_node shutdown <node number>` | Shuts down a node.<br>This command simulates stopping a node that can be restarted. It is similar to [`cockroach quit`](cockroach-quit.html).
-`\demo_node restart <node number>` | Restarts a node that has been shut down.
-`\demo_node decommission <node number>` | Decommissions a node.<br>This command simulates [decommissioning a node](remove-nodes.html). It is similar to [`cockroach quit --decommission`](cockroach-quit.html#general).
-`\demo_node recommission <node number>` | Recommissions a decommissioned node.
+`\demo shutdown <node number>` | Shuts down a node.<br><br>This command simulates stopping a node that can be restarted. It is similar to [`cockroach quit`](cockroach-quit.html).
+`\demo restart <node number>` | Restarts a node that has been shut down.
+`\demo decommission <node number>` | Decommissions a node.<br><br>This command simulates [decommissioning a node](remove-nodes.html). It is similar to [`cockroach quit --decommission`](cockroach-quit.html#general).
+`\demo recommission <node number>` | Recommissions a decommissioned node.
 
 For examples, see [Shut down and restart nodes](cockroach-demo.html#shut-down-and-restart-nodes).
 
@@ -312,7 +312,7 @@ This command starts a 9-node demo cluster with the `movr` database preloaded, an
 
 ### Shut down and restart nodes
 
-If you start a demo cluster with multiple nodes, you can use the [`\demo_node`](cockroach-demo.html#shutting-down-and-restarting-nodes) to shut down and restart individual nodes in the demo cluster.
+If you start a demo cluster with multiple nodes, you can use the [`\demo`](cockroach-demo.html#shutting-down-and-restarting-nodes) shell command to shut down and restart individual nodes in the demo cluster.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -327,7 +327,7 @@ You can shutdown the 3rd node and then restart it:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> \demo_node shutdown 3
+> \demo shutdown 3
 ~~~
 
 ~~~
@@ -336,7 +336,7 @@ node 3 has been shutdown
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> \demo_node restart 3
+> \demo restart 3
 ~~~
 
 ~~~
@@ -347,7 +347,7 @@ You can also decommission the 3rd node and then recommission it:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> \demo_node decommission 3
+> \demo decommission 3
 ~~~
 
 ~~~
@@ -356,7 +356,7 @@ node 3 has been decommissioned
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> \demo_node recommission 3
+> \demo recommission 3
 ~~~
 
 ~~~
