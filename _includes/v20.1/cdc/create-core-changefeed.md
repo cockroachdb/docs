@@ -1,10 +1,10 @@
 In this example, you'll set up a core changefeed for a single-node cluster.
 
-1. In a terminal window, start `cockroach`:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ cockroach start-single-node \
     --insecure \
     --listen-addr=localhost \
     --background
@@ -15,11 +15,9 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url="postgresql://root@127.0.0.1:26257?sslmode=disable" \
-    --format=csv
+    --format=csv \
+    --insecure
     ~~~
-
-    {% include {{ page.version.version }}/cdc/core-url.md %}
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
@@ -48,12 +46,16 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > EXPERIMENTAL CHANGEFEED FOR foo;
+    > EXPERIMENTAL CHANGEFEED FOR foo
+        WITH resolved = '10s';
     ~~~
     ~~~
     table,key,value
     foo,[0],"{""after"": {""a"": 0}}"
+    NULL,NULL,"{""resolved"":""1590611959605806000.0000000000""}"
     ~~~
+
+    This changefeed will emit [`resolved` timestamps](changefeed-for.html#options) every 10 seconds. Depending on how quickly you insert into your watched table, the output could look different than what is shown here.
 
 7. In a new terminal, add another row:
 
@@ -65,7 +67,11 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 8. Back in the terminal where the core changefeed is streaming, the following output has appeared:
 
     ~~~
+    table,key,value
+    foo,[0],"{""after"": {""a"": 0}}"
+    NULL,NULL,"{""resolved"":""1590611959605806000.0000000000""}"
     foo,[1],"{""after"": {""a"": 1}}"
+    NULL,NULL,"{""resolved"":""1590611970141415000.0000000000""}"
     ~~~
 
     Note that records may take a couple of seconds to display in the core changefeed.

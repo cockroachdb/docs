@@ -10,8 +10,6 @@ toc: true
 
 <span class="version-tag">New in v19.1:</span> The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
-{% include {{ page.version.version }}/cdc/core-url.md %}
-
 For more information, see [Change Data Capture](change-data-capture.html).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
@@ -19,6 +17,12 @@ For more information, see [Change Data Capture](change-data-capture.html).
 ## Required privileges
 
 Changefeeds can only be created by superusers, i.e., [members of the `admin` role](create-and-manage-users.html). The admin role exists by default with `root` as the member.
+
+## Considerations
+
+Because core changefeeds return results differently than other SQL statements, they require a dedicated database connection with specific settings around result buffering. In normal operation, CockroachDB improves performance by buffering results server-side before returning them to a client; however, result buffering is automatically turned off for core changefeeds. Core changefeeds also have different cancelation behavior than other queries: they can only be canceled by closing the underlying connection or issuing a [`CANCEL QUERY`](cancel-query.html) statement on a separate connection. Combined, these attributes of changefeeds mean that applications should explicitly create dedicated connections to consume changefeed data, instead of using a connection pool as most client drivers do by default.
+
+This cancelation behavior also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a core changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
 
 ## Synopsis
 

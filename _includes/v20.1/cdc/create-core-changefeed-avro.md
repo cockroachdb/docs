@@ -25,10 +25,10 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
+    $ cockroach sql \
+      --format=csv \
+      --insecure
     ~~~
-
-    {% include {{ page.version.version }}/cdc/core-url.md %}
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
@@ -57,13 +57,17 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > EXPERIMENTAL CHANGEFEED FOR bar WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > EXPERIMENTAL CHANGEFEED FOR bar \
+        WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081', resolved = '10s';
     ~~~
 
     ~~~
     table,key,value
     bar,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
+    NULL,NULL,\000\000\000\000\003\002<1590612821682559000.0000000000
     ~~~
+
+    This changefeed will emit [`resolved` timestamps](changefeed-for.html#options) every 10 seconds. Depending on how quickly you insert into your watched table, the output could look different than what is shown here.
 
 9. In a new terminal, add another row:
 
@@ -76,6 +80,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     ~~~
     bar,\000\000\000\000\001\002\002,\000\000\000\000\002\002\002\002
+    NULL,NULL,\000\000\000\000\003\002<1590612831891317000.0000000000
     ~~~
 
     Note that records may take a couple of seconds to display in the core changefeed.
