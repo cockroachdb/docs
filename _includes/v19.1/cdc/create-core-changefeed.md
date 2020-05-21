@@ -19,8 +19,6 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     --format=csv
     ~~~
 
-    {% include {{ page.version.version }}/cdc/core-url.md %}
-
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
 3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):

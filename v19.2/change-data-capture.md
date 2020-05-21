@@ -4,7 +4,7 @@ summary: Change data capture (CDC) provides efficient, distributed, row-level ch
 toc: true
 ---
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing. Change data capture is used for high-latency data exports from CockroachDB to a data warehouse. It is not a low-latency publish-subscribe mechanism.
 
 ## What is change data capture?
 

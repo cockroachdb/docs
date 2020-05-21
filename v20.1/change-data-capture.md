@@ -4,7 +4,7 @@ summary: Change data capture (CDC) provides efficient, distributed, row-level ch
 toc: true
 ---
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing. Change data capture is used for high-latency data exports from CockroachDB to a data warehouse. It is not a low-latency publish-subscribe mechanism.
 
 ## What is change data capture?
 
@@ -409,7 +409,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees \
+        INTO 'kafka://localhost:9092' \
+          WITH resolved = '10s';
     ~~~
     ~~~
 
@@ -419,7 +421,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     (1 row)
     ~~~
 
-    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
+    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka and it will emit [`resolved` timestamps](create-changefeed.html#options) every 10 seconds. Depending on how quickly you insert into your watched tables, the output could look different than what is shown here.
 
 14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
@@ -436,6 +438,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {"after": {"id": 2, "name": "Carl"}}
     {"after": {"id": 1, "name": "Lauren", "rowid": 528514320239329281}}
     {"after": {"id": 2, "name": "Spencer", "rowid": 528514320239362049}}
+    {"resolved":"1590613881923330000.0000000000"}
+    {"resolved":"1590613881923330000.0000000000"}
     ~~~
 
     The initial scan displays the state of the tables as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -591,7 +595,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs_avro (id),
+         dog_id INT REFERENCES office_dogs (id),
          employee_name STRING);
     ~~~
 
@@ -606,7 +610,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees \
+        INTO 'kafka://localhost:9092' \
+          WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081', resolved = '10s';
     ~~~
 
     ~~~
@@ -616,7 +622,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     (1 row)
     ~~~
 
-    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
+    This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka, and it will emit [`resolved` timestamps](create-changefeed.html#options) every 10 seconds. Depending on how quickly you insert into your watched tables, the output could look different than what is shown here.
 
 14. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
@@ -631,8 +637,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~ shell
     {"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
     {"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
-    {"after":{"employees":{"dog_id":{"long":1},"employee_name":{"string":"Lauren"},"rowid":{"long":528537452042682369}}}}
-    {"after":{"employees":{"dog_id":{"long":2},"employee_name":{"string":"Spencer"},"rowid":{"long":528537452042747905}}}}
+    {"resolved":{"string":"1590613448530328000.0000000000"}}
+    {"after":{"employees":{"dog_id":{"long":1},"employee_name":{"string":"Lauren"},"rowid":{"long":558835089014325249}}}}
+    {"after":{"employees":{"dog_id":{"long":2},"employee_name":{"string":"Spencer"},"rowid":{"long":558835089014390785}}}}
+    {"resolved":{"string":"1590613448530328000.0000000000"}}
+    {"resolved":{"string":"1590613458969189000.0000000000"}}
     ~~~
 
     The initial scan displays the state of the table as of when the changefeed started (therefore, the initial value of `"Petee"` is omitted).
@@ -768,7 +777,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'experimental-s3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees \
+        INTO 'experimental-s3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' \
+          WITH updated, resolved='10s';
     ~~~
 
     ~~~
