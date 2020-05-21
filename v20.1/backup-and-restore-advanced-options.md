@@ -141,7 +141,7 @@ And the restored cluster does not have [nodes with the locality](partitioning.ht
 
 ### Create an incremental locality-aware backup
 
-To create an incremental locality-aware backup from a full locality-aware backup, the syntax the same as it is for [regular incremental backups](backup.html#create-incremental-backups), i.e., if you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup in a subdirectory:
+To create an incremental locality-aware backup from a full locality-aware backup, the syntax the same as it is for [regular incremental backups](backup.html#create-incremental-backups). If you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup in a subdirector. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
