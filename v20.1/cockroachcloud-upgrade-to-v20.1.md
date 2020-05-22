@@ -7,6 +7,8 @@ build_for: [cockroachcloud]
 
 Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](cockroachcloud-console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Step 1. Select your cluster size
 
 The upgrade process depends on the number of nodes in your cluster. Select whether your cluster has multiple nodes or a single node:
