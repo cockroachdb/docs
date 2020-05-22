@@ -8,6 +8,57 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Dropping and renaming objects during an upgrade to v20.1.0
+
+{{site.data.alerts.callout_info}}
+This limitation applies only for upgrades to v20.1.0. Upgrades to v20.1.1 and later are not susceptible to this issue.
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/known-limitations/dropping-renaming-during-upgrade.md %}
+
+If your cluster gets into this state, rolling all nodes back to v19.2 will not resolve the issue. Instead, you must do the following:
+
+1. Using `root`, open the [built-in SQL shell](cockroach-sql.html) against a node running v20.1.
+
+1. Select all orphaned namespace rows:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT id, name
+      FROM system.namespace2
+      WHERE id != 29 AND id NOT IN (SELECT id FROM system.descriptor);
+    ~~~
+
+1. Manually verify that each of these IDs correspond to a table, view, sequence, or database that no longer exists.
+
+1. Grant node-level permissions to `root`:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.users VALUES ('node', '', true);
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT node TO root;
+    ~~~
+
+1. For each ID returned by the first query, delete the orphaned namespace rows:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > DELETE FROM system.namespace2 WHERE id = <id>
+    ~~~
+
+1. Revoke node-level permissions:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > REVOKE node FROM root;
+    ~~~
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49092)
+
 ### Primary key changes and zone configs
 
 When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
@@ -173,7 +224,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-  [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Cold starts of large clusters may require manual intervention
 
