@@ -6,8 +6,6 @@ toc: true
 
 This guide shows you how to do common tasks that come up when you build an application using CockroachDB.
 
-For instructions showing how to do a specific task, see the links below.
-
 ## Common Tasks
 
 - [Install a Postgres Client](install-client-drivers.html)
@@ -19,7 +17,10 @@ For instructions showing how to do a specific task, see the links below.
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Make Queries Fast](make-queries-fast.html)
-- ['Hello World' Example Apps](hello-world-example-apps.html)
+
+## Sample Apps and Tutorials
+
+For simple but complete sample apps and tutorials, see [Hello World](hello-world-example-apps.html).
 
 ## See also
 
