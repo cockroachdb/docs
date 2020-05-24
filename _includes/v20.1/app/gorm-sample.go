@@ -146,39 +146,50 @@ func runTransaction(db *gorm.DB, fn txnFunc) error {
 			// We need to cast GORM's db.Error to *pq.Error so we can
 			// detect the Postgres transaction retry error code and
 			// handle retries appropriately.
-			pqErr := err.(*pq.Error)
-			if pqErr.Code == "40001" {
-				// Since this is a transaction retry error, we
-				// ROLLBACK the transaction and sleep a little before
-				// trying again.  Each time through the loop we sleep
-				// for a little longer than the last time
-				// (A.K.A. exponential backoff).
-				txn.Rollback()
-				var sleepMs = math.Pow(2, float64(retries)) * 100 * (rand.Float64() + 0.5)
-				fmt.Printf("Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMs)
-				time.Sleep(time.Millisecond * time.Duration(sleepMs))
-			} else {
-				// If it's not a retry error, it's some other sort of
-				// DB interaction error that needs to be handled by
-				// the caller.
+			switch err.(type) {
+			case *pq.Error:
+				pqErr := err.(*pq.Error)
+				if pqErr.Code == "40001" {
+					// Since this is a transaction retry error, we
+					// ROLLBACK the transaction and sleep a little before
+					// trying again.  Each time through the loop we sleep
+					// for a little longer than the last time
+					// (A.K.A. exponential backoff).
+					txn.Rollback()
+					var sleepMs = math.Pow(2, float64(retries)) * 100 * (rand.Float64() + 0.5)
+					fmt.Printf("Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMs)
+					time.Sleep(time.Millisecond * time.Duration(sleepMs))
+				} else {
+					// If it's not a retry error, it's some other sort of
+					// DB interaction error that needs to be handled by
+					// the caller.
+					return err
+				}
+			default:
 				return err
 			}
 		} else {
 			// All went well, so we try to commit and break out of the
 			// retry loop if possible.
 			if err := txn.Commit().Error; err != nil {
-				pqErr := err.(*pq.Error)
-				if pqErr.Code == "40001" {
-					// However, our attempt to COMMIT could also
-					// result in a retry error, in which case we
-					// continue back through the loop and try again.
-					continue
-				} else {
-					// If it's not a retry error, it's some other sort
-					// of DB interaction error that needs to be
-					// handled by the caller.
+				switch err.(type) {
+				case *pq.Error:
+					pqErr := err.(*pq.Error)
+					if pqErr.Code == "40001" {
+						// However, our attempt to COMMIT could also
+						// result in a retry error, in which case we
+						// continue back through the loop and try again.
+						continue
+					} else {
+						// If it's not a retry error, it's some other sort
+						// of DB interaction error that needs to be
+						// handled by the caller.
+						return err
+					}
+				default:
 					return err
 				}
+				
 			}
 			break
 		}
