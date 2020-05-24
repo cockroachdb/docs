@@ -7,7 +7,7 @@ toc: true
 "Follow-the-workload" refers to CockroachDB's ability to dynamically optimize read latency for the location from which most of the workload is originating. This page explains how "follow-the-workload" works and walks you through a simple demonstration using a local cluster.
 
 {{site.data.alerts.callout_info}}
-In practice, follow-the-workload is somes useful when a CockroachDB cluster is running across multiple regions, with high latency between them, but other patterns are often preferable. For more details, see [Multi-Region Topology Patterns](topology-patterns.html#multi-region-patterns).  
+In practice, follow-the-workload is most useful when a CockroachDB cluster is running across multiple regions, with high latency between them, but other patterns are often preferable. For more details, see [Multi-Region Topology Patterns](topology-patterns.html#multi-region-patterns).  
 {{site.data.alerts.end}}
 
 ## Before you begin
