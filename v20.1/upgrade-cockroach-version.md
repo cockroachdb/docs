@@ -56,14 +56,6 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 
 ### Review temporary limitations
 
-#### Once the upgrade has started
-
-{% include {{ page.version.version }}/known-limitations/dropping-renaming-during-upgrade.md %}
-
-If your cluster gets into this state, rolling all nodes back to v19.2 will not resolve the issue. Instead, you must follow the steps in this [known limitation](known-limitations.html#dropping-and-renaming-objects-during-an-upgrade-to-v20-1-0).
-
-#### Once all nodes are running v20.1
-
 Once all nodes are running v20.1, but before the upgrade has been finalized:
 
 - New [schema changes](online-schema-changes.html) will be blocked and return an error, with the exception of [`CREATE TABLE`](create-table.html) statements without foreign key references and no-op schema change statements that use `IF NOT EXISTS`. Update your application or tooling to prevent disallowed schema changes during this period. Once the upgrade has been finalized, new schema changes can resume.
