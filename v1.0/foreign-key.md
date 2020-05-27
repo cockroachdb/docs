@@ -28,7 +28,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
         - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
         - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
         - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
+    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constrain are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
 
 **Referenced Columns**
 
