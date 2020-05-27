@@ -14,7 +14,7 @@ GSSAPI authentication is an [enterprise-only](enterprise-licensing.html) feature
 
 - A working Active Directory or Kerberos environment
 - A Service Principal
-- A GSSAPI-compatable Postgres Client (psql, etc.)
+- A GSSAPI-compatible Postgres Client (psql, etc.)
 - A client machine with a Kerberos client installed and configured
 
 ## Configuring KDC for CockroachDB
@@ -40,7 +40,7 @@ Example:
 $ ktpass -out postgres.keytab -princ postgres/loadbalancer1.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
-Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  You can do this using the `ktpass` command as well, using the following syntax:
+Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  You can do this using the `ktpass` command, using the following syntax:
 
 {% include copy-clipboard.html %}
 ~~~ shell
