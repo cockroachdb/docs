@@ -956,7 +956,7 @@
                 ]
               },
               {
-                "title": "<code>GRANT &lt;roles&gt;</code> (Enterprise)",
+                "title": "<code>GRANT &lt;roles&gt;</code>",
                 "urls": [
                   "/${VERSION}/grant-roles.html"
                 ]
@@ -1058,7 +1058,7 @@
                 ]
               },
               {
-                "title": "<code>REVOKE &lt;roles&gt;</code> (Enterprise)",
+                "title": "<code>REVOKE &lt;roles&gt;</code>",
                 "urls": [
                   "/${VERSION}/revoke-roles.html"
                 ]

@@ -8,8 +8,8 @@ Roles are SQL groups that contain any number of users and roles as members. To c
 
 - [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE` (Enterprise)](drop-role.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges>`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
@@ -241,13 +241,13 @@ $ cockroach start \
 
 ## See also
 
-- [`CREATE ROLE`](create-role.html)
+- [`CREATE ROLE` (Enterprise)](create-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>` (Enterprise)](revoke-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Manage Users](authorization.html#create-and-manage-users)
 - [Privileges](authorization.html#assign-privileges)

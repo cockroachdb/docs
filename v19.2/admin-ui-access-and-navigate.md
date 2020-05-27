@@ -8,7 +8,7 @@ The built-in Admin UI helps you monitor and troubleshoot CockroachDB by providin
 
 ## Access the Admin UI
 
-For insecure clusters, anyone can access and view the Admin UI. For secure clusters, only authorized users can [access and view the Admin UI](#accessing-the-admin-ui-for-a-secure-cluster).
+For insecure clusters, anyone can access and view the Admin UI. For secure clusters, only authorized users can [access and view the Admin UI](#accessing-the-admin-ui-for-a-secure-cluster). In addition, certain areas of the Admin UI can only be [accessed by `admin` users](admin-ui-overview.html#admin-ui-access).
 
 You can access the Admin UI from any node in the cluster.
 
@@ -19,6 +19,8 @@ If `--http-addr` is not specified when starting a node, the Admin UI is reachabl
 For additional guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
 ### Accessing the Admin UI for a secure cluster
+
+Note that on secure clusters, certain areas of the Admin UI can only be accessed by `admin` users. For details on providing access to users, see [this page](admin-ui-overview.html#admin-ui-access).
 
 On [accessing the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI. For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA. For more information, refer to [Use a UI certificate and key to access the Admin UI](create-security-certificates-custom-ca.html#accessing-the-admin-ui-for-a-secure-cluster).
 

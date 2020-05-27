@@ -345,18 +345,9 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
 
-      You will need this username and password to access the Admin UI in Step 4.
+      You will need this username and password to [access the Admin UI](#step-4-access-the-admin-ui) in Step 4.
 
-4. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
-
-    Assign `roach` to the `admin` role:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > GRANT admin TO roach;
-    ~~~
-
-5. Exit the SQL shell and pod:
+4. Exit the SQL shell and pod:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -372,11 +363,34 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     $ kubectl delete pod cockroachdb-client-secure --context=<cluster-context>
     ~~~
 
-## Step 4. Access the Web UI
+## Step 4. Access the Admin UI
 
-To access the cluster's [Web UI](admin-ui-overview.html):
+To access the cluster's [Admin UI](admin-ui-overview.html):
 
-1. Port-forward from your local machine to a pod in one of your Kubernetes clusters:
+1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
+
+    Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    ~~~
+
+2.  Assign `roach` to the `admin` role (you only need to do this once):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT admin TO roach;
+    ~~~
+
+3. Exit the SQL shell and pod:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+
+4. Port-forward from your local machine to a pod in one of your Kubernetes clusters:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -388,12 +402,12 @@ To access the cluster's [Web UI](admin-ui-overview.html):
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The `port-forward` command must be run on the same machine as the web browser in which you want to view the Web UI. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
+    The `port-forward` command must be run on the same machine as the web browser in which you want to view the Admin UI. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
     {{site.data.alerts.end}}
 
-2. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
+5. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
 
-3. In the UI, check the **Node List** to verify that all nodes are running, and then click the **Databases** tab on the left to verify that `bank` is listed.
+6. In the UI, check the **Node List** to verify that all nodes are running, and then click the **Databases** tab on the left to verify that `bank` is listed.
 
 ## Step 5. Simulate datacenter failure
 

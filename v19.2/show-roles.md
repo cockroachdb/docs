@@ -39,6 +39,6 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 - [`DROP ROLE` (Enterprise)](drop-role.html)
 - [`GRANT <privileges>`](grant.html)
 - [`REVOKE <privileges`](revoke.html)
-- [`GRANT <roles>` (Enterprise)](grant-roles.html)
-- [`REVOKE <roles` (Enterprise)](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <roles>`](revoke-roles.html)
 - [Manage Users](authorization.html#create-and-manage-users)
