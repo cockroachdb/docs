@@ -241,7 +241,7 @@ This command starts a 9-node demo cluster with the `movr` database preloaded, an
 
 ### Try your own scenario
 
-Cockroach demo uses movr database by default but the demo is not limited to that database alone. Feel free to create your own database or `USE defaultdb;` to try out your own use case.
+In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-database.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
 
 ## See also
 

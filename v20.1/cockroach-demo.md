@@ -363,6 +363,10 @@ node 3 has been decommissioned
 node 3 has been recommissioned
 ~~~
 
+### Try your own scenario
+
+In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-database.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
+
 ## See also
 
 - [`cockroach sql`](cockroach-sql.html)
