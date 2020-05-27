@@ -96,7 +96,7 @@ Nodes that have been [decommissioned](remove-nodes.html#how-it-works) will be li
 <img src="{{ 'images/v20.1/admin-ui-decommissioned-nodes.png' | relative_url }}" alt="CockroachDB Admin UI node list" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down.
+When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
 {{site.data.alerts.end}}
 
 ## Node Map (Enterprise)

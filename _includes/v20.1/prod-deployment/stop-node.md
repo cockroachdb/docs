@@ -1,0 +1,3 @@
+- If the node was started with a process manager like [systemd](https://www.freedesktop.org/wiki/Software/systemd/), stop the node using the process manager. The process manager should be configured to send `SIGTERM` and then, after about 1 minute, `SIGKILL`.
+- If the node was started using [`cockroach start`](cockroach-start.html) and is running in the foreground, press `ctrl-c` in the terminal.
+- If the node was started using [`cockroach start`](cockroach-start.html) and the `--background` and `--pid-file` flags, run `kill <pid>`, where `<pid>` is the process ID of the node.

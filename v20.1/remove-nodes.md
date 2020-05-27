@@ -9,7 +9,7 @@ This page shows you how to decommission one or more nodes. Decommissioning a nod
 You might do this, for example, when downsizing a cluster or reacting to hardware failures.
 
 {{site.data.alerts.callout_info}}
-In other scenarios, such as when [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or performing planned maintenance (e.g., upgrading system software), you will want to temporarily stop the node—as described in the steps below—without marking the node for decommissioning, and restart it later.
+Node decommissioning should not be performed when [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or performing planned maintenance (e.g., upgrading system software). In these scenarios, you will want to temporarily [stop the node](stop-a-node.html) and restart it later.
 {{site.data.alerts.end}}
 
 ## Overview
@@ -19,11 +19,11 @@ In other scenarios, such as when [upgrading your cluster's version of CockroachD
 A node is considered to be decommissioned when it meets two criteria:
 
 1. The node has completed the decommissioning process.
-2. The node has been stopped and has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
+2. The node has been stopped and has not [updated its liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for 5 minutes.
 
 The decommissioning process transfers all range replicas on the node to other nodes. During and after this process, the node is considered "decommissioning" and continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. For this reason, the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so load balancers can continue directing traffic to the node.
 
-After all range replicas have been transferred, it's typical to stop the node via a process manager or orchestration tool, or by sending `SIGTERM` manually. When stopped, the node is drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status response code so that load balancers stop directing traffic to the node. At this point, the node is decommissioned.
+After all range replicas have been transferred, it's typical to stop the node via a process manager or orchestration tool, or by sending `SIGTERM` manually. When stopped, the node is drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status response code so that load balancers stop directing traffic to the node. At this point the node stops updating its liveness record, and after 5 minutes is considered to be decommissioned.
 
 You can [check the status of node decommissioning](#check-the-status-of-decommissioning-nodes) with the CLI.
 
@@ -44,7 +44,7 @@ If you try to decommission a node, the process will hang indefinitely because th
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 {{site.data.alerts.callout_info}}
-Adding a 4th node to the cluster at this point will not enable the decommissioning process to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
+While the decommissioning process is hung, adding a 4th node to the cluster will not enable it to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
 {{site.data.alerts.end}}
 
 To successfully decommission a node in this cluster, you need to first add a 4th node. The decommissioning process can then complete:
@@ -72,7 +72,7 @@ If you try to decommission a node, the cluster will successfully rebalance all r
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 {{site.data.alerts.callout_info}}
-Adding a 6th node to the cluster at this point will not enable the decommissioning process to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
+While the decommissioning process is hung, adding a 6th node to the cluster will not enable it to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
 {{site.data.alerts.end}}
 
 To successfully decommission a node in this cluster, you need to first add a 6th node. The decommissioning process can then complete:
@@ -112,7 +112,7 @@ In the Admin UI, click **Metrics** on the left, select the **Replication** dashb
 
 ### Step 3. Start the decommissioning process on the node
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](cockroach-node.html) command with the ID of the node to decommission:
+Run the [`cockroach node decommission`](cockroach-node.html) command with the ID of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -170,14 +170,7 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 Stop the node using one of the following methods:
 
-- If the node was started with a process manager like [systemd](https://www.freedesktop.org/wiki/Software/systemd/), stop the node using the process manager. The process manager should be configured to send `SIGTERM` and then, after about 1 minute, `SIGKILL`.
-- If the node was started using [`cockroach start`](cockroach-start.html) and is running in the foreground, press `ctrl-c` in the terminal.
-- If the node was started using [`cockroach start`](cockroach-start.html) and the `--background` and `--pid-file` flags, run `kill` together with the node's process ID that was written to file:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    kill <pid>
-    ~~~
+{% include {{ page.version.version }}/prod-deployment/stop-node.md %}
 
 After about 5 minutes, you'll see the stopped node listed under **Recently Decommissioned Nodes**:
 
@@ -208,7 +201,7 @@ Open the Admin UI and scroll to the [**Node List**](admin-ui-cluster-overview-pa
 
 ### Step 2. Mark the dead node as decommissioned
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](cockroach-node.html) command with the ID of the node to officially decommission:
+Run the [`cockroach node decommission`](cockroach-node.html) command with the ID of the node to officially decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -274,7 +267,7 @@ In the Admin UI, click **Metrics** on the left, select the **Replication** dashb
 
 ### Step 3. Start the decommissioning process on the nodes
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](cockroach-node.html) command with the IDs of the nodes to decommission:
+Run the [`cockroach node decommission`](cockroach-node.html) command with the IDs of the nodes to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -334,14 +327,7 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 Stop each node using one of the following methods:
 
-- If the node was started with a process manager like [systemd](https://www.freedesktop.org/wiki/Software/systemd/), stop the node using the process manager. The process manager should be configured to send `SIGTERM` and then, after about 1 minute, `SIGKILL`.
-- If the node was started using [`cockroach start`](cockroach-start.html) and is running in the foreground, press `ctrl-c` in the terminal.
-- If the node was started using [`cockroach start`](cockroach-start.html) and the `--background` and `--pid-file` flags, run `kill` together with the node's process ID that was written to file:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    kill <pid>
-    ~~~
+{% include {{ page.version.version }}/prod-deployment/stop-node.md %}
 
 After about 5 minutes, you'll see the stopped nodes listed under **Recently Decommissioned Nodes**:
 
@@ -368,9 +354,18 @@ Open the Admin UI and scroll to the [**Node List**](admin-ui-cluster-overview-pa
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
 
-### Step 2. Recommission the nodes
+### Step 2. Remove the data directories of the nodes
 
-SSH to one of the live nodes and execute the [`cockroach node recommission`](cockroach-node.html) command with the IDs of the nodes to recommission:
+Nodes must be recommissioned as new nodes. To ensure this, remove the data directories of the nodes to recommission:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ rm -rf node4
+~~~
+
+### Step 3. Recommission the nodes
+
+Execute the [`cockroach node recommission`](cockroach-node.html) command with the IDs of the nodes to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}

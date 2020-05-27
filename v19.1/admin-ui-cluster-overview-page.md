@@ -55,7 +55,7 @@ Down Since | How long the node has been down.
 
 Nodes that have been decommissioned for removal from the cluster are listed in the **Decommissioned Nodes** table.
 
-When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down.
+When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
 
 ## Node Map (Enterprise)
 
