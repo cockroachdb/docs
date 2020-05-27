@@ -24,7 +24,7 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach cert create-client <username>
+    $ cockroach cert create-client <username> \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
