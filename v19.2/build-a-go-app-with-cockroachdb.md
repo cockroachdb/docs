@@ -1,5 +1,5 @@
 ---
-title: Build a Go App with CockroachDB the Go pg Driver
+title: Build a Go App with CockroachDB the Go pq Driver
 summary: Learn how to use CockroachDB from a simple Go application with the Go pq driver.
 toc: true
 twitter: false
@@ -10,7 +10,7 @@ twitter: false
     <a href="build-a-go-app-with-cockroachdb-gorm.html"><button class="filter-button">Use <strong>GORM</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Go application with CockroachDB and the Go pg driver.
+This tutorial shows you how build a simple Go application with CockroachDB and the Go pq driver.
 
 We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
