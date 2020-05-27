@@ -244,17 +244,17 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT id, name FROM users WHERE city = 'chicago';
+> SELECT id, name FROM users WHERE city = 'san francisco';
 ~~~
 
 ~~~
                    id                  |       name
-+--------------------------------------+------------------+
+---------------------------------------+-------------------
+  75c28f5c-28f5-4400-8000-000000000017 | William Wood
+  7ae147ae-147a-4000-8000-000000000018 | Alfred Garcia
   80000000-0000-4000-8000-000000000019 | Matthew Clay
   851eb851-eb85-4000-8000-00000000001a | Samantha Coffey
   8a3d70a3-d70a-4000-8000-00000000001b | Jessica Martinez
-  8f5c28f5-c28f-4000-8000-00000000001c | John Hines
-  947ae147-ae14-4800-8000-00000000001d | Kenneth Barnes
 (5 rows)
 ~~~
 
@@ -301,18 +301,18 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 ~~~
 
 ~~~
-            code            |                                                                                                   description                                                                                                    |                    rules
-+---------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
-  a_blue_member             | Yard send you end kitchen. High politics only support certainly. Reflect these agree travel bag myself. Month data magazine its trade water reality.                                                             | {"type": "percent_discount", "value": "10%"}
-  a_down_man                | EXPIRED                                                                                                                                                                                                          | {"type": "percent_discount", "value": "0%"}
-  ability_until_student     | Set hot parent statement organization charge. Wide new bag easy note each trial. Act compare information marriage. Through they speech top.                                                                      | {"type": "percent_discount", "value": "10%"}
-  about_mission_pull        | Main serious education economy situation turn. Away senior realize evidence. Far himself against look. Husband skin pick within. Sense garden sister draw theory remain.                                         | {"type": "percent_discount", "value": "10%"}
-  about_stuff_city          | Skill sing rich glass store whatever teach.                                                                                                                                                                      | {"type": "percent_discount", "value": "10%"}
-  accept_gas_hundred        | Listen much get art popular.                                                                                                                                                                                     | {"type": "percent_discount", "value": "10%"}
-  accept_resource_something | EXPIRED                                                                                                                                                                                                          | {"type": "percent_discount", "value": "0%"}
-  according_share_door      | Region difference letter now huge next any. Nothing hotel gas election hospital hope give. Capital can address look. Window off beyond success couple PM as hair. Side who understand indeed future system vote. | {"type": "percent_discount", "value": "10%"}
-  account_interest_next     | EXPIRED                                                                                                                                                                                                          | {"type": "percent_discount", "value": "0%"}
-  act_even_camera           | EXPIRED                                                                                                                                                                                                          | {"type": "percent_discount", "value": "0%"}
+             code            | description |                    rules
+-----------------------------+-------------+----------------------------------------------
+  0_explain_theory_something | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  100_address_garden_certain | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  101_system_skin_night      | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  102_card_professional_kid  | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  103_now_project_focus      | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  104_long_become_prove      | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  105_republican_guess_arm   | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  106_court_especially_plan  | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  107_she_matter_ten         | EXPIRED     | {"type": "percent_discount", "value": "0%"}
+  108_wind_marriage_for      | EXPIRED     | {"type": "percent_discount", "value": "0%"}
 (10 rows)
 ~~~
 
