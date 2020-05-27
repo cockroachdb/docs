@@ -190,7 +190,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Phantom Reads, Non-repeatable reads, Wite skew</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Phantom Reads, Non-repeatable reads, Write skew</span>
       <span class="support " data-dbs='["MongoDB"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write skew</span>
       <span class="support " data-dbs='["Cassandra"]'>Dirty Reads, Phantom Reads, Non-repeatable reads, write conflicts</span>
       <span class="support " data-dbs='["Spanner"]'>None</span>
