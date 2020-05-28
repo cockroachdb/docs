@@ -7,4 +7,4 @@ exclude:
 - "ci"
 - "scripts"
 - "vendor"
-- "hackathon.md"
+- "archived"
