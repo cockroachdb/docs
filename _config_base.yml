@@ -63,7 +63,8 @@ exclude:
 - "scripts"
 - "vendor"
 - "jekyll-algolia-dev"
-- "hackathon.md"
+- "archived"
+
 
 keep_files: [_internal]
 
@@ -83,4 +84,3 @@ algolia:
     - index.html
     - index.md
     - search.html
-    - "**/training/*.*"

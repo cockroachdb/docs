@@ -13,6 +13,9 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/advisories/ /docs/advisories/index.html 200!
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
 
+# Old training pages redirect to Cockroach University
+/docs/*/training/* https://university.cockroachlabs.com 301!
+
 # CockroachCloud page renames
 /docs/cockroachcloud/stable/managed-authentication.html /docs/cockroachcloud/stable/cockroachcloud-authentication.html 301!
 /docs/cockroachcloud/dev/managed-authentication.html /docs/cockroachcloud/dev/cockroachcloud-authentication.html 301!
