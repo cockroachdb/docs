@@ -170,7 +170,7 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 Stop the node using one of the following methods:
 
-{% include {{ page.version.version }}/prod-deployment/stop-node.md %}
+{% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
 After about 5 minutes, you'll see the stopped node listed under **Recently Decommissioned Nodes**:
 
@@ -327,7 +327,7 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 Stop each node using one of the following methods:
 
-{% include {{ page.version.version }}/prod-deployment/stop-node.md %}
+{% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
 After about 5 minutes, you'll see the stopped nodes listed under **Recently Decommissioned Nodes**:
 

@@ -7,9 +7,9 @@ key: stop-a-node.html
 ---
 
 {{site.data.alerts.callout_danger}}
-We no longer recommend using `cockroach quit` to stop nodes.
+`cockroach quit` will be deprecated in v20.2. To stop a node:
 
-{% include {{ page.version.version }}/prod-deployment/stop-node.md %}
+{% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 {{site.data.alerts.end}}
 
 This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart. 
