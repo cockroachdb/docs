@@ -8,6 +8,7 @@ CockroachDB's support of the PostgreSQL wire protocol enables support for many [
 
 {% include {{page.version.version}}/misc/tooling.md %}
 
-## See Also
+## See also
 
 - [Build an App with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Install a Postgres Client](install-client-drivers.html)
