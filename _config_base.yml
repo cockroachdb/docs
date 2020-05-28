@@ -49,12 +49,12 @@ release_info:
     docker_image: cockroachdb/cockroach
     build_time: 2020/05/26 11:00:26 (go1.13.4)
     start_time: 2020-05-26 11:01:26.34274101 +0000 UTC
-  # v20.2:
-  #   name: v20.2.0
-  #   version: v20.2.0
-  #   docker_image: cockroachdb/cockroach-unstable
-  #   build_time: 2020/05/12 11:00:26 (go1.13.4)
-  #   start_time: 2020-05-12 11:01:26.34274101 +0000 UTC
+  v20.2:
+    name: v20.2.0
+    version: v20.2.0-alpha.1
+    docker_image: cockroachdb/cockroach-unstable
+    build_time: 2020/05/12 11:00:26 (go1.13.4)
+    start_time: 2020-05-12 11:01:26.34274101 +0000 UTC
 
 
 include: ["_redirects"]
