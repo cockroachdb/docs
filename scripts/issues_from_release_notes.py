@@ -37,6 +37,8 @@ milestone = args.milestone
 # Map milestones to their internal IDs.
 if milestone == "20.2":
     milestone = 18
+if milestone == "20.1.x":
+    milestone = 22
 if milestone == "20.1":
     milestone = 17
 if milestone == "19.2.x":
