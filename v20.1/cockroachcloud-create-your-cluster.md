@@ -38,7 +38,7 @@ For optimal performance, select the cloud provider region in which you are runni
 Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
 {{site.data.alerts.end}}
 
-**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to technical limitations that we are actively trying to resolve:
+**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to GCP's technical limitations:
 
 - `asia-northeast2`
 - `europe-north1`
@@ -77,7 +77,7 @@ See [Example](#example) for further guidance.
 
 The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
-After entering the cluster name, click **Continue to Payment**.
+After entering the cluster name, click **Next**.
 
 ## Step 6. Enter your billing details
 
@@ -88,12 +88,11 @@ After entering the cluster name, click **Continue to Payment**.
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
 3. Add your preferred [payment method](cockroachcloud-console-access-management.html#manage-billing-for-the-organization).
-4. (Optional) If you have received a trial code, enter the code in the **Trial code** box.
+4. If you haven't used it yet, enter the code `CRDB30` in the **Trial code** box for a 30-day trial of CockroachCloud and click **Apply**.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster](cockroachcloud-cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}
-5. Check the **I agree to Cockroach Labs Terms of Service and Privacy Policy** box.
-6. Click **Create cluster**.
+5. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.
 
