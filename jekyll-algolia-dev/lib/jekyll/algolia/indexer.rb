@@ -304,13 +304,6 @@ module Jekyll
         settings = Configurator.settings
         setting_id = local_setting_id
 
-        versions = Configurator.config['versions']
-        stable_version = versions['stable']
-        dev_version = versions['dev']
-
-        Logger.log("Stable version: #{stable_version}")
-        Logger.log("Dev version: #{dev_version}")
-
         are_settings_forced = Configurator.force_settings?
 
         # The config we're about to push is the same we pushed previously. We
