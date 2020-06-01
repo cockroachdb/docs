@@ -78,7 +78,7 @@ curl \
   "https://api.github.com/repos/cockroachdb/docs/issues/$BUILD_BRANCH/comments"
 
 # Step 5. Run vale, but don't fail the build if it reports errors.
-run vale --no-wrap v19.2 || true
+run vale --no-wrap v20.1 || true
 
 # Step 6. Run htmltest, but skip checking external links to speed things up.
 run htmltest --skip-external
