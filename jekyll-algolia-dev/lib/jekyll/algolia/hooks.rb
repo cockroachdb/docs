@@ -57,14 +57,15 @@ module Jekyll
 
         if filepath.start_with?(stable_version)
           # Do not exclude from index if files are part of stable version
-          false
+          Logger.log("Do not exclude stable version: #{stable_version} from indexing")
+          return false
         elsif filepath.start_with?(dev_version)
           # Do exclude dev version from index if a stable version exists
-          has_stable_version?(filepath, dev_version, stable_version)
+          return has_stable_version?(filepath, dev_version, stable_version)
         else
           # For all cases that do not fall into the above two categories,
           # do exclude
-          true
+          return true
         end
       end
 
