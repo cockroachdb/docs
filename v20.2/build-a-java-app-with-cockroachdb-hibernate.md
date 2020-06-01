@@ -9,6 +9,7 @@ twitter: false
     <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button">Use <strong>JDBC</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button current">Use <strong>Hibernate</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button">Use <strong>jOOQ</strong></button></a>
+    <a href="build-a-spring-app-with-cockroachdb-mybatis.html"><button class="filter-button">Use <strong>MyBatis-Spring</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.

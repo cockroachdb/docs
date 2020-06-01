@@ -9,6 +9,7 @@ twitter: false
     <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button">Use <strong>JDBC</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button">Use <strong>Hibernate</strong></button></a>
     <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button current">Use <strong>jOOQ</strong></button></a>
+    <a href="build-a-spring-app-with-cockroachdb-mybatis.html"><button class="filter-button">Use <strong>MyBatis-Spring</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Java application with CockroachDB and [jOOQ](https://www.jooq.org/).
@@ -17,6 +18,10 @@ CockroachDB is supported in jOOQ [Professional and Enterprise editions](https://
 
 {{site.data.alerts.callout_success}}
 For another use of jOOQ with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+For Java applications that use the Spring framework, see the applications listed under [Java/Spring](build-a-spring-app-with-cockroachdb-mybatis.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
