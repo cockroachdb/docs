@@ -23,6 +23,8 @@ module Jekyll
             unordered(content)
             collection,categories,tags
           ],
+          # Special characters to index
+          'separatorsToIndex' => '@>',
           # Custom Ranking
           'customRanking' => [
             'desc(date)',
