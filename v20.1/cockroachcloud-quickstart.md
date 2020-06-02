@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-This page shows you how to create a 30-day free CockroachCloud cluster, connect to a sample application, and run your first query.
+This page shows you how to create and connect to a 30-day free CockroachCloud cluster and run your first query.
 
 ## Before you begin
 
@@ -49,7 +49,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 1. In the left navigation bar, click **Networking**.
 2. Click **Add Network**. The **Add Network** modal displays.
-3. From the **Network** dropdown, select **Public (Insecure)** to allow all networks, use `0.0.0.0/0`.
+3. From the **Network** dropdown, select **Public (Insecure)** to allow all networks.
 
      {{site.data.alerts.callout_info}}
      Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
@@ -58,18 +58,16 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 4. To allow the network to access the cluster's Admin UI and to use the CockroachDB client to access the databases, select the **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
-## Step 3. Get the connection string
+### Step 3. Get the connection string
 
 1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
-2. The `trial_user` is selected by default.
-3. The `us-west2 GCP` region is selected by default.
-4. Use the default database (`default_db`).
-5. Click **Continue**. The **Connect** tab is displayed.
-6. Click **Connection string**. Then click **Copy**.
+2. The `trial_user`, `us-west2 GCP` region, and `default_db` database are selected by default.
+3. Click **Continue**. The **Connect** tab is displayed.
+4. Click **Connection string** to get the connection string for your cluster.
 
-## Step 4. Connect to the cluster and run your first query
+## Connect to the cluster and run your first query
 
-On your local machine:
+For this quickstart, we will use the [`movr` workload](movr.html) to run the first query. On your local machine:
 
 1. [Download the CockroachDB binary](install-cockroachdb.html):
 
@@ -101,7 +99,9 @@ On your local machine:
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-3-get-the-connection-string). In the connection string, replace `<password>` with `trial_password` and the `ca.crt` path placeholder with `sslmode-require`:
+3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-3-get-the-connection-string).
+
+    In the connection string, replace `<password>` with `trial_password` and the `ca.crt` path placeholder with `sslmode-require`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -116,7 +116,7 @@ On your local machine:
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SHOW TABLES FROM movr;
     ~~~
 
@@ -135,7 +135,7 @@ On your local machine:
 5. Run your first query:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SELECT * FROM movr.users WHERE city='new york';
     ~~~
 
@@ -153,4 +153,5 @@ On your local machine:
 
 ## What's next
 
+- [Secure your cluster](cockroachcloud-security-overview.html)
 - [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
