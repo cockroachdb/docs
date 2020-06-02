@@ -325,7 +325,8 @@ module Jekyll
         # Settings have changed, we push them
         settings['userData'] = {
           'settingID' => setting_id,
-          'pluginVersion' => VERSION
+          'pluginVersion' => VERSION,
+          'separatorsToIndex' => '@>'
         }
 
         Logger.log("I:Updating settings of index #{index.name}")
