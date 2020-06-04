@@ -4,6 +4,12 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "Quickstart",
+        "urls": [
+          "/${VERSION}/cockroachcloud-quickstart.html"
+        ]
+      },
+      {
         "title": "Create Your Account",
         "urls": [
           "/${VERSION}/cockroachcloud-create-your-account.html"

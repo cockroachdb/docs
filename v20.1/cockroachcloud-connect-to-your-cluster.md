@@ -47,7 +47,7 @@ Use the Console to authorize networks:
 
     The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
 
-7. Click **Save**.
+7. Click **Apply**.
 
 ## Step 2. Create a SQL user
 
@@ -65,7 +65,7 @@ Use the Console to authorize networks:
     {{site.data.alerts.callout_info}}
     Password must be at least 12 characters long.
     {{site.data.alerts.end}}
-4. Click **Create**.
+4. Click **Save**.
 
     Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
@@ -359,4 +359,5 @@ Start by choosing the [Java JBDC driver](https://jdbc.postgresql.org/) or [Hiber
 
 ## What's next
 
+- [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
