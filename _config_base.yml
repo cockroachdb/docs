@@ -1,79 +1,86 @@
-algolia:
-  application_id: 7RXZLDVR5F
-  files_to_exclude:
-  - index.html
-  - index.md
-  - search.html
-  - '**/training/*.*'
-  index_name: cockroachcloud_docs
-  search_api_key: 372a10456f4ed7042c531ff3a658771b
-defaults:
-- scope:
-    path: ''
-    type: pages
-  values:
-    layout: page
-exclude:
-- ci
-- scripts
-- vendor
-- jekyll-algolia-dev
-- hackathon.md
-include:
-- _redirects
-keep_files:
-- _internal
-markdown: Redcarpet
+site_title: CockroachDB Docs
+url: "https://www.cockroachlabs.com"
+
 plugins:
 - jekyll-sitemap
+
+markdown: Redcarpet
+
 release_info:
   v1.0:
-    build_time: 2017/02/13 15:13:51 (go1.8.3)
-    docker_image: cockroachdb/cockroach
     name: v1.0.7
-    start_time: 2017-02-13 13:33:22.046027038 -0400 EDT
     version: v1.0.7
+    docker_image: cockroachdb/cockroach
+    build_time: 2017/02/13 15:13:51 (go1.8.3)
+    start_time: 2017-02-13 13:33:22.046027038 -0400 EDT
   v1.1:
-    build_time: 2018/10/01 14:48:26 (go1.8.3)
-    docker_image: cockroachdb/cockroach
     name: v1.1.9
-    start_time: 2018-10-01 15:10:52.34274101 +0000 UTC
     version: v1.1.9
-  v19.1:
-    build_time: 2020/05/12 14:48:26 (go1.11.6)
     docker_image: cockroachdb/cockroach
-    name: v19.1.9
-    start_time: 2020-05-12 15:10:52.34274101 +0000 UTC
-    version: v19.1.9
-  v19.2:
-    build_time: 2020/05/20 11:00:26 (go1.12.12)
-    docker_image: cockroachdb/cockroach
-    name: v19.2.7
-    start_time: 2020-05-20 11:01:26.34274101 +0000 UTC
-    version: v19.2.7
+    build_time: 2018/10/01 14:48:26 (go1.8.3)
+    start_time: 2018-10-01 15:10:52.34274101 +0000 UTC
   v2.0:
-    build_time: 2018/12/10 14:48:26 (go1.10)
-    docker_image: cockroachdb/cockroach
     name: v2.0.7
-    start_time: 2018-12-10 15:10:52.34274101 +0000 UTC
     version: v2.0.7
+    docker_image: cockroachdb/cockroach
+    build_time: 2018/12/10 14:48:26 (go1.10)
+    start_time: 2018-12-10 15:10:52.34274101 +0000 UTC
   v2.1:
-    build_time: 2019/01/29 14:48:26 (go1.10.3)
-    docker_image: cockroachdb/cockroach
     name: v2.1.11
-    start_time: 2019-01-29 15:10:52.34274101 +0000 UTC
     version: v2.1.11
-  v20.1:
-    build_time: 2020/05/26 11:00:26 (go1.13.4)
     docker_image: cockroachdb/cockroach
+    build_time: 2019/01/29 14:48:26 (go1.10.3)
+    start_time: 2019-01-29 15:10:52.34274101 +0000 UTC
+  v19.1:
+    name: v19.1.9
+    version: v19.1.9
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/05/12 14:48:26 (go1.11.6)
+    start_time: 2020-05-12 15:10:52.34274101 +0000 UTC
+  v19.2:
+    name: v19.2.7
+    version: v19.2.7
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/05/20 11:00:26 (go1.12.12)
+    start_time: 2020-05-20 11:01:26.34274101 +0000 UTC
+  v20.1:
     name: v20.1.1
-    start_time: 2020-05-26 11:01:26.34274101 +0000 UTC
     version: v20.1.1
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/05/26 11:00:26 (go1.13.4)
+    start_time: 2020-05-26 11:01:26.34274101 +0000 UTC
   v20.2:
-    build_time: 2020/05/12 11:00:26 (go1.13.4)
-    docker_image: cockroachdb/cockroach-unstable
     name: v20.2.0-alpha.1
-    start_time: 2020-05-12 11:01:26.34274101 +0000 UTC
     version: v20.2.0-alpha.1
-site_title: CockroachDB Docs
-url: https://www.cockroachlabs.com
+    docker_image: cockroachdb/cockroach-unstable
+    build_time: 2020/05/12 11:00:26 (go1.13.4)
+    start_time: 2020-05-12 11:01:26.34274101 +0000 UTC
+
+
+include: ["_redirects"]
+exclude:
+- "ci"
+- "scripts"
+- "vendor"
+- "jekyll-algolia-dev"
+- "archived"
+
+
+keep_files: [_internal]
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+
+algolia:
+  application_id: 7RXZLDVR5F
+  search_api_key: 372a10456f4ed7042c531ff3a658771b
+  index_name: cockroachcloud_docs
+  files_to_exclude:
+    - index.html
+    - index.md
+    - search.html
