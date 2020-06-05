@@ -808,7 +808,7 @@ $ cockroach start-single-node --insecure --socket-dir=/tmp
 
 ~~~
 CockroachDB node starting at 2020-04-22 15:07:17.232326 +0000 UTC (took 0.9s)
-build:               CCL v20.1.0 @ 2020/04/22 13:54:06 (go1.13.4)
+build:               CCL v20.2.0 @ 2020/06/02 13:54:06 (go1.13.4)
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
 RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --insecure

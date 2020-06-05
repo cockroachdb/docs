@@ -8,7 +8,7 @@ A column family is a group of columns in a table that are stored as a single key
 
 This page explains how CockroachDB organizes columns into families as well as cases in which you might want to manually override the default behavior.
 
- [Secondary indexes](indexes.html) respect the column family definitions applied to tables. When you define a secondary index, CockroachDB breaks the secondary index key-value pairs into column families, according to the family and stored column configurations. In versions prior to v20.1, all secondary indexes store values in a single column family.
+ [Secondary indexes](indexes.html) respect the column family definitions applied to tables. When you define a secondary index, CockroachDB breaks the secondary index key-value pairs into column families, according to the family and stored column configurations.
 
 ## Default behavior
 

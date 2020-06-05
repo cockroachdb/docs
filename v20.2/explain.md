@@ -355,7 +355,7 @@ Note that the data is processed in the local browser session and is never sent o
 When you visit the URL above you should see the following output in your browser.
 
 ~~~
--- Version: CockroachDB CCL v20.1.0 (x86_64-apple-darwin19.3.0, built 2020/03/31 16:16:33, go1.13.4)
+-- Version: CockroachDB CCL v20.2.0 (x86_64-apple-darwin19.3.0, built 2020/05/31 16:16:33, go1.13.4)
 
 -- reorder_joins_limit has the default value: 4
 -- enable_zigzag_join has the default value: on

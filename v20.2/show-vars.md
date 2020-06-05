@@ -74,7 +74,7 @@ Special syntax cases supported for compatibility:
   bytea_output                             | hex
   client_encoding                          | UTF8
   client_min_messages                      | notice
-  crdb_version                             | CockroachDB OSS v20.1.0
+  crdb_version                             | CockroachDB OSS v20.2.0
   database                                 | movr
   datestyle                                | ISO, MDY
   default_int_size                         | 8

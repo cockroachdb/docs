@@ -1,6 +1,6 @@
-When upgrading from v19.2.x to v20.1.0, as soon as any node of the cluster has run v20.1.0, it is important to avoid dropping, renaming, or truncating tables, views, sequences, or databases on the v19.2 nodes. This is true even in cases where nodes were upgraded to v20.1.0 and then rolled back to v19.2.
+When upgrading from v20.1.x to v20.2.0, as soon as any node of the cluster has run v20.2.0, it is important to avoid dropping, renaming, or truncating tables, views, sequences, or databases on the v20.1 nodes. This is true even in cases where nodes were upgraded to v20.2.0 and then rolled back to v20.1.
 
-In this case, avoid running the following operations against v19.2 nodes:
+In this case, avoid running the following operations against v20.1 nodes:
 
 - [`DROP TABLE`](drop-table.html), [`TRUNCATE TABLE`](truncate.html), [`RENAME TABLE`](rename-table.html)
 - [`DROP VIEW`](drop-view.html)

@@ -316,7 +316,7 @@ The last phase of the migration process is to change the [transactional behavior
 
 ### Transactions, locking, and concurrency control
 
-Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. In CockroachDB v20.1 and later, the [`SELECT FOR UPDATE`](select-for-update.html) statement is also supported.
+Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`](select-for-update.html) statement is also supported in CockroachDB.
 
 Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
 
