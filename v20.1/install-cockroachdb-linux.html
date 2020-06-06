@@ -129,12 +129,24 @@ key: install-cockroachdb.html
           <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
         </tr>
         <tr>
+          <td>Terminfo dev libraries</td>
+          <td>libncurses-dev on Debian/Ubuntu and ncurses-devel on CentOS.</td>
+        </tr>
+        <tr>
           <td>Go</td>
           <td>Version 1.13.5+ is required, but 1.14 and above is not recommended. Older versions might work via <code>make build IGNORE_GOVERS=1</code>.</td>
         </tr>
         <tr>
+          <td>Git</td>
+          <td>Versions 1.9+ are preferred, but we recommend versions 2.20+.</td>
+        </tr>
+        <tr>
           <td>Bash</td>
           <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
+        </tr>
+        <tr>
+          <td>GNU Make</td>
+          <td>Versions 3.81+ are known to work, but we recommend versions 4+.</td>
         </tr>
         <tr>
           <td>CMake</td>
@@ -144,6 +156,19 @@ key: install-cockroachdb.html
           <td>Autoconf</td>
           <td>Version 2.68 or higher is required.</td>
         </tr>
+        <tr>
+          <td>NodeJS</td>
+          <td>Versions 12+ are known to work.</td>
+        </tr>
+        <tr>
+          <td>Yarn</td>
+          <td>Versions 1.7+ are known to work.</td>
+        </tr>
+        <tr>
+          <td>Yacc or Bison</td>
+          <td>Bison is upward compatible with Yacc and recommended</td>
+        </tr>
+
       </table>
       <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
     </li>
