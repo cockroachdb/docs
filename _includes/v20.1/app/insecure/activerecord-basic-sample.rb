@@ -6,7 +6,7 @@ gemfile do
   gem 'activerecord', '5.2.0'
 
   # CockroachDB ActiveRecord adapter dependency
-  gem 'activerecord-cockroachdb-adapter', '5.2.0.beta2'
+  gem 'activerecord-cockroachdb-adapter', '5.2.0'
 end
 
 require 'pg'
