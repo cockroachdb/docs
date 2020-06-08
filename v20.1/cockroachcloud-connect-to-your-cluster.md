@@ -18,7 +18,7 @@ Use the Console to authorize networks:
 
 1. Navigate to your cluster's **Networking** page.
 
-    The **Networking** page displays a list of authorized networks (i.e., an IP network whitelist) that can access the cluster.
+    The **Networking** page displays a list of authorized networks (i.e., an IP network allowlist) that can access the cluster.
 
     <img src="{{ 'images/v19.2/cockroachcloud/networking.png' | relative_url }}" alt="Networking page" style="border:1px solid #eee;max-width:100%" />
 

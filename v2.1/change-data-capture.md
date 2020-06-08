@@ -18,7 +18,7 @@ CDC is an [enterprise-only](enterprise-licensing.html). There will be a core ver
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target a whitelist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format (JSON or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+The core feature of CDC is the [changefeed](create-changefeed.html). Changefeeds target an allowlist of tables, called the "watched rows". Every change to a watched row is emitted as a record in a configurable format (JSON or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
 ## Ordering guarantees
 
