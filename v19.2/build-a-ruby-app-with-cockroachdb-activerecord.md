@@ -12,6 +12,8 @@ twitter: false
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and the ActiveRecord ORM.
 
+We have tested the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html) enough to claim **beta-level** support in CockroachDB v19.2. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+
 {{site.data.alerts.callout_success}}
 For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}

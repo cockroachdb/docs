@@ -248,7 +248,7 @@ For a simple but complete "Hello World" example app, see [Build a Ruby App with 
 
 ### ActiveRecord
 
-**Support level:** Full
+**Support level:** Beta
 
 To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
