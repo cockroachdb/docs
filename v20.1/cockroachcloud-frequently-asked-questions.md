@@ -13,7 +13,7 @@ This page answers the frequently asked questions.
 
 Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless whitelisted for SQL and Web UI ports.
 
-The whitelist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from a whitelisted IP address, which protects against both compromised passwords and any potential bugs in the server.
+The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from a whitelisted IP address, which protects against both compromised passwords and any potential bugs in the server.
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
