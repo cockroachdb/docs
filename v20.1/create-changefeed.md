@@ -18,7 +18,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
 ## Considerations
 
-- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](change-data-capture.html#orderding-guarantees).
+- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](change-data-capture.html#ordering-guarantees).
 
 ## Synopsis
 
