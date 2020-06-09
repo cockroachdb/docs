@@ -100,7 +100,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE user-name = 'mroach';
+> SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE user_name = 'mroach';
 ~~~
 
 ~~~
