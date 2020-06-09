@@ -16,6 +16,7 @@ Subcommand | Usage
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | Decommission nodes for removal from the cluster. See [Decommission Nodes](remove-nodes.html) for more details.
 `recommission` | Recommission nodes that have been decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
+`drain` | Drain nodes of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries, and prevent ranges from rebalancing onto the node. This is usually done prior to [stopping the node](cockroach-quit.html).
 
 ## Synopsis
 
@@ -73,6 +74,12 @@ Recommission nodes:
 $ cockroach node recommission <node IDs> <flags>
 ~~~
 
+Drain nodes:
+
+~~~ shell
+$ cockroach node drain <flags>
+~~~
+
 View help:
 
 ~~~ shell
@@ -113,6 +120,12 @@ The `node decommission` subcommand also supports the following general flag:
 Flag | Description
 -----|------------
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
+
+The `node drain` subcommand also supports the following general flag:
+
+Flag | Description
+-----|------------
+`--drain-wait` | Amount of time to wait for the node to drain before returning to the client. <br><br>**Default:** `10m`
 
 ### Client connection
 

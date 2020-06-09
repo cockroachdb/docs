@@ -7,7 +7,7 @@ key: stop-a-node.html
 ---
 
 {{site.data.alerts.callout_danger}}
-`cockroach quit` will be deprecated in v20.2. To stop a node:
+`cockroach quit` is no longer recommended, and will be deprecated in v20.2. To stop a node, it's best to first run [`cockroach node drain`](cockroach-node.html) and then do one of the following:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 {{site.data.alerts.end}}
@@ -65,6 +65,7 @@ The `quit` command supports the following [general-use](#general), [client conne
 Flag | Description
 -----|------------
 `--decommission` | If specified, the node will be removed from the cluster instead of temporarily stopped. <br><br><span class="version-tag">Changed in v20.1:</span> The `--decommission` flag is deprecated. If you want to remove a node from the cluster, start with the [`cockroach node decommission`](cockroach-node.html) command. See [Decommission Nodes](remove-nodes.html) for more details.
+`--drain-wait` | Amount of time to wait for the node to drain before stopping the node. See [`cockroach node drain`](cockroach-node.html) for more details.<br><br>**Default:** `10m`
 
 ### Client connection
 

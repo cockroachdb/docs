@@ -60,6 +60,7 @@ The `quit` command supports the following [general-use](#general), [client conne
 Flag | Description
 -----|------------
 `--decommission` | If specified, the node will be removed from the cluster instead of temporarily stopped. See [Remove Nodes](remove-nodes.html) for more details.
+`--drain-wait` | Amount of time to wait for the node to drain before stopping the node. See [`cockroach node drain`](cockroach-node.html) for more details.<br><br>**Default:** `10m`
 
 ### Client connection
 
