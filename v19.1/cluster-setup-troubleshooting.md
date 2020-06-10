@@ -434,8 +434,9 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 
 ## Something else?
 
-If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
 
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

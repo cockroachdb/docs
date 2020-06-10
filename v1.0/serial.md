@@ -8,8 +8,7 @@ The `SERIAL` [data type](data-types.html) is a column data type that, on insert,
 
 {{site.data.alerts.callout_info}}
 We believe this data type is a better solution than PostgreSQL's <code>SERIAL</code> and MySQL's <code>AUTO_INCREMENT</code> types, both of which auto-increment integers but not necessarily in a strictly sequential fashion (see the <a href="#auto-incrementing-is-not-always-sequential"> Auto-Incrementing Is Not Always Sequential </a> example below). However, if you find that this feature is incompatible with your application, please <a href="https://github.com/cockroachdb/cockroach/issues">open an
-issue</a> or <a href="https://gitter.im/cockroachdb/cockroach">chat
-with us on Gitter</a>.
+issue</a>.
 {{site.data.alerts.end}}
 
 

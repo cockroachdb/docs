@@ -162,7 +162,9 @@ For more details, see the [Managed CockroachDB](../cockroachcloud/stable/) docs.
 
 ## Have questions that weren’t answered?
 
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [File a support ticket](https://support.cockroachlabs.com): Contact CockroachDB support privately.
-- [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
-- [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
+
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

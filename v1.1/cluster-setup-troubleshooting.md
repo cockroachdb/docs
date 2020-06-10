@@ -188,6 +188,7 @@ If data is not being replicated to some nodes in the cluster, we recommend check
 
 If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

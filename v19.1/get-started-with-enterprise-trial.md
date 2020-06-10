@@ -46,7 +46,7 @@ Your cluster now has access to all of CockroachDB's enterprise features for the 
 
 ## Getting help
 
-If you or your team need any help during your trial, our engineers are available on [Gitter](https://gitter.im/cockroachdb/cockroach), [our forum](https://forum.cockroachlabs.com/), or [GitHub](https://github.com/cockroachdb/cockroach).</p>
+If you or your team need any help during your trial, our engineers are available on [CockroachDB Community Slack](https://cockroachdb.slack.com), [our forum](https://forum.cockroachlabs.com/), or [GitHub](https://github.com/cockroachdb/cockroach).</p>
 
 ## See also
 
