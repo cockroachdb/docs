@@ -87,7 +87,6 @@ Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 `delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**.
 `comment`              | `CSV DATA `     | The unicode character that identifies rows to skip.
 `strict_quotes`        | `CSV DATA`      | Use if CSV import files have quotes (`""`) within rows to prevent multiple rows from being treated as single rows. **Default:** Off
-`experimental_save_rejected` | `CSV DATA` | Skip faulty rows during import and save them in a file called `<original_csv_file>.rejected`. Once the rows are fixed, use this file with [`IMPORT INTO`](import-into.html) to finish the import. **Default:** Off
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
@@ -97,6 +96,9 @@ Key                 | Context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
 `fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally.
+
+<!-- 
+`experimental_save_rejected` | `CSV DATA` | Skip faulty rows during import and save them in a file called `<original_csv_file>.rejected`. Once the rows are fixed, use this file with [`IMPORT INTO`](import-into.html) to finish the import. **Default:** Off -->
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
