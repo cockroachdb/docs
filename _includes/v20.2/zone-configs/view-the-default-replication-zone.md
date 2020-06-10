@@ -7,8 +7,8 @@
      target     |              raw_config_sql
 +---------------+------------------------------------------+
   RANGE default | ALTER RANGE default CONFIGURE ZONE USING
-                |     range_min_bytes = 16777216,
-                |     range_max_bytes = 67108864,
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
                 |     gc.ttlseconds = 90000,
                 |     num_replicas = 3,
                 |     constraints = '[]',

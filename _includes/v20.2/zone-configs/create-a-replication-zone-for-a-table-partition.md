@@ -49,8 +49,8 @@ To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FOR
                     target                    |                             raw_config_sql
 +---------------------------------------------+------------------------------------------------------------------------+
   PARTITION us_west OF INDEX vehicles@primary | ALTER PARTITION us_west OF INDEX vehicles@primary CONFIGURE ZONE USING
-                                              |     range_min_bytes = 16777216,
-                                              |     range_max_bytes = 67108864,
+                                              |     range_min_bytes = 134217728,
+                                              |     range_max_bytes = 536870912,
                                               |     gc.ttlseconds = 90000,
                                               |     num_replicas = 5,
                                               |     constraints = '[+region=us-west1]',

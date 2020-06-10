@@ -333,8 +333,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
              target        |                           raw_config_sql
     +----------------------+--------------------------------------------------------------------+
       DATABASE west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
-                           |     range_min_bytes = 16777216,
-                           |     range_max_bytes = 67108864,
+                           |     range_min_bytes = 134217728,
+                           |     range_max_bytes = 536870912,
                            |     gc.ttlseconds = 90000,
                            |     num_replicas = 3,
                            |     constraints = '{+region=us-central1: 1, +region=us-west1: 2}',
@@ -423,8 +423,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
            target      |               raw_config_sql
     +------------------+---------------------------------------------+
       DATABASE app1_db | ALTER DATABASE app1_db CONFIGURE ZONE USING
-                       |     range_min_bytes = 16777216,
-                       |     range_max_bytes = 67108864,
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
                        |     gc.ttlseconds = 90000,
                        |     num_replicas = 5,
                        |     constraints = '[]',
@@ -459,8 +459,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
            target      |               raw_config_sql
     +------------------+---------------------------------------------+
       DATABASE app2_db | ALTER DATABASE app2_db CONFIGURE ZONE USING
-                       |     range_min_bytes = 16777216,
-                       |     range_max_bytes = 67108864,
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
                        |     gc.ttlseconds = 90000,
                        |     num_replicas = 3,
                        |     constraints = '[+datacenter=us-2]',
@@ -550,7 +550,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     +-------------------------------+---------------------------------------------+
          TABLE db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
                                     |     range_min_bytes = 1048576,
-                                    |     range_max_bytes = 67108864,
+                                    |     range_max_bytes = 536870912,
                                     |     gc.ttlseconds = 90000,
                                     |     num_replicas = 5,
                                     |     constraints = '[+ssd]',
@@ -620,8 +620,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
          target     |              raw_config_sql
     +---------------+------------------------------------------+
       RANGE default | ALTER RANGE default CONFIGURE ZONE USING
-                    |     range_min_bytes = 16777216,
-                    |     range_max_bytes = 67108864,
+                    |     range_min_bytes = 134217728,
+                    |     range_max_bytes = 536870912,
                     |     gc.ttlseconds = 90000,
                     |     num_replicas = 5,
                     |     constraints = '[]',
@@ -646,8 +646,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
         target   |            raw_config_sql
     +------------+---------------------------------------+
       RANGE meta | ALTER RANGE meta CONFIGURE ZONE USING
-                 |     range_min_bytes = 16777216,
-                 |     range_max_bytes = 67108864,
+                 |     range_min_bytes = 134217728,
+                 |     range_max_bytes = 536870912,
                  |     gc.ttlseconds = 3600,
                  |     num_replicas = 7,
                  |     constraints = '[]',
@@ -672,8 +672,8 @@ There's no need to make zone configuration changes; by default, the cluster is c
            target      |               raw_config_sql
     +------------------+---------------------------------------------+
       RANGE timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
-                       |     range_min_bytes = 16777216,
-                       |     range_max_bytes = 67108864,
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
                        |     gc.ttlseconds = 90000,
                        |     num_replicas = 3,
                        |     constraints = '[]',
