@@ -10,9 +10,7 @@ twitter: false
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button current">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB and ActiveRecord.
-
-CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter). 
+This tutorial shows you how build a simple Ruby application with CockroachDB and [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 
 {{site.data.alerts.callout_success}}
 For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
@@ -22,13 +20,33 @@ For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see ou
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
+## Step 1. Install PostgreSQL
+
+[`pg`](ttps://github.com/ged/ruby-pg) and [`activerecord`](https://guides.rubyonrails.org/active_record_postgresql.html) are both dependencies of `activerecord-cockroachdb-adapter`. Both libraries require a [PostgreSQL](https://www.postgresql.org/) installation.
+
+To install PostgreSQL from source code, follow [the instructions on their documentation website](https://www.postgresql.org/docs/current/installation.html).
+
+You can also use a package manager to install PostgreSQL. For example, to install PostgreSQL on macOS, run the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ brew install postgresql
+~~~
+
+To install PostgreSQL on a Debian-based Linux distribution (e.g., Ubuntu), run the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ apt-get install postgresql
+~~~
+
 <section class="filter-content" markdown="1" data-scope="secure">
 
-## Step 1. Create the `maxroach` user and `bank` database
+## Step 2. Create the `maxroach` user and `bank` database
 
 {% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
 
-## Step 2. Generate a certificate for the `maxroach` user
+## Step 3. Generate a certificate for the `maxroach` user
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
@@ -37,7 +55,7 @@ Create a certificate and key for the `maxroach` user by running the following co
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
 
-## Step 3. Run the Ruby code
+## Step 4. Run the Ruby code
 
 The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
@@ -91,11 +109,11 @@ Then, issue the following statement:
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-## Step 1. Create the `maxroach` user and `bank` database
+## Step 2. Create the `maxroach` user and `bank` database
 
 {% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
 
-## Step 2. Run the Ruby code
+## Step 3. Run the Ruby code
 
 The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to database tables. Specifically, `Schema.new.change()` creates an `accounts` table based on the `Account` model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
