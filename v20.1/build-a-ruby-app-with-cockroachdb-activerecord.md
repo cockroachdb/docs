@@ -1,6 +1,6 @@
 ---
 title: Build a Ruby App with CockroachDB and ActiveRecord
-summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
+summary: Learn how to use CockroachDB from a simple Ruby script with the ActiveRecord gem.
 toc: true
 twitter: false
 ---
@@ -10,28 +10,35 @@ twitter: false
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button current">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB and the ActiveRecord ORM.
+This tutorial shows you how build a simple Ruby application with CockroachDB and [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 
 {{site.data.alerts.callout_success}}
-For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-## Step 1. Install the ActiveRecord ORM
+## Step 1. Install PostgreSQL
 
-To install ActiveRecord as well as the [pg driver](https://rubygems.org/gems/pg) and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
+[`pg`](ttps://github.com/ged/ruby-pg) and [`activerecord`](https://guides.rubyonrails.org/active_record_postgresql.html) are both dependencies of `activerecord-cockroachdb-adapter`. Both libraries require a [PostgreSQL](https://www.postgresql.org/) installation.
+
+To install PostgreSQL from source code, follow [the instructions on their documentation website](https://www.postgresql.org/docs/current/installation.html).
+
+You can also use a package manager to install PostgreSQL. For example, to install PostgreSQL on macOS, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ gem install activerecord pg activerecord-cockroachdb-adapter
+$ brew install postgresql
 ~~~
 
-{{site.data.alerts.callout_info}}
-The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter.
-{{site.data.alerts.end}}
+To install PostgreSQL on a Debian-based Linux distribution (e.g., Ubuntu), run the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ apt-get install postgresql
+~~~
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -50,7 +57,7 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 
 ## Step 4. Run the Ruby code
 
-The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
+The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/activerecord-basic-sample.rb" download>download it directly</a>.
@@ -70,10 +77,10 @@ $ ruby activerecord-basic-sample.rb
 The output should be:
 
 ~~~ shell
--- create_table(:accounts, {:force=>true})
-   -> 0.0361s
-1 1000
-2 250
+-- create_table(:accounts, {:force=>true, :id=>:integer})
+   -> 0.0883s
+account: 1 balance: 1000
+account: 2 balance: 250
 ~~~
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
@@ -91,12 +98,10 @@ Then, issue the following statement:
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
+  id | balance
+-----+----------
+   1 |    1000
+   2 |     250
 (2 rows)
 ~~~
 
@@ -110,7 +115,7 @@ Then, issue the following statement:
 
 ## Step 3. Run the Ruby code
 
-The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
+The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to database tables. Specifically, `Schema.new.change()` creates an `accounts` table based on the `Account` model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/activerecord-basic-sample.rb" download>download it directly</a>.
@@ -120,7 +125,7 @@ Copy the code or
 {% include {{page.version.version}}/app/insecure/activerecord-basic-sample.rb %}
 ~~~
 
-Then run the code:
+Then run the code (no need to run bundler first):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -130,10 +135,10 @@ $ ruby activerecord-basic-sample.rb
 The output should be:
 
 ~~~ shell
--- create_table(:accounts, {:force=>true})
-   -> 0.0361s
-1 1000
-2 250
+-- create_table(:accounts, {:force=>true, :id=>:integer})
+   -> 0.0883s
+account: 1 balance: 1000
+account: 2 balance: 250
 ~~~
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
@@ -151,12 +156,10 @@ Then, issue the following statement:
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
+  id | balance
+-----+----------
+   1 |    1000
+   2 |     250
 (2 rows)
 ~~~
 
@@ -164,6 +167,6 @@ Then, issue the following statement:
 
 ## What's next?
 
-Read more about using the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+Read more about using [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{page.version.version}}/app/see-also-links.md %}

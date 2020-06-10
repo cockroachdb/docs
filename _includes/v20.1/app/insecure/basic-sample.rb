@@ -20,9 +20,9 @@ conn.exec('INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)')
 puts 'Initial balances:'
 conn.exec('SELECT id, balance FROM accounts') do |res|
   res.each do |row|
-    puts row
+    puts "id: #{row['id']} balance: #{row['balance']}"
   end
 end
 
-# Close communication with the database.
+# Close the database connection.
 conn.close()
