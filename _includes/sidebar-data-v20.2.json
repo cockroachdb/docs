@@ -745,6 +745,9 @@
       },
       {
         "title": "Third-Party Database Tools",
+        "urls": [
+          "/${VERSION}/third-party-database-tools.html"
+        ],
         "items": [
           {
             "title": "DBeaver GUI",
