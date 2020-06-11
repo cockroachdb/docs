@@ -6,7 +6,7 @@ set -euo pipefail
 # day of the week and incremental backups when run on other days, and tracks
 # recently created backups in a file to pass as the base for incremental backups.
 
-what=""                                           # Leave empty for full cluster backup, or add "DATABASE database_name" to backup a database.
+what=""                                           # Leave empty for cluster backup, or add "DATABASE database_name" to backup a database.
 base="<storage_URL>/backups"                      # The URL where you want to store the backup.
 extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
 recent=recent_backups.txt                         # File in which recent backups are tracked.

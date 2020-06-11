@@ -120,7 +120,7 @@ Table with a [sequence](create-sequence.html) | The sequence.
 
 ### Users and privileges
 
-To restore your users and privilege [grants](grant.html), you can do a full cluster backup and restore the cluster to a fresh cluster with no user data.
+To restore your users and privilege [grants](grant.html), you can do a cluster backup and restore the cluster to a fresh cluster with no user data.
 
 If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
 
