@@ -35,7 +35,7 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 
 ### Slow query logs
 
- Another useful [cluster setting](cluster-settings.html) is `sql.log.slow_query.latency_threshold`, which is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
+The `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -43,6 +43,10 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 ~~~
 
 Each node that serves as a gateway will then record slow SQL queries to a `cockroach-sql-slow` log file. Use the symlink `cockroach-sql-slow.log` to open the most recent log. For more details on logging slow queries, see [Using the slow query log](query-behavior-troubleshooting.html#using-the-slow-query-log).
+
+{{site.data.alerts.callout_info}}
+Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables tracing on all queries, which impacts performance. After debugging, set the value back to `0s` to disable the log.
+{{site.data.alerts.end}}
 
 Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
@@ -100,7 +104,11 @@ I200219 05:02:18.152863 1037 sql/pgwire/auth.go:327  [n1,client,local,user=root]
 I200219 05:02:18.154168 1036 sql/pgwire/conn.go:216  [n1,client,local,user=root] 20 session terminated; duration: 5.261538ms
 ~~~
 
-For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`. Note that both logs perform one disk I/O per event and will impact performance.
+For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`. 
+
+{{site.data.alerts.callout_info}}
+Be aware that both logs perform one disk I/O per event and will impact performance when enabled.
+{{site.data.alerts.end}}
 
 For more details on authentication and certificates, see [Authentication](authentication.html).
 
