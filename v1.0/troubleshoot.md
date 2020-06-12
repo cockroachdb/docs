@@ -96,9 +96,9 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## Something Else?
 
-If we do not have an solution here, you can try:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
-- **Send Us Feedback**: In the **Was this page helpful?** section below, click **No**, and then send us details about your issue.
-
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

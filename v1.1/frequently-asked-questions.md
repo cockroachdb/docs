@@ -168,8 +168,9 @@ Not yet, but this is on our long-term roadmap.
 
 ## Have questions that weren’t answered?
 
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
-- [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
-- [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
 
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)
