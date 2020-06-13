@@ -13,14 +13,14 @@ If you haven't already, [sign up for a CockroachCloud account](https://cockroach
 
 ## Create a free CockroachCloud cluster
 
-For this quickstart, we will create a 3-node GCP cluster in the `us-west` region.
+For this tutorial, we will create a 3-node GCP cluster in the `us-west` region.
 
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 2. On the **Overview** page, click **Create Cluster**.
 3. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 4. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
 5. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
-6. For **Cluster name**,  enter `free-trial` in the text box.
+6. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 7. Click **Next**.
 8. On the **Summary** page, enter your credit card details.
 
@@ -41,8 +41,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 1. In the left navigation bar, click **SQL Users**.
 2. Click **Add User**. The **Add User** modal displays.
-3. For **Username**, enter `trial_user`.
-4. For **Password**, enter `trial_password`.
+3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
 ### Step 2. Authorize your network
@@ -61,13 +60,14 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 ### Step 3. Get the connection string
 
 1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
-2. The `trial_user`, `us-west2 GCP` region, and `default_db` database are selected by default.
-3. Click **Continue**. The **Connect** tab is displayed.
-4. Click **Connection string** to get the connection string for your cluster.
+2. From the **User** dropdown, select the SQL user you created in [Step 1. Create a SQL user](#step-1-create-a-sql-user).
+3. Verify that the `us-west2 GCP` region and `default_db` database are selected.
+4. Click **Continue**. The **Connect** tab is displayed.
+5. Click **Connection string** to get the connection string for your cluster.
 
 ## Connect to the cluster and run your first query
 
-For this quickstart, we will use the [`movr` workload](movr.html) to run the first query. On your local machine:
+For this tutorial, we will use the [`movr` workload](movr.html) to run the first query. On your local machine:
 
 1. [Download the CockroachDB binary](install-cockroachdb.html):
 
@@ -101,18 +101,22 @@ For this quickstart, we will use the [`movr` workload](movr.html) to run the fir
 
 3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-3-get-the-connection-string).
 
-    In the connection string, replace `<password>` with `trial_password` and the `ca.crt` path placeholder with `sslmode-require`:
+    In the connection string, the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 1](#step-1-create-a-sql-user). For this tutorial, replace the `ca.crt` path placeholder with `sslmode=require`.
+
+    {{site.data.alerts.callout_info}}
+    If you are using the cluster in production, use the `sslmode=verify-full` mode. For details, see [Node identity verification](cockroachcloud-authentication.html#node-identity-verification).
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init movr 'postgres://trial_user:trial_password@<global host>:26257/movr?sslmode=require'
+    $ cockroach workload init movr 'postgres://<username>:<password>@<global host>:26257/movr?sslmode=require'
     ~~~
 
 4. Use the built-in SQL client to view the database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url='postgres://trial_user:trial_password@<global host>:26257/movr?sslmode=require'
+    $ cockroach sql --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=require'
     ~~~
 
     {% include copy-clipboard.html %}
@@ -150,6 +154,10 @@ For this quickstart, we will use the [`movr` workload](movr.html) to run the fir
       19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
     (6 rows)
     ~~~
+
+## Before you move into production
+
+Before using your free cluster in production, make sure you have [authorized your network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). Also, download the `ca.crt` file on every machine from which you want to [connect to the cluster](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method) and reference it in the connection string.
 
 ## What's next
 
