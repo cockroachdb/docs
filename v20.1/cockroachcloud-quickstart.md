@@ -48,12 +48,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 1. In the left navigation bar, click **Networking**.
 2. Click **Add Network**. The **Add Network** modal displays.
-3. From the **Network** dropdown, select **Public (Insecure)** to allow all networks.
-
-     {{site.data.alerts.callout_info}}
-     Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
-     {{site.data.alerts.end}}
-
+3. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
 4. To allow the network to access the cluster's Admin UI and to use the CockroachDB client to access the databases, select the **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
@@ -64,6 +59,10 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 3. Verify that the `us-west2 GCP` region and `default_db` database are selected.
 4. Click **Continue**. The **Connect** tab is displayed.
 5. Click **Connection string** to get the connection string for your cluster.
+6. Create a `certs` directory on your local workstation.
+7. Click the name of the `ca.crt` file to download the CA certificate to your local machine.
+8. Move the downloaded `ca.crt` file to the `certs` directory.
+
 
 ## Connect to the cluster and run your first query
 
@@ -101,22 +100,18 @@ For this tutorial, we will use the [`movr` workload](movr.html) to run the first
 
 3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-3-get-the-connection-string).
 
-    In the connection string, the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 1](#step-1-create-a-sql-user). For this tutorial, replace the `ca.crt` path placeholder with `sslmode=require`.
-
-    {{site.data.alerts.callout_info}}
-    If you are using the cluster in production, use the `sslmode=verify-full` mode. For details, see [Node identity verification](cockroachcloud-authentication.html#node-identity-verification).
-    {{site.data.alerts.end}}
+    In the connection string, the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 1](#step-1-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 3](#step-3-get-the-connection-string).
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init movr 'postgres://<username>:<password>@<global host>:26257/movr?sslmode=require'
+    $ cockroach workload init movr 'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
 4. Use the built-in SQL client to view the database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=require'
+    $ cockroach sql --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
     {% include copy-clipboard.html %}
@@ -157,7 +152,7 @@ For this tutorial, we will use the [`movr` workload](movr.html) to run the first
 
 ## Before you move into production
 
-Before using your free cluster in production, make sure you have [authorized your network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). Also, download the `ca.crt` file on every machine from which you want to [connect to the cluster](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method) and reference it in the connection string.
+Before using your free cluster in production, make sure you have [authorized the network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method).
 
 ## What's next
 
