@@ -103,7 +103,7 @@ Use the Console to authorize networks:
 
 7. Click the name of the **ca.crt** file to download the CA certificate.
 
-8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect the cluster and referenced in connection string.
+8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect to the cluster and must be referenced in connection string.
 
     You will need to replace the `<certs_dir>` placeholders with the path to your certs directory in the CockroachDB client command or the connection string.
 

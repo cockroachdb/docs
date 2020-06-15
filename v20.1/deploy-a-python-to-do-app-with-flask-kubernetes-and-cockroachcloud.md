@@ -35,47 +35,31 @@ Before you connect to your CockroachCloud cluster, you need to authorize your ne
 
 Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to authorize your network:
 
-1. Navigate to your cluster's **Networking** page.
-2. Click the **Add Network** button in the top right corner.
-
-    The **Add Network** modal displays.
-
-    <img src="{{ 'images/v20.1/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:100%" />
-
+1. In the left navigation bar, click **Networking**.
+2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.
 3. (Optional) Enter a descriptive name for the network.
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
-5. Select both networks: **UI** and **SQL** client.
+5. Select both networks: **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
+    The **Admin UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
 
-6. Click **Save**.
+6. Click **Apply**.
 
 ### Step 2. Create a SQL user
 
 {% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
-2. Click the **Add User** button in the top right corner.
-
-    The **Add User** modal displays.
-
-    <img src="{{ 'images/v20.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
-
-3. In the **Username** field, enter `maxroach`.
-4. In the **Password** field, enter `Q7gc8rEdS`.
-5. Click **Create**.
+2. Click the **Add User** button in the top right corner. The **Add User** modal displays.
+3. Enter a **Username** and **Password**.
+4. Click **Save**.
 
     Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 
-1. In the top right corner of the Console, click the **Connect** button.
-
-    The **Connect** modal displays.
-
-    <img src="{{ 'images/v20.1/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:100%" />
-
-3. From the **User** dropdown, select `maxroach`.
+1. In the top right corner of the Console, click the **Connect** button. The **Connect** modal displays.
+3. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
 4. Select a **Region** to connect to.
 5. From the **Database** dropdown, select `defaultdb`.
 6. Create a `certs` directory on your local workstation.
@@ -133,15 +117,10 @@ On your local workstation's terminal:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url 'postgres://maxroach@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    $ cockroach sql --url 'postgres://<username>@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-4. Enter the password you created for `maxroach`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    Q7gc8rEdS
-    ~~~
+4. Enter the password you created for the SQL user in [Step 2](#step-2-create-a-sql-user).
 
 5. Create a database `todos`:
 
@@ -180,7 +159,7 @@ On your local workstation's terminal:
 
         <img src="{{ 'images/v20.1/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
 
-  2. From the **User** dropdown, select `maxroach`.
+  2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
   5. On the **Connect Your App** tab, click **Copy connection string**.
@@ -214,7 +193,7 @@ In a new terminal:
 
     {% include copy-clipboard.html %}
     ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -278,7 +257,7 @@ Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ kubectl create secret generic maxroach-secret --from-file <absolute path to the CA certificate>
+$ kubectl create secret generic <username>-secret --from-file <absolute path to the CA certificate>
 ~~~
 
 Verify the Kubernetes secret was created:
@@ -291,7 +270,7 @@ $ kubectl get secrets
 ~~~ shell
 NAME                  TYPE                                  DATA   AGE
 default-token-875zk   kubernetes.io/service-account-token   3      75s
-maxroach-secret       Opaque                                1      10s
+<username>-secret       Opaque                                1      10s
 ~~~
 
 ### Step 3. Change certificate directory path in configuration file
@@ -300,7 +279,7 @@ In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate d
 
 {% include copy-clipboard.html %}
 ~~~
-SQLALCHEMY_DATABASE_URI = 'cockroachdb://maxroach:Q7gc8rEdS@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -358,7 +337,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 5. Deploy the application
 
-1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file:
+1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file. Replace the `<username>` placeholder with the SQL user's username that you created  [while preparing the cluster](#step-2-create-a-sql-user):
 
     {% include copy-clipboard.html %}
     ~~~
@@ -393,7 +372,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
           volumes:
           - name: ca-certs
             secret:
-              secretName: maxroach-secret
+              secretName: <username>-secret
     ---
     apiVersion: v1
     kind: Service
@@ -492,10 +471,8 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 1. On the Console, navigate to the cluster's **Monitoring** page and click **Open Admin UI**.
 
     You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
-
-2. In the **Username** field, enter `maxroach`.
-3. In the **Password** field, enter `Q7gc8rEdS`.
-4. Click **Log In**.
+2. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
+3. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
