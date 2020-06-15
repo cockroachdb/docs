@@ -47,9 +47,13 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - Avoid using shared storage such as NFS, CIFS, and CEPH storage.
 
-- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300 GB - 2 TB.
+- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300 GiB - 2 TiB.
 
-    Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+    {{site.data.alerts.callout_info}}
+    Depending on the workload, you may be able to store more than 2 TiB per node. In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended. For more information about this test, see [Node density testing configuration](#node-density-testing-configuration).
+    {{site.data.alerts.end}}
+
+- Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
 - To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
@@ -60,6 +64,22 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
 
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
+
+##### Node density testing configuration
+
+In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended.
+
+These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
+
+Results:
+
+| Value                 | Result          |
+|-----------------------+-----------------|
+| vCPU per Node         | 16              |
+| Logical Data per Node | 4.32 TiB        |
+| RAM per Node          | 32 GiB          |
+| Data per Core         | ~270 GiB / vCPU |
+| Data per RAM          | ~135 GiB / GiB  |
 
 ### Cloud-specific recommendations
 
