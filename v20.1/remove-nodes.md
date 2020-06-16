@@ -43,11 +43,7 @@ If you try to decommission a node, the process will hang indefinitely because th
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-{{site.data.alerts.callout_info}}
-While the decommissioning process is hung, adding a 4th node to the cluster will not enable it to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
-{{site.data.alerts.end}}
-
-To successfully decommission a node in this cluster, you need to first add a 4th node. The decommissioning process can then complete:
+To successfully decommission a node in this cluster, you need to add a 4th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -70,10 +66,6 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-{{site.data.alerts.callout_info}}
-While the decommissioning process is hung, adding a 6th node to the cluster will not enable it to complete. You can [recommission](#recommission-nodes) the node to return it to a healthy state.
-{{site.data.alerts.end}}
 
 To successfully decommission a node in this cluster, you need to first add a 6th node. The decommissioning process can then complete:
 
@@ -163,7 +155,7 @@ Return to the [**Node List**](admin-ui-cluster-overview-page.html#node-list) on 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 {{site.data.alerts.callout_success}}
-Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) will be `DECOMMISSIONING` until you stop the node.
+Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
 {{site.data.alerts.end}}
 
 ### Step 5. Stop the decommissioning node
@@ -202,7 +194,7 @@ After the duration configured via [`server.time_until_store_dead`](cluster-setti
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-At this point, the node is decommissioned and will no longer appear in timeseries graphs unless you view a time range during which the node was live. However, it will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
+At this point, the node is `DECOMMISSIONED` and will no longer appear in timeseries graphs unless you view a time range during which the node was live. However, it will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
 
 ## Remove a single node (dead)
 
@@ -252,7 +244,7 @@ Within 5 minutes, you'll see the node move from the Node List to the **Recently 
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-At this point, the node is decommissioned and will no longer appear in timeseries graphs unless you view a time range during which the node was live. However, it will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
+At this point, the node is `DECOMMISSIONED` and will no longer appear in timeseries graphs unless you view a time range during which the node was live. However, it will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
 
 {{site.data.alerts.callout_info}}
 If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then restart the node so that it accepts new SQL connections.
@@ -342,7 +334,7 @@ Return to the [**Node List**](admin-ui-cluster-overview-page.html#node-list) on 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 {{site.data.alerts.callout_success}}
-Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) will be `DECOMMISSIONING` until you stop the node.
+Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
 {{site.data.alerts.end}}
 
 ### Step 5. Stop the decommissioning nodes
@@ -381,7 +373,7 @@ After the duration configured via [`server.time_until_store_dead`](cluster-setti
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-At this point, the nodes are decommissioned and will no longer appear in timeseries graphs unless you view a time range during which the nodes were live. However, they will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
+At this point, the nodes are `DECOMMISSIONED` and will no longer appear in timeseries graphs unless you view a time range during which the nodes were live. However, they will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
 
 {{site.data.alerts.callout_info}}
 If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then restart the node so that it accepts new SQL connections.
@@ -473,4 +465,4 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 ## See also
 
 - [`cockroach start`](cockroach-start.html)
-- [Admin UI Cluster Overview page](admin-ui-cluster-overview-page.html)
+- [Node status](admin-ui-cluster-overview-page.html#node-status)

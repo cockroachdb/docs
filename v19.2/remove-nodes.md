@@ -43,11 +43,7 @@ If you try to decommission a node, the process will hang indefinitely because th
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-{{site.data.alerts.callout_info}}
-While the decommissioning process is hung, adding a 4th node to the cluster will not enable it to complete. you can [recommission](#recommission-nodes) the node to return it to a healthy state.
-{{site.data.alerts.end}}
-
-To successfully decommission a node in this cluster, you need to first add a 4th node. The decommissioning process can then complete:
+To successfully decommission a node in this cluster, you need to add a 4th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -71,11 +67,7 @@ If you try to decommission a node, the cluster will successfully rebalance all r
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-{{site.data.alerts.callout_info}}
-While the decommissioning process is hung, adding a 6th node to the cluster will not enable it to complete. you can [recommission](#recommission-nodes) the node to return it to a healthy state.
-{{site.data.alerts.end}}
-
-To successfully decommission a node in this cluster, you need to first add a 6th node. The decommissioning process can then complete:
+To successfully decommission a node in this cluster, you need to add a 6th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -163,6 +155,10 @@ In the Admin UI **Replication** dashboard, again hover over the **Replicas per S
 Then view **Node List** on the **Overview** page and make sure all nodes but the decommissioning node are healthy (green):
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+
+{{site.data.alerts.callout_success}}
+The node is counted as a "Suspect" node in the Admin UI [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until it is shut down.
+{{site.data.alerts.end}}
 
 ### Step 5. Stop the decommissioning node
 
@@ -324,6 +320,10 @@ In the Admin UI **Replication** dashboard, again hover over the **Replicas per S
 Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the decommissioning nodes have 0 replicas:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.2/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+
+{{site.data.alerts.callout_success}}
+The nodes are counted as "Suspect" nodes in the Admin UI [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until they are shut down.
+{{site.data.alerts.end}}
 
 ### Step 5. Stop the decommissioning nodes
 
