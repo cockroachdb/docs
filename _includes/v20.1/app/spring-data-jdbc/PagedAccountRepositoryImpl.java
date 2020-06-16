@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 @Repository
-// @Transactional is not needed but here for clarity since we want repos to always be called from a tx context
+// @Transactional annotation here to emphasise that repositories should always be called within an existing transaction context
 @Transactional(propagation = MANDATORY)
 public class PagedAccountRepositoryImpl implements PagedAccountRepository {
     @Autowired
