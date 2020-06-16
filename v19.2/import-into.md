@@ -4,15 +4,14 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an existing table. To create a table, use [`CREATE TABLE`](create-table.html).
+<span class="version-tag">New in v19.2:</span> The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
 
-{{site.data.alerts.callout_success}}
-`IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
-{{site.data.alerts.end}}
+## Considerations
 
-{{site.data.alerts.callout_danger}}
-`IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
-{{site.data.alerts.end}}
+- `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
+- `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+- `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+- `IMPORT INTO` cannot be used to insert data into a column for an existing row. To do this, use [`INSERT`](insert.html).
 
 ## Required privileges
 
