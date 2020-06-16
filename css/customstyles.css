@@ -1168,12 +1168,20 @@ section.footer {
   padding-bottom: 5rem;
   padding-right: 5px; }
 
+.toc-col-contents::-webkit-scrollbar {
+  display: none;
+}
+
 #toc-right {
   max-height: 85vh;
   padding-right: 15px;
   background: #ffffff;
   overflow-y: auto;
   margin-bottom: 1.5rem; }
+
+#toc-right::-webkit-scrollbar {
+  display: none;
+}
 
 #toc > ul,
 #toc-right > ul {
@@ -3751,11 +3759,6 @@ a.accordion-toggle {
 .cockroachdb-training {
   width: 100%;
   max-width: 800px; }
-
-::-webkit-scrollbar {
-  width: 0px;
-  /* remove scrollbar space */
-  background: transparent; }
 
 /* Docs landing page */
 .landing-column-title {

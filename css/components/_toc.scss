@@ -30,12 +30,20 @@
   padding-right: 5px;
 }
 
+.toc-col-contents::-webkit-scrollbar {
+  display: none;
+}
+
 #toc-right {
   max-height: 85vh;
   padding-right: 15px;
   background: #ffffff;
   overflow-y: auto;
   margin-bottom: 1.5rem;
+}
+
+#toc-right::-webkit-scrollbar {
+  display: none;
 }
 
 #toc,
