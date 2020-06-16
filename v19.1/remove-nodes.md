@@ -1,26 +1,35 @@
 ---
 title: Decommission Nodes
-summary: Permanently remove one or more nodes from a cluster.
+summary: Remove one or more nodes from a cluster.
 toc: true
 ---
 
-This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
+This page shows you how to decommission one or more nodes. Decommissioning a node removes it from the CockroachDB cluster.
 
-For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](stop-a-node.html).
+You might do this, for example, when downsizing a cluster or reacting to hardware failures.
+
+{{site.data.alerts.callout_info}}
+Node decommissioning should not be performed when [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or performing planned maintenance (e.g., upgrading system software). In these scenarios, you will want to temporarily [stop the node](stop-a-node.html) and restart it later.
+{{site.data.alerts.end}}
 
 ## Overview
 
 ### How it works
 
-When you decommission a node, all range replicas on the node are transferred to other nodes.
+A node is considered to be decommissioned when it meets two criteria:
 
-During and after decommissioning, the node continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. However, note that the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) considers the node "unready" and returns a `503 Service Unavailable` status response code so load balancers stop directing traffic to the node. This behavior has been fixed in v20.1.
+1. The node has completed the decommissioning process.
+2. The node has been stopped and has not [updated its liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for the duration configured via [`server.time_until_store_dead`](cluster-settings.html), which defaults to 5 minutes.
 
-After decommissioning, it's typical to stop the node via a process manager or orchestration tool, or by sending `SIGTERM` manually, at which point the node is drained of in-flight SQL connections and new SQL connections are rejected.
+The decommissioning process transfers all range replicas on the node to other nodes. During and after this process, the node is considered "decommissioning" and continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. However, note that the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) considers the node "unready" and returns a `503 Service Unavailable` status response code so load balancers stop directing traffic to the node. In v20.1, the health endpoint correctly considers the node "ready".
+
+After all range replicas have been transferred, it's typical to use [`cockroach node drain`](view-node-details.html) to drain the node of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries. The node can then be stopped via a process manager or orchestration tool, or by sending `SIGTERM` manually. You can also use [`cockroach quit`](stop-a-node.html) to drain and shut down the node. When stopped, the node stops updating its liveness record, and after the duration configured via [`server.time_until_store_dead`](cluster-settings.html) is considered to be decommissioned.
+
+You can [check the status of node decommissioning](#check-the-status-of-decommissioning-nodes) with the CLI.
 
 ### Considerations
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommissioning process will hang indefinitely. See the [Examples](#examples) below for more details.
 
 ### Examples
 
@@ -30,11 +39,11 @@ In this scenario, each range is replicated 3 times, with each replica on a diffe
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
+If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioning node's replicas to the other 2 nodes, which already have a replica of each range:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-To successfully decommission a node, you need to first add a 4th node:
+To successfully decommission a node in this cluster, you need to add a 4th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -54,11 +63,11 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
+If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-To successfully decommission a node, you need to first add a 6th node:
+To successfully decommission a node in this cluster, you need to add a 6th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -69,17 +78,23 @@ To successfully decommission a node, you need to first add a 6th node:
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before you begin
+### Before decommissioning a node
 
 To ensure your cluster can adequately handle decommissioning nodes:
 
-- Only decommission one node at a time, and before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
-- If you have a decommissioning node that appears to be stuck or hung, [contact our support team](support-resources.html).
+- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
+- If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node. If you notice any issues persisting, [contact our support team](support-resources.html).
 
-    If possible, keep the node running instead of killing it, because a stuck decommissioning process might be a symptom of a problem that could result in data loss.
+    If possible, keep the node running instead of stopping it, because a hung decommissioning process might be a symptom of a problem that could result in data loss.
 - Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
 
-### Step 1. Check the node before decommissioning
+### Step 1. Get the ID of the node to decommission
+
+Open the Admin UI and select the **Node List** view, or go to **Metrics** on the left and click **View nodes list** in the **Summary** area. Note the ID of the node that you want to decommission:
+
+<div style="text-align: center;"><img src="{{ 'images/v19.1/before-decommission0.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
+
+### Step 2. Check the node before decommissioning
 
 Open the Admin UI, click **Metrics** on the left, select the **Replication** dashboard, and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
 
@@ -87,21 +102,21 @@ Open the Admin UI, click **Metrics** on the left, select the **Replication** das
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/before-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-### Step 2. Decommission and remove the node
+### Step 3. Start the decommissioning process on the node
 
-SSH to the machine where the node is running and execute the [`cockroach quit`](stop-a-node.html) command with the `--decommission` flag and other required flags:
+Run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --decommission --certs-dir=certs --host=<address of node to remove>
+$ cockroach node decommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --decommission --insecure --host=<address of node to remove>
+$ cockroach node decommission 4 --insecure --host=<address of any live node>
 ~~~
 </div>
 
@@ -127,25 +142,47 @@ No more data reported on target nodes. Please verify cluster health before remov
 ok
 ~~~
 
-### Step 3. Check the node and cluster after decommissioning
+Note that `is_decommissioning` will remain `true` after all replicas have been transferred from the node.
 
-In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the node that you decommissioned, the counts should be 0:
+### Step 4. Check the node and cluster after the decommissioning process
+
+In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning node, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-Then view **Node List** on the **Overview** page and make sure all nodes but the one you removed are healthy (green):
+Then view **Node List** on the **Overview** page and make sure all nodes but the decommissioning node are healthy (green):
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-In about 5 minutes, you'll see the removed node listed under **Decommissioned Nodes**:
+{{site.data.alerts.callout_success}}
+The node is counted as a "Suspect" node in the Admin UI [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until it is shut down.
+{{site.data.alerts.end}}
+
+### Step 5. Stop the decommissioning node
+
+Execute the `cockroach quit` command:
+
+<div class="filter-content" markdown="1" data-scope="secure">
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --certs-dir=certs --host=<address of decommissioned node>
+~~~
+</div>
+
+<div class="filter-content" markdown="1" data-scope="insecure">
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --insecure --host=<address of decommissioned node>
+~~~
+</div>
+
+After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the removed node listed under **Decommissioned Nodes**:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
-
-Also, if the node is restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
+At this point, the node is decommissioned and will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
 
 ## Remove a single node (dead)
 
@@ -154,11 +191,11 @@ Also, if the node is restarted, it will not accept any client connections, and t
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-Once a node has been dead for 5 minutes, CockroachDB automatically transfers the range replicas and range leases on the node to available live nodes. However, if it is restarted, the cluster will rebalance replicas and leases to it.
+After a node has been dead for 5 minutes, CockroachDB transfers the range replicas and range leases on the node to available live nodes. However, if the dead node is restarted, the cluster will rebalance replicas and leases to the node.
 
 To prevent the cluster from rebalancing data to a dead node if it comes back online, do the following:
 
-### Step 1. Identify the ID of the dead node
+### Step 1. Get the ID of the dead node
 
 Open the Admin UI and select the **Node List** view. Note the ID of the node listed under **Dead Nodes**:
 
@@ -166,20 +203,19 @@ Open the Admin UI and select the **Node List** view. Note the ID of the node lis
 
 ### Step 2. Mark the dead node as decommissioned
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to officially decommission:
-
+Run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 --insecure --host=<address of live node>
+$ cockroach node decommission 4 --insecure --host=<address of any live node>
 ~~~
 </div>
 
@@ -192,11 +228,15 @@ $ cockroach node decommission 4 --insecure --host=<address of live node>
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
-If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
+If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to the **Decommissioned Nodes** list. 
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-Also, if the node is ever restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
+At this point, the node is decommissioned and will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
+
+{{site.data.alerts.callout_info}}
+If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then [restart](start-a-node.html) the node so that it accepts new SQL connections.
+{{site.data.alerts.end}}
 
 ## Remove multiple nodes
 
@@ -205,11 +245,15 @@ Also, if the node is ever restarted, it will not accept any client connections, 
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-### Before you begin
+### Before decommissioning nodes
 
-Confirm that there are enough nodes to take over the replicas from the nodes you want to remove. See some [Example scenarios](#examples) above.
+- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
+- If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node. If you notice any issues persisting, [contact our support team](support-resources.html).
 
-### Step 1. Identify the IDs of the nodes to decommission
+    If possible, keep the node running instead of stopping it, because a hung decommissioning process might be a symptom of a problem that could result in data loss.
+- Confirm that there are enough nodes to take over the replicas from the node you want to remove. See some [Example scenarios](#examples) above.
+
+### Step 1. Get the IDs of the nodes to decommission
 
 Open the Admin UI and select the **Node List** view, or go to **Metrics** on the left and click **View nodes list** in the **Summary** area. Note the IDs of the nodes that you want to decommission:
 
@@ -225,19 +269,19 @@ Select the **Replication** dashboard, and hover over the **Replicas per Store** 
 
 ### Step 3. Decommission the nodes
 
-SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to officially decommission:
+Run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 5 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission 4 5 --insecure --host=<address of live node>
+$ cockroach node decommission 4 5 --insecure --host=<address of any live node>
 ~~~
 </div>
 
@@ -263,27 +307,27 @@ Once the nodes have been fully decommissioned, you'll see a confirmation:
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
-### Step 4. Check the nodes and cluster after decommissioning
+Note that `is_decommissioning` will remain `true` after all replicas have been transferred from each node.
 
-In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the nodes that you decommissioned, the counts should be 0:
+### Step 4. Check the nodes and cluster after the decommissioning process
+
+In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning nodes, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-multiple4.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-multiple5.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the decommissioned nodes have 0 replicas:
+Then click **View nodes list** in the **Summary** area and make sure all nodes are healthy (green) and the decommissioning nodes have 0 replicas:
 
 <div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-In about 5 minutes, you'll see the node move to the **Decommissioned Nodes** list, and the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
+{{site.data.alerts.callout_success}}
+The nodes are counted as a "Suspect" node in the Admin UI [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until they are shut down.
+{{site.data.alerts.end}}
 
-<div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+### Step 5. Stop the decommissioning nodes
 
-### Step 5. Remove the decommissioned nodes
-
-At this point, although the decommissioned nodes are live, the cluster will not rebalance any data to them, and the nodes will not accept any client connections. However, to officially remove the nodes from the cluster, you still need to stop them.
-
-For each decommissioned node, SSH to the machine running the node and execute the `cockroach quit` command:
+For each node, execute the `cockroach quit` command:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -299,6 +343,16 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
 ~~~
 </div>
 
+After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the nodes move to the **Decommissioned Nodes** list.
+
+<div style="text-align: center;"><img src="{{ 'images/v19.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
+
+At this point, the nodes are decommissioned and will no longer appear in timeseries graphs unless you are viewing a time range during which the nodes were live. However, they will never disappear from the **Decommissioned Nodes** list.
+
+{{site.data.alerts.callout_info}}
+If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then [restart](start-a-node.html) the node so that it accepts new SQL connections.
+{{site.data.alerts.end}}
+
 ## Recommission nodes
 
 <div class="filters clearfix">
@@ -306,63 +360,48 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-If you accidentally decommissioned any nodes, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
+If you accidentally started decommissioning a node, or have a node with a hung decommissioning process, you can recommission the node. This cancels the process of transferring replicas on the node to other nodes.
 
-### Step 1. Identify the IDs of the decommissioned nodes
+{{site.data.alerts.callout_info}}
+Recommissioning is intended to cancel an active decommissioning process. If all ranges have been removed from a node, start a new node instead of reusing the node.
+{{site.data.alerts.end}}
 
-Open the Admin UI and select the **Node List** view. Note the IDs of the nodes listed under **Decommissioned Nodes**:
+### Step 1. Kill the decommissioning process
 
-<div style="text-align: center;"><img src="{{ 'images/v19.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single dead node" style="border:1px solid #eee;max-width:100%" /></div>
+Press `ctrl-c` in each terminal with an ongoing decommissioning process that you want to cancel.
 
-### Step 2. Recommission the nodes
+### Step 2. Recommission the decommissioning nodes
 
-SSH to one of the live nodes and execute the [`cockroach node recommission`](view-node-details.html) command with the IDs of the nodes to recommission:
+Execute the [`cockroach node recommission`](view-node-details.html) command with the IDs of the nodes to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node recommission 4 --certs-dir=certs --host=<address of live node>
+$ cockroach node recommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node recommission 4 --insecure --host=<address of live node>
+$ cockroach node recommission 4 --insecure --host=<address of any live node>
 ~~~
 </div>
+
+The value of `is_decommissioning` will change back to `false`:
 
 ~~~
  id | is_live | replicas | is_decommissioning | is_draining  
 +---+---------+----------+--------------------+-------------+
-  4 |  false  |        0 |       false        |    true      
+  4 |  false  |        0 |       false        |    false      
 (1 row)
-The affected nodes must be restarted for the change to take effect.
 ~~~
 
-### Step 3. Restart the recommissioned nodes
-
-SSH to each machine with a recommissioned node and run the same `cockroach start` command that you used to initially start the node, for example:
-
-<div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --certs-dir=certs --advertise-addr=<address of node to restart> --join=<address of node 1> --background
-~~~
-</div>
-
-<div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --insecure --advertise-addr=<address of node to restart> --join=<address of node 1> --background
-~~~
-</div>
-
-On the **Nodes List** page, you should very soon see the recommissioned nodes listed under **Live Nodes** and, after a few minutes, you should see replicas rebalanced to it.
+On the [**Node List**](admin-ui-cluster-overview-page.html#node-list), you should soon see the recommissioned nodes listed as `LIVE`. After a few minutes, you should see replicas rebalanced to the nodes.
 
 ## Check the status of decommissioning nodes
 
-To check the progress of decommissioning nodes, you can run the `cockroach node status` command with the `--decommission` flag:
+To check the progress of decommissioning nodes, run the [`cockroach node status`](view-node-details.html) command with the `--decommission` flag:
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -394,6 +433,11 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 (5 rows)
 ~~~
 
+- `is_decommissioning == true` implies that replicas are being or have been transferred to other nodes. The node is either undergoing or has completed the decommissioning process.
+- `is_draining == true` implies that the node is no longer accepting SQL connections. The node is either in the process of shutting down or has already done so.
+
 ## See also
 
 - [Temporarily Stop a Node](stop-a-node.html)
+- [Start a Node](start-a-node.html)
+- [Admin UI Cluster Overview page](admin-ui-cluster-overview-page.html)

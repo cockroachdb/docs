@@ -4,9 +4,13 @@ summary: Learn how to temporarily stop a CockroachDB node.
 toc: true
 ---
 
-This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).
+This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart. 
 
-For information about permanently removing nodes to downsize a cluster or react to hardware failures, see [Remove Nodes](remove-nodes.html).
+You might do this, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).
+
+{{site.data.alerts.callout_info}}
+In other scenarios, such as when downsizing a cluster or reacting to hardware failures, it's best to remove nodes from your cluster entirely. For information about this, see [Decommission Nodes](remove-nodes.html).
+{{site.data.alerts.end}}
 
 ## Overview
 
@@ -15,8 +19,7 @@ For information about permanently removing nodes to downsize a cluster or react 
 When you stop a node, it performs the following steps:
 
 - Finishes in-flight requests. Note that this is a best effort that times out after the duration specified by the `server.shutdown.query_wait` [cluster setting](cluster-settings.html).
-- Transfers all **range leases** and Raft leadership to other nodes.
-- Gossips its draining state to the cluster, so that other nodes do not try to distribute query planning to the draining node, and no leases are transferred to the draining node. Note that this is a best effort that times out after the duration specified by the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html), so other nodes may not receive the gossip info in time.
+- Gossips its draining state to the cluster, so that other nodes do not try to distribute query planning to the draining node. Note that this is a best effort that times out after the duration specified by the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html), so other nodes may not receive the gossip info in time.
 - No new ranges are transferred to the draining node, to avoid a possible loss of quorum after the node shuts down.
 
 If the node then stays offline for a certain amount of time (5 minutes by default), the cluster considers the node dead and starts to transfer its **range replicas** to other nodes as well.
@@ -27,7 +30,6 @@ Basic terms:
 
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
 
 ### Considerations
 
@@ -55,7 +57,8 @@ The `quit` command supports the following [general-use](#general), [client conne
 
 Flag | Description
 -----|------------
-`--decommission` | If specified, the node will be permanently removed instead of temporarily stopped. See [Remove Nodes](remove-nodes.html) for more details.
+`--decommission` | If specified, the node will be removed from the cluster instead of temporarily stopped. See [Remove Nodes](remove-nodes.html) for more details.
+`--drain-wait` | Amount of time to wait for the node to drain before stopping the node. See [`cockroach node drain`](view-node-details.html) for more details.<br><br>**Default:** `10m`
 
 ### Client connection
 
@@ -129,5 +132,5 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 ## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
-- [Permanently Remove Nodes from a Cluster](remove-nodes.html)
+- [Decommission Nodes](remove-nodes.html)
 - [Upgrade a Cluster's Version](upgrade-cockroach-version.html)

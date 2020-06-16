@@ -65,7 +65,7 @@ Node Status | Description
 `LIVE` | Node is online and updating its liveness record.
 `SUSPECT` | Node has an [unavailable liveness status](cluster-setup-troubleshooting.html#node-liveness-issues).
 `DECOMMISSIONING` | Node is in the [process of decommissioning](remove-nodes.html#how-it-works).
-`DECOMMISSIONED` | Node has been decommissioned for permanent removal from the cluster.
+`DECOMMISSIONED` | Node has completed decommissioning, has been stopped, and has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
 `DEAD` | Node has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
 
 {{site.data.alerts.callout_info}}
@@ -81,7 +81,7 @@ The following details are also shown.
 Column | Description
 -------|------------
 Node Count | Number of nodes in the locality.
-Nodes | Nodes are grouped by locality and displayed with their address. Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log.
+Nodes | Nodes are grouped by locality and displayed with their address and node ID (the ID is the number that is prepended by `n`). Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log.
 Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
 Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on the node or in the locality. See [Capacity metrics](#capacity-metrics).
@@ -91,12 +91,12 @@ Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned Nodes
 
-Nodes that have recently been decommissioned for permanent removal from the cluster are listed in the table of **Recently Decommissioned Nodes**. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
+Nodes that have been [decommissioned](remove-nodes.html#how-it-works) will be listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
 
 <img src="{{ 'images/v20.1/admin-ui-decommissioned-nodes.png' | relative_url }}" alt="CockroachDB Admin UI node list" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-When you [decommission a node](remove-nodes.html), CockroachDB lets the node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node so that it can be safely shut down.
+When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
 {{site.data.alerts.end}}
 
 ## Node Map (Enterprise)
