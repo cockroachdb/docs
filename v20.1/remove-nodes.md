@@ -67,7 +67,7 @@ If you try to decommission a node, the cluster will successfully rebalance all r
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-To successfully decommission a node in this cluster, you need to first add a 6th node. The decommissioning process can then complete:
+To successfully decommission a node in this cluster, you need to add a 6th node. The decommissioning process can then complete:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
