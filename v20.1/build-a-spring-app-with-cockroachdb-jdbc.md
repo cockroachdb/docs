@@ -129,7 +129,7 @@ The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates
 
 ## Step 6. Run the application
 
-Compiling and running the application code will start a web application and submit some simple requests to the app's REST API that result in [atomic database transactions](transactions.html) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
+Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some simple requests to the app's REST API that result in [atomic database transactions](transactions.html) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
 
 To run the application:
 
@@ -209,7 +209,7 @@ Exit the SQL shell:
 
 ## Step 6. Run the application
 
-Compiling and running the application code will start a web application and submit some simple requests to the app's REST API that result in database transactions on the running CockroachDB cluster. For details about the application code, [see below](#implementation-details).
+Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some simple requests to the app's REST API that result in database transactions on the running CockroachDB cluster. For details about the application code, [see below](#implementation-details).
 
 To run the application:
 
@@ -261,52 +261,89 @@ The output should look like the following:
    ||----w |       powered by Spring Boot  (v2.2.7.RELEASE)
    ||     ||
 
-2020-05-21 11:13:40.858  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Starting JdbcApplication v1.0.0.BUILD-SNAPSHOT on MyComputer with PID 40702 (path/roach-data/roach-data-jdbc/target/roach-data-jdbc.jar started by user in path/roach-data/roach-data-jdbc)
-2020-05-21 11:13:40.861  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : No active profile set, falling back to default profiles: default
-2020-05-21 11:13:41.675  INFO 40702 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2020-05-21 11:13:41.760  INFO 40702 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 73ms. Found 2 JDBC repository interfaces.
-2020-05-21 11:13:42.989  INFO 40702 --- [           main] org.eclipse.jetty.util.log               : Logging initialized @3092ms to org.eclipse.jetty.util.log.Slf4jLog
-2020-05-21 11:13:43.146  INFO 40702 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 8080
-2020-05-21 11:13:43.151  INFO 40702 --- [           main] org.eclipse.jetty.server.Server          : jetty-9.4.28.v20200408; built: 2020-04-08T17:49:39.557Z; git: ab228fde9e55e9164c738d7fa121f8ac5acd51c9; jvm 1.8.0_242-b08
-2020-05-21 11:13:43.181  INFO 40702 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring embedded WebApplicationContext
-2020-05-21 11:13:43.182  INFO 40702 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2232 ms
-2020-05-21 11:13:43.666  INFO 40702 --- [           main] org.eclipse.jetty.server.session         : DefaultSessionIdManager workerName=node0
-2020-05-21 11:13:43.666  INFO 40702 --- [           main] org.eclipse.jetty.server.session         : No SessionScavenger set, using defaults
-2020-05-21 11:13:43.667  INFO 40702 --- [           main] org.eclipse.jetty.server.session         : node0 Scavenging every 600000ms
-2020-05-21 11:13:43.677  INFO 40702 --- [           main] o.e.jetty.server.handler.ContextHandler  : Started o.s.b.w.e.j.JettyEmbeddedWebAppContext@776a6d9b{application,/,[file:///private/var/folders/pg/r58v54857gq_1nqm_2tr6lg40000gn/T/jetty-docbase.1867254473227579642.8080/],AVAILABLE}
-2020-05-21 11:13:43.678  INFO 40702 --- [           main] org.eclipse.jetty.server.Server          : Started @3781ms
-2020-05-21 11:13:44.732  INFO 40702 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2020-05-21 11:13:45.149  INFO 40702 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2020-05-21 11:13:45.575  INFO 40702 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2020-05-21 11:13:47.399  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangeloglock
-2020-05-21 11:13:47.412  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangeloglock
-2020-05-21 11:13:47.415  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT LOCKED FROM public.databasechangeloglock WHERE ID=1
-2020-05-21 11:13:47.459  INFO 40702 --- [           main] l.lockservice.StandardLockService        : Successfully acquired change log lock
-2020-05-21 11:13:48.844  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT MD5SUM FROM public.databasechangelog WHERE MD5SUM IS NOT NULL LIMIT 1
-2020-05-21 11:13:48.851  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangelog
-2020-05-21 11:13:48.852  INFO 40702 --- [           main] l.c.StandardChangeLogHistoryService      : Reading from public.databasechangelog
-2020-05-21 11:13:48.853  INFO 40702 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT * FROM public.databasechangelog ORDER BY DATEEXECUTED ASC, ORDEREXECUTED ASC
-2020-05-21 11:13:48.873  INFO 40702 --- [           main] l.lockservice.StandardLockService        : Successfully released change log lock
-2020-05-21 11:13:48.959  INFO 40702 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 8 endpoint(s) beneath base path '/actuator'
-2020-05-21 11:13:49.017  INFO 40702 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-05-21 11:13:49.017  INFO 40702 --- [           main] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-05-21 11:13:49.030  INFO 40702 --- [           main] o.s.web.servlet.DispatcherServlet        : Completed initialization in 13 ms
-2020-05-21 11:13:49.067  INFO 40702 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@7526515b{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-2020-05-21 11:13:49.069  INFO 40702 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 8080 (http/1.1) with context path '/'
-2020-05-21 11:13:49.070  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Started JdbcApplication in 8.725 seconds (JVM running for 9.173)
-2020-05-21 11:13:49.072  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Lets move some $$ around!
-2020-05-21 11:13:51.021  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 7 remaining
-2020-05-21 11:13:51.024  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 6 remaining
-2020-05-21 11:13:51.024  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 5 remaining
-2020-05-21 11:13:51.024  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 4 remaining
-2020-05-21 11:13:51.029  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 3 remaining
-2020-05-21 11:13:51.030  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 2 remaining
-2020-05-21 11:13:51.030  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 1 remaining
-2020-05-21 11:13:51.040  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 0 remaining
-2020-05-21 11:13:51.041  INFO 40702 --- [           main] io.roach.data.jdbc.JdbcApplication       : All client workers finished but server keeps running. Have a nice day!
+2020-06-17 14:56:54.507  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Starting JdbcApplication v1.0.0.BUILD-SNAPSHOT on MyComputer with PID 43008 (path/roach-data/roach-data-jdbc/target/roach-data-jdbc.jar started by user in path/roach-data/roach-data-jdbc)
+2020-06-17 14:56:54.510  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : No active profile set, falling back to default profiles: default
+2020-06-17 14:56:55.387  INFO 43008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2020-06-17 14:56:55.452  INFO 43008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59ms. Found 2 JDBC repository interfaces.
+2020-06-17 14:56:56.581  INFO 43008 --- [           main] org.eclipse.jetty.util.log               : Logging initialized @3378ms to org.eclipse.jetty.util.log.Slf4jLog
+2020-06-17 14:56:56.657  INFO 43008 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 8080
+2020-06-17 14:56:56.661  INFO 43008 --- [           main] org.eclipse.jetty.server.Server          : jetty-9.4.28.v20200408; built: 2020-04-08T17:49:39.557Z; git: ab228fde9e55e9164c738d7fa121f8ac5acd51c9; jvm 11.0.7+10
+2020-06-17 14:56:56.696  INFO 43008 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring embedded WebApplicationContext
+2020-06-17 14:56:56.696  INFO 43008 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2088 ms
+2020-06-17 14:56:57.170  INFO 43008 --- [           main] org.eclipse.jetty.server.session         : DefaultSessionIdManager workerName=node0
+2020-06-17 14:56:57.171  INFO 43008 --- [           main] org.eclipse.jetty.server.session         : No SessionScavenger set, using defaults
+2020-06-17 14:56:57.172  INFO 43008 --- [           main] org.eclipse.jetty.server.session         : node0 Scavenging every 600000ms
+2020-06-17 14:56:57.178  INFO 43008 --- [           main] o.e.jetty.server.handler.ContextHandler  : Started o.s.b.w.e.j.JettyEmbeddedWebAppContext@deb3b60{application,/,[file:///private/var/folders/pg/r58v54857gq_1nqm_2tr6lg40000gn/T/jetty-docbase.3049902632643053896.8080/],AVAILABLE}
+2020-06-17 14:56:57.179  INFO 43008 --- [           main] org.eclipse.jetty.server.Server          : Started @3976ms
+2020-06-17 14:56:58.126  INFO 43008 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-17 14:56:58.369  INFO 43008 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-06-17 14:56:58.695  INFO 43008 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-06-17 14:56:59.901  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangeloglock
+2020-06-17 14:56:59.917  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE public.databasechangeloglock (ID INTEGER NOT NULL, LOCKED BOOLEAN NOT NULL, LOCKGRANTED TIMESTAMP WITHOUT TIME ZONE, LOCKEDBY VARCHAR(255), CONSTRAINT DATABASECHANGELOGLOCK_PKEY PRIMARY KEY (ID))
+2020-06-17 14:56:59.930  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangeloglock
+2020-06-17 14:56:59.950  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : DELETE FROM public.databasechangeloglock
+2020-06-17 14:56:59.953  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.databasechangeloglock (ID, LOCKED) VALUES (1, FALSE)
+2020-06-17 14:56:59.959  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT LOCKED FROM public.databasechangeloglock WHERE ID=1
+2020-06-17 14:56:59.969  INFO 43008 --- [           main] l.lockservice.StandardLockService        : Successfully acquired change log lock
+2020-06-17 14:57:01.367  INFO 43008 --- [           main] l.c.StandardChangeLogHistoryService      : Creating database history table with name: public.databasechangelog
+2020-06-17 14:57:01.369  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE public.databasechangelog (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED TIMESTAMP WITHOUT TIME ZONE NOT NULL, ORDEREXECUTED INTEGER NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35), DESCRIPTION VARCHAR(255), COMMENTS VARCHAR(255), TAG VARCHAR(255), LIQUIBASE VARCHAR(20), CONTEXTS VARCHAR(255), LABELS VARCHAR(255), DEPLOYMENT_ID VARCHAR(10))
+2020-06-17 14:57:01.380  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangelog
+2020-06-17 14:57:01.396  INFO 43008 --- [           main] l.c.StandardChangeLogHistoryService      : Reading from public.databasechangelog
+2020-06-17 14:57:01.397  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT * FROM public.databasechangelog ORDER BY DATEEXECUTED ASC, ORDEREXECUTED ASC
+2020-06-17 14:57:01.400  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM public.databasechangeloglock
+2020-06-17 14:57:01.418  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : -- DROP TABLE IF EXISTS account cascade;
+-- DROP TABLE IF EXISTS databasechangelog cascade;
+-- DROP TABLE IF EXISTS databasechangeloglock cascade;
+
+create table account
+(
+    id      int            not null primary key default unique_rowid(),
+    balance numeric(19, 2) not null,
+    name    varchar(128)   not null,
+    type    varchar(25)    not null
+)
+2020-06-17 14:57:01.426  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : -- insert into account (id,balance,name,type) values
+--     (1, 500.00,'Alice','asset'),
+--     (2, 500.00,'Bob','expense'),
+--     (3, 500.00,'Bobby Tables','asset'),
+--     (4, 500.00,'Doris','expense');
+2020-06-17 14:57:01.427  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : SQL in file db/create.sql executed
+2020-06-17 14:57:01.430  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:db/changelog-master.xml::1::root ran successfully in 14ms
+2020-06-17 14:57:01.430  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT MAX(ORDEREXECUTED) FROM public.databasechangelog
+2020-06-17 14:57:01.441  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('1', 'root', 'classpath:db/changelog-master.xml', NOW(), 1, '8:939a1a8c47676119a94d0173802d207e', 'sqlFile', '', 'EXECUTED', 'crdb', NULL, '3.8.9', '2420221402')
+2020-06-17 14:57:01.450  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.account (id, name, balance, type) VALUES ('1', 'Alice', 500.00, 'asset')
+2020-06-17 14:57:01.459  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : New row inserted into account
+2020-06-17 14:57:01.460  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.account (id, name, balance, type) VALUES ('2', 'Bob', 500.00, 'expense')
+2020-06-17 14:57:01.462  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : New row inserted into account
+2020-06-17 14:57:01.462  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.account (id, name, balance, type) VALUES ('3', 'Bobby Tables', 500.00, 'asset')
+2020-06-17 14:57:01.464  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : New row inserted into account
+2020-06-17 14:57:01.465  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.account (id, name, balance, type) VALUES ('4', 'Doris', 500.00, 'expense')
+2020-06-17 14:57:01.467  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : New row inserted into account
+2020-06-17 14:57:01.469  INFO 43008 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:db/changelog-master.xml::2::root ran successfully in 19ms
+2020-06-17 14:57:01.470  INFO 43008 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO public.databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('2', 'root', 'classpath:db/changelog-master.xml', NOW(), 2, '8:c2945f2a445cf60b4b203e1a91d14a89', 'insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account', '', 'EXECUTED', 'crdb', NULL, '3.8.9', '2420221402')
+2020-06-17 14:57:01.479  INFO 43008 --- [           main] l.lockservice.StandardLockService        : Successfully released change log lock
+2020-06-17 14:57:01.555  INFO 43008 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 8 endpoint(s) beneath base path '/actuator'
+2020-06-17 14:57:01.610  INFO 43008 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-06-17 14:57:01.610  INFO 43008 --- [           main] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-06-17 14:57:01.620  INFO 43008 --- [           main] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2020-06-17 14:57:01.653  INFO 43008 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@733c423e{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+2020-06-17 14:57:01.654  INFO 43008 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 8080 (http/1.1) with context path '/'
+2020-06-17 14:57:01.657  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Started JdbcApplication in 7.92 seconds (JVM running for 8.454)
+2020-06-17 14:57:01.659  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Lets move some $$ around!
+2020-06-17 14:57:03.552  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 7 remaining
+2020-06-17 14:57:03.606  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 6 remaining
+2020-06-17 14:57:03.606  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 5 remaining
+2020-06-17 14:57:03.607  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 4 remaining
+2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 3 remaining
+2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 2 remaining
+2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 1 remaining
+2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 0 remaining
+2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : All client workers finished but server keeps running. Have a nice day!
 ~~~
 
-As the output states, the application configures a database interface, starts a web servlet listening on the address `http://localhost:8080/`, and then runs some test operations as requests to the application's REST API.
+As the output states, the application configures a database connection, starts a web servlet listening on the address `http://localhost:8080/`, initializes the `account` table and changelog tables with [Liquibase](https://www.liquibase.org/), and then runs some test operations as requests to the application's REST API.
+
+For more details about the application code, see [Implementation details](#implementation-details).
 
 ### Query the database
 
@@ -568,7 +605,7 @@ For more information about actuator endpoints, see the [Spring Boot Actuator End
 
 ## Implementation details
 
-This section goes into detail about how the application code leverages some standard Spring modules without compromising the integrity and performance guarantees of CockroachDB.
+This section walks you through the different components of the application project in detail.
 
 ### Main application process
 
@@ -591,6 +628,88 @@ The annotations listed at the top of the `JdbcApplication` class definition decl
     Note that the `@EnableTransactionManagement` annotation is passed an `order` parameter, which indicates the ordering of advice evaluation when a common join point is reached. For details, see [Ordering advice](#ordering-advice).
 - [`@SpringBootApplication`](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html) is a standard configuration annotation used by Spring Boot applications. For details, see [Using the @SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) on the Spring Boot documentation site.
 
+### Schema management
+
+To create and initialize the database schema, the application uses [Liquibase](https://www.liquibase.org/).
+
+#### Liquibase changelogs
+
+Liquibase uses [changelog files](https://docs.liquibase.com/concepts/basic/changelog.html) to manage database schema changes. Changelog files include a list of instructions, known as [changesets](https://docs.liquibase.com/concepts/basic/changeset.html), that are executed against the database in a specified order.
+
+`resources/db/changelog-master.xml` defines the changelog for this application:
+
+{% include copy-clipboard.html %}
+~~~ xml
+{% include {{page.version.version}}/app/spring-data-jdbc/changelog-master.xml %}
+~~~
+
+The first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some SQL statements to execute. The file specified by the changeset, `resources/db/create.sql`, creates the `account` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+{% include {{page.version.version}}/app/spring-data-jdbc/create.sql %}
+~~~
+
+The second changeset in the changelog uses the [Liquibase XML syntax](https://docs.liquibase.com/concepts/basic/xml-format.html) to specify a series of sequential `INSERT` statements that initialize the `account` table with some values.
+
+When the application is started, all of the queries specified by the changesets are executed in the order specified by their `changeset` tag's `id` value. At application startup, Liquibase also creates a table called [`databasechangelog`](https://docs.liquibase.com/concepts/databasechangelog-table.html) in the database where it performs changes. This table's rows log all completed changesets.
+
+To see the completed changsets after starting the application, open a new terminal, start the [built-in SQL shell](cockroach-sql.html), and query the `databasechangelog` table:
+
+<section class="filter-content" markdown="1" data-scope="secure">
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --certs-dir=certs
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure
+~~~
+
+</section>
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM roach_data.databasechangelog;
+~~~
+
+~~~
+  id | author |             filename              |           dateexecuted           | orderexecuted | exectype |               md5sum               |                                              description                                               | comments | tag  | liquibase | contexts | labels | deployment_id
+-----+--------+-----------------------------------+----------------------------------+---------------+----------+------------------------------------+--------------------------------------------------------------------------------------------------------+----------+------+-----------+----------+--------+----------------
+  1  | root   | classpath:db/changelog-master.xml | 2020-06-17 14:57:01.431506+00:00 |             1 | EXECUTED | 8:939a1a8c47676119a94d0173802d207e | sqlFile                                                                                                |          | NULL | 3.8.9     | crdb     | NULL   | 2420221402
+  2  | root   | classpath:db/changelog-master.xml | 2020-06-17 14:57:01.470847+00:00 |             2 | EXECUTED | 8:c2945f2a445cf60b4b203e1a91d14a89 | insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account |          | NULL | 3.8.9     | crdb     | NULL   | 2420221402
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+Liquibase does not [retry transactions](transactions.html#transaction-retries) automatically. If a changeset fails at startup, you might need to restart the application manually to complete the changeset.
+{{site.data.alerts.end}}
+
+#### Liquibase configuration
+
+Typically, Liquibase properties are defined in a separate [`liquibase.properties`](https://docs.liquibase.com/workflows/liquibase-community/creating-config-properties.html) file. In this application, the [Spring properties](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html) file, `application.yml`, includes properties that enable and configure Liquibase:
+
+~~~ yml
+...
+ liquibase:
+   change-log: classpath:db/changelog-master.xml
+   default-schema:
+   drop-first: false
+   contexts: crdb
+   enabled: true
+...
+~~~
+
+The `contexts` property specifies a single [Liquibase context](https://docs.liquibase.com/concepts/advanced/contexts.html) (`crdb`). In order for a changeset to run, its `context` attribute must match a context set by this property. The `context` value is `crdb` in both of the changeset definitions in `changelog-master.xml`, so both changesets run at application startup.
+
+For simplicity, `application.yml` only specifies properties for a single [Spring profile](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles), with a single set of Liquibase properties. If you want the changelog to include changesets that only run in specific environments (e.g., for debugging and development), you can create a new Spring profile in a separate properties file (e.g. `application-dev.yml`), and specify a different set of Liquibase properties for that profile. The profile set by the application configuration will automatically use the properties in that profile's properties file. For information about setting profiles, see the [Spring documentation website](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles).
+
 ### Domain entities
 
 `Account.java` defines the [domain entity](https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks) for the `accounts` table. This class is used throughout the application to represent a row of data in the `accounts` table.
@@ -606,7 +725,7 @@ Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach
 
 To represent database objects as [HAL+JSON](https://en.wikipedia.org/wiki/Hypertext_Application_Language) for the REST API, the application extends the Spring HATEOAS module's [RepresentationModel](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.representation-models) class with `AccountModel`. Like the `Account` class, its attributes represent a row of data in the `accounts` table.
 
-The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/AccountController.java):
+The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/AccountModel.java):
 
 {% include copy-clipboard.html %}
 ~~~ java

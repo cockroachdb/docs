@@ -34,6 +34,12 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Python | [Django](build-a-python-app-with-cockroachdb-django.html)<br><br><hr>[peewee](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database)<hr>[PonyORM](build-a-python-app-with-cockroachdb-pony.html)<hr>[SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html) | [Django 3.0.6](https://pypi.org/project/Django/)<br>[django-cockroachdb 3.0](https://pypi.org/project/django-cockroachdb/)<hr>[3.13.3](https://pypi.org/project/peewee/)<hr>[0.7.13](https://pypi.org/project/pony/)<hr>[SQLAlchemy 1.3.17](https://pypi.org/project/SQLAlchemy/)<br>[sqlalchemy-cockroachdb 0.4.0](https://pypi.org/project/sqlalchemy-cockroachdb/) | Full<br><br> <hr>Full<hr>Full<hr>Full |
 | Typescript | [TypeORM](https://typeorm.io/#/) | [0.2.24](https://www.npmjs.com/package/typeorm) | Full |
 
+## Application frameworks
+
+| Framework | Data access | Recommended version | Support level |
+|-----------+-------------+---------------------+---------------|
+| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>JPA (Hibernate)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
+
 ## Graphical user interfaces (GUIs)
 
 | GUI | Recommended version | Support level |
