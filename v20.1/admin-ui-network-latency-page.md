@@ -23,7 +23,7 @@ Each cell in the matrix displays the round-trip latency in milliseconds between 
 
 Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
 
-On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-admin-ui), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution. 
+On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-admin-ui), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 
@@ -34,7 +34,7 @@ For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `
 Nodes that have lost a connection are displayed in a separate color. This can help you locate a network partition in your cluster.
 
 {{site.data.alerts.callout_info}}
-A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when whitelisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
+A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
 The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities](cockroach-start.html#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 {{site.data.alerts.end}}
@@ -46,7 +46,7 @@ Click the **NO CONNECTIONS** link to see lost connections between nodes or [loca
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
 {{site.data.alerts.callout_info}}
-Network latency limits the performance of individual operations. You can use the [Statements](admin-ui-statements-page.html) page to see the latencies of SQL statements on gateway nodes. 
+Network latency limits the performance of individual operations. You can use the [Statements](admin-ui-statements-page.html) page to see the latencies of SQL statements on gateway nodes.
 {{site.data.alerts.end}}
 
 ## See also

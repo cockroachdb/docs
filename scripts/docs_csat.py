@@ -52,7 +52,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-blacklist = ['cockroachdb-in-comparison.html']
+blocklist = ['cockroachdb-in-comparison.html']
 
 
 def initialize_analyticsreporting():
@@ -193,8 +193,8 @@ weighted_csats = dict()
 
 def calculate_csat(no_votes, yes_votes, pageviews):
 
-    # Remove blacklisted pages.
-    for p in blacklist:
+    # Remove blocklisted pages.
+    for p in blocklist:
         for k in list(pageviews):
             if p in k:
                 del pageviews[k]

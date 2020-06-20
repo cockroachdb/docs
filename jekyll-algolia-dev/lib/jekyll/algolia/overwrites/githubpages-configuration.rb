@@ -2,7 +2,7 @@
 
 module GitHubPages
   # The github-pages gem will automatically disable every plugin that is not in
-  # the whitelist of plugins allowed by GitHub. This includes any plugin defined
+  # the allowlist of plugins allowed by GitHub. This includes any plugin defined
   # in the `_plugins` folder as well.
   #
   # Users of the jekyll-algolia plugin will use custom plugins in _plugins to
