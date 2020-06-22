@@ -393,6 +393,8 @@ To avoid contention, multiple strategies can be applied:
   [`INSERT`](insert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html)/[`UPSERT`](upsert.html)
   clauses together in a single SQL statement.
 
+- In combination with the above, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can automatically retry the transaction for you.
+
 - Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. It orders transactions by controlling concurrent access to one or more rows of a table. It works by locking the rows returned by a [selection query](selection-queries.html), such that other transactions trying to access those rows are forced to wait for the transaction that locked the rows to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
 
 - When replacing values in a row, use [`UPSERT`](upsert.html) and

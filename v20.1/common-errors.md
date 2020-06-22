@@ -49,23 +49,9 @@ To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.h
 
 ## restart transaction
 
-Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-intervention) for more details.
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transactions.html#client-side-intervention).
 
-Several different types of transaction retry errors are described below:
-
-- [`read within uncertainty interval`](#read-within-uncertainty-interval)
-- [`transaction deadline exceeded`](#transaction-deadline-exceeded)
-
-{{site.data.alerts.callout_info}}
-Your application's retry logic does not need to distinguish between these types of errors. They are listed here for reference.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-To understand how transactions work in CockroachDB, and why transaction retries are necessary to maintain serializable isolation in a distributed database, see:
-
-- [Transaction Layer](architecture/transaction-layer.html)
-- [Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html)
-{{site.data.alerts.end}}
+For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 
 ### read within uncertainty interval
 

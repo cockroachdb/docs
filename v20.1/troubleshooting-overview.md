@@ -10,7 +10,7 @@ If you run into issues with CockroachDB, there are a few initial steps you can a
     - Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](cockroach-debug-zip.html).
     - Alternately, you can [stop](cockroach-quit.html) and [restart](cockroach-start.html) problematic nodes with the `--logtostderr` flag to print logs to your terminal through `stderr`, letting you see all cluster activities as it occurs.
 
-2. Check our list of [common errors](common-errors.html) for a solution.
+2. Check our list of [common errors](common-errors.html) for a solution.  If you are getting transaction retry errors, see [client-side retry handling](transactions.html#client-side-intervention) and the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 
 3. If the problem doesn't match a common error, try the following pages:
     - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html) helps start your cluster and scale it by adding nodes.
