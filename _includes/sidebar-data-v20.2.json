@@ -1805,6 +1805,12 @@
                       "urls": [
                           "/${VERSION}/advanced-client-side-transaction-retries.html"
                       ]
+                  },
+                  {
+                      "title": "Transaction Retry Error Reference",
+                      "urls": [
+                          "/${VERSION}/transaction-retry-error-reference.html"
+                      ]
                   }
               ]
           },
