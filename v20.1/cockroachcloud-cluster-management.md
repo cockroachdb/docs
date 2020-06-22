@@ -33,7 +33,7 @@ From the **Cluster Overview** page, you can connect to your cluster. For more in
 You can add or remove nodes from your cluster through the Console.
 
 {{site.data.alerts.callout_info}}
-At this time, we do not support scaling up a single-node cluster or scaling down to a single-node cluster.
+At this time, you cannot use the Console to scale up a single-node cluster or scale down to a single-node cluster. For single-node cluster changes, contact [Support](support.cockroachlabs.com).
 {{site.data.alerts.end}}
 
 ### Considerations
