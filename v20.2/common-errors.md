@@ -49,59 +49,9 @@ To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.h
 
 ## restart transaction
 
-Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-intervention) for more details.
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about to implement client-side retries, see [client-side retry handling](transactions.html#client-side-intervention).
 
-Several different types of transaction retry errors are described below:
-
-- [`read within uncertainty interval`](#read-within-uncertainty-interval)
-- [`transaction deadline exceeded`](#transaction-deadline-exceeded)
-
-{{site.data.alerts.callout_info}}
-Your application's retry logic does not need to distinguish between these types of errors. They are listed here for reference.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-To understand how transactions work in CockroachDB, and why transaction retries are necessary to maintain serializable isolation in a distributed database, see:
-
-- [Transaction Layer](architecture/transaction-layer.html)
-- [Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html)
-{{site.data.alerts.end}}
-
-### read within uncertainty interval
-
-(Error string includes: `ReadWithinUncertaintyIntervalError`)
-
-Uncertainty errors can occur when two transactions which start on different gateway nodes attempt to operate on the same data at close to the same time. The uncertainty comes from the fact that we cannot tell which one started first - the clocks on the two gateway nodes may not be perfectly in sync.
-
-For example, if the clock on node A is ahead of the clock on node B, a transaction started on node A may be able to commit a write with a timestamp that is still in the "future" from the perspective of node B. A later transaction that starts on node B should be able to see the earlier write from node A, even if B's clock has not caught up to A. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node B's transaction retries, it will unambiguously occur after the transaction from node A.
-
-Note that as long as the [client-side retry protocol](transactions.html#client-side-intervention) is followed, a transaction that has restarted once is much less likely to hit another uncertainty error, and the [`--max-offset` option](cockroach-start.html#flags) provides an upper limit on how long a transaction can continue to restart due to uncertainty.
-
-When errors like this occur, the application has the following options:
-
-- Prefer consistent historical reads using [AS OF SYSTEM TIME](as-of-system-time.html) to reduce contention.
-- Design the schema and queries to reduce contention. For information on how to avoid contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-- Be prepared to retry on uncertainty (and other) errors. For more information, see [Transaction retries](transactions.html#transaction-retries).
-
-{{site.data.alerts.callout_info}}
-Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
-{{site.data.alerts.end}}
-
-### transaction deadline exceeded
-
-Errors which were previously reported to the client as opaque `TransactionStatusError`s are now transaction retry errors with the error message "transaction deadline exceeded" and error code `40001`.
-
-This error can occur for long-running transactions (with execution time on the order of minutes) that also experience conflicts with other transactions and thus attempt to commit at a timestamp different than their original timestamp. If the timestamp at which the transaction attempts to commit is above a "deadline" imposed by the various schema elements that the transaction has used (i.e. table structures), then this error might get returned to the client.
-
-When this error occurs, the application must retry the transaction. For more information about how to retry transactions, see [Transaction retries](transactions.html#transaction-retries).
-
-{{site.data.alerts.callout_info}}
-For more information about the mechanics of the transaction conflict resolution process described above, see [Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html).
-{{site.data.alerts.end}}
-
-<!-- ### write too old -->
-
-<!-- ### async write failure -->
+For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 
@@ -230,3 +180,4 @@ Try searching the rest of our docs for answers or using our other [support resou
 - [CockroachDB Community Slack](https://cockroachdb.slack.com)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Support Portal](https://support.cockroachlabs.com)
+- [Transaction retry error reference](transaction-retry-error-reference.html)

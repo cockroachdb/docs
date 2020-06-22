@@ -58,7 +58,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client as described in [client-side intervention](#client-side-intervention).
+**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to contention: conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side intervention](#client-side-intervention).  For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`](commit-transaction.html) or [`ROLLBACK`](rollback-transaction.html) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -145,7 +145,7 @@ Your application should include client-side retry handling when the statements a
 > COMMIT;
 ~~~
 
-To indicate that a transaction must be retried, CockroachDB signals an error with the code `40001` and an error message that begins with the string `"retry transaction"`.
+To indicate that a transaction must be retried, CockroachDB signals an error with the code `40001` and an error message that begins with the string `"retry transaction"`.  For a complete list of transaction retry error codes, see [Transaction retry error reference](transaction-retry-error-reference.html).
 
 To handle these types of errors you have the following options:
 
@@ -243,3 +243,4 @@ For more information about the relationship between these levels, see [this pape
 - [`SHOW`](show-vars.html)
 - [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
+- [Transaction retry error reference](transaction-retry-error-reference.html)
