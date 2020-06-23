@@ -38,7 +38,7 @@ At this time, you cannot use the Console to scale up a single-node cluster or sc
 
 ### Considerations
 
-- We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic.
+- We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. 
 - If you have changed the [replication factor](configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
 - Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data.
 
