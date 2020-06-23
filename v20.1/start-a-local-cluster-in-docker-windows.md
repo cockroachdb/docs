@@ -69,7 +69,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach2 `
     --hostname=roach2 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach2:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
@@ -81,7 +80,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach3 `
     --hostname=roach3 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach3:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
