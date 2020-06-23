@@ -29,6 +29,10 @@
 </span></td></tr>
 <tr><td><a name="array_append"></a><code>array_append(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
+<tr><td><a name="array_append"></a><code>array_append(array: geography[], elem: geography) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
+<tr><td><a name="array_append"></a><code>array_append(array: geometry[], elem: geometry) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
 <tr><td><a name="array_append"></a><code>array_append(array: oid[], elem: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
 <tr><td><a name="array_append"></a><code>array_append(array: timetz[], elem: timetz) &rarr; timetz[]</code></td><td><span class="funcdesc"><p>Appends <code>elem</code> to <code>array</code>, returning the result.</p>
@@ -60,6 +64,10 @@
 <tr><td><a name="array_cat"></a><code>array_cat(left: <a href="timestamp.html">timestamptz</a>[], right: <a href="timestamp.html">timestamptz</a>[]) &rarr; <a href="timestamp.html">timestamptz</a>[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
 <tr><td><a name="array_cat"></a><code>array_cat(left: <a href="uuid.html">uuid</a>[], right: <a href="uuid.html">uuid</a>[]) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
+</span></td></tr>
+<tr><td><a name="array_cat"></a><code>array_cat(left: geography[], right: geography[]) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
+</span></td></tr>
+<tr><td><a name="array_cat"></a><code>array_cat(left: geometry[], right: geometry[]) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
 <tr><td><a name="array_cat"></a><code>array_cat(left: oid[], right: oid[]) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Appends two arrays.</p>
 </span></td></tr>
@@ -97,6 +105,10 @@
 </span></td></tr>
 <tr><td><a name="array_position"></a><code>array_position(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
+<tr><td><a name="array_position"></a><code>array_position(array: geography[], elem: geography) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_position"></a><code>array_position(array: geometry[], elem: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
 <tr><td><a name="array_position"></a><code>array_position(array: oid[], elem: oid) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_position"></a><code>array_position(array: timetz[], elem: timetz) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Return the index of the first occurrence of <code>elem</code> in <code>array</code>.</p>
@@ -128,6 +140,10 @@
 <tr><td><a name="array_positions"></a><code>array_positions(array: <a href="timestamp.html">timestamptz</a>[], elem: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="int.html">int</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_positions"></a><code>array_positions(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="int.html">int</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_positions"></a><code>array_positions(array: geography[], elem: geography) &rarr; <a href="int.html">int</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_positions"></a><code>array_positions(array: geometry[], elem: geometry) &rarr; <a href="int.html">int</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_positions"></a><code>array_positions(array: oid[], elem: oid) &rarr; <a href="int.html">int</a>[]</code></td><td><span class="funcdesc"><p>Returns and array of indexes of all occurrences of <code>elem</code> in <code>array</code>.</p>
 </span></td></tr>
@@ -161,6 +177,10 @@
 </span></td></tr>
 <tr><td><a name="array_prepend"></a><code>array_prepend(elem: <a href="uuid.html">uuid</a>, array: <a href="uuid.html">uuid</a>[]) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
+<tr><td><a name="array_prepend"></a><code>array_prepend(elem: geography, array: geography[]) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
+<tr><td><a name="array_prepend"></a><code>array_prepend(elem: geometry, array: geometry[]) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
+</span></td></tr>
 <tr><td><a name="array_prepend"></a><code>array_prepend(elem: oid, array: oid[]) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
 </span></td></tr>
 <tr><td><a name="array_prepend"></a><code>array_prepend(elem: timetz, array: timetz[]) &rarr; timetz[]</code></td><td><span class="funcdesc"><p>Prepends <code>elem</code> to <code>array</code>, returning the result.</p>
@@ -193,6 +213,10 @@
 </span></td></tr>
 <tr><td><a name="array_remove"></a><code>array_remove(array: <a href="uuid.html">uuid</a>[], elem: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
 </span></td></tr>
+<tr><td><a name="array_remove"></a><code>array_remove(array: geography[], elem: geography) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_remove"></a><code>array_remove(array: geometry[], elem: geometry) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
+</span></td></tr>
 <tr><td><a name="array_remove"></a><code>array_remove(array: oid[], elem: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_remove"></a><code>array_remove(array: timetz[], elem: timetz) &rarr; timetz[]</code></td><td><span class="funcdesc"><p>Remove from <code>array</code> all elements equal to <code>elem</code>.</p>
@@ -224,6 +248,10 @@
 <tr><td><a name="array_replace"></a><code>array_replace(array: <a href="timestamp.html">timestamptz</a>[], toreplace: <a href="timestamp.html">timestamptz</a>, replacewith: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a>[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_replace"></a><code>array_replace(array: <a href="uuid.html">uuid</a>[], toreplace: <a href="uuid.html">uuid</a>, replacewith: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_replace"></a><code>array_replace(array: geography[], toreplace: geography, replacewith: geography) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
+</span></td></tr>
+<tr><td><a name="array_replace"></a><code>array_replace(array: geometry[], toreplace: geometry, replacewith: geometry) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
 <tr><td><a name="array_replace"></a><code>array_replace(array: oid[], toreplace: oid, replacewith: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Replace all occurrences of <code>toreplace</code> in <code>array</code> with <code>replacewith</code>.</p>
 </span></td></tr>
@@ -478,6 +506,733 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr></tbody>
 </table>
 
+### Enum functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><a name="enum_first"></a><code>enum_first(val: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the first value of the input enum type.</p>
+</span></td></tr>
+<tr><td><a name="enum_last"></a><code>enum_last(val: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns the last value of the input enum type.</p>
+</span></td></tr>
+<tr><td><a name="enum_range"></a><code>enum_range(lower: anyenum, upper: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns all values of the input enum in an ordered array between the two arguments (inclusive).</p>
+</span></td></tr>
+<tr><td><a name="enum_range"></a><code>enum_range(val: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Returns all values of the input enum in an ordered array.</p>
+</span></td></tr></tbody>
+</table>
+
+### FLOAT functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><a name="abs"></a><code>abs(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="abs"></a><code>abs(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="abs"></a><code>abs(val: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="acos"></a><code>acos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse cosine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="acosd"></a><code>acosd(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse cosine of <code>val</code> with the result in degrees</p>
+</span></td></tr>
+<tr><td><a name="acosh"></a><code>acosh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse hyperbolic cosine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="asin"></a><code>asin(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse sine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="asind"></a><code>asind(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse sine of <code>val</code> with the result in degrees.</p>
+</span></td></tr>
+<tr><td><a name="asinh"></a><code>asinh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse hyperbolic sine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="atan"></a><code>atan(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="atan2"></a><code>atan2(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>x</code>/<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="atan2d"></a><code>atan2d(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>x</code>/<code>y</code> with the result in degrees</p>
+</span></td></tr>
+<tr><td><a name="atand"></a><code>atand(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>val</code> with the result in degrees.</p>
+</span></td></tr>
+<tr><td><a name="atanh"></a><code>atanh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse hyperbolic tangent of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cbrt"></a><code>cbrt(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the cube root (∛) of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cbrt"></a><code>cbrt(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cube root (∛) of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceil"></a><code>ceil(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cos"></a><code>cos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cosine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cosd"></a><code>cosd(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cosine of <code>val</code> where <code>val</code> is in degrees.</p>
+</span></td></tr>
+<tr><td><a name="cosh"></a><code>cosh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the hyperbolic cosine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cot"></a><code>cot(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cotangent of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="cotd"></a><code>cotd(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cotangent of <code>val</code> where <code>val</code> is in degrees.</p>
+</span></td></tr>
+<tr><td><a name="degrees"></a><code>degrees(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> as a radian value to a degree value.</p>
+</span></td></tr>
+<tr><td><a name="div"></a><code>div(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="div"></a><code>div(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="div"></a><code>div(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="exp"></a><code>exp(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <em>e</em> ^ <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="exp"></a><code>exp(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <em>e</em> ^ <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="floor"></a><code>floor(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="floor"></a><code>floor(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="floor"></a><code>floor(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="isnan"></a><code>isnan(val: <a href="decimal.html">decimal</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if <code>val</code> is NaN, false otherwise.</p>
+</span></td></tr>
+<tr><td><a name="isnan"></a><code>isnan(val: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if <code>val</code> is NaN, false otherwise.</p>
+</span></td></tr>
+<tr><td><a name="ln"></a><code>ln(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the natural log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="ln"></a><code>ln(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the natural log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="log"></a><code>log(b: <a href="decimal.html">decimal</a>, x: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="log"></a><code>log(b: <a href="float.html">float</a>, x: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="log"></a><code>log(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="log"></a><code>log(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="mod"></a><code>mod(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="mod"></a><code>mod(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="mod"></a><code>mod(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="pi"></a><code>pi() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the value for pi (3.141592653589793).</p>
+</span></td></tr>
+<tr><td><a name="pow"></a><code>pow(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="pow"></a><code>pow(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="pow"></a><code>pow(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="power"></a><code>power(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="power"></a><code>power(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="power"></a><code>power(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
+</span></td></tr>
+<tr><td><a name="radians"></a><code>radians(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> as a degree value to a radians value.</p>
+</span></td></tr>
+<tr><td><a name="random"></a><code>random() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns a random float between 0 and 1.</p>
+</span></td></tr>
+<tr><td><a name="round"></a><code>round(input: <a href="decimal.html">decimal</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position in <code>input</code> using half away from zero rounding. If <code>decimal_accuracy</code> is not in the range -2^31…(2^31-1), the results are undefined.</p>
+</span></td></tr>
+<tr><td><a name="round"></a><code>round(input: <a href="float.html">float</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position  in <code>input</code> using half to even (banker’s) rounding.</p>
+</span></td></tr>
+<tr><td><a name="round"></a><code>round(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer, half away from zero: round(+/-2.4) = +/-2, round(+/-2.5) = +/-3.</p>
+</span></td></tr>
+<tr><td><a name="round"></a><code>round(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer using half to even (banker’s) rounding.</p>
+</span></td></tr>
+<tr><td><a name="sign"></a><code>sign(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
+</span></td></tr>
+<tr><td><a name="sign"></a><code>sign(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
+</span></td></tr>
+<tr><td><a name="sign"></a><code>sign(val: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
+</span></td></tr>
+<tr><td><a name="sin"></a><code>sin(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the sine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="sind"></a><code>sind(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the sine of <code>val</code> where <code>val</code> is in degrees.</p>
+</span></td></tr>
+<tr><td><a name="sinh"></a><code>sinh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the hyperbolic sine of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="sqrt"></a><code>sqrt(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the square root of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="sqrt"></a><code>sqrt(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the square root of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="tan"></a><code>tan(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the tangent of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="tand"></a><code>tand(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the tangent of <code>val</code> where <code>val</code> is in degrees.</p>
+</span></td></tr>
+<tr><td><a name="tanh"></a><code>tanh(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the hyperbolic tangent of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="trunc"></a><code>trunc(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
+</span></td></tr>
+<tr><td><a name="trunc"></a><code>trunc(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
+</span></td></tr></tbody>
+</table>
+
+### Geospatial functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(catalog_name: <a href="string.html">string</a>, schema_name: <a href="string.html">string</a>, table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(catalog_name: <a href="string.html">string</a>, schema_name: <a href="string.html">string</a>, table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>, use_typmod: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(schema_name: <a href="string.html">string</a>, table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(schema_name: <a href="string.html">string</a>, table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>, use_typmod: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="addgeometrycolumn"></a><code>addgeometrycolumn(table_name: <a href="string.html">string</a>, column_name: <a href="string.html">string</a>, srid: <a href="int.html">int</a>, type: <a href="string.html">string</a>, dimension: <a href="int.html">int</a>, use_typmod: <a href="bool.html">bool</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Adds a new geometry column to an existing table and returns metadata about the column created.</p>
+</span></td></tr>
+<tr><td><a name="st_area"></a><code>st_area(geography: geography) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the area of the given geography in meters^2. Uses a spheroid to perform the operation.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_area"></a><code>st_area(geography: geography, use_spheroid: <a href="bool.html">bool</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the area of the given geography in meters^2.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_area"></a><code>st_area(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the area of the given geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_area2d"></a><code>st_area2d(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the area of the given geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_asbinary"></a><code>st_asbinary(geography: geography) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation of a given Geography.</p>
+</span></td></tr>
+<tr><td><a name="st_asbinary"></a><code>st_asbinary(geography: geography, xdr_or_ndr: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation of a given Geography. This variant has a second argument denoting the encoding - <code>xdr</code> for big endian and <code>ndr</code> for little endian.</p>
+</span></td></tr>
+<tr><td><a name="st_asbinary"></a><code>st_asbinary(geometry: geometry) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_asbinary"></a><code>st_asbinary(geometry: geometry, xdr_or_ndr: <a href="string.html">string</a>) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation of a given Geometry. This variant has a second argument denoting the encoding - <code>xdr</code> for big endian and <code>ndr</code> for little endian.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkb"></a><code>st_asewkb(geography: geography) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation of a given Geography.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkb"></a><code>st_asewkb(geometry: geometry) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkt"></a><code>st_asewkt(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKT representation of a given Geography. A default of 15 decimal digits is used.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkt"></a><code>st_asewkt(geography: geography, maximum_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKT representation of a given Geography. The maximum_decimal_digits parameter controls the maximum decimal digits to print after the <code>.</code>. Use -1 to print as many digits as possible.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkt"></a><code>st_asewkt(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKT representation of a given Geometry. A maximum of 15 decimal digits is used.</p>
+</span></td></tr>
+<tr><td><a name="st_asewkt"></a><code>st_asewkt(geometry: geometry, maximum_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKT representation of a given Geometry. The maximum_decimal_digits parameter controls the maximum decimal digits to print after the <code>.</code>. Use -1 to print as many digits as possible.</p>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geography. Coordinates have a maximum of 9 decimal digits.</p>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geography: geography, max_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geography with max_decimal_digits output for each coordinate value.</p>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geography: geography, max_decimal_digits: <a href="int.html">int</a>, options: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geography with max_decimal_digits output for each coordinate value.</p>
+<p>Options is a flag that can be bitmasked. The options are:</p>
+<ul>
+<li>0: no option (default for Geography)</li>
+<li>1: GeoJSON BBOX</li>
+<li>2: GeoJSON Short CRS (e.g EPSG:4326)</li>
+<li>4: GeoJSON Long CRS (e.g urn:ogc:def:crs:EPSG::4326)</li>
+<li>8: GeoJSON Short CRS if not EPSG:4326</li>
+</ul>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geometry. Coordinates have a maximum of 9 decimal digits.</p>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geometry: geometry, max_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geometry with max_decimal_digits output for each coordinate value.</p>
+</span></td></tr>
+<tr><td><a name="st_asgeojson"></a><code>st_asgeojson(geometry: geometry, max_decimal_digits: <a href="int.html">int</a>, options: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the GeoJSON representation of a given Geometry with max_decimal_digits output for each coordinate value.</p>
+<p>Options is a flag that can be bitmasked. The options are:</p>
+<ul>
+<li>0: no option</li>
+<li>1: GeoJSON BBOX</li>
+<li>2: GeoJSON Short CRS (e.g EPSG:4326)</li>
+<li>4: GeoJSON Long CRS (e.g urn:ogc:def:crs:EPSG::4326)</li>
+<li>8: GeoJSON Short CRS if not EPSG:4326 (default for Geometry)</li>
+</ul>
+</span></td></tr>
+<tr><td><a name="st_ashexewkb"></a><code>st_ashexewkb(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation in hex of a given Geography.</p>
+</span></td></tr>
+<tr><td><a name="st_ashexewkb"></a><code>st_ashexewkb(geography: geography, xdr_or_ndr: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation in hex of a given Geography. This variant has a second argument denoting the encoding - <code>xdr</code> for big endian and <code>ndr</code> for little endian.</p>
+</span></td></tr>
+<tr><td><a name="st_ashexewkb"></a><code>st_ashexewkb(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation in hex of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_ashexewkb"></a><code>st_ashexewkb(geometry: geometry, xdr_or_ndr: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the EWKB representation in hex of a given Geometry. This variant has a second argument denoting the encoding - <code>xdr</code> for big endian and <code>ndr</code> for little endian.</p>
+</span></td></tr>
+<tr><td><a name="st_ashexwkb"></a><code>st_ashexwkb(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation in hex of a given Geography.</p>
+</span></td></tr>
+<tr><td><a name="st_ashexwkb"></a><code>st_ashexwkb(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKB representation in hex of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_askml"></a><code>st_askml(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the KML representation of a given Geography.</p>
+</span></td></tr>
+<tr><td><a name="st_askml"></a><code>st_askml(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the KML representation of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_astext"></a><code>st_astext(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKT representation of a given Geography. A default of 15 decimal digits is used.</p>
+</span></td></tr>
+<tr><td><a name="st_astext"></a><code>st_astext(geography: geography, maximum_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKT representation of a given Geography. The maximum_decimal_digits parameter controls the maximum decimal digits to print after the <code>.</code>. Use -1 to print as many digits as possible.</p>
+</span></td></tr>
+<tr><td><a name="st_astext"></a><code>st_astext(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKT representation of a given Geometry. A maximum of 15 decimal digits is used.</p>
+</span></td></tr>
+<tr><td><a name="st_astext"></a><code>st_astext(geometry: geometry, maximum_decimal_digits: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the WKT representation of a given Geometry. The maximum_decimal_digits parameter controls the maximum decimal digits to print after the <code>.</code>. Use -1 to print as many digits as possible.</p>
+</span></td></tr>
+<tr><td><a name="st_azimuth"></a><code>st_azimuth(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the azimuth in radians of the segment defined by the given point geometries, or NULL if the two points are coincident.</p>
+<p>The azimuth is angle is referenced from north, and is positive clockwise: North = 0; East = π/2; South = π; West = 3π/2.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry: geometry, distance: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance
+from the given Geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry: geometry, distance: <a href="float.html">float</a>, buffer_style_params: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant takes in a space separate parameter string, which will augment the buffer styles. Valid parameters are:</p>
+<ul>
+<li>quad_segs=&lt;int&gt;, default 8</li>
+<li>endcap=&lt;round|flat|butt|square&gt;, default round</li>
+<li>join=&lt;round|mitre|miter|bevel&gt;, default round</li>
+<li>side=&lt;both|left|right&gt;, default both</li>
+<li>mitre_limit=&lt;float&gt;, default 5.0</li>
+</ul>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry: geometry, distance: <a href="float.html">float</a>, quad_segs: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant approximates the circle into quad_seg segments per line (the default is 8).</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="decimal.html">decimal</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance
+from the given Geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="decimal.html">decimal</a>, buffer_style_params: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant takes in a space separate parameter string, which will augment the buffer styles. Valid parameters are:</p>
+<ul>
+<li>quad_segs=&lt;int&gt;, default 8</li>
+<li>endcap=&lt;round|flat|butt|square&gt;, default round</li>
+<li>join=&lt;round|mitre|miter|bevel&gt;, default round</li>
+<li>side=&lt;both|left|right&gt;, default both</li>
+<li>mitre_limit=&lt;float&gt;, default 5.0</li>
+</ul>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="decimal.html">decimal</a>, quad_segs: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant approximates the circle into quad_seg segments per line (the default is 8).</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance
+from the given Geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="float.html">float</a>, buffer_style_params: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant takes in a space separate parameter string, which will augment the buffer styles. Valid parameters are:</p>
+<ul>
+<li>quad_segs=&lt;int&gt;, default 8</li>
+<li>endcap=&lt;round|flat|butt|square&gt;, default round</li>
+<li>join=&lt;round|mitre|miter|bevel&gt;, default round</li>
+<li>side=&lt;both|left|right&gt;, default both</li>
+<li>mitre_limit=&lt;float&gt;, default 5.0</li>
+</ul>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_buffer"></a><code>st_buffer(geometry_str: <a href="string.html">string</a>, distance: <a href="float.html">float</a>, quad_segs: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a Geometry that represents all points whose distance is less than or equal to the given distance from the
+given Geometry.</p>
+<p>This variant approximates the circle into quad_seg segments per line (the default is 8).</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_centroid"></a><code>st_centroid(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the centroid of the given geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_centroid"></a><code>st_centroid(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the centroid of the given string, which will be parsed as a geometry object.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_contains"></a><code>st_contains(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if no points of geometry_b lie in the exterior of geometry_a, and there is at least one point in the interior of geometry_b that lies in the interior of geometry_a.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_containsproperly"></a><code>st_containsproperly(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_b intersects the interior of geometry_a but not the boundary or exterior of geometry_a.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_coveredby"></a><code>st_coveredby(geography_a: geography, geography_b: geography) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if no point in geography_a is outside geography_b.</p>
+<p>The calculations performed are have a precision of 1cm.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_coveredby"></a><code>st_coveredby(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if no point in geometry_a is outside geometry_b</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_covers"></a><code>st_covers(geography_a: geography, geography_b: geography) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if no point in geography_b is outside geography_a.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_covers"></a><code>st_covers(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if no point in geometry_b is outside geometry_a.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_crosses"></a><code>st_crosses(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_a has some - but not all - interior points in common with geometry_b.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_dfullywithin"></a><code>st_dfullywithin(geometry_a: geometry, geometry_b: geometry, distance: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if every pair of points comprising geometry_a and geometry_b are within distance units. In other words, the ST_MaxDistance between geometry_a and geometry_b is less than or equal to distance units.</p>
+</span></td></tr>
+<tr><td><a name="st_distance"></a><code>st_distance(geography_a: geography, geography_b: geography) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the distance in meters between geography_a and geography_b.  Uses a spheroid to perform the operation.&quot;\n\nWhen operating on a spheroid, this function will use the sphere to calculate the closest two points using S2. The spheroid distance between these two points is calculated using GeographicLib. This follows observed PostGIS behavior.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_distance"></a><code>st_distance(geography_a: geography, geography_b: geography, use_spheroid: <a href="bool.html">bool</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the distance in meters between geography_a and geography_b.&quot;\n\nWhen operating on a spheroid, this function will use the sphere to calculate the closest two points using S2. The spheroid distance between these two points is calculated using GeographicLib. This follows observed PostGIS behavior.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_distance"></a><code>st_distance(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the distance between the given geometries.</p>
+</span></td></tr>
+<tr><td><a name="st_dwithin"></a><code>st_dwithin(geography_a: geography, geography_b: geography, distance: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if any of geography_a is within distance meters of geography_b. Uses a spheroid to perform the operation.&quot;\n\nWhen operating on a spheroid, this function will use the sphere to calculate the closest two points using S2. The spheroid distance between these two points is calculated using GeographicLib. This follows observed PostGIS behavior.</p>
+<p>The calculations performed are have a precision of 1cm.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_dwithin"></a><code>st_dwithin(geography_a: geography, geography_b: geography, distance: <a href="float.html">float</a>, use_spheroid: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if any of geography_a is within distance meters of geography_b.&quot;\n\nWhen operating on a spheroid, this function will use the sphere to calculate the closest two points using S2. The spheroid distance between these two points is calculated using GeographicLib. This follows observed PostGIS behavior.</p>
+<p>The calculations performed are have a precision of 1cm.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_dwithin"></a><code>st_dwithin(geometry_a: geometry, geometry_b: geometry, distance: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if any of geometry_a is within distance units of geometry_b.</p>
+</span></td></tr>
+<tr><td><a name="st_endpoint"></a><code>st_endpoint(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the last point of a geometry which has shape LineString. Returns NULL if the geometry is not a LineString.</p>
+</span></td></tr>
+<tr><td><a name="st_equals"></a><code>st_equals(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_a is spatially equal to geometry_b, i.e. ST_Within(geometry_a, geometry_b) = ST_Within(geometry_b, geometry_a) = true.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_exteriorring"></a><code>st_exteriorring(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the exterior ring of a Polygon as a LineString. Returns NULL if the shape is not a Polygon.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromewkb"></a><code>st_geogfromewkb(val: <a href="bytes.html">bytes</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from an EWKB representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromewkt"></a><code>st_geogfromewkt(val: <a href="string.html">string</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from an EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromgeojson"></a><code>st_geogfromgeojson(val: <a href="string.html">string</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from an GeoJSON representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromgeojson"></a><code>st_geogfromgeojson(val: jsonb) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from an GeoJSON representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromtext"></a><code>st_geogfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKT or EWKT representation with an SRID. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromtext"></a><code>st_geogfromtext(val: <a href="string.html">string</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKT or EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromwkb"></a><code>st_geogfromwkb(bytes: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKB representation with the given SRID set.</p>
+</span></td></tr>
+<tr><td><a name="st_geogfromwkb"></a><code>st_geogfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKB representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geographyfromtext"></a><code>st_geographyfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKT or EWKT representation with an SRID. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_geographyfromtext"></a><code>st_geographyfromtext(val: <a href="string.html">string</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns the Geography from a WKT or EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomcollfromtext"></a><code>st_geomcollfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not GeometryCollection, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_geomcollfromtext"></a><code>st_geomcollfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not GeometryCollection, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_geomcollfromwkb"></a><code>st_geomcollfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not GeometryCollection, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_geomcollfromwkb"></a><code>st_geomcollfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not GeometryCollection, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_geometryfromtext"></a><code>st_geometryfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_geometryfromtext"></a><code>st_geometryfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geometryn"></a><code>st_geometryn(geometry: geometry, n: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the n-th Geometry (1-indexed). Returns NULL if out of bounds.</p>
+</span></td></tr>
+<tr><td><a name="st_geometrytype"></a><code>st_geometrytype(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of geometry as a string.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromewkb"></a><code>st_geomfromewkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from an EWKB representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromewkt"></a><code>st_geomfromewkt(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from an EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromgeojson"></a><code>st_geomfromgeojson(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from an GeoJSON representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromgeojson"></a><code>st_geomfromgeojson(val: jsonb) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from an GeoJSON representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromtext"></a><code>st_geomfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromtext"></a><code>st_geomfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromwkb"></a><code>st_geomfromwkb(bytes: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with the given SRID set.</p>
+</span></td></tr>
+<tr><td><a name="st_geomfromwkb"></a><code>st_geomfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation.</p>
+</span></td></tr>
+<tr><td><a name="st_interiorringn"></a><code>st_interiorringn(geometry: geometry, n: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the n-th (1-indexed) interior ring of a Polygon as a LineString. Returns NULL if the shape is not a Polygon, or the ring does not exist.</p>
+</span></td></tr>
+<tr><td><a name="st_intersection"></a><code>st_intersection(geometry_a: geometry, geometry_b: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the point intersections of the given geometries.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_intersects"></a><code>st_intersects(geography_a: geography, geography_b: geography) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geography_a shares any portion of space with geography_b.</p>
+<p>The calculations performed are have a precision of 1cm.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_intersects"></a><code>st_intersects(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_a shares any portion of space with geometry_b.</p>
+<p>The calculations performed are have a precision of 1cm.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_length"></a><code>st_length(geography: geography) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the length of the given geography in meters. Uses a spheroid to perform the operation.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_length"></a><code>st_length(geography: geography, use_spheroid: <a href="bool.html">bool</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the length of the given geography in meters.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_length"></a><code>st_length(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the length of the given geometry.</p>
+<p>Note ST_Length is only valid for LineString - use ST_Perimeter for Polygon.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_linefromtext"></a><code>st_linefromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not LineString, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_linefromtext"></a><code>st_linefromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_linefromwkb"></a><code>st_linefromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_linefromwkb"></a><code>st_linefromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_lineinterpolatepoint"></a><code>st_lineinterpolatepoint(geometry: geometry, fraction: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a point along the given LineString which is at given fraction of LineString’s total length.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_lineinterpolatepoints"></a><code>st_lineinterpolatepoints(geometry: geometry, fraction: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns one or more points along the LineString which is at an integral multiples of given fraction of LineString’s total length.</p>
+<p>Note If the result has zero or one points, it will be returned as a POINT. If it has two or more points, it will be returned as a MULTIPOINT.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_lineinterpolatepoints"></a><code>st_lineinterpolatepoints(geometry: geometry, fraction: <a href="float.html">float</a>, repeat: <a href="bool.html">bool</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns one or more points along the LineString which is at an integral multiples of given fraction of LineString’s total length. If repeat is false (default true) then it returns first point.</p>
+<p>Note If the result has zero or one points, it will be returned as a POINT. If it has two or more points, it will be returned as a MULTIPOINT.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_linestringfromtext"></a><code>st_linestringfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not LineString, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_linestringfromtext"></a><code>st_linestringfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_linestringfromwkb"></a><code>st_linestringfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_linestringfromwkb"></a><code>st_linestringfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not LineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_longestline"></a><code>st_longestline(geometry_a: geometry, geometry_b: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the LineString corresponds to the max distance across every pair of points comprising the given geometries.</p>
+<p>Note if geometries are the same, it will return the LineString with the maximum distance between the geometry’s vertexes. The function will return the longest line that was discovered first when comparing maximum distances if more than one is found.</p>
+</span></td></tr>
+<tr><td><a name="st_makepoint"></a><code>st_makepoint(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a new Point with the given X and Y coordinates.</p>
+</span></td></tr>
+<tr><td><a name="st_maxdistance"></a><code>st_maxdistance(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the maximum distance across every pair of points comprising the given geometries. Note if the geometries are the same, it will return the maximum distance between the geometry’s vertexes.</p>
+</span></td></tr>
+<tr><td><a name="st_mlinefromtext"></a><code>st_mlinefromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_mlinefromtext"></a><code>st_mlinefromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mlinefromwkb"></a><code>st_mlinefromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mlinefromwkb"></a><code>st_mlinefromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpointfromtext"></a><code>st_mpointfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiPoint, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_mpointfromtext"></a><code>st_mpointfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpointfromwkb"></a><code>st_mpointfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpointfromwkb"></a><code>st_mpointfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpolyfromtext"></a><code>st_mpolyfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_mpolyfromtext"></a><code>st_mpolyfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpolyfromwkb"></a><code>st_mpolyfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_mpolyfromwkb"></a><code>st_mpolyfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinefromtext"></a><code>st_multilinefromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinefromtext"></a><code>st_multilinefromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinefromwkb"></a><code>st_multilinefromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinefromwkb"></a><code>st_multilinefromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinestringfromtext"></a><code>st_multilinestringfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinestringfromtext"></a><code>st_multilinestringfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinestringfromwkb"></a><code>st_multilinestringfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multilinestringfromwkb"></a><code>st_multilinestringfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiLineString, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipointfromtext"></a><code>st_multipointfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiPoint, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_multipointfromtext"></a><code>st_multipointfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipointfromwkb"></a><code>st_multipointfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipointfromwkb"></a><code>st_multipointfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiPoint, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolyfromtext"></a><code>st_multipolyfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolyfromtext"></a><code>st_multipolyfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolyfromwkb"></a><code>st_multipolyfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolyfromwkb"></a><code>st_multipolyfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolygonfromtext"></a><code>st_multipolygonfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolygonfromtext"></a><code>st_multipolygonfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolygonfromwkb"></a><code>st_multipolygonfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_multipolygonfromwkb"></a><code>st_multipolygonfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not MultiPolygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_ndims"></a><code>st_ndims(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of dimensions of a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_npoints"></a><code>st_npoints(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of points in a given Geometry. Works for any shape type.</p>
+</span></td></tr>
+<tr><td><a name="st_nrings"></a><code>st_nrings(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of rings in a Polygon Geometry. Returns 0 if the shape is not a Polygon.</p>
+</span></td></tr>
+<tr><td><a name="st_numgeometries"></a><code>st_numgeometries(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of shapes inside a given Geometry.</p>
+</span></td></tr>
+<tr><td><a name="st_numinteriorring"></a><code>st_numinteriorring(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of interior rings in a Polygon Geometry. Returns NULL if the shape is not a Polygon.</p>
+</span></td></tr>
+<tr><td><a name="st_numinteriorrings"></a><code>st_numinteriorrings(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of interior rings in a Polygon Geometry. Returns NULL if the shape is not a Polygon.</p>
+</span></td></tr>
+<tr><td><a name="st_numpoints"></a><code>st_numpoints(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of points in a LineString. Returns NULL if the Geometry is not a LineString.</p>
+</span></td></tr>
+<tr><td><a name="st_overlaps"></a><code>st_overlaps(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_a intersects but does not completely contain geometry_b, or vice versa. “Does not completely” implies ST_Within(geometry_a, geometry_b) = ST_Within(geometry_b, geometry_a) = false.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_perimeter"></a><code>st_perimeter(geography: geography) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the perimeter of the given geography in meters. Uses a spheroid to perform the operation.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_perimeter"></a><code>st_perimeter(geography: geography, use_spheroid: <a href="bool.html">bool</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the perimeter of the given geography in meters.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+<p>This function utilizes the GeographicLib library for spheroid calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_perimeter"></a><code>st_perimeter(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the perimeter of the given geometry in meters.</p>
+<p>Note ST_Perimeter is only valid for Polygon - use ST_Length for LineString.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_point"></a><code>st_point(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a new Point with the given X and Y coordinates.</p>
+</span></td></tr>
+<tr><td><a name="st_pointfromtext"></a><code>st_pointfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not Point, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_pointfromtext"></a><code>st_pointfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not Point, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_pointfromwkb"></a><code>st_pointfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not Point, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_pointfromwkb"></a><code>st_pointfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not Point, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_pointn"></a><code>st_pointn(geometry: geometry, n: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the n-th Point of a LineString (1-indexed). Returns NULL if out of bounds or not a LineString.</p>
+</span></td></tr>
+<tr><td><a name="st_pointonsurface"></a><code>st_pointonsurface(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a point that intersects with the given Geometry.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_polyfromtext"></a><code>st_polyfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not Polygon, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_polyfromtext"></a><code>st_polyfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_polyfromwkb"></a><code>st_polyfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_polyfromwkb"></a><code>st_polyfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_polygonfromtext"></a><code>st_polygonfromtext(str: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation with an SRID. If the shape underneath is not Polygon, NULL is returned. If the SRID is present in both the EWKT and the argument, the argument value is used.</p>
+</span></td></tr>
+<tr><td><a name="st_polygonfromtext"></a><code>st_polygonfromtext(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_polygonfromwkb"></a><code>st_polygonfromwkb(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_polygonfromwkb"></a><code>st_polygonfromwkb(wkb: <a href="bytes.html">bytes</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation with an SRID. If the shape underneath is not Polygon, NULL is returned.</p>
+</span></td></tr>
+<tr><td><a name="st_project"></a><code>st_project(geography: geography, distance: <a href="float.html">float</a>, azimuth: <a href="float.html">float</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns a point projected from a start point along a geodesic using a given distance and azimuth (bearing).
+This is known as the direct geodesic problem.</p>
+<p>The distance is given in meters. Negative values are supported.</p>
+<p>The azimuth (also known as heading or bearing) is given in radians. It is measured clockwise from true north (azimuth zero).
+East is azimuth π/2 (90 degrees); south is azimuth π (180 degrees); west is azimuth 3π/2 (270 degrees).
+Negative azimuth values and values greater than 2π (360 degrees) are supported.</p>
+</span></td></tr>
+<tr><td><a name="st_relate"></a><code>st_relate(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the DE-9IM spatial relation between geometry_a and geometry_b.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_relate"></a><code>st_relate(geometry_a: geometry, geometry_b: geometry, pattern: <a href="string.html">string</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns whether the DE-9IM spatial relation between geometry_a and geometry_b matches the DE-9IM pattern.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_segmentize"></a><code>st_segmentize(geography: geography, max_segment_length_meters: <a href="float.html">float</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Returns a modified Geography having no segment longer than the given max_segment_length meters.</p>
+<p>The calculations are done on a sphere.</p>
+<p>This function utilizes the S2 library for spherical calculations.</p>
+</span></td></tr>
+<tr><td><a name="st_segmentize"></a><code>st_segmentize(geometry: geometry, max_segment_length: <a href="float.html">float</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns a modified Geometry having no segment longer than the given max_segment_length. Length units are in units of spatial reference.</p>
+</span></td></tr>
+<tr><td><a name="st_setsrid"></a><code>st_setsrid(geography: geography, srid: <a href="int.html">int</a>) &rarr; geography</code></td><td><span class="funcdesc"><p>Sets a Geography to a new SRID without transforming the coordinates.</p>
+</span></td></tr>
+<tr><td><a name="st_setsrid"></a><code>st_setsrid(geometry: geometry, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Sets a Geometry to a new SRID without transforming the coordinates.</p>
+</span></td></tr>
+<tr><td><a name="st_shortestline"></a><code>st_shortestline(geometry_a: geometry, geometry_b: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the LineString corresponds to the minimum distance across every pair of points comprising the given geometries.</p>
+<p>Note if geometries are the same, it will return the LineString with the minimum distance between the geometry’s vertexes. The function will return the shortest line that was discovered first when comparing minimum distances if more than one is found.</p>
+</span></td></tr>
+<tr><td><a name="st_srid"></a><code>st_srid(geography: geography) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the Spatial Reference Identifier (SRID) for the ST_Geography as defined in spatial_ref_sys table.</p>
+</span></td></tr>
+<tr><td><a name="st_srid"></a><code>st_srid(geometry: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the Spatial Reference Identifier (SRID) for the ST_Geometry as defined in spatial_ref_sys table.</p>
+</span></td></tr>
+<tr><td><a name="st_startpoint"></a><code>st_startpoint(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the first point of a geometry which has shape LineString. Returns NULL if the geometry is not a LineString.</p>
+</span></td></tr>
+<tr><td><a name="st_summary"></a><code>st_summary(geography: geography) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a text summary of the contents of the geography.</p>
+<p>Flags shown square brackets after the geometry type have the following meaning:</p>
+<ul>
+<li>M: has M coordinate</li>
+<li>Z: has Z coordinate</li>
+<li>B: has a cached bounding box</li>
+<li>G: is geography</li>
+<li>S: has spatial reference system</li>
+</ul>
+</span></td></tr>
+<tr><td><a name="st_summary"></a><code>st_summary(geometry: geometry) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns a text summary of the contents of the geometry.</p>
+<p>Flags shown square brackets after the geometry type have the following meaning:</p>
+<ul>
+<li>M: has M coordinate</li>
+<li>Z: has Z coordinate</li>
+<li>B: has a cached bounding box</li>
+<li>G: is geography</li>
+<li>S: has spatial reference system</li>
+</ul>
+</span></td></tr>
+<tr><td><a name="st_touches"></a><code>st_touches(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if the only points in common between geometry_a and geometry_b are on the boundary. Note points do not touch other points.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_transform"></a><code>st_transform(geometry: geometry, from_proj_text: <a href="string.html">string</a>, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Transforms a geometry into the coordinate reference system assuming the from_proj_text to the new to_proj_text by projecting its coordinates. The supplied SRID is set on the new geometry.</p>
+<p>This function utilizes the PROJ library for coordinate projections.</p>
+</span></td></tr>
+<tr><td><a name="st_transform"></a><code>st_transform(geometry: geometry, from_proj_text: <a href="string.html">string</a>, to_proj_text: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Transforms a geometry into the coordinate reference system assuming the from_proj_text to the new to_proj_text by projecting its coordinates.</p>
+<p>This function utilizes the PROJ library for coordinate projections.</p>
+</span></td></tr>
+<tr><td><a name="st_transform"></a><code>st_transform(geometry: geometry, srid: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Transforms a geometry into the given SRID coordinate reference system by projecting its coordinates.</p>
+<p>This function utilizes the PROJ library for coordinate projections.</p>
+</span></td></tr>
+<tr><td><a name="st_transform"></a><code>st_transform(geometry: geometry, to_proj_text: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Transforms a geometry into the coordinate reference system referenced by the projection text by projecting its coordinates.</p>
+<p>This function utilizes the PROJ library for coordinate projections.</p>
+</span></td></tr>
+<tr><td><a name="st_union"></a><code>st_union(geometry_a: geometry, geometry_b: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the union of the given geometries as a single Geometry object.</p>
+<p>This function utilizes the GEOS module.</p>
+</span></td></tr>
+<tr><td><a name="st_within"></a><code>st_within(geometry_a: geometry, geometry_b: geometry) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if geometry_a is completely inside geometry_b.</p>
+<p>This function utilizes the GEOS module.</p>
+<p>This function will automatically use any available index.</p>
+</span></td></tr>
+<tr><td><a name="st_wkbtosql"></a><code>st_wkbtosql(val: <a href="bytes.html">bytes</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKB representation.</p>
+</span></td></tr>
+<tr><td><a name="st_wkttosql"></a><code>st_wkttosql(val: <a href="string.html">string</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the Geometry from a WKT or EWKT representation.</p>
+</span></td></tr>
+<tr><td><a name="st_x"></a><code>st_x(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the X coordinate of a geometry if it is a Point.</p>
+</span></td></tr>
+<tr><td><a name="st_y"></a><code>st_y(geometry: geometry) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the Y coordinate of a geometry if it is a Point.</p>
+</span></td></tr></tbody>
+</table>
+
 ### ID generation functions
 
 <table>
@@ -523,6 +1278,43 @@ has no relationship with the commit order of concurrent transactions.</p>
 <p>For example, <code>set_masklen('192.168.1.2', 16)</code> returns <code>'192.168.1.2/16'</code>.</p>
 </span></td></tr>
 <tr><td><a name="text"></a><code>text(val: <a href="inet.html">inet</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts the IP address and prefix length to text.</p>
+</span></td></tr></tbody>
+</table>
+
+### INT functions
+
+<table>
+<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><a name="crc32c"></a><code>crc32c(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the Castagnoli polynomial.</p>
+</span></td></tr>
+<tr><td><a name="crc32c"></a><code>crc32c(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the Castagnoli polynomial.</p>
+</span></td></tr>
+<tr><td><a name="crc32ieee"></a><code>crc32ieee(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the IEEE polynomial.</p>
+</span></td></tr>
+<tr><td><a name="crc32ieee"></a><code>crc32ieee(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the IEEE polynomial.</p>
+</span></td></tr>
+<tr><td><a name="fnv32"></a><code>fnv32(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1 hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv32"></a><code>fnv32(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1 hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv32a"></a><code>fnv32a(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1a hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv32a"></a><code>fnv32a(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1a hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv64"></a><code>fnv64(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1 hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv64"></a><code>fnv64(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1 hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv64a"></a><code>fnv64a(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1a hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="fnv64a"></a><code>fnv64a(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1a hash value of a set of values.</p>
+</span></td></tr>
+<tr><td><a name="width_bucket"></a><code>width_bucket(operand: <a href="decimal.html">decimal</a>, b1: <a href="decimal.html">decimal</a>, b2: <a href="decimal.html">decimal</a>, count: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned in a histogram having count equal-width buckets spanning the range b1 to b2.</p>
+</span></td></tr>
+<tr><td><a name="width_bucket"></a><code>width_bucket(operand: <a href="int.html">int</a>, b1: <a href="int.html">int</a>, b2: <a href="int.html">int</a>, count: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned in a histogram having count equal-width buckets spanning the range b1 to b2.</p>
+</span></td></tr>
+<tr><td><a name="width_bucket"></a><code>width_bucket(operand: anyelement, thresholds: anyelement[]) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned given an array listing the lower bounds of the buckets; returns 0 for an input less than the first lower bound; the thresholds array must be sorted, smallest first, or unexpected results will be obtained</p>
 </span></td></tr></tbody>
 </table>
 
@@ -586,161 +1378,6 @@ has no relationship with the commit order of concurrent transactions.</p>
 <tr><td><a name="to_json"></a><code>to_json(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
 </span></td></tr>
 <tr><td><a name="to_jsonb"></a><code>to_jsonb(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
-</span></td></tr></tbody>
-</table>
-
-### Math and numeric functions
-
-<table>
-<thead><tr><th>Function &rarr; Returns</th><th>Description</th></tr></thead>
-<tbody>
-<tr><td><a name="abs"></a><code>abs(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="abs"></a><code>abs(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="abs"></a><code>abs(val: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the absolute value of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="acos"></a><code>acos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse cosine of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="asin"></a><code>asin(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse sine of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="atan"></a><code>atan(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="atan2"></a><code>atan2(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the inverse tangent of <code>x</code>/<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="cbrt"></a><code>cbrt(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the cube root (∛) of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="cbrt"></a><code>cbrt(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cube root (∛) of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceil"></a><code>ceil(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceil"></a><code>ceil(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceil"></a><code>ceil(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ceiling"></a><code>ceiling(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the smallest integer not smaller than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="cos"></a><code>cos(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cosine of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="cot"></a><code>cot(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the cotangent of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="crc32c"></a><code>crc32c(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the Castagnoli polynomial.</p>
-</span></td></tr>
-<tr><td><a name="crc32c"></a><code>crc32c(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the Castagnoli polynomial.</p>
-</span></td></tr>
-<tr><td><a name="crc32ieee"></a><code>crc32ieee(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the IEEE polynomial.</p>
-</span></td></tr>
-<tr><td><a name="crc32ieee"></a><code>crc32ieee(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the CRC-32 hash using the IEEE polynomial.</p>
-</span></td></tr>
-<tr><td><a name="degrees"></a><code>degrees(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> as a radian value to a degree value.</p>
-</span></td></tr>
-<tr><td><a name="div"></a><code>div(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="div"></a><code>div(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="div"></a><code>div(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the integer quotient of <code>x</code>/<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="exp"></a><code>exp(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <em>e</em> ^ <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="exp"></a><code>exp(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <em>e</em> ^ <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="floor"></a><code>floor(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="floor"></a><code>floor(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="floor"></a><code>floor(val: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the largest integer not greater than <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="fnv32"></a><code>fnv32(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1 hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv32"></a><code>fnv32(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1 hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv32a"></a><code>fnv32a(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1a hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv32a"></a><code>fnv32a(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 32-bit FNV-1a hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv64"></a><code>fnv64(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1 hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv64"></a><code>fnv64(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1 hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv64a"></a><code>fnv64a(<a href="bytes.html">bytes</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1a hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="fnv64a"></a><code>fnv64a(<a href="string.html">string</a>...) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the 64-bit FNV-1a hash value of a set of values.</p>
-</span></td></tr>
-<tr><td><a name="isnan"></a><code>isnan(val: <a href="decimal.html">decimal</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if <code>val</code> is NaN, false otherwise.</p>
-</span></td></tr>
-<tr><td><a name="isnan"></a><code>isnan(val: <a href="float.html">float</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Returns true if <code>val</code> is NaN, false otherwise.</p>
-</span></td></tr>
-<tr><td><a name="ln"></a><code>ln(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the natural log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="ln"></a><code>ln(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the natural log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="log"></a><code>log(b: <a href="decimal.html">decimal</a>, x: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="log"></a><code>log(b: <a href="float.html">float</a>, x: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base <code>b</code> log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="log"></a><code>log(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="log"></a><code>log(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the base 10 log of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="mod"></a><code>mod(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="mod"></a><code>mod(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="mod"></a><code>mod(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>%<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="pi"></a><code>pi() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns the value for pi (3.141592653589793).</p>
-</span></td></tr>
-<tr><td><a name="pow"></a><code>pow(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="pow"></a><code>pow(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="pow"></a><code>pow(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="power"></a><code>power(x: <a href="decimal.html">decimal</a>, y: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="power"></a><code>power(x: <a href="float.html">float</a>, y: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="power"></a><code>power(x: <a href="int.html">int</a>, y: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates <code>x</code>^<code>y</code>.</p>
-</span></td></tr>
-<tr><td><a name="radians"></a><code>radians(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Converts <code>val</code> as a degree value to a radians value.</p>
-</span></td></tr>
-<tr><td><a name="random"></a><code>random() &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Returns a random float between 0 and 1.</p>
-</span></td></tr>
-<tr><td><a name="round"></a><code>round(input: <a href="decimal.html">decimal</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position in <code>input</code> using half away from zero rounding. If <code>decimal_accuracy</code> is not in the range -2^31…(2^31-1), the results are undefined.</p>
-</span></td></tr>
-<tr><td><a name="round"></a><code>round(input: <a href="float.html">float</a>, decimal_accuracy: <a href="int.html">int</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Keeps <code>decimal_accuracy</code> number of figures to the right of the zero position  in <code>input</code> using half to even (banker’s) rounding.</p>
-</span></td></tr>
-<tr><td><a name="round"></a><code>round(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer, half away from zero: round(+/-2.4) = +/-2, round(+/-2.5) = +/-3.</p>
-</span></td></tr>
-<tr><td><a name="round"></a><code>round(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Rounds <code>val</code> to the nearest integer using half to even (banker’s) rounding.</p>
-</span></td></tr>
-<tr><td><a name="sign"></a><code>sign(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
-</span></td></tr>
-<tr><td><a name="sign"></a><code>sign(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
-</span></td></tr>
-<tr><td><a name="sign"></a><code>sign(val: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Determines the sign of <code>val</code>: <strong>1</strong> for positive; <strong>0</strong> for 0 values; <strong>-1</strong> for negative.</p>
-</span></td></tr>
-<tr><td><a name="sin"></a><code>sin(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the sine of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="sqrt"></a><code>sqrt(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the square root of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="sqrt"></a><code>sqrt(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the square root of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="tan"></a><code>tan(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the tangent of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="trunc"></a><code>trunc(val: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="trunc"></a><code>trunc(val: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Truncates the decimal values of <code>val</code>.</p>
-</span></td></tr>
-<tr><td><a name="width_bucket"></a><code>width_bucket(operand: <a href="decimal.html">decimal</a>, b1: <a href="decimal.html">decimal</a>, b2: <a href="decimal.html">decimal</a>, count: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned in a histogram having count equal-width buckets spanning the range b1 to b2.</p>
-</span></td></tr>
-<tr><td><a name="width_bucket"></a><code>width_bucket(operand: <a href="int.html">int</a>, b1: <a href="int.html">int</a>, b2: <a href="int.html">int</a>, count: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned in a histogram having count equal-width buckets spanning the range b1 to b2.</p>
-</span></td></tr>
-<tr><td><a name="width_bucket"></a><code>width_bucket(operand: anyelement, thresholds: anyelement[]) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>return the bucket number to which operand would be assigned given an array listing the lower bounds of the buckets; returns 0 for an input less than the first lower bound; the thresholds array must be sorted, smallest first, or unexpected results will be obtained</p>
 </span></td></tr></tbody>
 </table>
 
@@ -1107,6 +1744,8 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.cluster_name"></a><code>crdb_internal.cluster_name() &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the cluster name.</p>
 </span></td></tr>
+<tr><td><a name="crdb_internal.completed_migrations"></a><code>crdb_internal.completed_migrations() &rarr; <a href="string.html">string</a>[]</code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
 <tr><td><a name="crdb_internal.encode_key"></a><code>crdb_internal.encode_key(table_id: <a href="int.html">int</a>, index_id: <a href="int.html">int</a>, row_tuple: anyelement) &rarr; <a href="bytes.html">bytes</a></code></td><td><span class="funcdesc"><p>Generate the key for a row on a particular table and index.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.force_assertion_error"></a><code>crdb_internal.force_assertion_error(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
@@ -1132,6 +1771,12 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 <tr><td><a name="crdb_internal.node_executable_version"></a><code>crdb_internal.node_executable_version() &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the version of CockroachDB this node is running.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.notice"></a><code>crdb_internal.notice(msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
+<tr><td><a name="crdb_internal.notice"></a><code>crdb_internal.notice(severity: <a href="string.html">string</a>, msg: <a href="string.html">string</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
+<tr><td><a name="crdb_internal.num_geo_inverted_index_entries"></a><code>crdb_internal.num_geo_inverted_index_entries(table_id: <a href="int.html">int</a>, index_id: <a href="int.html">int</a>, val: geography) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+</span></td></tr>
+<tr><td><a name="crdb_internal.num_geo_inverted_index_entries"></a><code>crdb_internal.num_geo_inverted_index_entries(table_id: <a href="int.html">int</a>, index_id: <a href="int.html">int</a>, val: geometry) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.num_inverted_index_entries"></a><code>crdb_internal.num_inverted_index_entries(val: anyelement[]) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
