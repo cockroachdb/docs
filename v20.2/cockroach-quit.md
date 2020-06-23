@@ -7,7 +7,7 @@ key: stop-a-node.html
 ---
 
 {{site.data.alerts.callout_danger}}
-`cockroach quit` is deprecated. To stop a node, it's best to first run [`cockroach node drain`](cockroach-node.html) and then do one of the following:
+`cockroach quit` is deprecated. To stop a node, it's best to first run [`cockroach node drain`](cockroach-node.html), wait for the node to be completely drained, and then do one of the following:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 {{site.data.alerts.end}}

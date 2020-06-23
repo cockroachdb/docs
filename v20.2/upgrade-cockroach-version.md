@@ -88,6 +88,14 @@ We recommend creating scripts to perform these steps instead of performing them 
     cockroach node drain --certs-dir=certs --host=<address of node to drain>
     ~~~
 
+    Once the node has been drained, you'll see a confirmation:
+
+    ~~~
+    node is draining... remaining: 1
+    node is draining... remaining: 0 (complete)
+    ok
+    ~~~
+    
 1. After the node is drained, stop the node:
     
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
