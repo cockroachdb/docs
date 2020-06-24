@@ -249,7 +249,7 @@ This page shows you how key features of CockroachDB stack up against other datab
   <tr>
     <td class="comparison-chart__feature">
       Cost Based Optimization
-      <a href="#" data-toggle="tooltip" title="Optimize exectuion of queries based on trabsaction analytics">
+      <a href="#" data-toggle="tooltip" title="Optimize exectuion of queries based on transaction analytics">
         <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
