@@ -20,10 +20,6 @@ For each cluster, the following details display:
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
-## Access tab
-
-On the **Clusters > Access** tab, Console administrators can manage Console access settings for the Organization.
-
 ## View cluster overview
 
 The **Cluster Overview** page displays a list of the selected cluster's nodes.
@@ -32,11 +28,26 @@ For each node, the page displays the node's `Name`, nested under its region.
 
 From the **Cluster Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
 
-## Manage cluster configuration
+## Add or remove nodes from a cluster
 
-Although you can leverage [geo-partitioning](partitioning.html), advanced [replication controls](configure-replication-zones.html), and [CDC](change-data-capture.html) without intervention from Cockroach Labs, we recommend [reaching out](https://support.cockroachlabs.com) for initial guidance and best practices.
+You can add or remove nodes from your cluster through the Console.
 
-To add or remove nodes, please contact [Support](https://support.cockroachlabs.com). Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
+{{site.data.alerts.callout_info}}
+At this time, you cannot use the Console to scale up a single-node cluster or scale down to a single-node cluster. For these changes, contact [Support](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
+
+### Considerations
+
+- Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic.
+- If you have changed the [replication factor](configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
+- Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data.
+
+To add or remove nodes from your cluster:
+
+1. On the **Cluster Overview** page, from the **Actions** dropdown in the right corner, select **Add/remove nodes**. The **Edit <cluster name>** page is displayed.
+2. From the **Nodes** dropdown, select the number of nodes you want in your cluster. Click **Next**.
+3. On the **Summary** page, verify the hourly estimated cost for the cluster.
+4. Click **Add/remove nodes**.
 
 ## Restore data from a backup
 
