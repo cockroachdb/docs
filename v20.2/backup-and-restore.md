@@ -21,13 +21,13 @@ We recommend [automating daily backups of your cluster](#automated-full-and-incr
 
 ### Full backups
 
-In most cases, **it's recommended to take full nightly backups of your cluster**. A full cluster backup allows you to do the following:
+In most cases, **it's recommended to take full nightly backups of your cluster**. A cluster backup allows you to do the following:
 
 - Restore table(s) from the cluster
 - Restore database(s) from the cluster
 - Restore a full cluster
 
-To do a full cluster backup, use the [`BACKUP`](backup.html) statement:
+To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -63,7 +63,7 @@ A full cluster restore can only be run on a target cluster that has _never_ had 
 
 If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
-Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
+Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -118,7 +118,7 @@ In the sample script, configure the day of the week for which you want to create
     # recently created backups in a file to pass as the base for incremental backups.
 
     full_day="<day_of_the_week>"                      # Must match (including case) the output of `LC_ALL=C date +%A`.
-    what=""                                           # Leave empty for full cluster backup, or add "DATABASE database_name" to backup a database.
+    what=""                                           # Leave empty for cluster backup, or add "DATABASE database_name" to backup a database.
     base="<storage_URL>/backups"                      # The URL where you want to store the backup.
     extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI (e.g., AWS key params).
     recent=recent_backups.txt                         # File in which recent backups are tracked.
@@ -152,7 +152,7 @@ In the sample script, configure the day of the week for which you want to create
     Variable | Description
     -----|------------
     `full_day` | The day of the week on which you want to take a full backup.
-    `what` | Leave empty for a full cluster backup. Otherwise, add `DATABASE <db_name>` to back up a database (i.e., create backups of all tables and views in the database).
+    `what` | Leave empty for a cluster backup. Otherwise, add `DATABASE <db_name>` to back up a database (i.e., create backups of all tables and views in the database).
     `base` | The URL where you want to store the backup.<br/><br/>URL format: `[scheme]://[host]/[path]` <br/><br/>For information about the components of the URL, see [Backup File URLs](backup.html#backup-file-urls).
     `extra`| The parameters required for the storage.<br/><br/>Parameters format: `?[parameters]` <br/><br/>For information about the storage parameters, see [Backup File URLs](backup.html#backup-file-urls).
     `backup_parameters` | Additional [backup parameters](backup.html#parameters) you might want to specify.

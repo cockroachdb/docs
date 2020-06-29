@@ -51,7 +51,7 @@ Only members of the `admin` role can run `BACKUP`. By default, the `root` user b
 `database_name` | The name of the database(s) you want to back up (i.e., create backups of all tables and views in the database).|
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
-`full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups).
+`full_backup_location` | Create an incremental backup using the backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** After a full backup for an explicit list of tables and/or databases, it is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html). In these cases, you must create a new [full backup](#full-backups) before more incremental backups can be created. To avoid this, [backup the cluster](#backup-a-cluster) instead of the explicit list of tables/databases.
 `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
 `kv_option_list` | Control the backup behavior with a comma-separated list of [these options](#options).
 
@@ -89,7 +89,7 @@ Table with a [sequence](create-sequence.html) | The sequence it uses; however, t
 
 ### Users and privileges
 
-The `system.users` table stores your users and their passwords. To restore your users and privilege [grants](grant.html), do a full cluster backup and restore the cluster to a fresh cluster with no user data. You can also backup the `system.users` table, and then use [this procedure](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup).
+The `system.users` table stores your users and their passwords. To restore your users and privilege [grants](grant.html), do a cluster backup and restore the cluster to a fresh cluster with no user data. You can also backup the `system.users` table, and then use [this procedure](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup).
 
 ### Backup types
 
