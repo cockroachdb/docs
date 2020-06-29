@@ -9,7 +9,7 @@
     "stable" has been added to your repositories
     ~~~
 
-2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/helm/charts/blob/master/stable/cockroachdb/Chart.yaml):
+2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/Chart.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell

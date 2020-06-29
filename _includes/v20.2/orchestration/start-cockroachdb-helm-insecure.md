@@ -9,14 +9,14 @@
     "stable" has been added to your repositories
     ~~~
 
-2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/helm/charts/blob/master/stable/cockroachdb/Chart.yaml):
+2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/Chart.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
 
-3. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
+3. Modify our Helm chart's [`values.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/values.yaml) parameters for your deployment scenario.
 
     Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
 
