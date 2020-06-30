@@ -13,6 +13,10 @@ twitter: false
 
 This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
 
+{{site.data.alerts.callout_success}}
+For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html).
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
