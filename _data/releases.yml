@@ -9,6 +9,8 @@
       version: v20.1.1
     - date: May 12, 2020
       version: v20.1.0
+    - date: July 6, 2020
+      version: v19.2.9
     - date: June 29, 2020
       version: v19.2.8
     - date: May 20, 2020
@@ -27,9 +29,10 @@
       version: v19.2.1
     - date: Nov 12, 2019
       version: v19.2.0
+    - date: July 6, 2020
+      version: v19.1.11
     - date: June 29, 2020
       version: v19.1.10
-      no_windows: true
     - date: May 12, 2020
       version: v19.1.9
       no_windows: true
