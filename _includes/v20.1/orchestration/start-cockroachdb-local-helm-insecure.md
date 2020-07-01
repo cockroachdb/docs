@@ -1,12 +1,12 @@
-1. [Install the Helm client](https://helm.sh/docs/intro/install) and add the official `stable` chart repository:
+1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+    $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
 
     ~~~
-    "stable" has been added to your repositories
+    "cockroachdb" has been added to your repositories
     ~~~
 
 2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/Chart.yaml):
