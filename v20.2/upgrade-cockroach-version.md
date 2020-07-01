@@ -91,7 +91,6 @@ We recommend creating scripts to perform these steps instead of performing them 
     Once the node has been drained, you'll see a confirmation:
 
     ~~~
-    node is draining... remaining: 1
     node is draining... remaining: 0 (complete)
     ok
     ~~~
