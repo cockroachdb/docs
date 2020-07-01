@@ -1,22 +1,22 @@
-1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the official `stable` chart repository:
+1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+    $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
 
     ~~~
-    "stable" has been added to your repositories
+    "cockroachdb" has been added to your repositories
     ~~~
 
-2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/helm/charts/blob/master/stable/cockroachdb/Chart.yaml):
+2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/Chart.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
 
-3. Modify our Helm chart's [`values.yaml`](https://github.com/helm/charts/blob/master/stable/cockroachdb/values.yaml) parameters for your deployment scenario.
+3. Modify our Helm chart's [`values.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/values.yaml) parameters for your deployment scenario.
 
     Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
 
@@ -59,7 +59,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install my-release --values my-values.yaml stable/cockroachdb
+    $ helm install my-release --values my-values.yaml cockroachdb/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
