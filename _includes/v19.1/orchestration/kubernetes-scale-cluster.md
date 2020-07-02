@@ -26,7 +26,7 @@ To do this, add a new worker node and then edit your StatefulSet configuration t
     ~~~ shell
     $ helm upgrade \
     my-release \
-    stable/cockroachdb \
+    cockroachdb/cockroachdb \
     --set Replicas=4 \
     --reuse-values
     ~~~

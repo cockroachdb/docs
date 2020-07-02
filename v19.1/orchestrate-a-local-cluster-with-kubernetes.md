@@ -70,7 +70,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~ shell
     $ helm upgrade \
     my-release \
-    stable/cockroachdb \
+    cockroachdb/cockroachdb \
     --set Replicas=4 \
     --reuse-values
     ~~~
