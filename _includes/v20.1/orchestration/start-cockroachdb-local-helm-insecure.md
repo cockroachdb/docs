@@ -16,7 +16,14 @@
     $ helm repo update
     ~~~
 
-3. Install the CockroachDB Helm chart. 
+3. Initialize Helm.  This will install Tiller to your running Kubernetes cluster, which is required to successfully install the Helm chart.
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ helm init
+    ~~~
+
+4. Install the CockroachDB Helm chart.
 
     Provide a "release" name to identify and track this particular deployment of the chart.
 
@@ -26,12 +33,12 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install my-release stable/cockroachdb
+    $ helm install stable/cockroachdb --name my-release
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
 
-4. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+5. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
