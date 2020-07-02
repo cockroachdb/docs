@@ -4,7 +4,7 @@ summary: The Overview dashboard lets you monitor important SQL performance, repl
 toc: true
 ---
 
-The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
+The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
@@ -70,6 +70,8 @@ The disk usage of the Cockroach binary, operating system, and other system files
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/admin-ui/admin-ui-summary-events.md %}
 
 ## See also
 

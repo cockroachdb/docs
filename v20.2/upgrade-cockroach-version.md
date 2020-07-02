@@ -28,7 +28,7 @@ Make sure your cluster is behind a [load balancer](recommended-production-settin
 
 ### Check cluster health
 
-Verify the overall health of your cluster using the [Admin UI](admin-ui-access-and-navigate.html). On the **Cluster Overview**:
+Verify the overall health of your cluster using the [Admin UI](admin-ui-overview.html). On the **Cluster Overview**:
 
   - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
@@ -191,7 +191,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-6. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-access-and-navigate.html).
+6. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-overview.html).
 
     {{site.data.alerts.callout_info}}
     To access the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). Then open a browser and go to `https://<any node's external IP address>:8080`. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.

@@ -10,7 +10,7 @@ The definition of the customized dashboard is encoded in the URL. To share the d
 
 ## Accessing the **Custom Chart** page
 
-To access the **Custom Chart** debug page, [access the Admin UI](admin-ui-access-and-navigate.html), and either:
+To access the **Custom Chart** debug page, [access the Admin UI](admin-ui-overview.html), and either:
 
 - Open <a href="http://localhost:8080/#/debug/chart" data-proofer-ignore>http://localhost:8080/#/debug/chart</a> in your browser (replacing `localhost` and `8080` with your node's host and port).
 

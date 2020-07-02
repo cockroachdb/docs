@@ -6,7 +6,7 @@ toc: true
 
 The **Replication** dashboard in the CockroachDB Admin UI enables you to monitor the replication metrics for your cluster. 
 
-To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
+To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
 
 ## Review of CockroachDB terminology
 
@@ -103,6 +103,8 @@ The **Replication** dashboard shows other time series graphs that are important 
 - Range Operations
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
+
+{% include {{ page.version.version }}/admin-ui/admin-ui-summary-events.md %}
 
 ## See also
 

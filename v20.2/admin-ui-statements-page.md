@@ -13,7 +13,7 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** in the left-hand navigation.
+To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Statements** in the left-hand navigation.
 
 ## Search and filter by application
 

@@ -356,12 +356,6 @@
                 ]
               },
               {
-                "title": "Use the Admin UI",
-                "urls": [
-                  "/${VERSION}/admin-ui-access-and-navigate.html"
-                ]
-              },
-              {
                 "title": "Enable the Node Map",
                 "urls": [
                   "/${VERSION}/enable-node-map.html"
@@ -2045,45 +2039,56 @@
             ]
           },
           {
-            "title": "Overview Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-overview-dashboard.html"
-            ]
-          },
-          {
-            "title": "Hardware Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-hardware-dashboard.html"
-            ]
-          },
-          {
-            "title": "Runtime Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-runtime-dashboard.html"
-            ]
-          },
-          {
-            "title": "SQL Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-sql-dashboard.html"
-            ]
-          },
-          {
-            "title": "Storage Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-storage-dashboard.html"
-            ]
-          },
-          {
-            "title": "Replication Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-replication-dashboard.html"
-            ]
-          },
-          {
-            "title": "Changefeeds Dashboard",
-            "urls": [
-              "/${VERSION}/admin-ui-cdc-dashboard.html"
+            "title": "Metrics Dashboards",
+            "items": [
+              {
+                "title": "Overview Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-overview-dashboard.html"
+                ]
+              },
+              {
+                "title": "Hardware Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-hardware-dashboard.html"
+                ]
+              },
+              {
+                "title": "Runtime Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-runtime-dashboard.html"
+                ]
+              },
+              {
+                "title": "SQL Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-sql-dashboard.html"
+                ]
+              },
+              {
+                "title": "Storage Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-storage-dashboard.html"
+                ]
+              },
+              {
+                "title": "Replication Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-replication-dashboard.html"
+                ]
+              },
+              {
+                "title": "Changefeeds Dashboard",
+                "urls": [
+                  "/${VERSION}/admin-ui-cdc-dashboard.html"
+                ]
+              },
+              {
+                "title": "Custom Chart",
+                "urls": [
+                  "/${VERSION}/admin-ui-custom-chart-debug-page.html"
+                ]
+              }
             ]
           },
           {
@@ -2111,15 +2116,9 @@
             ]
           },
           {
-            "title": "Advanced Debugging Page",
+            "title": "Advanced Debug Page",
             "urls": [
               "/${VERSION}/admin-ui-debug-pages.html"
-            ]
-          },
-          {
-            "title": "Custom Chart Debug Page",
-            "urls": [
-              "/${VERSION}/admin-ui-custom-chart-debug-page.html"
             ]
           }
         ]

@@ -6,7 +6,7 @@ toc: true
 
 The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory. 
 
-To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
+To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
