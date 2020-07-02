@@ -123,7 +123,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~ shell
     $ helm upgrade \
     my-release \
-    stable/cockroachdb \
+    cockroachdb/cockroachdb \
     --set Replicas=3 \
     --reuse-values
     ~~~

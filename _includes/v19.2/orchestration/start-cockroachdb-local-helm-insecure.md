@@ -9,7 +9,7 @@
     "cockroachdb" has been added to your repositories
     ~~~
 
-2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/Chart.yaml):
+2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -26,7 +26,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm install my-release stable/cockroachdb
+    $ helm install my-release cockroachdb/cockroachdb
     ~~~
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
