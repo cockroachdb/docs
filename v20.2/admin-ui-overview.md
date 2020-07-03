@@ -12,7 +12,7 @@ The CockroachDB Admin UI provides details about your cluster and database config
 
 Area | Description
 --------|----
-[Cluster Overview](admin-ui-cluster-overview-page`.html) | Essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
+[Cluster Overview](admin-ui-cluster-overview-page.html) | Essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
 [Node Map](enable-node-map.html) | Geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
 [Overview Dashboard](admin-ui-overview-dashboard.html) | Metrics about SQL performance, replication, and storage.
 [Hardware Dashboard](admin-ui-hardware-dashboard.html) | Metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
