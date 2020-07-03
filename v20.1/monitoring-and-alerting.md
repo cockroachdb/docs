@@ -12,15 +12,9 @@ This page explains available monitoring tools and critical events and metrics to
 
 ### Admin UI
 
-The [Admin UI](admin-ui-access-and-navigate.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues.
+The [Admin UI](admin-ui-overview.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues.
 
-The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
-
-#### Accessing the Admin UI for a secure cluster
-
-For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). Note that on secure clusters, certain areas of the Admin UI can only be accessed by `admin` users. For details on providing access to users, see [this page](admin-ui-overview.html#admin-ui-access).
-
-On accessing the Admin UI, users will see a login screen where they can enter their username and password.
+The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default. For more information on accessing the Admin UI, see [Admin UI access](admin-ui-overview.html#admin-ui-access).
 
 {{site.data.alerts.callout_danger}}
 Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.

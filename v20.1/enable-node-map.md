@@ -6,6 +6,8 @@ toc: true
 
 {{site.data.alerts.callout_info}}
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+
+The Node Map is an [enterprise-only](enterprise-licensing.html) feature. However, you can [request a trial license](https://www.cockroachlabs.com/get-cockroachdb/) to try it out. 
 {{site.data.alerts.end}}
 
 The **Node Map** is useful for:
@@ -16,15 +18,11 @@ The **Node Map** is useful for:
 
 This page walks you through the process of setting up and enabling the Node Map.
 
-{{site.data.alerts.callout_info}}
-The **Node Map** is an [enterprise-only](enterprise-licensing.html) feature. However, you can [request a trial license](https://www.cockroachlabs.com/get-cockroachdb/) to try it out. 
-{{site.data.alerts.end}}
-
-<img src="{{ 'images/v20.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.1/admin-ui-node-map-navigation3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ## Set up and enable the Node Map
 
-To enable the **Node Map**, you need to start the cluster with the correct [`--locality`](cockroach-start.html#locality) flags and assign the latitude and longitude for each locality.
+To enable the Node Map, you need to start the cluster with the correct [`--locality`](cockroach-start.html#locality) flags and assign the latitude and longitude for each locality.
 
 {{site.data.alerts.callout_info}}
 The Node Map will not be displayed until *all* nodes are started with the correct `--locality` flags and all localities are assigned the corresponding latitude and longitude.
@@ -102,15 +100,19 @@ Use the [`cockroach init`](cockroach-init.html) command to perform a one-time in
 $ cockroach init --insecure --host=<address of any node>
 ~~~
 
-[Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
+[Access the Admin UI](admin-ui-overview.html#admin-ui-access). The following page is displayed:
 
 <img src="{{ 'images/v20.1/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 2. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
 
-The following page should be displayed:
+The Node Map should now be displaying the highest-level localities you defined:
 
 <img src="{{ 'images/v20.1/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_info}}
+To be displayed on the world map, localities must be assigned a corresponding latitude and longitude.
+{{site.data.alerts.end}}
 
 ### Step 3. Set the latitudes and longitudes for the localities
 
@@ -131,14 +133,11 @@ Insert the approximate latitude and longitude of each region into the `system.lo
   ('region', 'eu-west-1', 53.142367, -7.692054);
 ~~~
 
-{{site.data.alerts.callout_info}}
-The Node Map will not be displayed until each region is assigned a corresponding latitude and longitude. {{site.data.alerts.end}}
-
 For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates).
 
-### Step 4. View the Node Map
+### Step 4. Refresh the Node Map
 
-[Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu. The **Node Map** will be displayed:
+Refresh the Admin UI to see the updated Node Map:
 
 <img src="{{ 'images/v20.1/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -146,17 +145,27 @@ For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [L
 
 Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
 
-1. Click on the map component marked as **region=us-east-1** on the Node Map. The datacenter view is displayed.
-2. Click on the datacenter component marked as **datacenter=us-east-1a**. The individual node components are displayed.
-3. To navigate back to the cluster view, either click on **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to region=us-east-1** and then click **Up to Cluster** in the lower left-hand side of the Node Map.
+1. Click on the map component marked as **region=us-east-1** on the Node Map. The [locality component](admin-ui-cluster-overview-page.html#locality-component) for the datacenter is displayed.
 
-<img src="{{ 'images/v20.1/admin-ui-node-map-navigation.gif' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+	<img src="{{ 'images/v20.1/admin-ui-node-map-navigation1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+1. Click on the datacenter component marked as **datacenter=us-east-1a**. The individual [node components](admin-ui-cluster-overview-page.html#node-component) are displayed.
+
+	<img src="{{ 'images/v20.1/admin-ui-node-map-navigation2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+
+1. To navigate back to the cluster view, either click on **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to REGION=US-EAST-1** and then click **Up to CLUSTER** in the lower left-hand side of the Node Map.
 
 ## Troubleshoot the Node Map
 
 ### Node Map not displayed
 
-The **Node Map** will not be displayed until all nodes have localities and are assigned the corresponding latitudes and longitudes. To verify this, navigate to the Localities debug page (`https://<address of any node>:8080/#/reports/localities`) in the Admin UI.
+The Node Map requires an [enterprise license](enterprise-licensing.html). 
+
+All nodes in the cluster must be assigned [localities](cockroach-start.html#locality). To be displayed on the world map, localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
+
+To verify both of the above, navigate to the Localities debug page (`https://<address of any node>:8080/#/reports/localities`) in the Admin UI.
+
+<img src="{{ 'images/v20.1/admin-ui-localities-debug.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The Localities debug page displays the following:
 
@@ -164,16 +173,11 @@ The Localities debug page displays the following:
 - Nodes corresponding to each locality.
 - Latitude and longitude coordinates for each locality/node.
 
-On the page, ensure that each node is assigned a locality and latitude/longitude coordinates.
+### World Map not displayed for all locality levels
 
-### Node Map not displayed for all locality levels
+The world map is displayed only when [localities are assigned latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities). 
 
-The **Node Map** is displayed only for the locality levels that have latitude/longitude coordinates assigned to them:
-
-- If you assign the latitude/longitude coordinates at the region level, the Node Map shows the regions on the world map. However, when you drill down to the datacenter and further to the individual nodes, the world map disappears and the datacenters/nodes are plotted in a circular layout.  
-- If you assign the latitude/longitude coordinates at the datacenter level, the Node Map shows the regions with single datacenters at the same location assigned to the datacenter, while regions with multiple datacenters are shown at the center of the datacenter coordinates in the region. When you drill down to the datacenter levels, the Node Map shows the datacenter at their assigned coordinates. Further drilling down to individual nodes shows the nodes in a circular layout.
-
-[Assign latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the Node Map.
+If a locality (e.g., region) is not assigned latitude/longitude coordinates, it is displayed using the latitude/longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
 
 ## Known limitations
 

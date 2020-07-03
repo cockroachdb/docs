@@ -206,7 +206,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     This will load 8TB of data for 100,000 "warehouses". This can take around 6 hours to complete.
 
-    You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-access-and-navigate.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 5. Partition the database
 
