@@ -20,7 +20,7 @@ Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements 
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`root` users see only their own currently active queries, whereas the `root` user sees all users' currently active queries.
+No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active queries, whereas the `admin` users see all users' currently active queries.
 
 ## Synopsis
 
