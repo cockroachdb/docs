@@ -72,6 +72,29 @@ Field | Description
 (1 row)
 ~~~
 
+To return just the `create_statement` value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT create_statement FROM [SHOW CREATE TABLE drivers];
+~~~
+
+~~~
+                      create_statement
+------------------------------------------------------------
+  CREATE TABLE drivers (
+      id UUID NOT NULL,
+      city STRING NOT NULL,
+      name STRING NULL,
+      dl STRING NULL,
+      address STRING NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      UNIQUE INDEX drivers_dl_key (dl ASC),
+      FAMILY "primary" (id, city, name, dl, address)
+  )
+(1 row)
+~~~
+
 {{site.data.alerts.callout_info}}
 `SHOW CREATE TABLE` also lists any partitions and zone configurations defined on primary and secondary indexes of a table. If partitions are defined, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 {{site.data.alerts.end}}
@@ -92,6 +115,20 @@ Field | Description
   table_name |                                create_statement
 +------------+--------------------------------------------------------------------------------+
   user_view  | CREATE VIEW user_view (city, name) AS SELECT city, name FROM movr.public.users
+(1 row)
+~~~
+
+To return just the `create_statement` value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT create_statement FROM [SHOW CREATE VIEW user_view];
+~~~
+
+~~~
+                                 create_statement
+----------------------------------------------------------------------------------
+  CREATE VIEW user_view (city, name) AS SELECT city, name FROM movr.public.users
 (1 row)
 ~~~
 
@@ -132,6 +169,20 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 (1 row)
 ~~~
 
+To return just the `create_statement` value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT create_statement FROM [SHOW CREATE desc_customer_list];
+~~~
+
+~~~
+                                           create_statement
+------------------------------------------------------------------------------------------------------
+  CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
+(1 row)
+~~~
+
 ### Show the `CREATE TABLE` statement for a table with a comment
 
  If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will display the comment.
@@ -159,6 +210,29 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
              |     FAMILY "primary" (id, city, name, address, credit_card)
              | );
              | COMMENT ON TABLE users IS 'This table contains information about users.'
+(1 row)
+~~~
+
+To return just the `create_statement` value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT create_statement FROM [SHOW CREATE TABLE users];
+~~~
+
+~~~
+                              create_statement
+----------------------------------------------------------------------------
+  CREATE TABLE users (
+      id UUID NOT NULL,
+      city VARCHAR NOT NULL,
+      name VARCHAR NULL,
+      address VARCHAR NULL,
+      credit_card VARCHAR NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      FAMILY "primary" (id, city, name, address, credit_card)
+  );
+  COMMENT ON TABLE users IS 'This table contains information about users.'
 (1 row)
 ~~~
 

@@ -27,6 +27,10 @@
 </span></td></tr>
 <tr><td><a name="array_agg"></a><code>array_agg(arg1: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a>[]</code></td><td><span class="funcdesc"><p>Aggregates the selected values into an array.</p>
 </span></td></tr>
+<tr><td><a name="array_agg"></a><code>array_agg(arg1: geography) &rarr; geography[]</code></td><td><span class="funcdesc"><p>Aggregates the selected values into an array.</p>
+</span></td></tr>
+<tr><td><a name="array_agg"></a><code>array_agg(arg1: geometry) &rarr; geometry[]</code></td><td><span class="funcdesc"><p>Aggregates the selected values into an array.</p>
+</span></td></tr>
 <tr><td><a name="array_agg"></a><code>array_agg(arg1: oid) &rarr; oid[]</code></td><td><span class="funcdesc"><p>Aggregates the selected values into an array.</p>
 </span></td></tr>
 <tr><td><a name="array_agg"></a><code>array_agg(arg1: timetz) &rarr; timetz[]</code></td><td><span class="funcdesc"><p>Aggregates the selected values into an array.</p>
@@ -73,7 +77,11 @@
 </span></td></tr>
 <tr><td><a name="json_agg"></a><code>json_agg(arg1: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Aggregates values as a JSON or JSONB array.</p>
 </span></td></tr>
+<tr><td><a name="json_object_agg"></a><code>json_object_agg(arg1: <a href="string.html">string</a>, arg2: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Aggregates values as a JSON or JSONB object.</p>
+</span></td></tr>
 <tr><td><a name="jsonb_agg"></a><code>jsonb_agg(arg1: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Aggregates values as a JSON or JSONB array.</p>
+</span></td></tr>
+<tr><td><a name="jsonb_object_agg"></a><code>jsonb_object_agg(arg1: <a href="string.html">string</a>, arg2: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Aggregates values as a JSON or JSONB object.</p>
 </span></td></tr>
 <tr><td><a name="max"></a><code>max(arg1: <a href="bool.html">bool</a>) &rarr; <a href="bool.html">bool</a></code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
 </span></td></tr>
@@ -100,6 +108,14 @@
 <tr><td><a name="max"></a><code>max(arg1: <a href="timestamp.html">timestamptz</a>) &rarr; <a href="timestamp.html">timestamptz</a></code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
 </span></td></tr>
 <tr><td><a name="max"></a><code>max(arg1: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a></code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
+</span></td></tr>
+<tr><td><a name="max"></a><code>max(arg1: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
+</span></td></tr>
+<tr><td><a name="max"></a><code>max(arg1: collatedstring{*}) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
+</span></td></tr>
+<tr><td><a name="max"></a><code>max(arg1: geography) &rarr; geography</code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
+</span></td></tr>
+<tr><td><a name="max"></a><code>max(arg1: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
 </span></td></tr>
 <tr><td><a name="max"></a><code>max(arg1: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Identifies the maximum selected value.</p>
 </span></td></tr>
@@ -135,6 +151,14 @@
 </span></td></tr>
 <tr><td><a name="min"></a><code>min(arg1: <a href="uuid.html">uuid</a>) &rarr; <a href="uuid.html">uuid</a></code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
 </span></td></tr>
+<tr><td><a name="min"></a><code>min(arg1: anyenum) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
+</span></td></tr>
+<tr><td><a name="min"></a><code>min(arg1: collatedstring{*}) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
+</span></td></tr>
+<tr><td><a name="min"></a><code>min(arg1: geography) &rarr; geography</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
+</span></td></tr>
+<tr><td><a name="min"></a><code>min(arg1: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
+</span></td></tr>
 <tr><td><a name="min"></a><code>min(arg1: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
 </span></td></tr>
 <tr><td><a name="min"></a><code>min(arg1: oid) &rarr; oid</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
@@ -142,6 +166,18 @@
 <tr><td><a name="min"></a><code>min(arg1: timetz) &rarr; timetz</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
 </span></td></tr>
 <tr><td><a name="min"></a><code>min(arg1: varbit) &rarr; varbit</code></td><td><span class="funcdesc"><p>Identifies the minimum selected value.</p>
+</span></td></tr>
+<tr><td><a name="percentile_cont"></a><code>percentile_cont(arg1: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Continuous percentile: returns a float corresponding to the specified fraction in the ordering, interpolating between adjacent input floats if needed.</p>
+</span></td></tr>
+<tr><td><a name="percentile_cont"></a><code>percentile_cont(arg1: <a href="float.html">float</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Continuous percentile: returns an interval corresponding to the specified fraction in the ordering, interpolating between adjacent input intervals if needed.</p>
+</span></td></tr>
+<tr><td><a name="percentile_cont"></a><code>percentile_cont(arg1: <a href="float.html">float</a>[]) &rarr; <a href="float.html">float</a>[]</code></td><td><span class="funcdesc"><p>Continuous percentile: returns floats corresponding to the specified fractions in the ordering, interpolating between adjacent input floats if needed.</p>
+</span></td></tr>
+<tr><td><a name="percentile_cont"></a><code>percentile_cont(arg1: <a href="float.html">float</a>[]) &rarr; <a href="interval.html">interval</a>[]</code></td><td><span class="funcdesc"><p>Continuous percentile: returns intervals corresponding to the specified fractions in the ordering, interpolating between adjacent input intervals if needed.</p>
+</span></td></tr>
+<tr><td><a name="percentile_disc"></a><code>percentile_disc(arg1: <a href="float.html">float</a>) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Discrete percentile: returns the first input value whose position in the ordering equals or exceeds the specified fraction.</p>
+</span></td></tr>
+<tr><td><a name="percentile_disc"></a><code>percentile_disc(arg1: <a href="float.html">float</a>[]) &rarr; anyelement</code></td><td><span class="funcdesc"><p>Discrete percentile: returns input values whose position in the ordering equals or exceeds the specified fractions.</p>
 </span></td></tr>
 <tr><td><a name="sqrdiff"></a><code>sqrdiff(arg1: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the sum of squared differences from the mean of the selected values.</p>
 </span></td></tr>
@@ -174,6 +210,12 @@
 <tr><td><a name="sum"></a><code>sum(arg1: <a href="interval.html">interval</a>) &rarr; <a href="interval.html">interval</a></code></td><td><span class="funcdesc"><p>Calculates the sum of the selected values.</p>
 </span></td></tr>
 <tr><td><a name="sum_int"></a><code>sum_int(arg1: <a href="int.html">int</a>) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Calculates the sum of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="var_samp"></a><code>var_samp(arg1: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the variance of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="var_samp"></a><code>var_samp(arg1: <a href="float.html">float</a>) &rarr; <a href="float.html">float</a></code></td><td><span class="funcdesc"><p>Calculates the variance of the selected values.</p>
+</span></td></tr>
+<tr><td><a name="var_samp"></a><code>var_samp(arg1: <a href="int.html">int</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the variance of the selected values.</p>
 </span></td></tr>
 <tr><td><a name="variance"></a><code>variance(arg1: <a href="decimal.html">decimal</a>) &rarr; <a href="decimal.html">decimal</a></code></td><td><span class="funcdesc"><p>Calculates the variance of the selected values.</p>
 </span></td></tr>

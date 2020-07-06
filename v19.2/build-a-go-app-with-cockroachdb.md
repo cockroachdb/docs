@@ -12,8 +12,6 @@ twitter: false
 
 This tutorial shows you how build a simple Go application with CockroachDB and the Go pq driver.
 
-We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
-
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
@@ -80,7 +78,7 @@ Initial balances:
 
 ### Transaction (with retry logic)
 
-Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
+Next, use the following code to connect as `maxroach` user and execute a batch of statements as an atomic transaction to transfer funds from one account to another. All statements in the transaction are either committed or aborted.
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
@@ -89,21 +87,13 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 {% include {{ page.version.version }}/app/txn-sample.go %}
 ~~~
 
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. To install  Clone the library into your `$GOPATH` as follows:
+CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client.
+
+To install the [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go), run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ mkdir -p $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cd $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ git clone git@github.com:cockroachdb/cockroach-go.git
+$ go get -d github.com/cockroachdb/cockroach-go
 ~~~
 
 Then run the code:
@@ -182,7 +172,7 @@ Initial balances:
 
 ### Transaction (with retry logic)
 
-Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
+Next, use the following code to connect as `maxroach` user and execute a batch of statements as an atomic transaction to transfer funds from one account to another. All statements in the transaction are either committed or aborted.
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
 

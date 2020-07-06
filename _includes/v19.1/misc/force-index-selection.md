@@ -25,7 +25,7 @@ This is equivalent to the longer expression:
 > SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
-Forcing a reverse can is sometimes useful during [performance tuning](performance-best-practices-overview.html). For reference, the full syntax for choosing an index and its scan direction is
+Forcing a reverse scan is sometimes useful during [performance tuning](performance-best-practices-overview.html). For reference, the full syntax for choosing an index and its scan direction is
 
 {% include copy-clipboard.html %}
 ~~~ sql

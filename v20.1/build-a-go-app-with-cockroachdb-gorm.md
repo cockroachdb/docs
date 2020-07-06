@@ -12,8 +12,6 @@ twitter: false
 
 This tutorial shows you how build a simple Go application with CockroachDB and the GORM ORM.
 
-We have tested the [GORM ORM](http://gorm.io) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
-
 {{site.data.alerts.callout_success}}
 For another use of GORM with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}

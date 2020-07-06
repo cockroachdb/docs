@@ -59,7 +59,7 @@ At this time `LATERAL` joins are not yet supported.  For details, see [this Gith
 
 ## When should I use interleaved tables?
 
-[Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
+[Interleaving tables](interleave-in-parent.html) improve query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
 
 {% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 

@@ -59,7 +59,7 @@ Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables traci
 
 ### Using the Admin UI
 
-High latency SQL statements are displayed on the [**Statements page**](admin-ui-statements-page.html) of the Admin UI. To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Statements** on the left.
+High latency SQL statements are displayed on the [**Statements page**](admin-ui-statements-page.html) of the Admin UI. To view the Statements page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Statements** on the left.
 
 You can also check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -103,7 +103,7 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 ## Single hot node
 
-A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
 
 -   Replication dashboard > Average queries per store graph.
 
@@ -129,7 +129,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 ## INSERT/UPDATE statements are slow
 
-Use the [Statements page](admin-ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then click Statements on the left.
+Use the [Statements page](admin-ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and then click Statements on the left.
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 

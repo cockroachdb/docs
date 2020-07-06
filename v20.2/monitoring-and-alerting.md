@@ -12,15 +12,9 @@ This page explains available monitoring tools and critical events and metrics to
 
 ### Admin UI
 
-The [Admin UI](admin-ui-access-and-navigate.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues.
+The [Admin UI](admin-ui-overview.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues.
 
-The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
-
-#### Accessing the Admin UI for a secure cluster
-
-For each user who should have access to the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). Note that on secure clusters, certain areas of the Admin UI can only be accessed by `admin` users. For details on providing access to users, see [this page](admin-ui-overview.html#admin-ui-access).
-
-On accessing the Admin UI, users will see a login screen where they can enter their username and password.
+The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default. For more information on accessing the Admin UI, see [Admin UI access](admin-ui-overview.html#admin-ui-access).
 
 {{site.data.alerts.callout_danger}}
 Because the Admin UI is built into CockroachDB, if a cluster becomes unavailable, most of the Admin UI becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.
@@ -80,7 +74,7 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 }
 ~~~
 
- The `/health` endpoint no longer returns details about the node such as its private IP address. These details could be considered privileged information in some deployments. If you need to retrieve node details, you can use the `/_status/details` endpoint along with a valid authentication cookie.
+The `/health` endpoint no longer returns details about the node such as its private IP address. These details could be considered privileged information in some deployments. If you need to retrieve node details, you can use the `/_status/details` endpoint along with a valid authentication cookie.
 
 #### /health?ready=1
 
@@ -92,7 +86,7 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
     {{site.data.alerts.end}}
 
-     In previous releases, nodes in the process of [decommissioning](remove-nodes.html) or already fully decommissioned would be considered unready and return `503 Service Unavailable`. This is no longer the case. Although such nodes no longer store replicas after decommissioning, they can still function as gateways to route SQL connections to relevant data.  
+    <span class="version-tag">Changed in v20.2:</span> In previous releases, nodes in the process of [decommissioning](remove-nodes.html) or already fully decommissioned would be considered unready and return `503 Service Unavailable`. This is no longer the case. Although such nodes no longer store replicas after decommissioning, they can still function as gateways to route SQL connections to relevant data.  
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
