@@ -54,7 +54,7 @@ We recommend disabling auto-finalization so you can monitor the stability and pe
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
