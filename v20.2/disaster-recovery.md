@@ -95,7 +95,7 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#228B22"><b>√</b></td>
       <td rowspan="7">Fewer resources are available. Some data will be under-replicated until the failed node is marked dead. <br><br>Once marked dead, data is replicated to other nodes and the cluster remains healthy.
       </td>
-      <td><a href="start-node.html>Restart the node</a> with a new disk.</td>
+      <td><a href="start-node.html">Restart the node</a> with a new disk.</td>
     </tr>
       <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
@@ -243,7 +243,7 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#228B22"><b>√</b></td>
       <td rowspan="3">If using a Kubenetes StatefulSet, a node will be restarted automatically. <br><br>If the server, rack, or AZ becomes available check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
       <br><br>- If the down server is marked <b>Suspect</b>, try <a href="start-node.html">restarting the node</a>.
-      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html>decommission the node</a> and add a new server. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
+      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Rack</b></td>
