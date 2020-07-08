@@ -273,11 +273,11 @@ The table below describes what actions to take to recover from various hardware 
 
 ## Data failure
 
-When dealing with data failure due to bad actors, rogue applications, or data corruption, domain expertise is required for long-term solutions. However, there are a few options for short term remediation that you can take:
+When dealing with data failure due to bad actors, rogue applications, or data corruption, domain expertise is required to identify the affected rows and determine how to to remedy the situation (e.g., remove the incorrectly inserted rows, insert deleted rows, etc.). However, there are a few options for short term remediation that you can take:
 
 #### Basic recovery actions
 
-- Using your backup file, [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) for the corrupted data to a point where you are certain there was no corruption.
+- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption. If you are a core user, [backup](backup.html) immediately,
 
     {{site.data.alerts.callout_success}}
     Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
