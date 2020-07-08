@@ -89,7 +89,7 @@ The table below describes what actions to take to recover from various hardware 
       <th>Action to Take</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class=nohover>
     <tr>
       <td style="color:#46a417"><b>1 Disk</td>
       <td style="color:#228B22"><b>√</b></td>
@@ -232,7 +232,7 @@ The table below describes what actions to take to recover from various hardware 
       <th>Action to Take</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class=nohover>
     <tr>
       <td style="color:#46a417"><b>1 Disk</td>
       <td style="color:#228B22"><b>√</b></td>
