@@ -277,13 +277,17 @@ When dealing with data failure due to bad actors, rogue applications, or data co
 
 #### Basic recovery actions
 
-- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption. If you are a core user, [backup](backup.html) immediately,
+- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption.
 
     {{site.data.alerts.callout_success}}
     Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
     {{site.data.alerts.end}}
 
-- Run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run “diffs” to find the offending rows to fix.
+- If you are within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours), run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run “diffs” to find the offending rows to fix. If you are outside of the garbage collection window, you will need to use a backup to run comparisons.
+
+    {{site.data.alerts.callout_info}}
+    Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
+    {{site.data.alerts.end}}
 
 #### Advanced recovery actions
 
