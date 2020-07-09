@@ -277,7 +277,7 @@ When dealing with data failure due to bad actors, rogue applications, or data co
 
 #### Basic recovery actions
 
-- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption. If you are a core user, [backup](backup.html) immediately,
+- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption.
 
     {{site.data.alerts.callout_success}}
     Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
