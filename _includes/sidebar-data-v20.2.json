@@ -497,6 +497,12 @@
             "urls": [
               "/${VERSION}/rotate-certificates.html"
             ]
+          },
+          {
+            "title": "Disaster Recovery",
+            "urls": [
+              "/${VERSION}/disaster-recovery.html"
+            ]
           }
         ]
       },
