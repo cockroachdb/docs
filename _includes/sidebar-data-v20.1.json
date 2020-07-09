@@ -470,14 +470,19 @@
           },
           {
             "title": "Back up and Restore Data",
-            "urls": [
-              "/${VERSION}/backup-and-restore.html"
-            ]
-          },
-          {
-            "title": "Back up and Restore Data - Advanced Options",
-            "urls": [
-              "/${VERSION}/backup-and-restore-advanced-options.html"
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/backup-and-restore.html"
+                ]
+              },
+              {
+                "title": "Advanced Options",
+                "urls": [
+                  "/${VERSION}/backup-and-restore-advanced-options.html"
+                ]
+              }
             ]
           },
           {
