@@ -183,11 +183,6 @@ Recently, however, OSS companies have seen the rise of highly-integrated provide
 
 To respond to this breed of competitor, we changed our software licensing terms. To learn more about our motivations, see the [Licensing FAQs](licensing-faqs.html) as well as our [blog post](https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/) about the license change.
 
-## Have questions that weren’t answered?
+## What is CockroachDB written in?
 
-Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
-
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [CockroachDB Community Slack](https://cockroachdb.slack.com)
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
-- [CockroachDB Support Portal](https://support.cockroachlabs.com)
+Why????? This is just creepy.
