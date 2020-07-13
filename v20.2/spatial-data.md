@@ -1,0 +1,324 @@
+---
+title: Working with Spatial Data
+summary: CockroachDB has special support for efficiently storing and querying spatial data.
+toc: true
+---
+
+<span class="version-tag">New in v20.2</span>: CockroachDB has special support for efficiently storing and querying spatial data. Supported spatial data types include:
+
+- Geometric objects such as points, lines, paths, and polygons in 2-dimensional space. These are projected onto the flat surface of a plane and are represented in SQL by the `GEOMETRY` data type.
+
+- Geographic objects, which are also made up of points, lines, polygons, etc., in 2-dimensional space. They are projected onto the surface of a sphere and are represented in SQL by the `GEOGRAPHY` data type. (Technically, they are projected onto a spheroid: "a sphere with a bulge"). The spheroid projection means that:
+
+    - The X and Y coordinates of 2-dimensional points are actually Longitude and Latitude values.
+    - The paths between geographic objects are not straight lines; they are curves, and so the distances between objects are calculated using [great circle math](https://en.wikipedia.org/wiki/Great-circle_distance).
+
+{{site.data.alerts.callout_info}}
+This documentation is for an early alpha release. Be prepared for CockroachDB's spatial support and this documentation to change before the 20.2 GA release.
+{{site.data.alerts.end}}
+
+## Compatibility
+
+Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension.
+
+However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our indexing works differently (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#geospatial-functions).
+
+If your application needs support for functions that are not yet implemented, please check out [our meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
+
+## Troubleshooting
+
+For general CockroachDB troubleshooting information, see [this troubleshooting overview](troubleshooting-overview.html).
+
+If you need help troubleshooting an issue with our spatial support, please get in touch using our [Support resources](support-resources.html).
+
+## Performance
+
+In order to avoid full table scans, make sure to add indexes to any columns that are accessed as part of a predicate in the [`WHERE`](select-clause.html#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (a `*` means it also works on `GEOGRAPHY` data types):
+
+- `st_covers` (*)
+- `st_coveredby` (*)
+- `st_contains`
+- `st_containsproperly`
+- `st_crosses`
+- `st_dwithin` (*)
+- `st_dfullywithin`
+- `st_equals`
+- `st_intersects` (*)
+- `st_overlaps`
+- `st_touches`
+- `st_within`
+
+To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., `_st_covers`.
+
+You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Make queries fast](make-queries-fast.html).
+
+The syntax for adding an index to a geometry column is:
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
+~~~
+
+This creates an inverted index on the `geom` column. For more information about how inverted indexes work, see [Inverted indexes](inverted-indexes.html).
+
+Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://en.wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://en.wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
+
+If you encounter behavior that you think is due to a performance issue, please get in touch using our [Support resources](support-resources.html).
+
+## Getting started
+
+In this section, we'll describe how to:
+
+1. Install CockroachDB with spatial support.
+2. Use it with a real-world spatial data set.
+
+{{site.data.alerts.callout_info}}
+This documentation is for an early alpha release. Be prepared for CockroachDB's spatial support and this documentation to change before the 20.2 GA release.
+{{site.data.alerts.end}}
+
+### Installation
+
+Currently, the best way to install a build of CockroachDB with support for spatial data is via [Docker](https://www.docker.com).
+
+Get the software:
+
+{% include copy-clipboard.html %}
+~~~ shell
+docker pull otanatcockroach/cockroachdb-geospatial
+~~~
+
+Start the server (this example uses some Docker networking and file location settings that map from the container to the host using CockroachDB's default network ports):
+
+{% include copy-clipboard.html %}
+~~~ shell
+docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  otanatcockroach/cockroachdb-geospatial start-single-node --insecure
+~~~
+
+Connect to the server from a [SQL client](cockroach-sql.html) installed on your local machine:
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach sql --insecure --host=localhost --port=26257
+~~~
+
+### Importing spatial data
+
+- [Example 1. NWS Tornado data](#example-1-nws-tornado-data)
+- [Example 2. NYC data from the PostGIS tutorial](#example-2-nyc-data-from-the-postgis-tutorial)
+
+#### Example 1. NWS Tornado data
+
+In this example we will import a specific data set that is available as a [Shapefile](https://en.wikipedia.org/wiki/Shapefile). 
+
+##### Step 1. Convert the shapefile to SQL
+
+If you have a shapefile, you will need to convert it to SQL using the [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html) tool.
+
+In this example, we will import the [US National Weather Service's Tornadoes (1950-2018) data set](https://www.spc.noaa.gov/gis/svrgis/) (specifically the [tornado start points data set](https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip)).
+
+First, we will need to convert the Shapefile data to SQL using the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+shp2pgsql 1950-2018-torn-initpoint.shp > tornado-points.sql &
+~~~
+
+##### Step 2. Edit the generated SQL so it can be imported
+
+In some cases, you can import your SQL spatial data files directly using the method in [Step 4](#step-4-import-the-tornado-data-into-the-tornadoes-database) below.
+
+However, you may encounter some errors loading arbitrary SQL files of spatial data into CockroachDB, since our spatial support is still in development. CockroachDB cannot always automatically execute the SQL statements generated by `shp2pgsql` or other tools, since those tools were designed for use with different databases.
+
+In order to get the file used in this example to load, execute the following "one-liners" in your shell. They will perform the necessary edits to the SQL file to get it to load (while taking backups of the file with the extension ".bak"):
+
+{% include copy-clipboard.html %}
+~~~ shell
+perl -p -i.bak -e 's/"1950-2018-torn-initpoint"\."shp"/tornadoes/g' tornado-points.sql
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+perl -p -i.bak -e "s/'1950-2018-torn-initpoint','shp'/'tornadoes'/g" tornado-points.sql
+~~~
+
+##### Step 3. Create the tornadoes database
+
+In your SQL client, create a `tornadoes` database so we have somewhere to put the data:
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE tornadoes;
+~~~
+
+##### Step 4. Import the tornado data into the tornadoes database
+
+Then, use the SQL client to [execute the SQL statements in the file](cockroach-sql.html#execute-sql-statements-from-a-file) as shown below. The shell redirects are used to quiet most of the output, and the trailing `&` runs it as a background job in the shell.
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach sql --insecure --database=tornadoes --port=26257 < tornado-points.sql 2>&1 1>/dev/null &
+~~~
+
+~~~
+NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
+~~~
+
+If you see the notice above, it's a good sign; it means CockroachDB is busily executing the SQL statements in `tornado-points.sql`. In most UNIX-like shells, you can check on the status of running jobs with the [`jobs(1)`](https://man7.org/linux/man-pages/man1/jobs.1p.html) command. It will take a few minutes to run.
+
+##### Step 5. Query the tornado data
+
+Once the data has finished importing, we can query the tornado data from SQL.
+
+For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://en.wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
+
+> a significant tornado outbreak that affected much of the Central and parts of the Eastern United States, with the highest record-breaking wind speeds of 302 ± 22 mph (486 ± 35 km/h). During this week-long event, 154 tornadoes touched down (including one in Canada), more than half of them on May 3 and 4 when activity reached its peak over Oklahoma, Kansas, Nebraska, Texas, and Arkansas.
+
+According to the wiki page linked above, there were 152 tornadoes confirmed between May 2-8, 1999 (one in Canada).
+
+We can try to verify this number against the NWS's tornado data set with the following query:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT COUNT(*)  FROM tornadoes WHERE yr = 1999 AND mo = 5 AND dy >= 02 AND dy <= 08;
+~~~
+
+~~~
+  count
+---------
+    150
+(1 row)
+~~~
+
+It might be interesting to look into why these numbers are different!
+
+Next, let's get a list of starting points for all of the tornadoes in the outbreak that started in Oklahoma:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT ST_AsText(geom) FROM tornadoes WHERE yr = 1999 AND st = 'OK' AND mo = 5 AND dy > 02 AND dy <= 08;
+~~~
+
+~~~
+                    st_astext
+--------------------------------------------------
+  POINT (-98.379999999999995 34.770000000000003)
+  POINT (-98.329999999999998 34.780000000000001)
+  POINT (-98.319999999999993 34.880000000000003)
+  POINT (-98.230000000000004 34.920000000000002)
+  POINT (-99.019999999999996 34.799999999999997)
+  POINT (-98.25 35.030000000000001)
+  POINT (-98.120000000000005 34.969999999999999)
+  POINT (-98.030000000000001 35.049999999999997)
+  POINT (-97.980000000000004 35.079999999999998)
+  POINT (-98.569999999999993 34.950000000000003)
+  POINT (-97.849999999999994 35.130000000000003)
+  POINT (-98.430000000000007 34.979999999999997)
+  POINT (-98.329999999999998 35.07)
+  POINT (-98.019999999999996 35.719999999999999)
+  POINT (-97.980000000000004 35.719999999999999)
+  POINT (-97.599999999999994 35.299999999999997)
+  POINT (-98.280000000000001 35.119999999999997)
+  POINT (-98.200000000000003 35.170000000000002)
+  POINT (-97.400000000000006 35.399999999999999)
+  POINT (-98.099999999999994 35.18)
+  POINT (-98.069999999999993 35.270000000000003)
+  POINT (-98.129999999999995 35.270000000000003)
+  POINT (-98.019999999999996 35.32)
+  POINT (-97.299999999999997 35.469999999999999)
+  POINT (-98 35.270000000000003)
+  POINT (-97.969999999999999 35.399999999999999)
+  POINT (-97.219999999999999 35.549999999999997)
+  POINT (-97.920000000000002 35.420000000000002)
+  POINT (-97.900000000000006 35.43)
+  POINT (-97.230000000000004 35.579999999999998)
+  POINT (-98.370000000000005 35.880000000000003)
+  POINT (-97.920000000000002 35.520000000000003)
+  POINT (-98.280000000000001 35.649999999999999)
+  POINT (-97.849999999999994 35.530000000000001)
+  POINT (-97.200000000000003 35.130000000000003)
+  POINT (-97.780000000000001 35.649999999999999)
+  POINT (-98.030000000000001 35.850000000000001)
+  POINT (-97.719999999999999 35.700000000000003)
+  POINT (-98.030000000000001 35.880000000000003)
+  POINT (-97 35.369999999999997)
+  POINT (-97.680000000000007 35.780000000000001)
+  POINT (-97.950000000000003 35.93)
+  POINT (-98.170000000000002 35.850000000000001)
+  POINT (-97.680000000000007 35.880000000000003)
+  POINT (-97.879999999999995 36.020000000000003)
+  POINT (-97.950000000000003 36.020000000000003)
+  POINT (-98 35.5)
+  POINT (-97.879999999999995 36.100000000000001)
+  POINT (-97.969999999999999 35.549999999999997)
+  POINT (-96.799999999999997 35.649999999999999)
+  POINT (-97.650000000000006 36.119999999999997)
+  POINT (-98.25 36.299999999999997)
+  POINT (-97.719999999999999 35.780000000000001)
+  POINT (-97.780000000000001 35.850000000000001)
+  POINT (-97.599999999999994 35.920000000000002)
+  POINT (-97.420000000000002 36.030000000000001)
+  POINT (-96.129999999999995 35.979999999999997)
+  POINT (-96.069999999999993 36.020000000000003)
+  POINT (-95.650000000000006 35.630000000000003)
+  POINT (-95.180000000000007 35.950000000000003)
+  POINT (-94.730000000000004 36)
+  POINT (-97.400000000000006 35.32)
+  POINT (-96.400000000000006 36.469999999999999)
+  POINT (-95.579999999999998 34.579999999999998)
+  POINT (-95.219999999999999 34.880000000000003)
+  POINT (-95 35.130000000000003)
+  POINT (-94.780000000000001 35.299999999999997)
+  POINT (-94.700000000000003 35.43)
+  POINT (-94.549999999999997 35.57)
+(69 rows)
+~~~
+
+We can see that almost half of all of the tornadoes in this outbreak began in Oklahoma.
+
+It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the spatial index coverings for the polygon.
+
+<img width="100%" src="{{ 'images/v20.2/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
+
+(Map data &copy; 2020 Google)
+
+#### Example 2. NYC data from the PostGIS tutorial
+
+Follow the steps below to load the SQL for the NYC data used in the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial.
+
+{{site.data.alerts.callout_info}}
+CockroachDB can work with the tutorial up to Chapter 22, with the following exceptions:  
+- Do not try to load Shapefiles via the GUI as shown in the tutorial. Instead, follow the steps below to load the SQL data directly into CockroachDB. (We have already converted the tutorial Shapefiles to SQL for you.)  
+- We do not support GML or KML data.  
+- We do not support SVG.  
+{{site.data.alerts.end}}
+
+##### Step 1. Load the NYC data
+
+Clone the data set:
+
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/otan-cockroach/otan-scripts/
+~~~
+
+Load the SQL files into your CockroachDB cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+cat otan-scripts/geospatial/geospatial_sql/*.sql | cockroach sql --insecure --host=localhost --port=26257
+~~~
+
+##### Step 2. Follow the PostGIS tutorial
+
+When the cluster is finished loading the data, open a SQL shell and start working through the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial:
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach sql --insecure --host=localhost --port=26257
+~~~
+
+## See also
+
+- [Troubleshooting overview](troubleshooting-overview.html)
+- [Support resources](support-resources.html)
+- [Geospatial functions](functions-and-operators.html#geospatial-functions)
