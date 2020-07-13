@@ -614,6 +614,12 @@
             "urls": [
               "/${VERSION}/sql-tuning-with-explain.html"
             ]
+          },
+          {
+            "title": "Working with Spatial Data",
+            "urls": [
+              "/${VERSION}/spatial-data.html"
+            ]
           }
         ]
       },
