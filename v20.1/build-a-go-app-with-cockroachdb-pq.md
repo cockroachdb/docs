@@ -13,8 +13,6 @@ twitter: false
 
 This tutorial shows you how build a simple Go application with CockroachDB and the Go pq driver.
 
-We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
-
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}

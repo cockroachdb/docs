@@ -9,10 +9,10 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func transferFunds(tx pgx.Tx, from int, to int, amount int) error {
+func transferFunds(ctx context.Context, tx pgx.Tx, from int, to int, amount int) error {
 	// Read the balance.
 	var fromBalance int
-	if err := tx.QueryRow(context.Background(),
+	if err := tx.QueryRow(ctx,
 		"SELECT balance FROM accounts WHERE id = $1", from).Scan(&fromBalance); err != nil {
 		return err
 	}
@@ -22,11 +22,11 @@ func transferFunds(tx pgx.Tx, from int, to int, amount int) error {
 	}
 
 	// Perform the transfer.
-	if _, err := tx.Exec(context.Background(),
+	if _, err := tx.Exec(ctx,
 		"UPDATE accounts SET balance = balance - $1 WHERE id = $2", amount, from); err != nil {
 		return err
 	}
-	if _, err := tx.Exec(context.Background(),
+	if _, err := tx.Exec(ctx,
 		"UPDATE accounts SET balance = balance + $1 WHERE id = $2", amount, to); err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func main() {
 
 	// Run a transfer in a transaction.
 	err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
-		return transferFunds(tx, 1 /* from acct# */, 2 /* to acct# */, 100 /* amount */)
+		return transferFunds(context.Background(), tx, 1 /* from acct# */, 2 /* to acct# */, 100 /* amount */)
 	})
 	if err == nil {
 		fmt.Println("Success")
