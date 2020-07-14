@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+
 ## Before you begin
 
 Before you begin this section, complete the previous section of the tutorial, [Develop a Multi-Region Web Application](multi-region-application.html). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
@@ -264,6 +266,7 @@ Some time after you have deployed your application, you will likely need to push
 
 ## See also
 
+- [MovR (live demo)](https://movr.cloud)
 - [CockroachCloud documentation](https://www.cockroachlabs.com/docs/cockroachcloud/stable/)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
