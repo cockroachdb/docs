@@ -15,6 +15,10 @@ Also keep in mind some basic topology recommendations:
 
 {% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
 
+## Software
+
+We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
+
 ## Hardware
 
 {{site.data.alerts.callout_info}}
@@ -23,45 +27,80 @@ Mentions of "CPU resources" refer to vCPUs, which are also known as hyperthreads
 
 ### Basic hardware recommendations
 
-Nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. It's important to test and tune your hardware setup before deploying to production.
+This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
+
+| Value | Recommendation | Reference
+|-------|----------------|----------
+| RAM per vCPU | 4 GB | [CPU and memory](#cpu-and-memory)
+| Capacity per vCPU | Up to 250 GB | [Storage](#storage)
+| IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
+| MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
+
+{{site.data.alerts.callout_danger}}
+Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#cpu-and-memory), [RAM](#cpu-and-memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
+{{site.data.alerts.end}}
 
 #### CPU and memory
 
-- At a bare minimum, each node should have **2 vCPUs and 2 GB of RAM**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
+Each node should have at least **2 vCPUs** and at least **4 GB of RAM per vCPU**. More data, complex workloads, higher concurrency, and faster performance require additional resources. 
 
-    {{site.data.alerts.callout_danger}}
-    Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
+{{site.data.alerts.callout_danger}}
+Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
+{{site.data.alerts.end}}
+
+- Select the fastest available processors. 
+
+- To optimize for throughput, use larger nodes with up to 32 vCPUs (the sweet spot for OLTP workloads, based on internal testing results). See [Disk I/O](#disk-i-o) for additional throughput guidelines.
+
+    To further increase throughput, add more nodes to the cluster instead of increasing node size. Nodes with more than 32 vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications leading to performance downgrades.
+
+    {{site.data.alerts.callout_info}}
+    Note that the benefits to having more RAM decrease as the number of vCPUs increases.
     {{site.data.alerts.end}}
 
-- To optimize for throughput, use larger nodes, up to 32 vCPUs. Based on internal testing results, 32 vCPUs is the sweet spot for OLTP workloads. For RAM, aim for a ratio of 2 GB per vCPU.
+- To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
 
-    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications.
-
-- To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
-
-- In all cases, make sure nodes are uniform to ensure consistent SQL performance.
+- To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
 #### Storage
 
-- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+Provision volumes with up to **250 GB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- Avoid using shared storage such as NFS, CIFS, and CEPH storage.
-
-- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300 GiB - 2 TiB.
+- The recommended disk capacity is 300 GiB to 4 TiB per node. 
 
     {{site.data.alerts.callout_info}}
-    Depending on the workload, you may be able to store more than 2 TiB per node. In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended before using it in a production environment. For more information about this test, see [Node density testing configuration](#node-density-testing-configuration).
+    For more context on these numbers, see [Node density testing configuration](#node-density-testing-configuration).
     {{site.data.alerts.end}}
 
-- Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+- Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
-- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
+    It is critical to store CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling. This can cause unwanted behavior on the cluster.
+
+- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+
+- Avoid using shared storage such as NFS, CIFS, and CEPH storage. These do not meet our [disk I/O](#disk-i-o) requirements.
+
+- For the best performance results, use SSD or NVMe devices.
+
+- Always keep at least 40% of disk capacity free on production. This accommodates fluctuations in routine database operations and supports continuous data growth.
 
 - Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
+
+##### Disk I/O
+
+Disks must be able to achieve **500 IOPS and 30 MB/s per vCPU**.
+
+{{site.data.alerts.callout_info}}
+Disk I/O especially affects performance on write-heavy workloads. For more context, see [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html#write-scenario).
+{{site.data.alerts.end}}
+
+- Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+
+- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
