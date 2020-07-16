@@ -14,8 +14,6 @@ func main() {
 		log.Fatal("error configuring the database: ", err)
 	}
 
-	config.TLSConfig.ServerName = "localhost"
-
 	// Connect to the "bank" database.
 	conn, err := pgx.ConnectConfig(context.Background(), config)
 	if err != nil {
