@@ -80,9 +80,8 @@
     var $footer_popout = $("#newsletter-footer-popout"),
       $footer_close = $("#newsletter-footer-popout .newsletter-close");
 
-    if (window.location.pathname === "/docs/advisories/index.html") {
+    if (window.location.pathname.indexOf('/advisories/index.html') > -1 ) {
 	  $footer_popout.addClass("animate");
-	  setCookie("popout", 1);
     } else {
       $(window).scroll(function () {
         var cookie = getCookie("popout");
