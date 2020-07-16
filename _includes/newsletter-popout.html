@@ -81,7 +81,8 @@
       $footer_close = $("#newsletter-footer-popout .newsletter-close");
 
     if (window.location.pathname === "/docs/advisories/index.html") {
-      $footer_popout.addClass("animate");
+	  $footer_popout.addClass("animate");
+	  setCookie("popout", 1);
     } else {
       $(window).scroll(function () {
         var cookie = getCookie("popout");
