@@ -175,7 +175,7 @@ To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.ht
 
 ### Cancel a Query
 
-When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to kill it.
+When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to stop it.
 
 For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have been running for more than 3 hours:
 

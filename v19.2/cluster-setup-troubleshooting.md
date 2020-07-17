@@ -366,7 +366,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 ### Node crashes because of insufficient memory
 
-Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system killing it suddenly due to low memory. So if you're seeing node crashes where the logs just end abruptly, it's probably because the node is running out of memory. On most Unix systems, you can verify if the `cockroach` process was killed because the node ran out of memory by running:
+Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system stopping it suddenly due to low memory. So if you're seeing node crashes where the logs just end abruptly, it's probably because the node is running out of memory. On most Unix systems, you can verify if the `cockroach` process was stopped because the node ran out of memory by running:
 
 ~~~ shell
 $ sudo dmesg | grep -iC 3 "cockroach"

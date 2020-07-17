@@ -8,7 +8,7 @@ If you need a location to store files for the [`IMPORT`](import.html) process or
 
 This is especially useful for:
 
-- Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have native support
+- Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have built-in support
 - Using on-premises storage
 
 ## HTTP export storage API

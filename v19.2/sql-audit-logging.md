@@ -125,7 +125,7 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 
 Unlike the `customers` table, `orders` doesn't have any PII, just a Product ID and a delivery status. (Note the use of the [`CHECK` constraint](check.html) as a workaround for the as-yet-unimplemented `ENUM` - see [SQL feature support](sql-feature-support.html) for more information.)
 
-Let's populate the `orders` table with some dummy data using [`CREATE SEQUENCE`](create-sequence.html):
+Let's populate the `orders` table with some placeholder data using [`CREATE SEQUENCE`](create-sequence.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -165,7 +165,7 @@ Let's verify that our orders were added successfully:
 
 ## Step 6. Check the audit log again
 
-Because we used a `SELECT` against the `customers` table to generate the dummy data for `orders`, those queries will also show up in the audit log as follows:
+Because we used a `SELECT` against the `customers` table to generate the placeholder data for `orders`, those queries will also show up in the audit log as follows:
 
 ~~~
 I180321 21:01:59.677273 351 sql/exec_log.go:163  [n1,client=127.0.0.1:60754,user=root] 7 exec "cockroach sql" {"customers"[76]:READ, "customers"[76]:READ} "INSERT INTO orders(product_id, delivery_status, customer_id) VALUES (nextval('product_ids_asc'), 'processing', (SELECT id FROM customers WHERE \"name\" ~ 'Cleve'))" {} 5.183 1 OK

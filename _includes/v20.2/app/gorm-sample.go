@@ -32,7 +32,7 @@ type txnFunc func(*gorm.DB) error
 var forceRetryLoop txnFunc = func(db *gorm.DB) error {
 
 	// The first statement in a transaction can be retried transparently
-	// on the server, so we need to add a dummy statement so that our
+	// on the server, so we need to add a placeholder statement so that our
 	// force_retry statement isn't the first one.
 	if err := db.Exec("SELECT now()").Error; err != nil {
 		return err

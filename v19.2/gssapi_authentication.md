@@ -231,7 +231,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     ~~~
 
 4. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
-5. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
+5. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -32,7 +32,7 @@ $ cockroach quit \
 ~~~
 
 {{site.data.alerts.callout_info}}
-For the purposes of this training, you use the `cockroach quit` command with the `--decommission` flag. However, in production, you'd use `cockroach decommission` and then instruct your process manager to kill the process.
+For the purposes of this training, you use the `cockroach quit` command with the `--decommission` flag. However, in production, you'd use `cockroach decommission` and then instruct your process manager to end the process.
 {{site.data.alerts.end}}
 
 Because the cluster has 3 nodes, with every range on every node, it is not possible to rebalance node 3's data, so the decommission process hangs:

@@ -6,7 +6,7 @@ redirect_from: stop-a-node.html
 key: stop-a-node.html
 ---
 
-This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart. 
+This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart.
 
 You might do this, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).
 
@@ -82,7 +82,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 2. If the node is running in the background and you are using a process manager for automatic restarts, use the process manager to stop the `cockroach` process without restarting it.
 
-    If the node is running in the background and you are not using a process manager, send a kill signal to the `cockroach` process, for example:
+    If the node is running in the background and you are not using a process manager, send a stop signal to the `cockroach` process, for example:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -768,7 +768,7 @@ $ cockroach sql --insecure \
 ^C
 ~~~
 
-In this example, the statement is executed every minute. We let the process run for a couple minutes before killing it with Ctrl+C.
+In this example, the statement is executed every minute. We let the process run for a couple minutes before stopping it with Ctrl+C.
 
 ## See also
 

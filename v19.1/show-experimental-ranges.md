@@ -38,7 +38,7 @@ Parameter | Description
 
 ## Examples
 
-The examples in this section operate on a hypothetical "user credit information" table filled with dummy data, running on a 5-node cluster.
+The examples in this section operate on a hypothetical "user credit information" table filled with placeholder data, running on a 5-node cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -2,7 +2,7 @@ Based on the `replicas: 3` line in the StatefulSet configuration, Kubernetes ens
 
 To see this in action:
 
-1. Kill one of CockroachDB nodes:
+1. Stop one of CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
