@@ -5,7 +5,7 @@ toc: true
 build_for: [cockroachcloud]
 ---
 
-This page describes the cluster management, backup/restore, and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows.
 
 ## View Clusters page
 
