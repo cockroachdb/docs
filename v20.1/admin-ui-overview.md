@@ -34,6 +34,7 @@ The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `h
 - If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname and port specified by that flag.
 - If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
 - If you are running a [secure cluster](#admin-ui-security), use `https` instead of `http`.
+- Or if you wish to run behind reverse proxy (eg: apache/nginx), you could use [`--unencrypted-localhost-http`] option
 
 {{site.data.alerts.callout_success}}
 For guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
