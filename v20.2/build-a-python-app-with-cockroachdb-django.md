@@ -36,16 +36,26 @@ The example code and instructions on this page use Python 3 and Django 3.0.
 
 ## Step 1. Install Django and the CockroachDB backend for Django
 
-Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb):
+Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django==3.0.*
+$ python -m pip install django==3.0.*
 ~~~
 
+Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
+
+- [psycopg2](https://pypi.org/project/psycopg2/), which has some
+  [prerequisites](https://www.psycopg.org/docs/install.html#prerequisites) of
+  its own. This package is recommended for production environments.
+
+- [psycopg2-binary](https://pypi.org/project/psycopg2-binary/). This package is recommended for development and testing.
+
+After you install the psycopg2 prerequisite, install the CockroachDB Django backend:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb==3.0.*
+$ python -m pip install django-cockroachdb==3.0.*
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -348,12 +358,12 @@ In the top `myproject` directory, use the [`manage.py` script](https://docs.djan
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py makemigrations myproject
+$ python manage.py makemigrations myproject
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py migrate
+$ python manage.py migrate
 ~~~
 
 This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
@@ -424,7 +434,7 @@ In a new terminal, start the app:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py runserver 0.0.0.0:8000
+$ python manage.py runserver 0.0.0.0:8000
 ~~~
 
 To perform simple reads and writes to the database, you can send HTTP requests to the application.
