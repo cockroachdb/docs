@@ -93,7 +93,7 @@ Then run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 sqlalchemy-basic-sample.py
+$ python sqlalchemy-basic-sample.py
 ~~~
 
 The output should look something like the following:
@@ -198,7 +198,7 @@ Change to the directory where you cloned the repo and run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 example.py
+$ python example.py
 ~~~
 
 The output should look something like the following:

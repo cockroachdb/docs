@@ -70,16 +70,26 @@ For a simple but complete "Hello World" example app, see [Build a Python App wit
 
 CockroachDB supports Django versions 2.2 and 3.0.
 
-To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb):
+To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django==3.0.*
+$ python -m pip install django==3.0.*
 ~~~
 
+Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
+
+- [psycopg2](https://pypi.org/project/psycopg2/), which has some
+  [prerequisites](https://www.psycopg.org/docs/install.html#prerequisites) of
+  its own. This package is recommended for production environments.
+
+- [psycopg2-binary](https://pypi.org/project/psycopg2-binary/). This package is recommended for development and testing.
+
+After you install the psycopg2 prerequisite, you can install the CockroachDB Django backend:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb==3.0.*
+$ python -m pip install django-cockroachdb==3.0.*
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -96,7 +106,7 @@ To install PonyORM:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install pony
+$ python -m pip install pony
 ~~~
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
@@ -109,7 +119,7 @@ To install peewee:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install peewee
+$ python -m pip install peewee
 ~~~
 
 For instructions on using peewee with CockroachDB, see the [CockroachDatabase peewee extension documentation](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database).
