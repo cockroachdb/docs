@@ -191,6 +191,19 @@ For a simple but complete "Hello World" example app, see [Build a Java App with 
 
 ## Drivers
 
+### pgx
+
+**Support level:** Full
+
+To install the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/jackc/pgx
+~~~
+
+For a simple but complete "Hello World" example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
+
 ### pq
 
 **Support level:** Full
