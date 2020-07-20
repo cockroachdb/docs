@@ -10,80 +10,68 @@ CockroachDB is built to be [fault-tolerant and to recover automatically](demo-fa
 
 When planning to survive hardware failures, these are the minimum replication factors to apply in order to have greater resilience.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_danger}}
 Increasing data replication factors may have an impact on [transaction](transactions.html) performance, since quorum levels are increasing.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+For the purposes of choosing a replication factor, disk failure is equivalent to node failure.
 {{site.data.alerts.end}}
 
 ### Single-region survivability planning
 
-The table below displays the minimum replication factor needed to survive simultaneous hardware failures (e.g., disk, node, availability zone (AZ), etc.) for a single-region CockroachDB cluster:
+The table below displays the minimum replication factor needed to survive hardware failures (e.g., node, availability zone (AZ), etc.) for a single-region, 3 AZ, 3-node CockroachDB 3-node cluster deployed to the cloud:
 
 <table>
   <thead>
     <tr>
-      <th>Simultaneous Failure</th>
-      <th>3 nodes <br>(3 AZ/Racks)</th>
-      <th>4 nodes <br>(4 AZ/Racks)</th>
-      <th>5 nodes <br>(5 AZ/Racks)</th>
+      <th>Fault Tolerance Goals</th>
+      <th>3 nodes <br>(3 AZ)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="color:#46a417"><b>Disk</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-    </tr>
       <td style="color:#46a417"><b>Node</b></td>
       <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
+    </tr>
     <tr>
-      <td style="color:#46a417"><b>AZ/Rack</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
+      <td style="color:#46a417"><b>AZ</b></td>
       <td>Rep Factor = 3</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Nodes</b></td>
       <td>Rep Factor = 5</td>
-      <td>Rep Factor = 5</td>
-      <td>Rep Factor = 5</td>
     </tr>
     <tr>
-      <td style="color:#46a417"><b>AZ/Rack + Node</b></td>
+      <td style="color:#46a417"><b>AZ + Node</b></td>
       <td>Rep Factor = 9</td>
-      <td>Rep Factor = 7</td>
-      <td>Rep Factor = 5</td>
     </tr>
     <tr>
-      <td style="color:#46a417"><b>2 AZ/Racks</b></td>
+      <td style="color:#46a417"><b>2 AZ</b></td>
       <td>Not possible</td>
-      <td>Not possible</td>
-      <td>Rep Factor = 5</td>
     </tr>
   </tbody>
 </table>
 
-For example, a single-region, 3-node cluster would need a minimum replication factor of 3 to survive a disk failure.
+For example, a single-region, 3 AZ, 3-node cluster would need a minimum replication factor of 3 to survive a node failure.
 
 ### Single-region recovery
 
-For hardware failures in a single-region cluster, the recovery actions vary and depend on the type of infrastructure used (e.g., virtual machines, Kubernetes, bare metal).
+For hardware failures in a single-region cluster, the recovery actions vary and depend on the type of infrastructure used.
 
-For example, consider a CockroachBD cluster with the following setup:
+For example, consider a cloud-deployed CockroachBD cluster with the following setup:
 
 - Single-region
-- 5 nodes
-- Each node is in a separate availability zone or rack
-- Replication factor of 5
+- 3 nodes
+- 3 availability zones
+- Replication factor of 9
 
 The table below describes what actions to take to recover from various hardware failures in this example cluster:
 
 <table>
   <thead>
     <tr>
-      <th>Simultaneous Failure</th>
+      <th>Fault Tolerance Goals</th>
       <th>Availability</th>
       <th>Consequence</th>
       <th>Action to Take</th>
@@ -93,19 +81,15 @@ The table below describes what actions to take to recover from various hardware 
     <tr>
       <td style="color:#46a417"><b>1 Disk</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="7">Fewer resources are available. Some data will be under-replicated until the failed node is marked dead. <br><br>Once marked dead, data is replicated to other nodes and the cluster remains healthy.
+      <td rowspan="5">Fewer resources are available. Some data will be under-replicated until the failed node(s) is marked dead. <br><br>Once marked dead, data is replicated to other nodes and the cluster remains healthy.
       </td>
       <td><a href="start-a-node.html">Restart the node</a> with a new disk.</td>
     </tr>
       <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="6">If using a Kubenetes StatefulSet, a node will be restarted automatically. <br><br>If the Server, Rack or AZ becomes available, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <td rowspan="4">If the server or AZ becomes unavailable, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
       <br><br>- If the down server is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
       <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
-    <tr>
-      <td style="color:#46a417"><b>1 Rack</b></td>
-      <td style="color:#228B22"><b>√</b></td>
-    </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</b></td>
       <td style="color:#228B22"><b>√</b></td>
@@ -120,19 +104,21 @@ The table below describes what actions to take to recover from various hardware 
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 AZ</b></td>
-      <td style="color:#228B22"><b>√</b></td>
+      <td style="color:#FF0000"><b>X</b></td>
+      <td>Cluster will become unavailable.</td>
+      <td>When the AZ comes back online, try <a href="cockroach-start.html">restarting</a> at least 1 of the nodes.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>3 Nodes</b></td>
       <td style="color:#FF0000"><b>X</b></td>
       <td>Cluster will become unavailable.</td>
-      <td>Recover one of the 3 nodes that are down to regain quorum. <br><br>If you can’t recover one of the 3 failed nodes, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> so we can assist in your cluster’s recovery.</td>
+      <td><a href="cockroach-start.html">Restart</a> 2 of the 3 nodes that are down to regain quorum. <br><br>If you can’t recover 2 of the 3 failed nodes, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Region</td>
       <td style="color:#FF0000"><b>X</b></td>
       <td>Cluster will become unavailable. <br><br>Potential data loss between last backup and time of outage if region and servers did not come back online. <br><br>This would be a considerable disaster (i.e., an entire data center was destroyed).</td>
-      <td>When the region comes back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If region does not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.</td>
+      <td>When the region comes back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If region does not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
   </tbody>
 </table>
@@ -140,9 +126,13 @@ The table below describes what actions to take to recover from various hardware 
 <span style="color:#228B22"><b>√</b></span> = Available
 <span style="color:#FF0000"><b>X</b></span> = Outage
 
+{{site.data.alerts.callout_info}}
+When using Kubernetes, recovery actions happen automatically in many cases and no action needs to be taken.
+{{site.data.alerts.end}}
+
 ### Multi-region survivability planning
 
-The table below displays the minimum replication factor needed to survive simultaneous hardware failures (e.g., disk, node, availability zone (AZ), etc.) for a multi-region CockroachDB cluster:
+The table below displays the minimum replication factor needed to survive simultaneous hardware failures (e.g., node, availability zone (AZ), etc.) for a multi-region CockroachDB cluster deployed to the cloud:
 
 {{site.data.alerts.callout_danger}}
 The chart below describes the CockroachDB default behavior when locality flags are correctly set. It does not use geo-partitioning or a specific [topology pattern](topology-patterns.html). For a multi-region cluster in production, we do not recommend using the default behavior, as the cluster's performance will be negatively affected.
@@ -151,37 +141,33 @@ The chart below describes the CockroachDB default behavior when locality flags a
 <table>
   <thead>
     <tr>
-      <th>Simultaneous Failure</th>
-      <th>3 Regions <br>(3 AZ/Racks) <br>(9 Nodes)</th>
-      <th>4 Regions <br>(4 AZ/Racks) <br>(12 Nodes)</th>
-      <th>5 Regions <br>(5 AZ/Racks) <br>(15 Nodes)</th>
+      <th>Fault Tolerance Goals</th>
+      <th>3 Regions <br>(9 nodes/3 AZ)</th>
+      <th>4 Regions <br>(12 nodes/4 AZ)</th>
+      <th>5 Regions <br>(15 nodes/5 AZ)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="color:#46a417"><b>Disk</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-    </tr>
-      <td style="color:#46a417"><b>Node</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-    <tr>
-      <td style="color:#46a417"><b>AZ/Rack</b></td>
+      <td style="color:#46a417"><b>1 Node</b></td>
       <td>Rep Factor = 3</td>
       <td>Rep Factor = 3</td>
       <td>Rep Factor = 3</td>
     </tr>
     <tr>
-      <td style="color:#46a417"><b>Region</b></td>
+      <td style="color:#46a417"><b>1 AZ</b></td>
       <td>Rep Factor = 3</td>
       <td>Rep Factor = 3</td>
       <td>Rep Factor = 3</td>
     </tr>
     <tr>
-      <td style="color:#46a417"><b>Region + 1 Node</b></td>
+      <td style="color:#46a417"><b>1 Region</b></td>
+      <td>Rep Factor = 3</td>
+      <td>Rep Factor = 3</td>
+      <td>Rep Factor = 3</td>
+    </tr>
+    <tr>
+      <td style="color:#46a417"><b>1 Region + 1 Node</b></td>
       <td>Rep Factor = 7</td>
       <td>Rep Factor = 7</td>
       <td>Rep Factor = 5</td>
@@ -211,9 +197,9 @@ For example, a 3-region, 9-node cluster would need a minimum replication factor 
 
 ### Multi-region recovery
 
-For hardware failures in a multi-region cluster, the actions taken to recover vary and depend on the type of infrastructure used (e.g., virtual machines, Kubernetes, bare metal).
+For hardware failures in a multi-region cluster, the actions taken to recover vary and depend on the type of infrastructure used.
 
-For example, consider a CockroachBD cluster with the following setup:
+For example, consider a cloud-deployed CockroachBD cluster with the following setup:
 
 - Multi-region
 - 9 nodes
@@ -226,7 +212,7 @@ The table below describes what actions to take to recover from various hardware 
 <table>
   <thead>
     <tr>
-      <th>Simultaneous Failure</th>
+      <th>Fault Tolerance Goals</th>
       <th>Availability</th>
       <th>Consequence</th>
       <th>Action to Take</th>
@@ -236,18 +222,14 @@ The table below describes what actions to take to recover from various hardware 
     <tr>
       <td style="color:#46a417"><b>1 Disk</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="5">Under-replicated data. Less resources for workload.</td>
+      <td rowspan="4">Under-replicated data. Fewer resources for workload.</td>
       <td><a href="start-a-node.html">Restart the node</a> with a new disk.</td>
     </tr>
       <td style="color:#46a417"><b>1 Server</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="3">If using a Kubenetes StatefulSet, a node will be restarted automatically. <br><br>If the server, rack, or AZ becomes available check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <td rowspan="2">If the server or AZ becomes unavailable check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
       <br><br>- If the down server is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
-      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
-    </tr>
-    <tr>
-      <td style="color:#46a417"><b>1 Rack</b></td>
-      <td style="color:#228B22"><b>√</b></td>
+      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. Ensure that [locality flags are set](cockroach-start.html#locality) correctly upon node startup. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</b></td>
@@ -263,7 +245,7 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#46a417"><b>2 or More Regions</b></td>
       <td style="color:#FF0000"><b>X</b></td>
       <td>Cluster will be unavailable. <br><br>Potential data loss between last backup and time of outage if region and servers did not come back online. This would be a considerable disaster (i.e., 2 or more data centers destroyed).</td>
-      <td>When the regions comes back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If the regions do not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.</td>
+      <td>When the regions come back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If the regions do not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
   </tbody>
 </table>
@@ -271,60 +253,72 @@ The table below describes what actions to take to recover from various hardware 
 <span style="color:#228B22"><b>√</b></span> = Available
 <span style="color:#FF0000"><b>X</b></span> = Outage
 
+{{site.data.alerts.callout_info}}
+When using Kubernetes, recovery actions happen automatically in many cases and no action needs to be taken.
+{{site.data.alerts.end}}
+
 ## Data failure
 
-When dealing with data failure due to bad actors, rogue applications, or data corruption, domain expertise is required to identify the affected rows and determine how to to remedy the situation (e.g., remove the incorrectly inserted rows, insert deleted rows, etc.). However, there are a few options for short term remediation that you can take:
+When dealing with data failure due to bad actors, rogue applications, or data corruption, domain expertise is required to identify the affected rows and determine how to to remedy the situation (e.g., remove the incorrectly inserted rows, insert deleted rows, etc.). However, there are a few actions that you can take for short-term remediation:
 
-#### Basic recovery actions
+- If you are within the garbage collection window, [run differentials](#run-differentials).
+- If you have a backup file, [restore to a point in time](#restore-to-a-point-in-time).
+- If your cluster is running and you do not have a backup with the data you need, [create a new backup](#create-a-new-backup).
+- To [recover from corrupted data in a database or table](#recover-from-corrupted-data-in-a-database-or-table), restore the corrupted object.
 
-- If you are an enterprise user, use your backup file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) to a point where you are certain there was no corruption.
+{{site.data.alerts.callout_success}}
+To give yourself more time to recover and clean up the corrupted data, put your application in “read only” mode and only run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries from the application.
+{{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_success}}
-    Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
-    {{site.data.alerts.end}}
+### Run differentials
 
-- If you are within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours), run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run “diffs” to find the offending rows to fix. If you are outside of the garbage collection window, you will need to use a backup to run comparisons.
+If you are within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours), run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run differentials to find the offending rows to fix.
 
-    {{site.data.alerts.callout_info}}
-    Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
-    {{site.data.alerts.end}}
+If you are outside of the garbage collection window, you will need to use a [backup](backup.html) to run comparisons.
 
-#### Advanced recovery actions
+### Restore to a point in time
 
-- While you clean up the data, put your application in “read only” mode and only run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries from the application.
-- If your cluster is running and you do not have a backup that encapsulates the time you want to restore to, immediately trigger a new [backup `with_revision_history`](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) and you will have a backup you can use to restore to the desired point in time.
+- If you are a core user, use a [backup](backup.html) that was taken with [`AS OF SYSTEM TIME`](as-of-system-time.html) to restore to a specific point.
+- If you are an enterprise user, use your [backup](backup.html) file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) where you are certain there was no corruption.
 
-### Recover from corrupted data in table
+### Create a new backup
 
-[Restore the table](restore.html#tables) from a prior [backup](backup.html) or a [point in time](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) if revision history is in the backup. If the table has [foreign keys](foreign-key.html), [careful consideration](backup-and-restore-advanced-options.html#remove-the-foreign-key-before-restore) should be applied to make sure data integrity is maintained during the restore process.
+If your cluster is running and you do not have a backup that encapsulates the time you want to [restore](restore.html) to, there are two actions you can take:
 
-### Recover from corrupted data in a database
+- If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
+- If you are an enterprise user, trigger a new [backup `with_revision_history`](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) and you will have a backup you can use to restore to the desired point in time.
 
-[Restore the database](restore.html#databases) from a prior [backup](backup.html) or a [point in time](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) if revision history is in the backup.
+### Recover from corrupted data in a database or table
+
+If you have corrupted data in a database or table, [restore](restore.html) the object from a from a prior [backup](backup.html). If revision history is in the backup, you can restore from a [point in time](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+
+{{site.data.alerts.callout_info}}
+If the table you are restoring has [foreign keys](foreign-key.html), [careful consideration](backup-and-restore-advanced-options.html#remove-the-foreign-key-before-restore) should be applied to make sure data integrity is maintained during the restore process.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later.
+{{site.data.alerts.end}}
 
 ## Compromised security keys
 
-CockroachDB maintains a secure environment for your data. However, there are bad actors who may find ways to gain access or expose important security information. In the event that this happens, there are a few things you can do to get ahead of a security issue (see the linked sections for more details):
+CockroachDB maintains a secure environment for your data. However, there are bad actors who may find ways to gain access or expose important security information. In the event that this happens, there are a few things you can do to get ahead of a security issue:
 
 - If you have [changefeeds to cloud storage sinks](#changefeeds-to-cloud-storage), cancel the changefeed job and restart it with new access credentials.
 - If you are using [encryption at rest](#encryption-at-rest), rotate the store key(s).
 - If you are using [wire encryption / TLS](#wire-encryption-tls), rotate your keys.
 
-{{site.data.alerts.callout_success}}
-As a best practice, keys should be rotated on an occasional basis to ensure an extra layer of security.
-{{site.data.alerts.end}}
-
 ### Changefeeds to cloud storage
 
 1. [Cancel the changefeed job](cancel-job.html) immediately and [record the high water timestamp](change-data-capture.html#monitor-a-changefeed) for where the changefeed was stopped.
-2. Remove the access keys from the identify management system of your cloud provider and replace with a new set of access keys.
+2. Remove the access keys from the identity management system of your cloud provider and replace with a new set of access keys.
 3. [Create a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended) with the new access credentials using the last high water timestamp.
 
 ### Encryption at rest
 
 If you believe the user-defined store keys have been compromised, quickly attempt to rotate your store keys that are being used for your encryption at rest setup. If this key has already been compromised and the store keys were rotated by a bad actor, the cluster should be wiped if possible and [restored](restore.html) from a prior backup.
 
-If the compromised key were not rotated by a bad actor, quickly attempt to [rotate the store key](encryption.html#rotating-keys) by restarting each of the nodes with the old key and the new key. For an example on how to do this, see [Encryption](encryption.html#changing-encryption-algorithm-or-keys).
+If the compromised keys were not rotated by a bad actor, quickly attempt to [rotate the store key](encryption.html#rotating-keys) by restarting each of the nodes with the old key and the new key. For an example on how to do this, see [Encryption](encryption.html#changing-encryption-algorithm-or-keys).
 
 Once all of the nodes are restarted with the new key, put in a request to revoke the old key from the Certificate Authority.
 
@@ -335,3 +329,10 @@ CockroachDB does not allow prior store keys to be used again.
 ### Wire Encryption / TLS
 
 As a best practice, [keys should be rotated](rotate-certificates.html). In the event that keys have been compromised, quickly attempt to rotate your keys. This can include rotating node certificates, client certificates, and the CA certificate.
+
+## See also
+
+- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
+- [Back up and Restore Data](backup-and-restore.html)
+- [Topology Patterns](topology-patterns.html)
+- [Production Checklist](recommended-production-settings.html)
