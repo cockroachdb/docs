@@ -18,7 +18,7 @@ CockroachDB is well suited for applications that require reliable, available, an
 
 - Distributed or replicated OLTP
 - Multi-datacenter deployments
-- Cloud-native infrastructure initiatives
+- Infrastructure initiatives built for the cloud
 
 ## When is CockroachDB not a good choice?
 
