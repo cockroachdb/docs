@@ -8,7 +8,10 @@ CockroachDB is built to be [fault-tolerant and to recover automatically](demo-fa
 
 ## Hardware failure
 
-When planning to survive hardware failures, these are the minimum replication factors to apply in order to have greater resilience.
+When planning to survive hardware failures, start by determining the minimum replication factor you need based on your fault tolerance goals:
+
+- [Single-region survivability planning](#single-region-survivability-planning)
+- [Multi-region survivability planning](#multi-region-survivability-planning)
 
 {{site.data.alerts.callout_danger}}
 Increasing data replication factors may have an impact on [transaction](transactions.html) performance, since quorum levels are increasing.
@@ -18,42 +21,63 @@ Increasing data replication factors may have an impact on [transaction](transact
 For the purposes of choosing a replication factor, disk failure is equivalent to node failure.
 {{site.data.alerts.end}}
 
+If you experience hardware failures in a cluster, the recovery actions you need to take will depend on the type of infrastructure and topology pattern used:
+
+- [Single-region recovery](#single-region-recovery)
+- [Multi-region recovery](#multi-region-recovery)
+
 ### Single-region survivability planning
 
-The table below displays the minimum replication factor needed to survive hardware failures (e.g., node, availability zone (AZ), etc.) for a single-region, 3 AZ, 3-node CockroachDB 3-node cluster deployed to the cloud:
+The table below shows the replication factor (RF) needed to achieve the listed fault tolerance goals for a single region, cloud-deployed cluster with nodes spread as evenly as possible across 3 availability zones (AZs):
+
+{{site.data.alerts.callout_info}}
+See our [basic production topology](topology-basic-production.html#configuration) for configuration guidance.
+{{site.data.alerts.end}}
 
 <table>
   <thead>
     <tr>
       <th>Fault Tolerance Goals</th>
-      <th>3 nodes <br>(3 AZ)</th>
+      <th>3 nodes</th>
+      <th>5 nodes</th>
+      <th>9 nodes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="color:#46a417"><b>Node</b></td>
-      <td>Rep Factor = 3</td>
+      <td style="color:#46a417"><b>1 Node</b></td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
     </tr>
     <tr>
-      <td style="color:#46a417"><b>AZ</b></td>
-      <td>Rep Factor = 3</td>
+      <td style="color:#46a417"><b>1 AZ</b></td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Nodes</b></td>
-      <td>Rep Factor = 5</td>
+      <td>Not possible</td>
+      <td>RF = 5</td>
+      <td>RF = 5</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>AZ + Node</b></td>
-      <td>Rep Factor = 9</td>
+      <td>Not possible</td>
+      <td>Not possible</td>
+      <td>RF = 9</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 AZ</b></td>
+      <td>Not possible</td>
+      <td>Not possible</td>
       <td>Not possible</td>
     </tr>
   </tbody>
 </table>
 
-For example, a single-region, 3 AZ, 3-node cluster would need a minimum replication factor of 3 to survive a node failure.
+To be able to survive 2+ availability zones failing, scale to a [multi-region](#multi-region-survivability-planning) deployment.
 
 ### Single-region recovery
 
@@ -63,8 +87,8 @@ For example, consider a cloud-deployed CockroachBD cluster with the following se
 
 - Single-region
 - 3 nodes
-- 3 availability zones
-- Replication factor of 9
+- A node in each availability zone (i.e., 3 AZ)
+- Replication factor of 3
 
 The table below describes what actions to take to recover from various hardware failures in this example cluster:
 
@@ -81,26 +105,32 @@ The table below describes what actions to take to recover from various hardware 
     <tr>
       <td style="color:#46a417"><b>1 Disk</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="5">Fewer resources are available. Some data will be under-replicated until the failed node(s) is marked dead. <br><br>Once marked dead, data is replicated to other nodes and the cluster remains healthy.
+      <td rowspan="3">Fewer resources are available. Some data will be under-replicated until the failed node(s) is marked dead. <br><br>Once marked dead, data is replicated to other nodes and the cluster remains healthy.
       </td>
       <td><a href="start-a-node.html">Restart the node</a> with a new disk.</td>
     </tr>
+    <tr>
       <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="4">If the server or AZ becomes unavailable, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
-      <br><br>- If the down server is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
-      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
+      <td rowspan="2">If the node or AZ becomes unavailable, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <br><br>- If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
+      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a>, wipe the store path, and then <a href="cockroach-start.html">rejoin it back to the cluster</a>. If the node has additional hardware issues, decommission the node and <a href="cockroach-start.html">add a new node</a> to the cluster. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</td>
+    </tr>
     <tr>
-      <td style="color:#46a417"><b>1 AZ</b></td>
+      <td style="color:#46a417"><b>1 AZ</td>
       <td style="color:#228B22"><b>√</b></td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Nodes</b></td>
-      <td style="color:#228B22"><b>√</b></td>
+      <td style="color:#FF0000"><b>X</b></td>
+      <td>Cluster will become unavailable.</td>
+      <td><a href="cockroach-start.html">Restart</a> 1 of the 2 nodes that are down to regain quorum. <br><br>If you can’t recover at least 1 node, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ + 1 Node</b></td>
-      <td style="color:#228B22"><b>√</b></td>
+      <td style="color:#FF0000"><b>X</b></td>
+      <td>Cluster will become unavailable.</td>
+      <td><a href="cockroach-start.html">Restart</a> the node that is down to regain quorum. When the AZ comes back online, try restarting the node.<br><br>If you can’t recover at least 1 node, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 AZ</b></td>
@@ -112,13 +142,13 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#46a417"><b>3 Nodes</b></td>
       <td style="color:#FF0000"><b>X</b></td>
       <td>Cluster will become unavailable.</td>
-      <td><a href="cockroach-start.html">Restart</a> 2 of the 3 nodes that are down to regain quorum. <br><br>If you can’t recover 2 of the 3 failed nodes, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance</td>
+      <td><a href="cockroach-start.html">Restart</a> 2 of the 3 nodes that are down to regain quorum. <br><br>If you can’t recover 2 of the 3 failed nodes, <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Region</td>
       <td style="color:#FF0000"><b>X</b></td>
-      <td>Cluster will become unavailable. <br><br>Potential data loss between last backup and time of outage if region and servers did not come back online. <br><br>This would be a considerable disaster (i.e., an entire data center was destroyed).</td>
-      <td>When the region comes back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If region does not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
+      <td>Cluster will become unavailable. <br><br>Potential data loss between last backup and time of outage if region and nodes did not come back online. <br><br>This would be a considerable disaster (i.e., an entire data center was destroyed).</td>
+      <td>When the region comes back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If region does not come back online and nodes are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
   </tbody>
 </table>
@@ -132,7 +162,7 @@ When using Kubernetes, recovery actions happen automatically in many cases and n
 
 ### Multi-region survivability planning
 
-The table below displays the minimum replication factor needed to survive simultaneous hardware failures (e.g., node, availability zone (AZ), etc.) for a multi-region CockroachDB cluster deployed to the cloud:
+The table below shows the replication factor (RF) needed to achieve the listed fault tolerance (e.g., survive 1 failed node) for a multi-region, cloud-deployed cluster with 3 availability zones (AZ) per region and one node in each AZ:
 
 {{site.data.alerts.callout_danger}}
 The chart below describes the CockroachDB default behavior when locality flags are correctly set. It does not use geo-partitioning or a specific [topology pattern](topology-patterns.html). For a multi-region cluster in production, we do not recommend using the default behavior, as the cluster's performance will be negatively affected.
@@ -142,58 +172,56 @@ The chart below describes the CockroachDB default behavior when locality flags a
   <thead>
     <tr>
       <th>Fault Tolerance Goals</th>
-      <th>3 Regions <br>(9 nodes/3 AZ)</th>
-      <th>4 Regions <br>(12 nodes/4 AZ)</th>
-      <th>5 Regions <br>(15 nodes/5 AZ)</th>
+      <th>3 Regions<br>(9 Nodes Total)</th>
+      <th>4 Regions<br>(12 Nodes Total)</th>
+      <th>5 Regions<br>(15 Nodes Total)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style="color:#46a417"><b>1 Node</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Region</b></td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-      <td>Rep Factor = 3</td>
-    </tr>
-    <tr>
-      <td style="color:#46a417"><b>1 Region + 1 Node</b></td>
-      <td>Rep Factor = 7</td>
-      <td>Rep Factor = 7</td>
-      <td>Rep Factor = 5</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
+      <td>RF = 3</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Nodes</b></td>
-      <td>Rep Factor = 5</td>
-      <td>Rep Factor = 5</td>
-      <td>Rep Factor = 5</td>
+      <td>RF = 5</td>
+      <td>RF = 5</td>
+      <td>RF = 5</td>
+    </tr>
+    <tr>
+      <td style="color:#46a417"><b>1 Region + 1 Node</b></td>
+      <td>RF = 9</td>
+      <td>RF = 7</td>
+      <td>RF = 5</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Regions</b></td>
       <td>Not possible</td>
       <td>Not possible</td>
-      <td>Rep Factor = 5</td>
+      <td>RF = 5</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Regions + 1 Node</b></td>
       <td>Not possible</td>
       <td>Not possible</td>
-      <td>Rep Factor = 11</td>
+      <td>RF = 15</td>
     </tr>
   </tbody>
 </table>
-
-For example, a 3-region, 9-node cluster would need a minimum replication factor of 3 to survive a disk failure.
 
 ### Multi-region recovery
 
@@ -201,10 +229,9 @@ For hardware failures in a multi-region cluster, the actions taken to recover va
 
 For example, consider a cloud-deployed CockroachBD cluster with the following setup:
 
-- Multi-region
-- 9 nodes
-- Each node is in a separate availability zone
-- 3 nodes in each region
+- 3 regions
+- 3 AZ per region
+- 9 nodes (1 node per AZ)
 - Replication factor of 3
 
 The table below describes what actions to take to recover from various hardware failures in this example cluster:
@@ -225,27 +252,27 @@ The table below describes what actions to take to recover from various hardware 
       <td rowspan="4">Under-replicated data. Fewer resources for workload.</td>
       <td><a href="start-a-node.html">Restart the node</a> with a new disk.</td>
     </tr>
-      <td style="color:#46a417"><b>1 Server</td>
+      <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="2">If the server or AZ becomes unavailable check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
-      <br><br>- If the down server is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
-      <br>- If the down server is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and add a new server. Ensure that [locality flags are set](cockroach-start.html#locality) correctly upon node startup. If you try to rejoin the same decommissioned node back into the server, you should wipe the store path before rejoining.</td>
+      <td rowspan="2">If the node or AZ becomes unavailable check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <br><br>- If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
+      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a>, wipe the store path, and then <a href="cockroach-start.html">rejoin it back to the cluster</a>. If the node has additional hardware issues, decommission the node and <a href="cockroach-start.html">add a new node</a> to the cluster. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.
+      </td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</b></td>
       <td style="color:#228B22"><b>√</b></td>
-      <td></td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Region</b></td>
       <td style="color:#228B22"><b>√</b></td>
-      <td>Check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI. If servers are marked <b>Dead</b>, <a href="remove-nodes.html">decommission the nodes</a> and add 3 new servers in a new region.</td>
+      <td>Check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI. If nodes are marked <b>Dead</b>, <a href="remove-nodes.html">decommission the nodes</a> and <a href="start-a-node.html">add 3 new nodes</a> in a new region. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 or More Regions</b></td>
       <td style="color:#FF0000"><b>X</b></td>
-      <td>Cluster will be unavailable. <br><br>Potential data loss between last backup and time of outage if region and servers did not come back online. This would be a considerable disaster (i.e., 2 or more data centers destroyed).</td>
-      <td>When the regions come back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If the regions do not come back online and servers are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
+      <td>Cluster will be unavailable. <br><br>Potential data loss between last backup and time of outage if region and nodes did not come back online. This would be a considerable disaster (i.e., 2 or more data centers destroyed).</td>
+      <td>When the regions come back online, try <a href="cockroach-start.html">restarting the nodes</a> in the cluster. <br><br>If the regions do not come back online and nodes are lost or destroyed, try <a href="restore.html">restoring the latest cluster backup</a> into a new cluster.<br><br>You can also <a href="https://support.cockroachlabs.com">contact Cockroach Labs support</a> for assistance.</td>
     </tr>
   </tbody>
 </table>
@@ -293,7 +320,7 @@ If your cluster is running and you do not have a backup that encapsulates the ti
 If you have corrupted data in a database or table, [restore](restore.html) the object from a from a prior [backup](backup.html). If revision history is in the backup, you can restore from a [point in time](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
 
 {{site.data.alerts.callout_info}}
-If the table you are restoring has [foreign keys](foreign-key.html), [careful consideration](backup-and-restore-advanced-options.html#remove-the-foreign-key-before-restore) should be applied to make sure data integrity is maintained during the restore process.
+If the table you are restoring has foreign keys, [careful consideration](backup-and-restore-advanced-options.html#remove-the-foreign-key-before-restore) should be applied to make sure data integrity is maintained during the restore process.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
