@@ -123,7 +123,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;
@@ -218,7 +218,7 @@ APP: getAccountBalance(2) --> 250
 APP: BEGIN;
 APP: transferFunds(1, 2, 100) --> 100
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100 
+APP: transferFunds(1, 2, 100) --> 100
 APP: BEGIN;
 APP: getAccountBalance(1) --> 900
 APP: COMMIT;
@@ -269,38 +269,6 @@ For more information about importing data from MySQL, see [Migrate from MySQL](m
 We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
-
-### Use a batch size of 128
-
-PGJDBC's batching support only works with [powers of two](https://github.com/pgjdbc/pgjdbc/blob/7b52b0c9e5b9aa9a9c655bb68f23bf4ec57fd51c/pgjdbc/src/main/java/org/postgresql/jdbc/PgPreparedStatement.java#L1597), and will split batches of other sizes up into multiple sub-batches. This means that a batch of size 128 can be 6x faster than a batch of size 250.
-
-The code snippet below shows a pattern for using a batch size of 128, and is taken from the longer example above (specifically, the `BasicExampleDAO.bulkInsertRandomAccountData()` method).
-
-Specifically, it does the following:
-
-1. Turn off auto-commit so you can manage the transaction lifecycle and thus the size of the batch inserts.
-2. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
-3. Finally, commit the batches of statements you've just executed.
-
-~~~ java
-int BATCH_SIZE = 128;
-connection.setAutoCommit(false);
-
-try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)")) {
-    for (int i=0; i<=(500/BATCH_SIZE);i++) {
-        for (int j=0; j<BATCH_SIZE; j++) {
-            int id = random.nextInt(1000000000);
-            int balance = random.nextInt(1000000000);
-            pstmt.setInt(1, id);
-            pstmt.setInt(2, balance);
-            pstmt.addBatch();
-        }
-        int[] count = pstmt.executeBatch();
-        System.out.printf("    => %s row(s) updated in this batch\n", count.length); // Verifying 128 rows in the batch
-    }
-    connection.commit();
-}
-~~~
 
 ## What's next?
 
