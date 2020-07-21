@@ -155,7 +155,7 @@ To see this in action:
     cockroachdb-2   1/1       Running   0          1h
     ~~~
 
-4. Kill one of CockroachDB nodes:
+4. Stop one of CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

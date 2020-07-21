@@ -84,7 +84,7 @@ Proceed through the following steps until you locate the source of the issue wit
     $ rm -r testStore
     ~~~
 
-    {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, skip this step. Running this command will kill your first node making it impossible to proceed.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, skip this step. Running this command will stop your first node making it impossible to proceed.{{site.data.alerts.end}}
 
 2. On each machine, start the CockroachDB node, joining it to the first node:
 

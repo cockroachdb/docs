@@ -158,7 +158,7 @@ After scaling to 5 nodes, the Admin UI will call out a number of under-replicate
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
 {{site.data.alerts.callout_success}}
-For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press **CTRL-C** a second time.
+For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press **CTRL-C** a second time.
 {{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:

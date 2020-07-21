@@ -105,7 +105,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 1. Install and configure your Kerberos client.
 2. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
 3. Get a Kerberos TGT for the Kerberos user from the KDC using `kinit`.
-4. Use the `psql` client, which natively supports GSSAPI authentication, to connect to CockroachDB:
+4. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
     ~~~ shell

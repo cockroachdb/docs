@@ -207,7 +207,7 @@ toggle to activate by default can be specified in the URL hash. If you
 attempt to link to, for example, `page-with-toggles.html#toggle-id` without
 listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
 that `toggle-id` does not exist on the page. Listing a hash in
-`allowed_hashes` will generate a dummy element with that ID at the top
+`allowed_hashes` will generate a placeholder element with that ID at the top
 of the page, which keeps our HTML tester happy.
 
 Here's an example from a page with OS toggles:
