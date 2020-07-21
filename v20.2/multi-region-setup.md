@@ -143,7 +143,7 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/en/latest/install/#install
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ python3 server.py
+    $ python server.py
     ~~~
 
 1. Navigate to the URL provided to test out the application. By default, this should be http://127.0.0.1:5000/.

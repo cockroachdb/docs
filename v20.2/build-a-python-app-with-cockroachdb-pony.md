@@ -30,7 +30,7 @@ To install PonyORM run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install pony
+$ python -m pip install pony
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="secure">
@@ -96,7 +96,7 @@ Run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 pony-basic-sample.py
+$ python pony-basic-sample.py
 ~~~
 
 To verify that the table and rows were created successfully, open a new terminal, and start a new session with the built-in SQL client:
