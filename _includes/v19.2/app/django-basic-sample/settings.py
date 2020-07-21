@@ -79,10 +79,15 @@ DATABASES = {
         'ENGINE': 'django_cockroachdb',
         'NAME': 'bank',
         'USER': 'django',
-        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '26257',
-    }
+        'OPTIONS': {
+            'sslmode': 'require',
+            'sslrootcert': '<path>/certs/ca.crt',
+            'sslcert': '<path>/certs/client.django.crt',
+            'sslkey': '<path>/certs/client.django.key',
+        },
+    },
 }
 
 
