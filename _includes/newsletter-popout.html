@@ -29,8 +29,12 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <div class="news-header">
-          Keep up-to-date with CockroachDB software releases and usage best
-          practices
+		{% if page.canonical == "/advisories/"  %}
+		Sign up for our technical advisory email list. You will get an email when there's a new advisory
+		{% else %}
+		Keep up-to-date with CockroachDB software releases and usage best
+		practices
+		{% endif %}
         </div>
       </div>
       <div class="col-xs-12 col-sm-6">
