@@ -6,6 +6,10 @@ toc_not_nested: true
 asciicast: true
 ---
 
+<script src="//katacoda.com/embed.js"></script>
+
+<div data-katacoda-id="ejqg64/start-cluster" data-katacoda-ui="panel" id="ejqg64-start-cluster"></div>
+
 <div class="filters filters-big clearfix">
     <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
     <a href="secure-a-cluster.html"><button class="filter-button">Secure</button></a>
