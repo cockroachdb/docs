@@ -45,6 +45,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | GUI | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [DBeaver](dbeaver.html) | [5.2.3](https://dbeaver.io/download/) or higher | Full |
+| [Beekeeper Studio](https://beekeeperstudio.io) | [1.6.10](https://beekeeperstudio.io) or higher | Full |
 
 ## Integrated development environments (IDEs)
 
