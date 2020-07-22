@@ -122,7 +122,6 @@ gc
 gemfile
 geospatial
 github
-gitter
 goroutine
 goroutines
 gradle
