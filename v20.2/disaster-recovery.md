@@ -110,12 +110,11 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#228B22"><b>√</b></td>
       <td rowspan="2">If the node or AZ becomes unavailable, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
       <br><br>- If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
-      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and then join it back to the cluster using <a href="cockroach-start.html><code>cockroach start</code></a>. If the node has additional hardware issues, decommission the node and add a new server (i.e., node) to the cluster using <code>cockroach start</code>.</td>
+      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and then join it back to the cluster using <a href="cockroach-start.html"><code>cockroach start</code></a>. If the node has additional hardware issues, decommission the node and add a new server (i.e., node) to the cluster using <code>cockroach start</code>.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td></td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 Nodes</b></td>
@@ -253,13 +252,12 @@ The table below describes what actions to take to recover from various hardware 
       <td style="color:#228B22"><b>√</b></td>
       <td rowspan="2">If the node or AZ becomes unavailable check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
       <br><br>- If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.
-      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and then join it back to the cluster using <a href="cockroach-start.html><code>cockroach start</code></a>. If the node has additional hardware issues, decommission the node and add a new server (i.e., node) to the cluster using <code>cockroach start</code>.
+      <br>- If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a> and then join it back to the cluster using <a href="cockroach-start.html"><code>cockroach start</code></a>. If the node has additional hardware issues, decommission the node and add a new server (i.e., node) to the cluster using <code>cockroach start</code>.
       </td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 AZ</b></td>
       <td style="color:#228B22"><b>√</b></td>
-      <td></td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>1 Region</b></td>
