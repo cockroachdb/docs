@@ -5,6 +5,10 @@ toc: true
 build_for: [cockroachdb, cockroachcloud]
 ---
 
+<script src="//katacoda.com/embed.js"></script>
+
+<div data-katacoda-id="ejqg64/cockroach-demo" data-katacoda-ui="panel" id="ejqg64-cockroach-demo"></div>
+
 {% unless site.cockroachcloud %}
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements, using the `movr` dataset.
