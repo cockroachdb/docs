@@ -52,54 +52,12 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 2. Configure your network
 
-CockroachDB requires TCP communication on two ports:
+[Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) to your security group to allow TCP communication on two ports:
 
-- `26257` for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
-- `8080` for exposing your Admin UI, and for routing from the load balancer to the health check
+- `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
+- `8080` for exposing the Admin UI to the user, and for routing the load balancer to the health check endpoint.
 
-If you haven't already done so, [create inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) for your security group.
-
-#### Inter-node and load balancer-node communication
-
- Field | Recommended Value
--------|-------------------
- Type | Custom TCP Rule
- Protocol | TCP
- Port Range | **26257**
- Source | The ID of your security group (e.g., *sg-07ab277a*)
-
-#### Application data
-
- Field | Recommended Value
--------|-------------------
- Type | Custom TCP Rules
- Protocol | TCP
- Port Range | **26257**
- Source | Your application's IP ranges
-
-If you plan to [run our sample workload](#step-9-run-a-sample-workload) on an instance, the traffic source is the internal (private) IP address of that instance. To find this, open the Instances section of the Amazon EC2 console and click on the instance.
-
-#### Admin UI
-
- Field | Recommended Value
--------|-------------------
- Type | Custom TCP Rule
- Protocol | TCP
- Port Range | **8080**
- Source | Your network's IP ranges
-
-You can set your network IP by selecting "My IP" in the Source field.
-
-#### Load balancer-health check communication
-
- Field | Recommended Value
--------|-------------------
- Type | Custom TCP Rule
- Protocol | TCP
- Port Range | **8080**
- Source | The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)
-
-To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
+{% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 
 ## Step 3. Synchronize clocks
 

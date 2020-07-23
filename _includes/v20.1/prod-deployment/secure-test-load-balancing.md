@@ -1,5 +1,9 @@
 CockroachDB offers a pre-built `workload` binary for Linux that includes several load generators for simulating client traffic against your cluster. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
+{{site.data.alerts.callout_info}}
+Be sure that you have [set up an inbound rule](deploy-cockroachdb-on-aws.html#step-2-configure-your-network) that allows traffic from the application to the load balancer. In this case, you will run the sample workload on one of your instances. The traffic source for your inbound rule should therefore be the **internal (private)** IP address of that instance. To find this, open the Instances section of the Amazon EC2 console and click on the instance.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}For comprehensive guidance on benchmarking CockroachDB with TPC-C, see our <a href="https://www.cockroachlabs.com/guides/cockroachdb-performance/">Performance Benchmarking white paper</a>.{{site.data.alerts.end}}
 
 1. SSH to the machine where you want to run the sample TPC-C workload.
