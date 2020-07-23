@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <div class="news-header">
-		{% if page.canonical == "/advisories/"  %}
+		{% if page.canonical contains "/advisories/"  %}
 		Sign up for our technical advisory email list. You will get an email when there's a new advisory
 		{% else %}
 		Keep up-to-date with CockroachDB software releases and usage best
@@ -44,7 +44,7 @@
               css: "",
               cssClass: "popout-form",
 			  portalId: "1753393",
-			  {% if page.canonical == "/advisories/"  %}
+			  {% if page.canonical contains "/advisories/"  %}
 			  formId: "3270abeb-4e49-4513-adc2-e4c7a250d3c3",
 			  {% else %}
 			  formId: "179cc17e-1092-4aa3-be00-e01d9144d066",
@@ -88,7 +88,7 @@
     var $footer_popout = $("#newsletter-footer-popout"),
       $footer_close = $("#newsletter-footer-popout .newsletter-close");
 
-    if (window.location.pathname.indexOf('/advisories/index.html') > -1 ) {
+    if (window.location.pathname.indexOf('/advisories/') > -1 ) {
 	  $footer_popout.addClass("animate");
     } else {
       $(window).scroll(function () {
