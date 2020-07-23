@@ -255,7 +255,7 @@ For a simple but complete "Hello World" example app, see [Build a Go App with Co
 
 ### pg
 
-**Support level:** Beta
+**Support level:** Full
 
 To install the [Ruby pg driver](https://rubygems.org/gems/pg):
 
