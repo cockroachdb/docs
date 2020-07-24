@@ -31,64 +31,58 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
 
 | Value | Recommendation | Reference
 |-------|----------------|----------
-| RAM per vCPU | 4 GB | [CPU and memory](#cpu-and-memory)
-| Capacity per vCPU | Up to 250 GB | [Storage](#storage)
+| RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
+| Capacity per vCPU | 60 GB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 
-{{site.data.alerts.callout_danger}}
 Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#cpu-and-memory), [RAM](#cpu-and-memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
-{{site.data.alerts.end}}
 
 #### CPU and memory
 
-Each node should have at least **2 vCPUs** and at least **4 GB of RAM per vCPU**. More data, complex workloads, higher concurrency, and faster performance require additional resources. 
+Each node should have **at least 2 vCPUs**, and for best performance we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
-{{site.data.alerts.callout_danger}}
-Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
-{{site.data.alerts.end}}
+- To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
 
-- Select the fastest available processors. 
+      {{site.data.alerts.callout_info}}
+      Note that the benefits to having more RAM decrease as the number of vCPUs increases.
+      {{site.data.alerts.end}}
 
-- To optimize for throughput, use larger nodes with up to 32 vCPUs (the sweet spot for OLTP workloads, based on internal testing results). See [Disk I/O](#disk-i-o) for additional throughput guidelines.
+- To optimize for resiliency, use many smaller nodes instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
 
-    To further increase throughput, add more nodes to the cluster instead of increasing node size. Nodes with more than 32 vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications leading to performance downgrades.
-
-    {{site.data.alerts.callout_info}}
-    Note that the benefits to having more RAM decrease as the number of vCPUs increases.
-    {{site.data.alerts.end}}
-
-- To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
+- Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
+{{site.data.alerts.callout_info}}
+Underprovisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause OOM crashes. Underprovisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [memory issues](cluster-setup-troubleshooting.html#memory-issues).
+{{site.data.alerts.end}}
+
 #### Storage
 
-Provision volumes with up to **250 GB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with **60 GB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The recommended disk capacity is 300 GiB to 4 TiB per node. 
-
-    {{site.data.alerts.callout_info}}
-    For more context on these numbers, see [Node density testing configuration](#node-density-testing-configuration).
-    {{site.data.alerts.end}}
+- The maximum recommended storage capacity per node is 4 TB, regardless of the number of vCPUs. See [Node density testing configuration](#node-density-testing-configuration).
 
 - Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
-    It is critical to store CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling. This can cause unwanted behavior on the cluster.
+    We suggest storing CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling. This can cause unwanted behavior on the cluster.
 
-- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+- The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 
-- Avoid using shared storage such as NFS, CIFS, and CEPH storage. These do not meet our [disk I/O](#disk-i-o) requirements.
+- Always keep some of your disk capacity free on production. Doing so accommodates fluctuations in routine database operations and supports continuous data growth. 
 
-- For the best performance results, use SSD or NVMe devices.
-
-- Always keep at least 40% of disk capacity free on production. This accommodates fluctuations in routine database operations and supports continuous data growth.
+    We strongly recommend [monitoring](monitoring-and-alerting.html#node-is-running-low-on-disk-space) your storage utilization and rate of growth, and taking action to add capacity well before you hit the limit.
 
 - Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
+
+{{site.data.alerts.callout_info}}
+Underprovisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a ballast file as described above. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
+{{site.data.alerts.end}}
 
 ##### Disk I/O
 
@@ -153,13 +147,13 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 #### Digital Ocean
 
-- Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
+- Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GiB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
 #### GCP
 
 - Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
 
-    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GiB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
 
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
