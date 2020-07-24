@@ -7,7 +7,7 @@ build_for: [cockroachdb, cockroachcloud]
 
 <script src="//katacoda.com/embed.js"></script>
 
-<div data-katacoda-id="ejqg64/cockroach-demo" data-katacoda-ui="panel" id="ejqg64-cockroach-demo"></div>
+<div data-katacoda-id="ejqg64/cockroach-demo" data-katacoda-ui="bash" id="ejqg64-cockroach-demo"></div>
 
 {% unless site.cockroachcloud %}
 
