@@ -430,8 +430,8 @@ header {
       -moz-osx-font-smoothing: grayscale;
       line-height: 15px;
       letter-spacing: 1.5px;
-      text-transform: uppercase;
-      line-height: 26px; }
+      line-height: 26px;
+      font-size: 13px; }
     #sidebar > li .arrow-down {
       margin-top: 7px; }
     #sidebar > li li .arrow-down {

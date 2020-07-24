@@ -47,7 +47,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 
 ### Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner. The **Add User** modal displays.

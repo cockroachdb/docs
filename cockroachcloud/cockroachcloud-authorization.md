@@ -2,7 +2,6 @@
 title: Authorization
 summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 CockroachCloud supports network authorization and user authorization.
@@ -32,7 +31,7 @@ Make sure you have already [connected to the cluster](cockroachcloud-connect-to-
 
 #### Use the Console
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to create a new user:
 
