@@ -351,6 +351,15 @@ $ cockroach init \
     --host=<address of any node>
     ~~~
 
+### Start a multi-node cluster with separate RPC and SQL networks to partition the traffic
+
+Start a cluster with separate RPC and SQL networks to partition the traffic to avoid bandwidth interference and add a level of isolation against network attacks as a measure of 'defense in depth'.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --insecure --listen_addr=26257 --http-port=26258 --sql-addr= --store=cockroach-data/1 
+~~~
+
 ### Add a node to a cluster
 
 <div class="filters clearfix">
