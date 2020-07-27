@@ -2,7 +2,9 @@
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
 toc: true
-redirect_from: explore-the-admin-ui.html
+redirect_from: 
+- explore-the-admin-ui.html
+- admin-ui-access-and-navigate.html
 key: explore-the-admin-ui.html
 ---
 
