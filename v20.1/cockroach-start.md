@@ -487,7 +487,7 @@ $ cockroach sql --insecure --port 26261
 
 ### Start a cluster with separate RPC and SQL networks
 
-Start a cluster with separate RPC and SQL networks to avoid bandwidth interference and add a level of isolation against network attacks as a measure of 'defense in depth'.
+Start a cluster with separate RPC and SQL networks to partition traffic and add a level of isolation against network attacks as a measure of 'defense in depth'.
 
 {% include copy-clipboard.html %}
 ~~~ shell
