@@ -485,6 +485,14 @@ $ cockroach sql --insecure --port 26261
 (1 row)
 ~~~
 
+### Start a cluster with separate RPC and SQL networks
+
+Start a cluster with separate RPC and SQL networks to avoid bandwidth interference and add a level of isolation against network attacks as a measure of 'defense in depth'.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start --insecure --sql-addr=:26257 --listen-addr=:26258 --store=cockroach-data/1
+~~~
 
 ## See also
 

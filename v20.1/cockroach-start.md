@@ -494,7 +494,6 @@ Start a cluster with separate RPC and SQL networks to avoid bandwidth interferen
 $ cockroach start --insecure --sql-addr=:26257 --listen-addr=:26258 --store=cockroach-data/1
 ~~~
 
-
 ## See also
 
 - [Initialize a Cluster](cockroach-init.html)
