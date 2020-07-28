@@ -38,7 +38,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Framework | Data access | Recommended version | Support level |
 |-----------+-------------+---------------------+---------------|
-| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>JPA (Hibernate)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
+| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
 
 ## Graphical user interfaces (GUIs)
 
@@ -57,3 +57,9 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Tool | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [Flyway](flyway.html) | [6.4.2](https://flywaydb.org/documentation/commandline/#download-and-installation) or higher | Full |
+
+## Other tools
+
+| Tool | Recommended version | Support level |
+|-----+---------------------+---------------|
+| [Flowable](https://blog.flowable.org/2019/07/11/getting-started-with-flowable-and-cockroachdb/) | [6.4.2](https://github.com/flowable/flowable-engine/releases/tag/flowable-6.4.2) or higher | Full |

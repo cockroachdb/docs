@@ -74,7 +74,7 @@ def run_transaction(conn, op):
 def test_retry_loop(conn):
     with conn.cursor() as cur:
         # The first statement in a transaction can be retried transparently on
-        # the server, so we need to add a dummy statement so that our
+        # the server, so we need to add a placeholder statement so that our
         # force_retry() statement isn't the first one.
         cur.execute('SELECT now()')
         # The function below can only be run by the root user.  Trying to run

@@ -20,7 +20,7 @@ CockroachDB is well suited for applications that require reliable, available, an
 - Multi-datacenter deployments
 - Multi-region deployments
 - Cloud migrations
-- Cloud-native infrastructure initiatives
+- Infrastructure initiatives built for the cloud
 
 ## When is CockroachDB not a good choice?
 

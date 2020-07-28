@@ -218,7 +218,7 @@ $ cockroach node decommission 4 --insecure --host=<address of any live node>
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
-Within 5 minutes, you'll see the node move from the Node List to the **Recently Decommissioned Nodes** list, with the new status `DECOMMISSIONED`. 
+Within 5 minutes, you'll see the node move from the Node List to the **Recently Decommissioned Nodes** list, with the new status `DECOMMISSIONED`.
 
 <div style="text-align: center;"><img src="{{ 'images/v20.1/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -348,7 +348,7 @@ If you accidentally started decommissioning a node, or have a node with a hung d
 Recommissioning is intended to cancel an active decommissioning process. If all ranges have been removed from a node, start a new node instead of reusing the node.
 {{site.data.alerts.end}}
 
-### Step 1. Kill the decommissioning process
+### Step 1. Cancel the decommissioning process
 
 Press `ctrl-c` in each terminal with an ongoing decommissioning process that you want to cancel.
 

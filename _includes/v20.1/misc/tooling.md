@@ -15,7 +15,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | [7.1.1](https://github.com/jtv/libpqxx/releases) (Windows)<br>[4.0.1](https://github.com/jtv/libpqxx/releases) or higher (macOS) | Beta |
 | C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | [4.1.3.1](https://www.nuget.org/packages/Npgsql/) | Beta |
 | Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | [0.7.11](https://search.maven.org/search?q=g:org.clojure%20AND%20a:java.jdbc) | Beta |
-| Go | [pgx](https://godoc.org/github.com/jackc/pgx)<hr>[pq](build-a-go-app-with-cockroachdb.html) | [4.6.0](https://github.com/jackc/pgx/releases)<hr>[1.5.2](https://github.com/lib/pq/releases) | Full<hr>Full |
+| Go | [pgx](build-a-go-app-with-cockroachdb.html)<hr>[pq](build-a-go-app-with-cockroachdb-pq.html) | [4.6.0](https://github.com/jackc/pgx/releases)<hr>[1.5.2](https://github.com/lib/pq/releases) | Full<hr>Full |
 | Java | [JDBC](build-a-java-app-with-cockroachdb.html) | [42.2.12](https://jdbc.postgresql.org/download.html#current) | Full |
 | Node.js | [pg](build-a-nodejs-app-with-cockroachdb.html) | [8.2.1](https://www.npmjs.com/package/pg) | Beta |
 | PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
@@ -38,7 +38,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Framework | Data access | Recommended version | Support level |
 |-----------+-------------+---------------------+---------------|
-| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>JPA (Hibernate)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
+| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>jOOQ<hr>MyBatis | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access version support. | See individual Java [ORM](#object-relational-mappers-orms) or [driver](#drivers) for data access support level. |
 
 ## Graphical user interfaces (GUIs)
 
@@ -57,3 +57,9 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Tool | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [Flyway](flyway.html) | [6.4.2](https://flywaydb.org/documentation/commandline/#download-and-installation) or higher | Full |
+
+## Other tools
+
+| Tool | Recommended version | Support level |
+|-----+---------------------+---------------|
+| [Flowable](https://blog.flowable.org/2019/07/11/getting-started-with-flowable-and-cockroachdb/) | [6.4.2](https://github.com/flowable/flowable-engine/releases/tag/flowable-6.4.2) or higher | Full |

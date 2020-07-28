@@ -58,6 +58,14 @@ CockroachDB offers three methods for client authentication:
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
 
+   ~~~
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    Enter password:
+  ~~~
+
    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).

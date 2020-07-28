@@ -288,7 +288,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
 </div>
 <div id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
+CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
 
 </div>
 

@@ -470,14 +470,19 @@
           },
           {
             "title": "Back up and Restore Data",
-            "urls": [
-              "/${VERSION}/backup-and-restore.html"
-            ]
-          },
-          {
-            "title": "Back up and Restore Data - Advanced Options",
-            "urls": [
-              "/${VERSION}/backup-and-restore-advanced-options.html"
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/backup-and-restore.html"
+                ]
+              },
+              {
+                "title": "Advanced Options",
+                "urls": [
+                  "/${VERSION}/backup-and-restore-advanced-options.html"
+                ]
+              }
             ]
           },
           {
@@ -628,6 +633,7 @@
                 "title": "Go",
                 "urls": [
                   "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+                  "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                   "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
                 ]
               },
@@ -701,6 +707,12 @@
                 "title": "Spring Boot with JDBC",
                 "urls": [
                   "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
+                ]
+              },
+              {
+                "title": "Spring Boot with JPA",
+                "urls": [
+                  "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
                 ]
               }
             ]
@@ -1781,6 +1793,12 @@
                       "title": "Advanced Client-side Transaction Retries",
                       "urls": [
                           "/${VERSION}/advanced-client-side-transaction-retries.html"
+                      ]
+                  },
+                  {
+                      "title": "Transaction Retry Error Reference",
+                      "urls": [
+                          "/${VERSION}/transaction-retry-error-reference.html"
                       ]
                   }
               ]

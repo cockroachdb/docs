@@ -36,16 +36,24 @@ The example code and instructions on this page use Python 3 and Django 3.0.
 
 ## Step 1. Install Django and the CockroachDB backend for Django
 
-Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/) and the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb):
+Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django==3.0.*
+$ python -m pip install django==3.0.*
 ~~~
 
+Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
+
+- [psycopg2](https://pypi.org/project/psycopg2/), which has some [prerequisites](https://www.psycopg.org/docs/install.html#prerequisites) of its own. This package is recommended for production environments.
+
+- [psycopg2-binary](https://pypi.org/project/psycopg2-binary/). This package is recommended for development and testing.
+
+After you install the psycopg2 prerequisite, install the CockroachDB Django backend:
+
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 -m pip install django-cockroachdb==3.0.*
+$ python -m pip install django-cockroachdb==3.0.*
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -56,7 +64,7 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-## Step 2. Create the `django` user and `bank` database
+## Step 2. Create the `django` user and `bank` database and generate certificates
 
 Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
 
@@ -69,7 +77,7 @@ In the SQL shell, issue the following statements to create the `django` user and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER IF NOT EXISTS django WITH PASSWORD 'password';
+> CREATE USER IF NOT EXISTS django;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -89,6 +97,13 @@ Exit the SQL shell:
 {% include copy-clipboard.html %}
 ~~~ sql
 > \q
+~~~
+
+Create a certificate and key for the `django` user by running the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client django --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
 
 </section>
@@ -216,10 +231,15 @@ DATABASES = {
         'ENGINE': 'django_cockroachdb',
         'NAME': 'bank',
         'USER': 'django',
-        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '26257',
-    }
+        'OPTIONS': {
+            'sslmode': 'require',
+            'sslrootcert': '<path>/certs/ca.crt',
+            'sslcert': '<path>/certs/client.django.crt',
+            'sslkey': '<path>/certs/client.django.key',
+        },
+    },
 }
 ~~~
 
@@ -348,12 +368,12 @@ In the top `myproject` directory, use the [`manage.py` script](https://docs.djan
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py makemigrations myproject
+$ python manage.py makemigrations myproject
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py migrate
+$ python manage.py migrate
 ~~~
 
 This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
@@ -420,11 +440,11 @@ To verify that the migration succeeded, connect to your CockroachCloud cluster u
 (14 rows)
 ~~~
 
-In a new terminal, start the app:
+In a new terminal, navigate to the top of the `myproject` directory, and start the app:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 manage.py runserver 0.0.0.0:8000
+$ python manage.py runserver 0.0.0.0:8000
 ~~~
 
 To perform simple reads and writes to the database, you can send HTTP requests to the application.
@@ -458,7 +478,7 @@ You can also query the tables directly in the SQL shell to see the changes:
 
 ~~~
           id         | name
-+--------------------+------+
+---------------------+-------
   523377322022797313 | Carl
 (1 row)
 ~~~

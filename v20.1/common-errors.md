@@ -29,7 +29,7 @@ To resolve this issue, do one of the following:
 - If the node hasn't yet been started, [start the node](cockroach-start.html).
 - If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also stop the node:
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also end the `cockroach` process, and then restart the node:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
@@ -48,23 +48,9 @@ To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.h
 
 ## restart transaction
 
-Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-intervention) for more details.
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transactions.html#client-side-intervention).
 
-Several different types of transaction retry errors are described below:
-
-- [`read within uncertainty interval`](#read-within-uncertainty-interval)
-- [`transaction deadline exceeded`](#transaction-deadline-exceeded)
-
-{{site.data.alerts.callout_info}}
-Your application's retry logic does not need to distinguish between these types of errors. They are listed here for reference.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-To understand how transactions work in CockroachDB, and why transaction retries are necessary to maintain serializable isolation in a distributed database, see:
-
-- [Transaction Layer](architecture/transaction-layer.html)
-- [Life of a Distributed Transaction](architecture/life-of-a-distributed-transaction.html)
-{{site.data.alerts.end}}
+For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 
 ### read within uncertainty interval
 

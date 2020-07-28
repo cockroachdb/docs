@@ -518,7 +518,7 @@ INDEX auth.public.token@token_id_west_idx    | ALTER INDEX auth.public.token@tok
                                              |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
 ~~~
 
-Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of dummy data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
+Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of placeholder data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
 
 {{site.data.alerts.callout_info}}
 On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.

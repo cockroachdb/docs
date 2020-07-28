@@ -20,7 +20,7 @@ Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements 
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`root` users see only their own currently active queries, whereas the `root` user sees all users' currently active queries.
+No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active queries, whereas the `admin` users see all users' currently active queries.
 
 ## Synopsis
 
@@ -178,7 +178,7 @@ To exclude queries from the [built-in SQL client](cockroach-sql.html), filter fo
 
 ### Cancel a query
 
-When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to kill it.
+When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to stop it.
 
 For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have been running for more than 3 hours:
 
