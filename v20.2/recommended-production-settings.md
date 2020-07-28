@@ -32,7 +32,7 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
 | Value | Recommendation | Reference
 |-------|----------------|----------
 | RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
-| Capacity per vCPU | 60 GB | [Storage](#storage)
+| Capacity per vCPU | 60 GiB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 
@@ -40,7 +40,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 #### CPU and memory
 
-Each node should have **at least 2 vCPUs**, and for best performance we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
+Each node should have **at least 2 vCPUs**. For best performance, we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
 
@@ -60,13 +60,13 @@ Underprovisioning RAM results in reduced performance (due to reduced caching and
 
 #### Storage
 
-We recommend provisioning volumes with **60 GB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with **60 GiB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The maximum recommended storage capacity per node is 4 TB, regardless of the number of vCPUs. See [Node density testing configuration](#node-density-testing-configuration).
+- The maximum recommended storage capacity per node is 4 TiB, regardless of the number of vCPUs. See [Node density testing configuration](#node-density-testing-configuration).
 
 - Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
-    We suggest storing CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling. This can cause unwanted behavior on the cluster.
+    We suggest storing CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling.
 
 - The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 

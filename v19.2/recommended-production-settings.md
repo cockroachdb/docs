@@ -31,8 +31,8 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
 
 | Value | Recommendation | Reference
 |-------|----------------|----------
-| RAM per vCPU | 4 GB | [CPU and memory](#cpu-and-memory)
-| Capacity per vCPU | 60 GB | [Storage](#storage)
+| RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
+| Capacity per vCPU | 60 GiB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 
@@ -40,7 +40,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 #### CPU and memory
 
-Each node should have **at least 2 vCPUs**, and for best performance we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
+Each node should have **at least 2 vCPUs**. For best performance, we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
 
@@ -60,13 +60,13 @@ Underprovisioning RAM results in reduced performance (due to reduced caching and
 
 #### Storage
 
-We recommend provisioning volumes with **60 GB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with **60 GiB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The maximum recommended storage capacity per node is 2 TB, regardless of the number of vCPUs.
+- The maximum recommended storage capacity per node is 2 TiB, regardless of the number of vCPUs.
 
 - Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
-    We suggest storing CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling. This can cause unwanted behavior on the cluster.
+    We suggest storing CockroachDB [log files](debug-and-error-logs.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling.
 
 - The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 
@@ -131,13 +131,13 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 #### Digital Ocean
 
-- Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
+- Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GiB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
 #### GCP
 
 - Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
 
-    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GiB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
 
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
