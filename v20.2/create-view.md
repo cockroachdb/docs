@@ -21,7 +21,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` |  Create a new view only if a view of the same name does not already exist. If one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the view name only. It does not check if an existing view has the same columns as the new view.
-`OR REPLACE`  |  <span class="version-tag">New in v20.2:</span> If a view of the same name already exists, replace that view.<br><br>Note that `OR REPLACE` checks the view name only. It does not check if an existing view has the same columns as the new view.
+`OR REPLACE`  |  <span class="version-tag">New in v20.2:</span> If a view of the same name already exists, replace that view.<br><br>In order to replace an existing view, the new view must have the same columns as the existing view, or more. For example, if the existing view has columns `a, b`, the new view can have an additional column `c`, but must have columns `a, b`.
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
 `AS select_stmt` | The [selection query](selection-queries.html) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
