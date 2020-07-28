@@ -121,24 +121,14 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
-1. Drain the node of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    cockroach node drain --certs-dir=certs --host=<address of node to drain>
-    ~~~
-
-    Once the node has been drained, you'll see a confirmation:
-
-    ~~~
-    node is draining... remaining: 0 (complete)
-    ok
-    ~~~
-
-1. After the node is completely drained, stop the node:
+1. Drain and stop the node using one of the following methods:
     
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
+    {{site.data.alerts.callout_info}}
+    In certain edge cases, stopping a node using signals can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during an upgrade, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
+    {{site.data.alerts.end}}
+    
     Verify that the process has stopped:
 
     {% include copy-clipboard.html %}

@@ -23,7 +23,7 @@ A node is considered to be decommissioned when it meets two criteria:
 
 The decommissioning process transfers all range replicas on the node to other nodes. During and after this process, the node is considered "decommissioning" and continues to accept new SQL connections. Even without replicas, the node can still function as a gateway to route connections to relevant data. For this reason, the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so load balancers can continue directing traffic to the node.
 
-After all range replicas have been transferred, it's typical to drain the node of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries. The node can then be stopped via a process manager or orchestration tool, or by sending `SIGTERM` manually. When stopped, the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status response code so that load balancers stop directing traffic to the node. At this point the node stops updating its liveness record, and after the duration configured via [`server.time_until_store_dead`](cluster-settings.html) is considered to be decommissioned.
+After all range replicas have been transferred, the node can be drained of SQL clients, [distributed SQL](architecture/sql-layer.html#distsql) queries, and range leases, and then stopped. This can be done with a process manager or orchestration tool, or by sending `SIGTERM` manually. When stopped, the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status response code so that load balancers stop directing traffic to the node. At this point the node stops updating its liveness record, and after the duration configured via [`server.time_until_store_dead`](cluster-settings.html) is considered to be decommissioned.
 
 You can [check the status of node decommissioning](#check-the-status-of-decommissioning-nodes) with the CLI.
 
@@ -160,35 +160,13 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 ### Step 5. Stop the decommissioning node
 
-A node should be drained of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries before being shut down.
-
-Run the [`cockroach node drain`](cockroach-node.html) command with the address of the node to drain:
-
-<div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach node drain --certs-dir=certs --host=<address of node to drain>
-~~~
-</div>
-
-<div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach node drain --insecure --host=<address of node to drain>
-~~~
-</div>
-
-Once the node has been drained, you'll see a confirmation:
-
-~~~
-node is draining... remaining: 1
-node is draining... remaining: 0 (complete)
-ok
-~~~
-
-Stop the node using one of the following methods:
+Drain and stop the node using one of the following methods:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
+
+{{site.data.alerts.callout_info}}
+In certain edge cases, stopping a node using signals can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during node decommissioning, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
+{{site.data.alerts.end}}
 
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped node listed under **Recently Decommissioned Nodes**:
 
@@ -339,35 +317,13 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 
 ### Step 5. Stop the decommissioning nodes
 
-Nodes should be drained of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries before being shut down.
-
-For each node, run the [`cockroach node drain`](cockroach-node.html) command with the address of the node to drain:
-
-<div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach node drain --certs-dir=certs --host=<address of node to drain>
-~~~
-</div>
-
-<div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach node drain --insecure --host=<address of node to drain>
-~~~
-</div>
-
-Once each node has been drained, you'll see a confirmation:
-
-~~~
-node is draining... remaining: 1
-node is draining... remaining: 0 (complete)
-ok
-~~~
-
-Stop each node using one of the following methods:
+Drain and stop each node using one of the following methods:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
+
+{{site.data.alerts.callout_info}}
+In certain edge cases, stopping a node using signals can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you want to minimize these occurrences, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and monitor the draining process instead of automating it.
+{{site.data.alerts.end}}
 
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped nodes listed under **Recently Decommissioned Nodes**:
 
