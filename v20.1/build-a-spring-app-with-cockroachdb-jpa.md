@@ -136,41 +136,44 @@ The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates
 Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in [atomic database transactions](transactions.html) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
 
 Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and edit the `roach-data/roach-data-jpa/src/main/resources/application.yml` file so that:
-    - The `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and use certificates in the connection parameters. For example:
 
-        ~~~ yml
-        ...
-        datasource:
-          url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key.pk8&sslcert=certs/client.maxroach.crt
-        ...
-        ~~~
-    - The `username` field specifies `maxroach` as the user:
+  - The `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and use certificates in the connection parameters. For example:
 
-        ~~~ yml
-        ...
-          username: maxroach
-        ...
-        ~~~
+      ~~~ yml
+      ...
+      datasource:
+        url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key.pk8&sslcert=certs/client.maxroach.crt
+      ...
+      ~~~
+
+  - The `username` field specifies `maxroach` as the user:
+
+      ~~~ yml
+      ...
+        username: maxroach
+      ...
+      ~~~
+
 Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cd <path>/roach-data/roach-data-jpa
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ cd <path>/roach-data/roach-data-jpa
+~~~
 
 Use Maven to download the application dependencies and compile the code:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mvn clean install
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ mvn clean install
+~~~
 
 From the `roach-data-jpa` directory, run the application JAR file:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ java -jar target/roach-data-jpa.jar
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ java -jar target/roach-data-jpa.jar
+~~~
 
 </section>
 
@@ -213,44 +216,45 @@ Exit the SQL shell:
 
 Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in database transactions on the running CockroachDB cluster. For details about the application code, [see below](#implementation-details).
 
-To run the application:
-
 Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and edit the `roach-data/roach-data-jpa/src/main/resources/application.yml` file so that:
-    - The `url` field specifies the correct [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). For example:
 
-        ~~~ yaml
-        ...
-        datasource:
-          url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=disable
-        ...
-        ~~~
-    - The `username` field specifies `maxroach` as the user:
+  - The `url` field specifies the correct [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). For example:
 
-        ~~~ yaml
-        ...
-          username: maxroach
-        ...
-        ~~~
+      ~~~ yml
+      ...
+      datasource:
+        url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=disable
+      ...
+      ~~~
+
+  - The `username` field specifies `maxroach` as the user:
+
+      ~~~ yml
+      ...
+        username: maxroach
+      ...
+      ~~~
+
 Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cd <path>/roach-data/roach-data-jpa
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ cd <path>/roach-data/roach-data-jpa
+~~~
 
 Use Maven to download the application dependencies and compile the code:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mvn clean install
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ mvn clean install
+~~~
 
 From the `roach-data-jpa` directory, run the application JAR file:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ java -jar target/roach-data-jpa.jar
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ java -jar target/roach-data-jpa.jar
+~~~
 
 </section>
 
