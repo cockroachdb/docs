@@ -57,3 +57,9 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Tool | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [Flyway](flyway.html) | [6.4.2](https://flywaydb.org/documentation/commandline/#download-and-installation) or higher | Full |
+
+## Other tools
+
+| Tool | Recommended version | Support level |
+|-----+---------------------+---------------|
+| [Flowable](https://blog.flowable.org/2019/07/11/getting-started-with-flowable-and-cockroachdb/) | [6.4.2](https://github.com/flowable/flowable-engine/releases/tag/flowable-6.4.2) or higher | Full |
