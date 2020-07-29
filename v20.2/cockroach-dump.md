@@ -267,7 +267,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 ## Dump all databases
 
-<span class="version-tag">New in v20.2: To dump all non-system databases, their table schemas, and data:
+<span class="version-tag">New in v20.2:</span> To dump all non-system databases, their table schemas, and data:
 
 ~~~ shell
 $ cockroach dump --dump-all
