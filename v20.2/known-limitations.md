@@ -268,6 +268,12 @@ For multi-core systems, the user CPU percent can be greater than 100%. Full util
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
+### Admin UI: CPU count in containerized environments
+
+When CockroachDB is run in a containerized environment (e.g., Kubernetes), the Admin UI does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
+
 ### `TRUNCATE` does not behave like `DELETE`
 
 `TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)

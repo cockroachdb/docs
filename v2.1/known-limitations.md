@@ -73,6 +73,12 @@ For multi-core systems, the user CPU percent can be greater than 100%. Full util
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
+### Admin UI: CPU count in containerized environments
+
+When CockroachDB is run in a containerized environment (e.g., Kubernetes), the Admin UI does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
+
 ### `GROUP BY` referring to `SELECT` aliases
 
 Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
