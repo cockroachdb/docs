@@ -63,6 +63,12 @@ Dump just the data of all tables in a database to stdout:
 $ cockroach dump <database> --dump-mode=data <other flags>
 ~~~
 
+<span class="version-tag">New in v20.2:</span> Dump all non-system databases:
+
+~~~ shell
+$ cockroach dump --dump-all
+~~~
+
 Dump to a file:
 
 ~~~ shell
@@ -84,6 +90,7 @@ The `dump` command supports the following [general-use](#general) and [logging](
 Flag | Description
 -----|------------
 `--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstration.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--dump-all` | <span class="version-tag">New in v20.2:</span> [Dump all non-system databases](#dump-all-databases), their table schemas, and data.
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br>Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility.
 
@@ -256,6 +263,55 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
     ('"Beauty is transitory." "Beauty survives."', 'Spock and Kirk', NULL, 72),
     ('"Can you imagine how life could be improved if we could do away with jealousy, greed, hate ..." "It can also be improved by eliminating love, tenderness, sentiment -- the other side of the coin"', 'Dr. Roger Corby and Kirk', 2712.4, 7),
     ...
+~~~
+
+## Dump all databases
+
+<span class="version-tag">New in v20.2:</span> To dump all non-system databases, their table schemas, and data:
+
+~~~ shell
+$ cockroach dump --dump-all
+~~~
+
+~~~
+CREATE DATABASE IF NOT EXISTS movr;
+USE movr;
+
+CREATE TABLE promo_codes (
+	code VARCHAR NOT NULL,
+	description VARCHAR NULL,
+	creation_time TIMESTAMP NULL,
+	expiration_time TIMESTAMP NULL,
+	rules JSONB NULL,
+	CONSTRAINT "primary" PRIMARY KEY (code ASC),
+	FAMILY "primary" (code, description, creation_time, expiration_time, rules)
+);
+
+CREATE TABLE users (
+	...
+);
+
+CREATE TABLE vehicles (
+	...
+);
+
+CREATE TABLE rides (
+	...
+);
+
+CREATE TABLE user_promo_codes (
+	...
+);
+
+CREATE TABLE vehicle_location_histories (
+	...
+);
+
+INSERT INTO promo_codes (code, description, creation_time, expiration_time, rules) VALUES
+	('0_explain_theory_something', 'Live sing car maybe. Give safe edge chair discuss resource. Stop entire look support instead. Sister focus long agency like argue.', '2018-12-27 03:04:05+00:00', '2019-01-02 03:04:05+00:00', '{"type": "percent_discount", "value": "10%"}'),
+	('100_address_garden_certain', 'Hour industry himself student position international. Southern traditional rest name prepare. Tough sign little into class. Money general care guy.', '2018-12-27 03:04:05+00:00', '2019-01-13 03:04:05+00:00', '{"type": "percent_discount", "value": "10%"}'),
+
+  ...
 ~~~
 
 ### Dump fails (user does not have `SELECT` privilege)
