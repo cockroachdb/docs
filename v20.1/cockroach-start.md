@@ -487,11 +487,15 @@ $ cockroach sql --insecure --port 26261
 
 ### Start a cluster with separate RPC and SQL networks
 
-Start a cluster with separate RPC and SQL networks to partition traffic and add a level of isolation against network attacks as a measure of 'defense in depth'.
+In enterprise deployments, separating RPC and SQL networks to partition traffic adds a level of isolation against network attacks as a measure of "defense in depth". To achieve the partition, the first step is to ensure that the server where CockroachDB is running has two or more network interfaces, with different IP addresses.
+
+Let's suppose that the interface on the privileged network has address `172.20.0.1` and the interface on the client network has address `10.0.0.1`.
+
+Then, it is possible to configure CockroachDB to split its RPC and SQL listeners across these two networks as follows:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --insecure --sql-addr=:26257 --listen-addr=:26258 --store=cockroach-data/1
+$ cockroach start --insecure --sql-addr=10.0.0.1:26257 --listen-addr=172.20.0.1:26257 --store=cockroach-data/1
 ~~~
 
 ## See also
