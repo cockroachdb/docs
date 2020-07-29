@@ -69,7 +69,7 @@ TransactionRetryWithProtoRefreshError: ... RETRY_WRITE_TOO_OLD ...
 
 _Description_:
 
-The `RETRY_WRITE_TOO_OLD` error occurs when a transaction _A_ tries to write to a row _R_, but another transaction _B_ that was supposed to be serialized after _A_ (i.e., had been assigned a lower timestamp), has already written to that row _R_, and has already committed. This is a common error when you have too much contention in your workload.
+The `RETRY_WRITE_TOO_OLD` error occurs when a transaction _A_ tries to write to a row _R_, but another transaction _B_ that was supposed to be serialized after _A_ (i.e., had been assigned a higher timestamp), has already written to that row _R_, and has already committed. This is a common error when you have too much contention in your workload.
 
 _Action_:
 
