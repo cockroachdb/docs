@@ -126,7 +126,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
     {{site.data.alerts.callout_info}}
-    In certain edge cases, stopping a node using signals can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during an upgrade, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
+    In certain edge cases, stopping a node forcefully using `SIGKILL` or a signal other than `SIGTERM` can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during an upgrade, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
     {{site.data.alerts.end}}
     
     Verify that the process has stopped:
