@@ -36,18 +36,18 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
  Parameter | Description
 -----------|-------------
- `file_location` | Specify the URL of the file location where you want to store the exported CSV data.
+ `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names, so each export should have a unique destination to avoid overwriting. 
  `WITH kv_option` | Control your export's behavior with [these options](#export-options).
  `select_stmt` | Specify the query whose result you want to export to CSV format.
  `table_name` | Specify the name of the table you want to export to CSV format.
 
 ### Export file URL
 
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...). Each export should have a unique destination to avoid overwriting other exports.
+
 URLs for the file directory location you want to export to must use the following format:
 
 {% include {{ page.version.version }}/misc/external-urls.md %}
-
-You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
 ### Export options
 

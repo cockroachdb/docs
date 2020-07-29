@@ -70,7 +70,7 @@ Any of the cloud storages below can be used as a sink:
 The `scheme` for a cloud storage sink should be prepended with `experimental-`.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/external-urls.md %}
+{% include {{ page.version.version }}/cdc/external-urls.md %}
 
 #### Query parameters
 
@@ -144,7 +144,9 @@ CockroachDB Type | Avro Type | Avro Logical Type
 
 ## Responses
 
-The messages (i.e., keys and values) emitted to a Kafka topic are specific to the [`envelope`](#options). The default format is `wrapped`, and the output messages are composed of the following:
+### Messages
+
+The messages (i.e., keys and values) emitted to a sink are specific to the [`envelope`](#options). The default format is `wrapped`, and the output messages are composed of the following:
 
 - **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
 - **Value**:
@@ -161,6 +163,41 @@ Statement                                      | Response
 -----------------------------------------------+-----------------------------------------------------------------------
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
+
+### Files
+
+The files emitted to a sink use the following naming conventions:
+
+- [General file format](#general-file-format)
+- [Resolved file format](#resolved-file-format)
+
+{{site.data.alerts.callout_info}}
+The timestamp format is `YYYYMMDDHHMMSSNNNNNNNNNLLLLLLLLLL`.
+{{site.data.alerts.end}}
+
+#### General file format
+
+~~~
+/[date]/[timestamp]-[uniquer]-[topic]-[schema-id]
+~~~
+
+For example:
+
+~~~
+/2020-04-02/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
+~~~
+
+#### Resolved file format
+
+~~~
+/[date]/[timestamp].RESOLVED
+~~~
+
+For example:
+
+~~~
+/2020-04-04/202004042351304139680000000000000.RESOLVED
+~~~
 
 ## Examples
 
