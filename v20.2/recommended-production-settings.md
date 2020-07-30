@@ -45,7 +45,7 @@ Each node should have **at least 2 vCPUs**. For best performance, we recommend b
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
 
       {{site.data.alerts.callout_info}}
-      Note that the benefits to having more RAM decrease as the number of vCPUs increases.
+      The benefits to having more RAM decrease as the number of vCPUs increases.
       {{site.data.alerts.end}}
 
 - To optimize for resiliency, use many smaller nodes instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
@@ -88,15 +88,15 @@ Underprovisioning storage leads to node crashes when the disks fill up. Once thi
 
 Disks must be able to achieve **500 IOPS and 30 MB/s per vCPU**.
 
-{{site.data.alerts.callout_info}}
-Disk I/O especially affects performance on write-heavy workloads. For more context, see [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html#write-scenario).
-{{site.data.alerts.end}}
-
 - Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
 - To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
+
+{{site.data.alerts.callout_info}}
+Disk I/O especially affects performance on write-heavy workloads. For more context, see [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html#write-scenario).
+{{site.data.alerts.end}}
 
 ##### Node density testing configuration
 
