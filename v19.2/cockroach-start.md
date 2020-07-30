@@ -73,7 +73,7 @@ Flag | Description
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
-`--join`<br>`-j` | The addresses for connecting the node to a cluster.<br><br>When starting a multi-node cluster for the first time, set this flag to the addresses of 3-5 of the initial nodes. Then run the [`cockroach init`](cockroach-init.html) command against any of the nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, set this flag to 3-5 of the nodes already in the cluster; it's easiest to use the same list of addresses that was used to start the initial nodes.<br><br><span class="version-tag">Changed in v19.2:</span> Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
+`--join`<br>`-j` | The host addresses for connecting the node to a cluster. These can be IP addresses or DNS aliases of nodes. Do not use the address of a load balancer.<br><br>When starting a multi-node cluster for the first time, specify the addresses of 3-5 initial nodes, which act as brokers to distribute all node addresses to the cluster. Then run the [`cockroach init`](cockroach-init.html) command against any of these nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>When adding a node to an existing cluster, use the same `--join` addresses that you set when initializing the clusters. The same join hosts *must* be given to every node to ensure that the cluster can stabilize.<br><br><span class="version-tag">Changed in v19.2:</span> Running `cockroach start` without the `--join` flag has been deprecated. To start a single-node cluster, use `cockroach start-single-node` instead.
 `--advertise-host` | **Deprecated.** Use `--advertise-addr` instead.
 `--host` | **Deprecated.** Use `--listen-addr` instead.
 `--port`<br>`-p` | **Deprecated.** Specify port in `--advertise-addr` and/or `--listen-addr` instead.
@@ -195,7 +195,11 @@ Field | Description
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of 3-5 of the initial nodes:
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of the initial nodes.
+
+{% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
+
+{% include {{ page.version.version }}/prod-deployment/join-flag-multi-region.md %}
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
@@ -334,7 +338,7 @@ $ cockroach init \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addresses of 3-5 of the nodes already in the cluster:
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}

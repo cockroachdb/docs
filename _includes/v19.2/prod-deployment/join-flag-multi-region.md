@@ -1,0 +1,1 @@
+When starting a multi-region cluster, set 2 `--join` addresses per region to ensure [high availability](architecture/replication-layer.html#overview).

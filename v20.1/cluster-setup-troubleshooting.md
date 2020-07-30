@@ -163,30 +163,6 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 **Solution:** To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address.
 
-### Missing `--join` address
-
-If you try to add another node to the cluster, but the `--join` address is missing entirely, then the new node will initialize itself as a new cluster instead of joining the existing cluster. You can see this in the status field printed to stdout:
-
-~~~
-CockroachDB node starting at 2018-02-08 16:30:26.690638 +0000 UTC (took 0.2s)  
-build: CCL v2.2.0-alpha.20181217 @ 2018/01/08 17:30:06 (go1.8.3)  
-admin: https://localhost:8085  
-sql: postgresql://root@localhost:26262?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt  
-logs: /Users/jesseseldess/cockroachdb-training/cockroach-v2.2.0-alpha.20181217.darwin-10.9-amd64/node6/logs  
-store[0]: path=/Users/jesseseldess/cockroachdb-training/cockroach-v2.2.0-alpha.20181217.darwin-10.9-amd64/node6  
-status: initialized new cluster  
-clusterID: cfcd80ee-9005-4975-9ae9-9c36d9aaa57e  
-nodeID: 1
-~~~
-
-If you then stop the node and start it again with a correct `--join` address, the startup process will fail because the cluster will notice that the node's cluster ID does not match the cluster ID of the nodes it is trying to join to:
-
-~~~
-W180815 17:21:00.316845 237 gossip/client.go:123 [n1] failed to start gossip client to localhost:26258: initial connection heartbeat failed: rpc error: code = Unknown desc = client cluster ID "9a6ed934-50e8-472a-9d55-c6ecf9130984" doesn't match server cluster ID "ab6960bb-bb61-4e6f-9190-992f219102c6"
-~~~
-
-**Solution:** To successfully join the node to the cluster, you need to remove the node's data directory, which is where its incorrect cluster ID is stored, and start the node again.
-
 ## Client connection issues
 
 If a client cannot connect to the cluster, check basic network connectivity (`ping`), port connectivity (`telnet`), and certificate validity.
