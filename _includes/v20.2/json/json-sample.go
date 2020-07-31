@@ -21,7 +21,7 @@ func main() {
 	// the value received from the last call.
 	after := "null"
 
-	for i := 0; i < 40; i++ {
+	for i := 0; i < 41; i++ {
 		after, err = makeReq(db, after)
 		if err != nil {
 			panic(err)
