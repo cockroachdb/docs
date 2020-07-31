@@ -13,7 +13,7 @@ cur = conn.cursor()
 url = "https://www.reddit.com/r/programming.json"
 after = {"after": "null"}
 
-for n in range(300):
+for n in range(40):
     # First, make a request to reddit using the appropriate "after" string.
     req = requests.get(url, params=after, headers={"User-Agent": "Python"})
 
