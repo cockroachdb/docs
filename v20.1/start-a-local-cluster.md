@@ -8,7 +8,7 @@ asciicast: true
 
 <script src="//katacoda.com/embed.js"></script>
 
-<div data-katacoda-id="ejqg64/start-cluster" data-katacoda-ui="panel" id="ejqg64-start-cluster"></div>
+<div data-katacoda-id="ejqg64/courses/2-get-started/start-cluster" data-katacoda-ui="panel" id="ejqg64-start-cluster"></div>
 
 <div class="filters filters-big clearfix">
     <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>

@@ -5,14 +5,12 @@ toc: true
 build_for: [cockroachdb, cockroachcloud]
 ---
 
-<script src="//katacoda.com/embed.js"></script>
-<div id="ejqg64/learn-cockroachdb-sql"
-  data-katacoda-id="ejqg64/learn-cockroachdb-sql"
-  style="height: 600px; width: 1000px;">
+<div class="filters filters-big clearfix">
+    <a href="demo-json-support-interactive.html"><button class="filter-button">In-Browser</button></a>
+    <a href="demo-json-support.html"><button class="filter-button current"><strong>Local</strong></button></a>
 </div>
 
-
-<!-- {% unless site.cockroachcloud %}
+{% unless site.cockroachcloud %}
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements, using the `movr` dataset.
 
@@ -715,4 +713,4 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 
 Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
 
-{% endif %} -->
+{% endif %}

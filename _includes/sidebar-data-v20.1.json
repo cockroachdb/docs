@@ -45,6 +45,7 @@
           {
             "title": "Learn CockroachDB SQL",
             "urls": [
+              "/${VERSION}/learn-cockroachdb-sql-interactive.html",
               "/${VERSION}/learn-cockroachdb-sql.html"
             ]
           }
@@ -606,6 +607,7 @@
           {
             "title": "JSON Support",
             "urls": [
+              "/${VERSION}/demo-json-support-interactive.html",
               "/${VERSION}/demo-json-support.html"
             ]
           },
