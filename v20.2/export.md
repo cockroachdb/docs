@@ -36,7 +36,7 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
  Parameter | Description
 -----------|-------------
- `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names, so each export should have a unique destination to avoid overwriting. 
+ `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names across exports, so each export should have a unique destination to avoid overwriting. 
  `WITH kv_option` | Control your export's behavior with [these options](#export-options).
  `select_stmt` | Specify the query whose result you want to export to CSV format.
  `table_name` | Specify the name of the table you want to export to CSV format.
