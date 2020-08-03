@@ -313,7 +313,7 @@ If you are outside of the garbage collection window, you will need to use a [bac
 If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#replication-zone-variables), there are two actions you can take:
 
 - If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
-- If you are an enterprise user, trigger a new [backup `with_revision_history`](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) and you will have a backup you can use to restore to the desired point in time.
+- If you are an enterprise user, trigger a new [backup `with_revision_history`](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
 
 ### Recover from corrupted data in a database or table
 
