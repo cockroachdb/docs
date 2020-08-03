@@ -658,7 +658,8 @@
                 "urls": [
                   "/${VERSION}/build-a-java-app-with-cockroachdb.html",
                   "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
-                  "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html"
+                  "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
+                  "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
                 ]
               },
               {
