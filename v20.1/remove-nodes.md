@@ -165,7 +165,7 @@ Drain and stop the node using one of the following methods:
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
 {{site.data.alerts.callout_info}}
-In certain edge cases, stopping a node forcefully using `SIGKILL` or a signal other than `SIGTERM` can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during node decommissioning, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
+The amount of time you should wait before sending `SIGKILL` can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during node decommissioning, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
 {{site.data.alerts.end}}
 
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped node listed under **Recently Decommissioned Nodes**:
@@ -322,7 +322,7 @@ Drain and stop each node using one of the following methods:
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
 {{site.data.alerts.callout_info}}
-In certain edge cases, stopping a node forcefully using `SIGKILL` or a signal other than `SIGTERM` can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you want to minimize these occurrences, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and monitor the draining process instead of automating it.
+The amount of time you should wait before sending `SIGKILL` can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you want to minimize these occurrences, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and monitor the draining process instead of automating it.
 {{site.data.alerts.end}}
 
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped nodes listed under **Recently Decommissioned Nodes**:
