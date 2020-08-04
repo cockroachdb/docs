@@ -124,10 +124,6 @@ We recommend creating scripts to perform these steps instead of performing them 
 1. Drain and stop the node using one of the following methods:
     
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
-
-    {{site.data.alerts.callout_info}}
-    The amount of time you should wait before sending `SIGKILL` can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during an upgrade, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
-    {{site.data.alerts.end}}
     
     Verify that the process has stopped:
 

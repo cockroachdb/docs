@@ -164,10 +164,6 @@ Drain and stop the node using one of the following methods:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
-{{site.data.alerts.callout_info}}
-The amount of time you should wait before sending `SIGKILL` can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability during node decommissioning, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and actively monitor the draining process instead of automating it.
-{{site.data.alerts.end}}
-
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped node listed under **Recently Decommissioned Nodes**:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
@@ -320,10 +316,6 @@ Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.h
 Drain and stop each node using one of the following methods:
 
 {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
-
-{{site.data.alerts.callout_info}}
-The amount of time you should wait before sending `SIGKILL` can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you want to minimize these occurrences, you can run [`cockroach node drain`](cockroach-node.html) prior to node shutdown and monitor the draining process instead of automating it.
-{{site.data.alerts.end}}
 
 After the duration configured via [`server.time_until_store_dead`](cluster-settings.html), you'll see the stopped nodes listed under **Recently Decommissioned Nodes**:
 
