@@ -49,7 +49,8 @@ Alternatively, to make it much easier to run this complex query, you could creat
   FROM startrek.quotes
   JOIN startrek.episodes
   ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+  GROUP BY startrek.episodes.season
+  ORDER BY startrek.episodes.season;
 ~~~
 
 ~~~
@@ -166,9 +167,13 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW bank.user_accounts
-  AS SELECT type, email
-  FROM bank.accounts;
+> CREATE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season
+  ORDER BY startrek.episodes.season;
 ~~~
 
 ~~~
@@ -185,14 +190,15 @@ Once created, views are listed alongside regular tables in the database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM bank;
+> SHOW TABLES FROM startrek;
 ~~~
 
 ~~~
-   table_name
------------------
-  accounts
-  user_accounts
+  schema_name |    table_name     | type
+--------------+-------------------+--------
+  public      | episodes          | table
+  public      | quotes            | table
+  public      | quotes_per_season | view
 (3 rows)
 ~~~
 
@@ -200,18 +206,13 @@ To list just views, you can query the `views` table in the [Information Schema](
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM bank.information_schema.views;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
 > SELECT * FROM startrek.information_schema.views;
 ~~~
 
 ~~~
-  table_catalog | table_schema |  table_name   |               view_definition                | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into
-----------------+--------------+---------------+----------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+-----------------------------
-  bank          | public       | user_accounts | SELECT type, email FROM bank.public.accounts | NULL         | NO           | NO                 | NO                   | NO                   | NO
+  table_catalog | table_schema |    table_name     |                                                                                                      view_definition                                                                                                      | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into
+----------------+--------------+-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+-----------------------------
+  startrek      | public       | quotes_per_season | SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season | NULL         | NO           | NO                 | NO                   | NO                   | NO
 (1 row)
 ~~~
 
@@ -221,31 +222,29 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM bank.user_accounts;
+> SELECT * FROM startrek.quotes_per_season;
 ~~~
 
 ~~~
-    type   |      email
------------+------------------
-  checking | max@roach.com
-  savings  | max@roach.com
-  checking | betsy@roach.com
-  checking | lilly@roach.com
-  savings  | ben@roach.com
-(5 rows)
+  season | quotes
+---------+---------
+       1 |     78
+       2 |     76
+       3 |     46
+(3 rows)
 ~~~
 
 `SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`](show-create.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE bank.user_accounts;
+> SHOW CREATE startrek.quotes_per_season;
 ~~~
 
 ~~~
-         table_name         |                                    create_statement
-----------------------------+------------------------------------------------------------------------------------------
-  bank.public.user_accounts | CREATE VIEW user_accounts (type, email) AS SELECT type, email FROM bank.public.accounts
+             table_name             |                                                                                                                              create_statement
+------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  startrek.public.quotes_per_season | CREATE VIEW quotes_per_season (season, quotes) AS SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season
 (1 row)
 ~~~
 
@@ -253,13 +252,13 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
+> SELECT view_definition FROM startrek.information_schema.views WHERE table_name = 'quotes_per_season';
 ~~~
 
 ~~~
-                view_definition
-------------------------------------------------
-  SELECT type, email FROM bank.public.accounts
+                              view_definition
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season
 (1 row)
 ~~~
 
@@ -269,38 +268,44 @@ A view depends on the objects targeted by its underlying query. Attempting to re
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE bank.accounts RENAME TO bank.accts;
+> ALTER TABLE startrek.quotes RENAME TO startrek.sayings;
 ~~~
 
 ~~~
-pq: cannot rename table "bank.accounts" because view "user_accounts" depends on it
+ERROR: cannot rename relation "startrek.public.quotes" because view "quotes_per_season" depends on it
+SQLSTATE: 2BP01
+HINT: you can drop quotes_per_season instead.
 ~~~
 
 Likewise, attempting to drop an object referenced in a view's stored query results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE bank.accounts;
+> DROP TABLE startrek.quotes;
 ~~~
 
 ~~~
-pq: cannot drop table "accounts" because view "user_accounts" depends on it
+ERROR: cannot drop relation "quotes" because view "quotes_per_season" depends on it
+SQLSTATE: 2BP01
+HINT: you can drop quotes_per_season instead.
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE bank.accounts DROP COLUMN email;
+> ALTER TABLE startrek.episodes DROP COLUMN season;
 ~~~
 
 ~~~
-pq: cannot drop column email because view "bank.user_accounts" depends on it
+ERROR: cannot drop column "season" because view "quotes_per_season" depends on it
+SQLSTATE: 2BP01
+HINT: you can drop quotes_per_season instead.
 ~~~
 
 There is an exception to the rule above, however: When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE bank.accounts CASCADE;
+> DROP TABLE startrek.quotes CASCADE;
 ~~~
 
 ~~~
@@ -317,7 +322,7 @@ To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER VIEW bank.user_accounts RENAME TO bank.user_accts;
+> ALTER VIEW startrek.quotes_per_season RENAME TO startrek.quotes_count;
 ~~~
 
 ~~~
@@ -326,13 +331,48 @@ RENAME VIEW
 
 It is not possible to change the stored query executed by the view. Instead, you must drop the existing view and create a new view.
 
+### Replacing views
+
+<span class="version-tag">New in v20.2:</span> To replace a view, use [`CREATE OR REPLACE VIEW`](create-view.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE OR REPLACE VIEW startrek.quotes_count (season, quotes, stardate)
+  AS SELECT startrek.episodes.season, count(*), startrek.episodes.stardate
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season, startrek.episodes.stardate;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM startrek.quotes_count LIMIT 10;
+~~~
+
+~~~
+  season | quotes | stardate
+---------+--------+-----------
+       2 |      1 |   3715.3
+       2 |      2 |   4523.3
+       3 |      1 |   4385.3
+       3 |      1 |   5423.4
+       1 |      1 |   1672.1
+       1 |      2 |   2817.6
+       1 |      3 |   2124.5
+       1 |      1 |   3045.6
+       2 |      2 |   3018.2
+       2 |      1 |   3619.2
+(10 rows)
+~~~
+
 ### Removing views
 
 To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP VIEW bank.user_accounts
+> DROP VIEW startrek.quotes_count;
 ~~~
 
 ~~~

@@ -1,6 +1,6 @@
 ---
 title: CREATE VIEW
-summary: The CREATE VIEW statement creates a .
+summary: The CREATE VIEW statement creates a view of a table
 toc: true
 ---
 
@@ -21,6 +21,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` |  Create a new view only if a view of the same name does not already exist. If one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the view name only. It does not check if an existing view has the same columns as the new view.
+`OR REPLACE`  |  <span class="version-tag">New in v20.2:</span> Create a new view if a view of the same name does not already exist. If a view of the same name already exists, replace that view.<br><br>In order to replace an existing view, the new view must have the same columns as the existing view, or more. If the new view has additional columns, the old columns must be a prefix of the new columns. For example, if the existing view has columns `a, b`, the new view can have an additional column `c`, but must have columns `a, b` as a prefix. In this case, `CREATE OR REPLACE VIEW myview (a, b, c)` would be allowed, but `CREATE OR REPLACE VIEW myview (b, a, c)` would not.
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
 `AS select_stmt` | The [selection query](selection-queries.html) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
@@ -32,7 +33,20 @@ Parameter | Description
 This example highlights one key benefit to using views: simplifying complex queries. For additional benefits and examples, see [Views](views.html).
 {{site.data.alerts.end}}
 
-Let's say you're using our [sample `startrek` database](cockroach-gen.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
+### Setup
+
+The following examples use the [`startrek` demo database schema](cockroach-demo.html#datasets).
+
+To follow along, run [`cockroach demo startrek`](cockroach-demo.html) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach demo startrek
+~~~
+
+### Create a view
+
+The sample `startrek` database contains two tables, `episodes` and `quotes`. The table also contains a foreign key constraint, between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -64,10 +78,6 @@ Alternatively, to make it much easier to run this complex query, you could creat
   GROUP BY startrek.episodes.season;
 ~~~
 
-~~~
-CREATE VIEW
-~~~
-
 The view is then represented as a virtual table alongside other tables in the database:
 
 {% include copy-clipboard.html %}
@@ -76,11 +86,11 @@ The view is then represented as a virtual table alongside other tables in the da
 ~~~
 
 ~~~
-     table_name
----------------------
-  episodes
-  quotes
-  quotes_per_season
+  schema_name |    table_name     | type
+--------------+-------------------+--------
+  public      | episodes          | table
+  public      | quotes            | table
+  public      | quotes_per_season | view
 (3 rows)
 ~~~
 
@@ -94,9 +104,38 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 ~~~
   season | quotes
 ---------+---------
+       3 |     46
        1 |     78
        2 |     76
+(3 rows)
+~~~
+
+### Replace an existing view
+
+<span class="version-tag">New in v20.2:</span> You can create a new view, or replace an existing view, with `CREATE OR REPLACE VIEW`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE OR REPLACE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season
+  ORDER BY startrek.episodes.season;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM startrek.quotes_per_season;
+~~~
+
+~~~
+  season | quotes
+---------+---------
        3 |     46
+       1 |     78
+       2 |     76
 (3 rows)
 ~~~
 
