@@ -25,14 +25,45 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
 
-{{site.data.alerts.callout_info}}
-There will be a one-time extension of Assistance Support for v2.1 to **July 1, 2020**.
-{{site.data.alerts.end}}
+<table>
+	<thead>
+		<tr>
+			<th>Version</th>
+			<th>Release Date</th>
+			<th>Maintenance Support ends</th>
+			<th>Assistance Support ends (EOL Date)</th>
+		</tr>
+	</thead>
+	<tr>
+		<td><a href="v20.1.0.html">v20.1</a></td>
+		<td>5/12/20</td>
+		<td>5/12/21</td>
+		<td>11/12/21</td>
+	</tr>
+	<tr>
+		<td><a href="v19.2.0.html">v19.2</a></td>
+		<td>11/12/19</td>
+		<td>11/12/20</td>
+		<td>5/12/21</td>
+	</tr>
+	<tr>
+		<td><a href="v19.1.0.html">v19.1</a></td>
+		<td>4/30/19</td>
+		<td>4/30/20</td>
+		<td>11/1/20</td>
+	</tr>
+	<tr class=eol>
+		<td><a href="v2.1.0.html">v2.1</a></td>
+		<td>11/19/18</td>
+		<td>11/19/19</td>
+		<td>7/1/20*</td>
+	</tr>
+	<tr class=eol>
+		<td><a href="v2.0.0.html">v2.0</a></td>
+		<td>4/4/18</td>
+		<td>4/4/19</td>
+		<td>11/4/19*</td>
+	</tr>
+</table>
 
-|Version | Release Date | Maintenance Support ends | Assistance Support ends (EOL Date)
-|--------|---------|-----------|-----------
-|[v20.1](v20.1.0.html) |5/12/20 |5/12/21 |11/12/21
-|[v19.2](v19.2.0.html) |11/12/19 |11/12/20 |5/12/21
-|[v19.1](v19.1.0.html) |4/30/19 |4/30/20 |11/1/20
-|[v2.1](v2.1.0.html) |11/19/18 |11/19/19  |7/1/20
-|[v2.0](v2.0.0.html) |4/4/18 |4/4/19 |11/4/19
+&#42; Version has reached EOL
