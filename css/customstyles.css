@@ -3334,6 +3334,9 @@ th {
 tbody tr:hover {
   background-color: #F3F3F3 !important; }
 
+tbody.nohover tr:hover {
+  background-color: inherit; }
+
 table > thead > tr > th,
 table > tbody > tr > th,
 table > tfoot > tr > th,
