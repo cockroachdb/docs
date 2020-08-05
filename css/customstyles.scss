@@ -201,6 +201,11 @@ tbody tr:hover {
   background-color: $cl_gray_light !important;
 }
 
+
+tbody tr.eol {  
+  background-color: #fffaea !important;
+}
+
 table > thead > tr > th,
 table > tbody > tr > th,
 table > tfoot > tr > th,
