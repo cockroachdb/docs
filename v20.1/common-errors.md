@@ -29,7 +29,7 @@ To resolve this issue, do one of the following:
 - If the node hasn't yet been started, [start the node](cockroach-start.html).
 - If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also end the `cockroach` process, and then restart the node:
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also terminate the `cockroach` process, and then restart the node:
 
 {% include copy-clipboard.html %}
 ~~~ shell

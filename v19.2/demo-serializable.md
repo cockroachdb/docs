@@ -270,7 +270,7 @@ Again, this anomaly is the result of Postgres' default isolation level of `READ 
 
 ### Step 8. Stop Postgres
 
-Exit each SQL shell with `\q` and then stop the Postgres server:
+Exit each SQL shell with `\q` and then terminate the Postgres server:
 
 {% include copy-clipboard.html %}
 ~~~ shell

@@ -27,7 +27,7 @@ Proceed through the following steps until you locate the source of the issue wit
 
 ### 1. Start a single-node cluster
 
-1. Stop any running `cockroach` processes and remove any old data:
+1. Terminate any running `cockroach` processes and remove any old data:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -83,7 +83,7 @@ Proceed through the following steps until you locate the source of the issue wit
 
 ### 2. Start a multi-node cluster
 
-1. Stop any running `cockroach` processes and remove any old data on the additional machines::
+1. Terminate any running `cockroach` processes and remove any old data on the additional machines::
 
     {% include copy-clipboard.html %}
     ~~~ shell

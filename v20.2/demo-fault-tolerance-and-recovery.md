@@ -4,7 +4,7 @@ summary: Use a local cluster to explore how CockroachDB remains available during
 toc: true
 ---
 
-This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 6-node local cluster with the default 3-way replication, you'll run a sample workload, stop a node to simulate failure, and see how the cluster continues uninterrupted. You'll then leave that node offline for long enough to watch the cluster repair itself by re-replicating missing data to other nodes. You'll then prepare the cluster for 2 simultaneous node failures by increasing to 5-way replication, then take two nodes offline at the same time, and again see how the cluster continues uninterrupted.
+This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 6-node local cluster with the default 3-way replication, you'll run a sample workload, terminate a node to simulate failure, and see how the cluster continues uninterrupted. You'll then leave that node offline for long enough to watch the cluster repair itself by re-replicating missing data to other nodes. You'll then prepare the cluster for 2 simultaneous node failures by increasing to 5-way replication, then take two nodes offline at the same time, and again see how the cluster continues uninterrupted.
 
 ## Before you begin
 
@@ -232,7 +232,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
-2. Then use the [`cockroach quit`](../cockroach-quit.html) command to stop a node:
+2. Then use the [`cockroach quit`](../cockroach-quit.html) command to terminate a node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -357,7 +357,7 @@ $ cockroach quit --insecure --host=localhost:26261
 
 1. In the terminal where the YCSB workload is running, press CTRL + c.
 
-2. Stop HAProxy:
+2. Terminate HAProxy:
 
     {% include copy-clipboard.html %}
     ~~~ shell

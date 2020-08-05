@@ -123,7 +123,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. Connect to the node.
 
-2. Stop the `cockroach` process.
+2. Terminate the `cockroach` process.
 
     Without a process manager like `systemd`, use this command:
 

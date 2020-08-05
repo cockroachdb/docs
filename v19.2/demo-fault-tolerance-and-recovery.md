@@ -357,7 +357,7 @@ $ cockroach quit --insecure --host=localhost:26261
 
 1. In the terminal where the YCSB workload is running, press CTRL + c.
 
-2. Stop HAProxy:
+2. Terminate HAProxy:
 
     {% include copy-clipboard.html %}
     ~~~ shell

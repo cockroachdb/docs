@@ -37,7 +37,7 @@ For each node in your cluster, complete the following steps.
 
 1. Connect to the node.
 
-2. Stop the `cockroach` process.
+2. Terminate the `cockroach` process.
 
     Without a process manager, use this command:
 

@@ -73,7 +73,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 
 1. Connect to the node.
 
-2. Stop the `cockroach` process.
+2. Terminate the `cockroach` process.
 
     Without a process manager like `systemd`, use this command:
 
