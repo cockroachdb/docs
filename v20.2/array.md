@@ -11,7 +11,7 @@ The `ARRAY` data type is useful for ensuring compatibility with ORMs and other t
  CockroachDB supports indexing array columns with [inverted indexes](inverted-indexes.html). This permits accelerating containment queries ([`@>`](functions-and-operators.html#operator-contains) and [`<@`](functions-and-operators.html#operator-is-contained-by)) on array columns by adding an index to them.
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support nested arrays or ordering by arrays.
+CockroachDB does not support nested arrays.
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/vectorized-support.md %}
@@ -51,11 +51,9 @@ For a complete list of array functions built into CockroachDB, see the [document
 ~~~
 
 ~~~
-+----------------------+
-|          b           |
-+----------------------+
-| {"sky","road","car"} |
-+----------------------+
+        b
+------------------
+  {sky,road,car}
 (1 row)
 ~~~
 
@@ -77,11 +75,9 @@ For a complete list of array functions built into CockroachDB, see the [document
 ~~~
 
 ~~~
-+------------+
-|     d      |
-+------------+
-| {10,20,30} |
-+------------+
+      d
+--------------
+  {10,20,30}
 (1 row)
 ~~~
 
@@ -97,11 +93,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+------------+
-|     d      |
-+------------+
-| {10,20,30} |
-+------------+
+      d
+--------------
+  {10,20,30}
 (1 row)
 ~~~
 
@@ -111,11 +105,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+------+
-| d[2] |
-+------+
-|   20 |
-+------+
+  d
+------
+  20
 (1 row)
 ~~~
 
@@ -129,11 +121,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+------------+
-|     d      |
-+------------+
-| {10,20,30} |
-+------------+
+      d
+--------------
+  {10,20,30}
 (1 row)
 ~~~
 
@@ -148,11 +138,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+---------------+
-|       d       |
-+---------------+
-| {10,20,30,40} |
-+---------------+
+        d
+-----------------
+  {10,20,30,40}
 (1 row)
 ~~~
 
@@ -164,11 +152,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+---------------+
-|       d       |
-+---------------+
-| {10,20,30,40} |
-+---------------+
+        d
+-----------------
+  {10,20,30,40}
 (1 row)
 ~~~
 
@@ -183,12 +169,48 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+------------------+
-|        d         |
-+------------------+
-| {10,20,30,40,50} |
-+------------------+
+         d
+--------------------
+  {10,20,30,40,50}
 (1 row)
+~~~
+
+### Ordering by an array
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE t (a INT ARRAY, b STRING);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO t VALUES (ARRAY[3,4],'threefour'),(ARRAY[1,2],'onetwo');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM t;
+~~~
+
+~~~
+    a   |     b
+--------+------------
+  {3,4} | threefour
+  {1,2} | onetwo
+(2 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM t ORDER BY a;
+~~~
+
+~~~
+    a   |     b
+--------+------------
+  {1,2} | onetwo
+  {3,4} | threefour
+(2 rows)
 ~~~
 
 ## Supported casting and conversion
