@@ -14,7 +14,7 @@ When planning to survive hardware failures, start by determining the minimum rep
 - [Multi-region survivability planning](#multi-region-survivability-planning)
 
 {{site.data.alerts.callout_danger}}
-Increasing the replication factor can impact write performance in that more replicas must agree to reach quorum. For more details about the mechanics of writes and the Raft protocol, see [Read and Writes Overview](reads-and-writes-overview.html).
+Increasing the replication factor can impact write performance in that more replicas must agree to reach quorum. For more details about the mechanics of writes and the Raft protocol, see [Read and Writes Overview](architecture/reads-and-writes-overview.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
