@@ -16,6 +16,10 @@ For instructions showing how to use follower reads to get low latency, historica
 This is an [enterprise feature](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
+## Watch the demo
+
+<iframe width="560" height="315" src="https://youtu.be/V--skgN_JMo" frameborder="0" allowfullscreen></iframe>
+
 ## How follower reads work
 
 Each CockroachDB node tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the replica receives a write at a timestamp less than its closed timestamp, it rejects the write.
