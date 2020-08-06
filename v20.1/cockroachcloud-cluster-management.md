@@ -61,14 +61,6 @@ To restore your data, [contact us](https://support.cockroachlabs.com).
 
 Additionally, you can [backup and restore](backup-and-restore.html) data on your own.
 
-### Backup and restore from a self-hosted CockroachDB cluster
-
-You can [backup](backup.html) your self-hosted CockroachDB databases to an [external location](backup.html#backup-file-urls) and then [restore](restore.html) to your CockroachCloud cluster.
-
-{{site.data.alerts.callout_danger}}
-If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
-{{site.data.alerts.end}}
-
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
