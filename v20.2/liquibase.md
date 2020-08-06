@@ -144,7 +144,7 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
             xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
              http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
 
-        <changeSet id="1" author="max" context="crdb">
+        <changeSet id="1" author="max" runInTransaction="false">
             <validCheckSum>ANY</validCheckSum>
             <sqlFile path="create.sql"/>
         </changeSet>
@@ -153,6 +153,11 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
     ~~~
 
     This first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some [SQL statements](https://docs.liquibase.com/concepts/basic/sql-format.html) to execute.
+
+    {{site.data.alerts.callout_success}}
+    CockroachDB has [limited support for online schema changes in transactions](online-schema-changes.html#limited-support-for-schema-changes-within-transactions). To avoid running into issues with incomplete transactions, we recommend setting the [`runInTransaction` attribute](https://docs.liquibase.com/concepts/basic/changeset.html#available-attributes) to `"false"` on all changesets.
+    {{site.data.alerts.end}}
+
 
 1. In the same directory, create the SQL file specified by the first changeset:
 
@@ -180,7 +185,7 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
     {% include copy-clipboard.html %}
     ~~~ xml
-    <changeSet id="2" author="max" context="crdb">
+    <changeSet id="2" author="max" runInTransaction="false">
         <insert tableName="account">
             <column name="id">1</column>
             <column name="name">Alice</column>
@@ -211,6 +216,10 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
     This second changeset uses the [Liquibase XML syntax](https://docs.liquibase.com/concepts/basic/xml-format.html) to specify a series of sequential `INSERT` statements that initialize the `account` table with some values.
 
 When the application is started, all of the queries specified by the changesets are executed in the order specified by their `changeset` `id` values.
+
+{{site.data.alerts.callout_success}}
+When possible, we recommend limiting each changeset to a single statement, per the **one change per changeset** [Liquibase best practice](https://docs.liquibase.com/concepts/bestpractices.html). This is especially important for [online schema changes](online-schema-changes.html). For more information, see [Liquibase and transactions](#liquibase-and-transactions).
+{{site.data.alerts.end}}
 
 ## Step 5. Configure a Liquibase properties file
 
@@ -346,7 +355,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 1. In the `changelog-main.xml` file, add the following after the second `changeSet` element:
 
     ~~~ xml
-    <changeSet id="3" author="max" context="crdb">
+    <changeSet id="3" author="max" runInTransaction="false">
         <sqlFile path="add_uuid.sql"/>
     </changeSet>
     ~~~
@@ -371,7 +380,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 1. In the `changelog-main.xml` file, add the following after the third `changeSet` element:
 
     ~~~ xml
-    <changeSet id="4" author="max" context="crdb">
+    <changeSet id="4" author="max" runInTransaction="false">
         <sqlFile path="update_pk.sql"/>
     </changeSet>
     ~~~
@@ -467,13 +476,21 @@ You can also query the `account` table directly to see the latest changes reflec
 (1 row)
 ~~~
 
-## Liquibase and Transactions
+## Liquibase and transactions
 
-Liquibase wraps each changeset within a single transaction. If the transaction fails to successfully commit, Liquibase rolls back the transaction.
+By default, Liquibase wraps each changeset within a single transaction. If the transaction fails to successfully commit, Liquibase rolls back the transaction.
+
+CockroachDB has [limited support for online schema changes within transactions](online-schema-changes.html#limited-support-for-schema-changes-within-transactions). If a schema change fails, automatic rollbacks can lead to unexpected results. To avoid running into issues with incomplete transactions, we recommend setting the `runInTransaction` attribute on each of your changesets to `"false"`, as demonstrated throughout this tutorial.
+
+{{site.data.alerts.callout_info}}
+If `runInTransaction="false"` for a changeset, and an error occurs while Liquid is running the changeset, the `databasechangelog` table might be left in an invalid state and need to be fixed manually.
+{{site.data.alerts.end}}
+
+### Transaction retries
 
 When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure).
 
-Liquibase *does not* automatically retry transactions. To handle transaction failures, we recommend writing client-side transaction retry logic. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
+Liquibase does not automatically retry transactions. To handle transaction failures, we recommend writing client-side transaction retry logic. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
 
 ## Liquibase integrations
 
