@@ -56,6 +56,7 @@ For each database in the backup, the following details display:
 - The number of [**Tables**](#tables) in the database
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
+
 <!--
 - Additional **Recovery Info** -->
 
@@ -64,6 +65,7 @@ If a database does not contain tables, it will not display in the databases view
 {{site.data.alerts.end}}
 
 You can [restore these databases](#restore-a-database).
+
 <!--
 To view additional details or [to restore a database](#restore-a-database), click **View** in the **Recovery Info** column. -->
 
@@ -76,9 +78,11 @@ For each table in the database, the following details display:
 - The **Name** of the table
 - The **Size** of the table
 - The number of **Rows** in the table
+
 <!-- - Additional **Recovery Info** -->
 
 You can [restore these tables](#restore-a-table).
+
 <!--
 To view additional details or [to restore a table](#restore-a-table), click **View** in the **Recovery Info** column. -->
 
