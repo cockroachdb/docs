@@ -106,6 +106,8 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the Admin UI.
     - The `--store` flag indicates the location where the node's data and logs are stored.
     - The `--join` flag specifies the addresses and ports of the nodes that will initially comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
+
+        {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
     - The `--background` flag starts the `cockroach` process in the background so you can continue using the same terminal for other operations.
 
 3. Start two more nodes:

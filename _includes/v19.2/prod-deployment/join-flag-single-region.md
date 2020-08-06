@@ -1,0 +1,1 @@
+For a cluster in a single region, set 3-5 `--join` addresses. Each starting node will attempt to contact one of the join hosts. In case a join host can't be reached, the node will try another address on the list until it can join the gossip network.
