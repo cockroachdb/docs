@@ -55,7 +55,7 @@ Special syntax cases supported for compatibility:
 
 ~~~
   database
-+----------+
+------------
   movr
 (1 row)
 ~~~
@@ -68,61 +68,13 @@ Special syntax cases supported for compatibility:
 ~~~
 
 ~~~
-                  variable                 |                                                      value
--------------------------------------------+------------------------------------------------------------------------------------------------------------------
-  application_name                         | $ cockroach demo
-  bytea_output                             | hex
-  client_encoding                          | UTF8
-  client_min_messages                      | notice
-  crdb_version                             | CockroachDB OSS v20.2.0
-  database                                 | movr
-  datestyle                                | ISO, MDY
-  default_int_size                         | 8
-  default_tablespace                       |
-  default_transaction_isolation            | serializable
-  default_transaction_read_only            | off
-  distsql                                  | auto
-  enable_implicit_select_for_update        | on
-  enable_insert_fast_path                  | on
-  enable_zigzag_join                       | on
-  experimental_enable_hash_sharded_indexes | off
-  experimental_enable_temp_tables          | off
-  experimental_serial_normalization        | rowid
-  extra_float_digits                       | 2
-  force_savepoint_restart                  | off
-  idle_in_transaction_session_timeout      | 0
-  integer_datetimes                        | on
-  intervalstyle                            | postgres
-  locality                                 | region=us-east1,az=b
-  lock_timeout                             | 0
-  max_identifier_length                    | 128
-  max_index_keys                           | 32
-  node_id                                  | 1
-  optimizer                                | on
-  optimizer_foreign_keys                   | on
-  reorder_joins_limit                      | 4
-  require_explicit_primary_keys            | off
-  results_buffer_size                      | 16384
-  row_security                             | off
-  search_path                              | public
-  server_encoding                          | UTF8
-  server_version                           | 9.5.0
-  server_version_num                       | 90500
-  session_id                               | 16016feed4d6ae800000000000000001
-  session_user                             | root
-  sql_safe_updates                         | on
-  standard_conforming_strings              | on
-  statement_timeout                        | 0
-  synchronize_seqscans                     | on
-  timezone                                 | UTC
-  tracing                                  | off
-  transaction_isolation                    | serializable
-  transaction_priority                     | normal
-  transaction_read_only                    | off
-  transaction_status                       | NoTxn
-  vectorize                                | auto
-  vectorize_row_count_threshold            | 1000
-(52 rows)
+       variable       |      value
+----------------------+-------------------
+  application_name    | $ cockroach demo
+  bytea_output        | hex
+  client_encoding     | UTF8
+  client_min_messages | notice
+...
 ~~~
 
 ## See also
