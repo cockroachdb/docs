@@ -18,7 +18,7 @@ Subcommand | Usage
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | Decommission nodes for removal from the cluster. See [Decommission Nodes](remove-nodes.html) for more details.
 `recommission` | Recommission nodes that have been decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
-`drain` | Drain nodes of SQL clients and [distributed SQL](architecture/sql-layer.html#distsql) queries, and prevent ranges from rebalancing onto the node. This is usually done prior to [stopping the node](cockroach-quit.html).
+`drain` | Drain nodes of SQL clients, [distributed SQL](architecture/sql-layer.html#distsql) queries, and range leases, and prevent ranges from rebalancing onto the node. This is normally done during [node shutdown](cockroach-quit.html), but the `drain` subcommand provides operators an option to interactively monitor, and if necessary intervene in, the draining process.
 
 ## Synopsis
 

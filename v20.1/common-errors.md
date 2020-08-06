@@ -31,10 +31,9 @@ To resolve this issue, do one of the following:
 
 If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also end the `cockroach` process, and then restart the node:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ pkill cockroach
-~~~
+{% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
+
+Then restart the node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
