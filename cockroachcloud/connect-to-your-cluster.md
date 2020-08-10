@@ -14,8 +14,9 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
+- If you had [enabled VPC peering while creating your cluster], you can set up and authorize the peered network.
 
-Use the Console to authorize networks:
+### Add IP addresses to the allowlist
 
 1. Navigate to your cluster's **Networking** page.
 
@@ -50,6 +51,17 @@ Use the Console to authorize networks:
 
 7. Click **Apply**.
 
+
+### Configure VPC Peering
+
+1. Navigate to your cluster's **Networking** page and click **Peering**.
+2. Check if the current network has been authorized. If not, proceed with the following steps.
+3. Click **Initiate peering connection**.
+4. 
+
+
+
+
 ## Step 2. Create a SQL user
 
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
@@ -68,7 +80,11 @@ Use the Console to authorize networks:
     {{site.data.alerts.end}}
 4. Click **Save**.
 
+<<<<<<< HEAD:cockroachcloud/connect-to-your-cluster.md
     Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
+=======
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-user-authorization.html#granting-privileges) and [Using roles](cockroachcloud-user-authorization.html#using-roles).
+>>>>>>> 4deed5d1... Initial drafts:v20.1/cockroachcloud-connect-to-your-cluster.md
 
 ## Step 3. Select a connection method
 

@@ -18,8 +18,10 @@ layout: null
 # CockroachCloud page renames
 /docs/cockroachcloud/stable/managed-authentication.html /docs/cockroachcloud/stable/cockroachcloud-authentication.html 301!
 /docs/cockroachcloud/dev/managed-authentication.html /docs/cockroachcloud/dev/cockroachcloud-authentication.html 301!
-/docs/cockroachcloud/stable/managed-authorization.html /docs/cockroachcloud/stable/cockroachcloud-authorization.html 301!
-/docs/cockroachcloud/dev/managed-authorization.html /docs/cockroachcloud/dev/cockroachcloud-authorization.html 301!
+/docs/cockroachcloud/stable/managed-authorization.html /docs/cockroachcloud/stable/cockroachcloud-user-authorization.html 301!
+/docs/cockroachcloud/dev/managed-authorization.html /docs/cockroachcloud/dev/cockroachcloud-user-authorization.html 301!
+/docs/cockroachcloud/stable/cockroachcloud-authorization.html /docs/cockroachcloud/stable/cockroachcloud-user-authorization.html 301!
+/docs/cockroachcloud/dev/cockroachcloud-authorization.html /docs/cockroachcloud/dev/cockroachcloud-user-authorization.html 301!
 /docs/cockroachcloud/stable/managed-cluster-management.html /docs/cockroachcloud/stable/cockroachcloud-cluster-management.html 301!
 /docs/cockroachcloud/dev/managed-cluster-management.html /docs/cockroachcloud/dev/cockroachcloud-cluster-management.html 301!
 /docs/cockroachcloud/stable/managed-cluster-overview.html /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.html 301!

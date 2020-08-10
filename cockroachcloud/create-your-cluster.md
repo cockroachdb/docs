@@ -77,9 +77,29 @@ See [Example](#example) for further guidance.
 
 The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
-After entering the cluster name, click **Next**.
+Click **Next**. Optionally, you can enable VPC peering for your cluster.
 
-## Step 6. Enter your billing details
+## Step 6. Enable VPC Peering (Optional)
+
+{{site.data.alerts.callout_info}}
+Self-service VPC peering setup is available only for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+{{site.data.alerts.end}}
+
+You can use [VPC peering](cockroachcloud-network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
+
+1. In the *Additional Settings* section, toggle the VPC Peering switch to "Yes".
+2. Based on your application network setup, you can use CockroachCloud's default IP range or configure your own IP range.
+    {{site.data.alerts.callout_info}}
+    The IP range and size cannot be changed after the cluster is created and may limit your ability to expand into multiple regions in the future. Use the default IP range only if it does not overlap with the IP ranges in your application network.
+    {{site.data.alerts.end}}
+
+    To use the default IP range, select **Use the default IP range** and click **Next**.
+
+    To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
+
+3. Click **Next**.
+
+## Step 7. Enter your billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
 2. Verify the hourly estimated cost for the cluster.
