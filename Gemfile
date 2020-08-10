@@ -7,7 +7,8 @@ source "https://rubygems.org"
 
 # TODO(benesch): upgrade to the next version that incorporates c55eaf7724
 # (URL filter caching) when it's released.
-gem "jekyll", github: "jekyll", ref: "c55eaf7724"
+# gem "jekyll", github: "jekyll", ref: "c55eaf7724"
+gem "jekyll", "~> 4.1.0"
 gem "jekyll-redirect-from", "~> 0.15"
 gem "jekyll-sitemap", "~> 1.3.1"
 gem "liquid-c", "~> 4.0.0"
