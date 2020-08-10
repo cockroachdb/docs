@@ -73,6 +73,7 @@ Statement | Usage
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
+[`SHOW ENUMS`](show-databases.html) | List [enumerated data types](enum.html) in the cluster.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.

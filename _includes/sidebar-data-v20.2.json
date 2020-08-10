@@ -1092,6 +1092,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE TYPE</code>",
+                "urls": [
+                  "/${VERSION}/create-type.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE USER</code>",
                 "urls": [
                   "/${VERSION}/create-user.html"
@@ -1125,6 +1131,12 @@
                 "title": "<code>DROP DATABASE</code>",
                 "urls": [
                   "/${VERSION}/drop-database.html"
+                ]
+              },
+              {
+                "title": "<code>DROP TYPE</code>",
+                "urls": [
+                  "/${VERSION}/drop-type.html"
                 ]
               },
               {
@@ -1392,6 +1404,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW ENUMS</code>",
+                "urls": [
+                  "/${VERSION}/show-enums.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW GRANTS</code>",
                 "urls": [
                   "/${VERSION}/show-grants.html"
@@ -1586,6 +1604,12 @@
                 "title": "<code>DECIMAL</code>",
                 "urls": [
                   "/${VERSION}/decimal.html"
+                ]
+              },
+              {
+                "title": "<code>ENUM</code>",
+                "urls": [
+                  "/${VERSION}/enum.html"
                 ]
               },
               {

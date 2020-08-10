@@ -16,6 +16,7 @@ Type | Description | Example | [Vectorized Execution](vectorized-execution.html)
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'` | Supported
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.  | `'a1b2c3' COLLATE en` | Not supported
 [`DATE`](date.html) | A date.  | `DATE '2016-01-25'` | Supported
+[`ENUM`](enum.html) | <span class="version-tag">New in v20.2:</span> A data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')` | Not supported
 [`DECIMAL`](decimal.html) | An exact, fixed-point number.  | `1.2345` | Supported
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number.  | `1.2345` | Supported
 [`INET`](inet.html) | An IPv4 or IPv6 address.  | `192.168.0.1` | Not supported
