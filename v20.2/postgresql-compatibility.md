@@ -11,7 +11,7 @@ CockroachDB is compatible with PostgreSQL 9.5 and works with majority of Postgre
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because these features cannot be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
-{{site.data.alerts.callout_info}}This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as the <code>ENUM</code> type.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>.{{site.data.alerts.end}}
 
 ## Unsupported Features
 

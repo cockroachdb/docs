@@ -107,7 +107,7 @@ To restore individual tables, the tables can not already exist in the [target da
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
-<span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., `ENUM`), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
+<span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., [`ENUM`](enum.html)), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
 
 - If there is _not_ an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
 - If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
@@ -234,6 +234,9 @@ If you are restoring from HTTP storage, provide the previous full and incrementa
 - [Backup and Restore Data](backup-and-restore.html)
 - [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
 - [Configure Replication Zones](configure-replication-zones.html)
+- [`ENUM`](enum.html)
+- [`CREATE TYPE`](create-type.html)
+- [`DROP TYPE`](drop-type.html)
 
 <!-- Reference links -->
 
