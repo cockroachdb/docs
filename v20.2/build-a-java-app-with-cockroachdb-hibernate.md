@@ -90,7 +90,7 @@ To run it:
 1. Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate-basic-sample.tgz). The settings in [`hibernate.cfg.xml`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate.cfg.xml) specify how to connect to the database.
 
     {{site.data.alerts.callout_info}}
-    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. To enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB. The dialect version must be no greater than the installed version of CockroachDB, but using a previous version of the CockroachDB dialect will not break an application.
+    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html#hibernate).
     {{site.data.alerts.end}}
 
 2. Compile and run the code using [`build.gradle`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/build.gradle), which will also download the dependencies.
