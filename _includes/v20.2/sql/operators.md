@@ -146,6 +146,7 @@
 <table><thead>
 <tr><td><a name="operator-less-than"></a><code><</code></td><td>Return</td></tr>
 </thead><tbody>
+<tr><td>anyenum <code><</code> anyenum</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool</a> <code><</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code><</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bytes.html">bytes</a> <code><</code> <a href="bytes.html">bytes</a></td><td><a href="bool.html">bool</a></td></tr>
@@ -203,8 +204,9 @@
 <tr><td>varbit <code><<</code> <a href="int.html">int</a></td><td>varbit</td></tr>
 </tbody></table>
 <table><thead>
-<tr><td><a name="operator-less-than-or-equal"></a><code><=</code></td><td>Return</td></tr>
+<tr><td><a name="operator-less-than-or-equal"><code><=</code></td><td>Return</td></tr>
 </thead><tbody>
+<tr><td>anyenum <code><=</code> anyenum</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool</a> <code><=</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code><=</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bytes.html">bytes</a> <code><=</code> <a href="bytes.html">bytes</a></td><td><a href="bool.html">bool</a></td></tr>
@@ -263,6 +265,7 @@
 <table><thead>
 <tr><td><a name="operator-equals"></a><code>=</code></td><td>Return</td></tr>
 </thead><tbody>
+<tr><td>anyenum <code>=</code> anyenum</td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool</a> <code>=</code> <a href="bool.html">bool</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bool.html">bool[]</a> <code>=</code> <a href="bool.html">bool[]</a></td><td><a href="bool.html">bool</a></td></tr>
 <tr><td><a href="bytes.html">bytes</a> <code>=</code> <a href="bytes.html">bytes</a></td><td><a href="bool.html">bool</a></td></tr>
