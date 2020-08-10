@@ -40,24 +40,6 @@ In general, you are likely to have to make changes to your schema, and how your 
 
 Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](https://en.wikipedia.org/wiki/Write_amplification).  See each data type's documentation for its recommended size limits.
 
-## Unsupported data types
-
-CockroachDB does not provide `ENUM` or `SET` data types.
-
-In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.html) as shown below.  For MySQL, we perform this conversion automatically during the import.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE orders (
-    id UUID PRIMARY KEY,
-    -- ...
-    status STRING check (
-      status='processing' or status='in-transit' or status='delivered'
-    ) NOT NULL,
-    -- ...
-  );
-~~~
-
 ## See also
 
 - [`IMPORT`][import]
