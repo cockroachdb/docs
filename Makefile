@@ -72,5 +72,6 @@ vendor:
 	gem install bundler
 
 bootstrap: Gemfile Gemfile.lock | vendor
+	bundle update
 	bundle install
 	touch $@
