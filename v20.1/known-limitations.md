@@ -59,6 +59,27 @@ If your cluster gets into this state, rolling all nodes back to v19.2 will not r
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49092)
 
+### Admin UI Data Distribution page not accessible after some version upgrades
+
+{{site.data.alerts.callout_info}}
+This limitation applies only for upgrades to v20.1.0, v20.1.1, and v20.1.2. Upgrades to v20.1.3 and later are not susceptible to this issue. First-time installations of v20.1.0, v20.1.1, and v20.1.2 are also unaffected.
+{{site.data.alerts.end}}
+
+Upgrading to v20.1.0, v20.1.1, or v20.1.2 will break the [Data Distribution](admin-ui-debug-pages.html) page in the Admin UI.
+
+Navigating to this page will show the following error message:
+
+```
+An error was encountered while loading this data:
+
+- Internal Server Error
+No details available.
+```
+
+To resolve the issue, [upgrade to v20.1.3](upgrade-cockroach-version.html) or any later version.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49882)
+
 ### Primary key changes and zone configs
 
 When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
