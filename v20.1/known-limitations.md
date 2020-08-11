@@ -59,6 +59,16 @@ If your cluster gets into this state, rolling all nodes back to v19.2 will not r
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49092)
 
+### Data Distribution Admin UI page breaks after upgrading to v20.1.2 or earlier
+
+{{site.data.alerts.callout_info}}
+This limitation applies only for upgrades to v20.1.0, v20.1.1, and v20.1.2. Upgrades to v20.1.3 and later are not susceptible to this issue.
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/known-limitations/upgrading-breaks-data-distribution-page.md %}
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/49882)
+
 ### Primary key changes and zone configs
 
 When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
