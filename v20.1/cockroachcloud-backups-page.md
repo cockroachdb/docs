@@ -53,6 +53,11 @@ For each database in the backup, the following details display:
 
 - The **Name** of the database
 - The **Size** of the database
+
+    {{site.data.alerts.callout_info}}
+    If the **Size** listed for a database in an incremental backup is **0.00 B**, it means no changes were made in the database since the last full backup.
+    {{site.data.alerts.end}}
+
 - The number of [**Tables**](#tables) in the database
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
@@ -77,6 +82,11 @@ For each table in the database, the following details display:
 
 - The **Name** of the table
 - The **Size** of the table
+
+    {{site.data.alerts.callout_info}}
+    If the **Size** listed for a database in an incremental backup is **0.00 B**, it means no changes were made in the database since the last full backup.
+    {{site.data.alerts.end}}
+    
 - The number of **Rows** in the table
 
 <!-- - Additional **Recovery Info** -->
