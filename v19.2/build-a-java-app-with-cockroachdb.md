@@ -21,9 +21,7 @@ This tutorial shows you how to build a simple Java application with CockroachDB 
 
 ## Step 1. Install the Java JDBC driver
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
-
-{% include {{page.version.version}}/app/jdbc-version-note.md %}
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the latest PostgreSQL JDBC 42.2.x driver.
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
