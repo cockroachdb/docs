@@ -284,6 +284,22 @@ module Jekyll
         nil
       end
 
+      def self.update_synonyms
+        index.save_synonym('CBO', {
+          objectID: 'CBO',
+          type: 'synonym',
+          synonyms: ['CBO', 'cost-based optimizer', 'cost based optimizer']
+        }, false)
+ 
+        index.save_synonym('spatial', {
+          objectID: 'spatial',
+          type: 'synonym',
+          synonyms: ['spatial', 'geospatial']
+        }, false)
+      
+        return
+      end
+
       # Public: Smart update of the settings of the index
       #
       # This will first compare the settings about to be pushed with the
@@ -386,6 +402,7 @@ module Jekyll
         end
 
         update_settings
+        update_synonyms
         update_records(records)
 
         Logger.log('I:✔ Indexing complete')
