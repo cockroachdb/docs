@@ -112,6 +112,7 @@ SQL driver to determine whether these options are supported.
 
 The following URL is suitable to connect to a CockroachDB node using an insecure connection:
 
+{% include copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=disable
 ~~~
@@ -124,6 +125,7 @@ current database. `sslmode=disable` makes the connection insecure.
 
 The following URL is suitable to connect to a CockroachDB node using a secure connection:
 
+{% include copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=verify-full&sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key
 ~~~
@@ -146,6 +148,7 @@ For details about how to create and manage SSL/TLS certificates, see
 
 <span class="version-tag">New in v20.1:</span> The following URI is suitable to connect to a CockroachDB cluster listening for Unix domain socket connections at `/path/to/client`:
 
+{% include copy-clipboard.html %}
 ~~~
 postgres://root@?host=/path/to/client&port=26257
 ~~~
@@ -169,6 +172,7 @@ variable is used when the command-line flag is not specified.
 
 The following command-line flags establish an insecure connection:
 
+{% include copy-clipboard.html %}
 ~~~
 --user=root \
 --host=<servername>
@@ -183,6 +187,7 @@ the connection insecure.
 
 The following command-line flags establish a secure connection:
 
+{% include copy-clipboard.html %}
 ~~~
 --user=root \
 --host=<servername>
@@ -217,12 +222,14 @@ override settings not otherwise set in the URL.
 
 The `cockroach start` command prints out the following connection URL, which connects to the `defaultdb` database:
 
+{% include copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/?sslmode=disable
 ~~~
 
 To specify `mydb` as the current database using [`cockroach sql`](cockroach-sql.html), run the following command:
 
+{% include copy-clipboard.html %}
 ~~~
 cockroach sql \
 --url "postgres://root@servername:26257/?sslmode=disable" \
@@ -231,6 +238,7 @@ cockroach sql \
 
 This is equivalent to:
 
+{% include copy-clipboard.html %}
 ~~~
 cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 ~~~
