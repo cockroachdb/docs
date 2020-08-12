@@ -13,6 +13,8 @@ twitter: false
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
 {{site.data.alerts.callout_success}}
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
@@ -20,10 +22,6 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
-
-{{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
-{{site.data.alerts.end}}
 
 ## Step 1. Install the Gradle build tool
 
