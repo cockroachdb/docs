@@ -9,7 +9,6 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
-/docs/releases /docs/releases/ 200!
 /docs/releases/ /docs/releases/index.html 200!
 /docs/advisories/ /docs/advisories/index.html 200!
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
