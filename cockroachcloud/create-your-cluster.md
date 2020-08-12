@@ -87,15 +87,15 @@ Self-service VPC peering setup is available only for GCP clusters. For AWS clust
 
 You can use [VPC peering](cockroachcloud-network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
 
-1. In the *Additional Settings* section, toggle the VPC Peering switch to "Yes".
-2. Based on your application network setup, you can use CockroachCloud's default IP range or configure your own IP range.
-    {{site.data.alerts.callout_info}}
-    The IP range and size cannot be changed after the cluster is created and may limit your ability to expand into multiple regions in the future. Use the default IP range only if it does not overlap with the IP ranges in your application network.
-    {{site.data.alerts.end}}
+1. Under *Additional Settings*, toggle the VPC Peering switch to "Yes".
+2. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
 
-    To use the default IP range, select **Use the default IP range** and click **Next**.
+    -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
+    - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
-    To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
+      Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
+
+    To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
 
 3. Click **Next**.
 
