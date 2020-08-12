@@ -16,12 +16,10 @@ This tutorial shows you how build a simple Java application with CockroachDB and
 
 CockroachDB is supported in jOOQ [Professional and Enterprise editions](https://www.jooq.org/download/#databases).
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
 {{site.data.alerts.callout_success}}
 For another use of jOOQ with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-For Java applications that use the Spring framework, see the applications listed under [Java/Spring](build-a-spring-app-with-cockroachdb-mybatis.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -51,10 +49,6 @@ For other ways to install Maven, see [its official documentation](https://maven.
 ## Step 2. Install jOOQ
 
 Download the free trial of jOOQ Professional or Enterprise edition from [jOOQ's website](https://www.jooq.org/download), and unzip the file.
-
-{{site.data.alerts.callout_info}}
-If you have Java 6, Java 8, or Java 11, go to [Download your jOOQ version](https://www.jooq.org/download/versions#trial), and download the free trial of jOOQ for your version of Java.
-{{site.data.alerts.end}}
 
 To install jOOQ to your machine's local Maven repository, run the `maven-install.sh` script included in the jOOQ install folder:
 

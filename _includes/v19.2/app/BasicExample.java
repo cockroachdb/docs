@@ -39,6 +39,7 @@ public class BasicExample {
         ds.setPassword(null);
         ds.setSsl(true);
         ds.setSslMode("require");
+        ds.setSslRootCert("certs/client.root.crt");
         ds.setSslCert("certs/client.maxroach.crt");
         ds.setSslKey("certs/client.maxroach.key.pk8");
         ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string

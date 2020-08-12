@@ -14,6 +14,8 @@ twitter: false
 
 This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
 {{site.data.alerts.callout_success}}
 For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html).
 {{site.data.alerts.end}}
@@ -22,13 +24,11 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-{{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
-{{site.data.alerts.end}}
-
 ## Step 1. Install the Java JDBC driver
 
 Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+
+{% include {{page.version.version}}/app/jdbc-version-note.md %}
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
