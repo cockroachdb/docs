@@ -109,6 +109,60 @@ To view how the index hint modifies the query plan that CockroachDB follows for 
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
+## Delete "expired" data
+
+CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process using a job scheduler like `cron`.
+
+<span class="version-tag">New in v20.2:</span> CockroachDB records the timestamp of each row created in the database with the `crdb_internal_mvcc_timestamp` metadata column. In the absence of an explicit timestamp column in your table, we recommend using `crdb_internal_mvcc_timestamp` to filter expired data.
+
+For example, consider the following Python script:
+
+{% include copy-clipboard.html %}
+~~~ python
+#!/usr/bin/env python3
+
+import psycopg2
+import sys
+import os
+
+conn = psycopg2.connect(os.environ.get('DB_URI'))
+batchsize = 10000
+
+while True:
+    with conn.cursor() as cur:
+        cur.execute("DELETE from bank WHERE crdb_internal_mvcc_timestamp < current_date() - INTERVAL '1 MONTH' LIMIT {0}".format(batchsize))
+        if cur.statusmessage == 'DELETE 0':
+            sys.exit()
+    conn.commit()
+~~~
+
+This script deletes all rows older than a month, working iteratively in batches of 10,000 rows. To run this script with a daily `cron` job:
+
+1. Make the file executable:
+
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ chmod +x cleanup.py
+  ~~~
+
+2. Create a new `cron` job:
+
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ crontab -e
+  ~~~
+
+  {% include copy-clipboard.html %}
+  ~~~ txt
+  30 10 * * * cleanup.py >> ~/cron.log 2>&1
+  ~~~
+
+Saving the `cron` file will install a new job that runs the `cleanup.py` file every morning at 10:00 A.M., writing the results to the `cron.log` file.
+
+{{site.data.alerts.callout_info}}
+CockroachDB versions < v20.2 do not include the `crdb_internal_mvcc_timestamp` metadata column.
+{{site.data.alerts.end}}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}

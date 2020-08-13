@@ -10,6 +10,12 @@ The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
 {{site.data.alerts.callout_info}}To delete columns, see <a href="drop-column.html"><code>DROP COLUMN</code></a>.{{site.data.alerts.end}}
 
+## Performance best practices
+
+- To delete all rows in a table, use [`TRUNCATE`][truncate] instead of `DELETE`. Unless your table is small (less than 1000 rows), `TRUNCATE` will be more performant.
+
+- To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For more information, see [batch deletes](#batch-deletes).
+
 ## Required privileges
 
 The user must have the `DELETE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
@@ -33,9 +39,8 @@ table td:first-child {
  `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
  `table_name` | The name of the table that contains the rows you want to update.
  `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table.__
- `sort_clause` | An `ORDER BY` clause. <br /><br /> See [Ordering of rows in
-DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
+`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using `TRUNCATE` instead of `DELETE`.__
+ `sort_clause` | An `ORDER BY` clause. <br /><br /> See [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 
@@ -48,6 +53,29 @@ Successful `DELETE` statements return one of the following:
 `DELETE` _`int`_ | _int_ rows were deleted.<br><br>`DELETE` statements that do not delete any rows respond with `DELETE 0`. When `RETURNING NOTHING` is used, this information is not included in the response.
 Retrieved table | Including the `RETURNING` clause retrieves the deleted rows, using the columns identified by the clause's parameters.<br><br>[See an example.](#return-deleted-rows)
 
+## Batch deletes
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows with a [`LIMIT`](limit-offset.html) clause. You can script a simple loop to do this.
+
+For example, in Python, this would look similar to the following:
+
+{% include copy-clipboard.html %}
+~~~ python
+while True:
+    with conn.cursor() as cur:
+        cur.execute("DELETE from bank WHERE {0} LIMIT {1}".format(filter, batchsize))
+        print(cur.statusmessage)
+        if cur.statusmessage == 'DELETE 0':
+            sys.exit()
+    conn.commit()
+~~~
+
+To determine the optimal batch size for your application, try out different batch sizes (1000 rows, 10000 rows, 100000 rows, etc.) and monitor the change in performance.
+
+{{site.data.alerts.callout_info}}
+If you are batch-deleting a large amount of data, you might see a drop in performance for each subsequent batch. For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+{{site.data.alerts.end}}
+
 ## Disk space usage after deletes
 
 Deleting a row does not immediately free up the disk space. This is
@@ -55,7 +83,7 @@ due to the fact that CockroachDB retains [the ability to query tables
 historically](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
 
 If disk usage is a concern, the solution is to
-[reduce the time-to-live](configure-replication-zones.html) (TTL) for
+[reduce the garbage collection time-to-live](configure-replication-zones.html) (TTL) for
 the zone by setting `gc.ttlseconds` to a lower value, which will cause
 garbage collection to clean up deleted objects (rows, tables) more
 frequently.
@@ -66,7 +94,7 @@ Queries that scan across tables that have lots of deleted rows will
 have to scan over deletions that have not yet been garbage
 collected. Certain database usage patterns that frequently scan over
 and delete lots of rows will want to reduce the
-[time-to-live](configure-replication-zones.html) values to clean up
+[garbage collection time-to-live](configure-replication-zones.html) values to clean up
 deleted rows more frequently.
 
 ## Sorting the output of deletes
@@ -76,12 +104,6 @@ deleted rows more frequently.
 For more information about ordering query results in general, see
 [Ordering Query Results](query-order.html) and [Ordering of rows in
 DML statements](query-order.html#ordering-rows-in-dml-statements).
-
-## Delete performance on large data sets
-
-If you are deleting a large amount of data using iterative `DELETE ... LIMIT` statements, you are likely to see a drop in performance for each subsequent `DELETE` statement.
-
-For an explanation of why this happens, and for instructions showing how to iteratively delete rows in constant time, see [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
 
 ## Force index selection for deletes
 
@@ -109,52 +131,63 @@ To view how the index hint modifies the query plan that CockroachDB follows for 
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
+## Delete "expired" data
+
+CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a [batch delete process](#batch-deletes) using a job scheduler like `cron`.
+
+For example, consider the following Python script:
+
+{% include copy-clipboard.html %}
+~~~ python
+#!/usr/bin/env python3
+
+import psycopg2
+import sys
+import os
+
+conn = psycopg2.connect(os.environ.get('DB_URI'))
+batchsize = 10000
+
+while True:
+    with conn.cursor() as cur:
+        cur.execute("DELETE from bank WHERE timestamp < current_date() - INTERVAL '1 MONTH' LIMIT {0}".format(batchsize))
+        if cur.statusmessage == 'DELETE 0':
+            sys.exit()
+    conn.commit()
+~~~
+
+This script deletes all rows older than a month, working iteratively in batches of 10,000 rows. To run this script with a daily `cron` job:
+
+1. Make the file executable:
+
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ chmod +x cleanup.py
+  ~~~
+
+2. Create a new `cron` job:
+
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ crontab -e
+  ~~~
+
+  {% include copy-clipboard.html %}
+  ~~~ txt
+  30 10 * * * cleanup.py >> ~/cron.log 2>&1
+  ~~~
+
+Saving the `cron` file will install a new job that runs the `cleanup.py` file every morning at 10:00 A.M., writing the results to the `cron.log` file.
+
+{{site.data.alerts.callout_info}}
+CockroachDB versions < v20.2 do not automatically create timestamp data for table rows. As a result, your table must have a timestamp column to follow the pattern demonstrated above.
+{{site.data.alerts.end}}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
-### Delete all rows
-
-You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
-
-{{site.data.alerts.callout_info}}
-If the [`sql_safe_updates`](cockroach-sql.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
-{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DELETE FROM vehicle_location_histories;
-~~~
-
-~~~
-pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
-~~~
-
-You can use a [`SET`](set-vars.html) statement to set session variables.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET sql_safe_updates = false;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DELETE FROM vehicle_location_histories;
-~~~
-
-~~~
-DELETE 1000
-~~~
-
-{{site.data.alerts.callout_success}}
-Unless your table is small (less than 1000 rows), using [`TRUNCATE`][truncate] to delete the contents of a table will be more performant than using `DELETE`.
-{{site.data.alerts.end}}
-
-### Delete specific rows
-
-When deleting specific rows from a table, the most important decision you make is which columns to use in your `WHERE` clause. When making that choice, consider the potential impact of using columns with the [Primary Key](primary-key.html)/[Unique](unique.html) constraints (both of which enforce uniqueness) versus those that are not unique.
-
-#### Delete rows using Primary Key/unique columns
+### Delete rows using Primary Key/unique columns
 
 Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
 
@@ -168,7 +201,7 @@ In this example, `code` is our primary key and we want to delete the row where t
 DELETE 1
 ~~~
 
-#### Delete rows using non-unique columns
+### Delete rows using non-unique columns
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 

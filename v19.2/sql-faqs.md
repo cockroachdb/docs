@@ -14,6 +14,12 @@ toc_not_nested: true
     {{site.data.alerts.end}}
 - To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases](migration-overview.html) like MySQL, Oracle, and Postgres.  
 
+## How do I bulk delete data from CockroachDB?
+
+- To delete all of the contents of a table, but not the table itself, use a [`TRUNCATE`](truncate.html) statement.
+
+- To delete a large number of rows from a table, we recommend iteratively deleting batches of rows with [`DELETE`](delete.html) statements until all of the unwanted rows are deleted. For an example, see [Batch deletes](delete.html#batch-deletes).
+
 ## How do I auto-generate unique row IDs in CockroachDB?
 
 {% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
@@ -142,7 +148,7 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 ## Why are my deletes getting slower over time?
 
-> I need to delete a large amount of data. I'm iteratively deleting a certain number of rows using a [`DELETE`](delete.html) statement with a [`LIMIT`](limit-offset.html) clause, but it's getting slower over time. Why?
+> I need to delete a large amount of data. I'm [iteratively deleting a certain number of rows](delete.html#batch-deletes) using a [`DELETE`](delete.html) statement with a [`LIMIT`](limit-offset.html) clause, but it's getting slower over time. Why?
 
 CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed.  By default, this period is 25 hours.
 
@@ -150,7 +156,7 @@ This means that with the default settings, each iteration of your `DELETE` state
 
 If you need to iteratively delete rows in constant time, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and run your `DELETE` statement once per GC interval. We strongly recommend returning `gc.ttlseconds` to the default value after your large deletion is completed.
 
-For instructions showing how to delete specific rows, see [Delete specific rows](delete.html#delete-specific-rows).
+For instructions showing how to delete specific rows, see [`DELETE`](delete.html).
 
 ## See also
 
