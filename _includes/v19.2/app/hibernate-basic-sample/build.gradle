@@ -11,6 +11,6 @@ repositories {
 }
 
 dependencies {
-    compile 'org.hibernate:hibernate-core:5.2.4.Final'
-    compile 'org.postgresql:postgresql:42.2.2.jre7'
+    implementation 'org.hibernate:hibernate-core:5.4.19.Final'
+    implementation 'org.postgresql:postgresql:42.2.14'
 }
