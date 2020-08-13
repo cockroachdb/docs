@@ -9,10 +9,6 @@ This page describes the **Backups** page and how to restore your data.
 
 Cockroach Labs runs [full backups](backup.html#full-backups) daily and [incremental backups](backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
-{{site.data.alerts.callout_info}}
-All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
-{{site.data.alerts.end}}
-
 The backups that Cockroach Labs takes for you can be viewed on the [Backups page](#backups-page), where you can:
 
 - [Restore a cluster](#restore-a-cluster)
@@ -21,7 +17,7 @@ The backups that Cockroach Labs takes for you can be viewed on the [Backups page
 
 You can also:
 
-- [Back up and restore from a self-hosted CockroachDB cluster](#back-up-and-restore-from-a-self-hosted-cockroachdb-cluster)
+- [Back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
 - [Back up and restore data manually](#back-up-and-restore-data-manually)
 
 ## Backups page
@@ -52,7 +48,7 @@ To view the databases included in the backup, click the number in the **Database
 For each database in the backup, the following details display:
 
 - The **Name** of the database
-- The **Size** of the database
+- The **Size** of the database data captured in the backup
 
     {{site.data.alerts.callout_info}}
     If the **Size** listed for a database in an incremental backup is **0.00 B**, it means no changes were made in the database since the last full backup.
@@ -81,13 +77,13 @@ To view the tables in a database, click the number in the **Tables** column on t
 For each table in the database, the following details display:
 
 - The **Name** of the table
-- The **Size** of the table
+- The **Size** of the table data captured in the backup
 
     {{site.data.alerts.callout_info}}
-    If the **Size** listed for a database in an incremental backup is **0.00 B**, it means no changes were made in the database since the last full backup.
+    If the **Size** listed for a table in an incremental backup is **0.00 B**, it means no changes were made in the table since the last full backup.
     {{site.data.alerts.end}}
-    
-- The number of **Rows** in the table
+
+- The number of **Rows** captured in the backup
 
 <!-- - Additional **Recovery Info** -->
 
@@ -175,6 +171,10 @@ To restore a database:
     > RESTORE DATABASE example_database FROM 'path_to_backup';
     ~~~
 
+1. Set any database-specific [zone configurations](configure-replication-zones.html).
+
+1. If applicable, [grant privileges](grant.html).
+
 ## Restore a table
 
 To restore a table:
@@ -204,7 +204,7 @@ To restore a table:
 
 1. If the table's name is already in use, either:
 
-    [Drop the existing database](drop-table.html):
+    [Drop the existing table](drop-table.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -221,7 +221,7 @@ To restore a table:
     You can also restore to a different database by changing the target database name:
 
     ~~~ sql
-    > RESTORE TABLE new_target_database.example_table FROM 'path_to_backup';
+    > RESTORE TABLE example_database.example_table FROM 'path_to_backup' WITH into_db = 'new_target_database';
     ~~~
 
 1. [Restore](restore.html) the table to the target cluster:
@@ -231,9 +231,13 @@ To restore a table:
     > RESTORE TABLE example_database.example_table FROM 'path_to_backup';
     ~~~
 
-## Back up and restore from a self-hosted CockroachDB cluster
+1. Set any table-specific [zone configurations](configure-replication-zones.html).
 
-To back up and restore from a self-hosted CockroachDB cluster:
+1. If applicable, [grant privileges](grant.html).
+
+## Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster
+
+To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 1. While [connected to your self-hosted CockroachDB cluster](connect-to-the-database.html), [back up](backup.html) your databases and/or tables to an [external location](backup.html#backup-file-urls):
 
