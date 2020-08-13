@@ -329,7 +329,9 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 DELETE 669
 ~~~
 
-Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted.
+Just as with the `UPDATE` statement, if a table has a primary key, you can use that in the `WHERE` clause to reliably delete specific rows; otherwise, each row matching the `WHERE` clause is deleted. When there's no `WHERE` clause, all rows in the table are deleted. We do not recommend using `WHERE` to delete all of the rows in a table. Instead, use [`TRUNCATE`](truncate.html).
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Batch deletes](delete.html#batch-deletes).
 
 ## Remove a table
 
