@@ -7,7 +7,7 @@ toc: true
 In a multi-region deployment, the geo-partitioned [leaseholders](architecture/replication-layer.html#leases) topology is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
-- Reads must be up-to-date for business reasons or because the table is reference by [foreign keys](foreign-key.html).
+- Reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](foreign-key.html).
 - Rows in the table, and all latency-sensitive queries, can be tied to specific geographies, e.g., city, state, region.
 - Table data must remain available during a region failure.
 
@@ -243,7 +243,7 @@ Because this pattern balances the replicas for each partition across regions, on
 
 ## Alternatives
 
-- If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
+- If reads from a table can be historical (4.8 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
 - If rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies, consider the [Duplicate Indexes](topology-duplicate-indexes.html) pattern.
 
 ## See also
