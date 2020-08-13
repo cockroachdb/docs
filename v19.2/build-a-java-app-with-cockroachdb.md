@@ -13,17 +13,15 @@ twitter: false
 
 This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-{{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
-{{site.data.alerts.end}}
-
 ## Step 1. Install the Java JDBC driver
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the latest PostgreSQL JDBC 42.2.x driver.
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -35,7 +33,7 @@ Download and set up the Java JDBC driver as described in the [official documenta
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-<span class="version-tag">New in v19.1</span>: You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -64,7 +62,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 To run it:
 
-1. Download [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/BasicExample.java), or create the file yourself and copy the code below.
+1. Download [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/BasicExample.java), or create the file yourself and copy the code below.
 2. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
@@ -83,7 +81,7 @@ To clone a version of the code below that connects to insecure clusters, run the
 `git clone https://github.com/cockroachlabs/hello-world-java-jdbc/`
 {{site.data.alerts.end}}
 
-The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/BasicExample.java):
+The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/BasicExample.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -138,7 +136,7 @@ To run it:
     $ java -classpath .:/path/to/postgresql.jar BasicExample
     ~~~
 
-The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/insecure/BasicExample.java):
+The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/BasicExample.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
