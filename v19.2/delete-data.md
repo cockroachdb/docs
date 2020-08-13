@@ -106,6 +106,10 @@ You can delete multiple rows from a table in several ways:
 
 - Using [`TRUNCATE`](truncate.html) instead of [`DELETE`](delete.html) to delete all of the rows from a table, as recommended in our [performance best practices](performance-best-practices-overview.html#use-truncate-instead-of-delete-to-delete-all-rows-in-a-table).
 
+{{site.data.alerts.callout_success}}
+We recommend [deleting large amounts of data in batches](delete.html#batch-deletes).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 Before deleting large amounts of data, see [Performance considerations](#performance-considerations).
 {{site.data.alerts.end}}
@@ -132,7 +136,7 @@ Reference information related to this task:
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)
 - [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
-- [Delete Multiple Rows](delete.html#delete-specific-rows)
+- [Delete Multiple Rows](delete.html#examples)
 
 Other common tasks:
 

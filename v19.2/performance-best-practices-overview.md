@@ -20,12 +20,12 @@ For more information, see:
 
 - [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 - [Upsert Multiple Rows](upsert.html#upsert-multiple-rows)
-- [Delete Multiple Rows](delete.html#delete-specific-rows)
+- [Delete Multiple Rows](delete.html#examples)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
 
-The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows. For smaller tables (with less than 1000 rows), however, using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
+The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows
 
 ## Bulk insert best practices
 
@@ -41,9 +41,19 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Bulk deletion best practices
+## Bulk delete best practices
+
+### Batch deletes
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Batch deletes](delete.html#batch-deletes).
+
+### Performance optimization
 
 To get the best performance when deleting large amounts of data, follow the instructions in [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+
+### Delete "expired" data
+
+CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Delete expired data](delete.html#delete-expired-data).
 
 ## Assign column families
 
