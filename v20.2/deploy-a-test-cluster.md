@@ -142,7 +142,7 @@ To see this in action:
     cockroachdb-2   1/1       Running   0          1h
     ~~~
 
-3. Terminate one of CockroachDB nodes:
+3. Terminate one of the CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
