@@ -7,6 +7,8 @@ back_to_top: true
 
 The Hot Ranges endpoint returns ranges with active requests for a specified node.
 
+This API will remain stable across minor (patch) releases within a major release.
+
 ## Resource
 
 `GET /_status/hotranges`
