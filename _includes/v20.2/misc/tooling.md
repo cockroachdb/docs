@@ -20,7 +20,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Node.js | [pg](build-a-nodejs-app-with-cockroachdb.html) | [8.2.1](https://www.npmjs.com/package/pg) | Beta |
 | PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
 | Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [2.8.6](https://www.psycopg.org/docs/install.html) | Full |
-| Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [1.2.3](https://rubygems.org/gems/pg) | Beta |
+| Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [1.2.3](https://rubygems.org/gems/pg) | Full |
 | Rust | <a href="https://crates.io/crates/postgres/" data-proofer-ignore>postgres</a> {% comment %} This link is in HTML instead of Markdown because HTML proofer dies bc of https://github.com/rust-lang/crates.io/issues/163 {% endcomment %} | [0.17.3](https://crates.io/crates/postgres/) | Beta |
 
 ## Object-relational mappers (ORMs)
