@@ -130,11 +130,15 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 ## Drivers
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
+{% include {{page.version.version}}/app/java-tls-note.md %}
+
 ### JDBC
 
 **Support level:** Full
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the latest PostgreSQL JDBC 42.2.x driver.
 
 For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
@@ -144,56 +148,44 @@ For a simple but complete "Hello World" example app, see [Build a Java App with 
 
 **Support level:** Full
 
-You can use the [Gradle build tool](https://gradle.org/) to get all dependencies for your application, including Hibernate.
+You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including Hibernate. Only Hibernate versions 5.4.19 and later support the Hibernate CockroachDB dialect.
 
-To install Gradle on Mac:
+If you are using Gradle, add the following to your `dependencies`:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ brew install gradle
+~~~
+implementation 'org.hibernate:hibernate-core:5.4.19.Final'
+implementation 'org.postgresql:postgresql:42.2.14'
 ~~~
 
-To install Gradle on a Debian-based Linux distribution like Ubuntu:
+For a simple but complete "Hello World" example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ apt-get install gradle
+If you are using Maven, add the following to your `<dependencies>`:
+
+~~~
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.4.19.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+</dependency>
 ~~~
 
-To install Gradle on a Red Hat-based Linux distribution like Fedora:
+For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ dnf install gradle
-~~~
+You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm). Versions of the Hibernate CockroachDB dialect correspond to the version of CockroachDB installed on your machine. For example, `org.hibernate.dialect.CockroachDB201Dialect` corresponds to CockroachDB v20.1, and `org.hibernate.dialect.CockroachDB192Dialect` corresponds to CockroachDB v19.2.
 
-For other ways to install Gradle, see [its official documentation](https://gradle.org/install).
-
-For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
+All dialect versions are forward-compatible (e.g. CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
 
 ### jOOQ
 
 **Support level:** Full
 
-You can use the [Maven build tool](https://gradle.org/) to manage application dependencies.
+You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including jOOQ.
 
-To install Maven on Mac:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ brew install maven
-~~~
-
-To install Maven on a Debian-based Linux distribution like Ubuntu:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ apt-get install maven
-~~~
-
-For other ways to install Maven, see [its official documentation](https://maven.apache.org/install.html).
-
-For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
+For a simple but complete "Hello World" example app that uses Maven for dependency management, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
 
 </section>
 
@@ -255,7 +247,7 @@ For a simple but complete "Hello World" example app, see [Build a Go App with Co
 
 ### pg
 
-**Support level:** Beta
+**Support level:** Full
 
 To install the [Ruby pg driver](https://rubygems.org/gems/pg):
 

@@ -779,22 +779,38 @@
           "/${VERSION}/third-party-database-tools.html"
         ],
         "items": [
-          {
-            "title": "DBeaver GUI",
-            "urls": [
-              "/${VERSION}/dbeaver.html"
-            ]
-          },
-          {
-            "title": "Flyway Schema Migrations",
-            "urls": [
-              "/${VERSION}/flyway.html"
-            ]
-          },
-          {
-            "title": "IntelliJ IDEA",
-            "urls": [
-              "/${VERSION}/intellij-idea.html"
+            {
+              "title": "Schema Migration Tools",
+              "items": [
+                {
+                  "title": "Flyway",
+                  "urls": [
+                    "/${VERSION}/flyway.html"
+                  ]
+                },
+                {
+                  "title": "Liquibase",
+                  "urls": [
+                    "/${VERSION}/liquibase.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "GUIs & IDEs",
+              "items": [
+              {
+                "title": "DBeaver GUI",
+                "urls": [
+                  "/${VERSION}/dbeaver.html"
+                ]
+              },
+              {
+                "title": "IntelliJ IDEA",
+                "urls": [
+                  "/${VERSION}/intellij-idea.html"
+                ]
+              }
             ]
           }
         ]
@@ -1837,6 +1853,23 @@
             "title": "Window Functions",
             "urls": [
               "/${VERSION}/window-functions.html"
+            ]
+          },
+          {
+            "title": "Spatial Features",
+              "items": [
+                  {
+                      "title": "Overview",
+                      "urls": [
+                          "/${VERSION}/spatial-features.html"
+                      ]
+                  },
+                  {
+                      "title": "Spatial and GIS Glossary of Terms",
+                      "urls": [
+                          "/${VERSION}/spatial-glossary.html"
+                      ]
+                  }
             ]
           },
           {

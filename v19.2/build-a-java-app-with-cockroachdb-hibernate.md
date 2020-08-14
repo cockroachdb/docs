@@ -13,6 +13,8 @@ twitter: false
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
+{% include {{page.version.version}}/app/java-version-note.md %}
+
 {{site.data.alerts.callout_success}}
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
@@ -20,10 +22,6 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 ## Before you begin
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
-
-{{site.data.alerts.callout_danger}}
-The examples on this page assume you are using a Java version <= 9. They do not work with Java 10.
-{{site.data.alerts.end}}
 
 ## Step 1. Install the Gradle build tool
 
@@ -85,6 +83,11 @@ It does all of the above using the practices we recommend for using Hibernate (a
 To run it:
 
 1. Download and extract [hibernate-basic-sample.tgz](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate-basic-sample.tgz). The settings in [`hibernate.cfg.xml`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/hibernate.cfg.xml) specify how to connect to the database.
+
+    {{site.data.alerts.callout_info}}
+    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html#hibernate).
+    {{site.data.alerts.end}}
+
 2. Compile and run the code using [`build.gradle`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/build.gradle), which will also download the dependencies.
 
     {% include copy-clipboard.html %}

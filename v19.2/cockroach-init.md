@@ -46,7 +46,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ## Examples
 
-These examples assume that nodes have already been started with [`cockroach start`](cockroach-start.html) but are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+Usage of `cockroach init` assumes that nodes have already been started with [`cockroach start`](cockroach-start.html) and are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 ### Initialize a Cluster on a Node's Machine
 

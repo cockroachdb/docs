@@ -82,6 +82,18 @@
 
   <tr>
    <td>
+    <code>default_transaction_priority</code>
+   </td>
+   <td>The default transaction priority for the current session. The supported options include <code>LOW</code>, <code>NORMAL</code>, and <code>HIGH</code>.</td>
+   <td>
+    <code>NORMAL</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>default_transaction_read_only</code>
    </td>
    <td>The default transaction access mode for the current session. If set to <code>on</code>, only read operations are allowed in transactions in the current session; if set to <code>off</code>, both read and write operations are allowed. See <a href="set-transaction.html"><code>SET TRANSACTION</code></a>
@@ -143,22 +155,20 @@
   </tr>
 
   <tr>
+   <td><code>force_savepoint_restart</code></td>
+   <td>When set to <code>true</code>, allows the <a href="savepoint.html"><code>SAVEPOINT</code></a> statement to accept any name for a savepoint.</td>
    <td>
-    <code>reorder_joins_limit</code>
-   </td>
-   <td>Maximum number of joins that the optimizer will attempt to reorder when searching for an optimal query execution plan. For more information, see <a href="cost-based-optimizer.html#join-reordering">Join reordering</a>.</td>
-   <td>
-    <code>4</code>
+    <code>off</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
 
   <tr>
-   <td><code>force_savepoint_restart</code></td>
-   <td>When set to <code>true</code>, allows the <a href="savepoint.html"><code>SAVEPOINT</code></a> statement to accept any name for a savepoint.</td>
+   <td><code>idle_in_session_timeout</code></td>
+   <td>Automatically terminates sessions that idle past the specified threshold. When set to <code>0</code>, the session will not timeout.</td>
    <td>
-    <code>off</code>
+    <code>0</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
@@ -177,11 +187,36 @@
 
   <tr>
    <td>
-    <code>optimizer_foreign_keys</code>
+    <code>optimizer_use_histograms</code>
    </td>
-   <td> If <code>off</code>, disables <a href="cost-based-optimizer.html">optimizer-driven</a> foreign key checks.
+   <td>If <code>on</code>, the optimizer uses collected histograms for cardinality estimation.</td>
+   <td>
+    <code>on</code>
    </td>
-   <td><code>on</code></td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>optimizer_use_multicol_stats</code>
+   </td>
+   <td>If <code>on</code>, the optimizer uses collected multi-column statistics for cardinality estimation.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>reorder_joins_limit</code>
+   </td>
+   <td>Maximum number of joins that the optimizer will attempt to reorder when searching for an optimal query execution plan. For more information, see <a href="cost-based-optimizer.html#join-reordering">Join reordering</a>.</td>
+   <td>
+    <code>4</code>
+   </td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
@@ -218,6 +253,19 @@
    <td>A list of schemas that will be searched to resolve unqualified table or function names. For more details, see <a href="sql-name-resolution.html">SQL name resolution</a>.</td>
    <td>
     <code>public</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+
+  <tr>
+   <td>
+    <code>serial_normalization</code>
+   </td>
+   <td>Specifies the default handling of <code>SERIAL</code> in table definitions. Valid options include <code>'rowid'</code>, <code>'virtual_sequence'</code>, and <code>sql_sequence</code>.<br>If set to <code>'virtual_sequence'</code>, the <code>SERIAL</code> type auto-creates a sequence for <a href="https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/">better compatibility with Hibernate sequences</a>.</td>
+   <td>
+    <code>'rowid'</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>

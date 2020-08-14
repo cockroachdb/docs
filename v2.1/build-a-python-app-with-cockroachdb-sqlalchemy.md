@@ -262,7 +262,7 @@ In addition to the above, using `run_transaction` has the following benefits:
 
 - Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
 - It abstracts away the [client-side transaction retry logic](transactions.html#client-side-intervention) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against Postgres (modulo changes to the prefix and port number in the connection string).
-- It will run your transactions to completion much faster than a naive implementation that created a fresh transaction after every retry error. Because of the way the CockroachDB dialect's driver structures the transaction attempts (using a [`SAVEPOINT`](savepoint.html) statement under the hood, which has a slightly different meaning in CockroachDB than in some other databases), the server is able to preserve some information about the previously attempted transactions to allow subsequent retries to complete more easily.
+
 
 For more information about how transactions (and retries) work, see [Transactions](transactions.html).
 

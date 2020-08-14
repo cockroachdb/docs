@@ -243,6 +243,8 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
+    {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
+
 3. Add two more nodes:
 
     {% include copy-clipboard.html %}

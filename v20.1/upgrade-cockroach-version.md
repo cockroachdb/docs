@@ -121,25 +121,11 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
-1. Connect to the node.
-
-2. Terminate the `cockroach` process.
-
-    Without a process manager like `systemd`, use this command:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ pkill cockroach
-    ~~~
-
-    If you are using `systemd` as the process manager, use this command to stop a node without `systemd` restarting it:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ systemctl stop <systemd config filename>
-    ~~~
-
-    Then verify that the process has stopped:
+1. Drain and stop the node using one of the following methods:
+    
+    {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
+    
+    Verify that the process has stopped:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -148,7 +134,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
 
-3. Download and install the CockroachDB binary you want to use:
+1. Download and install the CockroachDB binary you want to use:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -180,7 +166,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     ~~~
     </div>
 
-4. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
+1. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -212,7 +198,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     ~~~
     </div>
 
-5. Start the node to have it rejoin the cluster.
+1. Start the node to have it rejoin the cluster.
 
     Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
@@ -231,13 +217,13 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-6. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-overview.html).
+1. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-overview.html).
 
     {{site.data.alerts.callout_info}}
     To access the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). Then open a browser and go to `https://<any node's external IP address>:8080`. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.
     {{site.data.alerts.end}}
 
-7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
+1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -246,7 +232,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     If you leave versioned binaries on your servers, you do not need to do anything.
 
-8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
+1. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
 ## Step 5. Finish the upgrade
 
