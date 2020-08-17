@@ -6,22 +6,17 @@ toc: true
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
-## Aliases
+## Subtypes and aliases
 
-In CockroachDB, the following are aliases for `STRING`:
+<span class="version-tag">New in v19.2:</span> CockroachDB supports the following `STRING` subtypes for PostgreSQL compatibility:
 
-- `CHARACTER`
-- `CHAR`
-- `VARCHAR`
-- `TEXT`
+Subtype                                                               | Description                  
+----------------------------------------------------------------------|------------------------------
+`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`                        | Fixed-length                
+`CHARACTER VARYING`, `CHARACTER VARYING(n)`, `VARCHAR`, `VARCHAR(n)`  | Variable-length, with a limit  
+`TEXT`                                                                | Variable-length, with no limit
 
-And the following are aliases for `STRING(n)`:
-
-- `CHARACTER(n)`
-- `CHARACTER VARYING(n)`
-- `CHAR(n)`
-- `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+By default, `STRING` values are variable-length, with a limit. As such, `CHARACTER VARYING` and `VARCHAR` types are aliases for `STRING`.
 
 ## Length
 
