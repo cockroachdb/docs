@@ -132,8 +132,6 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 {% include {{page.version.version}}/app/java-version-note.md %}
 
-{% include {{page.version.version}}/app/java-tls-note.md %}
-
 ### JDBC
 
 **Support level:** Full
