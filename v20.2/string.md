@@ -6,22 +6,17 @@ toc: true
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
-## Aliases
+## Subtypes and aliases
 
-In CockroachDB, the following are aliases for `STRING`:
+CockroachDB supports the following `STRING` subtypes for PostgreSQL compatibility:
 
-- `CHARACTER`
-- `CHAR`
-- `VARCHAR`
-- `TEXT`
+Subtype                                                               | Description                  
+----------------------------------------------------------------------|------------------------------
+`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`                        | Fixed-length                
+`CHARACTER VARYING`, `CHARACTER VARYING(n)`, `VARCHAR`, `VARCHAR(n)`  | Variable-length, with a limit  
+`TEXT`                                                                | Variable-length, with no limit
 
-And the following are aliases for `STRING(n)`:
-
-- `CHARACTER(n)`
-- `CHARACTER VARYING(n)`
-- `CHAR(n)`
-- `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+By default, `STRING` values are variable-length, with a limit. As such, `CHARACTER VARYING` and `VARCHAR` types are aliases for `STRING`.
 
 ## Length
 
@@ -32,6 +27,10 @@ When inserting a string:
 - If the value exceeds the column's length limit, CockroachDB gives an error.
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
 - If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> To improve compatibility with PostgreSQL, CockroachDB truncates trailing space characters in `CHAR` variables.
+{{site.data.alerts.end}}
 
 ## Syntax
 
