@@ -33,6 +33,10 @@ When inserting a string:
 - If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
 - If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.1:</span> To improve compatibility with PostgreSQL, CockroachDB truncates trailing space characters in `STRING` variables.
+{{site.data.alerts.end}}
+
 ## Syntax
 
 A value of type `STRING` can be expressed using a variety of formats.
@@ -115,7 +119,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 Type | Details
 -----|--------
-`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Limited to `ARRAY`s of type [`INT`](int.html) and [`DECIMAL`](decimal.html). 
+`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Limited to `ARRAY`s of type [`INT`](int.html) and [`DECIMAL`](decimal.html).
 `BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'`.
 `BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
 `BYTES` | For more details, [see here](bytes.html#supported-conversions).
