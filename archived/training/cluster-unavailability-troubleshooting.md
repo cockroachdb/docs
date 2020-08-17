@@ -23,7 +23,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 1. In the terminal where node 2 is running, press **CTRL-C**.
 
-2. In the terminal where node 3 is running, press **CTRL-C**. You may need to press **CRTL + C** a second time to force this node to stop.  
+2. In the terminal where node 3 is running, press **CTRL-C**. You may need to press **CRTL + C** a second time to force this node to terminate.  
 
 ## Step 2. Troubleshoot the problem
 
@@ -33,7 +33,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
     You'll notice that an error is shown and timeseries metrics  are no longer being reported.
 
-2. In a new terminal, try to query the one node that was not stopped:
+2. In a new terminal, try to query the one node that was not terminated:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -89,7 +89,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
 
-1. Stop all CockroachDB nodes:
+1. Terminate all CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

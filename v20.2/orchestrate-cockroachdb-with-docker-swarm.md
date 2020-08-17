@@ -479,7 +479,7 @@ To see this in action:
     32769a6dd664        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   10 minutes ago        Up 10 minutes         8080/tcp, 26257/tcp   cockroachdb-2.1.0wigdh8lx0ylhuzm4on9bbldq
     ~~~
 
-2. Use `sudo docker kill` to remove the container, which implicitly stops the node:
+2. Use `sudo docker kill` to remove the container, which implicitly terminates the node:
 
     {% include copy-clipboard.html %}
     ~~~ shell

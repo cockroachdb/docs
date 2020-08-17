@@ -250,7 +250,7 @@ Instead of 103.748ms, the query now takes 6.862ms.
 
 ## Step 10. Clean up
 
-If the program is still running, press CTRL + c to stop it and then use [`cockroach quit`](cockroach-quit.html) to stop the single-node CockroachDB cluster:
+If the program is still running, press CTRL + c to terminate it and then use [`cockroach quit`](cockroach-quit.html) to stop the single-node CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

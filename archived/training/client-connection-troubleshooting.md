@@ -150,7 +150,7 @@ This time, the connection attempt succeeds:
 
 In the next module, you'll start a new cluster from scratch, so take a moment to clean things up.
 
-1. Stop all CockroachDB nodes:
+1. Terminate all CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell

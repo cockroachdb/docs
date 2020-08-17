@@ -119,9 +119,9 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 ## Step 3. Upgrade the first node to v19.2
 
-1. In node 1's terminal, press **CTRL-C** to stop the `cockroach` process.
+1. In node 1's terminal, press **CTRL-C** to terminate the `cockroach` process.
 
-2. Verify that node 1 has stopped:
+2. Verify that node 1 has been terminated:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -152,9 +152,9 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 ## Step 4. Upgrade the rest of the nodes to v19.2
 
-1. In node 2's terminal, press **CTRL-C** to stop the `cockroach` process.
+1. In node 2's terminal, press **CTRL-C** to terminate the `cockroach` process.
 
-2. Verify that node 2 has stopped:
+2. Verify that node 2 has been terminated:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -183,9 +183,9 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 4. Wait 1 minute.
 
-5. In node 3's terminal, press **CTRL-C** to stop the `cockroach` process.
+5. In node 3's terminal, press **CTRL-C** to terminate the `cockroach` process.
 
-6. Verify that node 3 has stopped:
+6. Verify that node 3 has been terminated:
 
     {% include copy-clipboard.html %}
     ~~~ shell

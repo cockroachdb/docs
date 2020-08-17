@@ -91,7 +91,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
     $ ./bin/confluent stop
     ~~~
 
-    To stop all Confluent processes, use:
+    To terminate all Confluent processes, use:
 
     {% include copy-clipboard.html %}
     ~~~ shell
