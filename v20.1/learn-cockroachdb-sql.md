@@ -1,5 +1,6 @@
 ---
 title: Learn CockroachDB SQL
+breadcrumbs: [guides, get-started]
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
 build_for: [cockroachdb, cockroachcloud]

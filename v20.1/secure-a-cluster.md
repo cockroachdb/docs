@@ -1,5 +1,6 @@
 ---
 title: Start a Local Cluster (Secure)
+breadcrumbs: [guides, get-started, start-a-local-cluster]
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
 asciicast: true
