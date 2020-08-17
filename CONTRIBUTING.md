@@ -318,4 +318,4 @@ This example shows some of the first section of the sidenav, `Get Started`:
 
 ## Style Guide
 
-See [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md) for more details.
+See [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide) for more details.
