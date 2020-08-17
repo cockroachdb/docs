@@ -97,7 +97,7 @@ def transfer_funds_randomly(session):
 
     # Check balance of the first account.
     if source.balance < amount:
-        raise "Insufficient funds"
+        raise InsufficientFundsError("Insufficient funds")
 
     source.balance -= amount
     session.query(Account).filter_by(id=sink_id).update(
@@ -108,3 +108,8 @@ def transfer_funds_randomly(session):
 # Run the transfer inside a transaction.
 
 run_transaction(sessionmaker(bind=engine), transfer_funds_randomly)
+
+
+class InsufficientFundsError(Exception):
+    pass
+
