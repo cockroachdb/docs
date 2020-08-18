@@ -50,7 +50,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -79,7 +79,7 @@ You can add number of rows and the schema of the backed up table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -120,7 +120,7 @@ You can add number of rows and the schema of the backed up table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
 ~~~
 
 ~~~
