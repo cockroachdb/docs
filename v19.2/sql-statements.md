@@ -40,7 +40,6 @@ Statement | Usage
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
