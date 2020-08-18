@@ -44,7 +44,7 @@ If you have not done so already, [create a cluster](cockroachcloud-create-your-c
     If you haven't connected to your CockroachCloud cluster before, see [Connect to your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-2. Enable [rangefeeds](change-data-capture.html#enable-rangefeeds-to-reduce-latency):
+2. Enable [rangefeeds](change-data-capture.html#enable-rangefeeds):
 
     {% include copy-clipboard.html %}
     ~~~ sql

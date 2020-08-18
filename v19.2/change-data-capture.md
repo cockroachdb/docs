@@ -15,6 +15,21 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 - [Core changefeeds](#create-a-core-changefeed), which stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 - [Enterprise changefeeds](#configure-a-changefeed-enterprise), where every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
+## Enable rangefeeds
+
+Changefeeds they connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+
+**Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting](set-cluster-setting.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING kv.rangefeed.enabled = true;
+~~~
+
+Any created changefeed will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being using in a changefeed.
+
+The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+
 ## Ordering guarantees
 
 - In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
@@ -118,20 +133,6 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [2]	{"id": 2, "likes_treats": true, "name": "Carl"}
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
-
-## Enable rangefeeds to reduce latency
-
-Previously created changefeeds collect changes by periodically sending a request for any recent changes. Newly created changefeeds now behave differently: they connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
-
-To enable rangefeeds, set the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html) to `true`. Any created changefeed will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being using in a changefeed.
-
-If you are experiencing an issue, you can revert back to the previous behavior by setting `changefeed.push.enabled` to `false`. Note that this setting will be removed in a future release; if you have to use the fallback, please [file a Github issue](file-an-issue.html).
-
-{{site.data.alerts.callout_info}}
-To enable rangefeeds for an existing changefeed, you must also restart the changefeed. For an enterprise changefeed, [pause](#pause) and [resume](#resume) the changefeed. For a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
-{{site.data.alerts.end}}
-
-The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with push changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
 ## Create a changefeed (Core)
 

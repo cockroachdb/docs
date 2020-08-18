@@ -15,6 +15,21 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 - [Core changefeeds](#create-a-core-changefeed), which stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 - [Enterprise changefeeds](#configure-a-changefeed-enterprise), where every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
 
+## Enable rangefeeds
+
+Changefeeds they connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+
+**Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting](set-cluster-setting.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING kv.rangefeed.enabled = true;
+~~~
+
+Any created changefeed will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being using in a changefeed.
+
+The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+
 ## Ordering guarantees
 
 - In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
@@ -132,23 +147,6 @@ To enable rangefeeds for an existing changefeed, you must also restart the chang
 {{site.data.alerts.end}}
 
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with push changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
-
-## Create a changefeed (Core)
-
-A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
-
-To create a core changefeed:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR name;
-~~~
-
-For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
-
-## Configure a changefeed (Enterprise)
-
-An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
 
 ### Create
 
