@@ -4,11 +4,15 @@ summary: Use the ALTER TYPE statement to change a column's data type.
 toc: true
 ---
 
-The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).
+The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html).
 
-{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
+{{site.data.alerts.callout_info}}
+In CockroachDB versions < v20.2, support for altering column types is limited to increasing the precision of the current column type. For details, see [Limitations](#limitations).
+{{site.data.alerts.end}}
 
-## Considerations
+## Limitations
+
+In CockroachDB versions < v20.2, support for altering column types is limited to increasing the precision of the current type of a column. You cannot convert the column type to another data type, or decrease the precision of the column type.
 
 You can use the `ALTER TYPE` subcommand if the following conditions are met:
 
@@ -31,7 +35,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 |-----------|-------------
 | `table_name` | The name of the table with the column whose data type you want to change.
 | `column_name` | The name of the column whose data type you want to change.
-| `typename` | The new [data type](data-types.html) you want to use.
+| `typename` | The new data type you want to use.<br>`ALTER TABLE ... ALTER TYPE` and [`ALTER TABLE ... ALTER COLUMN ... SET DATA TYPE`](alter-column.html) are aliases.
 
 ## Viewing schema changes
 
@@ -41,7 +45,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Success scenario
 
-The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
+The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database contains a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

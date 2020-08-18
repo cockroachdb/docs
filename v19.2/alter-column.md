@@ -5,6 +5,7 @@ toc: true
 ---
 
 The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and can be used to:
+
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
 - Set or drop a column's [`NOT NULL` constraint](not-null.html)
 
@@ -30,7 +31,8 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 |-----------|-------------|
 | `table_name` | The name of the table with the column you want to modify. |
 | `column_name` | The name of the column you want to modify. |
-| `a_expr` | The new [Default Value](default-value.html) you want to use. |
+| `SET DEFAULT a_expr` | The new [Default Value](default-value.html) you want to use. |
+| `typename` | The new [data type](data-type.html) you want to use.<br>[`ALTER TABLE ... ALTER TYPE`](alter-type.html) and `ALTER TABLE ... ALTER COLUMN ... SET DATA TYPE` are aliases.<br>{{site.data.alerts.callout_info}}In CockroachDB versions < v20.2, support for altering column types is limited to increasing the precision of the current column type. For more information, see [`ALTER TYPE`](alter-type.html).{{site.data.alerts.end}}|
 
 ## Viewing schema changes
 

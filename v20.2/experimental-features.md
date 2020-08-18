@@ -19,6 +19,7 @@ The table below lists the experimental session settings that are available.  For
 
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enable_experimental_alter_column_type_general`       | `'false'`       |  If set to `'true'`, enables [column type altering](#alter-column-type).                                                                                                                                                                                   |
 | `experimental_enable_hash_sharded_indexes`       | `'off'`       |  If set to `'on'`, enables [hash-sharded indexes](#hash-sharded-indexes) with `USING HASH`.                                                                                                                                                                                   |
 | `experimental_enable_temp_tables`       | `'off'`       |  If set to `'on'`, enables [temporary objects](#temporary-objects), including [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences).                                                                                                                                                                                   |
 
@@ -134,6 +135,9 @@ The table below lists the experimental SQL functions and operators available in 
 | [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
 | [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
 
+## Alter column types
+
+<span class="version-tag">New in v20.2:</span> CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [`ALTER TYPE`](alter-type.html).
 
 ## Temporary objects
 

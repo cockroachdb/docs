@@ -5,8 +5,10 @@ toc: true
 ---
 
 The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and can be used to:
+
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
 - Set or drop a column's [`NOT NULL` constraint](not-null.html)
+- <span class="version-tag">New in v20.2:</span> [Set a column's data type](alter-type.html)
 
 {{site.data.alerts.callout_info}}
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
@@ -30,7 +32,9 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 |-----------|-------------|
 | `table_name` | The name of the table with the column you want to modify. |
 | `column_name` | The name of the column you want to modify. |
-| `a_expr` | The new [Default Value](default-value.html) you want to use. |
+| `SET DEFAULT a_expr` | The new [Default Value](default-value.html) you want to use. |
+| `typename` | The new [data type](data-type.html) you want to use.<br><br>[`ALTER TABLE ... ALTER TYPE`](alter-type.html) and `ALTER TABLE ... ALTER COLUMN ... SET DATA TYPE` are aliases. Note that support for altering column types is expanded in CockroachDB v20.2, but still [experimental](experimental-features.html), and with certain limitations. For more information, see [`ALTER TYPE`](alter-type.html).|
+| `opt_alter_column_using` | <span class="version-tag">New in v20.2:</span> Specifies how to compute a new column value from the old column value. For more information on usage, see [`ALTER TYPE`](alter-type.html). |
 
 ## Viewing schema changes
 
@@ -87,3 +91,4 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [`ALTER TYPE`](alter-type.html)
