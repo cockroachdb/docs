@@ -134,19 +134,22 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-## Enable rangefeeds to reduce latency
+## Create a changefeed (Core)
 
-Previously created changefeeds collect changes by periodically sending a request for any recent changes. Newly created changefeeds now behave differently: they connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
-To enable rangefeeds, set the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html) to `true`. Any created changefeed will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being using in a changefeed.
+To create a core changefeed:
 
-If you are experiencing an issue, you can revert back to the previous behavior by setting `changefeed.push.enabled` to `false`. Note that this setting will be removed in a future release; if you have to use the fallback, please [file a Github issue](file-an-issue.html).
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPERIMENTAL CHANGEFEED FOR name;
+~~~
 
-{{site.data.alerts.callout_info}}
-To enable rangefeeds for an existing changefeed, you must also restart the changefeed. For an enterprise changefeed, [pause](#pause) and [resume](#resume) the changefeed. For a core changefeed, cut the connection (**CTRL+C**) and reconnect using the `cursor` option.
-{{site.data.alerts.end}}
+For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
-The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with push changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+## Configure a changefeed (Enterprise)
+
+An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
 
 ### Create
 
