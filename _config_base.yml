@@ -41,8 +41,8 @@ release_info:
     name: v19.2.10
     version: v19.2.10
     docker_image: cockroachdb/cockroach
-    build_time: 2020/08/19 11:00:26 (go1.12.12)
-    start_time: 2020-08-19 11:01:26.34274101 +0000 UTC
+    build_time: 2020/08/24 11:00:26 (go1.12.12)
+    start_time: 2020-08-24 11:01:26.34274101 +0000 UTC
   v20.1:
     name: v20.1.4
     version: v20.1.4
