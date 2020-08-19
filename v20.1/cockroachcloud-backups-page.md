@@ -9,11 +9,11 @@ This page describes the **Backups** page and how to restore your data.
 
 Cockroach Labs runs [full backups](backup.html#full-backups) daily and [incremental backups](backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
-The backups that Cockroach Labs takes for you can be viewed on the [Backups page](#backups-page), where you can:
+The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page), where you can:
 
 - [Restore a cluster](#restore-a-cluster)
-- [Restore a database](#restore-a-cluster)
-- [Restore a table](#restore-a-cluster)
+- [Restore a database](#restore-a-database)
+- [Restore a table](#restore-a-table)
 
 You can also:
 
@@ -62,7 +62,7 @@ For each database in the backup, the following details display:
 - Additional **Recovery Info** -->
 
 {{site.data.alerts.callout_info}}
-If a database does not contain tables, it will not display in the databases view.
+If a database does not contain tables, it will not display in the Databases view.
 {{site.data.alerts.end}}
 
 You can [restore these databases](#restore-a-database).
