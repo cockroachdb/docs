@@ -47,13 +47,9 @@ To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statemen
 
 To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Batch deletes](delete.html#batch-deletes).
 
-### Performance optimization
+### Batch-delete "expired" data
 
-To get the best performance when deleting large amounts of data, follow the instructions in [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
-
-### Delete "expired" data
-
-CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Delete expired data](delete.html#delete-expired-data).
+CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Batch-delete "expired" data](delete.html#batch-delete-expired-data).
 
 ## Assign column families
 
