@@ -59,6 +59,15 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 {% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 
+#### Load balancer-health check communication
+
+ Field | Value
+-------|-------------------
+ Port Range | **8080**
+ Source | The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)
+
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs.
+
 ## Step 3. Synchronize clocks
 
 {% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}

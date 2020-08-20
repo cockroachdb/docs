@@ -224,7 +224,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --vpc-cidr=<ip-range-3>
     ~~~
 
-    Each command creates three EKS instances in a region, one for each CockroachDB node you will deploy. Note that the Kubernetes scheduler automatically assigns each instance to a different availability zone in the region.
+    Each command creates three EKS instances in a region, one for each CockroachDB node you will deploy. Note that each instance is assigned to a different availability zone in the region.
 
     In each region, the EKS instances are joined into a separate Kubernetes cluster: `cockroachdb1`, `cockroachdb2`, and `cockroachdb3`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
@@ -317,7 +317,7 @@ This important rule enables node communication between Kubernetes clusters in di
 
 The Kubernetes cluster in each region needs to have a [Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) pointed at its CoreDNS service, which you will configure in the next step.
 
-1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
+1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -356,7 +356,7 @@ The Kubernetes cluster in each region needs to have a [Network Load Balancer](ht
     ...
     ~~~
 
-    `ip1`, `ip2`, and `ip3` correspond to the 3 availability zones in the region where EKS instances are running. You will need these IP addresses when configuring your network in the next step.
+    `ip1`, `ip2`, and `ip3` correspond to the 3 availability zones in the region where Network Load Balancers have been set up. You will need these IP addresses when configuring your network in the next step.
 
 ### Configure CoreDNS
 
@@ -364,7 +364,7 @@ Each Kubernetes cluster has a [CoreDNS](https://coredns.io/) service that respon
 
 To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [modify the ConfigMap](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options) for the CoreDNS Corefile in each region.
 
-1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/configmap.yaml).
+1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml).
 
 1. After [obtaining the IP addresses of EKS instances](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions. 
 
@@ -376,7 +376,7 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
            ready
            cache 10
            forward . ip1 ip2 ip3 {      # <---- Modify
-                force_tcp            # <---- Modify
+                force_tcp
            }
        }
        region3.svc.cluster.local:53 {       # <---- Modify
@@ -385,14 +385,14 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
            ready
            cache 10
            forward . ip1 ip2 ip3 {      # <---- Modify
-                force_tcp            # <---- Modify
+                force_tcp
            }
        }
     ~~~
 
     For each region, modify `configmap.yaml` by replacing:
 
-    <ul><li><code>region2</code> and <code>region3</code> with the namespaces in which the CockroachDB pods will run in the other 2 regions. You defined these namespaces after <a href="#step-1-start-kubernetes-clusters">starting the Kubernetes clusters</a>.</li><li><code>ip1</code>, <code>ip2</code>, and <code>ip3</code> with the IP addresses of the EKS instances in the region, which you looked up in the previous step.</li></ul>
+    <ul><li><code>region2</code> and <code>region3</code> with the namespaces in which the CockroachDB pods will run in the other 2 regions. You defined these namespaces after <a href="#step-1-start-kubernetes-clusters">starting the Kubernetes clusters</a>.</li><li><code>ip1</code>, <code>ip2</code>, and <code>ip3</code> with the IP addresses of the Network Load Balancers in the region, which you looked up in the previous step.</li></ul>
 
     You will end up with 3 different ConfigMaps. Give each ConfigMap a unique filename like `configmap-1.yaml`.
 
@@ -675,7 +675,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
 ### Create StatefulSets
 
-1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
+1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
 
     {% include copy-clipboard.html %}
     ~~~ shell
