@@ -1001,6 +1001,7 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
 <section class="filter-content" markdown="1" data-scope="gke">
 1. [Resize your Kubernetes cluster.](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster)
+</section>
 
 <section class="filter-content" markdown="1" data-scope="eks">
 1. [Resize your Kubernetes cluster.](https://eksctl.io/usage/managing-nodegroups/#scaling)
