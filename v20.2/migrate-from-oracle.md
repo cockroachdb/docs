@@ -13,6 +13,8 @@ To illustrate this process, we use the following sample data and tools:
 - [Oracle Data Pump](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump.html), which enables the movement of data and metadata from one database to another, and comes with all Oracle installations.
 - [SQL*Plus](https://docs.oracle.com/database/121/SQPUG/ch_three.htm), the interactive and batch query tool that comes with every Oracle Database installation.
 
+{% include {{ page.version.version }}/misc/import-perf.md %}
+
 ## Step 1. Export the Oracle schema
 
 Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
@@ -381,6 +383,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 ## See also
 
 - [`IMPORT`](import.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from Postgres](migrate-from-postgres.html)

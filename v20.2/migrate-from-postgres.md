@@ -9,6 +9,8 @@ This page has instructions for migrating data from Postgres to CockroachDB using
 
 The examples below pull real data from [Amazon S3](https://aws.amazon.com/s3/).  They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).  The data was imported to Postgres using [pgloader][pgloader], and then modified for use here as explained below.
 
+{% include {{ page.version.version }}/misc/import-perf.md %}
+
 ## Step 1. Dump the Postgres database
 
 There are several ways to dump data from Postgres to be imported into CockroachDB:
@@ -200,6 +202,7 @@ Example usage:
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)

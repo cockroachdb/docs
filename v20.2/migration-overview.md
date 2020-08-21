@@ -6,7 +6,7 @@ toc: true
 build_for: [cockroachdb]
 ---
 
-CockroachDB supports importing data from the following databases:
+CockroachDB supports [importing](import.html) data from the following databases:
 
 - MySQL
 - Oracle (using CSV)
@@ -15,6 +15,7 @@ CockroachDB supports importing data from the following databases:
 and from the following data formats:
 
 - CSV/TSV
+- Avro
 
 This page lists general considerations to be aware of as you plan your migration to CockroachDB.
 
@@ -24,6 +25,9 @@ In addition to the information listed below, see the following pages for specifi
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
+- [Migrate from Avro][avro]
+
+{% include {{ page.version.version }}/misc/import-perf.md %}
 
 ## File storage during import
 
@@ -61,10 +65,12 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from Oracle][oracle]
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
+- [Migrate from Avro][avro]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [SQL Dump (Export)](cockroach-dump.html)
@@ -79,3 +85,4 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 [mysql]: migrate-from-mysql.html
 [csv]: migrate-from-csv.html
 [import]: import.html
+[avro]: migrate-from-avro.html
