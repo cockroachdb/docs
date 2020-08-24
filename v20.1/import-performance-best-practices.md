@@ -13,12 +13,18 @@ Import speed primarily depends on the amount of data the you want to import. How
 - [Import format](#choose-a-performant-import-format)
 
 {{site.data.alerts.callout_info}}
-If the import size is small (around 64-129 MiB), then you do not need to do anything to optimize performance. In this case, the import should run quickly, regardless of the settings.
+If the import size is small, then you do not need to do anything to optimize performance. In this case, the import should run quickly, regardless of the settings.
 {{site.data.alerts.end}}
 
 ## Split your data into multiple files
 
-Splitting the import data into multiple files can have a large impact on the import performance. We recommend splitting your data into as many files as there are nodes.
+Splitting the import data into multiple files can have a large impact on the import performance. The following formats support multi-file import:
+
+- `CSV`
+- `DELIMITED DATA`
+- `AVRO`, when the [schema is provided in-line](#provide-the-table-schema-in-line)
+
+For these formats, we recommend splitting your data into as many files as there are nodes.
 
 For example, if you have a 3-node cluster, split your data into 3 files and import:
 
@@ -48,17 +54,16 @@ Import formats do not have the same performance because of the way they are proc
 
 1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import.html#delimited-data-files) (both have about the same import performance)
 1. [`AVRO`](migrate-from-avro.html)
-1. [`PGCOPY`](import.html)
 1. [`MYSQLDUMP`](migrate-from-mysql.html)
 1. [`PGDUMP`](migrate-from-postgres.html)
 
 We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance.
 
-However, `PGCOPY`, `MYSQLDUMP`, and `PGDUMP` run a single thread to parse their data, and therefore perform substantially slower.
+However, `MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and therefore perform substantially slower.
 
 `MYSQLDUMP` and `PGDUMP` are two examples of “bundled” data. This means that the dump file contains both the table schema as well as the data to import.
 
-These formats are the slowest to import, with `PGDUMP` being the slower of the two. This is because CockroachDB has to first load the whole file, read the whole file to get the schema, and then import the data. While these formats are slow, there are a couple of things you can do to speed up a bundled data import:
+These formats are the slowest to import, with `PGDUMP` being the slower of the two. This is because CockroachDB has to first load the whole file, read the whole file to get the schema, create the table with that schema, and then import the data. While these formats are slow, there are a couple of things you can do to speed up a bundled data import:
 
 - [Provide the table schema in-line](#provide-the-table-schema-in-line)
 - [Import the schema separately from the data](#import-the-schema-separately-from-the-data)
@@ -117,7 +122,7 @@ CSV DATA (
 );
 ~~~
 
-This method has the added benefit of alerting on potential issues with the import sooner; that is, you won't have to wait for a huge file to load both the schema and data just to find an error in the schema.
+This method has the added benefit of alerting on potential issues with the import sooner; that is, you will not have to wait for the file to load both the schema and data just to find an error in the schema.
 
 ## See also
 

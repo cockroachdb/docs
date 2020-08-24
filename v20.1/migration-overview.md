@@ -79,6 +79,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 
 <!-- Links -->
 
+[avro]: migrate-from-avro.html
 [oracle]: migrate-from-oracle.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
