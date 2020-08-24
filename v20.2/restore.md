@@ -107,10 +107,13 @@ To restore individual tables, the tables can not already exist in the [target da
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
-<span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., `ENUM`), CockroachDB will first check to see if the type already exists. The CockroachDB restore will attempt the following for each user-defined type within a table backup:
+<span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., `ENUM`), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
 
 - If there is _not_ an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
 - If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
+
+    In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same set of elements that have also added in the same order.
+
 - If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the name conflict. You can do this by either dropping or renaming the existing user-defined type.
 
 ### Object dependencies
