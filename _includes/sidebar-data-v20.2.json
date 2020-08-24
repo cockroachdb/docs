@@ -2188,6 +2188,34 @@
         ]
       },
       {
+        "title": "HTTP",
+        "items": [
+          {
+            "title": "API Endpoints",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/api-endpoints.html"
+                ]
+              },
+              {
+                "title": "Hot Ranges",
+                "urls": [
+                  "/${VERSION}/hot-ranges.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "API Reference",
+            "urls": [
+              "/${VERSION}/api-reference.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Third-Party Database Tools",
         "urls": [
           "/${VERSION}/third-party-database-tools.html"
