@@ -6,10 +6,6 @@ toc: true
 
 This page walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool. For detailed information about using Flyway, see the [Flyway documentation site](https://flywaydb.org/documentation/).
 
-## Watch the demo
-
-<iframe width="560" height="315" src="https://youtu.be/xz4j5tU0ZRU" frameborder="0" allowfullscreen></iframe>
-
 ## Before You Begin
 
 Before you begin, do the following:
