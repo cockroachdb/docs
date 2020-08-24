@@ -147,7 +147,7 @@ func runTransaction(db *gorm.DB, fn txnFunc) error {
 			// detect the Postgres transaction retry error code and
 			// handle retries appropriately.
 			pqErr, ok := err.(*pq.Error)
-			if !ok  {
+			if !ok || pqErr.Code != "40001" {
 				// If it's not a retry error, it's some other sort of
 				// DB interaction error that needs to be handled by
 				// the caller.
@@ -169,7 +169,7 @@ func runTransaction(db *gorm.DB, fn txnFunc) error {
 			// retry loop if possible.
 			if err := txn.Commit().Error; err != nil {
 				pqErr, ok := err.(*pq.Error)
-				if !ok {
+				if !ok || pqErr.Code != "40001" {
 					// If it's not a retry error, it's some other sort
 					// of DB interaction error that needs to be
 					// handled by the caller.
