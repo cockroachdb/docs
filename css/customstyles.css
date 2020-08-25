@@ -396,7 +396,7 @@ header {
   @media screen and (min-width: 992px) {
     #sidebar {
       top: 0;
-      width: 235px;
+      width: 200px;
       padding: 0;
       border-bottom: unset;
       background: transparent; } }
@@ -475,7 +475,7 @@ body.sidenav-open .col-content {
       top: 145px;
       bottom: 0;
       min-width: 295px;
-      padding: 60px 0 0 30px;
+      padding: 60px 30px 0 30px;
       background-color: transparent;
       overflow: hidden; }
       .col-sidebar:hover {
@@ -2721,7 +2721,7 @@ img.mfp-img {
   line-height: 40px;
   padding: 0;
   margin-top: 9px;
-  margin-right: 72px;
+  margin-right: 2px;
   text-align: center; }
   .contribute .btn-contribute:focus {
     color: #54B30E; }
@@ -2732,7 +2732,7 @@ img.mfp-img {
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1); }
   @media screen and (min-width: 571px) {
     .contribute .dropdown-menu {
-      left: 1px; } }
+      left: -60px; } }
 .contribute .dropdown-menu > li > a {
   font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
@@ -3336,9 +3336,6 @@ tbody tr:hover {
 
 tbody tr.eol {
   background-color: #fffaea !important; }
-
-tbody.nohover tr:hover {
-  background-color: inherit !important; }
 
 table > thead > tr > th,
 table > tbody > tr > th,

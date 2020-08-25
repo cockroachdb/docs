@@ -6,7 +6,7 @@
 
   @include at-query($min, $screen-md) {
     top: 0;
-    width: 235px;
+    width: 200px;
     padding: 0;
     border-bottom: unset;
     background: transparent;
@@ -104,7 +104,7 @@ body.sidenav-open {
     top: 145px;
     bottom: 0;
     min-width: 295px;
-    padding: 60px 0 0 30px;
+    padding: 60px 30px 0 30px;
     background-color: transparent;
     overflow: hidden;
 
