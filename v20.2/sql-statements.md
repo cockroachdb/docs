@@ -181,7 +181,7 @@ Statement | Usage
 
 ## Changefeed statements (Enterprise)
 
-[Change data capture](change-data-capture.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
+[Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------
