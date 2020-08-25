@@ -6,7 +6,7 @@ toc: true
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
--  [Avro][avro]
+- [Avro][avro]
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
@@ -47,8 +47,8 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create.
 `table_elem_list` | The table schema you want to use.  
-`CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-urls) of a SQL file containing the table schema.
-`file_location` | The [URL](#import-file-urls) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
+`CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-location) of a SQL file containing the table schema.
+`file_location` | The [URL](#import-file-location) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
 ### For import from dump file
@@ -57,7 +57,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create. Use this when the dump file contains a specific table. Leave out `TABLE table_name FROM` when the dump file contains an entire database.
 `import_format` | [`PGDUMP`](#import-a-postgres-database-dump), [`MYSQLDUMP`](#import-a-mysql-database-dump), or [`DELIMITED DATA`](#delimited-data-files)
-`file_location` | The [URL](#import-file-urls) of a dump file you want to import.
+`file_location` | The [URL](#import-file-location) of a dump file you want to import.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
 #### Delimited data files
@@ -70,12 +70,6 @@ The `DELIMITED DATA` format can be used to import delimited data from any text f
 - Carriage return (`\r`)
 
 For examples showing how to use the `DELIMITED DATA` format, see the [Examples](#import-a-delimited-data-file) section below.
-
-### Import file URLs
-
-URLs for the files you want to import must use the format shown below.  For examples, see [Example file URLs](#example-file-urls).
-
-{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Import options
 
@@ -150,18 +144,16 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 
 ### Import file location
 
-We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.) for the data you want to import.
+We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.) for the data you want to import. For more information, see [External File Storage](external-file-storage.html).
 
-Local files are supported; however, they must be accessible to all nodes in the cluster using identical [Import file URLs](#import-file-urls).
-
-To import a local file, you have the following options:
+Local files are supported; however, they must be accessible to all nodes in the cluster using identical import file URLs. To import a local file, you have the following options:
 
 - Option 1. Run a [local file server](create-a-file-server.html) to make the file accessible from all nodes.
 
 - Option 2. Make the file accessible from each local node's store:
     1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](cockroach-start.html#general), but will look something like `/path/to/cockroach-data/extern/`.
     2. Copy the file to each node's `extern` directory.
-    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal://1/data.sql'`.
+    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL: `'nodelocal://1/data.sql'`.
 
 ### Table users and privileges
 

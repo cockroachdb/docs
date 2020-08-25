@@ -33,7 +33,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import into.
 `column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
-`file_location` | The [URL](#import-file-urls) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#file-storage-overview) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [CSV import options](#csv-import-options) or [Avro import options](#avro-import-options).
 
 ### Import file URLs
@@ -97,7 +97,7 @@ To import a local file, you have the following options:
 - Option 2. Make the file accessible from a local node's store. You can do this by using [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) or by manually placing the file in the `extern` directory:
     1. Create an `extern` directory on a node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](cockroach-start.html#general), but will look something like `/path/to/cockroach-data/extern/`.
     2. Copy the file to a node's `extern` directory.
-    3. Assuming the file is called `data.sql` and you uploaded it to node 1, you can access it in your `IMPORT` statement using the following [import file URL](#import-file-urls): `'nodelocal://1/data.sql'`.
+    3. Assuming the file is called `data.sql` and you uploaded it to node 1, you can access it in your `IMPORT` statement using the following import file URL: `'nodelocal://1/data.sql'`.
 
 ## Performance
 

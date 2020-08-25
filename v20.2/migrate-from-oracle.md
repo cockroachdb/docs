@@ -171,7 +171,7 @@ These compressed CSV files will be used to import your data into CockroachDB.
 
 ## Step 6. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`](import.html) can pull from, see [Import File URLs](import.html#import-file-urls).
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`](import.html) can pull from, see [File Storage Overview](file-storage-overview.html).
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
