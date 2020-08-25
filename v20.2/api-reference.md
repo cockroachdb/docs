@@ -19,7 +19,7 @@ With the exception of [API endpoints](api-endpoints.html) documented in greater 
 
 
 
-##### Request Parameters
+#### Request Parameters
 
 
 
@@ -34,7 +34,7 @@ With the exception of [API endpoints](api-endpoints.html) documented in greater 
 
 
 
-##### Response Parameters
+#### Response Parameters
 
 
 
@@ -1438,7 +1438,7 @@ information about the resources on a node used by that table.
 `GET /_status/hotranges`
 
 {{site.data.alerts.callout_info}}
-See [Hot Ranges](hot-ranges.md) for full documentation.
+See [Hot Ranges](hot-ranges.html) for full documentation.
 {{site.data.alerts.end}}
 
 #### Request Parameters

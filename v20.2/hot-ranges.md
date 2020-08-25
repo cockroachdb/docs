@@ -9,44 +9,44 @@ The Hot Ranges endpoint returns ranges with active requests for a specified node
 
 This API will remain stable across minor (patch) releases within a major release.
 
-## Resource
+### Resource
 
 `GET /_status/hotranges`
 
-## Authorization
+### Authorization
 
 - TK token is required.
 - A user must have the `admin` role.
 
-## Request Parameters
+### Request Parameters
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | node_id | [string](#cockroach.server.serverpb.HotRangesRequest-string) |  | If left empty, hot ranges for all nodes/stores will be returned. |
 
-### Example Request
+#### Example Request
 
 ```
 code block
 ```
 
-## Response Parameters
+### Response Parameters
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | node_id | [int32](#cockroach.server.serverpb.HotRangesResponse-int32) |  | NodeID is the node that submitted all the requests. |
 | hot_ranges_by_node_id | [HotRangesResponse.HotRangesByNodeIdEntry](#cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.HotRangesByNodeIdEntry) | repeated |  |
 
-### Example Response
+#### Example Response
 
 ```
 code block
 ```
 
-## Custom Parameter Types
+### Special Parameter Types
 
 <a name="cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.HotRangesByNodeIdEntry"></a>
-### HotRangesResponse.HotRangesByNodeIdEntry
+#### HotRangesResponse.HotRangesByNodeIdEntry
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
@@ -54,7 +54,7 @@ code block
 | value | [HotRangesResponse.NodeResponse](#cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.NodeResponse) |  |  |
 
 <a name="cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.NodeResponse"></a>
-### HotRangesResponse.NodeResponse
+#### HotRangesResponse.NodeResponse
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
@@ -62,7 +62,7 @@ code block
 | stores | [HotRangesResponse.StoreResponse](#cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.StoreResponse) | repeated |  |
 
 <a name="cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.StoreResponse"></a>
-### HotRangesResponse.StoreResponse
+#### HotRangesResponse.StoreResponse
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
@@ -70,7 +70,7 @@ code block
 | hot_ranges | [HotRangesResponse.HotRange](#cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.HotRange) | repeated |  |
 
 <a name="cockroach.server.serverpb.HotRangesResponse-cockroach.server.serverpb.HotRangesResponse.HotRange"></a>
-### HotRangesResponse.HotRange
+#### HotRangesResponse.HotRange
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
