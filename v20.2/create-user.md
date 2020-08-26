@@ -82,15 +82,11 @@ After creating users, you must:
 > CREATE USER carl with CREATEROLE;
 ~~~
 
-### Create a user with a password 
+### Create a user with a password
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD 'ilov3beefjerky';
-~~~
-
-~~~
-CREATE USER 1
 ~~~
 
 ### Create a user with a password using an identifier

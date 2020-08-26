@@ -46,9 +46,6 @@ Parameter | Description
 ~~~ sql
 > ALTER ROLE carl WITH PASSWORD 'ilov3beefjerky';
 ~~~
-~~~
-ALTER ROLE 1
-~~~
 
 ### Change password using an identifier
 
