@@ -975,7 +975,7 @@ For more detailed information about importing data from Avro and examples, see [
 
 ## See also
 
-- [Create a File Server](create-a-file-server.html)
+- [File Storage Overview](file-storage-overview.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
