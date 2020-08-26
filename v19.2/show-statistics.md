@@ -5,6 +5,10 @@ toc: true
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
+{{site.data.alerts.callout_info}}
+[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns.
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -23,27 +27,13 @@ Parameter      | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### List table statistics
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS students ON id FROM students_by_list;
-~~~
-
-~~~
-CREATE STATISTICS
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW STATISTICS FOR TABLE students_by_list;
-~~~
-
-~~~
-  statistics_name | column_names |             created              | row_count | distinct_count | null_count | histogram_id
-+-----------------+--------------+----------------------------------+-----------+----------------+------------+--------------+
-  students        | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
-(1 row)
+> SHOW STATISTICS FOR TABLE rides;
 ~~~
 
 ### Delete statistics

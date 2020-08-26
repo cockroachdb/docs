@@ -7,13 +7,8 @@ Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table s
 
 Once you [create a table](create-table.html) and load data into it (e.g., [`INSERT`](insert.html), [`IMPORT`](import.html)), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
-`CREATE STATISTICS` automatically figures out which columns to get statistics on &mdash; specifically, it chooses:
-
-- Columns that are part of the primary key or an index (in other words, all indexed columns).
-- Up to 100 non-indexed columns (unless you specify which columns to create statistics on, as shown in [this example](#create-statistics-on-a-specific-column)).
-
 {{site.data.alerts.callout_info}}
-[Automatic statistics is enabled by default](cost-based-optimizer.html#table-statistics); most users don't need to issue `CREATE STATISTICS` statements directly.
+[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns. As a result, most users don't need to issue `CREATE STATISTICS` statements directly.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -37,27 +32,69 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
-### Create statistics on a specific column
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
+### Create statistics on a single column
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS students ON id FROM students_by_list;
+> CREATE STATISTICS revenue_stats ON revenue FROM rides;
 ~~~
 
-{{site.data.alerts.callout_info}}
-Multi-column statistics are not supported yet.
-{{site.data.alerts.end}}
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW STATISTICS FOR TABLE rides;
+~~~
+
+~~~
+  statistics_name |  column_names   |             created              | row_count | distinct_count | null_count |    histogram_id
++-----------------+-----------------+----------------------------------+-----------+----------------+------------+--------------------+
+  __auto__        | {city}          | 2020-08-26 17:24:25.334218+00:00 |       500 |              9 |          0 | 584555775053725697
+  __auto__        | {vehicle_city}  | 2020-08-26 17:24:25.334218+00:00 |       500 |              9 |          0 | 584555775060344833
+  __auto__        | {id}            | 2020-08-26 17:24:25.334218+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {rider_id}      | 2020-08-26 17:24:25.334218+00:00 |       500 |             50 |          0 |               NULL
+  __auto__        | {vehicle_id}    | 2020-08-26 17:24:25.334218+00:00 |       500 |             15 |          0 |               NULL
+  __auto__        | {start_address} | 2020-08-26 17:24:25.334218+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {end_address}   | 2020-08-26 17:24:25.334218+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {start_time}    | 2020-08-26 17:24:25.334218+00:00 |       500 |             30 |          0 |               NULL
+  __auto__        | {end_time}      | 2020-08-26 17:24:25.334218+00:00 |       500 |            367 |          0 |               NULL
+  __auto__        | {revenue}       | 2020-08-26 17:24:25.334218+00:00 |       500 |            100 |          0 |               NULL
+  revenue_stats   | {revenue}       | 2020-08-26 17:24:34.494008+00:00 |       500 |            100 |          0 | 584555805068886017
+(11 rows)
+~~~
+
+Note that statistics are automatically collected for all columns in the `rides` table, making the `revenue_stats` statistics a duplicate of the statistics automatically collected on the `revenue` column.
 
 ### Create statistics on a default set of columns
 
-The `CREATE STATISTICS` statement shown below automatically figures out which columns to get statistics on &mdash; specifically, it chooses: 
-
-- Columns that are part of the primary key or an index (in other words, all indexed columns).
-- Up to 100 non-indexed columns.
+The `CREATE STATISTICS` statement shown below automatically figures out which columns to get statistics on.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS students FROM students_by_list;
+> CREATE STATISTICS users_stats FROM users;
+~~~
+
+This statement creates statistics identical to the statistics that CockroachDB creates automatically.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW STATISTICS FOR TABLE users;
+~~~
+
+~~~
+  statistics_name | column_names  |             created              | row_count | distinct_count | null_count |    histogram_id
++-----------------+---------------+----------------------------------+-----------+----------------+------------+--------------------+
+  __auto__        | {city}        | 2020-08-26 17:24:25.305468+00:00 |        50 |              9 |          0 | 584555774958108673
+  __auto__        | {id}          | 2020-08-26 17:24:25.305468+00:00 |        50 |             50 |          0 |               NULL
+  __auto__        | {name}        | 2020-08-26 17:24:25.305468+00:00 |        50 |             49 |          0 |               NULL
+  __auto__        | {address}     | 2020-08-26 17:24:25.305468+00:00 |        50 |             50 |          0 |               NULL
+  __auto__        | {credit_card} | 2020-08-26 17:24:25.305468+00:00 |        50 |             50 |          0 |               NULL
+  users_stats     | {city}        | 2020-08-26 17:24:53.49405+00:00  |        50 |              9 |          0 | 584555867327430657
+  users_stats     | {id}          | 2020-08-26 17:24:53.49405+00:00  |        50 |             50 |          0 |               NULL
+  users_stats     | {name}        | 2020-08-26 17:24:53.49405+00:00  |        50 |             49 |          0 |               NULL
+  users_stats     | {address}     | 2020-08-26 17:24:53.49405+00:00  |        50 |             50 |          0 |               NULL
+  users_stats     | {credit_card} | 2020-08-26 17:24:53.49405+00:00  |        50 |             50 |          0 |               NULL
+(10 rows)
 ~~~
 
 ### Create statistics as of a given time
@@ -66,7 +103,7 @@ To create statistics as of a given time (in this example, 1 minute ago to avoid 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS employee_stats FROM employees AS OF SYSTEM TIME '-1m';
+> CREATE STATISTICS vehicle_stats_1 FROM vehicles AS OF SYSTEM TIME '-1m';
 ~~~
 
 For more information about how the `AS OF SYSTEM TIME` clause works, including supported time formats, see [`AS OF SYSTEM TIME`](as-of-system-time.html).
@@ -89,11 +126,12 @@ To view statistics jobs, there are two options:
     ~~~
 
     ~~~
-           job_id       |   job_type   |                           description                            | statement | user_name |  status   | running_status |          created           |          started           |          finished          |          modified          | fraction_completed | error | coordinator_id 
-    --------------------+--------------+------------------------------------------------------------------+-----------+-----------+-----------+----------------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------
-     441281249412743169 | CREATE STATS | CREATE STATISTICS salary_stats FROM employees.public.salaries    |           | root      | succeeded |                | 2019-04-08 15:52:30.040531 | 2019-04-08 15:52:30.046646 | 2019-04-08 15:52:32.757519 | 2019-04-08 15:52:32.757519 |                  1 |       |              1
-     441281163978637313 | CREATE STATS | CREATE STATISTICS employee_stats FROM employees.public.employees |           | root      | succeeded |                | 2019-04-08 15:52:03.968099 | 2019-04-08 15:52:03.972557 | 2019-04-08 15:52:05.168809 | 2019-04-08 15:52:05.168809 |                  1 |       |              1
-    (2 rows)
+            job_id       |   job_type   |                                           description                                            | statement | user_name |  status   | running_status |             created              |             started              |             finished             |             modified             | fraction_completed | error | coordinator_id
+    +--------------------+--------------+--------------------------------------------------------------------------------------------------+-----------+-----------+-----------+----------------+----------------------------------+----------------------------------+----------------------------------+----------------------------------+--------------------+-------+----------------+
+      584555805032710145 | CREATE STATS | CREATE STATISTICS revenue_stats ON revenue FROM movr.public.rides                                |           | root      | succeeded | NULL           | 2020-08-26 17:24:34.485089+00:00 | 2020-08-26 17:24:34.487231+00:00 | 2020-08-26 17:24:34.49702+00:00  | 2020-08-26 17:24:34.496442+00:00 |                  1 |       |              1
+      584555867287060481 | CREATE STATS | CREATE STATISTICS users_stats FROM movr.public.users                                             |           | root      | succeeded | NULL           | 2020-08-26 17:24:53.483605+00:00 | 2020-08-26 17:24:53.486025+00:00 | 2020-08-26 17:24:53.505254+00:00 | 2020-08-26 17:24:53.504697+00:00 |                  1 |       |              1
+      584555915664261121 | CREATE STATS | CREATE STATISTICS vehicle_stats_1 FROM movr.public.vehicles WITH OPTIONS AS OF SYSTEM TIME '-1m' |           | root      | succeeded | NULL           | 2020-08-26 17:25:08.247163+00:00 | 2020-08-26 17:25:08.252334+00:00 | 2020-08-26 17:25:08.27947+00:00  | 2020-08-26 17:25:08.278204+00:00 |                  1 |       |              1
+    (3 rows)
     ~~~
 
 2. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by the [automatic statistics feature](cost-based-optimizer.html#table-statistics):
@@ -104,16 +142,15 @@ To view statistics jobs, there are two options:
     ~~~
 
     ~~~
-           job_id       |     job_type      |                        description                         |                                         statement                                         | user_name |  status   | running_status |          created           |          started           |          finished          |          modified          | fraction_completed | error | coordinator_id 
-    --------------------+-------------------+------------------------------------------------------------+-------------------------------------------------------------------------------------------+-----------+-----------+----------------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------
-     441280366254850049 | AUTO CREATE STATS | Table statistics refresh for employees.public.departments  | CREATE STATISTICS __auto__ FROM [55] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:48:00.522119 | 2019-04-08 15:48:00.52663  | 2019-04-08 15:48:00.541608 | 2019-04-08 15:48:00.541608 |                  1 |       |              1
-     441280364809289729 | AUTO CREATE STATS | Table statistics refresh for employees.public.titles       | CREATE STATISTICS __auto__ FROM [60] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:48:00.080971 | 2019-04-08 15:48:00.083117 | 2019-04-08 15:48:00.515766 | 2019-04-08 15:48:00.515767 |                  1 |       |              1
-     441280356286201857 | AUTO CREATE STATS | Table statistics refresh for employees.public.salaries     | CREATE STATISTICS __auto__ FROM [59] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:47:57.479929 | 2019-04-08 15:47:57.482235 | 2019-04-08 15:48:00.075025 | 2019-04-08 15:48:00.075025 |                  1 |       |              1
-     441280352161693697 | AUTO CREATE STATS | Table statistics refresh for employees.public.employees    | CREATE STATISTICS __auto__ FROM [58] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:47:56.221223 | 2019-04-08 15:47:56.223664 | 2019-04-08 15:47:57.474159 | 2019-04-08 15:47:57.474159 |                  1 |       |              1
-     441280352070434817 | AUTO CREATE STATS | Table statistics refresh for employees.public.dept_manager | CREATE STATISTICS __auto__ FROM [57] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:47:56.193375 | 2019-04-08 15:47:56.195813 | 2019-04-08 15:47:56.215114 | 2019-04-08 15:47:56.215114 |                  1 |       |              1
-     441280350791401473 | AUTO CREATE STATS | Table statistics refresh for employees.public.dept_emp     | CREATE STATISTICS __auto__ FROM [56] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:47:55.803052 | 2019-04-08 15:47:55.806071 | 2019-04-08 15:47:56.187153 | 2019-04-08 15:47:56.187154 |                  1 |       |              1
-     441279760786096129 | AUTO CREATE STATS | Table statistics refresh for test.public.kv                | CREATE STATISTICS __auto__ FROM [53] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded |                | 2019-04-08 15:44:55.747725 | 2019-04-08 15:44:55.754582 | 2019-04-08 15:44:55.775664 | 2019-04-08 15:44:55.775665 |                  1 |       |              1
-    (7 rows)
+            job_id       |     job_type      |                             description                             |                                         statement                                         | user_name |  status   | running_status |             created              |             started              |             finished             |             modified             | fraction_completed | error | coordinator_id
+    +--------------------+-------------------+---------------------------------------------------------------------+-------------------------------------------------------------------------------------------+-----------+-----------+----------------+----------------------------------+----------------------------------+----------------------------------+----------------------------------+--------------------+-------+----------------+
+      584555774723129345 | AUTO CREATE STATS | Table statistics refresh for movr.public.promo_codes                | CREATE STATISTICS __auto__ FROM [57] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.23534+00:00  | 2020-08-26 17:24:25.237261+00:00 | 2020-08-26 17:24:25.258822+00:00 | 2020-08-26 17:24:25.258199+00:00 |                  1 |       |              1
+      584555774808096769 | AUTO CREATE STATS | Table statistics refresh for movr.public.vehicles                   | CREATE STATISTICS __auto__ FROM [54] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.261267+00:00 | 2020-08-26 17:24:25.263309+00:00 | 2020-08-26 17:24:25.292766+00:00 | 2020-08-26 17:24:25.292114+00:00 |                  1 |       |              1
+      584555774921211905 | AUTO CREATE STATS | Table statistics refresh for movr.public.users                      | CREATE STATISTICS __auto__ FROM [53] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.295787+00:00 | 2020-08-26 17:24:25.297427+00:00 | 2020-08-26 17:24:25.31669+00:00  | 2020-08-26 17:24:25.315689+00:00 |                  1 |       |              1
+      584555775000444929 | AUTO CREATE STATS | Table statistics refresh for movr.public.rides                      | CREATE STATISTICS __auto__ FROM [55] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.31997+00:00  | 2020-08-26 17:24:25.322527+00:00 | 2020-08-26 17:24:25.35465+00:00  | 2020-08-26 17:24:25.353909+00:00 |                  1 |       |              1
+      584555775125815297 | AUTO CREATE STATS | Table statistics refresh for movr.public.user_promo_codes           | CREATE STATISTICS __auto__ FROM [58] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.35823+00:00  | 2020-08-26 17:24:25.35987+00:00  | 2020-08-26 17:24:25.380727+00:00 | 2020-08-26 17:24:25.380128+00:00 |                  1 |       |              1
+      584555775206588417 | AUTO CREATE STATS | Table statistics refresh for movr.public.vehicle_location_histories | CREATE STATISTICS __auto__ FROM [56] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | NULL           | 2020-08-26 17:24:25.382874+00:00 | 2020-08-26 17:24:25.384203+00:00 | 2020-08-26 17:24:25.405608+00:00 | 2020-08-26 17:24:25.404834+00:00 |                  1 |       |              1
+    (6 rows)
     ~~~
 
 ## See Also
