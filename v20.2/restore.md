@@ -14,7 +14,7 @@ Because CockroachDB is designed with high fault tolerance, restores are designed
 
 You can restore:
 
--  [A full cluster](#full-cluster)
+- [A full cluster](#full-cluster)
 - [Databases](#databases)
 - [Tables](#tables)
 
@@ -67,7 +67,7 @@ The URL for your backup's locations must use the following format:
 
 You can restore:
 
--  [A full cluster](#full-cluster)
+- [A full cluster](#full-cluster)
 - [Databases](#databases)
 - [Tables](#tables)
 
@@ -98,14 +98,27 @@ The target database must have not have tables or views with the same name as the
 
 You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the [target database](#databases).
 
+{{site.data.alerts.callout_info}}
+`RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
+{{site.data.alerts.end}}
+
 To restore individual tables, the tables can not already exist in the [target database](#databases). This means the target database must not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
 
-{{site.data.alerts.callout_info}}
-`RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
-{{site.data.alerts.end}}
+<span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., `ENUM`), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
+
+- If there is _not_ an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
+- If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
+- If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either dropping or renaming the existing user-defined type.
+
+In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been [created in the same way](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200331_enums.md#physical-layout). For example:
+
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes', 'no')` are compatible.
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('no', 'yes')` are not compatible.
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes'); ALTER TYPE t2 ADD VALUE ('no')` are not compatible because they were not created in the same way.
+
 
 ### Object dependencies
 
