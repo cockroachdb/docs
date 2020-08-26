@@ -430,8 +430,8 @@ header {
       -moz-osx-font-smoothing: grayscale;
       line-height: 15px;
       letter-spacing: 1.5px;
-      text-transform: uppercase;
-      line-height: 26px; }
+      line-height: 26px;
+      font-size: 13px; }
     #sidebar > li .arrow-down {
       margin-top: 7px; }
     #sidebar > li li .arrow-down {
@@ -2721,7 +2721,7 @@ img.mfp-img {
   line-height: 40px;
   padding: 0;
   margin-top: 9px;
-  margin-right: 72px;
+  margin-right: 2px;
   text-align: center; }
   .contribute .btn-contribute:focus {
     color: #54B30E; }
@@ -2732,7 +2732,7 @@ img.mfp-img {
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1); }
   @media screen and (min-width: 571px) {
     .contribute .dropdown-menu {
-      left: 1px; } }
+      left: -60px; } }
 .contribute .dropdown-menu > li > a {
   font-family: 'Graphik-Regular', sans-serif;
   font-size: 15px;
@@ -3333,12 +3333,6 @@ th {
 
 tbody tr:hover {
   background-color: #F3F3F3 !important; }
-
-tbody tr.eol {
-  background-color: #fffaea !important; }
-
-tbody.nohover tr:hover {
-  background-color: inherit !important; }
 
 table > thead > tr > th,
 table > tbody > tr > th,

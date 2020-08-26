@@ -2,7 +2,6 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page shows you how to connect to your CockroachCloud cluster.
@@ -51,7 +50,7 @@ Use the Console to authorize networks:
 
 ## Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 

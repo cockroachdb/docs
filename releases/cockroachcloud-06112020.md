@@ -2,7 +2,6 @@
 title: What&#39;s New in CockroachCloud
 toc: true
 summary: Additions and changes in CockroachCloud.
-build_for: [cockroachcloud]
 ---
 
 ## June 11, 2020

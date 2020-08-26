@@ -53,8 +53,8 @@
 
     > a {
       @include button-text--heavy--small;
-      text-transform: uppercase;
       line-height: 26px;
+      font-size: 13px;
     }
 
     .arrow-down { margin-top: 7px; }

@@ -5,18 +5,6 @@ toc: true
 twitter: false
 ---
 
-{% unless site.cockroachcloud %}
-
-<div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 22%" class="filter-button">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button current">Use <strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
-</div>
-
-{% endunless %}
-
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
 CockroachDB supports Django versions 2.2 and 3.0.
@@ -25,7 +13,7 @@ CockroachDB supports Django versions 2.2 and 3.0.
 
 ## Before you begin
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include cockroachcloud/app/before-you-begin.md %}
 
 {% endunless %}
 
@@ -291,22 +279,22 @@ After you generate the initial Django project files, you need to build out the a
 
 ### Models
 
-Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/django-basic-sample/models.py" download>download the file directly</a>.
+Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/django-basic-sample/models.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/django-basic-sample/models.py %}
+{% include cockroachcloud/app/django-basic-sample/models.py %}
 ~~~
 
 In this file, we define some simple classes that map to the tables in the example database `bank`.
 
 ### Views
 
-Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/django-basic-sample/views.py" download>download the file directly</a>.
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/django-basic-sample/views.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/django-basic-sample/views.py %}
+{% include cockroachcloud/app/django-basic-sample/views.py %}
 ~~~
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
@@ -315,11 +303,11 @@ Importantly, the file defines a [transaction retry loop](transactions.html#trans
 
 ### URL routes
 
-Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/django-basic-sample/urls.py %}
+{% include cockroachcloud/app/django-basic-sample/urls.py %}
 ~~~
 
 </section>
@@ -328,22 +316,22 @@ Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/ht
 
 ### Models
 
-Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/models.py" download>download the file directly</a>.
+Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/insecure/django-basic-sample/models.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/insecure/django-basic-sample/models.py %}
+{% include cockroachcloud/app/insecure/django-basic-sample/models.py %}
 ~~~
 
 In this file, we define some simple classes that map to the tables in the example database `bank`.
 
 ### Views
 
-Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/views.py" download>download the file directly</a>.
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/insecure/django-basic-sample/views.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/insecure/django-basic-sample/views.py %}
+{% include cockroachcloud/app/insecure/django-basic-sample/views.py %}
 ~~~
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
@@ -352,11 +340,11 @@ Importantly, the file defines a [transaction retry loop](transactions.html#trans
 
 ### URL routes
 
-Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `myproject/myproject`.  You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/app/insecure/django-basic-sample/urls.py" download>download the file directly</a> and replace the existing one.
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/insecure/django-basic-sample/urls.py %}
+{% include cockroachcloud/app/insecure/django-basic-sample/urls.py %}
 ~~~
 
 </section>
@@ -487,4 +475,4 @@ You can also query the tables directly in the SQL shell to see the changes:
 
 Read more about writing a [Django app](https://docs.djangoproject.com/en/3.0/intro/tutorial01/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include cockroachcloud/app/see-also-links.md %}
