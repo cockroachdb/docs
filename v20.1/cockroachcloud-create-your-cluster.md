@@ -21,18 +21,7 @@ This page walks you through the process of creating a CockroachCloud cluster.
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-The choice of the cloud provider decides the price per node. For pricing comparison, refer to the following table:
-
-Hardware configuration	| GCP Pricing (per node, per hour)	| AWS Pricing (per node, per hour)
-----------|------------|------------
-`Option 1` (2 vCPU, 60 GB disk) |	$0.11	| $0.48
-`Option 2` (4 vCPU, 150 GB disk) | $0.69	| $0.83
-
-The following points are important to note with regards to CockroachCloud pricing:
-
-- The discrepancy is pricing is reflective of the cloud provider's pricing and not of the underlying reliability, hardware, or security. Refer to the [Cloud Report](https://www.cockroachlabs.com/guides/2020-cloud-report/) to make an informed choice.
-- CockroachCloud does not charge you for data transfer costs.
-- The price displayed does not include taxes.
+{% include {{ page.version.version }}/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region and number of nodes
 
