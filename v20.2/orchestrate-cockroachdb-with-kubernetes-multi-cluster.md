@@ -444,7 +444,7 @@ kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS="c
 Remember that these are the CIDR blocks you chose when [starting your Kubernetes clusters](#step-1-start-kubernetes-clusters). You can also get the IP range of a VPC by opening the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and finding the VPC listed in the section called Your VPCs.
 
 {{site.data.alerts.callout_info}}
-If you plan to run your instances exclusively on private subnets, set the following environment variable instead on each region: `kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXTERNALSNAT=true --context <cluster-context>`
+If you plan to run your instances exclusively on private subnets, set the following environment variable instead on each region: <code style="white-space:pre-line">kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXTERNALSNAT=true --context \<cluster-context\></code>
 {{site.data.alerts.end}}
 </section>
 
