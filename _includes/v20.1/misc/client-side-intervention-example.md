@@ -13,6 +13,7 @@ while true:
     try:
         # add logic here to run all your statements
         conn.exec('COMMIT')
+        break
     catch error:
         if error.code != "40001":
             throw error
