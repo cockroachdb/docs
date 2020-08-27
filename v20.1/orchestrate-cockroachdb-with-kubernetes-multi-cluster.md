@@ -41,16 +41,16 @@ Feature | Description
 
 ### UX differences from running in a single cluster
 
-These instructions create 3 StatefulSets that each run 3 CockroachDB pods in a separate Kubernetes cluster deployed in its own region. If you haven't often worked with multiple Kubernetes clusters, remember that `kubectl` commands are run against a cluster in a specific context. Either run `kubectl use-context <cluster-context>` frequently to switch contexts between commands, or append `--context=<cluster-context>` to the commands you run to ensure they are run against the correct cluster.
+These instructions create 3 StatefulSets that each run 3 CockroachDB pods in a separate Kubernetes cluster deployed in its own region. If you haven't often worked with multiple Kubernetes clusters, remember that `kubectl` commands are run against a cluster in a specific context. Either run `kubectl use-context <cluster-context>` frequently to switch contexts between commands, or append `--context <cluster-context>` to the commands you run to ensure they are run against the correct cluster.
 
 <section class="filter-content" markdown="1" data-scope="gke">
-Each Kubernetes cluster's DNS server is pointed at the other clusters' DNS servers so that DNS lookups for certain zone-scoped suffixes (e.g., `*.us-west1-a.svc.cluster.local`) can be deferred to the appropriate cluster's DNS server. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace=<cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace=<namespace-name>` to set the default namespace for a context.
+Each Kubernetes cluster's DNS server is pointed at the other clusters' DNS servers so that DNS lookups for certain zone-scoped suffixes (e.g., `*.us-west1-a.svc.cluster.local`) can be deferred to the appropriate cluster's DNS server. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace <cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace <namespace-name>` to set the default namespace for a context.
 
 Because the CockroachDB pods run in a non-default namespace, client applications wanting to talk to CockroachDB from the default namespace would need to use a zone-scoped service name (e.g., `cockroachdb-public.us-west1-a`) rather than `cockroachdb-public`, as in a single-cluster setting. However, the setup script used by these instructions sets up an additional [`ExternalName` service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in the default namespace such that the clients in the default namespace can simply talk to the `cockroachdb-public` address.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="eks">
-To enable the pods to communicate across regions, we peer the VPCs in all 3 regions with each other and configure a CoreDNS service in each region to route DNS traffic to the appropriate pods. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace=<cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace=<namespace-name>` to set the default namespace for a context.
+To enable the pods to communicate across regions, we peer the VPCs in all 3 regions with each other and configure a CoreDNS service in each region to route DNS traffic to the appropriate pods. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace <cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace <namespace-name>` to set the default namespace for a context.
 </section>
 
 ### Limitations
@@ -163,17 +163,17 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context=<cluster-context-1>
+    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context=<cluster-context-2>
+    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context=<cluster-context-3>
+    $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-3>
     ~~~
 </section>
 
@@ -188,6 +188,10 @@ If you want to run on another cloud or on-premises, use this [basic network test
     In order to enable VPC peering between the regions, the CIDR blocks of the VPCs **must not** overlap. This value cannot change once the cluster has been created, so be sure that your IP ranges do not overlap.
     {{site.data.alerts.end}}
 
+    {{site.data.alerts.callout_success}}
+    To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
+    {{site.data.alerts.end}}
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
@@ -196,8 +200,8 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --node-type m5.xlarge \
     --nodes 3 \
     --node-ami auto \
-    --region <aws-region-1>
-    --vpc-cidr=<ip-range-1>
+    --region <aws-region-1> \
+    --vpc-cidr <ip-range-1>
     ~~~
 
     {% include copy-clipboard.html %}
@@ -208,8 +212,8 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --node-type m5.xlarge \
     --nodes 3 \
     --node-ami auto \
-    --region <aws-region-2>
-    --vpc-cidr=<ip-range-2>
+    --region <aws-region-2> \
+    --vpc-cidr <ip-range-2>
     ~~~
        
     {% include copy-clipboard.html %}
@@ -220,8 +224,8 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --node-type m5.xlarge \
     --nodes 3 \
     --node-ami auto \
-    --region <aws-region-3>
-    --vpc-cidr=<ip-range-3>
+    --region <aws-region-3> \
+    --vpc-cidr <ip-range-3>
     ~~~
 
     Each command creates three EKS instances in a region, one for each CockroachDB node you will deploy. Note that each instance is assigned to a different availability zone in the region.
@@ -258,17 +262,17 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl create namespace <cluster-namespace> --context=<cluster-context>
+    kubectl create namespace <cluster-namespace> --context <cluster-context>
     ~~~
 
     It's simplest for the namespace and region to have the same name, e.g.:
 
     ~~~ shell
-    kubectl create namespace eu-central-1 --context=maxroach@cockroachdb1.eu-central-1.eksctl.io
+    kubectl create namespace eu-central-1 --context maxroach@cockroachdb1.eu-central-1.eksctl.io
     ~~~
 
     {{site.data.alerts.callout_info}}
-    `kubectl` commands are run against the namespace named `default` by default. You can change the default namespace for a given context with `kubectl config set-context <context-name> --namespace=<namespace-name>`.
+    `kubectl` commands are run against the namespace named `default` by default. You can change the default namespace for a given context with `kubectl config set-context <context-name> --namespace <namespace-name>`.
 
     For clarity, every `kubectl` command in this tutorial uses the `--namespace` flag to indicate the proper namespace.
     {{site.data.alerts.end}}
@@ -281,10 +285,10 @@ For pods to communciate across three separate Kubernetes clusters, the VPCs in a
 
 1. Open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and note the ID of the VPC in each region. The VPC ID is found in the section called Your VPCs.
 
-1. Navigate to the Peering Connections section and [create a VPC peering connection](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) between each of the 3 regions. When you create a peering connection, you will first select a requester VPC in the current region and then an accepter VPC in another region, specified by pasting the VPC ID.
+1. Navigate to the Peering Connections section and [create a VPC peering connection](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) between each of the 3 regions. When you create a peering connection, you will first select a requester VPC in the current region and then an accepter VPC in a destination region, specified by pasting the VPC ID.
 
     {{site.data.alerts.callout_success}}
-    You should have a total of 3 VPC peering connections between your three VPCs. You will need to switch regions in the console to create one of the peering connections.
+    You need to create a total of 3 VPC peering connections between your 3 VPCs, which means switching regions at least once in the console. For example, if you are deploying in `eu-central-1`, `eu-north-1`, and `ca-central-1`, you can select `eu-central-1` in the console and create VPC peering connections to both `eu-north-1` and `ca-central-1`. Then switch to either `eu-north-1` or `ca-central-1` to create the VPC peering connection between those two regions.
     {{site.data.alerts.end}}
 
 1. To complete the VPC peering connections, switch to each destination region and [accept the pending connection](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) in the VPC console. 
@@ -293,7 +297,7 @@ For pods to communciate across three separate Kubernetes clusters, the VPCs in a
 
 ### Create inbound rules
 
-For each region, navigate to the Security Groups section of the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and locate the security group that enables communication between nodes int he cluster. It should have a name like `ClusterSharedNodeSecurityGroup`. [Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) to this security group to allow TCP communication on two ports:
+For each region, navigate to the Security Groups section of the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and locate the security group that enables communication between nodes in the cluster. It should have a name like `ClusterSharedNodeSecurityGroup`. [Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) to this security group to allow TCP communication on two ports:
 
 - `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
 - `8080` for exposing the Admin UI to the user, and for routing the load balancer to the health check endpoint.
@@ -317,28 +321,28 @@ This important rule enables node communication between Kubernetes clusters in di
 
 The Kubernetes cluster in each region needs to have a [Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) pointed at its CoreDNS service, which you will configure in the next step.
 
-1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
+1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/dns-lb-eks.yaml --context=<cluster-context-1>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/dns-lb-eks.yaml --context=<cluster-context-2>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/dns-lb-eks.yaml --context=<cluster-context-3>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-3>
     ~~~
 
     You should see the load balancer appear in the Load Balancers section of the EC2 console in each region. This load balancer will route traffic to CoreDNS in the region.
 
 1. For each region, navigate to the Load Balancer section of the [EC2 console](https://console.aws.amazon.com/ec2/) and get the DNS name of the Network Load Balancer you created in the previous step.
 
-1. For each region's load balancer, look up the IP addresses mapped to the load balancer:
+1. For each region's load balancer, look up the IP addresses mapped to the load balancer's DNS name:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -364,7 +368,12 @@ Each Kubernetes cluster has a [CoreDNS](https://coredns.io/) service that respon
 
 To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [modify the ConfigMap](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options) for the CoreDNS Corefile in each region.
 
-1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml).
+1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/configmap.yaml):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml 
+    ~~~
 
 1. After [obtaining the IP addresses of EKS instances](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions. 
 
@@ -411,14 +420,14 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
 
     {% include copy-clipboard.html %}
     ~~~
-    kubectl apply -f <configmap-name> --context=<cluster-context>
+    kubectl apply -f <configmap-name> --context <cluster-context>
     ~~~
 
 1. For each region, check that your CoreDNS settings were applied:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl get -n kube-system cm/coredns --export -o yaml --context=<cluster-context>
+    kubectl get -n kube-system cm/coredns --export -o yaml --context <cluster-context>
     ~~~
 
 ### Exclude VPCs from SNAT
@@ -429,13 +438,13 @@ Set `AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS` to recognize the values of your 3 CIDR 
 
 {% include copy-clipboard.html %}
 ~~~
-kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS="cidr1,cidr2,cidr3" --context=<cluster-context>
+kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS="cidr1,cidr2,cidr3" --context <cluster-context>
 ~~~
 
 Remember that these are the CIDR blocks you chose when [starting your Kubernetes clusters](#step-1-start-kubernetes-clusters). You can also get the IP range of a VPC by opening the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and finding the VPC listed in the section called Your VPCs.
 
 {{site.data.alerts.callout_info}}
-If you plan to run your instances exclusively on private subnets, set the following environment variable instead on each region: `kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXTERNALSNAT=true --context=<cluster-context>`
+If you plan to run your instances exclusively on private subnets, set the following environment variable instead on each region: `kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXTERNALSNAT=true --context <cluster-context>`
 {{site.data.alerts.end}}
 </section>
 
@@ -508,7 +517,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-1>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-1>
     ~~~
 
     ~~~
@@ -520,7 +529,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-2>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-2>
     ~~~
 
     ~~~
@@ -532,7 +541,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-3>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-3>
     ~~~
 
     ~~~
@@ -607,8 +616,8 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     $ kubectl create secret \
     generic cockroachdb.client.root \
     --from-file=certs \
-    --context=<cluster-context-1> \
-    --namespace=<cluster-namespace-1>
+    --context <cluster-context-1> \
+    --namespace <cluster-namespace-1>
     ~~~
 
     {% include copy-clipboard.html %}
@@ -616,8 +625,8 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     $ kubectl create secret \
     generic cockroachdb.client.root \
     --from-file=certs \
-    --context=<cluster-context-2> \
-    --namespace=<cluster-namespace-2>
+    --context <cluster-context-2> \
+    --namespace <cluster-namespace-2>
     ~~~
 
     {% include copy-clipboard.html %}
@@ -625,8 +634,8 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     $ kubectl create secret \
     generic cockroachdb.client.root \
     --from-file=certs \
-    --context=<cluster-context-3> \
-    --namespace=<cluster-namespace-3>
+    --context <cluster-context-3> \
+    --namespace <cluster-namespace-3>
     ~~~
 
 1. Create the certificate and key pair for your CockroachDB nodes in one region, substituting `<cluster-namespace>` in this command with the appropriate namespace:
@@ -652,8 +661,8 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     $ kubectl create secret \
     generic cockroachdb.node \
     --from-file=certs
-    --context=<cluster-context> \
-    --namespace=<cluster-namespace>    
+    --context <cluster-context> \
+    --namespace <cluster-namespace>    
     ~~~
     
 1. Repeat the previous 2 steps for your 2 remaining regions. You may need to delete the local `node.crt` and `node.key` in your `certs` directory before generating a new node certificate and key pair.
@@ -662,7 +671,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get secrets --context=<cluster-context>
+    $ kubectl get secrets --context <cluster-context>
     ~~~
 
     ~~~
@@ -675,7 +684,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
 ### Create StatefulSets
 
-1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
+1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -736,17 +745,17 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f <statefulset-1> --context=<cluster-context-1> --namespace=<cluster-namespace-1>
+    $ kubectl create -f <statefulset-1> --context <cluster-context-1> --namespace <cluster-namespace-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f <statefulset-2> --context=<cluster-context-2> --namespace=<cluster-namespace-2>
+    $ kubectl create -f <statefulset-2> --context <cluster-context-2> --namespace <cluster-namespace-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f <statefulset-3> --context=<cluster-context-3> --namespace=<cluster-namespace-3>
+    $ kubectl create -f <statefulset-3> --context <cluster-context-3> --namespace <cluster-namespace-3>
     ~~~
 
 1. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
@@ -754,8 +763,8 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     {% include copy-clipboard.html %}
     ~~~
     kubectl exec \
-    --context=<cluster-context> \
-    --namespace=<cluster-namespace> \
+    --context <cluster-context> \
+    --namespace <cluster-namespace> \
     -it cockroachdb-0 \
     -- /cockroach/cockroach init \
     --certs-dir=/cockroach/cockroach-certs
@@ -769,7 +778,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl get pods --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -781,7 +790,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 </section>
 
 {{site.data.alerts.callout_success}}
-In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB nodes to write to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname> --context=<cluster-context> --namespace=<cluster-namespace>` rather than checking the log on the persistent volume.
+In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB nodes to write to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname> --context <cluster-context> --namespace <cluster-namespace>` rather than checking the log on the persistent volume.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="gke">
@@ -791,7 +800,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f client-secure.yaml --context=<cluster-context>
+    $ kubectl create -f client-secure.yaml --context <cluster-context>
     ~~~
 
     ~~~
@@ -808,7 +817,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context=<cluster-context> --namespace=<cluster-namespace> 
+    kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace> 
     ~~~
 
     ~~~
@@ -822,7 +831,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> --namespace=<cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -892,7 +901,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-client-secure --context=<cluster-context>
+    $ kubectl delete pod cockroachdb-client-secure --context <cluster-context>
     ~~~
 
 <section class="filter-content" markdown="1" data-scope="gke">
@@ -911,7 +920,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> --namespace=<cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
@@ -932,7 +941,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl port-forward cockroachdb-0 8080 --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl port-forward cockroachdb-0 8080 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -952,7 +961,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 </section>
 
 <section class="filter-content" markdown="1" data-scope="eks">
-## Step 6. Access the Admin UI
+## Step 6. Simulate datacenter failure
 </section>
 
 One of the major benefits of running a multi-region CockroachDB cluster is that an entire datacenter or region can go down without affecting the availability of the cluster as a whole.
@@ -963,7 +972,7 @@ To see this in action:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl scale statefulset cockroachdb --replicas=0 --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl scale statefulset cockroachdb --replicas=0 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -976,7 +985,7 @@ To see this in action:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl scale statefulset cockroachdb --replicas=3 --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl scale statefulset cockroachdb --replicas=3 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -1011,7 +1020,7 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl scale statefulset cockroachdb --replicas=4 --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl scale statefulset cockroachdb --replicas=4 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -1022,7 +1031,7 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --context=<cluster-context> --namespace=<cluster-namespace>
+    $ kubectl get pods --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
@@ -1052,7 +1061,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> --namespace=<cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
@@ -1066,34 +1075,34 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl patch statefulset cockroachdb --namespace=<namespace-of-kubernetes-cluster1> --context=<cluster-context-1> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
+    $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster1> --context <cluster-context-1> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl patch statefulset cockroachdb --namespace=<namespace-of-kubernetes-cluster2> --context=<cluster-context-2> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
+    $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster2> --context <cluster-context-2> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl patch statefulset cockroachdb --namespace=<namespace-of-kubernetes-cluster3> --context=<cluster-context-3> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
+    $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster3> --context <cluster-context-3> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
 3. If you then check the status of the pods in each Kubernetes cluster, you should see one of them being restarted:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-1>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-2>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context=<cluster-context-3>
+    $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-3>
     ~~~
 
     This will continue until all of the pods have restarted and are running the new image.
@@ -1110,7 +1119,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
         {% include copy-clipboard.html %}
         ~~~ shell
-        $ kubectl exec -it cockroachdb-client-secure --context=<cluster-context> --namespace=<cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
+        $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     2. Re-enable auto-finalization:
@@ -1182,17 +1191,17 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context=<cluster-context-1>
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context=<cluster-context-2>
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context=<cluster-context-3>
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-3>
     ~~~
 
     ~~~
@@ -1216,7 +1225,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-client-secure --context=<cluster-context>
+    $ kubectl delete pod cockroachdb-client-secure --context <cluster-context>
     ~~~
 
     ~~~
@@ -1227,7 +1236,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get secrets --context=<cluster-context>
+    $ kubectl get secrets --context <cluster-context>
     ~~~
 
     ~~~
@@ -1241,17 +1250,17 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context=<cluster-context-1>
+    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-1>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context=<cluster-context-2>
+    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-2>
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context=<cluster-context-3>
+    $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-3>
     ~~~
 
 1. Stop Kubernetes in each region:
