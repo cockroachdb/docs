@@ -64,6 +64,10 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 2. From your local workstation, start the Kubernetes cluster:
 
+    {{site.data.alerts.callout_success}}
+    To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
+    {{site.data.alerts.end}}
+    
     {% include copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
