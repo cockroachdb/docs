@@ -780,6 +780,88 @@
             ]
           },
           {
+            "title": "Migrate from Shapefiles",
+            "urls": [
+              "/${VERSION}/migrate-from-shapefiles.html"
+            ]
+          },
+          {
+            "title": "Migrate from OpenStreetMap",
+            "urls": [
+              "/${VERSION}/migrate-from-openstreetmap.html"
+            ]
+          },
+          {
+            "title": "Migrate from GeoJSON",
+            "urls": [
+              "/${VERSION}/migrate-from-geojson.html"
+            ]
+          },
+          {
+            "title": "Migrate from GeoPackage",
+            "urls": [
+              "/${VERSION}/migrate-from-geopackage.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Maintain",
+        "items": [
+          {
+            "title": "Upgrade to CockroachDB v20.2",
+            "urls": [
+              "/${VERSION}/upgrade-cockroach-version.html"
+            ]
+          },
+          {
+            "title": "Online Schema Changes",
+            "urls": [
+              "/${VERSION}/online-schema-changes.html"
+            ]
+          },
+          {
+            "title": "Manage Long-Running Queries",
+            "urls": [
+              "/${VERSION}/manage-long-running-queries.html"
+            ]
+          },
+          {
+            "title": "Decommission Nodes",
+            "urls": [
+              "/${VERSION}/remove-nodes.html"
+            ]
+          },
+          {
+            "title": "Back up and Restore Data",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/backup-and-restore.html"
+                ]
+              },
+              {
+                "title": "Advanced Options",
+                "urls": [
+                  "/${VERSION}/backup-and-restore-advanced-options.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
+            "urls": [
+              "/${VERSION}/create-a-file-server.html"
+            ]
+          },
+          {
+            "title": "Rotate Security Certificates",
+            "urls": [
+              "/${VERSION}/rotate-certificates.html"
+            ]
+          },
+          {
             "title": "Import Performance Best Practices",
             "urls": [
               "/${VERSION}/import-performance-best-practices.html"

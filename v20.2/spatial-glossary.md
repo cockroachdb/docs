@@ -209,5 +209,10 @@ This section has information about the representation of geometric and geographi
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
-- [Geospatial functions](functions-and-operators.html#geospatial-functions)
-- [Spatial Features](spatial-features.html)
+- [Spatial functions](functions-and-operators.html#geospatial-functions)
+- [Spatial Features Overview](spatial-features.html)
+- [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Migrate from GeoJSON](migrate-from-geojson.html)
+- [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Spatial and GIS Glossary of Terms](spatial-glossary.html)

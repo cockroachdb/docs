@@ -10,12 +10,16 @@ CockroachDB supports [importing](import.html) data from the following databases:
 
 - MySQL
 - Oracle (using CSV)
-- Postgres
+- Postgres (and <span class="version-tag">New in v20.2</span>: PostGIS)
 
 and from the following data formats:
 
 - CSV/TSV
 - Avro
+- <span class="version-tag">New in v20.2</span>: ESRI Shapefiles (`.shp`) (using `shp2pgsql`)
+- <span class="version-tag">New in v20.2</span>: OpenStreetMap data files (`.pbf`) (using `osm2pgsql`)
+- <span class="version-tag">New in v20.2</span>: GeoPackage data files (`.gpkg`) (using `ogr2ogr`)
+- <span class="version-tag">New in v20.2</span>: GeoJSON data files (`.geojson`) (using `ogr2ogr`)
 
 This page lists general considerations to be aware of as you plan your migration to CockroachDB.
 
@@ -26,6 +30,10 @@ In addition to the information listed below, see the following pages for specifi
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
 - [Migrate from Avro][avro]
+- [Migrate from Shapefiles][shp]
+- [Migrate from OpenStreetMap][pbf]
+- [Migrate from GeoPackage][gpkg]
+- [Migrate from GeoPackage][geojson]
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
@@ -68,3 +76,7 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 [csv]: migrate-from-csv.html
 [import]: import.html
 [avro]: migrate-from-avro.html
+[shp]: migrate-from-shapefiles.html
+[pbf]: migrate-from-openstreetmap.html
+[gpkg]: migrate-from-geopackage.html
+[geojson]: migrate-from-geojson.html
