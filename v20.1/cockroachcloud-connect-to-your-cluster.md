@@ -172,7 +172,7 @@ For more details about the built-in SQL client, and many examples of how to use 
 
 You can use the connection string or parameters to connect to the cluster using a PostgreSQL-compatible driver or ORM. The following language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
 
-For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v19.2/build-an-app-with-cockroachdb.html).
+For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v20.1/build-an-app-with-cockroachdb.html).
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="python">Python</button>
