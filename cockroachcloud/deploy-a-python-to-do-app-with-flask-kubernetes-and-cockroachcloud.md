@@ -33,7 +33,7 @@ Tool | Purpose
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to authorize your network:
+Once you are [logged in](create-your-account.html#log-in), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
 2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.
@@ -54,7 +54,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 

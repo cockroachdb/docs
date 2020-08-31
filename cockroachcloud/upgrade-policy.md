@@ -21,7 +21,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 [Major version releases](https://www.cockroachlabs.com/docs/releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.1.x → v20.2.x).
 
-When a new major version is available, [CockroachCloud Admin](cockroachcloud-console-access-management.html#console-admin)s will be able to [start an upgrade directly from the CockroachCloud Console](cockroachcloud-upgrade-to-v20.1.html).
+When a new major version is available, [CockroachCloud Admin](console-access-management.html#console-admin)s will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v20.1.html).
 
 ### Support downgrade for older CockroachDB versions
 
@@ -29,7 +29,7 @@ As CockroachDB releases new major versions, older versions reach their End of Su
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy.html).
 
-If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](cockroachcloud-upgrade-to-v20.1.html) directly from the CockroachCloud Console.
+If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](upgrade-to-v20.1.html) directly from the CockroachCloud Console.
 
 ### Rollback support
 
@@ -37,4 +37,4 @@ When you upgrade to a new major version, once all nodes are running the new vers
 
 ## See also
 
-For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](cockroachcloud-upgrade-to-v20.1.html).
+For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](upgrade-to-v20.1.html).

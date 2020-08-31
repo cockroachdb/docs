@@ -6,7 +6,7 @@ redirect_from:
 - ../stable/cockroachcloud-upgrade-to-v20.1.html
 ---
 
-Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](cockroachcloud-console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
+Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -44,7 +44,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](cockroachcloud-connect-to-your-cluster.html#step-2-create-a-sql-user) and [**Monitoring**](cockroachcloud-monitoring-page.html) tabs in the CockroachCloud Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](connect-to-your-cluster.html#step-2-create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the CockroachCloud Console will be disabled.
 
 </section>
 
@@ -82,7 +82,7 @@ Once your cluster is running v20.1, but before the upgrade has been finalized:
 
 - [`GRANT`](../stable/grant.html) and [`REVOKE`](../stable/revoke.html) statements will be blocked and return an error. This is because privileges are stored with table metadata and, therefore, privilege changes are considered schema changes, from an internal perspective. Update your application or tooling to prevent privilege changes during this period. Once the upgrade has been finalized, changes to user privileges can resume.
 
-   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](cockroachcloud-connect-to-your-cluster.html#step-2-create-a-sql-user) tab of the CockroachCloud Console until the upgrade has been finalized. Attempting to do so will result in an error.   
+   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](connect-to-your-cluster.html#step-2-create-a-sql-user) tab of the CockroachCloud Console until the upgrade has been finalized. Attempting to do so will result in an error.   
 
 {{site.data.alerts.callout_info}}
 Note that these limitations are specific to upgrades from v19.2 to v20.1; they do not apply to other upgrades.
@@ -114,7 +114,7 @@ Once your cluster is running v20.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [Admin UI](cockroachcloud-monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
@@ -164,5 +164,5 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 
 ## See also
 
-- [Upgrade Policy](cockroachcloud-upgrade-policy.html)
+- [Upgrade Policy](upgrade-policy.html)
 - [CockroachDB v20.1 Release Notes](https://www.cockroachlabs.com/docs/releases/v20.1.0.html)

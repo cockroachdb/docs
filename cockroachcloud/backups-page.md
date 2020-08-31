@@ -255,7 +255,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
     {{site.data.alerts.end}}
 
-1. [Connect to your CockroachCloud cluster](cockroachcloud-connect-to-your-cluster.html):
+1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -274,7 +274,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 Additionally, you can [back up and restore](../v20.1/backup-and-restore.html) your Cockroach Cloud data manually:
 
-1. [Connect to your CockroachCloud cluster](cockroachcloud-connect-to-your-cluster.html):
+1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell

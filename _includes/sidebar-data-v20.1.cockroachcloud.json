@@ -6,19 +6,19 @@
       {
         "title": "Quickstart",
         "urls": [
-          "/${VERSION}/cockroachcloud-quickstart.html"
+          "/${VERSION}/quickstart.html"
         ]
       },
       {
         "title": "Create Your Account",
         "urls": [
-          "/${VERSION}/cockroachcloud-create-your-account.html"
+          "/${VERSION}/create-your-account.html"
         ]
       },
       {
         "title": "Create Your Cluster",
         "urls": [
-            "/${VERSION}/cockroachcloud-create-your-cluster.html"
+            "/${VERSION}/create-your-cluster.html"
         ]
       }
     ]
@@ -30,7 +30,7 @@
       {
         "title": "Connect to Your Cluster",
         "urls": [
-            "/${VERSION}/cockroachcloud-connect-to-your-cluster.html"
+            "/${VERSION}/connect-to-your-cluster.html"
         ]
       },
       {
@@ -56,25 +56,25 @@
           {
             "title": "Security Overview",
             "urls": [
-              "/${VERSION}/cockroachcloud-security-overview.html"
+              "/${VERSION}/security-overview.html"
             ]
           },
           {
             "title": "Authentication",
             "urls": [
-              "/${VERSION}/cockroachcloud-authentication.html"
+              "/${VERSION}/authentication.html"
             ]
           },
           {
             "title": "Authorization",
             "urls": [
-              "/${VERSION}/cockroachcloud-authorization.html"
+              "/${VERSION}/authorization.html"
             ]
           },
           {
             "title": "SQL Audit Logging",
             "urls": [
-              "/${VERSION}/cockroachcloud-sql-audit-logging.html"
+              "/${VERSION}/sql-audit-logging.html"
             ]
           }
         ]
@@ -135,31 +135,31 @@
       {
         "title": "Move into Production",
         "urls": [
-          "/${VERSION}/cockroachcloud-production-checklist.html"
+          "/${VERSION}/production-checklist.html"
         ]
       },
       {
         "title": "Monitor Your Cluster",
         "urls": [
-          "/${VERSION}/cockroachcloud-monitoring-page.html"
+          "/${VERSION}/monitoring-page.html"
         ]
       },
       {
         "title": "Troubleshoot Your Cluster",
         "urls": [
-          "/${VERSION}/cockroachcloud-troubleshooting-page.html"
+          "/${VERSION}/troubleshooting-page.html"
         ]
       },
       {
         "title": "Manage Your Cluster",
         "urls": [
-          "/${VERSION}/cockroachcloud-cluster-management.html"
+          "/${VERSION}/cluster-management.html"
         ]
       },
       {
         "title": "Restore Data from a Backup",
         "urls": [
-          "/${VERSION}/cockroachcloud-backups-page.html"
+          "/${VERSION}/backups-page.html"
         ]
       },
       {
@@ -168,13 +168,13 @@
           {
             "title": "Upgrade Policy",
             "urls": [
-              "/${VERSION}/cockroachcloud-upgrade-policy.html"
+              "/${VERSION}/upgrade-policy.html"
             ]
           },
           {
             "title": "Upgrade to v20.1",
             "urls": [
-              "/${VERSION}/cockroachcloud-upgrade-to-v20.1.html"
+              "/${VERSION}/upgrade-to-v20.1.html"
             ]
           }
         ]
@@ -184,7 +184,7 @@
   {
     "title": "Manage Console Access",
     "urls": [
-      "/${VERSION}/cockroachcloud-console-access-management.html"
+      "/${VERSION}/console-access-management.html"
     ]
   },
   {
@@ -208,7 +208,7 @@
   {
     "title": "FAQs",
     "urls": [
-      "/${VERSION}/cockroachcloud-frequently-asked-questions.html"
+      "/${VERSION}/frequently-asked-questions.html"
     ]
   },
   {
@@ -218,31 +218,31 @@
       {
         "title": "July 2020",
         "urls": [
-          "/releases/cockroachcloud-07062020.html"
+          "/releases/07062020.html"
         ]
       },
       {
         "title": "June 2020",
         "urls": [
-          "/releases/cockroachcloud-06112020.html"
+          "/releases/06112020.html"
         ]
       },
       {
         "title": "May 2020",
         "urls": [
-          "/releases/cockroachcloud-05042020.html"
+          "/releases/05042020.html"
         ]
       },
       {
         "title": "April 2020",
         "urls": [
-          "/releases/cockroachcloud-04062020.html"
+          "/releases/04062020.html"
         ]
       },
       {
         "title": "March 2020",
         "urls": [
-          "/releases/cockroachcloud-03022020.html"
+          "/releases/03022020.html"
         ]
       }
     ]

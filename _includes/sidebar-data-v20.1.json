@@ -10,13 +10,13 @@
           {
             "title": "Deploy a Free Cluster",
             "urls": [
-              "/cockroachcloud/cockroachcloud-quickstart.html"
+              "/cockroachcloud/quickstart.html"
             ]
           },
           {
             "title": "Deploy a Dedicated Cluster",
             "urls": [
-                "/cockroachcloud/cockroachcloud-create-your-cluster.html"
+                "/cockroachcloud/create-your-cluster.html"
             ]
           }
         ]
@@ -27,7 +27,7 @@
           {
             "title": "Connect to Your Cluster",
             "urls": [
-                "/cockroachcloud/cockroachcloud-connect-to-your-cluster.html"
+                "/cockroachcloud/connect-to-your-cluster.html"
             ]
           },
           {
@@ -53,25 +53,25 @@
               {
                 "title": "Security Overview",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-security-overview.html"
+                  "/cockroachcloud/security-overview.html"
                 ]
               },
               {
                 "title": "Authentication",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-authentication.html"
+                  "/cockroachcloud/authentication.html"
                 ]
               },
               {
                 "title": "Authorization",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-authorization.html"
+                  "/cockroachcloud/authorization.html"
                 ]
               },
               {
                 "title": "SQL Audit Logging",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-sql-audit-logging.html"
+                  "/cockroachcloud/sql-audit-logging.html"
                 ]
               }
             ]
@@ -126,31 +126,31 @@
           {
             "title": "Move into Production",
             "urls": [
-              "/cockroachcloud/cockroachcloud-production-checklist.html"
+              "/cockroachcloud/production-checklist.html"
             ]
           },
           {
             "title": "Monitor Your Cluster",
             "urls": [
-              "/cockroachcloud/cockroachcloud-monitoring-page.html"
+              "/cockroachcloud/monitoring-page.html"
             ]
           },
           {
             "title": "Troubleshoot Your Cluster",
             "urls": [
-              "/cockroachcloud/cockroachcloud-troubleshooting-page.html"
+              "/cockroachcloud/troubleshooting-page.html"
             ]
           },
           {
             "title": "Manage Your Cluster",
             "urls": [
-              "/cockroachcloud/cockroachcloud-cluster-management.html"
+              "/cockroachcloud/cluster-management.html"
             ]
           },
           {
             "title": "Restore Data from a Backup",
             "urls": [
-              "/cockroachcloud/cockroachcloud-backups-page.html"
+              "/cockroachcloud/backups-page.html"
             ]
           },
           {
@@ -159,13 +159,13 @@
               {
                 "title": "Upgrade Policy",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-upgrade-policy.html"
+                  "/cockroachcloud/upgrade-policy.html"
                 ]
               },
               {
                 "title": "Upgrade to v20.1",
                 "urls": [
-                  "/cockroachcloud/cockroachcloud-upgrade-to-v20.1.html"
+                  "/cockroachcloud/upgrade-to-v20.1.html"
                 ]
               }
             ]
@@ -175,7 +175,7 @@
       {
         "title": "Manage Console Access",
         "urls": [
-          "/cockroachcloud/cockroachcloud-console-access-management.html"
+          "/cockroachcloud/console-access-management.html"
         ]
       },
       {
@@ -198,7 +198,7 @@
       {
         "title": "FAQs",
         "urls": [
-          "/cockroachcloud/cockroachcloud-frequently-asked-questions.html"
+          "/cockroachcloud/frequently-asked-questions.html"
         ]
       },
       {

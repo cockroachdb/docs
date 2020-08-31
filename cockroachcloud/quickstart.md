@@ -153,9 +153,9 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 ## Before you move into production
 
-Before using your free cluster in production, make sure you have [authorized the network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method).
+Before using your free cluster in production, make sure you have [authorized the network](connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-3-select-a-connection-method).
 
 ## What's next
 
-- [Secure your cluster](cockroachcloud-security-overview.html)
+- [Secure your cluster](security-overview.html)
 - [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
