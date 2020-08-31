@@ -2,6 +2,8 @@
 title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachCloud cluster.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-production-checklist.html
 ---
 
 This page provides important recommendations for CockroachCloud production deployments.

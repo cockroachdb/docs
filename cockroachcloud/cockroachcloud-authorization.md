@@ -2,6 +2,8 @@
 title: Authorization
 summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-authorization.html
 ---
 
 CockroachCloud supports network authorization and user authorization.

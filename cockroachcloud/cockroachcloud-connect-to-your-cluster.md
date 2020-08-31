@@ -2,6 +2,8 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-connect-to-your-cluster.html
 ---
 
 This page shows you how to connect to your CockroachCloud cluster.

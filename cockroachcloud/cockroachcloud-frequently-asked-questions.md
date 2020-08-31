@@ -2,6 +2,8 @@
 title: Frequently Asked Questions
 summary: CockroachCloud FAQs
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-frequently-asked-questions.html
 ---
 
 This page answers the frequently asked questions.

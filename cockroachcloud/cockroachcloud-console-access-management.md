@@ -2,6 +2,8 @@
 title: Console Access Management
 summary: Manage your account roles and permissions.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-console-access-management.html
 ---
 
 The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in to the Console](cockroachcloud-create-your-account.html#log-in) and click **Access**.

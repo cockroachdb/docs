@@ -2,6 +2,8 @@
 title: Cluster Management
 summary: Manage your cluster's schema, data, and backups.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-cluster-management.html
 ---
 
 This page describes the cluster management and cluster deletion workflows.

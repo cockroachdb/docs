@@ -2,6 +2,8 @@
 title: Troubleshoot CockroachCloud
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-troubleshooting-page.html
 ---
 
 This page describes common CockroachCloud errors and their solutions.

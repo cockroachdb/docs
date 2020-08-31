@@ -3,6 +3,8 @@ title: Build a Python App with CockroachDB and Django
 summary: Learn how to use CockroachDB from a simple Django application.
 toc: true
 twitter: false
+redirect_from:
+- ../stable/build-a-python-app-with-cockroachdb-django.html
 ---
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.

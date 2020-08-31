@@ -2,6 +2,8 @@
 title: CockroachCloud Quickstart
 summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-quickstart.html
 ---
 
 This page shows you how to create and connect to a 30-day free CockroachCloud cluster and run your first query.

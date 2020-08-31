@@ -6,6 +6,7 @@ toc_not_nested: true
 redirect_from:
 - managed-build-a-python-app-with-kubernetes.html
 - cockroachcloud-build-a-python-app-with-kubernetes.html
+- ../stable/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachCloud as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
