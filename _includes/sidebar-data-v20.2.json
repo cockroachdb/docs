@@ -312,7 +312,7 @@
                 ]
               },
               {
-                "title": "Local File Storage",
+                "title": "Local File Server",
                 "urls": [
                   "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
                 ]
@@ -519,12 +519,6 @@
             "title": "Decommission Nodes",
             "urls": [
               "/${VERSION}/remove-nodes.html"
-            ]
-          },
-          {
-            "title": "Create a File Server for <code>IMPORT</code>/<code>BACKUP</code>",
-            "urls": [
-              "/${VERSION}/create-a-file-server.html"
             ]
           },
           {
