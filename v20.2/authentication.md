@@ -205,7 +205,7 @@ File name | File usage
 
 ## Authentication for cloud storage
 
-See [Backup file URLs](backup.html#backup-file-urls)
+See [Use External Storage for Bulk Operations](use-external-storage-for-bulk-operations.html).
 
 ## Authentication best practice
 

@@ -33,7 +33,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import into.
 `column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
-`file_location` | The [URL](#file-storage-overview) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#import-file-location) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [CSV import options](#csv-import-options) or [Avro import options](#avro-import-options).
 
 ### CSV import options
@@ -82,16 +82,10 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 
 ### Import file location
 
-We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.) for the data you want to import. For more information, see [External File Storage](external-file-storage.html).
+CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-Local files are supported; however, they must be accessible to all nodes in the cluster using identical import file URLs. To import a local file, you have the following options:
-
-- Option 1. Run a [local file server](create-a-file-server.html) to make the file accessible from all nodes.
-
-- Option 2. Make the file accessible from each local node's store:
-    1. Create an `extern` directory on each node's store. The pathname will differ depending on the [`--store` flag passed to `cockroach start` (if any)](cockroach-start.html#general), but will look something like `/path/to/cockroach-data/extern/`.
-    2. Copy the file to each node's `extern` directory.
-    3. Assuming the file is called `data.sql`, you can access it in your `IMPORT` statement using the following [import file URL: `'nodelocal://1/data.sql'`.
+- [Use External Storage for Bulk Operations](use-external-storage-for-bulk-operations.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Performance
 
@@ -243,4 +237,4 @@ For more detailed information about importing data from Avro and examples, see [
 
 - [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
-- [File Storage Overview](file-storage-overview.html)
+- [Use External Storage for Bulk Operations](use-external-storage-for-bulk-operations.html)

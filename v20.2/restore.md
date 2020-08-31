@@ -36,7 +36,7 @@ Only members of the `admin` role can run `RESTORE`. By default, the `root` user 
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
- `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+ `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `kv_option_list` | Control your backup's behavior with [these options](#options).
 
 {{site.data.alerts.callout_info}}
@@ -49,17 +49,18 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](backup-and-restore-advanced-options.html#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](restore.html#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.<br><br>Example: `WITH into_db = 'newdb'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
-`encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) statement.
+`encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
 
 ### Backup file URLs
 
-The URL for your backup's locations must use the following format:
+CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-{% include {{ page.version.version }}/misc/external-urls.md %}
+- [Use External Storage for Bulk Operations](use-external-storage-for-bulk-operations.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Functional details
 
@@ -122,7 +123,7 @@ Table with a [sequence](create-sequence.html) | The sequence.
 
 To restore your users and privilege [grants](grant.html), you can do a cluster backup and restore the cluster to a fresh cluster with no user data.
 
-If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
+If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](restore.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
 
 ### Restore types
 
@@ -211,15 +212,61 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 If you are restoring from HTTP storage, provide the previous full and incremental backup locations in a comma-separated list. You cannot use the simplified syntax.
 {{site.data.alerts.end}}
 
-### Advanced examples
 
-{% include {{ page.version.version }}/backups/advanced-examples-list.md %}
+### Other restore usages
+
+#### Restore into a different database
+
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](restore.html#into_db) option, you can control the target database.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.customers \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+WITH into_db = 'newdb';
+~~~
+
+#### Remove the foreign key before restore
+
+By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.accounts \
+FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+WITH skip_missing_foreign_keys;
+~~~
+
+#### Restoring users from `system.users` backup
+
+The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
+
+After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE system.users \
+FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
+WITH into_db = 'newdb';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO system.users SELECT * FROM newdb.users;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP TABLE newdb.users;
+~~~
 
 ## See also
 
 - [`BACKUP`][backup]
-- [Backup and Restore Data](backup-and-restore.html)
-- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
+- [Take Full and Incremental Backups](take-and-restore-encrypted-backups.html)
+- [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
+- [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
+- [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 
 <!-- Reference links -->
