@@ -2,7 +2,6 @@
 title: Create Your Account
 summary: Learn how to sign up for a CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
 redirect_from: cockroachcloud-sign-up-for-a-cluster.html
 ---
 

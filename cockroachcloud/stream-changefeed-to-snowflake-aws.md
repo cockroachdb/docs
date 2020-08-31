@@ -2,12 +2,11 @@
 title: Stream a Changefeed to Snowflake
 summary: Use a CockroachCloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page walks you through a demonstration of how to use an [enterprise changefeed](create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page walks you through a demonstration of how to use an [enterprise changefeed](../v20.1/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
@@ -44,7 +43,7 @@ If you have not done so already, [create a cluster](cockroachcloud-create-your-c
     If you haven't connected to your CockroachCloud cluster before, see [Connect to your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-2. Enable [rangefeeds](change-data-capture.html#enable-rangefeeds):
+2. Enable [rangefeeds](../v20.1/change-data-capture.html#enable-rangefeeds):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +104,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 ## Step 6. Create an enterprise changefeed
 
-Back in the built-in SQL shell, [create an enterprise changefeed](create-changefeed.html):
+Back in the built-in SQL shell, [create an enterprise changefeed](../v20.1/create-changefeed.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -125,7 +124,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](create-changef
 Be sure to replace the placeholders with your AWS key ID and AWS secret key.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](change-data-capture.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../v20.1/change-data-capture.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -146,7 +145,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 2. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](change-data-capture.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../v20.1/change-data-capture.html#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
@@ -236,4 +235,4 @@ Your changefeed is now streaming to Snowflake.
 
 ### General change data capture known limitations
 
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
+{% include cockroachcloud/known-limitations/cdc.md %}

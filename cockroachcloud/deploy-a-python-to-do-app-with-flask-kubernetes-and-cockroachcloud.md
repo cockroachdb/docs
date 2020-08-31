@@ -3,7 +3,6 @@ title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud
 summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachCloud
 toc: true
 toc_not_nested: true
-build_for: [cockroachcloud]
 redirect_from:
 - managed-build-a-python-app-with-kubernetes.html
 - cockroachcloud-build-a-python-app-with-kubernetes.html
@@ -41,13 +40,13 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 5. Select both networks: **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **Admin UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
+    The **Admin UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](../stable/admin-ui-overview.html).
 
 6. Click **Apply**.
 
 ### Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner. The **Add User** modal displays.
@@ -73,7 +72,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 
 On your local workstation's terminal:
 
-1. [Download the CockroachDB binary](install-cockroachdb.html):
+1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -476,7 +475,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](../stable/admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -486,7 +485,7 @@ On the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), view es
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-2. On the [**Hardware** dashboard](admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+2. On the [**Hardware** dashboard](../stable/admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -495,4 +494,4 @@ On the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), view es
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-2. The [**Statements** page](admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+2. The [**Statements** page](../stable/admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

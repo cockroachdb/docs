@@ -2,7 +2,6 @@
 title: Monitoring Page
 summary: The Monitoring page is currently under development. In the future, time series charts will display here.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in Admin UI to see them.
@@ -25,5 +24,5 @@ For details on creating additional users that can connect to the cluster and acc
 
 ## Explore the Admin UI
 
-- For an overview of all the areas of the Admin UI, see [Admin UI Overview](admin-ui-overview.html).
-- Be sure to check out the [**Node Map**](admin-ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- For an overview of all the areas of the Admin UI, see [Admin UI Overview](../stable/admin-ui-overview.html).
+- Be sure to check out the [**Node Map**](../stable/admin-ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.

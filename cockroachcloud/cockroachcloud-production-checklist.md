@@ -2,14 +2,13 @@
 title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page provides important recommendations for CockroachCloud production deployments.
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](performance-best-practices-overview.html) guide.
+To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) guide.
 
 ## Use a small pool of persistent connections
 

@@ -2,7 +2,6 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page shows you how to connect to your CockroachCloud cluster.
@@ -45,13 +44,13 @@ Use the Console to authorize networks:
 
 6. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
-    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](admin-ui-overview.html).
+    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](../stable/admin-ui-overview.html).
 
 7. Click **Apply**.
 
 ## Step 2. Create a SQL user
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
 
@@ -81,7 +80,7 @@ Use the Console to authorize networks:
 3. From the **Region** dropdown, select the region closest to where your client or application is running.
 4. From the **Database** dropdown, select the database you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [Default databases](show-databases.html#default-databases).
+    The default database is `defaultdb`. For more information, see [Default databases](../v20.1/show-databases.html#preloaded-databases).
 
 5. Click **Continue**.
 
@@ -115,7 +114,7 @@ The CockroachDB binary comes with a built-in SQL client for executing SQL statem
 
 On the machine where you want to run the CockroachDB SQL client:
 
-1. [Download the CockroachDB binary](install-cockroachdb.html):
+1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
 
     For Mac:
     {% include copy-clipboard.html %}
@@ -162,15 +161,15 @@ On the machine where you want to run the CockroachDB SQL client:
     --execute="CREATE TABLE accounts (id INT PRIMARY KEY, balance DECIMAL);"
     ~~~
 
-4. Execute some [CockroachDB SQL](learn-cockroachdb-sql.html).
+4. Execute some [CockroachDB SQL](../stable/learn-cockroachdb-sql.html).
 
 {{site.data.alerts.callout_success}}
-For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](cockroach-sql.html) documentation.
+For more details about the built-in SQL client, and many examples of how to use it, see the [`cockroach sql`](../stable/cockroach-sql.html) documentation.
 {{site.data.alerts.end}}
 
 ### Use a Postgres driver or ORM
 
-You can use the connection string or parameters to connect to the cluster using a PostgreSQL-compatible driver or ORM. The following language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
+You can use the connection string or parameters to connect to the cluster using a PostgreSQL-compatible driver or ORM. The following language-specific versions assume that you have installed the relevant [client drivers](../stable/install-client-drivers.html).
 
 For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v20.1/build-an-app-with-cockroachdb.html).
 

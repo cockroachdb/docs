@@ -2,7 +2,6 @@
 title: Authentication
 summary: Learn about the authentication features for CockroachCloud clusters.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 CockroachCloud uses TLS 1.2 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](https://www.postgresql.org/docs/11/libpq-ssl.html) for node identity verification, and password authentication for client identity verification.
@@ -22,9 +21,9 @@ You can also use the `require` SSL mode, although we do not recommend using it s
 
 CockroachCloud uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
 
-To set a password for a SQL user, [use the Console](cockroachcloud-authorization.html#use-the-console) or the  [`ALTER USER`](alter-user.html) command.
+To set a password for a SQL user, [use the Console](cockroachcloud-authorization.html#use-the-console) or the  [`ALTER USER`](../stable/alter-user.html) command.
 
 ## See also
 
-- [Client Connection Parameters](connection-parameters.html)
+- [Client Connection Parameters](../stable/connection-parameters.html)
 - [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html)

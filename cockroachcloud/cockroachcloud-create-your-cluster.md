@@ -2,7 +2,6 @@
 title: Create Your CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page walks you through the process of creating a CockroachCloud cluster.
@@ -21,7 +20,7 @@ This page walks you through the process of creating a CockroachCloud cluster.
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{% include {{ page.version.version }}/cockroachcloud-pricing.md %}
+{% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region and number of nodes
 

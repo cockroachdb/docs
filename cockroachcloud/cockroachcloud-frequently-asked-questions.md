@@ -2,7 +2,6 @@
 title: Frequently Asked Questions
 summary: CockroachCloud FAQs
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page answers the frequently asked questions.
@@ -63,11 +62,11 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
-Additionally, you can [backup and restore](backup-and-restore.html) data on your own.
+Additionally, you can [backup and restore](../stable/backup-and-restore.html) data on your own.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
-Yes. You can [backup](backup.html) your self-hosted CockroachDB databases to an [external location](backup.html#backup-file-urls) and then [restore](restore.html) to your CockroachCloud cluster.
+Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location](../v20.1/backup.html#backup-file-urls) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -77,13 +76,13 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](partitioning.html), [change data capture](change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ## Cluster troubleshooting
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](performance-best-practices-overview.html) and [Performance Tuning](performance-tuning.html) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) and [Performance Tuning](../stable/performance-tuning.html) docs for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 

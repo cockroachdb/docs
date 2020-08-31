@@ -2,7 +2,6 @@
 title: CockroachCloud Quickstart
 summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
 ---
 
 This page shows you how to create and connect to a 30-day free CockroachCloud cluster and run your first query.
@@ -66,9 +65,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Connect to the cluster and run your first query
 
-For this tutorial, we will use the [`movr` workload](movr.html) to run the first query. On your local machine:
+For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run the first query. On your local machine:
 
-1. [Download the CockroachDB binary](install-cockroachdb.html):
+1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
 
     For Mac:
     {% include copy-clipboard.html %}
