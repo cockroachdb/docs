@@ -2,13 +2,15 @@
 title: Cluster Management
 summary: Manage your cluster's schema, data, and backups.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-cluster-management.html
 ---
 
 This page describes the cluster management and cluster deletion workflows.
 
 ## View Clusters page
 
-On [logging in to the Console](cockroachcloud-create-your-account.html#log-in), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
+On [logging in to the Console](create-your-account.html#log-in), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
 
 For each cluster, the following details display:
 
@@ -25,7 +27,7 @@ The **Cluster Overview** page displays a list of the selected cluster's nodes.
 
 For each node, the page displays the node's `Name`, nested under its region.
 
-From the **Cluster Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html).
+From the **Cluster Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
 ## Add or remove nodes from a cluster
 

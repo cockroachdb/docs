@@ -2,6 +2,8 @@
 title: Authorization
 summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-authorization.html
 ---
 
 CockroachCloud supports network authorization and user authorization.
@@ -10,7 +12,7 @@ CockroachCloud supports network authorization and user authorization.
 
 CockroachCloud requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
 
-Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 {{site.data.alerts.callout_info}}
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network since it allows anybody who uses your password to reach the CockroachDB nodes.
@@ -18,11 +20,11 @@ While developing and testing your application, you may add `0.0.0.0/0` to the al
 
 ## User authorization
 
-By default, a new SQL user created using a [Console Admin](cockroachcloud-console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ### Before you begin
 
-Make sure you have already [connected to the cluster](cockroachcloud-connect-to-your-cluster.html) with your `admin` SQL user.
+Make sure you have already [connected to the cluster](connect-to-your-cluster.html) with your `admin` SQL user.
 
 #### Create a SQL user
 
@@ -33,7 +35,7 @@ Make sure you have already [connected to the cluster](cockroachcloud-connect-to-
 
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
-Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to create a new user:
+Once you are [logged in](create-your-account.html#log-in), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -50,7 +52,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 
 #### Use the CockroachDB SQL client
 
-Once you have [connected to the cluster's SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create-user.html) statement:
 
@@ -186,4 +188,4 @@ Role-based access control lets you simplify how you manage privileges. In essenc
 ## See also
 
 - [Client Connection Parameters](../stable/connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html)
+- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)

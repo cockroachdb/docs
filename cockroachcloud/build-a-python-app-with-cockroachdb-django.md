@@ -3,6 +3,8 @@ title: Build a Python App with CockroachDB and Django
 summary: Learn how to use CockroachDB from a simple Django application.
 toc: true
 twitter: false
+redirect_from:
+- ../stable/build-a-python-app-with-cockroachdb-django.html
 ---
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
@@ -140,7 +142,7 @@ Exit the SQL shell:
 
 ## Step 2: Connect to your CockroachCloud cluster and create the `django` user and `bank` database
 
-Connect to your CockroachCloud cluster using the [SQL shell](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client).
+Connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#use-the-cockroachdb-sql-client).
 
 In the SQL shell, issue the following statements to create the `django` user and `bank` database:
 
@@ -253,7 +255,7 @@ DATABASES = {
 
 {% if site.cockroachcloud %}
 
-In the CockroachCloud Console, generate the [connection parameters](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method). Then in `myproject/myproject/settings.py`, change `DATABASES` to the following:
+In the CockroachCloud Console, generate the [connection parameters](connect-to-your-cluster.html#step-3-select-a-connection-method). Then in `myproject/myproject/settings.py`, change `DATABASES` to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -393,7 +395,7 @@ $ cockroach sql --insecure --host=localhost:26257
 
 {% if site.cockroachcloud %}
 
-To verify that the migration succeeded, connect to your CockroachCloud cluster using the [SQL shell](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and issue the following statements:
+To verify that the migration succeeded, connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and issue the following statements:
 
 {% endif %}
 

@@ -2,6 +2,8 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
+redirect_from:
+- ../stable/cockroachcloud-connect-to-your-cluster.html
 ---
 
 This page shows you how to connect to your CockroachCloud cluster.
@@ -66,7 +68,7 @@ Use the Console to authorize networks:
     {{site.data.alerts.end}}
 4. Click **Save**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
 
 ## Step 3. Select a connection method
 

@@ -6,6 +6,7 @@ toc_not_nested: true
 redirect_from:
 - managed-build-a-python-app-with-kubernetes.html
 - cockroachcloud-build-a-python-app-with-kubernetes.html
+- ../stable/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachCloud as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
@@ -32,7 +33,7 @@ Tool | Purpose
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to authorize your network:
+Once you are [logged in](create-your-account.html#log-in), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
 2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.
@@ -53,7 +54,7 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-authorization.html#granting-privileges) and [Using roles](cockroachcloud-authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 
