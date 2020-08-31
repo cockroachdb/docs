@@ -205,7 +205,7 @@ File name | File usage
 
 ## Authentication for cloud storage
 
-See [Use External Storage for Bulk Operations](use-external-storage-for-bulk-operations.html).
+See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Authentication best practice
 

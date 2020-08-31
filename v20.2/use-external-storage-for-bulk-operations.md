@@ -1,12 +1,16 @@
 ---
-title: Use External File Storage for Bulk Operations
+title: Use Cloud Storage for Bulk Operations
 summary: Import data into your CockroachDB cluster.
 toc: true
 ---
 
-We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.) for the data you want to import.
+CockroachDB uses the URL provided in a [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), or [`EXPORT`](export.html) statement to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using.
 
-URLs for the files you want to import must use the format shown below.  For examples, see [Example file URLs](#example-file-urls).
+{{site.data.alerts.callout_success}}
+We strongly recommend using cloud/remote storage (Amazon S3, Google Cloud Platform, etc.).
+{{site.data.alerts.end}}
+
+URLs for the files you want to import must use the format shown below. For examples, see [Example file URLs](#example-file-urls).
 
 ~~~
 [scheme]://[host]/[path]?[parameters]

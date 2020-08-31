@@ -41,7 +41,7 @@ You can specify the base directory where you want to store the exported .csv fil
 
 For more information, see the following:
 
-- [Use External File Storage for Bulk Operations](use-external-storage-for-bulk-operations.html)
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ### Export options

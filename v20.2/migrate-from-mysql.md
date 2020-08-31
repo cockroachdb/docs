@@ -50,7 +50,7 @@ $ mysqldump -uroot employees employees > employees.sql
 
 Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`][import] can pull from,  see the following:
 
-- [Use External File Storage for Bulk Operations](use-external-storage-for-bulk-operations.html)
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 {{site.data.alerts.callout_success}}

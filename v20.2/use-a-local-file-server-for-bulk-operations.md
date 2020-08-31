@@ -6,7 +6,7 @@ redirect_from:
 - create-a-file-server.html
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB backups](backup.html), but do not have access to (or cannot use) cloud storage providers, you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
+If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB backups](backup.html), but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage-for-bulk-operations.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
 
 This is especially useful for:
 

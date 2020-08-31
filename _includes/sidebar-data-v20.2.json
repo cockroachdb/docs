@@ -307,7 +307,7 @@
               {
                 "title": "External Storage",
                 "urls": [
-                  "/${VERSION}/use-external-storage-for-bulk-operations.html"
+                  "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
                 ]
               },
               {
