@@ -34,6 +34,13 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 > DROP TYPE <name>;
 ~~~
 
+## Required privileges
+
+- To [create a type](create-type.html) in a database, a user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the database.
+- To [drop a type](drop-type.html), a user must be the owner of the type.
+- To [alter a type](alter-type.html), a user must be the owner of the type.
+- To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
+
 ## Example
 
 {% include copy-clipboard.html %}
@@ -132,7 +139,7 @@ Values can be cast explicitly or implicitly. For example, the following [`SELECT
 
 ### Comparing enumerated types
 
-To compare two enumerated types, you must explicitly cast the types as `STRING`s. For example:
+To compare two enumerated types, you must explicitly cast both types as `STRING`s. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -196,5 +203,6 @@ SQLSTATE: 22023
 
 - [Data Types](data-types.html)
 - [`CREATE TYPE`](create-type.html)
+- [`ALTER TYPE`](alter-type.html)
 - [`SHOW ENUMS`](show-enums.html)
 - [`DROP TYPE`](drop-type.html)

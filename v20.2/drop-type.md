@@ -23,6 +23,10 @@ Parameter | Description
 `IF EXISTS` | Drop the type if it exists. If it does not exist, do not return an error.
 `type_name_list` | A type name or a comma-separated list of type names to drop.
 
+## Required privileges
+
+The user must be the owner of the type.
+
 ## Example
 
 ### Drop a single type
@@ -131,4 +135,5 @@ SQLSTATE: 2BP01
 - [`ENUM`](enum.html)
 - [Data types](data-types.html)
 - [`CREATE TYPE`](create-type.html)
+- [`ALTER TYPE`](alter-type.html)
 - [`SHOW ENUMS`](show-enums.html)

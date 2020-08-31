@@ -43,4 +43,5 @@ toc: true
 - [`ENUM`](enum.html)
 - [Data types](data-types.html)
 - [`CREATE TYPE`](create-type.html)
+- [`ALTER TYPE`](alter-type.html)
 - [`DROP TYPE`](drop-type.html)

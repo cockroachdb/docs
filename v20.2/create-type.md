@@ -19,6 +19,10 @@ Parameter | Description
 `type_name` | The name of the type.
 `opt_enum_val_list` | A list of values that make up the type's enumerated set.
 
+## Required privileges
+
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+
 ## Example
 
 {% include copy-clipboard.html %}
@@ -99,6 +103,7 @@ Parameter | Description
 ## See also
 
 - [`ENUM`](enum.html)
+- [`ALTER TYPE`](alter-type.html)
 - [Data types](data-types.html)
 - [`SHOW ENUMS`](show-enums.html)
 - [`DROP TYPE`](drop-type.html)
