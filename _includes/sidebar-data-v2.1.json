@@ -1,4 +1,5 @@
 [
+  {% include sidebar-data-cockroachcloud.json %},
   {
     "title": "Guides",
     "is_top_level": true,
