@@ -250,11 +250,11 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Avenir-Light, Open Sans, sans-serif;
-  font-size: 16px;
-  line-height:28px;
+  font-family: 'SourceSansPro-Regular', Open Sans, sans-serif;
+  font-size: 14px;
+  line-height:24px;
   font-weight: normal;
-  color: #142848;
+  color: #242A35;
   background-color: white;
 }
 input,

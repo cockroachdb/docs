@@ -66,13 +66,14 @@
 // body
 //
 @mixin type-body {
-  @include graphik_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_r(14px);
+  line-height: 22px;
 }
 
 @mixin type-body-medium {
-  @include graphik_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_b(14px);
+  line-height: 24px;
+  letter-spacing: .02em;
 }
 
 //
@@ -125,24 +126,24 @@
 }
 
 @mixin caption {
-  @include graphik_r(15px);
+  @include sourcesanspro_r(15px);
   line-height: 25px;
 }
 
 @mixin caption--small {
-  @include graphik_r(12px);
+  @include sourcesanspro_r(12px);
   line-height: 15px;
 }
 
 // this matches the name on the hugo site
 // eventually we should consolidate type styles here too
 @mixin type-caption {
-  @include graphik_r(15px);
+  @include sourcesanspro_r(15px);
   line-height: 25px;
 }
 
 @mixin paragraph-type {
-  @include graphik_r(16px);
+  @include sourcesanspro_r(14px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
@@ -152,7 +153,7 @@
 }
 
 @mixin paragraph-type--medium {
-  @include graphik_r(17px);
+  @include sourcesanspro_r(17px);
   line-height: 30px;
 }
 

@@ -117,3 +117,35 @@
 @mixin graphik_sb($size) {font-family: 'Graphik-Semibold', sans-serif; font-size:$size; @include font-props;}
 @mixin graphik_r($size) {font-family: 'Graphik-Regular', sans-serif; font-size:$size; @include font-props;}
 @mixin graphik_ri($size) {font-family: 'Graphik-RegularItalic', sans-serif; font-size:$size; @include font-props;}
+
+
+@font-face {
+  font-family: 'SourceSansPro-Regular';
+  src: url('../fonts/SourceSansPro-Regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SourceSansPro-Light';
+  src: url('../fonts/SourceSansPro-Light.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SourceSansPro-Medium';
+  src: url('../fonts/SourceSansPro-SemiBold.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SourceSansPro-Bold';
+  src: url('../fonts/SourceSansPro-Bold.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
+@mixin sourcesanspro_b($size) {font-family: 'SourceSansPro-Bold', sans-serif; font-size:$size; @include font-props;}

@@ -60,6 +60,26 @@
   src: url("../fonts/Graphik-RegularItalic.otf");
   font-weight: normal;
   font-style: normal; }
+@font-face {
+  font-family: 'SourceSansPro-Regular';
+  src: url("../fonts/SourceSansPro-Regular.otf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'SourceSansPro-Light';
+  src: url("../fonts/SourceSansPro-Light.otf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'SourceSansPro-Medium';
+  src: url("../fonts/SourceSansPro-SemiBold.otf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'SourceSansPro-Bold';
+  src: url("../fonts/SourceSansPro-Bold.otf");
+  font-weight: normal;
+  font-style: normal; }
 body.menu_open {
   overflow: hidden; }
   body.menu_open nav.mobile_expanded {
@@ -139,7 +159,7 @@ nav.mobile_expanded {
       display: block;
       margin-bottom: 10px;
       color: #152849;
-      font-family: 'Graphik-Regular', sans-serif;
+      font-family: 'SourceSansPro-Regular', sans-serif;
       font-size: 15px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
@@ -259,7 +279,7 @@ header {
     border-bottom: 1px solid #DADADA; }
   header .navbar-fixed-top--inner {
     width: 100%;
-    max-width: 1530px; }
+    max-width: 1600px; }
   header nav.mobile {
     float: right; }
     @media screen and (min-width: 992px) {
@@ -710,7 +730,7 @@ a:not([href]) {
       margin-right: 10px;
       margin-bottom: 2px; } }
 .landing-page .landing-page__tutorial--tile-label {
-  font-family: 'Graphik-Regular', sans-serif;
+  font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -720,8 +740,8 @@ a:not([href]) {
   margin-top: 5px; }
   @media screen and (min-width: 544px) {
     .landing-page .landing-page__tutorial--tile-label {
-      font-family: 'Graphik-Regular', sans-serif;
-      font-size: 16px;
+      font-family: 'SourceSansPro-Regular', sans-serif;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -763,7 +783,7 @@ a:not([href]) {
       #content #main-content {
         margin: 0 auto;
         min-height: 625px;
-        max-width: 1530px; } }
+        max-width: 1600px; } }
     #content #main-content .content-col {
       padding-bottom: 100px;
       max-width: 100%;
@@ -866,7 +886,7 @@ section.footer {
           margin-right: 20px; } }
       section.footer .footer-nav li a {
         color: #111D39;
-        font-family: 'Graphik-Regular', sans-serif;
+        font-family: 'SourceSansPro-Regular', sans-serif;
         font-size: 15px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
@@ -912,7 +932,7 @@ section.footer {
         display: block; } }
   section.footer .copyright {
     margin: 20px 0 0 20px;
-    font-family: 'Graphik-Regular', sans-serif;
+    font-family: 'SourceSansPro-Regular', sans-serif;
     font-size: 15px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -934,7 +954,7 @@ section.footer {
   align-items: center;
   height: 55px;
   width: 100%;
-  max-width: 1530px;
+  max-width: 1600px;
   padding: 0 15px;
   background: #F3F3F3;
   border-bottom: 1px solid #DADADA; }
@@ -1053,7 +1073,7 @@ section.footer {
 
 .search-link {
   color: #999988;
-  font-family: 'Graphik-Regular', sans-serif;
+  font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1062,7 +1082,7 @@ section.footer {
   margin-bottom: 5px; }
 
 .search-snippet {
-  font-family: 'Graphik-Regular', sans-serif;
+  font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -1099,8 +1119,8 @@ section.footer {
   padding: 30px 40px 30px 25px;
   margin: 15px 0;
   border-left: 5px solid #eee;
-  font-family: 'Graphik-Regular', sans-serif;
-  font-size: 16px;
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2530,16 +2550,16 @@ img.mfp-img {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  text-transform: capitalize;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
-  border: 2px solid #54B30E;
+  border: 1px solid #54B30E;
   color: #FFFFFF;
   padding: 18px 25px 16px;
   background-color: #54B30E; }
@@ -2557,27 +2577,31 @@ img.mfp-img {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  text-transform: capitalize;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
-  border: 2px solid #54B30E;
-  color: #54B30E;
+  border: 1px solid #54B30E;
+  color: #394455;
   line-height: 40px;
   text-align: center;
   width: 150px;
   height: 40px;
-  background-color: #FFFFFF; }
+  background-color: #FFFFFF;
+  border-color: #C0C6D9; }
   .button--secondary:focus {
     color: #54B30E; }
   .button--secondary:hover {
-    background-color: #54B30E;
-    color: #FFFFFF; }
+    background-color: #F5F7FA;
+    color: #242A35; }
+  .button--secondary:active {
+    border-color: #7E89A9;
+    color: #394455; }
 
 .button--header {
   font-family: 'AvenirLTStd-Black', serif;
@@ -2587,16 +2611,16 @@ img.mfp-img {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  text-transform: capitalize;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
-  border: 2px solid #54B30E;
+  border: 1px solid #54B30E;
   display: none;
   height: 30px;
   font-family: 'AvenirLTStd-Heavy', serif;
@@ -2705,16 +2729,16 @@ img.mfp-img {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  text-transform: capitalize;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   display: inline-block;
-  border: 2px solid #54B30E;
+  border: 1px solid #54B30E;
   background-color: transparent;
   border: none;
   color: #A2A2A2;
@@ -2734,7 +2758,7 @@ img.mfp-img {
     .contribute .dropdown-menu {
       left: -60px; } }
 .contribute .dropdown-menu > li > a {
-  font-family: 'Graphik-Regular', sans-serif;
+  font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -2963,7 +2987,7 @@ p .version-tag, .clickable-header .version-tag {
   max-height: none; }
 .select2-container .select2-results__option {
   text-align: center;
-  font-family: 'Graphik-Regular', sans-serif;
+  font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 12px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -3144,8 +3168,8 @@ html {
 
 body {
   height: 100%;
-  font-family: 'Graphik-Regular', sans-serif;
-  font-size: 16px;
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3157,8 +3181,8 @@ body {
       line-height: 30px; } }
 
 p {
-  font-family: 'Graphik-Regular', sans-serif;
-  font-size: 16px;
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

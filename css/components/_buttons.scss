@@ -1,10 +1,10 @@
 @mixin button() {
 	@include button-text;
-	text-transform: uppercase;
-	@include rounded(5px);
+	text-transform: capitalize;
+	@include rounded(3px);
 	@include groovy(all);
 	display: inline-block;
-	border: 2px solid $cl_green;
+	border: 1px solid $cl_green;
 }
 
 .button--primary {
@@ -25,20 +25,24 @@
 
 .button--secondary {
 	@include button();
-	color: $cl_green;
+	color: $neutral-700;
 	line-height: 40px;
 	text-align: center;
 	width: 150px;
 	height: 40px;
 	background-color: #FFFFFF;
-
+	border-color: $neutral-400;
 	&:focus {
 		color: $cl_green;
 	}
 
 	&:hover {
-		background-color: $cl_green;
-		color: #FFFFFF;
+		background-color: $neutral-100;
+		color: $neutral-800;
+	}
+	&:active {
+		border-color: $neutral-500;
+		color: $neutral-700;
 	}
 }
 
