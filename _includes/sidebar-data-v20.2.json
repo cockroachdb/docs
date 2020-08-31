@@ -306,7 +306,7 @@
             "title": "File Storage for Bulk Operations",
             "items": [
               {
-                "title": "External Storage",
+                "title": "Cloud Storage",
                 "urls": [
                   "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
                 ]
