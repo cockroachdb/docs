@@ -439,6 +439,12 @@
             "urls": [
               "/${VERSION}/migrate-from-avro.html"
             ]
+          },
+          {
+            "title": "Import Performance Best Practices",
+            "urls": [
+              "/${VERSION}/import-performance-best-practices.html"
+            ]
           }
         ]
       },

@@ -7,6 +7,8 @@ build_for: [cockroachdb]
 
 This page has instructions for migrating data from Avro files into CockroachDB using [`IMPORT`][import].
 
+{% include {{ page.version.version }}/misc/import-perf.md %}
+
 ## Step 1. Export data to Avro
 
 Please refer to the documentation of your database for instructions on exporting data to Avro.
@@ -200,6 +202,7 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to 
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

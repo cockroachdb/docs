@@ -11,6 +11,8 @@ The examples below use the [employees data set](https://github.com/datacharmer/t
 
 The examples below pull real data from [Amazon S3](https://aws.amazon.com/s3/).  They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/), dumped as a set of CSV files.
 
+{% include {{ page.version.version }}/misc/import-perf.md %}
+
 ## Step 1. Export data to CSV
 
 Please refer to the documentation of your database for instructions on exporting data to CSV.
@@ -186,6 +188,7 @@ Example usage:
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [SQL Dump (Export)](cockroach-dump.html)
