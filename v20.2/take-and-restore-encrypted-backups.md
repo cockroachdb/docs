@@ -16,7 +16,7 @@ This doc provides information about how to take and restore encrypted backups.
 
 ## Create an encrypted backup
 
-To create an [encrypted backup](#encrypted-backup-and-restore), use the `encryption_passphrase` option:
+To create an encrypted backup, use the `encryption_passphrase` option:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -35,7 +35,7 @@ To [restore](restore.html), use the same `encryption_passphrase`:
 
 ## Restore from an encrypted backup
 
- To decrypt an [encrypted backup](#encrypted-backup-and-restore), use the `encryption_passphrase` option and the same passphrase that was used to create the backup.
+ To decrypt an [encrypted backup](#create-an-encrypted-backup), use the `encryption_passphrase` option and the same passphrase that was used to create the backup.
 
 For example, the encrypted backup created in the [previous example](#create-an-encrypted-backup):
 

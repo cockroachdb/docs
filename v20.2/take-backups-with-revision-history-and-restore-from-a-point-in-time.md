@@ -30,7 +30,7 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 ## Point-in-time restore
 
-If the full or incremental backup was taken [with revision history](#backup-with-revision-history-and-point-in-time-restore), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
+If the full or incremental backup was taken [with revision history](#create-a-backup-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
 
  Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html).
 

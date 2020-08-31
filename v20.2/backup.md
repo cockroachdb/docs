@@ -8,7 +8,7 @@ toc: true
 `BACKUP` is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. For non-enterprise backups, see [`cockroach dump`](cockroach-dump.html).
 {{site.data.alerts.end}}
 
-CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](backup-and-restore.html#perform-enterprise-backup-and-restore) of your cluster's schema and data that are consistent as of a given timestamp.
+CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html#perform-enterprise-backup-and-restore) of your cluster's schema and data that are consistent as of a given timestamp.
 
  You can [backup a full cluster](#backup-a-cluster), which includes:
 

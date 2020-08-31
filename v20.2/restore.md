@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`RESTORE` is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. For non-enterprise restores, see [Perform core backup and restore](backup-and-restore.html#perform-core-backup-and-restore).
+`RESTORE` is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. For non-enterprise restores, see [Perform core backup and restore](take-full-and-incremental-backups.html#perform-core-backup-and-restore).
 {{site.data.alerts.end}}
 
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`][backup] stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
