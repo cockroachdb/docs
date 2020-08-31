@@ -25,7 +25,7 @@ Splitting the import data into multiple files can have a large impact on the imp
 
 For these formats, we recommend splitting your data into as many files as there are nodes.
 
-For example, if you have a 3-node cluster, split your data into 3 files and import:
+For example, if you have a 3-node cluster, split your data into 3 files and [import](import.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -58,11 +58,9 @@ Import formats do not have the same performance because of the way they are proc
 
 We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance.
 
-However, `MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and therefore perform substantially slower.
+However, `MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and therefore have substantially slower performance.
 
-`MYSQLDUMP` and `PGDUMP` are two examples of “bundled” data. This means that the dump file contains both the table schema as well as the data to import.
-
-These formats are the slowest to import, with `PGDUMP` being the slower of the two. This is because CockroachDB has to first load the whole file, read the whole file to get the schema, create the table with that schema, and then import the data. While these formats are slow, there are a couple of things you can do to speed up a bundled data import:
+`MYSQLDUMP` and `PGDUMP` are two examples of "bundled" data. This means that the dump file contains both the table schema and the data to import. These formats are the slowest to import, with `PGDUMP` being the slower of the two. This is because CockroachDB has to first load the whole file, read the whole file to get the schema, create the table with that schema, and then import the data. While these formats are slow, there are a couple of things you can do to speed up a bundled data import:
 
 - [Provide the table schema in-line](#provide-the-table-schema-in-line)
 - [Import the schema separately from the data](#import-the-schema-separately-from-the-data)
