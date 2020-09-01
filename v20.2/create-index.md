@@ -49,6 +49,7 @@ Parameter | Description
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
 `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html).
+`opt_where_clause` | <span class="version-tag">New in v20.2:</span> An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `USING HASH WITH BUCKET COUNT` |  Creates a [hash-sharded index](indexes.html#hash-sharded-indexes) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
 

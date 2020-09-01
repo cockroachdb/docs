@@ -1939,6 +1939,12 @@
     		      "/${VERSION}/inverted-indexes.html"
     		    ]
     		  },
+          {
+            "title": "Partial Indexes",
+            "urls": [
+              "/${VERSION}/partial-indexes.html"
+            ]
+          },
     		  {
     		    "title": "Column Families",
     		    "urls": [
