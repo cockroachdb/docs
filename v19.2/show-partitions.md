@@ -237,3 +237,4 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 - [Define Table Partitions](partitioning.html)
 - [SQL Statements](sql-statements.html)
 - [Geo-Partitioning](demo-low-latency-multi-region-deployment.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

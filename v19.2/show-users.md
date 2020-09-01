@@ -52,3 +52,4 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 
 - [`CREATE USER`](create-user.html)
 - [Manage Users](authorization.html#create-and-manage-users)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

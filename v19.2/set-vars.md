@@ -232,6 +232,7 @@ All timezone abbreviations are case-sensitive and must be uppercase, with the ex
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for session variables](programmability-of-session-variables.html)
 - [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)

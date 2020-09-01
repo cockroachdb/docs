@@ -772,6 +772,7 @@ In this example, the statement is executed every minute. We let the process run 
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for the SQL shell](programmability-of-command-line-interfaces.html#guarantees-per-command)
 - [Client Connection Parameters](connection-parameters.html)
 - [`cockroach demo`](cockroach-demo.html)
 - [Other Cockroach Commands](cockroach-commands.html)

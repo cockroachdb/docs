@@ -245,6 +245,7 @@ In addition to using one of the [pre-loaded dataset](#datasets), you can create 
 
 ## See also
 
+- [Programmability and forward compatibility guarantees for the `demo` shell](programmability-of-command-line-interfaces.html#guarantees-per-command)
 - [`cockroach sql`](cockroach-sql.html)
 - [`cockroach workload`](cockroach-workload.html)
 - [Other Cockroach Commands](cockroach-commands.html)

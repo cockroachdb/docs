@@ -77,3 +77,4 @@ Parameter | Description
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)
 - [`SHOW USERS`](show-users.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

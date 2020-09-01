@@ -223,3 +223,4 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 - [`CREATE VIEW`](create-view.html)
 - [`COMMENT ON`](comment-on.html)
 - [Information Schema](information-schema.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

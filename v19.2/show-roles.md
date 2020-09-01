@@ -42,3 +42,4 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 - [`GRANT <roles>`](grant-roles.html)
 - [`REVOKE <roles>`](revoke-roles.html)
 - [Manage Users](authorization.html#create-and-manage-users)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

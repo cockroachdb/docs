@@ -183,6 +183,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 ## See also
 
+- [Programmability and forward compatibility of HTTP status endpoints](programmability-of-other-interfaces.html#http-status-endpoints)
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)

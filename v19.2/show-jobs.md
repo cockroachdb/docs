@@ -162,3 +162,4 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 - [`ALTER TABLE`](alter-table.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees

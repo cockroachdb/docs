@@ -92,3 +92,4 @@ CONFIGURE ZONE 1
 - [`ALTER RANGE`](alter-range.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)
+- [SQL Introspection Interfaces](introspection-interfaces.html) and their forward compatibility guarantees
