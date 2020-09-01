@@ -29,10 +29,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
-**opt_temp_create_table ::=**
+**opt_persistence_temp_table ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
+  {% include {{ page.version.version }}/sql/diagrams/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
@@ -88,7 +88,7 @@ Parameter | Description
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
-`opt_temp_create_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
+`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 
 ## Table-level replication
 
