@@ -112,7 +112,13 @@
 	      "urls": [
 		"/stable/migrate-from-avro.html"
 	      ]
-	    }
+	    },
+            {
+              "title": "Import Performance Best Practices",
+              "urls": [
+                "/stable/import-performance-best-practices.html"
+              ]
+            }
 	  ]
 	},
 	{
