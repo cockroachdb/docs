@@ -9,7 +9,7 @@ redirect_from:
 - backup-and-restore-advanced-options.html
 ---
 
-Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
+Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
 Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
 
