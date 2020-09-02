@@ -13,7 +13,8 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html"
+              "/${VERSION}/install-cockroachdb-windows.html",
+              "/${VERSION}/install-cockroachdb-spatial.html"
             ]
           },
           {
@@ -986,6 +987,12 @@
       		      "/${VERSION}/alter-table.html"
       		    ]
       		  },
+            {
+              "title": "<code>ALTER TYPE</code>",
+              "urls": [
+                "/${VERSION}/alter-type.html"
+              ]
+            },
       		  {
       		    "title": "<code>ALTER USER</code>",
       		    "urls": [
@@ -1100,6 +1107,12 @@
       		      "/${VERSION}/create-table-as.html"
       		    ]
       		  },
+            {
+              "title": "<code>CREATE TYPE</code>",
+              "urls": [
+                "/${VERSION}/create-type.html"
+              ]
+            },
       		  {
       		    "title": "<code>CREATE USER</code>",
       		    "urls": [
@@ -1136,6 +1149,12 @@
       		      "/${VERSION}/drop-database.html"
       		    ]
       		  },
+            {
+              "title": "<code>DROP TYPE</code>",
+              "urls": [
+                "/${VERSION}/drop-type.html"
+              ]
+            },
       		  {
       		    "title": "<code>DROP INDEX</code>",
       		    "urls": [
@@ -1400,6 +1419,12 @@
       		      "/${VERSION}/show-databases.html"
       		    ]
       		  },
+            {
+              "title": "<code>SHOW ENUMS</code>",
+              "urls": [
+                "/${VERSION}/show-enums.html"
+              ]
+            },
       		  {
       		    "title": "<code>SHOW GRANTS</code>",
       		    "urls": [
@@ -1597,6 +1622,12 @@
       		      "/${VERSION}/decimal.html"
       		    ]
       		  },
+            {
+              "title": "<code>ENUM</code>",
+              "urls": [
+                "/${VERSION}/enum.html"
+              ]
+            },
       		  {
       		    "title": "<code>FLOAT</code>",
       		    "urls": [
