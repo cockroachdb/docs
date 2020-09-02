@@ -3057,7 +3057,7 @@ p .version-tag, .clickable-header .version-tag {
     #version-switcher {
       display: block;
       position: relative;
-      width: 150px;
+      width: 160px;
       margin-right: 5px;
       margin-left: auto;
       border-top: none; } }
