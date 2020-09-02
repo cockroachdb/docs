@@ -2,26 +2,27 @@
 title: Create Your CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
+redirect_from:
+- ../stable/cockroachcloud-create-your-cluster.html
 ---
 
 This page walks you through the process of creating a CockroachCloud cluster.
 
 ## Before you begin
 
-- Before creating a cluster, check that you have the correct [organization](cockroachcloud-create-your-account.html) selected. Click the drop down in the top right corner to select a specific organization.
-- Only [CockroachCloud Console Administrators](cockroachcloud-console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+- Before creating a cluster, check that you have the correct [organization](create-your-account.html) selected. Click the drop down in the top right corner to select a specific organization.
+- Only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 ## Step 1. Access the Create new cluster page
 
-1. [Log in](cockroachcloud-create-your-account.html#log-in) to your CockroachCloud account.
+1. [Log in](create-your-account.html#log-in) to your CockroachCloud account.
 2. On the **Overview** page, click **Create Cluster**.
 
 ##Step 2. Select the cloud provider
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{% include {{ page.version.version }}/cockroachcloud-pricing.md %}
+{% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region and number of nodes
 
@@ -82,10 +83,10 @@ After entering the cluster name, click **Next**.
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
-3. Add your preferred [payment method](cockroachcloud-console-access-management.html#manage-billing-for-the-organization).
+3. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
 4. If you haven't used it yet, enter the code `CRDB30` in the **Trial code** box for a 30-day trial of CockroachCloud and click **Apply**.
       {{site.data.alerts.callout_info}}
-      Make sure that you [delete your trial cluster](cockroachcloud-cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](cockroachcloud-console-access-management.html#manage-billing-for-the-organization) page.
+      Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}
 5. Click **Create cluster**.
 

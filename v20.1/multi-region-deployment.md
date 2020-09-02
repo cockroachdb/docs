@@ -20,7 +20,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [CockroachCloud](https://www.cockroachlabs.com/docs/cockroachcloud/stable/):
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [CockroachCloud](../cockroachcloud/quickstart.html):
 
 1. Create a CockroachCloud account at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
@@ -267,7 +267,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 - [MovR (live demo)](https://movr.cloud)
-- [CockroachCloud documentation](https://www.cockroachlabs.com/docs/cockroachcloud/stable/)
+- [CockroachCloud documentation](../cockroachcloud/quickstart.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

@@ -2,14 +2,15 @@
 title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
+redirect_from:
+- ../stable/cockroachcloud-production-checklist.html
 ---
 
 This page provides important recommendations for CockroachCloud production deployments.
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](performance-best-practices-overview.html) guide.
+To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) guide.
 
 ## Use a small pool of persistent connections
 
@@ -21,4 +22,4 @@ Connection pooling helps resolve this dilemma by creating a set of authenticated
 
 CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
 
-To verify that you have authorized the application server's network, navigate to the [**Networking** page](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network) on the CockroachCloud Console and check if you see the application server network in the list of authorized networks. If you don't see the application server network in the list, [authorize the network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network).
+To verify that you have authorized the application server's network, navigate to the [**Networking** page](connect-to-your-cluster.html#step-1-authorize-your-network) on the CockroachCloud Console and check if you see the application server network in the list of authorized networks. If you don't see the application server network in the list, [authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network).

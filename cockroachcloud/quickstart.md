@@ -2,7 +2,8 @@
 title: CockroachCloud Quickstart
 summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
-build_for: [cockroachcloud]
+redirect_from:
+- ../stable/cockroachcloud-quickstart.html
 ---
 
 This page shows you how to create and connect to a 30-day free CockroachCloud cluster and run your first query.
@@ -66,9 +67,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Connect to the cluster and run your first query
 
-For this tutorial, we will use the [`movr` workload](movr.html) to run the first query. On your local machine:
+For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run the first query. On your local machine:
 
-1. [Download the CockroachDB binary](install-cockroachdb.html):
+1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
 
     For Mac:
     {% include copy-clipboard.html %}
@@ -152,9 +153,9 @@ For this tutorial, we will use the [`movr` workload](movr.html) to run the first
 
 ## Before you move into production
 
-Before using your free cluster in production, make sure you have [authorized the network](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method).
+Before using your free cluster in production, make sure you have [authorized the network](connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-3-select-a-connection-method).
 
 ## What's next
 
-- [Secure your cluster](cockroachcloud-security-overview.html)
+- [Secure your cluster](security-overview.html)
 - [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)

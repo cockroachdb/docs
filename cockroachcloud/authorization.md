@@ -2,7 +2,8 @@
 title: Authorization
 summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
 toc: true
-build_for: [cockroachcloud]
+redirect_from:
+- ../stable/cockroachcloud-authorization.html
 ---
 
 CockroachCloud supports network authorization and user authorization.
@@ -11,7 +12,7 @@ CockroachCloud supports network authorization and user authorization.
 
 CockroachCloud requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
 
-Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 {{site.data.alerts.callout_info}}
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network since it allows anybody who uses your password to reach the CockroachDB nodes.
@@ -19,11 +20,11 @@ While developing and testing your application, you may add `0.0.0.0/0` to the al
 
 ## User authorization
 
-By default, a new SQL user created using a [Console Admin](cockroachcloud-console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ### Before you begin
 
-Make sure you have already [connected to the cluster](cockroachcloud-connect-to-your-cluster.html) with your `admin` SQL user.
+Make sure you have already [connected to the cluster](connect-to-your-cluster.html) with your `admin` SQL user.
 
 #### Create a SQL user
 
@@ -32,9 +33,9 @@ Make sure you have already [connected to the cluster](cockroachcloud-connect-to-
 
 #### Use the Console
 
-{% include {{ page.version.version }}/cockroachcloud-ask-admin.md %}
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
-Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you can use the Console to create a new user:
+Once you are [logged in](create-your-account.html#log-in), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
 2. Click the **Add User** button in the top right corner.
@@ -51,9 +52,9 @@ Once you are [logged in](cockroachcloud-create-your-account.html#log-in), you ca
 
 #### Use the CockroachDB SQL client
 
-Once you have [connected to the cluster's SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
 
-To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html) statement:
+To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create-user.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -61,14 +62,14 @@ To create a new user, use the [`CREATE USER ... WITH PASSWORD`](create-user.html
 ~~~
 
 {{site.data.alerts.callout_info}}
-Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the admin UI. To add or change a password for a user, use the [`ALTER USER`](alter-user.html) statement.
+Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the admin UI. To add or change a password for a user, use the [`ALTER USER`](../stable/alter-user.html) statement.
 {{site.data.alerts.end}}
 
 ### Granting privileges
 
-Access to the data in your cluster is controlled by [privileges](authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges](../v20.1/authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
-To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](grant.html) statement. For example, to assign a user all privileges for all tables in a database:
+To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../stable/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -82,25 +83,25 @@ To assign a user more limited privileges for one table in a database:
 > GRANT SELECT, INSERT ON <database>.<table> TO <user>;
 ~~~
 
-For more details, see [Privileges](authorization.html#assign-privileges) and [`GRANT`](grant.html).
+For more details, see [Privileges](../v20.1/authorization.html#assign-privileges) and [`GRANT`](../stable/grant.html).
 
 ### Managing SQL users
 
-- To change a user's password, use the [`ALTER USER`](alter-user.html) statement:
+- To change a user's password, use the [`ALTER USER`](../stable/alter-user.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER USER <user> WITH PASSWORD '<new password>';
     ~~~
 
-- To list all the users in your cluster, use the [`SHOW USERS`](show-users.html) statement:
+- To list all the users in your cluster, use the [`SHOW USERS`](../stable/show-users.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW USERS;
     ~~~
 
-- To remove a user, use the [`DROP USER`](drop-user.html) statement:
+- To remove a user, use the [`DROP USER`](../stable/drop-user.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -113,14 +114,14 @@ For more details, see [Privileges](authorization.html#assign-privileges) and [`G
 
 ### Managing privileges
 
-- To show privileges granted to a user, use the [`SHOW GRANTS`](show-grants.html) statement:
+- To show privileges granted to a user, use the [`SHOW GRANTS`](../stable/show-grants.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON DATABASE <database> FOR <user>;
     ~~~
 
-- To revoke privileges from a user, use the [`REVOKE`](revoke.html) statement:
+- To revoke privileges from a user, use the [`REVOKE`](../stable/revoke.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -131,49 +132,49 @@ For more details, see [Privileges](authorization.html#assign-privileges) and [`G
 
 Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
-- To create a role, use the [`CREATE ROLE`](create-role.html) statement:
+- To create a role, use the [`CREATE ROLE`](../stable/create-role.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE <role>;
     ~~~
 
-- To grant privileges to a role, use the [`GRANT <privilege>`](grant.html) statement:
+- To grant privileges to a role, use the [`GRANT <privilege>`](../stable/grant.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > GRANT <privilege> ON <database> TO <role>;
     ~~~
 
-- To add a user (or another role) to a role, use the [`GRANT <role>`](grant-roles.html) statement:
+- To add a user (or another role) to a role, use the [`GRANT <role>`](../stable/grant-roles.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > GRANT <role> TO <user or role>;
     ~~~
 
-- To revoke privileges from a role, use the [`REVOKE <privilege>`](revoke.html) statement:
+- To revoke privileges from a role, use the [`REVOKE <privilege>`](../stable/revoke.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > REVOKE INSERT ON <database>.<table> FROM <role>;
     ~~~
 
-- To remove a user (or another role) from a role, use the [`REVOKE <role>`](revoke-roles.html) statement:
+- To remove a user (or another role) from a role, use the [`REVOKE <role>`](../stable/revoke-roles.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > REVOKE <role> FROM <user or role>;
     ~~~
 
-- To list all roles in your cluster, use the [`SHOW ROLES`](show-roles.html) statement:
+- To list all roles in your cluster, use the [`SHOW ROLES`](../stable/show-roles.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
 
-- To remove a role, use the [`DROP ROLE`](drop-role.html) statement:
+- To remove a role, use the [`DROP ROLE`](../stable/drop-role.html) statement:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -186,5 +187,5 @@ Role-based access control lets you simplify how you manage privileges. In essenc
 
 ## See also
 
-- [Client Connection Parameters](connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](cockroachcloud-connect-to-your-cluster.html)
+- [Client Connection Parameters](../stable/connection-parameters.html)
+- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)

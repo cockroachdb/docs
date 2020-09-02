@@ -2,7 +2,8 @@
 title: Restore Data from a Backup
 summary: Restore a table or database from a backup in CockroachCloud.
 toc: true
-build_for: [cockroachcloud]
+redirect_from:
+- ../stable/cockroachcloud-backups-page.html
 ---
 
 This page describes the **Backups** page and how to restore your data.
@@ -11,7 +12,7 @@ This page describes the **Backups** page and how to restore your data.
 Currently, the **Backups** page is only available for CockroachCloud clusters running on AWS. This page will be available for GCP clusters soon.
 {{site.data.alerts.end}}
 
-Cockroach Labs runs [full backups](backup.html#full-backups) daily and [incremental backups](backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+Cockroach Labs runs [full backups](../v20.1/backup.html#full-backups) daily and [incremental backups](../v20.1/backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page), where you can:
 
@@ -106,13 +107,13 @@ To restore a cluster:
 
 1. [Restore each database](#restore-a-database).
 
-1. [Configure replication zones](configure-replication-zones.html).
+1. [Configure replication zones](../v20.1/configure-replication-zones.html).
 
-1. If you are restoring to a new cluster, configure the [cluster settings](cluster-settings.html).
+1. If you are restoring to a new cluster, configure the [cluster settings](../v20.1/cluster-settings.html).
 
-1. If you are restoring to a new cluster, [create users and roles](create-role.html), and [grant privileges](grant.html).
+1. If you are restoring to a new cluster, [create users and roles](../v20.1/create-role.html), and [grant privileges](../v20.1/grant.html).
 
-1. If applicable, [add comments](comment-on.html) to databases and tables.
+1. If applicable, [add comments](../v20.1/comment-on.html) to databases and tables.
 
 <!--
 1. Click **View** for the cluster backup you want to restore.
@@ -154,30 +155,30 @@ To restore a database:
 
 1. If the database's name is already in use, either:
 
-    [Drop the existing database](drop-database.html):
+    [Drop the existing database](../v20.1/drop-database.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > DROP DATABASE example_database;
     ~~~
 
-    Or [change the existing database's name](rename-database.html):
+    Or [change the existing database's name](../v20.1/rename-database.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE example_database RENAME TO archived_example_database;
     ~~~
 
-1. [Restore](restore.html) the database to the target cluster:
+1. [Restore](../v20.1/restore.html) the database to the target cluster:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > RESTORE DATABASE example_database FROM 'path_to_backup';
     ~~~
 
-1. Set any database-specific [zone configurations](configure-replication-zones.html).
+1. Set any database-specific [zone configurations](../v20.1/configure-replication-zones.html).
 
-1. If applicable, [grant privileges](grant.html).
+1. If applicable, [grant privileges](../v20.1/grant.html).
 
 ## Restore a table
 
@@ -208,14 +209,14 @@ To restore a table:
 
 1. If the table's name is already in use, either:
 
-    [Drop the existing table](drop-table.html):
+    [Drop the existing table](../v20.1/drop-table.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > DROP TABLE example_table;
     ~~~
 
-    Or [change the existing table's name](rename-table.html):
+    Or [change the existing table's name](../v20.1/rename-table.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -228,22 +229,22 @@ To restore a table:
     > RESTORE TABLE example_database.example_table FROM 'path_to_backup' WITH into_db = 'new_target_database';
     ~~~
 
-1. [Restore](restore.html) the table to the target cluster:
+1. [Restore](../v20.1/restore.html) the table to the target cluster:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > RESTORE TABLE example_database.example_table FROM 'path_to_backup';
     ~~~
 
-1. Set any table-specific [zone configurations](configure-replication-zones.html).
+1. Set any table-specific [zone configurations](../v20.1/configure-replication-zones.html).
 
-1. If applicable, [grant privileges](grant.html).
+1. If applicable, [grant privileges](../v20.1/grant.html).
 
 ## Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster
 
 To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
-1. While [connected to your self-hosted CockroachDB cluster](connect-to-the-database.html), [back up](backup.html) your databases and/or tables to an [external location](backup.html#backup-file-urls):
+1. While [connected to your self-hosted CockroachDB cluster](../v20.1/connect-to-the-database.html), [back up](../v20.1/backup.html) your databases and/or tables to an [external location](../v20.1/backup.html#backup-file-urls):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -254,7 +255,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
     {{site.data.alerts.end}}
 
-1. [Connect to your CockroachCloud cluster](cockroachcloud-connect-to-your-cluster.html):
+1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -262,7 +263,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
     ~~~
 
-1. [Restore](restore.html) to your CockroachCloud cluster:
+1. [Restore](../v20.1/restore.html) to your CockroachCloud cluster:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -271,9 +272,9 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 ## Back up and restore data manually
 
-Additionally, you can [back up and restore](backup-and-restore.html) your Cockroach Cloud data manually:
+Additionally, you can [back up and restore](../v20.1/backup-and-restore.html) your Cockroach Cloud data manually:
 
-1. [Connect to your CockroachCloud cluster](cockroachcloud-connect-to-your-cluster.html):
+1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -281,7 +282,7 @@ Additionally, you can [back up and restore](backup-and-restore.html) your Cockro
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
     ~~~
 
-1. [Back up](backup.html) your databases and/or tables to an [external location](backup.html#backup-file-urls):
+1. [Back up](../v20.1/backup.html) your databases and/or tables to an [external location](../v20.1/backup.html#backup-file-urls):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -292,7 +293,7 @@ Additionally, you can [back up and restore](backup-and-restore.html) your Cockro
     If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
     {{site.data.alerts.end}}
 
-1. To [restore](restore.html) to your CockroachCloud cluster:
+1. To [restore](../v20.1/restore.html) to your CockroachCloud cluster:
 
     {% include copy-clipboard.html %}
     ~~~ sql
