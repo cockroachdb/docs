@@ -33,7 +33,7 @@ module Jekyll
           # Apply custom user-defined hooks
           # Users can return `nil` from the hook to signal we should not index
           # such a record
-          record = Hooks.apply_each(record, node, Jekyll::Algolia.site)
+          record = Hooks.apply_each(file.path, record, node, Jekyll::Algolia.site)
           next if record.nil?
 
           records << record
