@@ -1,13 +1,15 @@
 ---
-title: Back up and Restore Data
+title: Take Full and Incremental Backups
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: true
 redirect_from:
 - back-up-data.html
 - restore-data.html
+- backup-and-restore.html
+- backup-and-restore-advanced-options.html
 ---
 
-Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
+Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
 Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
 
@@ -82,7 +84,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 ~~~
 
 {{site.data.alerts.callout_info}}
-For an example on how to specify the destination of an incremental backup, see [Backup and Restore - Advanced Options](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations)
+For an example on how to specify the destination of an incremental backup, see [Take Full and Incremental Backups](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
 {{site.data.alerts.end}}
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the automatically appended incremental backups (that are stored as subdirectories, like in the example above):
@@ -90,6 +92,18 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM '<backup_location>';
+~~~
+
+### Incremental backups with explicitly specified destinations
+
+To explicitly control where your incremental backups go, use the [`INCREMENTAL FROM`](backup.html#synopsis) syntax:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE bank \
+TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
+AS OF SYSTEM TIME '-10s' \
+INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
 
 ### Examples
@@ -215,9 +229,11 @@ If you created a backup from another database and want to import it into Cockroa
 
 ## See also
 
-- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
+- [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
+- [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
+- [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](import-data.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

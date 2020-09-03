@@ -10,10 +10,10 @@ The **Jobs** page of the Admin UI provides details about long-running tasks perf
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics).
-- [Changefeeds](change-data-capture.html).
+- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
 {{site.data.alerts.callout_success}}
-All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster. 
+All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster.
 {{site.data.alerts.end}}
 
 To view these details, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Jobs** in the left-hand navigation.
@@ -27,16 +27,16 @@ Use the **Type** menu to filter jobs by type.
 You can toggle between showing the latest 50 jobs or all jobs on the cluster.
 
 {{site.data.alerts.callout_info}}
-Jobs are deleted every 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html). 
+Jobs are deleted every 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
 
-The Jobs list is designed for you to manage pending work. It is not intended to display the canonical record of all jobs that have run. If you need a historical record of all jobs you have run, you should log this information externally. 
+The Jobs list is designed for you to manage pending work. It is not intended to display the canonical record of all jobs that have run. If you need a historical record of all jobs you have run, you should log this information externally.
 {{site.data.alerts.end}}
 
 ## Jobs list
 
 Use the **Jobs** list to see your recently created and completed jobs.
 
-- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](change-data-capture.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Automatic-Statistics Creation** as described [above](#filter-jobs).
 

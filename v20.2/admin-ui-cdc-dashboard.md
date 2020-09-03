@@ -4,7 +4,7 @@ summary: The Changefeeds dashboard lets you monitor the changefeeds created acro
 toc: true
 ---
 
-The **Changefeeds** dashboard in the CockroachDB Admin UI lets you monitor the [changefeeds](change-data-capture.html) created across your cluster. To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
+The **Changefeeds** dashboard in the CockroachDB Admin UI lets you monitor the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster. To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
@@ -17,7 +17,7 @@ This graph shows the maximum latency for resolved timestamps of any running chan
 <img src="{{ 'images/v20.2/admin_ui_max_changefeed.png' | relative_url }}" alt="CockroachDB Admin UI Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](change-data-capture.html#ordering-guarantees).
+The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
 {{site.data.alerts.end}}
 
 ## Sink Byte Traffic
@@ -32,7 +32,7 @@ Metric | Description
 
 ## Sink Counts
 
-This graph shows: 
+This graph shows:
 
 - The number of messages that CockroachDB sent to the sink.
 - The number of flushes that the sink performed for changefeeds.
@@ -46,7 +46,7 @@ Metric | Description
 
 ## Sink Timings
 
-This graph shows: 
+This graph shows:
 
 - The time in milliseconds per second required by CockroachDB to send messages to the sink.
 - The time CockroachDB spent waiting for the sink to flush the messages for changefeeds.
@@ -68,7 +68,7 @@ This graph displays the number of times changefeeds restarted due to retryable e
 
 ## See also
 
-- [Change Data Capture](change-data-capture.html)
+- [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Support Resources](support-resources.html)
 - [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
