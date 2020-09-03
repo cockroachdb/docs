@@ -28,7 +28,7 @@ Parameter | Description
 Option       | Value | Description
 -------------+-------+-----------------------------------------------------
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
 
 ## Response
 
@@ -50,7 +50,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -79,7 +79,7 @@ You can add number of rows and the schema of the backed up table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -120,7 +120,7 @@ You can add number of rows and the schema of the backed up table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
 ~~~
 
 ~~~

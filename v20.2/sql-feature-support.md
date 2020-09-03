@@ -43,8 +43,9 @@ table tr td:nth-child(2) {
  `TIME` | ✓ | Standard | [`TIME` documentation](time.html)
  XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing.
  `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it.
- `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms.
+ `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
  `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
+ `ENUM` | ✓ | PostgreSQL Extension | [`ENUM` documentation](enum.html)
 
 ### Constraints
 

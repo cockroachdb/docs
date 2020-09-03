@@ -59,9 +59,6 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 ~~~ sql
 > DROP ROLE dev_ops;
 ~~~
-~~~
-DROP ROLE 1
-~~~
 
 ## See also
 

@@ -1,6 +1,6 @@
 <div class="version-nav-wrapper">
   <div class="version-nav">
-    <a
+    <!-- <a
       class="version-nav__link version-nav__link--crdb {% unless site.cockroachcloud %}version-nav__link--active{% endunless %}"
       href="{% if site.cockroachcloud %}{{ "/../stable/" | relative_url }}{% else %}{{ "/stable/" | relative_url }}{% endif %}"
     >
@@ -13,7 +13,7 @@
       data-proofer-ignore
     >
       <span class="version-nav__link-text version-nav__link-text--managed"></span>
-    </a>
+    </a> -->
     {% unless site.cockroachcloud %}
       {% if page.version %}
         {% include version-switcher.html %}

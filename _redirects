@@ -1,6 +1,5 @@
 ---
 layout: null
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 {%- if site.baseurl == "/docs" %}

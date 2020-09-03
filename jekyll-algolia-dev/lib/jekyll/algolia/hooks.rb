@@ -11,14 +11,14 @@ module Jekyll
       #
       # record - The hash of the record to be pushed
       # node - The Nokogiri node of the element
-      def self.apply_each(record, node, context)
+      def self.apply_each(filepath, record, node, context)
         case method(:before_indexing_each).arity
         when 1
           before_indexing_each(record)
         when 2
           before_indexing_each(record, node)
         else
-          before_indexing_each(record, node, context)
+          before_indexing_each(filepath, record, node, context)
         end
       end
 
@@ -46,8 +46,9 @@ module Jekyll
       # but a custom hook like this one can allow more fine-grained
       # customisation.
       def self.should_be_excluded?(filepath)
-        # We want to include release files
+        # We want to include release files and CockroachCloud docs
         return false if filepath.start_with?('release')
+        return false if filepath.start_with?('cockroachcloud')
 
         # Exclude from index if files are not part of stable version.
         # If valid stable version does not exist, index dev version.
@@ -86,7 +87,7 @@ module Jekyll
       # information from the HTML node.
       #
       # Users can return nil to signal that the record should not be indexed
-      def self.before_indexing_each(record, _node, context)
+      def self.before_indexing_each(filepath, record, _node, context)
         [:version,
          :versions,
          :release_info,
@@ -94,12 +95,11 @@ module Jekyll
          :toc,
          :redirect_from].each { |k| record.delete(k)}
 
-        if context.config['cockroachcloud']
+        record[:url] = "https://www.cockroachlabs.com/docs#{record[:url]}"
+
+        if filepath.start_with?('cockroachcloud') || context.config['cockroachcloud']
           record[:doc_type] = 'cockroachcloud'
-          record[:url] = "https://www.cockroachlabs.com/docs/cockroachcloud#{record[:url]}"
-          # record[:canonical] = "/cockroachcloud#{record[:url]}"
         else
-          record[:url] = "https://www.cockroachlabs.com/docs#{record[:url]}"
           record[:doc_type]  = 'cockroachdb'
         end
         record

@@ -12,12 +12,6 @@ Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.c
 This is an [enterprise feature](enterprise-licensing.html). Also, it is in **beta** and is currently undergoing continued testing. Please [file a Github issue](file-an-issue.html) with us if you identify a bug.
 {{site.data.alerts.end}}
 
-## Export file location
-
-You can use remote cloud storage (Amazon S3, Google Cloud Platform, etc.) to store the exported CSV data. Alternatively, you can use an [HTTP server](create-a-file-server.html) accessible from all nodes.
-
-For simplicity's sake, it's **strongly recommended** to use cloud/remote storage for the data you want to export. Local files are supported; however, they must be accessible identically from all nodes in the cluster.
-
 ## Cancelling export
 
 After the export has been initiated, you can cancel it with [`CANCEL QUERY`](cancel-query.html).
@@ -36,7 +30,7 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
  Parameter | Description
 -----------|-------------
- `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names across exports, so each export should have a unique destination to avoid overwriting. 
+ `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names across exports, so each export should have a unique destination to avoid overwriting.
  `WITH kv_option` | Control your export's behavior with [these options](#export-options).
  `select_stmt` | Specify the query whose result you want to export to CSV format.
  `table_name` | Specify the name of the table you want to export to CSV format.
@@ -45,9 +39,10 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
 You can specify the base directory where you want to store the exported .csv files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...). Each export should have a unique destination to avoid overwriting other exports.
 
-URLs for the file directory location you want to export to must use the following format:
+For more information, see the following:
 
-{% include {{ page.version.version }}/misc/external-urls.md %}
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ### Export options
 
@@ -154,4 +149,4 @@ Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, wh
 
 ## See also
 
-- [Create a File Server](create-a-file-server.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)

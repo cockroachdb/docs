@@ -110,7 +110,7 @@ my @files = qw/
   backup.md
   restore.md
   show-backup.md
-  change-data-capture.md
+  stream-data-out-of-cockroachdb-using-changefeeds.md
   create-changefeed.md
   changefeed-for.md
   /;

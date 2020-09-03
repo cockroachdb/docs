@@ -22,10 +22,12 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-By default, CockroachDB generates table statistics automatically when tables are [created](create-table.html), and as they are [updated](update.html). It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
+By default, CockroachDB automatically generates table statistics when tables are [created](create-table.html), and as they are [updated](update.html). It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
+
+<span class="version-tag">New in v20.2:</span> By default, CockroachDB also automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on columns that prefix an index.
 
 {{site.data.alerts.callout_info}}
 [Schema changes](online-schema-changes.html) trigger automatic statistics collection for the affected table(s).
@@ -79,6 +81,10 @@ For instructions showing how to manually generate statistics, see the examples i
 #### Controlling histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
+
+{{site.data.alerts.callout_info}}
+CockroachDB does not support multi-column histograms yet. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/49698).
+{{site.data.alerts.end}}
 
 If you are an advanced user and need to disable histogram collection for troubleshooting or performance tuning reasons, change the [`sql.stats.histogram_collection.enabled` cluster setting](cluster-settings.html) by running [`SET CLUSTER SETTING`](set-cluster-setting.html) as follows:
 

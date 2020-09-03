@@ -127,7 +127,7 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 
 ## Step 5. Populate the `orders` table
 
-Unlike the `customers` table, `orders` doesn't have any PII, just a Product ID and a delivery status. (Note the use of the [`CHECK` constraint](check.html) as a workaround for the as-yet-unimplemented `ENUM` - see [SQL feature support](sql-feature-support.html) for more information.)
+Unlike the `customers` table, `orders` doesn't have any PII, just a Product ID and a delivery status.
 
 Let's populate the `orders` table with some placeholder data using [`CREATE SEQUENCE`](create-sequence.html):
 

@@ -4,7 +4,7 @@ summary: The RESUME JOB statement lets you resume jobs that were previously paus
 toc: true
 ---
 
- The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [`changefeeds`](change-data-capture.html), and [schema change](online-schema-changes.html) jobs.
+ The `RESUME JOB` [statement](sql-statements.html) lets you resume [paused](pause-job.html) [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [`changefeeds`](stream-data-out-of-cockroachdb-using-changefeeds.html), and [schema change](online-schema-changes.html) jobs.
 
 ## Required privileges
 

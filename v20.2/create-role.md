@@ -49,9 +49,6 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 ~~~ sql
 > CREATE ROLE dev_ops;
 ~~~
-~~~
-CREATE ROLE 1
-~~~
 
 After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
 
@@ -67,10 +64,6 @@ After creating roles, you can [add users to the role](grant-roles.html) and [gra
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE carl WITH PASSWORD 'ilov3beefjerky';
-~~~
-
-~~~
-CREATE ROLE 1
 ~~~
 
 ### Create a role with a password using an identifier

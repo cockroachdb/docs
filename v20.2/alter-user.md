@@ -46,9 +46,6 @@ Parameter | Description
 ~~~ sql
 > ALTER USER carl WITH PASSWORD 'ilov3beefjerky';
 ~~~
-~~~
-ALTER USER 1
-~~~
 
 ### Change password using an identifier
 

@@ -9,6 +9,8 @@ This page has instructions for migrating data from MySQL to CockroachDB using [`
 
 The examples below use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
 
+{% include {{ page.version.version }}/misc/import-perf.md %}
+
 ## Considerations
 
 In addition to the general considerations listed in the [Migration Overview](migration-overview.html), there is also the following MySQL-specific information to consider as you prepare your migration.
@@ -48,7 +50,10 @@ $ mysqldump -uroot employees employees > employees.sql
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [Import File URLs](import.html#import-file-urls).
+Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`][import] can pull from,  see the following:
+
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -171,6 +176,7 @@ Example usage:
 ## See also
 
 - [`IMPORT`](import.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
 - [Migrate from Postgres][postgres]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)

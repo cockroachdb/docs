@@ -430,8 +430,8 @@ header {
       -moz-osx-font-smoothing: grayscale;
       line-height: 15px;
       letter-spacing: 1.5px;
-      text-transform: uppercase;
-      line-height: 26px; }
+      line-height: 26px;
+      font-size: 13px; }
     #sidebar > li .arrow-down {
       margin-top: 7px; }
     #sidebar > li li .arrow-down {
@@ -612,6 +612,21 @@ body.sidenav-open .col-content {
                   @media screen and (min-width: 992px) {
                     .nav > li > ul > li > ul > li > ul > li > a {
                       font-size: 13px; } }
+                .nav > li > ul > li > ul > li > ul > li > ul {
+                  padding-left: 15px; }
+                  .nav > li > ul > li > ul > li > ul > li > ul > li {
+                    list-style: none; }
+                    .nav > li > ul > li > ul > li > ul > li > ul > li > a {
+                      font-family: 'AvenirLTStd-Roman', serif;
+                      font-size: 13px;
+                      font-weight: normal;
+                      -webkit-font-smoothing: antialiased;
+                      -moz-osx-font-smoothing: grayscale;
+                      line-height: 20px; }
+                      @media screen and (min-width: 992px) {
+                        .nav > li > ul > li > ul > li > ul > li > ul > li > a {
+                          font-size: 13px; } }
+
   .nav a {
     background-color: transparent;
     display: inline-block; }
@@ -3042,7 +3057,7 @@ p .version-tag, .clickable-header .version-tag {
     #version-switcher {
       display: block;
       position: relative;
-      width: 150px;
+      width: 160px;
       margin-right: 5px;
       margin-left: auto;
       border-top: none; } }
@@ -3333,12 +3348,6 @@ th {
 
 tbody tr:hover {
   background-color: #F3F3F3 !important; }
-
-tbody tr.eol {
-  background-color: #fffaea !important; }
-
-tbody.nohover tr:hover {
-  background-color: inherit !important; }
 
 table > thead > tr > th,
 table > tbody > tr > th,
