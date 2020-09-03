@@ -165,19 +165,19 @@ Statement | Usage
 [`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
-## Backup and restore statements (Enterprise)
-
-The following statements require an [enterprise license](enterprise-licensing.html).
-
-{{site.data.alerts.callout_info}}
-For non-enterprise users, see [Back up Data](backup.html) and [Restore Data](restore.html).
-{{site.data.alerts.end}}
+## Backup and restore statements
 
 Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | <span class="version-tag">New in v20.2:</span> Create a schedule for periodic backups.
+[`SHOW SCHEDULES`](show-schedules.html) | <span class="version-tag">New in v20.2:</span> View information on backup schedules.
+[`PAUSE SCHEDULES`](pause-schedules.html) | <span class="version-tag">New in v20.2:</span> Pause backup schedules.
+[`RESUME SCHEDULES`](resume-schedules.html) | <span class="version-tag">New in v20.2:</span> Resume paused backup schedules.
+[`DROP SCHEDULES`](drop-schedules.html) | <span class="version-tag">New in v20.2:</span> Drop backup schedules.
+
 
 ## Changefeed statements (Enterprise)
 
