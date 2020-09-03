@@ -53,7 +53,21 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 ## Example file URLs
 
-Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), or [`EXPORT`](export.html):
+Example URLs for [`BACKUP`](backup.html), [`EXPORT`](export.html), or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html):
+
+Location     | Example                                                                          
+-------------+----------------------------------------------------------------------------------
+Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
+Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
+Google Cloud | `gs://acme-co`                                                     
+HTTP         | `http://localhost:8080/employees`
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+
+{{site.data.alerts.callout_info}}
+Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
+{{site.data.alerts.end}}
+
+Example URLs for [`RESTORE`](restore.html) or [`IMPORT`](import.html):
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -62,16 +76,3 @@ Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=a
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
-
-Example URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html):
-
-Location     | Example                                                                          
--------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
-Google Cloud | `gs://acme-co`                                                     
-HTTP         | `http://localhost:8080/employees`
-
-{{site.data.alerts.callout_info}}
-Currently, cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
-{{site.data.alerts.end}}
