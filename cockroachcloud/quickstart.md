@@ -157,5 +157,6 @@ Before using your free cluster in production, make sure you have [authorized the
 
 ## What's next
 
+- [Create your new CockroachCloud cluster](create-your-cluster.html)
 - [Secure your cluster](security-overview.html)
 - [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)

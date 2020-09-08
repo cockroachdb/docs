@@ -3,26 +3,21 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Get Started",
-      "items": [
-	{
-	  "title": "Deploy a Free Cluster",
-	  "urls": [
-	    "/cockroachcloud/quickstart.html"
-	  ]
-	},
-	{
-	  "title": "Deploy a Dedicated Cluster",
-	  "urls": [
-	      "/cockroachcloud/create-your-cluster.html"
-	  ]
-	}
+      "title": "Quickstart with a Free Cluster",
+      "urls": [
+	"/cockroachcloud/quickstart.html"
       ]
     },
     {
-      "title": "Use Your Cluster",
+      "title": "Get Started",
       "items": [
 	{
+	  "title": "Create a New CockroachCloud Cluster",
+	  "urls": [
+	      "/cockroachcloud/create-your-cluster.html"
+	  ]
+	},
+  {
 	  "title": "Connect to Your Cluster",
 	  "urls": [
 	      "/cockroachcloud/connect-to-your-cluster.html"
@@ -44,7 +39,12 @@
 	      ]
 	    }
 	  ]
-	},
+	}
+      ]
+    },
+    {
+      "title": "Use Your Cluster",
+      "items": [
 	{
 	  "title": "Secure Your Cluster",
 	  "items": [
