@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Quickstart with Free Cluster",
+      "title": "Quickstart with a Free Cluster",
       "urls": [
 	"/cockroachcloud/quickstart.html"
       ]
@@ -12,7 +12,7 @@
       "title": "Get Started",
       "items": [
 	{
-	  "title": "Create Your Cluster",
+	  "title": "Create a New CockroachCloud Cluster",
 	  "urls": [
 	      "/cockroachcloud/create-your-cluster.html"
 	  ]

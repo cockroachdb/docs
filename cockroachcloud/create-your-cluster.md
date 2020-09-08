@@ -8,6 +8,10 @@ redirect_from:
 
 This page walks you through the process of creating a CockroachCloud cluster.
 
+{{site.data.alerts.callout_info}}
+To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart guide](quickstart.html).
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 - Before creating a cluster, check that you have the correct [organization](create-your-account.html) selected. Click the drop down in the top right corner to select a specific organization.
