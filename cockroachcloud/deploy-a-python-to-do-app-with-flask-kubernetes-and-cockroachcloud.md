@@ -54,11 +54,7 @@ Once you are [logged in](create-your-account.html#log-in), you can use the Conso
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-<<<<<<< HEAD:cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
-=======
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](cockroachcloud-user-authorization.html#granting-privileges) and [Using roles](cockroachcloud-user-authorization.html#using-roles).
->>>>>>> 4deed5d1... Initial drafts:v20.1/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#granting-privileges) and [Using roles](user-authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 

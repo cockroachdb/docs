@@ -18,17 +18,10 @@ To access the Admin UI:
 
     You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 
-<<<<<<< HEAD:cockroachcloud/monitoring-page.md
-2. Log in with your [SQL username](authorization.html#use-the-console) and password.
+2. Log in with your [SQL username](user-authorization.html#use-the-console) and password.
 
 {{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](authorization.html#use-the-console).
-=======
-2. Log in with your [SQL username](cockroachcloud-user-authorization.html#use-the-console) and password.
-
-{{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](cockroachcloud-user-authorization.html#use-the-console).
->>>>>>> 4deed5d1... Initial drafts:v20.1/cockroachcloud-monitoring-page.md
+For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](user-authorization.html#use-the-console).
 {{site.data.alerts.end}}
 
 ## Explore the Admin UI
