@@ -1,4 +1,8 @@
+
+
 @import "global/variables";
+@import "bs/bootstrap.scss"; 
+
 @import "global/mixins";
 @import "global/fonts";
 @import "global/type";
@@ -27,6 +31,7 @@
 @import "components/comparison-chart";
 @import "components/algolia";
 @import "components/version-switcher";
+@import "components/navbar";
 
 html {
   height: 100%;

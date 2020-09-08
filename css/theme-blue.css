@@ -81,7 +81,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     text-decoration: none;
 }
 
-.btn {
+/* .btn {
     background: #46a417;
     border: 2px solid #46a417;
     font-family: Avernir-Black, sans-serif;
@@ -97,7 +97,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
 .btn:hover {
     background: #fff;
     color: #46a417;
-}
+} */
 
 .navbar-header-items > ul > li {
     list-style-type: none;
@@ -127,10 +127,10 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     border-color: #347DBE;
 }
 
-.btn-primary:hover,
+/* .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
-.btn-primary.active,
+.btn-primary.active, */
 .open .dropdown-toggle.btn-primary {
    /*background-color: #248ec2;*/
     border-color: #347DBE;

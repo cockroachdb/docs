@@ -36,6 +36,25 @@ $cl_syntax_green_link: #54B30E;
 
 
 // 2020 styles
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1600px
+);
+
+$grid-gutter-width: 24px;
+
+
 $white:  #fff;
 
 $neutral-100: #F5F7FA;
@@ -49,6 +68,7 @@ $neutral-800: #242A35;
 $neutral-900: #060C12;
 $black:  #000;
 
+
 $grays: (
   "100": $neutral-100,
   "200": $neutral-200,
@@ -61,3 +81,25 @@ $grays: (
   "900": $neutral-900
 );
 
+$blue-100: #E0EEFB;
+$blue-200: #74BDFD;
+$blue-300: #0788FF;
+$blue-400: #0788FF;
+$blue-500: #00294D;
+
+$theme-colors: (
+  "primary": #0074d9,
+  "danger": #ff4136
+);
+
+$secondary: $neutral-400;
+$body-color: #242A35;
+
+$border-color: $neutral-300;
+$border-radius: 3px;
+
+$input-btn-padding-y-sm:      3px;
+$input-btn-padding-x-sm:      14px;
+$input-btn-focus-width: 3px;
+
+$line-height-base: 1.725;

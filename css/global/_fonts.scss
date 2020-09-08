@@ -148,4 +148,5 @@
 }
 
 @mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
+@mixin sourcesanspro_m($size) {font-family: 'SourceSansPro-SemiBold', sans-serif; font-size:$size; @include font-props;}
 @mixin sourcesanspro_b($size) {font-family: 'SourceSansPro-Bold', sans-serif; font-size:$size; @include font-props;}

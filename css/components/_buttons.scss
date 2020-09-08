@@ -4,7 +4,10 @@
 	@include rounded(3px);
 	@include groovy(all);
 	display: inline-block;
-	border: 1px solid $cl_green;
+	border: $btn-border-width solid transparent;
+	padding: $btn-padding-y $btn-padding-x;
+	line-height: $line-height-base;
+	white-space: nowrap;
 }
 
 .button--primary {
@@ -23,29 +26,42 @@
 	}
 }
 
-.button--secondary {
+.btn-outline-secondary {
 	@include button();
 	color: $neutral-700;
-	line-height: 40px;
 	text-align: center;
-	width: 150px;
-	height: 40px;
 	background-color: #FFFFFF;
 	border-color: $neutral-400;
+	padding: $btn-padding-y-sm $btn-padding-x-sm;
 	&:focus {
-		color: $cl_green;
+		border-color: $neutral-500;
+		background-color: $neutral-100;
+		box-shadow: 0 0 0 $input-focus-width $neutral-100;
 	}
 
 	&:hover {
 		background-color: $neutral-100;
 		color: $neutral-800;
 	}
-	&:active {
-		border-color: $neutral-500;
-		color: $neutral-700;
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $neutral-500;
+			background-color: $neutral-100;
+	
+			&:focus {
+				border-color: $neutral-500;
+				background-color: $neutral-100;
+				box-shadow: 0 0 0 $input-focus-width $neutral-100; 
+			  }
+		}
+		
 	}
 }
-
+.btn--sm {
+	padding: $btn-padding-y-sm $btn-padding-x-sm;
+}
 .button--header {
 	@include button();
 	display: none;

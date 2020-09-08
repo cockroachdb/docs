@@ -96,9 +96,10 @@
 }
 
 @mixin button-text {
-  @include avenir_bl(12px);
-  line-height: 15px;
-  letter-spacing: 1.5px;
+  @include sourcesanspro_r(14px);
+  line-height: $line-height-base;
+  letter-spacing: 0.1px;
+  font-weight: 600;
 }
 
 @mixin button-text--heavy {
