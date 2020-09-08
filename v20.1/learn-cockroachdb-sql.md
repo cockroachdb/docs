@@ -4,6 +4,11 @@ summary: Learn some of the most essential CockroachDB SQL statements on a local 
 toc: true
 ---
 
+<div class="filters filters-big clearfix">
+    <a href="learn-cockroachdb-sql.html"><button class="filter-button current"><strong>Local</strong></button></a>
+    <a href="learn-cockroachdb-sql-interactive.html"><button class="filter-button">In-Browser</button></a>
+</div>
+
 This tutorial walks you through some of the most essential CockroachDB SQL statements, using the `movr` dataset.
 
 For a complete list of supported SQL statements and related details, see [SQL Statements](sql-statements.html).
