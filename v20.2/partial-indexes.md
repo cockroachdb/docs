@@ -16,7 +16,11 @@ Partial indexes can improve cluster performance in a number of ways:
 
 - They contain fewer rows than full indexes, making them less expensive to create and store on a cluster.
 - Read queries on rows included in a partial index only scan the rows in the partial index. This contrasts with queries on columns in full indexes, which must scan all rows in the indexed column.
-- Write queries on rows implied by a partial index only modify rows in the partial index. This contrasts with write queries on columns in full indexes, which must modify the larger set of rows that make up a full-column index.
+- Write queries on tables with a partial index only perform an index write when the rows inserted satisfy the partial index predicate. This contrasts with write queries on tables with full indexes, which incur the overhead of a full index write when the rows inserted modify an indexed column.
+
+{{site.data.alerts.callout_info}}
+When a query on a table with a partial index has a filter expression, the [cost-based optimizer](cost-based-optimizer.html) attempts to prove that the filter implies the partial index predicate. It is not guaranteed that the optimizer can prove the implication of arbitrarily complex expressions. Although unlikely, it is possible that a filter implies a predicate, but the optimizer cannot prove the implication.
+{{site.data.alerts.end}}
 
 ## Creation
 
@@ -54,10 +58,6 @@ When defining the predicate expression, note that:
 - The predicate expression can only refer to columns in the table being indexed.
 - [Functions](functions-and-operators.html) used in predicates must be immutable. For example, the `now()` function is not allowed in predicates because its value depends on more than its arguments.
 
-{{site.data.alerts.callout_info}}
-Partial indexes cannot be created at [table creation](create-table.html).
-{{site.data.alerts.end}}
-
 ## Unique partial indexes
 
 You can enforce [uniqueness](unique.html) on a subset of rows with `CREATE UNIQUE INDEX ... WHERE ...`.
@@ -76,10 +76,6 @@ For another example, see [Create a partial index that enforces uniqueness on a s
 When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-CockroachDB returns an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
-{{site.data.alerts.end}}
-
 ## Index hints
 
 You can force queries [to use a specific partial index](table-expressions.html#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
@@ -88,7 +84,7 @@ You can force queries [to use a specific partial index](table-expressions.html#f
 
 - CockroachDB does not currently support partial [inverted indexes](inverted-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50952).
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
-- CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
+- CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
 
 ## Examples
 
@@ -185,6 +181,25 @@ Another `EXPLAIN` statement shows that the number of rows scanned by the query d
 (6 rows)
 ~~~
 
+Filtering the query on both columns in the partial index (i.e., on both `city` and `revenue`) will limit the scan to even fewer rows:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 80;
+~~~
+
+~~~
+  tree |        field        |                 description
+-------+---------------------+-----------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 705
+       | table               | rides@rides_city_revenue_idx (partial index)
+       | spans               | [/'new york' - /'new york']
+(6 rows)
+~~~
+
 Note that querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 80`) will also use the partial index:
 
 {% include copy-clipboard.html %}
@@ -206,7 +221,7 @@ Note that querying a subset of the rows implied by the partial index predicate e
 (8 rows)
 ~~~
 
-The number of rows scanned is the the same. Because the query returns a subset of the rows in the partial index, an additional filter is applied to the query plan.
+The number of rows scanned is the the same, but, because the query returns a subset of the rows in the partial index, an additional filter is applied to the query plan.
 
 If you query a non-indexed column of the same table, but the rows in the table are implied by the partial index, the query plan will use the partial index.
 
