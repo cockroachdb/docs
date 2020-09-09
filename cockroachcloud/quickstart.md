@@ -1,18 +1,20 @@
 ---
-title: CockroachCloud Quickstart
+title: Quickstart with CockroachCloud
 summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-quickstart.html
 ---
 
-This page shows you how to create and connect to a 30-day free CockroachCloud cluster and run your first query.
+This page shows you how to deploy a free CockroachDB cluster on CockroachCloud. You'll use a 30-day free trial code to create the cluster and a sample workload to connect and run your first query.
+
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/start-a-local-cluster.html).
 
 ## Before you begin
 
 If you haven't already, [sign up for a CockroachCloud account](https://cockroachlabs.cloud/signup).
 
-## Create a free CockroachCloud cluster
+## Step 1. Create a free cluster
 
 For this tutorial, we will create a 3-node GCP cluster in the `us-west` region.
 
@@ -36,16 +38,14 @@ Your cluster will be created in approximately 20-30 minutes. Watch this [Getting
 
 Once your cluster is created, you will be redirected to the **Cluster Overview** page.
 
-## Get the connection string
-
-### Step 1. Create a SQL user
+## Step 2. Create a SQL user
 
 1. In the left navigation bar, click **SQL Users**.
 2. Click **Add User**. The **Add User** modal displays.
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-### Step 2. Authorize your network
+## Step 3. Authorize your network
 
 1. In the left navigation bar, click **Networking**.
 2. Click **Add Network**. The **Add Network** modal displays.
@@ -53,10 +53,10 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 4. To allow the network to access the cluster's Admin UI and to use the CockroachDB client to access the databases, select the **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
-### Step 3. Get the connection string
+## Step 4. Get the connection string
 
 1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
-2. From the **User** dropdown, select the SQL user you created in [Step 1. Create a SQL user](#step-1-create-a-sql-user).
+2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 3. Verify that the `us-west2 GCP` region and `default_db` database are selected.
 4. Click **Continue**. The **Connect** tab is displayed.
 5. Click **Connection string** to get the connection string for your cluster.
@@ -64,8 +64,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 7. Click the name of the `ca.crt` file to download the CA certificate to your local machine.
 8. Move the downloaded `ca.crt` file to the `certs` directory.
 
-
-## Connect to the cluster and run your first query
+## Step 5. Run your first query
 
 For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run the first query. On your local machine:
 
@@ -99,9 +98,9 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-3-get-the-connection-string).
+3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
 
-    In the connection string, the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 1](#step-1-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 3](#step-3-get-the-connection-string).
+    In the connection string, the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -151,12 +150,16 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     (6 rows)
     ~~~
 
-## Before you move into production
-
-Before using your free cluster in production, make sure you have [authorized the network](connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster. Also, download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-3-select-a-connection-method).
-
 ## What's next
 
-- [Create your new CockroachCloud cluster](create-your-cluster.html)
-- [Secure your cluster](security-overview.html)
-- [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
+Learn more:
+
+- Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install another client framework](../stable/install-client-drivers.html) for your preferred language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
+
+Before you move into production:
+
+- [Authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster.
+- Download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-3-select-a-connection-method).
+- Review the [production checklist](production-checklist.html).
