@@ -14,14 +14,13 @@ redirect_from: start-a-local-cluster-in-docker.html
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
-{{site.data.alerts.callout_danger}}
-Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
-{{site.data.alerts.end}}
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
 
 <!-- TODO: update the asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.

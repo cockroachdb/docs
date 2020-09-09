@@ -1,4 +1,11 @@
 [
+  {
+    "title": "Quickstart",
+    "is_top_level": true,
+    "urls": [
+      "/cockroachcloud/quickstart.html"
+    ]
+  },
   {% include sidebar-data-cockroachcloud.json %},
   {
     "title": "CockroachDB",
@@ -23,8 +30,8 @@
               {
                 "title": "From Binary",
                 "urls": [
-                  "/${VERSION}/start-a-local-cluster.html",
-                  "/${VERSION}/secure-a-cluster.html"
+                  "/${VERSION}/secure-a-cluster.html",
+                  "/${VERSION}/start-a-local-cluster.html"
                 ]
               },
               {

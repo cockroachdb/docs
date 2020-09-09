@@ -13,7 +13,9 @@ ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-crea
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Microsoft Azure, using Azure's managed load balancing service to distribute client traffic.
 
-{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
+
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
