@@ -82,12 +82,12 @@ Click **Next**. Optionally, you can enable VPC peering for your cluster.
 ## Step 6. Enable VPC Peering (Optional)
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is available only for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 {{site.data.alerts.end}}
 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
 
-1. Under *Additional Settings*, toggle the VPC Peering switch to "Yes".
+1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
 2. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
 
     -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.

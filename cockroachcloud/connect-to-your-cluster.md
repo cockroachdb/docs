@@ -14,7 +14,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
-- If you had [enabled VPC peering while creating your cluster](create-your-cluster.html), you can set up and authorize the peered network.
+- If you had [enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster, you can set up and authorize the peered network.
 
 ### Add IP addresses to the allowlist
 
@@ -51,16 +51,14 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 7. Click **Apply**.
 
-
 ### Configure VPC Peering
 
 1. Navigate to your cluster's **Networking** page and click **Peering**.
-2. Check if the current network has been authorized. If not, proceed with the following steps.
-3. Click **Initiate peering connection**.
-4.
-
-
-
+2. Click **Set up a VPC peering connection**.
+3. On the **Request a VPC peering connection** window, enter your [GCP Project ID](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and [GCP VPC network name](https://cloud.google.com/vpc/docs/using-vpc#viewing-networks). In the **Connection name** field, enter a descriptive name for the VPC connection.
+4. Click **Request Connection**.
+5. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
+6. On the **Networking** page, verify the connection status is **Active**.
 
 ## Step 2. Create a SQL user
 
@@ -90,19 +88,20 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
     <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />    
 
-2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
-3. From the **Region** dropdown, select the region closest to where your client or application is running.
-4. From the **Database** dropdown, select the database you want to connect to.
+2. **IP Allowlist** is selected by default as the **Network Security** option. If you had [enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster and [configured VPC Peering](#configure-vpc-peering), select **VPC Peering** instead.
+3. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
+4. From the **Region** dropdown, select the region closest to where your client or application is running.
+5. From the **Database** dropdown, select the database you want to connect to.
 
     The default database is `defaultdb`. For more information, see [Default databases](../v20.1/show-databases.html#preloaded-databases).
 
-5. Click **Continue**.
+6. Click **Continue**.
 
     The **Connect** tab is displayed.
 
     <img src="{{ 'images/v19.2/cockroachcloud/connect-tab.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />
 
-6. Select a connection method:
+7. Select a connection method:
 
     You can connect to your cluster using the in-built SQL client or using a Postgres-compatible ORM or driver.
 
@@ -114,9 +113,9 @@ CockroachCloud requires you to authorize the networks that can access the cluste
     The connection string allows you to connect to the cluster's regional load balancer. No additional load balancing needs to be implemented on the application side.
     {{site.data.alerts.end}}
 
-7. Click the name of the **ca.crt** file to download the CA certificate.
+8. Click the name of the **ca.crt** file to download the CA certificate.
 
-8. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect to the cluster and must be referenced in connection string.
+9. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect to the cluster and must be referenced in connection string.
 
     You will need to replace the `<certs_dir>` placeholders with the path to your certs directory in the CockroachDB client command or the connection string.
 

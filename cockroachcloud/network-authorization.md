@@ -9,7 +9,7 @@ To prevent denial-of-service and brute force password attacks, CockroachCloud re
 
 ## IP allowlisting
 
-Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the CockroachCloud cluster's allowlist](cockroachcloud-connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the CockroachCloud cluster's allowlist](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
@@ -38,7 +38,7 @@ Setting up a VPC peering connection between your CockroachCloud cluster and GCP 
 Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. To set up VPC peering for existing clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 {{site.data.alerts.end}}
 
-While creating your CockroachCloud cluster, [enable VPC peering](cockroachcloud-create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+While creating your CockroachCloud cluster, [enable VPC peering](create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
 
 -  To adhere to [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
 - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
@@ -46,5 +46,3 @@ While creating your CockroachCloud cluster, [enable VPC peering](cockroachcloud-
 Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
 After creating the cluster, [request the peering connection] from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, you can check the status of the connection on the Peering page. It should show `ACTIVE`.
-
-You can rename or delete the peering connection from the **Networking** page.
