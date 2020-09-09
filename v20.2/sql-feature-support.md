@@ -77,7 +77,7 @@ table tr td:nth-child(2) {
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
  Partial indexes | ✓ | Common Extension | [Partial indexes documentation](partial-indexes.html)
- Multiple indexes per query | Planned | Common Extension | Use multiple indexes to filter the table's values for a single query
+ Multiple indexes per query | Partial | Common Extension | [Use multiple indexes for a single query](https://github.com/cockroachdb/cockroach/issues/2142)
  Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
  Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them
  Geospatial indexes | Potential | Common Extension | Improves performance of queries calculating geospatial data
