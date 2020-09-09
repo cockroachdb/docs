@@ -8,7 +8,7 @@ redirect_from:
 
 This page shows you how to deploy a free CockroachDB cluster on CockroachCloud. You'll use a 30-day free trial code to create the cluster and a sample workload to connect and run your first query.
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/start-a-local-cluster.html).
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
 ## Before you begin
 

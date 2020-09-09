@@ -30,8 +30,8 @@
               {
                 "title": "From Binary",
                 "urls": [
-                  "/${VERSION}/start-a-local-cluster.html",
-                  "/${VERSION}/secure-a-cluster.html"
+                  "/${VERSION}/secure-a-cluster.html",
+                  "/${VERSION}/start-a-local-cluster.html"
                 ]
               },
               {

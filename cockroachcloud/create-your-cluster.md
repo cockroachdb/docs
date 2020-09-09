@@ -8,8 +8,8 @@ redirect_from:
 
 This page walks you through the process of creating a CockroachCloud cluster.
 
-{{site.data.alerts.callout_info}}
-To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart guide](quickstart.html).
+{{site.data.alerts.callout_success}}
+To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
