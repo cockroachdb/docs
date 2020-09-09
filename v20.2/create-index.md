@@ -12,7 +12,7 @@ The following types cannot be included in an index key, but can be stored (and u
 - [`ARRAY`](array.html)
 - The computed [`TUPLE`](scalar-expressions.html#tuple-constructor) type, even if it is constructed from indexed fields
 
-To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, use an [inverted index](inverted-indexes.html).
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
 
 {{site.data.alerts.callout_info}}
 Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
