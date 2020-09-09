@@ -95,9 +95,7 @@ module Jekyll
          :toc,
          :redirect_from].each { |k| record.delete(k)}
 
-        pp record[:url].class
-        record_url = record[:url].to_s
-        pp record_url.class
+        record_url = #{record[:url]}
 
         if record_url.start_with?('cockroachcloud')
           record[:doc_type] = 'cockroachcloud'
