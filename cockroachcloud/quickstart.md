@@ -70,33 +70,47 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
 
-    For Mac:
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+    </div>
+
+    <section class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
+    </section>
 
-    For Linux:
+    <section class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
     ~~~
+    </section>
 
 2. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
 
-    For Mac:
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+    </div>
+
+    <section class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
+    </section>
 
-    For Linux:
+    <section class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
+    </section>
 
 3. Initialize the `movr` workload using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
 
@@ -104,14 +118,16 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach workload init movr 'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    $ cockroach workload init movr \
+    'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
 4. Use the built-in SQL client to view the database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    $ cockroach sql \
+    --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
     {% include copy-clipboard.html %}
@@ -150,7 +166,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     (6 rows)
     ~~~
 
-## What's next
+## What's next?
 
 Learn more:
 
