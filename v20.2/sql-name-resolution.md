@@ -8,7 +8,6 @@ A query can specify a table name without a database or schema name (e.g., `SELEC
 
 This page details how CockroachDB performs **name resolution** to answer this question.
 
-
 ## Logical schemas and namespaces
 
 A CockroachDB cluster can store multiple databases, and each database can store multiple tables/views/sequences. This **two-level structure for stored data** is commonly called the "logical schema" in relational database management systems.
@@ -24,22 +23,11 @@ In the naming hierarchy, the path to a stored object has three components:
 - schema name
 - object name
 
-The schema name for all stored objects in any given database is always
-`public`. There is only a single schema available for stored
-objects because CockroachDB only supports a two-level storage
-structure.
+The default schema name for all stored objects in any given database is `public`. In addition to `public`, CockroachDB supports a fixed set of virtual schemas, available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard.
 
-In addition to `public`, CockroachDB also supports a fixed set of
-virtual schemas, available in every database, that provide ancillary, non-stored
-data to client applications. For example,
-[`information_schema`](information-schema.html) is provided for
-compatibility with the SQL standard.
+<span class="version-tag">New in v20.2</span>: CockroachDB also supports user-defined schemas with the [`CREATE SCHEMA` statement](create-schema.html).
 
-The list of all databases can be obtained with [`SHOW
-DATABASES`](show-databases.html). The list of all schemas for a given
-database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The
-list of all objects for a given schema can be obtained with other
-`SHOW` statements.
+The list of all databases can be obtained with [`SHOW DATABASES`](show-databases.html). The list of all schemas for a given database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The list of all objects for a given schema can be obtained with other `SHOW` statements.
 
 ## How name resolution works
 
@@ -49,7 +37,7 @@ Name resolution occurs separately to **look up existing objects** and to
 The rules to look up an existing object are as follows:
 
 1. If the name already fully specifies the database and schema, use that information.
-2. If the name has a single component prefix, try to find a schema with the prefix name in the [current database](#current-database). If that fails, try to find the object in the `public` schema of a database with the prefix name.
+2. If the name has a single component prefix, try to find a schema with the prefix name in the [current database](#current-database) and [current schema](#current-schema). If that fails, try to find the object in the `public` schema of a database with the prefix name.
 3. If the name has no prefix, use the [search path](#search-path) with the [current database](#current-database).
 
 Similarly, the rules to decide the full name of a new object are as follows:
@@ -177,9 +165,7 @@ For example:
 This looks up `mytable` in the `public` schema of the current
 database. If the current database is `mydb`, the lookup succeeds.
 
-For compatibility with CockroachDB 1.x, and to ease development in
-multi-database scenarios, CockroachDB also allows queries to specify
-a database name in a partially qualified name. For example:
+To ease development in multi-database scenarios, CockroachDB also allows queries to specify a database name in a partially qualified name. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -273,6 +259,7 @@ fully qualified name, as follows:
 
 ## See also
 
+- [`CREATE SCHEMA`](create-schema.html)
 - [`SET`](set-vars.html)
 - [`SHOW`](show-vars.html)
 - [`SHOW DATABASES`](show-databases.html)
