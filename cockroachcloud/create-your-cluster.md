@@ -98,7 +98,7 @@ Your cluster will be created in approximately 20-30 minutes.
 
 ## Example
 
-Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `useast-1` region.
+Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
 
 Suppose the raw data amount we expect to store without replication is 500 GB.
 At 40% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
