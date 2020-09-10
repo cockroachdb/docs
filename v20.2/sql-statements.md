@@ -40,6 +40,7 @@ Statement | Usage
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
+[`ALTER SCHEMA`](alter-schema.html) | <span class="version-tag">New in v20.2</span>: Alter a user-defined schema.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
@@ -50,6 +51,7 @@ Statement | Usage
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
+[`CREATE SCHEMA`](create-schema.html) | <span class="version-tag">New in v20.2</span>: Create a user-defined schema.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
@@ -59,6 +61,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP SCHEMA`](drop-schema.html) | <span class="version-tag">New in v20.2</span>: Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP TYPE`](drop-type.html) | <span class="version-tag">New in v20.2:</span> Remove a user-defined, [enumerated data type](enum.html).

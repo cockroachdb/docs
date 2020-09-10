@@ -1005,6 +1005,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>ALTER SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/alter-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>ALTER SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/alter-sequence.html"
@@ -1113,6 +1119,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>CREATE SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/create-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>CREATE SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/create-sequence.html"
@@ -1194,6 +1206,12 @@
     		    "title": "<code>DROP ROLE</code>",
     		    "urls": [
     		      "/${VERSION}/drop-role.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>DROP SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/drop-schema.html"
     		    ]
     		  },
     		  {

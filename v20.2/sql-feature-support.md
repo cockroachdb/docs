@@ -98,6 +98,9 @@ table tr td:nth-child(2) {
  Index renames | ✓ | Standard | [`RENAME INDEX` documentation](rename-index.html)
  Adding indexes | ✓ | Standard | [`CREATE INDEX` documentation](create-index.html)
  Removing indexes | ✓ | Standard | [`DROP INDEX` documentation](drop-index.html)
+ Adding user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`CREATE SCHEMA` documentation](create-schema.html)
+ Removing user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`DROP SCHEMA` documentation](drop-schema.html)
+ Altering user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER SCHEMA` documentation](create-schema.html)
 
 ### Statements
 
