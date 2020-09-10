@@ -55,9 +55,15 @@
       	      ]
       	    },
       	    {
-      	      "title": "Authorization",
+      	      "title": "User Authorization",
       	      "urls": [
-      		      "/cockroachcloud/authorization.html"
+      		      "/cockroachcloud/user-authorization.html"
+      	      ]
+      	    },
+            {
+      	      "title": "Network Authorization",
+      	      "urls": [
+      		      "/cockroachcloud/network-authorization.html"
       	      ]
       	    },
       	    {
