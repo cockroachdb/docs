@@ -1,24 +1,12 @@
 ---
-title: Authorization
-summary: Learn about the authorization features for CockroachCloud CockroachDB clusters.
+title: User Authorization
+summary: Learn about the user authorization features for CockroachCloud CockroachDB clusters.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-authorization.html
 ---
 
-CockroachCloud supports network authorization and user authorization.
-
-## Network authorization
-
-CockroachCloud requires you to authorize the networks that can access the cluster. This helps prevent denial-of-service and brute force password attacks.
-
-Authorize your application server’s network and your local machine’s network by adding the IP addresses in the CIDR notation using the [Networking page](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
-
-{{site.data.alerts.callout_info}}
-While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network since it allows anybody who uses your password to reach the CockroachDB nodes.
-{{site.data.alerts.end}}
-
-## User authorization
+CockroachCloud requires you to create SQL users to access the cluster.
 
 By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
