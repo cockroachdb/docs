@@ -35,6 +35,10 @@ data to client applications. For example,
 [`information_schema`](information-schema.html) is provided for
 compatibility with the SQL standard.
 
+{{site.data.alerts.callout_info}}
+CockroachDB versions < v20.2 do not support user-defined schemas.
+{{site.data.alerts.end}}
+
 The list of all databases can be obtained with [`SHOW
 DATABASES`](show-databases.html). The list of all schemas for a given
 database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The

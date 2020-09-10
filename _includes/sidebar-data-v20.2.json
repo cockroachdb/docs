@@ -1039,6 +1039,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>ALTER SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/alter-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>ALTER SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/alter-sequence.html"
@@ -1150,6 +1156,12 @@
     		    "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
     		    "urls": [
     		      "/${VERSION}/create-schedule-for-backup.html"
+            ]
+          },
+          {
+    		    "title": "<code>CREATE SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/create-schema.html"
     		    ]
     		  },
     		  {
@@ -1240,6 +1252,12 @@
     		    "title": "<code>DROP SCHEDULES</code>",
     		    "urls": [
     		      "/${VERSION}/drop-schedules.html"
+            ]
+          },
+          {
+    		    "title": "<code>DROP SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/drop-schema.html"
     		    ]
     		  },
     		  {
