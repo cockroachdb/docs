@@ -51,7 +51,11 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 7. Click **Apply**.
 
-### Configure VPC Peering
+### Establish a VPC Peering connection
+
+{{site.data.alerts.callout_info}}
+Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+{{site.data.alerts.end}}
 
 1. Navigate to your cluster's **Networking** page and click **Peering**.
 2. Click **Set up a VPC peering connection**.

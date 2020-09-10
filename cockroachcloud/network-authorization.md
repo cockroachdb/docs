@@ -22,21 +22,22 @@ If your application servers’ IP addresses are not static or you want to limit 
 
 ## VPC peering
 
-VPC peering allows you to connect your GCP or AWS application servers directly to your CockroachCloud cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
-
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is available only for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 {{site.data.alerts.end}}
 
-### Using CockroachCloud VPC peering for GCP applications
+If you select GCP as your Cloud provider while [creating your CockroachCloud cluster](create-your-cluster.html), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your CockroachCloud cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
 
-If you select GCP as your Cloud provider while creating your CockroachCloud cluster, you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application to your CockroachCloud cluster.
+Setting up a VPC peering connection between your CockroachCloud cluster and GCP application is a two-part process:
 
-Setting up a VPC peering connection between your CockroachCloud cluster and GCP application is a two-part process that involves configuring the IP range and size while creating the CockroachCloud cluster and establishing the peering connection after creating the cluster.
+- Configure the IP range and size while creating the CockroachCloud cluster
+- Configure a peering connection after creating the cluster
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. To set up VPC peering for existing clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 {{site.data.alerts.end}}
+
+### Configure the IP range and size while creating your CockroachCloud cluster
 
 While creating your CockroachCloud cluster, [enable VPC peering](create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
 
@@ -45,4 +46,6 @@ While creating your CockroachCloud cluster, [enable VPC peering](create-your-clu
 
 Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
-After creating the cluster, [request the peering connection] from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, you can check the status of the connection on the Peering page. It should show `ACTIVE`.
+### Establish a VPC Peering connection after creating your CockroachCloud cluster
+
+After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#Establish-a-vpc-peering-connection) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-3-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-4-connect-to-your-cluster).
