@@ -240,8 +240,8 @@ To understand the extent to which we support the standard SQL features, use the 
 |  F302-01 | INTERSECT DISTINCT table operator | Yes |
 |  F302-02 | INTERSECT ALL table operator | Yes |
 |  F304 | EXCEPT ALL table operator | Yes |
-|  F311 | Schema definition statement | No |
-|  F311-01 | CREATE SCHEMA | No |
+|  F311 | Schema definition statement | Yes |
+|  F311-01 | CREATE SCHEMA | Yes |
 |  F311-02 | CREATE TABLE for persistent base tables | Yes |
 |  F311-03 | CREATE VIEW | Yes |
 |  F311-04 | CREATE VIEW: WITH CHECK OPTION | No |

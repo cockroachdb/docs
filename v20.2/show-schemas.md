@@ -24,9 +24,11 @@ Parameter | Description
 
 ## Example
 
+### Show schemas in the current database
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET DATABASE = bank;
+> CREATE SCHEMA org_one;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -35,20 +37,46 @@ Parameter | Description
 ~~~
 
 ~~~
-+--------------------+
-|    schema_name     |
-+--------------------+
-| crdb_internal      |
-| information_schema |
-| pg_catalog         |
-| public             |
-+--------------------+
-(4 rows)
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+~~~
+
+### Show ownership of schemas
+
+To show ownership of schemas, you need to query tables in the `pg_catalog` schema:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT
+  nspname, usename
+FROM
+  pg_catalog.pg_namespace
+  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid;
+~~~
+
+~~~
+       nspname       | usename
+---------------------+----------
+  crdb_internal      | NULL
+  information_schema | NULL
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | NULL
+  org_one            | root
+(6 rows)
 ~~~
 
 ## See also
 
 - [Logical Schemas and Namespaces](sql-name-resolution.html)
+- [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [Information Schema](information-schema.html)
 - [Other SQL Statements](sql-statements.html)
