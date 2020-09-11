@@ -111,7 +111,7 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 ~~~
   schema_name | table_name | type  | estimated_row_count
 --------------+------------+-------+----------------------
-  public      | rides      | table |               31337
+  public      | rides      | table |               29446
 (1 row)
 ~~~
 
@@ -119,7 +119,7 @@ Without a partial index, querying the `rides` table with a `WHERE revenue > 80` 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 80;
+> EXPLAIN SELECT * FROM rides WHERE revenue > 80;
 ~~~
 
 ~~~
@@ -130,7 +130,7 @@ Without a partial index, querying the `rides` table with a `WHERE revenue > 80` 
   filter    |                     |
    │        | filter              | revenue > 80
    └── scan |                     |
-            | estimated row count | 31337
+            | estimated row count | 29446
             | table               | rides@primary
             | spans               | FULL SCAN
 (8 rows)
@@ -162,11 +162,34 @@ To limit the number of rows scanned to just the rows that you are querying, you 
 (12 rows)
 ~~~
 
-Another `EXPLAIN` statement shows that the number of rows scanned by the query decreases significantly with a partial index:
+Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (SELECT city, revenue FROM rides WHERE revenue > 80);
+> EXPLAIN SELECT * FROM rides WHERE revenue > 80;
+~~~
+
+~~~
+     tree    |        field        |                 description
+-------------+---------------------+-----------------------------------------------
+             | distribution        | full
+             | vectorized          | true
+  index join |                     |
+   │         | table               | rides@primary
+   └── scan  |                     |
+             | estimated row count | 5829
+             | table               | rides@rides_city_revenue_idx (partial index)
+             | spans               | FULL SCAN
+(8 rows)
+~~~
+
+Note that query's `SELECT` statement queries all columns in the `rides` table, not just the indexed columns. As a result, an "index join" is required on both the primary index and the partial index.
+
+Querying only the columns in the index will make the query more efficient by removing the index join from the query plan:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 80;
 ~~~
 
 ~~~
@@ -175,32 +198,13 @@ Another `EXPLAIN` statement shows that the number of rows scanned by the query d
        | distribution        | full
        | vectorized          | true
   scan |                     |
-       | estimated row count | 6039
+       | estimated row count | 5829
        | table               | rides@rides_city_revenue_idx (partial index)
        | spans               | FULL SCAN
 (6 rows)
 ~~~
 
-Filtering the query on both columns in the partial index (i.e., on both `city` and `revenue`) will limit the scan to even fewer rows:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 80;
-~~~
-
-~~~
-  tree |        field        |                 description
--------+---------------------+-----------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 705
-       | table               | rides@rides_city_revenue_idx (partial index)
-       | spans               | [/'new york' - /'new york']
-(6 rows)
-~~~
-
-Note that querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 80`) will also use the partial index:
+Querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 80`) will also use the partial index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -215,36 +219,51 @@ Note that querying a subset of the rows implied by the partial index predicate e
   filter    |                     |
    │        | filter              | revenue > 95
    └── scan |                     |
-            | estimated row count | 6039
+            | estimated row count | 5829
             | table               | rides@rides_city_revenue_idx (partial index)
             | spans               | FULL SCAN
 (8 rows)
 ~~~
 
-The number of rows scanned is the the same, but, because the query returns a subset of the rows in the partial index, an additional filter is applied to the query plan.
+The number of rows scanned is the same, and an additional filter is applied to the query plan so that only the subset specified by the filter is returned.
 
-If you query a non-indexed column of the same table, but the rows in the table are implied by the partial index, the query plan will use the partial index.
+So far, all the query scans in this example have spanned the entire partial index (i.e., performed a `FULL SCAN` of the index). This is because the `WHERE` clause does not filter on the first column in the index prefix (`city`). Filtering the query on both columns in the partial index will limit the scan to just the rows that match the filter:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT end_time FROM rides WHERE revenue > 80;
+> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 80;
 ~~~
 
 ~~~
-     tree    |        field        |                 description
--------------+---------------------+-----------------------------------------------
-             | distribution        | full
-             | vectorized          | true
-  index join |                     |
-   │         | table               | rides@primary
-   └── scan  |                     |
-             | estimated row count | 6039
-             | table               | rides@rides_city_revenue_idx (partial index)
-             | spans               | FULL SCAN
-(8 rows)
+  tree |        field        |                 description
+-------+---------------------+-----------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 660
+       | table               | rides@rides_city_revenue_idx (partial index)
+       | spans               | [/'new york' - /'new york']
+(6 rows)
 ~~~
 
-Because the query includes a non-indexed column, an "index join" is required. Nevertheless, using the partial index for the initial row scan is still more efficient than using the primary index.
+Refining the `revenue` filter expression to match just a subset of the partial index will lower the scanned row count even more:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue >= 90 AND revenue < 95;
+~~~
+
+~~~
+  tree |        field        |                 description
+-------+---------------------+-----------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 174
+       | table               | rides@rides_city_revenue_idx (partial index)
+       | spans               | [/'new york'/90 - /'new york'/95)
+(6 rows)
+~~~
 
 ### Create an index that excludes values
 
