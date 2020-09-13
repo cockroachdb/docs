@@ -1,7 +1,7 @@
 ---
 title: ADD CONSTRAINT
 summary: Use the ADD CONSTRAINT statement to add constraints to columns.
-toc: false
+toc: true
 ---
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
@@ -13,11 +13,10 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 {{site.data.alerts.callout_info}}
 The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not Null</a> constraints can only be applied through <a href="create-table.html"><code>CREATE TABLE</code></a>. The <a href="default-value.html">Default</a> constraint is managed through <a href="alter-column.html"><code>ALTER COLUMN</code>.</a>{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/add_constraint.html %}
 
 ## Required Privileges
 
@@ -63,12 +62,12 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +-----------+-------------------------------------------------+
 |   Table   |                   CreateTable                   |
 +-----------+-------------------------------------------------+
-| customers | CREATE TABLE customers (␤                       |
-|           |     id INT NOT NULL,␤                           |
-|           |     "name" STRING NOT NULL,␤                    |
-|           |     address STRING NULL,␤                       |
-|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤ |
-|           |     FAMILY "primary" (id, "name", address)␤     |
+| customers | CREATE TABLE customers (                        |
+|           |     id INT NOT NULL,                            |
+|           |     "name" STRING NOT NULL,                     |
+|           |     address STRING NULL,                        |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),  |
+|           |     FAMILY "primary" (id, "name", address)      |
 |           | )                                               |
 +-----------+-------------------------------------------------+
 (1 row)
@@ -82,13 +81,13 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +--------+-------------------------------------------------------------------------------------------------------------+
 | Table  |                                                 CreateTable                                                 |
 +--------+-------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                      |
-|        |     id INT NOT NULL,␤                                                                                       |
-|        |     customer_id INT NULL,␤                                                                                  |
-|        |     status STRING NOT NULL,␤                                                                                |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                             |
-|        |     FAMILY "primary" (id, customer_id, status),␤                                                            |
-|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))␤ |
+| orders | CREATE TABLE orders (                                                                                       |
+|        |     id INT NOT NULL,                                                                                        |
+|        |     customer_id INT NULL,                                                                                   |
+|        |     status STRING NOT NULL,                                                                                 |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                              |
+|        |     FAMILY "primary" (id, customer_id, status),                                                             |
+|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))  |
 |        | )                                                                                                           |
 +--------+-------------------------------------------------------------------------------------------------------------+
 (1 row)

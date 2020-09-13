@@ -29,7 +29,7 @@ To resolve this issue, do one of the following:
 - If you specified a `--host` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable..
 - If you specified a `--port` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_PORT` environment variable.
 
-If you're not sure what the `--host` and `--port` values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also kill the `cockroach` process, and then restart the node:
+If you're not sure what the `--host` and `--port` values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also terminate the `cockroach` process, and then restart the node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -76,7 +76,7 @@ This message can also occur in the following scenario:
 1. The first node of a cluster is started without the `--join` flag.
 2. Subsequent nodes are started with the `--join` flag pointing to the first node.
 3. The first node is stopped and restarted after the node's data directory is deleted or using a new directory. This causes the first node to initialize a new cluster.
-4. The other nodes, still communicating with the first node, notice that their cluster ID and the first node's cluster ID don't match.
+4. The other nodes, still communicating with the first node, notice that their cluster ID and the first node's cluster ID do not match.
 
 To avoid this scenario, update your scripts to use the new, recommended approach to initializing a cluster:
 
@@ -138,7 +138,7 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## clock synchronization error: this node is more than 500ms away from at least half of the known nodes
 
-This error indicates that a node has spontaneously shut down because it detected that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
+This error indicates that a node has spontaneously shut down because it detected that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
 
 To prevent this from happening, you should run clock synchronization software on each node. For guidance on synchronizing clocks, see the tutorial for your deployment environment:
 
@@ -158,7 +158,7 @@ This message occurs when a component of CockroachDB gives up because it was rely
 
 In a distributed system, some errors can have ambiguous results. For
 example, if you receive a `connection closed` error while processing a
-`COMMIT` statement, you can't tell whether the transaction
+`COMMIT` statement, you cannot tell whether the transaction
 successfully committed or not. These errors are possible in any
 database, but CockroachDB is somewhat more likely to produce them than
 other databases because ambiguous results can be caused by failures
@@ -187,9 +187,9 @@ the user.
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
 
-- [Other troubleshooting pages](troubleshooting-overview.html)
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

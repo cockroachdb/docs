@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on AWS EC2
 summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -14,7 +14,6 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 
@@ -254,7 +253,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 3. Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
@@ -295,7 +294,7 @@ At this point, your cluster is live and operational but contains only a single n
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
@@ -432,7 +431,7 @@ On this page, verify that the cluster is running as expected:
 
 2. Click the **Databases** tab on the left to verify that `securenodetest` is listed.
 
-{% include prometheus-callout.html %}
+{% include {{ page.version.version }}/misc/prometheus-callout.html %}
 
 ## Step 10. Use the database
 

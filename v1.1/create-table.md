@@ -1,12 +1,11 @@
 ---
 title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
-toc: false
+toc: true
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -20,36 +19,36 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 
 **column_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
 
 **col_qualification ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
+{% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 
 **index_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 
 **family_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
 
 **table_constraint ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 
 **opt_interleave ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
 
 </div>
 
@@ -203,7 +202,7 @@ We also have other resources on indexes:
 
 ### Create a Table with Auto-Generated Unique Row IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Create a Table with Foreign Keys
 
@@ -247,7 +246,7 @@ In this example, we'll show a series of tables using different formats of foreig
 
 ### Create a Table that Mirrors Key-Value Storage
 
-{% include faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ### Create a Table from a `SELECT` Statement
 
@@ -290,13 +289,13 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 +--------+----------------------------------------------------------+
 | Table  |                       CreateTable                        |
 +--------+----------------------------------------------------------+
-| logoff | CREATE TABLE logoff (␤                                   |
-|        |     user_id INT NOT NULL,␤                               |
-|        |     user_email STRING(50) NULL,␤                         |
-|        |     logoff_date DATE NULL,␤                              |
-|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),␤         |
-|        |     UNIQUE INDEX logoff_user_email_key (user_email),␤    |
-|        |     FAMILY "primary" (user_id, user_email, logoff_date)␤ |
+| logoff | CREATE TABLE logoff (                                    |
+|        |     user_id INT NOT NULL,                                |
+|        |     user_email STRING(50) NULL,                          |
+|        |     logoff_date DATE NULL,                               |
+|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),          |
+|        |     UNIQUE INDEX logoff_user_email_key (user_email),     |
+|        |     FAMILY "primary" (user_id, user_email, logoff_date)  |
 |        | )                                                        |
 +--------+----------------------------------------------------------+
 (1 row)

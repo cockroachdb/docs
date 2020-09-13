@@ -1,12 +1,11 @@
 ---
 title: CANCEL JOB
 summary: The CANCEL JOB statement stops long-running jobs.
-toc: false
+toc: true
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and as of v2.1, schema changes.
+The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, and as of v2.1, schema changes and [changefeeds](change-data-capture.html).
 
-<div id="toc"></div>
 
 ## Limitations
 
@@ -14,21 +13,24 @@ When an enterprise [`RESTORE`](restore.html) is canceled, partially restored dat
 
 ## Required privileges
 
-By default, only the `root` user can cancel a job.
+Only members of the `admin` role can cancel a job. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/cancel_job.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/cancel_job.html %}
+</div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
 `job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`](show-jobs.html).
+`select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to cancel.
 
 ## Examples
 
-### Cancel a restore
+### Cancel a single job
 
 ~~~ sql
 > SHOW JOBS;
@@ -44,9 +46,22 @@ Parameter | Description
 > CANCEL JOB 27536791415282;
 ~~~
 
+### Cancel multiple jobs
+
+<span class="version-tag">New in v2.1:</span> To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL JOBS (SELECT job_id FROM [SHOW JOBS]
+      WHERE user_name = 'maxroach');
+~~~
+
+All jobs created by `maxroach` will be cancelled.
+
 ## See also
 
 - [`SHOW JOBS`](show-jobs.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`IMPORT`](import.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)

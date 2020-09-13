@@ -1,16 +1,16 @@
 ---
 title: Information Schema
 summary: The information_schema database contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
-toc: false
+toc: true
 ---
 
 CockroachDB provides a virtual schema called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
 The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema `crdb_internal`, which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
 
-{{site.data.alerts.callout_info}}The <code>information_schema</code> views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the <code>root</code> user.{{site.data.alerts.end}}
-
-<div id="toc"></div>
+{{site.data.alerts.callout_info}}
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the `root` user.
+{{site.data.alerts.end}}
 
 ## Data exposed by information_schema
 
@@ -18,21 +18,32 @@ To perform introspection on objects, you can either read from the related `infor
 
 Object | Information Schema Table | Corresponding `SHOW` Statement
 -------|--------------|--------
-Columns | [`columns`](#columns)| [`SHOW COLUMNS`](show-columns.html)
+Columns | [`columns`](#columns) | [`SHOW COLUMNS`](show-columns.html)
 Constraints | [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
 Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
+Roles | [`role_table_grants`](#role_table_grants) | [`SHOW ROLES`](show-roles.html)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-sequence.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
-Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE VIEW`](show-create-view.html)
+Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`](show-create.html)
 
 ## Tables in information_schema
 
-The virtual schema `information_schema` contains virtual tables, also called "system views", representing the database's objects, each of which is detailed below.
+The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
 
 These differ from regular [SQL views](views.html) in that they are
 not showing data created from the content of other tables. Instead,
 CockroachDB generates the data for virtual tables when they are accessed.
+
+Currently, there are some `information_schema` tables that are empty but provided for compatibility:
+
+- `routines`
+- `parameters`
+
+{{site.data.alerts.callout_info}}
+A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution](sql-name-resolution.html) for more information.
+{{site.data.alerts.end}}
 
 ### administrable_role_authorizations
 
@@ -69,6 +80,7 @@ Column | Description
 `character_maximum_length` |  If `data_type` is `STRING`, the maximum length in characters of a value; otherwise `NULL`.
 `character_octet_length` | If `data_type` is `STRING`, the maximum length in octets (bytes) of a value; otherwise `NULL`.
 `numeric_precision` | If `data_type` is numeric, the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
+`numeric_precision_radix` | If `data_type` identifies a numeric type, the base in which the values in the columns `numeric_precision` and `numeric_scale` are expressed (either `2` or `10`). For all other data types, column is `NULL`.
 `numeric_scale` | If `data_type` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise `NULL`.
 `datetime_precision` | Always `NULL` (unsupported by CockroachDB).
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
@@ -88,8 +100,22 @@ Column | Description
 `table_schema` | Name of the schema containing the table that contains the column.
 `table_name` | Name of the table.
 `column_name` | Name of the column.
-`privilege_type` | Name of the [privilege](privileges.html).
+`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
+
+### constraint_column_usage
+
+`constraint_column_usage` identifies all columns in a database that are used by some [constraint](constraints.html).
+
+Column | Description
+-------|-----------
+`table_catalog` | Name of the database that contains the table that contains the column that is used by some constraint.
+`table_schema` | Name of the schema that contains the table that contains the column that is used by some constraint.
+`table_name` | Name of the table that contains the column that is used by some constraint.
+`column_name` | Name of the column that is used by some constraint.
+`constraint_catalog` | Name of the database that contains the constraint.
+`constraint_schema` | Name of the schema that contains the constraint.
+`constraint_name` | Name of the constraint.
 
 ### enabled_roles
 
@@ -101,7 +127,7 @@ Column | Description
 
 ### key_column_usage
 
-`key_column_usage` identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [`FOREIGN KEY` / `REFERENCES`](foreign-key.html) constraints.
+`key_column_usage` identifies columns with [`PRIMARY KEY`](primary-key.html), [`UNIQUE`](unique.html), or [foreign key / `REFERENCES`](foreign-key.html) constraints.
 
 Column | Description
 -------|-----------
@@ -124,18 +150,18 @@ Column | Description
 `constraint_catalog` | Name of the database containing the constraint.
 `constraint_schema` | Name of the schema containing the constraint.
 `constraint_name` | Name of the constraint.
-`unique_constraint_catalog` | Name of the database containing the unique or primary key constraint that the foreign key constraint references (always the current database).
-`unique_constraint_schema` | Name of the schema containing the unique or primary key constraint that the foreign key constraint references.
-`unique_constraint_name` | Name of the unique or primary key constraint.
+`unique_constraint_catalog` | Name of the database containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references (always the current database).
+`unique_constraint_schema` | Name of the schema containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references.
+`unique_constraint_name` | Name of the `UNIQUE` or `PRIMARY KEY` constraint.
 `match_option` | Match option of the foreign key constraint: `FULL`, `PARTIAL`, or `NONE`.
 `update_rule` | Update rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
 `delete_rule` | Delete rule of the foreign key constraint: `CASCADE`, `SET NULL`, `SET DEFAULT`, `RESTRICT`, or `NO ACTION`.
 `table_name` | Name of the table containing the constraint.
-`referenced_table_name` | Name of the table containing the unique or primary key constraint that the foreign key constraint references.
+`referenced_table_name` | Name of the table containing the `UNIQUE` or `PRIMARY KEY` constraint that the foreign key constraint references.
 
 ### role_table_grants
 
-`role_table_grants` identifies which [privileges](privileges.html) have been granted on tables or views where the grantor
+`role_table_grants` identifies which [privileges](authorization.html#assign-privileges) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
 
 Column | Description
@@ -145,20 +171,20 @@ Column | Description
 `table_catalog` | Name of the database containing the table.
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
-`privilege_type` | Name of the [privilege](privileges.html).
+`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
 
-`schema_privileges` identifies which [privileges](privileges.html) have been granted to each user at the database level.
+`schema_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the database level.
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
-`privilege_type` | Name of the [privilege](privileges.html).
+`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### schemata
@@ -171,6 +197,25 @@ Column | Description
 `table_schema` | Name of the schema.
 `default_character_set_name` |  Always `NULL` (unsupported by CockroachDB).
 `sql_path` |  Always `NULL` (unsupported by CockroachDB).
+
+### sequences
+
+`sequences` identifies [sequences](create-sequence.html) defined in a database.
+
+Column | Description
+-------|-----------
+`sequence_catalog` | Name of the database that contains the sequence.
+`sequence_schema` | Name of the schema that contains the sequence.
+`sequence_name` | Name of the sequence.
+`data_type` | The data type of the sequence.
+`numeric_precision` | The (declared or implicit) precision of the sequence `data_type`.
+`numeric_precision_radix` | The base of the values in which the columns `numeric_precision` and `numeric_scale` are expressed. The value is either `2` or `10`.
+`numeric_scale` | The (declared or implicit) scale of the sequence `data_type`. The scale indicates the number of significant digits to the right of the decimal point. It can be expressed in decimal (base 10) or binary (base 2) terms, as specified in the column `numeric_precision_radix`.
+`start_value` | The first value of the sequence.
+`minimum_value` | The minimum value of the sequence.
+`maximum_value` | The maximum value of the sequence.
+`increment` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
+`cycle_option` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 
 ### statistics
 
@@ -204,22 +249,22 @@ Column | Description
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
 `table_name` | Name of the constrained table.
-`constraint_type` | Type of [constraint](constraints.html): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.
+`constraint_type` | Type of [constraint](constraints.html): `CHECK`, foreign key, `PRIMARY KEY`, or `UNIQUE`.
 `is_deferrable` | `YES` if the constraint can be deferred; `NO` if not.
 `initially_deferred` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 
 ### table_privileges
 
-`table_privileges`  identifies which [privileges](privileges.html) have been granted to each user at the table level.
+`table_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the table level.
 
 Column | Description
 -------|-----------
 `grantor` | Always `NULL` (unsupported by CockroachDB).
-`grantee` | Username of user with grant.
+`grantee` | Username of the user with grant.
 `table_catalog` | Name of the database that the grant applies to.
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
-`privilege_type` | Type of [privilege](privileges.html): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
+`privilege_type` | Type of [privilege](authorization.html#assign-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
@@ -233,11 +278,11 @@ Column | Description
 `table_schema` | Name of the schema that contains the table.
 `table_name` | Name of the table.
 `table_type` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
-`version` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table.
+`version` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table. Note that this column is an experimental feature used for internal purposes inside CockroachDB and its definition is subject to change without notice.
 
 ### user_privileges
 
-`user_privileges` identifies global [privileges](privileges.html).
+`user_privileges` identifies global [privileges](authorization.html#assign-privileges).
 
 {{site.data.alerts.callout_info}}Currently, CockroachDB does not support global privileges for non-<code>root</code> users. Therefore, this view contains global privileges only for <code>root</code>.
 {{site.data.alerts.end}}
@@ -246,7 +291,7 @@ Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database that the privilege applies to.
-`privilege_type` | Type of [privilege](privileges.html).
+`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### views
@@ -301,8 +346,7 @@ Column | Description
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW INDEX`](show-index.html)

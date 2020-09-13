@@ -7,17 +7,18 @@ redirect_from: general-troubleshooting.html
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).
 
-Topic | Message
-------|--------
-Client connection | [`connection refused`](#connection-refused)
-Client connection | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)
-Transactions | [`retry transaction`](#retry-transaction)
-Node startup | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
-Node configuration | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
-Node configuration | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
-Replication | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
-Deadline exceeded | [`context deadline exceeded`](#context-deadline-exceeded)
-Ambiguous results | [`result is ambiguous`](#result-is-ambiguous)
+| Topic                                  | Message                                                                                                                                                                                                                                         |
+|----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     |
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  |
+| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   |
+| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) |
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  |
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   |
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   |
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       |
+| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   |
+| Time zone data                         | [`invalid value for parameter "TimeZone"`](#invalid-value-for-parameter-timezone)                                                                                                                                                               |
 
 ## connection refused
 
@@ -26,10 +27,9 @@ This message indicates a client is trying to connect to a node that is either no
 To resolve this issue, do one of the following:
 
 - If the node hasn't yet been started, [start the node](start-a-node.html).
-- If you specified a `--host` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable..
-- If you specified a `--port` flag when starting the node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_PORT` environment variable.
+- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](start-a-node.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the `--host` and `--port` values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also kill the `cockroach` process, and then restart the node:
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](debug-and-error-logs.html). If necessary, you can also terminate the `cockroach` process, and then restart the node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -45,11 +45,39 @@ $ cockroach start [flags]
 
 This message indicates that the cluster is using TLS encryption to protect network communication, and the client is trying to open a connection without using the required TLS certificates.
 
-To resolve this issue, use the [`cockroach cert client-create`](create-security-certificates.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
+To resolve this issue, use the [`cockroach cert create-client`](create-security-certificates.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
-## retry transaction
+## restart transaction
 
-Messages with the error code `40001` and the string `retry transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](transactions.html#client-side-transaction-retries) for more details.
+
+The sections below describe different types of transaction retry errors.  Your application's retry logic does not need to distinguish between these types of errors; they are listed here for reference.
+
+- [read within uncertainty interval](#read-within-uncertainty-interval)
+
+### read within uncertainty interval
+
+(Error string includes: `ReadWithinUncertaintyIntervalError`)
+
+Uncertainty errors can occur when two transactions which start on different gateway nodes attempt to operate on the same data at close to the same time. The uncertainty comes from the fact that we cannot tell which one started first - the clocks on the two gateway nodes may not be perfectly in sync.
+
+For example, if the clock on node A is ahead of the clock on node B, a transaction started on node A may be able to commit a write with a timestamp that is still in the "future" from the perspective of node B. A later transaction that starts on node B should be able to see the earlier write from node A, even if B's clock has not caught up to A. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node B's transaction retries, it will unambiguously occur after the transaction from node A.
+
+Note that as long as the [client-side retry protocol](transactions.html#client-side-intervention) is followed, a transaction that has restarted once is much less likely to hit another uncertainty error, and the [`--max-offset` option](start-a-node.html#flags) provides an upper limit on how long a transaction can continue to restart due to uncertainty.
+
+When errors like this occur, the application has the following options:
+
+- Prefer consistent historical reads using [AS OF SYSTEM TIME](as-of-system-time.html) to reduce contention.
+- Design the schema and queries to reduce contention. For information on how to avoid contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+- Be prepared to retry on uncertainty (and other) errors. For more information, see [Transaction retries](transactions.html#transaction-retries).
+
+{{site.data.alerts.callout_info}}
+Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
+{{site.data.alerts.end}}
+
+<!-- ### write too old -->
+
+<!-- ### async write failure -->
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 
@@ -102,35 +130,21 @@ When running a single-node CockroachDB cluster, an error about replicas failing 
 E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"
 ~~~
 
-This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by updating your default zone configuration to expect only one node:
+This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by using [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) to update your default zone configuration to expect only one node:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # Insecure cluster:
-$ cockroach zone set .default --insecure --disable-replication
+$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --insecure
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # Secure cluster:
-$ cockroach zone set .default --certs-dir=[path to certs directory] --disable-replication
+$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --certs-dir=[path to certs directory]
 ~~~
 
-The `--disable-replication` flag automatically reduces the zone's replica count to 1, but you can do this manually as well:
-
-{% include copy-clipboard.html %}
-~~~ shell
-# Insecure cluster:
-$ echo 'num_replicas: 1' | cockroach zone set .default --insecure -f -
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-# Secure cluster:
-$ echo 'num_replicas: 1' | cockroach zone set .default --certs-dir=[path to certs directory] -f -
-~~~
-
-See [Configure Replication Zones](configure-replication-zones.html) for more details.
+The zone's replica count is reduced to 1. For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) and [Configure Replication Zones](configure-replication-zones.html).
 
 ### When running a multi-node cluster
 
@@ -138,7 +152,7 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## clock synchronization error: this node is more than 500ms away from at least half of the known nodes
 
-This error indicates that a node has spontaneously shut down because it detected that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
+This error indicates that a node has spontaneously shut down because it detected that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default). CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency, so the node shutting down in this way avoids the risk of consistency anomalies.
 
 To prevent this from happening, you should run clock synchronization software on each node. For guidance on synchronizing clocks, see the tutorial for your deployment environment:
 
@@ -185,11 +199,19 @@ decide whether to retry or not based on whether it would be better for
 your application to apply the transaction twice or return an error to
 the user.
 
+## invalid value for parameter "TimeZone"
+
+This error indicates that the machine running the CockroachDB node is missing the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`), which is required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers.
+
+To resolve this issue, install the `tzdata` library and keep it up-to-date. It's important for all nodes to have the same version, so when updating the library, do so as quickly as possible across all nodes.
+
+For details about other libraries the CockroachDB binary for Linux depends on, see [Dependencies](recommended-production-settings.html#dependencies).
+
 ## Something else?
 
-If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
 
-- [Other troubleshooting pages](troubleshooting-overview.html)
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

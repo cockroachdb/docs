@@ -1,7 +1,7 @@
 ---
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -14,7 +14,6 @@ This tutorial shows you how build a simple Ruby application with CockroachDB usi
 
 {{site.data.alerts.callout_success}}For a more realistic use of ActiveRecord with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -29,18 +28,18 @@ To install ActiveRecord as well as the [pg driver](https://rubygems.org/gems/pg)
 $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Ruby code
 
 The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/activerecord-basic-sample.rb" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/activerecord-basic-sample.rb" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/activerecord-basic-sample.rb %}
+{% include {{ page.version.version }}/app/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:

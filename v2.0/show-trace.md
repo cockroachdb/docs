@@ -1,14 +1,13 @@
 ---
 title: SHOW TRACE
 summary: The SHOW TRACE statement returns details about how CockroachDB executed a statement or series of statements.
-toc: false
+toc: true
 ---
 
 The `SHOW TRACE` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-<div id="toc"></div>
 
 ## Usage Overview
 
@@ -57,13 +56,13 @@ For `SHOW TRACE FOR <stmt>`, the user must have the appropriate [privileges](pri
 
 ## Syntax
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_trace.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_trace.html %}</section>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underly key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR <stmt>`, per-result-row messages are included.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 `COMPACT` | <span class="version-tag">New in v2.0:</span> If specified, fewer columns are returned by the statement. See [Response](#response) for more details.
 `explainable_stmt` | The statement to execute and trace. Only [explainable](explain.html#explainable-statements) statements are supported.
 
@@ -332,13 +331,13 @@ In this example, we use session tracing to show an [automatic transaction retry]
 	|        age         |        message                                                                                                |
 	+--------------------+---------------------------------------------------------------------------------------------------------------+
 	| 0s                 | === SPAN START: sql txn implicit ===                                                                          |
-	| 123µs317ns         | AutoCommit. err: <nil>␤                                                                                       |
+	| 123µs317ns         | AutoCommit. err: <nil>                                                                                        |
 	|                    | txn: "sql txn implicit" id=64d34fbc key=/Min rw=false pri=0.02500536 iso=SERIALIZABLE stat=COMMITTED ...      |
 	| 1s767ms959µs448ns  | === SPAN START: sql txn ===                                                                                   |
 	| 1s767ms989µs448ns  | executing 1/1: BEGIN TRANSACTION                                                                              |
 	| # Annotation: First execution of INSERT.                                                                                           |
 	| 13s536ms79µs67ns   | executing 1/1: INSERT INTO t VALUES (1)                                                                       |
-	| 13s536ms134µs682ns | client.Txn did AutoCommit. err: <nil>␤                                                                        |
+	| 13s536ms134µs682ns | client.Txn did AutoCommit. err: <nil>                                                                         |
 	|                    | txn: "unnamed" id=329e7307 key=/Min rw=false pri=0.01354772 iso=SERIALIZABLE stat=COMMITTED epo=0 ...         |
 	| 13s536ms143µs145ns | added table 't' to table collection                                                                           |
 	| 13s536ms305µs103ns | query not supported for distSQL: mutations not supported                                                      |
@@ -362,7 +361,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 	|                      HandledRetryableTxnError: serializable transaction timestamp pushed (detected by SQL Executor)                |
 	| # Annotation: Second execution of INSERT.                                                                                          |
 	| 13s537ms83µs369ns  | executing 1/1: INSERT INTO t VALUES (1)                                                                       |
-	| 13s537ms109µs516ns | client.Txn did AutoCommit. err: <nil>␤                                                                        |
+	| 13s537ms109µs516ns | client.Txn did AutoCommit. err: <nil>                                                                         |
 	|                    | txn: "unnamed" id=1228171b key=/Min rw=false pri=0.02917782 iso=SERIALIZABLE stat=COMMITTED epo=0             |
 	|                      ts=1507321556.991937203,0 orig=1507321556.991937203,0 max=1507321557.491937203,0 wto=false rop=false          |
 	| 13s537ms111µs738ns | releasing 1 tables                                                                                            |

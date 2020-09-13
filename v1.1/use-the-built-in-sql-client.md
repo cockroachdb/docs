@@ -1,14 +1,13 @@
 ---
 title: Use the Built-in SQL Client
 summary: CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line.
-toc: false
+toc: true
 ---
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
-<div id="toc"></div>
 
 ## Synopsis
 
@@ -44,7 +43,7 @@ Flag | Description
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -514,7 +513,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 ### Allow potentially unsafe SQL statements
 
-The `--unsafe-updates` flag defaults to `false`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we can't use `DELETE` without a `WHERE` clause to delete all rows from a table:
+The `--unsafe-updates` flag defaults to `false`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"

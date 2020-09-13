@@ -1,7 +1,7 @@
 ---
 title: RESTORE
 summary: Restore your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
-toc: false
+toc: true
 ---
 
 {{site.data.alerts.callout_danger}}The <code>RESTORE</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. For non-enterprise restores, see <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
@@ -10,7 +10,6 @@ The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas a
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
-<div id="toc"></div>
 
 ## Functional Details
 
@@ -66,7 +65,7 @@ Restore Type | Parameters
 
 ### Point-in-time Restore <span class="version-tag">New in v2.0</span>
 
-{% include beta-warning.md %}
+{% include {{ page.version.version }}/misc/beta-warning.md %}
 
 If the full or incremental backup was taken [with revision history](backup.html#backups-with-revision-history-new-in-v2-0), you can restore the data as it existed at the specified point-in-time within the revision history captured by that backup.
 
@@ -80,13 +79,15 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 
 ## Viewing and Controlling Restore Jobs
 
-Whenever you initiate a restore, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the restore has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/restore.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>RESTORE</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
@@ -109,7 +110,7 @@ Only the `root` user can run `RESTORE`.
 
 The URL for your backup's locations must use the following format:
 
-{% include external-urls-v2.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Restore Option List
 
@@ -117,14 +118,14 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 #### `into_db`
 
-- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but don't want to drop it.
+- **Description**: If you want to restore a table or view into a database other than the one it originally existed in, you can [change the target database](#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.
 - **Key**: `into_db`
 - **Value**: The name of the database you want to use
 - **Example**: `WITH into_db = 'newdb'`
 
 #### `skip_missing_foreign_keys`
 
-- **Description**: If you want to restore a table with a foreign key but don't want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
+- **Description**: If you want to restore a table with a foreign key but do not want to restore the table it references, you can drop the Foreign Key constraint from the table and then have it restored.
 - **Key**: `skip_missing_foreign_keys`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_foreign_keys`
@@ -133,7 +134,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 <span class="version-tag">New in v2.0</span>
 
-- **Description**: If you want to restore a table that depends on a sequence but don't want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
+- **Description**: If you want to restore a table that depends on a sequence but do not want to restore the sequence it references, you can drop the sequence dependency from a table (i.e., the `DEFAULT` expression that uses the sequence) and then have it restored.
 - **Key**: `skip_missing_sequences`
 - **Value**: *No value*
 - **Example**: `WITH skip_missing_sequences`

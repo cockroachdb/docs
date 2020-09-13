@@ -1,12 +1,11 @@
 ---
 title: SHOW CREATE SEQUENCE
 summary: The SHOW CREATE SEQUENCE statement shows the CREATE SEQUENCE statement that would create a copy of the specified sequence.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `SHOW CREATE SEQUENCE` [statement](sql-statements.html) shows the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,9 @@ The user must have any [privilege](privileges.html) on the target sequence.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_create_sequence.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/show_create_sequence.html %}
+</div>
 
 ## Parameters
 

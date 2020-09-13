@@ -1,7 +1,7 @@
 ---
 title: Scalar Expressions
 summary: Scalar expressions allow the computation of new values from basic parts.
-toc: false
+toc: true
 redirect_from: sql-expressions.html
 key: sql-expressions.html
 ---
@@ -18,7 +18,6 @@ structured as a table.
 
 The following sections provide details on each of these options.
 
-<div id="toc"></div>
 
 ## Constants
 
@@ -102,7 +101,7 @@ There are two exceptions however, made for compatibility with PostgreSQL:
   specifies that `NaN` is different from itself.
 - `NaN` is considered to be smaller than every other value, including
   `-INFINITY`. IEEE 754 specifies that `NaN` does not order with any
-  other value, i.e. `x <= NaN` and `x >= NaN` are both false for every
+  other value, i.e., `x <= NaN` and `x >= NaN` are both false for every
   value of `x` including infinities.
 
 These exceptions exist so that the value `NaN` can be used in `WHERE`
@@ -199,7 +198,7 @@ For example:
 
 #### Typing rule
 
-`IN` requires its right operand to be a homogenous tuple type and its left operand
+`IN` requires its right operand to be a homogeneous tuple type and its left operand
 to match the tuple element type. The result has type `BOOL`.
 
 ### String Pattern Matching
@@ -219,7 +218,7 @@ or `FALSE` otherwise, or the inverted value for the `NOT` variants.
 
 Patterns can contain `_` to match any single
 character, or `%` to match any sequence of zero or more characters.
-`ILIKE` causes the match to be tested case-insentively.
+`ILIKE` causes the match to be tested case-insensitively.
 
 For example:
 
@@ -338,7 +337,7 @@ See also [the separate section on supported built-in functions](functions-and-op
 
 In addition, the following SQL special forms are also supported:
 
-{% include sql/{{ page.version.version }}/function-special-forms.md %}
+{% include {{ page.version.version }}/sql/function-special-forms.md %}
 
 #### Typing rule
 
@@ -366,7 +365,7 @@ The subscripted expression must have an array type; the index expression
 must have type `INT`.  The result has the element type of the
 subscripted expression.
 
-## Conditional Expressions and Boolean Short-Circuit Operations
+## Conditional Expressions
 
 Expressions can test a conditional expression and, depending on whether
 or which condition is satisfied, evaluate to one or more additional
@@ -387,6 +386,9 @@ IF ( <cond>, <expr1>, <expr2> )
 
 Evaluates `<cond>`, then evaluates `<expr1>` if the condition is true,
 or `<expr2>` otherwise.
+
+The expression corresponding to the case when the condition is false
+is not evaluated.
 
 #### Typing rule
 
@@ -411,6 +413,8 @@ equal to `<cond>`, then evaluates and returns the corresponding `THEN`
 expression. If no `WHEN` branch matches, the `ELSE` expression is
 evaluated and returned, if any. Otherwise, `NULL` is returned.
 
+Conditions and result expressions after the first match are not evaluated.
+
 #### Typing rule
 
 The condition and the `WHEN` expressions must have the same type.
@@ -433,6 +437,8 @@ expression that evaluates to `TRUE`, returns the result of evaluating the
 corresponding `THEN` expression.  If none of the `<cond>` expressions
 evaluates to true, then evaluates and returns the value of the `ELSE`
 expression, if any, or `NULL` otherwise.
+
+Conditions and result expressions after the first match are not evaluated.
 
 #### Typing rule
 
@@ -468,35 +474,36 @@ COALESCE ( <expr1> [, <expr2> [, <expr3> ] ...] )
 result of applying `COALESCE` on the remaining expressions. If all the
 expressions are `NULL`, `NULL` is returned.
 
+Arguments to the right of the first non-null argument are not evaluated.
+
 `IFNULL(a, b)` is equivalent to `COALESCE(a, b)`.
 
 #### Typing rule
 
 The operands must have the same type, which is also the type of the result.
 
-### `AND` and `OR`: Boolean Short-Circuit Comparisons
+## Logical operators
+
+The Boolean operators `AND`, `OR` and `NOT` are available.
 
 Syntax:
 
 ~~~
+NOT <expr>
 <expr1> AND <expr2>
 <expr1> OR <expr2>
 ~~~
 
-These operators compute the AND or OR function of their operands,
-using short-circuit evaluation:
+`AND` and `OR` are commutative. Moreover, the input to `AND`
+and `OR` is not evaluated in any particular order. Some operand may
+not even be evaluated at all if the result can be fully ascertained using
+only the other operand.
 
-- Both operators first evaluate their left operand.
-- If the resulting value is `TRUE`, `OR` returns `TRUE` directly and
-  does not evaluate its right operand (short circuit), whereas `AND`
-  evaluates and returns the value of the right operand.
-- If the resulting value of the left operand is `FALSE` or `NULL`, `AND`
-  returns `FALSE` directly and does not evaluate its right operand,
-  whereas `OR` evaluates and returns the value of the right operand.
+{{site.data.alerts.callout_info}}This is different from the left-to-right "short-circuit logic" found in other programming languages. When it is essential to force evaluation order, use <a href="#conditional-expressions">a conditional expression</a>.{{site.data.alerts.end}}
 
 See also [NULLs and Ternary Logic](null-handling.html#nulls-and-ternary-logic).
 
-#### Typing rule
+### Typing rule
 
 The operands must have type `BOOL`. The result has type `BOOL`.
 

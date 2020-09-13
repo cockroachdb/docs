@@ -1,15 +1,14 @@
 ---
 title: Upgrade a Cluster's Version
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
-Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations. 
+Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 {{site.data.alerts.callout_info}}This page shows you how to upgrade from v1.0 to a patch release in the 1.0.x series. To upgrade from v1.0.x to v1.1, see <a href="https://www.cockroachlabs.com/docs/v1.1/upgrade-cockroach-version.html">the 1.1 version of this page</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Step 1. Prepare to upgrade
 
@@ -38,7 +37,7 @@ For each node in your cluster, complete the following steps.
 
 1. Connect to the node.
 
-2. Stop the `cockroach` process.
+2. Terminate the `cockroach` process.
 
     Without a process manager, use this command:
 
@@ -67,13 +66,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
@@ -81,13 +78,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
@@ -103,7 +98,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -115,7 +110,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -143,7 +138,7 @@ For each node in your cluster, complete the following steps.
     $ rm /usr/local/bin/cockroach_old
     ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    If you leave versioned binaries on your servers, you do not need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 

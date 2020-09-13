@@ -1,14 +1,13 @@
 ---
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
-toc: false
+toc: true
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
 {{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Create a Database
 
@@ -64,7 +63,7 @@ To set the default database, use the [`SET`](set-vars.html#examples) statement:
 > SET DATABASE = bank;
 ~~~
 
-When working with the default database, you don't need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
+When working with the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -92,7 +91,7 @@ To create a table, use [`CREATE TABLE`](create-table.html) followed by a table n
 );
 ~~~
 
-Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you don't explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 

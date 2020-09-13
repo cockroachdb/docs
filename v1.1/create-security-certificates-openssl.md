@@ -1,7 +1,7 @@
 ---
 title: Create Security Certificates
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -11,7 +11,6 @@ toc: false
 
 A secure CockroachDB cluster uses [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) for encrypted inter-node and client-node communication, which requires CA, node, and client certificates and keys. To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, or use [`openssl` commands](https://wiki.openssl.org/index.php/).
 
-<div id="toc"></div>
 
 ## Subcommands
 
@@ -85,6 +84,7 @@ Note the following:
     serial = serial.txt 
     default_md = sha256 
     copy_extensions = copy
+    unique_subject = no
 
     # Used to create the CA certificate.
     [ req ]
@@ -174,13 +174,14 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
+    # Required value for commonName, do not change.
     commonName = node
 
     [ extensions ]
     subjectAltName = DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
     ~~~
 
-    {{site.data.alerts.callout_info}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. It is also important that <code>commonName</code> be set to <code>node</code>. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}The <code>commonName</code> and <code>subjectAltName</code> parameters are vital for CockroachDB functions. It is also required that <code>commonName</code> be set to <code>node</code>. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the <code>commonName</code> and <code>subjectAltName</code> parameters.  {{site.data.alerts.end}}
   
 2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 

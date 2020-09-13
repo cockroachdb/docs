@@ -1,7 +1,7 @@
 ---
 title: SHOW EXPERIMENTAL_RANGES
 summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
-toc: false
+toc: true
 redirect_from: show-testing-ranges.html
 ---
 
@@ -17,19 +17,17 @@ This information is useful for verifying that:
 - The ["follow-the-workload"](demo-follow-the-workload.html) feature is operating as expected.
 - Range splits specified by the [`SPLIT AT`](split-at.html) statement were created as expected.
 
-{% include experimental-warning.md %}
-
-<div id="toc"></div>
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/show_ranges.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_ranges.html %}
 </div>
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](privileges.html) on the target table.
+The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the target table.
 
 ## Parameters
 
@@ -40,7 +38,7 @@ Parameter | Description
 
 ## Examples
 
-The examples in this section operate on a hypothetical "user credit information" table filled with dummy data, running on a 5-node cluster.
+The examples in this section operate on a hypothetical "user credit information" table filled with placeholder data, running on a 5-node cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -87,7 +85,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /5      |      158 | {2,3,5}  |            5 |
 | /5        | /10     |      159 | {3,4,5}  |            5 |
@@ -106,7 +104,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ~~~
 +-----------+---------+----------+-----------+--------------+
-| Start Key | End Key | Range ID | Replicas  | Lease Holder |
+| start_key | end_key | range_id | replicas  | lease_holder |
 +-----------+---------+----------+-----------+--------------+
 | NULL      | /400    |      135 | {2,4,5}   |            2 |
 | /400      | /600    |      136 | {2,4,5}   |            4 |

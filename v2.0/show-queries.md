@@ -1,7 +1,7 @@
 ---
 title: SHOW QUERIES
 summary: The SHOW QUERIES statement lists all currently active queries across the cluster or on the local node.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:
@@ -16,7 +16,6 @@ These details let you monitor the progress of active queries and, if necessary, 
 
 {{site.data.alerts.callout_info}}Schema changes and <a href="backup.html"><code>BACKUP</code></a>/<a href="restore.html"><code>RESTORE</code></a> statements are not executed as queries internally and so are not listed by <code>SHOW QUERIES</code>. To monitor such statements, use <a href="show-jobs.html"><code>SHOW JOBS</code></a> instead.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -24,7 +23,7 @@ No [privileges](privileges.html) are required to execute this statement. However
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_queries.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_queries.html %}</section>
 
 - To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.
 - To list the active queries just on the local node, use `SHOW LOCAL QUERIES`.
@@ -176,7 +175,7 @@ To exclude queries from the [built-in SQL client](use-the-built-in-sql-client.ht
 
 ### Cancel a Query
 
-When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to kill it.
+When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to stop it.
 
 For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have been running for more than 3 hours:
 

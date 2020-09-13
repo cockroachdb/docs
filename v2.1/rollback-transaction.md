@@ -1,30 +1,29 @@
 ---
 title: ROLLBACK
 summary: Abort the current transaction, discarding all updates made by statements included in the transaction with the ROLLBACK statement in CockroachDB.
-toc: false
+toc: true
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html), discarding all updates made by statements included in the transaction.
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT cockroach_restart` to handle a transaction that needs to be retried (identified via the `40001` error code or `retry transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
 
-<div id="toc"></div>
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/rollback_transaction.html %}
+  {% include {{ page.version.version }}/sql/diagrams/rollback_transaction.html %}
 </div>
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](authorization.html#assign-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `TO SAVEPOINT cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error. |
+ Parameter | Description
+-----------|-------------
+ `TO SAVEPOINT cockroach_restart` | If using [client-side transaction retries](transactions.html#client-side-transaction-retries), retry the transaction. You should execute this statement when a transaction returns a `40001` / `retry transaction` error.
 
 ## Example
 

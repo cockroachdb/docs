@@ -3,6 +3,31 @@
 @import "global/fonts";
 @import "global/type";
 
+@import "layouts/header";
+@import "layouts/sidebar";
+@import "layouts/landing-page";
+@import "layouts/content";
+@import "layouts/footer";
+@import "layouts/version-nav";
+
+@import "components/search";
+@import "components/callout";
+@import "components/toc";
+@import "components/filtertabs";
+@import "components/newsletter";
+@import "components/codesamples";
+@import "syntax/sql";
+@import "syntax/syntax";
+@import "components/feedback-widget";
+@import "components/back-to-top";
+@import "components/buttons";
+@import "components/releases";
+@import "components/copy-clipboard";
+@import "components/version-tag";
+@import "components/comparison-chart";
+@import "components/algolia";
+@import "components/version-switcher";
+
 html {
   height: 100%;
 }
@@ -27,12 +52,8 @@ p {
 }
 
 h1, h2 {
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: 20px;
-
-  @include at-query($min, $screen-sm) {
-    margin-top: 35px;
-  }
 }
 
 h3, h4, h5, h6 {
@@ -45,13 +66,13 @@ h3, h4, h5, h6 {
 }
 
 h1 {
-  @include adelle_b(36px);
+  @include graphik_sb(36px);
   line-height: 45px;
   color: $cl_blue;
 }
 
 h2 {
-  @include adelle_b(30px);
+  @include graphik_sb(30px);
   line-height: 40px;
   color: $cl_blue;
 
@@ -91,6 +112,14 @@ h4 {
   }
 }
 
+h5 {
+  @include graphik_ri(17px);
+
+  code {
+    font-size: 17px;
+  }
+}
+
 pre { overflow: auto; }
 
 code {
@@ -115,12 +144,6 @@ a code:hover {
   text-decoration: underline;
 }
 
-@import "layouts/header";
-@import "layouts/sidebar";
-@import "layouts/landing-page";
-@import "layouts/content";
-@import "layouts/footer";
-
 .breadcrumb > .active {color: #777 !important;}
 
 /* make room for the nav bar */
@@ -129,11 +152,12 @@ h2:target:before,
 h3:target:before,
 h4:target:before,
 h5:target:before,
-h6:target:before {
+h6:target:before,
+td a:target:before {
   content: '';
   display: block;
-  height: 100px;
-  margin-top: -100px; }
+  height: 155px;
+  margin-top: -155px; }
 
 .post-content {
   img {
@@ -175,6 +199,11 @@ th {
 tbody tr:hover {
   // what is theme-blue.css? overwriting requires important
   background-color: $cl_gray_light !important;
+}
+
+
+tbody tr.eol {  
+  background-color: #fffaea !important;
 }
 
 table > thead > tr > th,
@@ -269,12 +298,6 @@ dl.dl-horizontal dd {
 
 img.screenshotSmall {
   max-width: 300px;
-}
-
-@media (max-width: 990px) {
-  #mysidebar {
-    position: relative;
-  }
 }
 
 figcaption {
@@ -445,7 +468,7 @@ ol.series li {
   padding-left: 0px;
 }
 
-#mysidebar .nav ul {
+#sidebar .nav ul {
   background-color: #FAFAFA;
 }
 .nav ul.series li {
@@ -528,20 +551,73 @@ a.accordion-toggle {
   margin-bottom: 0;
 }
 
-@import "components/search";
-@import "components/callout";
-@import "components/toc";
-@import "components/filtertabs";
-@import "components/newsletter";
-@import "components/codesamples";
-@import "syntax/sql";
-@import "syntax/syntax";
-@import "components/feedback-widget";
-@import "components/back-to-top";
-@import "components/buttons";
-@import "components/help-widget";
-@import "components/releases";
-@import "components/copy-clipboard";
-@import "components/version-tag";
-@import "components/comparison-chart";
-@import "components/algolia";
+.cockroachdb-training {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Docs landing page */
+.landing-column-title {
+  font-family: 'Graphik-Semibold', sans-serif;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.landing-column-content p {
+  line-height: 25px;
+}
+
+/* Use flexbox to keep columns at equal height */
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.row.display-flex > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search results highlight */
+#search-hits mark {
+  background: none;
+  font-weight: bold;
+}
+
+#search-stats {
+  margin-top: -10px;
+}
+
+#search-pages .ais-Pagination {
+  margin: 45px 0;
+}
+
+#search-pages .ais-Pagination-list {
+  padding: 0;
+}
+
+#search-pages .ais-Pagination-item {
+  display: inline;
+}
+
+#search-pages .ais-Pagination-item.ais-Pagination-item--previousPage a,
+#search-pages .ais-Pagination-item.ais-Pagination-item--nextPage a {
+  color: #192847;
+  font-size: 15px;
+}
+
+#search-pages .ais-Pagination-item a {
+  font-size: 16px;
+  line-height: 46px;
+  text-align: center;
+  letter-spacing: -0.0941177px;
+  color: #192847;
+  padding: 4px;
+}
+
+#search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
+  color: #497EDA;
+  font-weight: 900;
+}

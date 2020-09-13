@@ -1,20 +1,20 @@
 ---
 title: DROP SEQUENCE
 summary:
-toc: false
+toc: true
 ---
 
 The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
 
-<div id="toc"></div>
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified sequence(s).
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified sequence(s).
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_sequence.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_sequence.html %}</section>
 
 ## Parameters
 
@@ -27,7 +27,7 @@ table td:first-child {
  Parameter | Description
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.
-`sequence_name` | The name of the sequence you want to drop. Find the sequence name with `SHOW CREATE TABLE` on the table that uses the sequence.
+`sequence_name` | The name of the sequence you want to drop. Find the sequence name with `SHOW CREATE` on the table that uses the sequence.
 `RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints](constraints.html) and tables) use it.
 `CASCADE` | Not yet implemented. Currently, you can only drop a sequence if nothing depends on it.
 
@@ -98,3 +98,4 @@ DROP SEQUENCE
 - [`RENAME SEQUENCE`](rename-sequence.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

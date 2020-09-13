@@ -1,7 +1,7 @@
 ---
 title: SQL Dump (Export)
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
@@ -9,8 +9,6 @@ The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statemen
 {{site.data.alerts.callout_success}}
 CockroachDB [enterprise license](https://www.cockroachlabs.com/pricing/) users can also back up their cluster's data using [`BACKUP`](backup.html).
 {{site.data.alerts.end}}
-
-<div id="toc"></div>
 
 ## Considerations
 
@@ -24,6 +22,10 @@ When `cockroach dump` is executed:
 {{site.data.alerts.callout_info}}
 The user must have the `SELECT` privilege on the target table(s).
 {{site.data.alerts.end}}
+
+## Known limitations
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
 ## Synopsis
 
@@ -61,13 +63,13 @@ The `dump` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstration.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br>Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility.
 
 ### Client connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -372,5 +374,6 @@ As you can see, the results of the dump are identical to the earlier time-travel
 ## See also
 
 - [Import Data](import-data.html)
+- [`IMPORT`](import.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)

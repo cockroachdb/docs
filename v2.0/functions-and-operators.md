@@ -1,14 +1,13 @@
 ---
 title: Functions and Operators
 summary: CockroachDB supports many built-in functions, aggregate functions, and operators.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Special Syntax Forms
 
@@ -16,7 +15,7 @@ The following syntax forms are recognized for compatibility with the
 SQL standard and PostgreSQL, but are equivalent to regular built-in
 functions:
 
-{% include sql/{{ page.version.version }}/function-special-forms.md %}
+{% include {{ page.version.version }}/sql/function-special-forms.md %}
 
 ## Conditional and Function-Like Operators
 
@@ -38,11 +37,11 @@ functions but have special evaluation rules:
 
 ## Built-in Functions
 
-{% include sql/{{ page.version.version }}/functions.md %}
+{% include {{ page.version.version }}/sql/functions.md %}
 
 ## Aggregate Functions
 
-{% include sql/{{ page.version.version }}/aggregates.md %}
+{% include {{ page.version.version }}/sql/aggregates.md %}
 
 ## Operators
 
@@ -96,15 +95,15 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |  | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
 |  | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value](scalar-expressions.html#comparison-with-nan) | unary (postfix) |
 |  | `IS OF(...)` | Type predicate | unary (postfix)
-| 15 | `NOT` | Logical NOT | unary |
-| 16 | `AND` | [Logical AND with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
-| 17 | `OR` | [Logical OR with Short-Circuit Evaluation](scalar-expressions.html#and-and-or-boolean-short-circuit-comparisons) | binary |
+| 15 | `NOT` | [Logical NOT](scalar-expressions.html#logical-operators) | unary |
+| 16 | `AND` | [Logical AND](scalar-expressions.html#logical-operators) | binary |
+| 17 | `OR` | [Logical OR](scalar-expressions.html#logical-operators) | binary |
 
 [Multi-valued]: scalar-expressions.html#multi-valued-comparisons
 
 ### Supported Operations
 
-{% include sql/{{ page.version.version }}/operators.md %}
+{% include {{ page.version.version }}/sql/operators.md %}
 
 <!--
 ## `CAST()`

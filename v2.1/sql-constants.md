@@ -1,12 +1,11 @@
 ---
 title: Constant Values
 summary: SQL Constants represent a simple value that doesn't change.
-toc: false
+toc: true
 ---
 
 SQL Constants represent a simple value that doesn't change.
 
-<div id="toc"></div>
 
 ## Introduction
 
@@ -37,11 +36,11 @@ using the context where it appears.
 
 For example:
 
-| Expression | Data type of the string literal |
-|------------|---------------------------------|
-| `length('hello')` | `STRING` |
-| `now() + '3 day'`  | `INTERVAL` |
-| `INSERT INTO tb(date_col) VALUES ('2013-01-02')` | `DATE` |
+ Expression | Data type of the string literal 
+------------|---------------------------------
+ `length('hello')` | `STRING` 
+ `now() + '3 day'`  | `INTERVAL` 
+ `INSERT INTO tb(date_col) VALUES ('2013-01-02')` | `DATE` 
 
 In general, the data type of a string literal is that demanded by the
 context if there is no ambiguity, or `STRING` otherwise.
@@ -146,12 +145,12 @@ Some examples:
 The actual data type of a numeric constant depends both on the context
 where it is used, its literal format, and its numeric value.
 
-| Syntax | Possible data types |
-|--------|---------------------|
-| Contains a decimal separator | `FLOAT`, `DECIMAL` |
-| Contains an exponent | `FLOAT`, `DECIMAL` |
-| Contains a value outside of the range -2^63...(2^63)-1 | `FLOAT`, `DECIMAL` |
-| Otherwise | `INT`, `DECIMAL`, `FLOAT` |
+ Syntax | Possible data types 
+--------|---------------------
+ Contains a decimal separator | `FLOAT`, `DECIMAL` 
+ Contains an exponent | `FLOAT`, `DECIMAL` 
+ Contains a value outside of the range -2^63...(2^63)-1 | `FLOAT`, `DECIMAL` 
+ Otherwise | `INT`, `DECIMAL`, `FLOAT` 
 
 Of the possible data types, which one is actually used is then further
 refined depending on context.
@@ -185,14 +184,13 @@ with character escapes are as follows:
 ### Hexadecimal-encoded byte array literals
 
 This is a CockroachDB-specific extension to express byte array
-literals: the delimiter `x'` or `e'\\x` followed by an arbitrary sequence of
+literals: the delimiter `x'` followed by an arbitrary sequence of
 hexadecimal digits, followed by a closing `'`.
 
 For example, all the following formats are equivalent to `b'cat'`:
 
 - `x'636174'`
 - `X'636174'`
-- `e'\\x636174'::BYTES`
 
 ## Interpreted literals
 

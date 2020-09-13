@@ -1,7 +1,7 @@
 ---
 title: INTERLEAVE IN PARENT
 summary: Interleaving tables improves query performance by optimizing the key-value structure of closely related table's data.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Interleaving tables improves query performance by optimizing the key-value struc
 
 {{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## How interleaved tables work
 
@@ -45,7 +44,7 @@ By writing data in this way, related data is more likely to remain on the same k
 
 ## When to interleave tables
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ### Interleaved hierarchy
 
@@ -63,6 +62,18 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 - Using only tables in the interleaved hierarchy.
 
+<a name="fast-path-deletes"></a>
+
+<span class="version-tag">New in v2.1:</span> Fast deletes are available for interleaved tables that use [`ON DELETE CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).  Deleting rows from such tables will use an optimized code path and run much faster, as long as the following conditions are met:
+
+- The table or any of its interleaved tables do not have any secondary indices.
+- The table or any of its interleaved tables are not referenced by any other table outside of them by foreign key.
+- All of the interleaved relationships use `ON DELETE CASCADE` clauses.
+
+The performance boost when using this fast path is several orders of magnitude, potentially reducing delete times from seconds to nanoseconds.
+
+For an example showing how to create tables that meet these criteria, see [Interleaved fast path deletes](#interleaved-fast-path-deletes) below.
+
 ### Tradeoffs
 
 - In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.
@@ -71,21 +82,25 @@ In general, reads, writes, and joins of values related through the interleave pr
 
     For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
 
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-format) (64MB by default), the interleaved optimizations will be diminished.
+    Another exception is the [fast path delete optimization](#fast-path-deletes), which is available if you set up your tables according to certain criteria.
+
+- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-variables) (64MB by default), the interleaved optimizations will be diminished.
 
     For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
 ## Syntax
 
-{% include sql/{{ page.version.version }}/diagrams/interleave.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+</div>
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
-| `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into. |
-| `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix). |
+ Parameter | Description
+-----------|-------------
+ `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
+ `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into.
+ `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix).
 
 ## Requirements
 
@@ -146,6 +161,56 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
   ) INTERLEAVE IN PARENT orders (customer, "order");
 ~~~
 
+### Interleaved fast path deletes
+
+This example shows how to create interleaved tables that enable our SQL engine to use a code path optimized to run much faster when deleting rows from these tables.  For more information about the criteria for enabling this optimization, see [fast path deletes](#fast-path-deletes) above.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE items (id INT PRIMARY KEY);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS bundles (
+    id INT,
+    item_id INT,
+    PRIMARY KEY (item_id, id),
+    FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE ON UPDATE CASCADE
+  )
+  INTERLEAVE IN PARENT items (item_id);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS suppliers (
+    id INT,
+    item_id INT,
+    PRIMARY KEY (item_id, id),
+    FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE ON UPDATE CASCADE
+  )
+  INTERLEAVE IN PARENT items (item_id);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS orders (
+    id INT,
+    item_id INT,
+    bundle_id INT,
+    FOREIGN KEY (item_id, bundle_id) REFERENCES bundles (item_id, id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (item_id, bundle_id, id)
+  )
+  INTERLEAVE IN PARENT bundles (item_id, bundle_id);
+~~~
+
+The following statement will delete some rows from the `parent` table, very quickly:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DELETE FROM items WHERE id <= 5;
+~~~
+
 ### Key-value storage example
 
 It can be easier to understand what interleaving tables does by seeing what it looks like in the key-value store. For example, using the above example of interleaving `orders` in `customers`, we could insert the following values:
@@ -166,16 +231,16 @@ It can be easier to understand what interleaving tables does by seeing what it l
     (2, 1003, 70.00);
 ~~~
 
-Using an illustrative format of the key-value store (keys are represented in colors; values are represented by `-> value`), the data would be written like this:
+Using an illustrative format of the key-value store (keys are on the left; values are represented by `-> value`), the data would be written like this:
 
-<pre class="highlight">
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;customers.id = 1&gt;</span> -> 'Ha-Yun'
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;orders.customer = 1&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#ef2da8">&lt;orders.id = 1000&gt;</span> -> 100.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;orders.customer = 1&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#c4258a">&lt;orders.id = 1002&gt;</span> -> 80.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;customers.id = 2&gt;</span> -> 'Emanuela'
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;orders.customer = 2&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#EF2D56">&lt;orders.id = 1001&gt;</span> -> 90.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;orders.customer = 2&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#c42547">&lt;orders.id = 1003&gt;</span> -> 70.00
-</pre>
+~~~
+/customers/<customers.id = 1> -> 'Ha-Yun'
+/customers/<orders.customer = 1>/orders/<orders.id = 1000> -> 100.00
+/customers/<orders.customer = 1>/orders/<orders.id = 1002> -> 80.00
+/customers/<customers.id = 2> -> 'Emanuela'
+/customers/<orders.customer = 2>/orders/<orders.id = 1001> -> 90.00
+/customers/<orders.customer = 2>/orders/<orders.id = 1003> -> 70.00
+~~~
 
 You'll notice that `customers.id` and `orders.customer` are written into the same position in the key-value store. This is how CockroachDB relates the two table's data for the interleaved structure. By storing data this way, accessing any of the `orders` data alongside the `customers` is much faster.
 

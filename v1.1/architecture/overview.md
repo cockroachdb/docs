@@ -1,7 +1,7 @@
 ---
 title: Architecture Overview
 summary:
-toc: false
+toc: true
 key: cockroachdb-architecture.html
 redirect_from: index.html
 ---
@@ -10,13 +10,12 @@ CockroachDB was designed to create the open-source database our developers would
 
 However, you definitely do not need to understand the underlying architecture to use CockroachDB. These pages give serious users and database enthusiasts a high-level framework to explain what's happening under the hood.
 
-<div id="toc"></div>
 
 ## Using this Guide
 
 This guide is broken out into pages detailing each layer of CockroachDB. It's recommended to read through the layers sequentially, starting with this overview and then proceeding to the SQL Layer.
 
-If you're looking for a high-level understanding of CockroachDB, you can simply read the **Overview** section of each layer. For more technical detail––for example, if you're interested in [contributing to the project](../contribute-to-cockroachdb.html)––you should read the **Components** sections as well.
+If you're looking for a high-level understanding of CockroachDB, you can simply read the **Overview** section of each layer. For more technical detail––for example, if you're interested in [contributing to the project](https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB)––you should read the **Components** sections as well.
 
 {{site.data.alerts.callout_info}}This guide details how CockroachDB is built, but does not explain how <em>you</em> should architect an application using CockroachDB. For help with your own application's architecture using CockroachDB, check out our <a href="https://cockroachlabs.com/docs/stable">user documentation</a>.{{site.data.alerts.end}}
 
@@ -56,7 +55,7 @@ Term | Definition
 **Consensus** | When a range receives a write, a quorum of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.<br/><br/>When a write *doesn't* achieve consensus, forward progress halts to maintain consistency within the cluster.
 **Replication** | Replication involves creating and distributing copies of data, as well as ensuring copies remain consistent. However, there are multiple types of replication: namely, synchronous and asynchronous.<br/><br/>Synchronous replication requires all writes to propagate to a quorum of copies of the data before being considered committed. To ensure consistency with your data, this is the kind of replication CockroachDB uses.<br/><br/>Asynchronous replication only requires a single node to receive the write to be considered committed; it's propagated to each copy of the data after the fact. This is more or less equivalent to "eventual consistency", which was popularized by NoSQL databases. This method of replication is likely to cause anomalies and loss of data.
 **Transactions** | A set of operations performed on your database that satisfy the requirements of [ACID semantics](https://en.wikipedia.org/wiki/Database_transaction). This is a crucial component for a consistent system to ensure developers can trust the data in their database.
-**Multi-Active Availability** | Our consensus-based notion of high availability that lets each node in the cluster handle reads and writes for a subset of the stored data (on a per-range basis). This is in contrast to active-passive replication, in which the active node receives 100% of request traffic, as well as active-active replication, in which all nodes accept requests but typically can't guarantee that reads are both up-to-date and fast.
+**Multi-Active Availability** | Our consensus-based notion of high availability that lets each node in the cluster handle reads and writes for a subset of the stored data (on a per-range basis). This is in contrast to active-passive replication, in which the active node receives 100% of request traffic, as well as active-active replication, in which all nodes accept requests but typically cannot guarantee that reads are both up-to-date and fast.
 
 ## Overview
 
@@ -69,7 +68,7 @@ Once the `cockroach` process is running, developers interact with CockroachDB th
 
 After receiving SQL RPCs, nodes convert them into operations that work with our distributed key-value store. As these RPCs start filling your cluster with data, CockroachDB algorithmically starts distributing your data among your nodes, breaking the data up into 64MiB chunks that we call ranges. Each range is replicated to at least 3 nodes to ensure survivability. This way, if nodes go down, you still have copies of the data which can be used for reads and writes, as well as replicating the data to other nodes.
 
-If a node receives a read or write request it can't directly serve, it simply finds the node that can handle the request, and communicates with it. This way you don't need to know where your data lives, CockroachDB tracks it for you, and enables symmetric behavior for each node.
+If a node receives a read or write request it cannot directly serve, it simply finds the node that can handle the request, and communicates with it. This way you do not need to know where your data lives, CockroachDB tracks it for you, and enables symmetric behavior for each node.
 
 Any changes made to the data in a range rely on a consensus algorithm to ensure a majority of its replicas agree to commit the change, ensuring industry-leading isolation guarantees and providing your application consistent reads, regardless of which node you communicate with.
 

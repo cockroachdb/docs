@@ -1,14 +1,13 @@
 ---
 title: Inverted Indexes
 summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate schemaless data in a JSONB column.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> Inverted indexes improve your database's performance by helping SQL locate the schemaless data in a [`JSONB`](jsonb.html) column.
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## How Do Inverted Indexes Work?
 
@@ -82,6 +81,34 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 ### Performance
 
 Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
+
+### Comparisons
+Currently, inverted indexes only support equality comparisons using the `=` operator. If you require comparisons using `>`, `<=`, etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+
+1. Create your table with a computed column: 
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE test (
+        id INT, 
+        data JSONB, 
+        foo INT AS ((data->>'foo')::INT) STORED
+        );
+    ~~~
+
+2. Create an index on your computed column: 
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE INDEX test_idx ON test (foo);
+    ~~~
+
+3. Execute your query with your comparison: 
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM test where foo > 3;
+    ~~~
 
 ## Example
 

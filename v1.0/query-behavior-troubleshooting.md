@@ -1,12 +1,11 @@
 ---
 title: Query Behavior Troubleshooting
-summary: Learn how to troubleshoot issues with specific queries with CockroachDB 
-toc: false
+summary: Learn how to troubleshoot issues with specific queries with CockroachDB
+toc: true
 ---
 
 If a query returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
-<div id="toc"></div>
 
 ## Correctness Issues
 
@@ -36,8 +35,9 @@ Because this kind of behavior is entirely unexpected, you should [file an issue]
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

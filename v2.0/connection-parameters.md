@@ -1,7 +1,7 @@
 ---
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
-toc: false
+toc: true
 ---
 
 Client applications, including client [`cockroach`
@@ -10,7 +10,6 @@ connection to a CockroachDB cluster. The client connection parameters
 determine which CockroachDB cluster they connect to, and how to
 establish this network connection.
 
-<div id="toc"></div>
 
 
 ## Supported Connection Parameters
@@ -150,7 +149,7 @@ For each command-line flag that directs a connection parameter,
 CockroachDB also recognizes an environment variable. The environment
 variable is used when the command-line flag is not specified.
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 {{site.data.alerts.callout_info}}The command-line flag
 <code>--url</code> is only supported for <code>cockroach</code>

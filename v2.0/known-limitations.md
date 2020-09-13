@@ -1,14 +1,16 @@
 ---
 title: Known Limitations in CockroachDB v2.0
 summary: Known limitations in CockroachDB v2.0.
-toc: false
+toc: true
 ---
 
-This page describes newly identified limitations in the CockroachDB v2.0 release as well as unresolved limitations identified in earlier releases.
-
-<div id="toc"></div>
+This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New Limitations
+
+### Changes to the default replication zone are not applied to existing replication zones
+
+{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
 
 ### Silent validation error with `DECIMAL` values
 
@@ -28,9 +30,7 @@ In the upgrade process, after upgrading all binaries to v2.0, it's recommended t
 
 ### Write and update limits for a single statement
 
-{{site.data.alerts.callout_info}}Resolved as of v2.1. See <a href="https://github.com/cockroachdb/cockroach/pull/23373">#23373</a>.{{site.data.alerts.end}}
-
-A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. `INSERT INTO ... SELECT FROM` queries commonly encounter these limits.
+A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. Currently, `INSERT INTO ... SELECT FROM` and `CREATE TABLE AS SELECT` queries may encounter these limits.
 
 To increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
 
@@ -53,6 +53,8 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 ~~~
 
 ### Check constraints with `INSERT ... ON CONFLICT`
+
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.4.html">v2.0.4</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26699">#26699</a>.{{site.data.alerts.end}}
 
 [`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
 
@@ -95,59 +97,80 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 ### Referring to a CTE by name more than once
 
-{% include known_limitations/cte-by-name.md %}
+{% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
 ### Using CTEs with data-modifying statements
 
-{% include known_limitations/cte-with-dml.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-dml.md %}
 
 ### Using CTEs with views
 
-{% include known_limitations/cte-with-view.md %}
+{% include {{ page.version.version }}/known-limitations/cte-with-view.md %}
 
 ### Using CTEs with `VALUES` clauses
 
-{% include known_limitations/cte-in-values-clause.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
 
 ### Using CTEs with Set Operations
 
-{% include known_limitations/cte-in-set-expression.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
 
 ### Assigning latitude/longitude for the Node Map
 
-{% include known_limitations/node-map.md %}
+{% include {{ page.version.version }}/known-limitations/node-map.md %}
 
 ### Placeholders in `PARTITION BY`
 
-{% include known_limitations/partitioning-with-placeholders.md %}
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-### Adding a column with certain `DEFAULT` values
+### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> CREATE TABLE t (x INT);
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> CREATE SEQUENCE s;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+~~~
+
+~~~
+ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
 ## Unresolved Limitations
 
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+
 ### Available capacity metric in the Admin UI
 
-{% include available-capacity-metric.md %}
+{% include v2.0/misc/available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
 Within a single [transaction](transactions.html):
 
-- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
+- DDL statements cannot be mixed with DML statements. As a workaround, you can split the statements into separate transactions.
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
@@ -276,7 +299,7 @@ Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP 
 
 ### Query planning for `OR` expressions
 
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it can't use both conditions at once.
+Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ### Privileges for `DELETE` and `UPDATE`
 
@@ -284,4 +307,4 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

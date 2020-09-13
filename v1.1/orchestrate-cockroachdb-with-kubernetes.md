@@ -1,7 +1,7 @@
 ---
 title: Orchestrate CockroachDB with Kubernetes
 summary: How to orchestrate the deployment and management of a secure 3-node CockroachDB cluster with Kubernetes.
-toc: false
+toc: true
 secure: true
 ---
 
@@ -16,7 +16,6 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 {{site.data.alerts.callout_success}}For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see <a href="kubernetes-performance.html">CockroachDB Performance on Kubernetes</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -27,19 +26,19 @@ Before getting started, it's helpful to review some Kubernetes-specific terminol
 Feature | Description
 --------|------------
 instance | A physical or virtual machine. In this tutorial, you'll create GCE or AWS instances and join them into a single Kubernetes cluster from your local workstation.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one or more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or Certificate Signing Request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster.
-[RBAC](https://kubernetes.io/docs/admin/authorization/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
+[RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
-{% include orchestration/kubernetes-limitations.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-{% include orchestration/start-kubernetes.md %}
+{% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
 ## Step 3. Start CockroachDB nodes
 
-{% include orchestration/start-cluster.md %}
+{% include {{ page.version.version }}/orchestration/start-cluster.md %}
 
 ## Step 4. Approve node certificates
 
@@ -60,7 +59,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   5m        kubelet                                 Approved,Issued
     ~~~
 
-    If you don't see a `Pending` CSR, wait a minute and try again.
+    If you do not see a `Pending` CSR, wait a minute and try again.
 
 2. Examine the CSR for pod 1:
 
@@ -151,7 +150,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     ~~~
 
     ~~~
-    certificatesigningrequest "default.node.cockroachdb-0" approved
+    certificatesigningrequest "default.client.root" approved
     ~~~
 
 5. Confirm that cluster initialization has completed successfully:
@@ -166,7 +165,9 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     cluster-init-secure   1         1            19m
     ~~~
 
-{{site.data.alerts.callout_success}}The StatefulSet configuration sets all CockroachDB nodes to write to <code>stderr</code>, so if you ever need access to a pod/node's logs to troubleshoot, use <code>kubectl logs &lt;podname&gt;</code> rather than checking the log on the persistent volume.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+{{site.data.alerts.end}}
 
 ## Step 6. Test the cluster
 
@@ -247,15 +248,15 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ## Step 7. Monitor the cluster
 
-{% include orchestration/monitor-cluster.md %}
+{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
 ## Step 8. Simulate node failure
 
-{% include orchestration/kubernetes-simulate-failure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 9. Scale the cluster
 
-{% include orchestration/kubernetes-scale-cluster.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
 3. Get the name of the `Pending` CSR for the new pod:
 
@@ -276,7 +277,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
     ~~~
 
-    If you don't see a `Pending` CSR, wait a minute and try again.
+    If you do not see a `Pending` CSR, wait a minute and try again.
 
 4. Examine the CSR for the new pod:
 
@@ -336,7 +337,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 ## Step 10. Upgrade the cluster
 
-{% include orchestration/kubernetes-upgrade-cluster.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
 
 4. If this was an upgrade between minor or major versions (e.g., between v1.0.x and v1.1.y or between v1.1.y and v2.0.z), then you'll want to [finalize the upgrade](upgrade-cockroach-version.html#finalize-the-upgrade) if you're happy with the new version. Assuming you upgraded to the v1.1 minor version, you'd run:
 
@@ -460,9 +461,9 @@ To shut down the CockroachDB cluster:
 
 7. Stop Kubernetes:
 
-{% include orchestration/stop-kubernetes.md %}
+{% include {{ page.version.version }}/orchestration/stop-kubernetes.md %}
 
 ## See Also
 
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

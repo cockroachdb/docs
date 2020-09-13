@@ -1,12 +1,11 @@
 ---
 title: Known Limitations in CockroachDB v1.1
 summary: Known limitations in CockroachDB v1.1.
-toc: false
+toc: true
 ---
 
 This page describes newly identified limitations in the CockroachDB v1.1 release as well as unresolved limitations identified in earlier releases.
 
-<div id="toc"></div>
 
 ## New Limitations
 
@@ -26,7 +25,7 @@ The locations of all ranges in a cluster are stored in a two-level index at the 
 
 ### Available capacity metric in the Admin UI
 
-{% include available-capacity-metric.md %}
+{% include v1.1/misc/available-capacity-metric.md %}
 
 ### Downgrading to v1.1.0 from a later v1.1.x patch release
 
@@ -38,7 +37,7 @@ If you have started or [upgraded](upgrade-cockroach-version.html#finalize-the-up
 
 Within a single [transaction](transactions.html):
 
-- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
+- DDL statements cannot be mixed with DML statements. As a workaround, you can split the statements into separate transactions.
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table. This also applies to running [`TRUNCATE`](truncate.html) on such a table because `TRUNCATE` implicitly drops and recreates the table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
@@ -176,7 +175,7 @@ Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP 
 
 ### Query planning for `OR` expressions
 
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it can't use both conditions at once.
+Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ### Privileges for `DELETE` and `UPDATE`
 
@@ -184,4 +183,4 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

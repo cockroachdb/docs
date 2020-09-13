@@ -1,14 +1,13 @@
 ---
 title: RENAME TABLE
 summary: The RENAME TABLE statement changes the name of a table.
-toc: false
+toc: true
 ---
 
 The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table. It can also be used to move a table from one database to another.
 
 {{site.data.alerts.callout_info}}It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -16,7 +15,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/rename_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_table.html %}
 
 ## Parameters
 
@@ -27,7 +26,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 | `new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables. |
 
 ## Viewing Schema Changes <span class="version-tag">New in v1.1</span>
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

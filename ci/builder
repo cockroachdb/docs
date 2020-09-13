@@ -3,7 +3,7 @@
 set -euo pipefail
 
 image=cockroachdb/docs-builder
-version=${COCKROACH_DOCS_BUILDER_VERSION:-20180529-163433}
+version=${COCKROACH_DOCS_BUILDER_VERSION:-20200810-185542}
 
 root=$(cd "$(dirname "$0")" && pwd)
 repo_root=$root/..
@@ -31,6 +31,7 @@ case "$command" in
       --user "$(id -u):$(id -g)" \
       --env AWS_ACCESS_KEY_ID \
       --env AWS_SECRET_ACCESS_KEY \
+      --env ALGOLIA_DOCS_STAGING \
       --volume="$repo_root:/docs" \
       "$image:$version" "$@"
     ;;

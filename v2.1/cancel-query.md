@@ -1,25 +1,26 @@
 ---
 title: CANCEL QUERY
 summary: The CANCEL QUERY statement cancels a running SQL query.
-toc: false
+toc: true
 ---
 
 The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
 
-<div id="toc"></div>
 
 ## Considerations
 
-- Schema changes are treated differently than other SQL queries. You can use <a href="show-jobs.html"><code>SHOW JOBS</code></a> to monitor the progress of schema changes, and as of v2.1, use <a href="cancel-job.html"><code>CANCEL JOB</code></a> to cancel schema changes that are taking longer than expected. 
+- Schema changes are treated differently than other SQL queries. You can use <a href="show-jobs.html"><code>SHOW JOBS</code></a> to monitor the progress of schema changes, and as of v2.1, use <a href="cancel-job.html"><code>CANCEL JOB</code></a> to cancel schema changes that are taking longer than expected.
 - In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
 
 ## Required privileges
 
-The `root` user can cancel any currently active queries, whereas non-`root` users cancel only their own currently active queries.
+Members of the `admin` role (include `root`, which belongs to `admin` by default) can cancel any currently active. User that are not members of the `admin` role can cancel only their own currently active queries.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/cancel_query.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/cancel_query.html %}
+</div>
 
 ## Parameters
 

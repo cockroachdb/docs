@@ -1,21 +1,19 @@
 ---
 title: SHOW COLUMNS
 summary: The SHOW COLUMNS statement shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
-toc: false
+toc: true
 ---
 
 The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
 
-<div id="toc"></div>
-
 ## Required privileges
 
-The user must have any [privilege](privileges.html) on the target table.
+The user must have any [privilege](authorization.html#assign-privileges) on the target table.
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/show_columns.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_columns.html %}
 </div>
 
 ## Parameters
@@ -30,13 +28,15 @@ The following fields are returned for each column.
 
 Field | Description
 ------|------------
-`Field` | The name of the column.
-`Type` | The [data type](data-types.html) of the column.
-`Null` | Whether or not the column accepts `NULL`. Possible values: `true` or `false`.
-`Default` | The default value for the column, or an expression that evaluates to a default value.
-`Indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
+`column_name` | The name of the column.
+`data_type` | The [data type](data-types.html) of the column.
+`is_nullable` | Whether or not the column accepts `NULL`. Possible values: `true` or `false`.
+`column_default` | The default value for the column, or an expression that evaluates to a default value.
+`generation_expression` | The expression used for a [computed column](computed-columns.html).
+`indices` | The list of [indexes](indexes.html) that the column is involved in, as an array.
+`is_hidden` | <span class="version-tag">New in v2.1:</span> Whether or not the column is hidden. Possible values: `true` or `false`.
 
-## Example
+## Examples
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -58,17 +58,35 @@ Field | Description
 ~~~
 
 ~~~
-+-------------+-----------+-------+----------------+----------------------------------+
-|    Field    |   Type    | Null  |    Default     |             Indices              |
-+-------------+-----------+-------+----------------+----------------------------------+
-| id          | INT       | false | unique_rowid() | {primary,orders_customer_id_key} |
-| date        | TIMESTAMP | false | NULL           | {}                               |
-| priority    | INT       | true  |              1 | {}                               |
-| customer_id | INT       | true  | NULL           | {orders_customer_id_key}         |
-| status      | STRING    | true  | 'open'         | {}                               |
-+-------------+-----------+-------+----------------+----------------------------------+
+  column_name | data_type | is_nullable | column_default  | generation_expression |               indices                | is_hidden
++-------------+-----------+-------------+-----------------+-----------------------+--------------------------------------+-----------+
+  id          | INT       |    false    | unique_rowid()  |                       | {"primary","orders_customer_id_key"} |   false
+  date        | TIMESTAMP |    false    | NULL            |                       | {}                                   |   false
+  priority    | INT       |    true     | 1:::INT         |                       | {}                                   |   false
+  customer_id | INT       |    true     | NULL            |                       | {"orders_customer_id_key"}           |   false
+  status      | STRING    |    true     | 'open':::STRING |                       | {}                                   |   false
 (5 rows)
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE foo (x INT);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM foo;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  x           | INT       |    true     | NULL           |                       | {}          |   false
+  rowid       | INT       |    false    | unique_rowid() |                       | {"primary"} |   true
+(2 rows)
+~~~
+
+
 
 ## See also
 

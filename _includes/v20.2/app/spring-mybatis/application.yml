@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=/Users/ericharmeling/certs/ca.crt&sslkey=/Users/ericharmeling/certs/client.maxroach.key.pk8&sslcert=/Users/ericharmeling/certs/client.maxroach.crt
+    username: maxroach

@@ -1,11 +1,10 @@
 ---
 title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
-<div id="toc"></div>
 
 ## How do I bulk insert data into CockroachDB?
 
@@ -13,28 +12,28 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ## How do I generate unique, slowly increasing sequential numbers in CockroachDB?
 
-{% include faq/sequential-numbers.md %}
+{% include {{ page.version.version }}/faq/sequential-numbers.md %}
 
 ## What are the differences between `UUID`, sequences, and `unique_rowid()`?
 
-{% include faq/differences-between-numberings.md %}
+{% include {{ page.version.version }}/faq/differences-between-numberings.md %}
 
 ## How do I order writes to a table to closely follow time in CockroachDB?
 
-{% include faq/sequential-transactions.md %}
+{% include {{ page.version.version }}/faq/sequential-transactions.md %}
 
 ## How do I get the last ID/SERIAL value inserted into a table?
 
 There’s no function in CockroachDB for returning last inserted values, but you can use the [`RETURNING` clause](insert.html#insert-and-return-values) of the `INSERT` statement.
 
-For example, this is how you’d use `RETURNING` to return an auto-generated [`SERIAL`](serial.html) value:
+For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
 ~~~ sql
-> CREATE TABLE users (id SERIAL, name STRING);
+> CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
 
 > INSERT INTO users (name) VALUES ('mike') RETURNING id;
 ~~~
@@ -53,16 +52,17 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 
 ## Does CockroachDB support `JOIN`?
 
-[CockroachDB supports uncorrelated SQL joins](joins.html).  We are
+[CockroachDB supports SQL joins](joins.html).  We are
 working to improve their execution performance.
 
-At this time, `LATERAL` (correlated) joins are not yet supported.
+At this time, some correlated joins, including `LATERAL` joins, are
+not yet supported.
 
 ## When should I use interleaved tables?
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
@@ -84,7 +84,7 @@ If you'd like to tell the query planner which index to use, you can do so via so
 
 ## How do I log SQL queries?
 
-{% include faq/sql-query-logging.md %}
+{% include {{ page.version.version }}/faq/sql-query-logging.md %}
 
 ## Does CockroachDB support a UUID type?
 
@@ -126,6 +126,20 @@ If you instead need to perform arithmetic on `INT`s in JavaScript, you will need
 parseInt(idString, 10) + 1; // WRONG: returns 235191684988928000
 require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191684988928002'
 ~~~
+
+## Can I use CockroachDB as a key-value store?
+
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
+
+## Why are my deletes getting slower over time?
+
+> I need to delete a large amount of data. I'm iteratively deleting a certain number of rows using a [`DELETE`](delete.html) statement with a [`LIMIT`](limit-offset.html) clause, but it's getting slower over time. Why?
+
+CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](strong-consistency.html). As such, when you delete a row it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) [zone configuration](show-zone-configurations.html) has passed.  By default, this period is 25 hours.
+
+This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within the last 25 hours. This means that if you try to delete 10,000 rows 10 times within the same 25 hour period, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
+
+If you need to iteratively delete rows in constant time, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and run your `DELETE` statement once per GC interval. We strongly recommend returning `gc.ttlseconds` to the default value after your large deletion is completed.
 
 ## See also
 

@@ -1,7 +1,7 @@
 ---
 title: Table Expressions
 summary: Table expressions define a data source in selection clauses.
-toc: false
+toc: true
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
@@ -11,12 +11,11 @@ Table expressions define a data source in the `FROM` sub-clause of
 [SQL Joins](joins.html) are a particular kind of table
 expression.
 
-<div id="toc"></div>
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/table_ref.html %}
+  {% include {{ page.version.version }}/sql/diagrams/table_ref.html %}
 </div>
 
 ## Parameters
@@ -26,9 +25,9 @@ Parameter | Description
 `table_name` | A [table or view name](#table-or-view-names).
 `table_alias_name` | A name to use in an [aliased table expression](#aliased-table-expressions).
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
-`scan_parameters` | Optional syntax to [force index selection](#force-index-selection).
+`index_name` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Results from a function](#results-from-a-function).
-`explainable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](explain.html#explainable-statements).
+`preparable_stmt` | [Use the result rows](#using-the-output-of-other-statements) of a [preparable statement](sql-grammar.html#preparable_stmt).
 `select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
 `joined_table` | A [join expression](joins.html).
 
@@ -45,13 +44,13 @@ Construct | Description | Examples
 `<table expr> WITH ORDINALITY` | [Enumerate the result rows](#ordinality-annotation). | `accounts WITH ORDINALITY`
 `<table expr> JOIN <table expr> ON ...` | [Join expression](joins.html). | `orders o JOIN customers c ON o.customer_id = c.id`
 `(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#subqueries-as-table-expressions). | `(SELECT * FROM customers c)`
-`[... statement ...]` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](explain.html#explainable-statements).<br><br>This is a CockroachDB extension. | `[SHOW COLUMNS FROM accounts]`
+`[... statement ...]` | [Use the result rows](#using-the-output-of-other-statements) of an [explainable statement](sql-grammar.html#preparable_stmt).<br><br>This is a CockroachDB extension. | `[SHOW COLUMNS FROM accounts]`
 
 The following sections provide details on each of these options.
 
 ## Table expressions that generate data
 
-The following sections decribe primary table expressions that produce
+The following sections describe primary table expressions that produce
 data.
 
 ### Access a table or view
@@ -187,7 +186,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM generate_series(1, 3)
+> SELECT * FROM generate_series(1, 3);
 ~~~
 ~~~
 +-----------------+
@@ -199,7 +198,30 @@ For example:
 +-----------------+
 ~~~
 
-{{site.data.alerts.callout_info}}Currently CockroachDB only supports a small set of generator function compatible with <a href="https://www.postgresql.org/docs/9.6/static/functions-srf.html">the PostgreSQL set-generating functions of the same name</a>.{{site.data.alerts.end}}
+<span class="version-tag">New in v2.1:</span> Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is one of the following:
+
+- The name of a column returned from the function
+- `*` to denote all columns.
+
+For example (note that the output of queries against [`information_schema`](information-schema.html) will vary per database):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT (i.keys).* FROM (SELECT information_schema._pg_expandarray(indkey) AS keys FROM pg_index) AS i;
+~~~
+
+~~~
+ x | n
+---+---
+ 1 | 1
+ 2 | 1
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+Currently CockroachDB only supports a small set of generator functions compatible with [the PostgreSQL set-generating functions with the same
+names](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
+{{site.data.alerts.end}}
 
 ## Operators that extend a table expression
 
@@ -339,28 +361,30 @@ Syntax:
 [ <statement> ]
 ~~~
 
-An [explainable statement](explain.html#explainable-statements)
+An [explainable statement](sql-grammar.html#preparable_stmt)
 between square brackets in a table expression context designates the
 output of executing said statement.
 
 {{site.data.alerts.callout_info}}
-This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable use of any [explainable statement](explain.html#explainable-statements) as subquery, including `SHOW` and other non-query statements.
+This is a CockroachDB extension. This syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable use of any [explainable statement](sql-grammar.html#preparable_stmt) as subquery, including `SHOW` and other non-query statements.
 {{site.data.alerts.end}}
 
 For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT "Field" FROM [SHOW COLUMNS FROM customer];
+> SELECT "column_name" FROM [SHOW COLUMNS FROM customer];
 ~~~
+
 ~~~
-+---------+
-| Field   |
-+---------+
-| id      |
-| name    |
-| address |
-+---------+
++-------------+
+| column_name |
++-------------+
+| id          |
+| name        |
+| address     |
++-------------+
+(3 rows)
 ~~~
 
 The following statement inserts Albert in the `employee` table and
@@ -399,7 +423,7 @@ For more options to compose query results, see [Selection Queries](selection-que
 - [Constants](sql-constants.html)
 - [Selection Queries](selection-queries.html)
   - [Selection Clauses](selection-queries.html#selection-clauses)
-- [Explainable Statements](explain.html#explainable-statements)
+- [Explainable Statements](sql-grammar.html#preparable_stmt)
 - [Scalar Expressions](scalar-expressions.html)
 - [Data Types](data-types.html)
 - [Subqueries](subqueries.html)

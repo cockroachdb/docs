@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Google Cloud Platform GCE
 summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engine.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
 ---
@@ -15,15 +15,14 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/secure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/secure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 ## Step 1. Configure your network
 
@@ -40,13 +39,13 @@ When creating firewall rules, we recommend using Google Cloud Platform's **tag**
 
 #### Admin UI
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Name | **cockroachadmin** |
-| Source filter | IP ranges |
-| Source IP ranges | Your local network's IP ranges |
-| Allowed protocols... | **tcp:8080** |
-| Target tags | **cockroachdb** |
+ Field | Recommended Value
+-------|-------------------
+ Name | **cockroachadmin**
+ Source filter | IP ranges
+ Source IP ranges | Your local network's IP ranges
+ Allowed protocols... | **tcp:8080**
+ Target tags | **cockroachdb**
 
 #### Application data
 
@@ -70,7 +69,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 3. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up TCP Proxy Load Balancing
 
@@ -80,7 +79,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 - **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
 
-GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
+GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
 {{site.data.alerts.callout_danger}}When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using <a href="https://cloud.google.com/compute/docs/load-balancing/network/">Network TCP Load Balancing</a> instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance).{{site.data.alerts.end}}
 
@@ -89,45 +88,45 @@ To use GCE's TCP Proxy Load Balancing service:
 1. For each zone in which you're running an instance, [create a distinct instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances).
     - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp26257` as the **Port name** and `26257` as the **Port number**.
 2. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
-3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#configure_load_balancer).
+3. [Configure TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#configure_load_balancer).
     - During backend configuration, create a health check, setting the **Protocol** to `HTTPS`, the **Port** to `8080`, and the **Request path** to path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
         - If you want to maintain long-lived SQL connections that may be idle for more than tens of seconds, increase the backend timeout setting accordingly.
     - During frontend configuration, reserve a static IP address and note the IP address and the port you select. You'll use this address and port for all client connections.
-4. [Create a firewall rule](https://cloud.google.com/compute/docs/load-balancing/tcp-ssl/tcp-proxy#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
+4. [Create a firewall rule](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
     - Be sure to set **Source IP ranges** to `130.211.0.0/22` and `35.191.0.0/16` and set **Target tags** to `cockroachdb` (not to the value specified in the linked instructions).
 
 ## Step 5. Generate certificates
 
-{% include prod_deployment/secure-generate-certificates.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
-{% include prod_deployment/secure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include prod_deployment/secure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test the cluster
 
-{% include prod_deployment/secure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Run a sample workload
 
-{% include prod_deployment/secure-test-load-balancing.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
 ## Step 10. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
 
-{% include prod_deployment/secure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 12. Use the database
 
-{% include prod_deployment/use-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

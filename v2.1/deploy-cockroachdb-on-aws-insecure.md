@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on AWS EC2 (Insecure)
 summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ---
@@ -15,15 +15,14 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 - All instances running CockroachDB should be members of the same Security Group.
 
@@ -38,30 +37,30 @@ You can create these rules using [Security Groups' Inbound Rules](http://docs.aw
 
 #### Inter-node and load balancer-node communication
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Type | Custom TCP Rule |
-| Protocol | TCP |
-| Port Range | **26257** |
-| Source | The name of your security group (e.g., *sg-07ab277a*) |
+ Field | Recommended Value
+-------|-------------------
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **26257**
+ Source | The name of your security group (e.g., *sg-07ab277a*)
 
 #### Admin UI
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Type | Custom TCP Rule |
-| Protocol | TCP |
-| Port Range | **8080** |
-| Source | Your network's IP ranges |
+ Field | Recommended Value
+-------|-------------------
+ Type | Custom TCP Rule
+ Protocol | TCP
+ Port Range | **8080**
+ Source | Your network's IP ranges
 
 #### Application data
 
-| Field | Recommended Value |
-|-------|-------------------|
-| Type | Custom TCP Rules |
-| Protocol | TCP |
-| Port Range | **26257** |
-| Source | Your application's IP ranges |
+ Field | Recommended Value
+-------|-------------------
+ Type | Custom TCP Rules
+ Protocol | TCP
+ Port Range | **26257**
+ Source | Your application's IP ranges
 
 ## Step 2. Create instances
 
@@ -77,7 +76,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 3. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -98,27 +97,27 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 ## Step 5. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Run a sample workload
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 11. Use the cluster
 
@@ -130,4 +129,4 @@ Now that your deployment is working, you can:
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

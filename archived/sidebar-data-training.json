@@ -1,0 +1,273 @@
+[
+  {
+    "title": "Training Home",
+    "urls": [
+      "/${VERSION}/training/"
+    ]
+  },
+  {
+    "title": "Introduction",
+    "items": [
+      {
+        "title": "Why CockroachDB?",
+        "urls": [
+          "/${VERSION}/training/why-cockroachdb.html"
+        ]
+      },
+      {
+        "title": "Architecture Overview",
+        "urls": [
+          "/${VERSION}/training/architecture-overview.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Key Capabilities",
+    "items": [
+      {
+        "title": "Cluster Startup and Scaling",
+        "urls": [
+          "/${VERSION}/training/cluster-startup-and-scaling.html"
+        ]
+      },
+      {
+        "title": "Fault Tolerance and Automated Repair",
+        "urls": [
+          "/${VERSION}/training/fault-tolerance-and-automated-repair.html"
+        ]
+      },
+      {
+        "title": "Locality and Replication Zones",
+        "urls": [
+          "/${VERSION}/training/locality-and-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Geo-Partitioning",
+        "urls": [
+          "/${VERSION}/training/geo-partitioning.html"
+        ]
+      },
+      {
+        "title": "Orchestration with Kubernetes",
+        "urls": [
+          "/${VERSION}/training/orchestration-with-kubernetes.html"
+        ]
+      },
+      {
+        "title": "Performance Benchmarking",
+        "urls": [
+          "/${VERSION}/training/performance-benchmarking.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ops Basics",
+    "items": [
+      {
+        "title": "Data Import",
+        "urls": [
+          "/${VERSION}/training/data-import.html"
+        ]
+      },
+      {
+        "title": "SQL Basics",
+        "urls": [
+          "/${VERSION}/training/sql-basics.html"
+        ]
+      },
+      {
+        "title": "Users and Privileges",
+        "urls": [
+          "/${VERSION}/training/users-and-privileges.html"
+        ]
+      },
+      {
+        "title": "Security",
+        "urls": [
+          "/${VERSION}/training/security.html"
+        ]
+      },
+      {
+        "title": "Production Deployment",
+        "urls": [
+          "/${VERSION}/training/production-deployment.html"
+        ]
+      },
+      {
+        "title": "Monitoring and Alerting",
+        "urls": [
+          "/${VERSION}/training/monitoring-and-alerting.html"
+        ]
+      },
+      {
+        "title": "Debug Logs",
+        "urls": [
+          "/${VERSION}/training/logs.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Troubleshooting",
+    "items": [
+      {
+        "title": "Node Startup",
+        "urls": [
+          "/${VERSION}/training/node-startup-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Client Connection",
+        "urls": [
+          "/${VERSION}/training/client-connection-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Under-Replication",
+        "urls": [
+          "/${VERSION}/training/under-replication-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Cluster Unavailability",
+        "urls": [
+          "/${VERSION}/training/cluster-unavailability-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Data Unavailability",
+        "urls": [
+          "/${VERSION}/training/data-unavailability-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Data Corruption",
+        "urls": [
+          "/${VERSION}/training/data-corruption-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Software Panic",
+        "urls": [
+          "/${VERSION}/training/software-panic-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Network Partition",
+        "urls": [
+          "/${VERSION}/training/network-partition-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "How Cockroach Labs Debugs",
+        "urls": [
+          "/${VERSION}/training/how-cockroach-labs-debugs.html"
+        ]
+      },
+      {
+        "title": "How to Get Support",
+        "urls": [
+          "/${VERSION}/training/how-to-get-support.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Maintenance",
+    "items": [
+      {
+        "title": "Planned Maintenance",
+        "urls": [
+          "/${VERSION}/training/planned-maintenance.html"
+        ]
+      },
+      {
+        "title": "Node Decommissioning",
+        "urls": [
+          "/${VERSION}/training/node-decommissioning.html"
+        ]
+      },
+      {
+        "title": "Backup and Restore",
+        "urls": [
+          "/${VERSION}/training/backup-and-restore.html"
+        ]
+      },
+      {
+        "title": "Cluster Upgrade",
+        "urls": [
+          "/${VERSION}/training/cluster-upgrade.html"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Wrap Up",
+    "items": [
+      {
+        "title": "Give Us Feedback",
+        "urls": [
+          "https://goo.gl/forms/UmtasgsYrBgQrrKl1"
+        ]
+      },
+      {
+        "title": "Explore Our Docs",
+        "urls": [
+          "/${VERSION}/"
+        ]
+      }
+    ]
+  }
+]
+
+/*
+{
+  "title": "Introduction",
+  "items": [
+    {
+      "title": "Why CockroachDB?",
+      "urls": [
+        "/${VERSION}/training/why-cockroachdb.html"
+      ]
+    },
+    {
+      "title": "Architecture Overview",
+      "urls": [
+        "/${VERSION}/training/architecture-overview.html"
+      ]
+    }
+  ]
+},
+{
+  "title": "Ops Basics",
+  "items": [
+    {
+      "title": "Cluster Startup and Scaling",
+      "urls": [
+        "/${VERSION}/training/cluster-startup-and-scaling.html"
+      ]
+    },
+    {
+      "title": "Fault Tolerance and Automated Repair",
+      "urls": [
+        "/${VERSION}/training/fault-tolerance-and-automated-repair.html"
+      ]
+    },
+    {
+      "title": "Locality and Replication Zones",
+      "urls": [
+        "/${VERSION}/training/locality-and-replication-zones.html"
+      ]
+    },
+  ]
+},
+{
+  "title": "More Training?",
+  "urls": [
+    "https://www.surveymonkey.com/r/5TGPWRJ"
+  ]
+}
+] */

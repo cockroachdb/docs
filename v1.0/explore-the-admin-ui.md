@@ -1,12 +1,11 @@
 ---
 title: Explore the Admin UI
-toc: false
+toc: true
 feedback: false
 ---
 
 CockroachDB's Admin UI provides detail about your cluster's performance and health.
 
-<div id="toc"></div>
 
 ## Access the Admin UI
 

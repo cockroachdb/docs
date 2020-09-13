@@ -4,11 +4,11 @@ summary: CockroachDB implements efficient, fully-serializable distributed transa
 toc: false
 ---
 
-CockroachDB distributes [transactions](transactions.html) across your cluster, whether it’s a few servers in a single location or many servers across multiple datacenters. Unlike with sharded setups, you don’t need to know the precise location of data; you just talk to any node in your cluster and CockroachDB gets your transaction to the right place seamlessly. Distributed transactions proceed without downtime or additional latency while rebalancing is underway. You can even move tables – or entire databases – between data centers or cloud infrastructure providers while the cluster is under load.
+CockroachDB distributes [transactions](transactions.html) across your cluster, whether it’s a few servers in a single location or many servers across multiple datacenters. Unlike with sharded setups, you do not need to know the precise location of data; you just talk to any node in your cluster and CockroachDB gets your transaction to the right place seamlessly. Distributed transactions proceed without downtime or additional latency while rebalancing is underway. You can even move tables – or entire databases – between data centers or cloud infrastructure providers while the cluster is under load.
 
 -   Easily build consistent applications
 -   Optimistic concurrency with distributed deadlock detection
--   Serializable default isolation level
+-   Serializable isolation level
 
 <img src="{{ 'images/v2.1/2distributed-transactions.png' | relative_url }}" alt="Distributed transactions in CockroachDB" style="width: 400px" />
 

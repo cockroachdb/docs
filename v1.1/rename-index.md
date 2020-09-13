@@ -1,18 +1,17 @@
 ---
 title: RENAME INDEX
 summary: The RENAME INDEX statement changes the name of an index for a table.
-toc: false
+toc: true
 ---
 
 The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index for a table.
 
 {{site.data.alerts.callout_info}}It is not possible to rename an index referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/rename_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_index.html %}
 
 ## Required Privileges
 

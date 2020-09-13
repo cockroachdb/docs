@@ -1,9 +1,10 @@
 ---
 title: Deploy CockroachDB on Digital Ocean (Insecure)
 summary: Learn how to deploy CockroachDB on Digital Ocean.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
+
 ---
 
 <div class="filters filters-big clearfix">
@@ -15,15 +16,14 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 - If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
 
@@ -39,7 +39,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 2. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 3. Set up load balancing
 
@@ -53,7 +53,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 
 1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
 	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
-	- Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers don't direct traffic to nodes that are live but not ready to receive requests.
+	- Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see the <a href="deploy-cockroachdb-on-premises-insecure.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
@@ -75,27 +75,27 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 5. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Run a sample workload
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 11. Use the cluster
 
@@ -107,4 +107,4 @@ Now that your deployment is working, you can:
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

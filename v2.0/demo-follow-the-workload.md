@@ -1,12 +1,11 @@
 ---
 title: Follow-the-Workload
 summary: CockroachDB can dynamically optimize read latency for the location from which most of the workload is originating.
-toc: false
+toc: true
 ---
 
 "Follow-the-workload" refers to CockroachDB's ability to dynamically optimize read latency for the location from which most of the workload is originating. This page explains how "follow-the-workload" works and walks you through a simple demonstration using a local cluster.
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -165,13 +164,13 @@ The load generator created a `kv` table that maps to an underlying key-value ran
     ~~~
 
     ~~~
-    +----+-----------------+--------+---------------------+---------------------+
-    | id |     address     | build  |     updated_at      |     started_at      |
-    +----+-----------------+--------+---------------------+---------------------+
-    |  1 | localhost:26257 | v1.1.2 | 2017-11-18 05:22:34 | 2017-11-18 05:21:24 |
-    |  2 | localhost:26258 | v1.1.2 | 2017-11-18 05:22:36 | 2017-11-18 05:21:26 |
-    |  3 | localhost:26259 | v1.1.2 | 2017-11-18 05:22:36 | 2017-11-18 05:21:26 |
-    +----+-----------------+--------+---------------------+---------------------+
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    | id |     address     | build  |     updated_at      |     started_at      | is_live |
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    |  1 | localhost:26257 | v2.0.3 | 2018-07-05 07:58:17 | 2018-07-05 07:53:57 | true    |
+    |  2 | localhost:26258 | v2.0.3 | 2018-07-05 07:58:19 | 2018-07-05 07:53:58 | true    |
+    |  3 | localhost:26259 | v2.0.3 | 2018-07-05 07:58:19 | 2018-07-05 07:53:59 | true    |
+    +----+-----------------+--------+---------------------+---------------------+---------+
     (3 rows)
     ~~~
 
@@ -192,11 +191,11 @@ The load generator created a `kv` table that maps to an underlying key-value ran
     ~~~
 
     ~~~
-    +-----------+---------+----------+--------------+
-    | Start Key | End Key | Replicas | Lease Holder |
-    +-----------+---------+----------+--------------+
-    | NULL      | NULL    | {1,2,3}  |            3 |
-    +-----------+---------+----------+--------------+
+    +-----------+---------+----------+----------+--------------+
+    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    +-----------+---------+----------+----------+--------------+
+    | NULL      | NULL    |       29 | {1,2,3}  |            3 |
+    +-----------+---------+----------+----------+--------------+
     (1 row)
     ~~~
 
@@ -227,13 +226,13 @@ Verify that the range's lease moved to the node in the "US West" as follows.
     ~~~
 
     ~~~
-    +----+-----------------+--------+---------------------+---------------------+
-    | id |     address     | build  |     updated_at      |     started_at      |
-    +----+-----------------+--------+---------------------+---------------------+
-    |  1 | localhost:26257 | v1.1.2 | 2017-11-18 05:06:21 | 2017-11-18 04:56:41 |
-    |  2 | localhost:26258 | v1.1.2 | 2017-11-18 05:06:21 | 2017-11-18 04:56:41 |
-    |  3 | localhost:26259 | v1.1.2 | 2017-11-18 05:06:22 | 2017-11-18 04:56:42 |
-    +----+-----------------+--------+---------------------+---------------------+
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    | id |     address     | build  |     updated_at      |     started_at      | is_live |
+    +----+-----------------+--------+---------------------+---------------------+---------+
+    |  1 | localhost:26257 | v2.0.3 | 2018-07-05 08:11:17 | 2018-07-05 07:53:57 | true    |
+    |  2 | localhost:26258 | v2.0.3 | 2018-07-05 08:11:19 | 2018-07-05 07:53:58 | true    |
+    |  3 | localhost:26259 | v2.0.3 | 2018-07-05 08:11:19 | 2018-07-05 07:53:59 | true    |
+    +----+-----------------+--------+---------------------+---------------------+---------+
     (3 rows)
     ~~~
 
@@ -254,11 +253,11 @@ Verify that the range's lease moved to the node in the "US West" as follows.
     ~~~
 
     ~~~
-    +-----------+---------+----------+--------------+
-    | Start Key | End Key | Replicas | Lease Holder |
-    +-----------+---------+----------+--------------+
-    | NULL      | NULL    | {1,2,3}  |            1 |
-    +-----------+---------+----------+--------------+
+    +-----------+---------+----------+----------+--------------+
+    | Start Key | End Key | Range ID | Replicas | Lease Holder |
+    +-----------+---------+----------+----------+--------------+
+    | NULL      | NULL    |       29 | {1,2,3}  |            1 |
+    +-----------+---------+----------+----------+--------------+
     (1 row)
     ~~~
 
@@ -268,9 +267,9 @@ Verify that the range's lease moved to the node in the "US West" as follows.
 
 Once you're done with your cluster, press **CTRL-C** in each node's terminal.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -279,7 +278,7 @@ $ rm -rf follow1 follow2 follow3
 
 ### Step 10. Stop simulating network latency
 
-Once you're done with this tutorial, you won't want a 100 millisecond delay for all requests on your local workstation, so stop the `comcast` tool:
+Once you're done with this tutorial, you will not want a 100 millisecond delay for all requests on your local workstation, so stop the `comcast` tool:
 
 {% include copy-clipboard.html %}
 ~~~ shell

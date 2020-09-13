@@ -1,12 +1,11 @@
 ---
 title: DATE
 summary: The DATE data type stores a year, month, and day.
-toc: false
+toc: true
 ---
 
 The `DATE` [data type](data-types.html) stores a year, month, and day.
 
-<div id="toc"></div>
 
 ## Syntax
 
@@ -67,9 +66,9 @@ A `DATE` column supports values up to 8 bytes in width, but the total storage si
 
 Type | Details
 -----|--------
-`INT` | Converts to number of days since the Unix epoch (Jan. 1, 1970)
-`DECIMAL` | Converts to number of days since the Unix epoch (Jan. 1, 1970)
-`FLOAT` | Converts to number of days since the Unix epoch (Jan. 1, 1970)
+`INT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`FLOAT` | Converts to number of days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `TIMESTAMP` | Sets the time to 00:00 (midnight) in the resulting timestamp
 `STRING` | ––
 

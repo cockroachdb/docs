@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Microsoft Azure (Insecure)
 summary: Learn how to deploy CockroachDB on Microsoft Azure.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
 ---
@@ -15,15 +15,14 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 ## Step 1. Configure your network
 
@@ -41,32 +40,32 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
     - **Admin UI support**:
 
-        | Field | Recommended Value |
-        |-------|-------------------|
-        | Name | **cockroachadmin** |
-        | Source | **IP Addresses** |
-        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
-        | Source port ranges | * |
-        | Destination | **Any** |
-        | Destination port range | **8080** |
-        | Protocol | **TCP** |
-        | Action | **Allow** |
-        | Priority | Any value > 1000 |
+         Field | Recommended Value 
+        -------|-------------------
+         Name | **cockroachadmin** 
+         Source | **IP Addresses** 
+         Source IP addresses/CIDR ranges | Your local network’s IP ranges 
+         Source port ranges | * 
+         Destination | **Any** 
+         Destination port range | **8080** 
+         Protocol | **TCP** 
+         Action | **Allow** 
+         Priority | Any value > 1000 
     - **Application support**:
 
         {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you will not need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
 
-        | Field | Recommended Value |
-        |-------|-------------------|
-        | Name | **cockroachapp** |
-        | Source | **IP Addresses** |
-        | Source IP addresses/CIDR ranges | Your local network’s IP ranges |
-        | Source port ranges | * |
-        | Destination | **Any** |
-        | Destination port range | **26257** |
-        | Protocol | **TCP** |
-        | Action | **Allow** |
-        | Priority | Any value > 1000 |
+         Field | Recommended Value 
+        -------|-------------------
+         Name | **cockroachapp** 
+         Source | **IP Addresses**
+         Source IP addresses/CIDR ranges | Your local network’s IP ranges 
+         Source port ranges | * 
+         Destination | **Any** 
+         Destination port range | **26257** 
+         Protocol | **TCP** 
+         Action | **Allow** 
+         Priority | Any value > 1000 
 
 
 ## Step 2. Create VMs
@@ -87,7 +86,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 3. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -109,27 +108,27 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 ## Step 5. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Run a sample workload
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 11. Use the cluster
 
@@ -141,4 +140,4 @@ Now that your deployment is working, you can:
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

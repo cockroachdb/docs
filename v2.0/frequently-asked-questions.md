@@ -2,10 +2,8 @@
 title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
-toc: false
+toc: true
 ---
-
-<div id="toc"></div>
 
 ## What is CockroachDB?
 
@@ -15,21 +13,15 @@ CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive
 
 ## When is CockroachDB a good choice?
 
-CockroachDB is well suited for applications that require reliable, available, and correct data regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
+CockroachDB is well suited for applications that require reliable, available, and correct data, and millisecond response times, regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
 
 - Distributed or replicated OLTP
 - Multi-datacenter deployments
 - Multi-region deployments
 - Cloud migrations
-- Cloud-native infrastructure initiatives
+- Infrastructure initiatives built for the cloud
 
-## When is CockroachDB not a good choice?
-
-CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
-
-Also, CockroachDB is not yet suitable for:
-
-- Heavy analytics / OLAP
+CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms or less, and supports a variety of [SQL and operational tuning practices](performance-tuning.html) for optimizing query performance. However, CockroachDB is not yet suitable for heavy analytics / OLAP.
 
 ## How easy is it to install CockroachDB?
 
@@ -165,11 +157,13 @@ Not yet, but this is on our long-term roadmap.
 
 ## Can I use CockroachDB as a key-value store?
 
-{% include faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ## Have questions that weren’t answered?
 
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
-- [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
-- [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
+
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

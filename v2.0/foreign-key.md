@@ -1,7 +1,7 @@
 ---
 title: Foreign Key Constraint
 summary: The Foreign Key constraint specifies a column can contain only values exactly matching existing values from the column it references.
-toc: false
+toc: true
 ---
 
 The Foreign Key [constraint](constraints.html) specifies that all of a column's values must exactly match existing values from the column it references, enforcing referential integrity.
@@ -13,7 +13,6 @@ For example, if you create a foreign key on `orders.customer` that references `c
 
 {{site.data.alerts.callout_success}}If you plan to use Foreign Keys in your schema, consider using <a href="interleave-in-parent.html">interleaved tables</a>, which can dramatically improve query performance.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Details
 
@@ -30,7 +29,7 @@ For example, if you create a foreign key on `orders.customer` that references `c
         - Rely on indexes created by the [Primary Key](primary-key.html) or [Unique](unique.html) constraints.
         - Have CockroachDB automatically create an index of the foreign key columns for you. However, it's important to note that if you later remove the Foreign Key constraint, this automatically created index _is not_ removed.
         - Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
+    - To meet this requirement when adding the Foreign Key constraint to an existing table, if the columns you want to constrain are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the Foreign Key constraint to the columns.
 
 **Referenced Columns**
 
@@ -79,7 +78,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Column Level
 
-<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_column_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/foreign_key_column_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -106,7 +105,7 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 ### Table Level
 
-<section>{% include sql/{{ page.version.version }}/diagrams/foreign_key_table_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/foreign_key_table_level.html %}</section>
 
 | Parameter | Description |
 |-----------|-------------|

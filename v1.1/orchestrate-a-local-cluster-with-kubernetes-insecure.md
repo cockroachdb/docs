@@ -1,7 +1,7 @@
 ---
 title: Automated Operations
 summary: Orchestrate the deployment and management of an local cluster using Kubernetes.
-toc: false
+toc: true
 ---
 
 Other tutorials in this section feature the ways that CockroachDB automates operations for you. On top of this built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
@@ -10,7 +10,6 @@ This page walks you through a simple demonstration, using the open-source Kubern
 
 {{site.data.alerts.callout_info}}To orchestrate a physically distributed cluster in production, see <a href="orchestration.html">Orchestrated Deployment</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -19,7 +18,7 @@ Before getting started, it's helpful to review some Kubernetes-specific terminol
 Feature | Description
 --------|------------
 [minikube](http://kubernetes.io/docs/getting-started-guides/minikube/) | This is the tool you'll use to run a Kubernetes cluster inside a VM on your local workstation.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, all pods will run on your local workstation, each containing one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one or more Docker containers. In this tutorial, all pods will run on your local workstation, each containing one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of local storage mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>When using `minikube`, persistent volumes are external temporary directories that endure until they are manually deleted or until the entire Kubernetes cluster is deleted.
 [persistent volume claim](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) | When pods are created (one per CockroachDB node), each pod will request a persistent volume claim to “claim” durable storage for its node.
@@ -41,17 +40,17 @@ Feature | Description
 
 When starting a cluster manually, you run the <code>cockroach start</code> command multiple times, once per node. In this step, you use a Kubernetes StatefulSet configuration instead, reducing the effort of starting 3 nodes to a single command.
 
-{% include orchestration/start-cluster.md %}
+{% include {{ page.version.version }}/orchestration/start-cluster.md %}
 
 ## Step 3. Initialize the cluster
 
-{% include orchestration/initialize-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/initialize-cluster-insecure.md %}
 
 ## Step 4. Test the cluster
 
 To test the cluster, launch a temporary pod for using the built-in SQL client, and then use a deployment configuration file to run a high-traffic load generator against the cluster from another pod.
 
-{% include orchestration/test-cluster-insecure.md %}
+{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
 4. Use our [`example-app.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) file to launch a pod and run a load generator against the cluster from the pod:
 
@@ -104,7 +103,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 ## Step 6. Simulate node failure
 
-{% include orchestration/kubernetes-simulate-failure.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 7. Scale the cluster
 

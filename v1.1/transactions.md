@@ -1,14 +1,13 @@
 ---
 title: Transactions
 summary: CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction.
-toc: false
+toc: true
 ---
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions.
 
 {{site.data.alerts.callout_info}}For a detailed discussion of CockroachDB transaction semantics, see <a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/">How CockroachDB Does Distributed Atomic Transactions</a> and <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>. Note that the explanation of the transaction model described in this blog post is slightly out of date. See the <a href="#transaction-retries">Transaction Retries</a> section for more details.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## SQL Statements
 
@@ -53,7 +52,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retryable Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
+**Retryable Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. See [client-side transaction retries](#client-side-transaction-retries) for more details.
 **Ambiguous Errors** | Errors with the code `40003` that are returned in response to `RELEASE SAVEPOINT` (or `COMMIT` when not using `SAVEPOINT`), which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity.<br><br>For example, you might want to read values from the database to see if the transaction successfully wrote values before attempting to write the values again or, alternatively, you might write the data again without seeing if the first write attempt succeeded.<br><br>Ambiguous errors are the result of inter-node communication failures which prevent a caller from knowing with certainty whether a transaction commit succeeded. Most applications will choose to simply retry the transaction.
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the Unique constraint generates an `23505` error. After encountering these errors, you can either issue a `COMMIT` or `ROLLBACK` to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 

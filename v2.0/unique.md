@@ -1,12 +1,11 @@
 ---
 title: Unique Constraint
 summary: The Unique constraint specifies that each non-NULL value in the constrained column must be unique.
-toc: false
+toc: true
 ---
 
 The Unique [constraint](constraints.html) specifies that each non-*NULL* value in the constrained column must be unique.
 
-<div id="toc"></div>
 
 ## Details
 
@@ -24,7 +23,9 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ### Column Level
 
-{% include sql/{{ page.version.version }}/diagrams/unique_column_level.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/unique_column_level.html %}
+</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -47,7 +48,9 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ### Table Level
 
-{% include sql/{{ page.version.version }}/diagrams/unique_table_level.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/unique_table_level.html %}
+</div>
 
 | Parameter | Description |
 |-----------|-------------|

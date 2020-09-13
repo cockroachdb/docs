@@ -1,18 +1,17 @@
 ---
 title: BEGIN
 summary: Initiate a SQL transaction with the BEGIN statement in CockroachDB.
-toc: false
+toc: true
 ---
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
 
 {{site.data.alerts.callout_danger}}When using transactions, your application should include logic to <a href="transactions.html#transaction-retries">retry transactions</a> that are aborted to break a dependency cycle between concurrent transactions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/begin_transaction.html %}
+{% include {{ page.version.version }}/sql/diagrams/begin_transaction.html %}
 
 ## Required Privileges
 
@@ -36,8 +35,8 @@ For more information on isolation level aliases, see [Comparison to ANSI SQL Iso
 
 | Parameter | Description |
 |-----------|-------------|
-| `ISOLATION LEVEL` | If you don't want the transaction to run as `SERIALIZABLE` (CockroachDB's default, which provides the highest level of isolation), you can specify `SNAPSHOT`, which can provide better performance in high-contention scenarios.<br/><br/>For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` |
-| `PRIORITY` | If you don't want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL` |
+| `ISOLATION LEVEL` | If you do not want the transaction to run as `SERIALIZABLE` (CockroachDB's default, which provides the highest level of isolation), you can specify `SNAPSHOT`, which can provide better performance in high-contention scenarios.<br/><br/>For more information, see [Transactions: Isolation Levels](transactions.html#isolation-levels).<br/><br/>**Default**: `SERIALIZABLE` |
+| `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL` |
 
 ## Examples
 

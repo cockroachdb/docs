@@ -1,11 +1,10 @@
 ---
 title: INET
 summary: The INET data type stores an IPv4 or IPv6 address.
-toc: false
+toc: true
 ---
 <span class="version-tag">New in v2.0:</span> The `INET` [data type](data-types.html) stores an IPv4 or IPv6 address.
 
-<div id="toc"></div>
 
 ## Syntax
 

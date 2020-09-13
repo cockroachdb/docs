@@ -1,7 +1,7 @@
 ---
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
-toc: false
+toc: true
 asciicast: true
 ---
 
@@ -16,7 +16,6 @@ Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple t
 Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 
@@ -81,26 +80,28 @@ You can use either [`cockroach cert`](create-security-certificates.html) command
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=localhost \
+--listen-addr=localhost
 ~~~
 
 ~~~
-CockroachDB node starting at {{page.release_info.start_time}}
-build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
-admin:      https://ROACHs-MBP:8080
-sql:        postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
-logs:       cockroach-data/logs
-store[0]:   path=cockroach-data
-status:     restarted pre-existing node
-clusterID:  {dab8130a-d20b-4753-85ba-14d8956a294c}
-nodeID:     1
+CockroachDB node starting at 2018-09-13 01:25:57.878119479 +0000 UTC (took 0.3s)
+build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
+webui:               https://localhost:8080
+sql:                 postgresql://root@ROACHs-MBP:26257?sslcert=%2FUsers%2F...
+client flags:        cockroach <client cmd> --host=localhost:26257 --certs-dir=certs
+logs:                cockroach/cockroach-data/logs
+temp dir:            cockroach-data/cockroach-temp998550693
+external I/O path:   cockroach-data/extern
+store[0]:            path=cockroach-data
+status:              initialized new cluster
+clusterID:           2711b3fa-43b3-4353-9a23-20c9fb3372aa
+nodeID:              1
 ~~~
 
 This command starts a node in secure mode, accepting most [`cockroach start`](start-a-node.html) defaults.
 
 - The `--certs-dir` directory points to the directory holding certificates and keys.
-- Since this is a purely local cluster, `--host=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
-- The Admin UI defaults to listening on all interfaces. The `--http-host` flag is therefore used to restrict Admin UI access to the specified interface, in this case, `localhost`.
+- Since this is a purely local cluster, `--listen-addr=localhost` tells the node to listens only on `localhost`, with default ports used for internal and client traffic (`26257`) and for HTTP requests from the Admin UI (`8080`).
 - Node data is stored in the `cockroach-data` directory.
 - The [standard output](start-a-node.html#standard-output) gives you helpful details such as the CockroachDB version, the URL for the Admin UI, and the SQL URL for clients.
 
@@ -115,9 +116,8 @@ In a new terminal, add the second node:
 $ cockroach start \
 --certs-dir=certs \
 --store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257
 ~~~
 
@@ -128,13 +128,12 @@ In a new terminal, add the third node:
 $ cockroach start \
 --certs-dir=certs \
 --store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257
 ~~~
 
-The main difference in these commands is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--port`, and `--http-port` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.
+The main difference in these commands is that you use the `--join` flag to connect the new nodes to the cluster, specifying the address and port of the first node, in this case `localhost:26257`. Since you're running all nodes on the same machine, you also set the `--store`, `--listen-addr`, and `--http-addr` flags to locations and ports not used by other nodes, but in a real deployment, with each node on a different machine, the defaults would suffice.
 
 ## Step 4. Test the cluster
 
@@ -145,7 +144,8 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=certs
+--certs-dir=certs \
+--host=localhost:26257
 ~~~
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -171,11 +171,9 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
@@ -192,7 +190,7 @@ Then connect the SQL shell to node 2, this time specifying the node's non-defaul
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
---port=26258
+--host=localhost:26258
 ~~~
 
 {{site.data.alerts.callout_info}}In a real deployment, all nodes would likely use the default port <code>26257</code>, and so you wouldn't need to set the <code>--port</code> flag.{{site.data.alerts.end}}
@@ -205,15 +203,20 @@ Now run the same `SELECT` query:
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
 As you can see, node 1 and node 2 behaved identically as SQL gateways.
+
+Finally, [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need in the next step to access the [Admin UI](admin-ui-overview.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+~~~
 
 Exit the SQL shell on node 2:
 
@@ -224,9 +227,9 @@ Exit the SQL shell on node 2:
 
 ## Step 5. Monitor the cluster
 
-Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to `http://localhost:8080`, or to the address in the `admin` field in the standard output of any node on startup. Then click **Metrics** on the left-hand navigation bar.
+Access the [Admin UI](admin-ui-overview.html) for your cluster by pointing a browser to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>, or to the address in the `admin` field in the standard output of any node on startup. Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
 
-Note that your browser will consider the CockroachDB-created certificate invalid; you’ll need to click through a warning message to get to the UI.
+Log in with the username and password created in the [Test the cluster](#step-4-test-the-cluster) step. Then click **Metrics** on the left-hand navigation bar.
 
 <img src="{{ 'images/v2.1/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -250,7 +253,7 @@ At this point, with 2 nodes still online, the cluster remains operational becaus
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
---port=26258
+--host=localhost:26258
 ~~~
 
 {% include copy-clipboard.html %}
@@ -259,11 +262,9 @@ $ cockroach sql \
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  1 |  1000.5 |
-+----+---------+
+   1 | 1000.50
 (1 row)
 ~~~
 
@@ -276,7 +277,7 @@ Exit the SQL shell:
 
 Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
@@ -295,7 +296,7 @@ Restart the first node from the parent directory of `cockroach-data`:
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
---host=localhost
+--listen-addr=localhost
 ~~~
 
 {{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
@@ -308,9 +309,8 @@ In a new terminal, restart the second node from the parent directory of `node2`:
 $ cockroach start \
 --certs-dir=certs \
 --store=node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257
 ~~~
 
@@ -321,9 +321,8 @@ In a new terminal, restart the third node from the parent directory of `node3`:
 $ cockroach start \
 --certs-dir=certs \
 --store=node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257
 ~~~
 

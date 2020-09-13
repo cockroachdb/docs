@@ -1,7 +1,7 @@
 ---
 title: Replication Layer
-summary:
-toc: false
+summary: The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between copies.
+toc: true
 ---
 
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
@@ -10,13 +10,12 @@ The replication layer of CockroachDB's architecture copies data between nodes an
 If you haven't already, we recommend reading the [Architecture Overview](overview.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 
 High availability requires that your database can tolerate nodes going offline without interrupting service to your application. This means replicating data between nodes to ensure the data remains accessible.
 
-Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB users a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as multi-active availability) requires 3 nodes.
+Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB uses a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as multi-active availability) requires 3 nodes.
 
 The number of failures that can be tolerated is equal to *(Replication factor - 1)/2*. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on. You can control the replication factor at the cluster, database, and table level using [replication zones](../configure-replication-zones.html).
 
@@ -55,7 +54,7 @@ After loading the snapshot, the node gets up to date by replaying all actions fr
 
 ### Leases
 
-A single node in the Raft group acts as the Leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).
+A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).
 
 When serving reads, leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
 
@@ -79,19 +78,61 @@ This mechanism lets us avoid tracking leases for every range, which eliminates a
 
 Your table's meta and system ranges (detailed in the distribution layer) are treated as normal key-value data, and therefore have leases, as well. However, instead of using epochs, they have an expiration-based lease. These leases simply expire at a particular timestamp (typically a few seconds)––however, as long as the node continues proposing Raft commands, it continues to extend the expiration of the lease. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
+#### Leaseholder rebalancing
+
+Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance if the replica closest to the primary geographic source of traffic holds the lease. However, as traffic to your cluster shifts throughout the course of the day, you might want to dynamically shift which nodes hold leases.
+
+{{site.data.alerts.callout_info}}
+
+This feature is also called [Follow-the-Workload](../demo-follow-the-workload.html) in our documentation.
+
+{{site.data.alerts.end}}
+
+Periodically (every 10 minutes by default in large clusters, but more frequently in small clusters), each leaseholder considers whether it should transfer the lease to another replica by considering the following inputs:
+
+- Number of requests from each locality
+- Number of leases on each node
+- Latency between localities
+
+##### Intra-locality
+
+If all the replicas are in the same locality, the decision is made entirely on the basis of the number of leases on each node that contains a replica, trying to achieve a roughly equitable distribution of leases across all of them. This means the distribution isn't perfectly equal; it intentionally tolerates small deviations between nodes to prevent thrashing (i.e., excessive adjustments trying to reach an equilibrium).
+
+##### Inter-locality
+
+If replicas are in different localities, CockroachDB attempts to calculate which replica would make the best leaseholder, i.e., provide the lowest latency.
+
+To enable dynamic leaseholder rebalancing, a range's current leaseholder tracks how many requests it receives from each locality as an exponentially weighted moving average. This calculation results in the locality that has recently requested the range most often being assigned the greatest weight. If another locality then begins requesting the range very frequently, this calculation would shift to assign the second region the greatest weight.
+
+When checking for leaseholder rebalancing opportunities, the leaseholder correlates each requesting locality's weight (i.e., the proportion of recent requests) to the locality of each replica by checking how similar the localities are. For example, if the leaseholder received requests from gateway nodes in locality `country=us,region=central`, CockroachDB would assign the following weights to replicas in the following localities:
+
+Replica locality | Replica rebalancing weight
+-----------------|-------------------
+`country=us,region=central` | 100% because it is an exact match
+`country=us,region=east` | 50% because only the first locality matches
+`country=aus,region=central` | 0% because the first locality does not match
+
+The leaseholder then evaluates its own weight and latency versus the other replicas to determine an adjustment factor. The greater the disparity between weights and the larger the latency between localities, the more CockroachDB favors the node from the locality with the larger weight.
+
+When checking for leaseholder rebalancing opportunities, the current leaseholder evaluates each replica's rebalancing weight and adjustment factor for the localities with the greatest weights. If moving the leaseholder is both beneficial and viable, the current leaseholder will transfer the lease to the best replica.
+
+##### Controlling leaseholder rebalancing
+
+You can control leaseholder rebalancing through the `kv.allocator.load_based_lease_rebalancing.enabled` and `kv.allocator.lease_rebalancing_aggressiveness` [cluster settings](../cluster-settings.html).
+
 ### Membership changes: rebalance/repair
 
 Whenever there are changes to a cluster's number of nodes, the members of Raft groups change and, to ensure optimal survivability and performance, replicas need to be rebalanced. What that looks like varies depending on whether the membership change is nodes being added or going offline.
 
-**Nodes added**: The new node communicates information about itself to other nodes, indicating that it has space available. The cluster then rebalances some replicas onto the new node.
+- **Nodes added**: The new node communicates information about itself to other nodes, indicating that it has space available. The cluster then rebalances some replicas onto the new node.
 
-**Nodes going offline**: If a member of a Raft group ceases to respond, after 5 minutes, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
+- **Nodes going offline**: If a member of a Raft group ceases to respond, after 5 minutes, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
 
-#### Rebalancing replicas
+Rebalancing is achieved by using a snapshot of a replica from the leaseholder, and then sending the data to another node over [gRPC](distribution-layer.html#grpc). After the transfer has been completed, the node with the new replica joins that range's Raft group; it then detects that its latest timestamp is behind the most recent entries in the Raft log and it replays all of the actions in the Raft log on itself.
 
-When CockroachDB detects a membership change, ultimately, replicas are moved between nodes.
+#### Load-based replica rebalancing
 
-This is achieved by using a snapshot of a replica from the Leaseholder, and then sending the data to another node over [gRPC](distribution-layer.html#grpc). After the transfer has been completed, the node with the new replica joins that range's Raft group; it then detects that its latest timestamp is behind the most recent entries in the Raft log and it replays all of the actions in the Raft log on itself.
+<span class="version-tag">New in v2.1:</span> In addition to the rebalancing that occurs when nodes join or leave a cluster, replicas are also rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings](../cluster-settings.html).  Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
 
 ## Interactions with other layers
 

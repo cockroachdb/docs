@@ -1,7 +1,7 @@
 ---
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
-toc: false
+toc: true
 ---
 
 {{site.data.alerts.callout_danger}}
@@ -12,7 +12,6 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create ful
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
-<div id="toc"></div>
 
 ## Functional details
 
@@ -30,7 +29,7 @@ Dependent objects must be backed up at the same time as the objects they depend 
 
 Object | Depends On
 -------|-----------
-Table with [`FOREIGN KEY`](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
+Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 [Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
@@ -65,7 +64,7 @@ Note the following restrictions:
 
 ### Backups with revision history
 
-{% include beta-warning.md %}
+{% include {{ page.version.version }}/misc/beta-warning.md %}
 
 You can create full or incremental backups with revision history:
 
@@ -96,13 +95,15 @@ Once the backup is complete, your client will receive a `BACKUP` response.
 
 ## Viewing and controlling backups jobs
 
-Whenever you initiate a backup, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates a backup, it registers the backup as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the backup has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/backup.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/backup.html %}
+</div>
 
 {{site.data.alerts.callout_info}}
 The `BACKUP` statement cannot be used within a [transaction](transactions.html).
@@ -110,7 +111,7 @@ The `BACKUP` statement cannot be used within a [transaction](transactions.html).
 
 ## Required privileges
 
-Only the `root` user can run `BACKUP`.
+Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
@@ -119,16 +120,16 @@ Only the `root` user can run `BACKUP`.
 | `table_pattern` | The table or [view](views.html) you want to back up. |
 | `name` | The name of the database you want to back up (i.e., create backups of all tables and views in the database).|
 | `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). |
-| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-format)). |
+| `AS OF SYSTEM TIME timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)). |
 | `WITH revision_history` | Create a backup with full [revision history](backup.html#backups-with-revision-history) that records every change made to the cluster within the garbage collection period leading up to and including the given timestamp. |
 | `INCREMENTAL FROM full_backup_location` | Create an incremental backup using the full backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** It is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) after the full backup. In this case, you must create a new [full backup](#full-backups). |
-| `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-format). |
+| `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables). |
 
 ### Backup file URLs
 
-The path to each backup must be unique. The URL for your backup's destination/locations must use the following format:
+We will use the URL provided to construct a secure API call to the service you specify. The path to each backup must be unique, and the URL for your backup's destination/locations must use the following format:
 
-{% include external-urls-v2.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ## Examples
 

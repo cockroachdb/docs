@@ -1,0 +1,86 @@
+site_title: CockroachDB Docs
+url: "https://www.cockroachlabs.com"
+
+plugins:
+- jekyll-sitemap
+
+markdown: Redcarpet
+
+release_info:
+  v1.0:
+    name: v1.0.7
+    version: v1.0.7
+    docker_image: cockroachdb/cockroach
+    build_time: 2017/02/13 15:13:51 (go1.8.3)
+    start_time: 2017-02-13 13:33:22.046027038 -0400 EDT
+  v1.1:
+    name: v1.1.9
+    version: v1.1.9
+    docker_image: cockroachdb/cockroach
+    build_time: 2018/10/01 14:48:26 (go1.8.3)
+    start_time: 2018-10-01 15:10:52.34274101 +0000 UTC
+  v2.0:
+    name: v2.0.7
+    version: v2.0.7
+    docker_image: cockroachdb/cockroach
+    build_time: 2018/12/10 14:48:26 (go1.10)
+    start_time: 2018-12-10 15:10:52.34274101 +0000 UTC
+  v2.1:
+    name: v2.1.11
+    version: v2.1.11
+    docker_image: cockroachdb/cockroach
+    build_time: 2019/01/29 14:48:26 (go1.10.3)
+    start_time: 2019-01-29 15:10:52.34274101 +0000 UTC
+  v19.1:
+    name: v19.1.11
+    version: v19.1.11
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/07/07 14:48:26 (go1.11.6)
+    start_time: 2020-07-07 15:10:52.34274101 +0000 UTC
+  v19.2:
+    name: v19.2.10
+    version: v19.2.10
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/08/24 11:00:26 (go1.12.12)
+    start_time: 2020-08-24 11:01:26.34274101 +0000 UTC
+  v20.1:
+    name: v20.1.5
+    version: v20.1.5
+    docker_image: cockroachdb/cockroach
+    build_time: 2020/08/31 11:00:26 (go1.13.4)
+    start_time: 2020-08-31 11:01:26.34274101 +0000 UTC
+  v20.2:
+    name: v20.2.0
+    version: v20.2.0-alpha.3
+    docker_image: cockroachdb/cockroach-unstable
+    build_time: 2020/08/25 11:00:26 (go1.13.4)
+    start_time: 2020-08-25 11:01:26.34274101 +0000 UTC
+
+
+include: ["_redirects"]
+exclude:
+- "ci"
+- "scripts"
+- "vendor"
+- "jekyll-algolia-dev"
+- "archived"
+
+
+keep_files: [_internal]
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+
+algolia:
+  application_id: 7RXZLDVR5F
+  search_api_key: 372a10456f4ed7042c531ff3a658771b
+  index_name: cockroachcloud_docs
+  files_to_exclude:
+    - index.html
+    - index.md
+    - search.html

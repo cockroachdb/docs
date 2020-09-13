@@ -1,12 +1,11 @@
 ---
 title: SHOW COLUMNS
 summary: The SHOW COLUMNS statement shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
-toc: false
+toc: true
 ---
 
 The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,9 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_columns.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/show_columns.html %}
+</div>
 
 ## Parameters
 

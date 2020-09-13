@@ -1,17 +1,16 @@
 ---
 title: Create a File Server for Imports and Backups
 summary: Learn how to create a simple file server for use with CockroachDB IMPORT and BACKUP
-toc: false
+toc: true
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB enterprise backups](backup.html), but don't have access to (or simply can't use) cloud storage providers, you can easily create your own file server. You can then use this file server by leveraging support for our HTTP Export Storage API.
+If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB enterprise backups](backup.html), but do not have access to (or simply cannot use) cloud storage providers, you can easily create your own file server. You can then use this file server by leveraging support for our HTTP Export Storage API.
 
 This is especially useful for:
 
-- Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have native support
+- Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have built-in support
 - Using on-premises storage
 
-<div id="toc"></div>
 
 ## HTTP Export Storage API
 
@@ -34,7 +33,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 2. Run `caddy` with an [`upload` directive](https://caddyserver.com/docs/http.upload), either in the command line or via [`Caddyfile`](https://caddyserver.com/docs/caddyfile).
     - Command line example (with no TLS):
-    		
+
         ~~~ shell
         caddy -root /mnt/cockroach-exports "upload / {" 'to "/mnt/cockroach-exports"' 'yes_without_tls' "}"
         ~~~
@@ -50,7 +49,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 ### Using nginx as a File Server
 
-1. Install `nginx` with the `webdav` module (often included in `-full` or similarly named packages in various distributions). 
+1. Install `nginx` with the `webdav` module (often included in `-full` or similarly named packages in various distributions).
 
 2. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
 

@@ -1,18 +1,16 @@
 ---
 title: Enable the Node Map
 summary: Learn how to enable the node map in the Admin UI.
-toc: false
+toc: true
 ---
 
 The **Node Map** visualizes the geographical configuration of a multi-regional cluster by plotting the node localities on a world map. The **Node Map** also provides real-time cluster metrics, with the ability to drill down to individual nodes to monitor and troubleshoot the cluster health and performance.
 
 This page walks you through the process of setting up and enabling the **Node Map**.
 
-{{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/pricing/request-a-license/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/get-cockroachdb/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
 
 <img src="{{ 'images/v2.1/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
-
-<div id="toc"></div>
 
 ## Set up and enable the Node Map
 
@@ -29,27 +27,7 @@ Consider a scenario of a four-node geo-distributed cluster with the following co
 |  Node3 | us-west-1 | us-west-1a |
 |  Node4 | eu-west-1 | eu-west-1a |
 
-### Step 1. Ensure the CockroachDB Version is 2.0 or higher
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach version
-~~~
-
-~~~
-Build Tag:   {{page.release_info.version}}
-Build Time:  {{page.release_info.build_time}}
-Distribution: CCL
-Platform:     darwin amd64 (x86_64-apple-darwin13)
-Go Version:   go1.10
-C Compiler:   4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)
-Build SHA-1:  367ad4f673b33694df06caaa2d7fc63afaaf3053
-Build Type:   release
-~~~
-
-If any node is running an earlier version, [upgrade it to CockroachDB v2.0](upgrade-cockroach-version.html).
-
-### Step 2. Start the nodes with the correct `--locality` flags
+### Step 1. Start the nodes with the correct `--locality` flags
 
 To start a new cluster with the correct `--locality` flags:
 
@@ -60,10 +38,10 @@ Start Node 1:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1a  \
---host=<node1 address> \
+--advertise-addr=<node1 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 2:
@@ -73,10 +51,10 @@ Start Node 2:
 $ cockroach start \
 --insecure \
 --locality=region=us-east-1,datacenter=us-east-1b \
---host=<node2 address> \
+--advertise-addr=<node2 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 3:
@@ -86,10 +64,10 @@ Start Node 3:
 $ cockroach start \
 --insecure \
 --locality=region=us-west-1,datacenter=us-west-1a \
---host=<node3 address> \
+--advertise-addr=<node3 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Start Node 4:
@@ -99,30 +77,30 @@ Start Node 4:
 $ cockroach start \
 --insecure \
 --locality=region=eu-west-1,datacenter=eu-west-1a \
---host=<node4 address> \
+--advertise-addr=<node4 address> \
 --cache=.25 \
 --max-sql-memory=.25 \
---join=<node1 address>:26257,<node2 address>:26257,<node3 address>:26257,<node4 address>:26257
+--join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
 ~~~
 
 Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach init --insecure
+$ cockroach init --insecure --host=<address of any node>
 ~~~
 
 [Access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui). The following page is displayed:
 
 <img src="{{ 'images/v2.1/admin-ui-node-map-before-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 3. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
+### Step 2. [Set the enterprise license](enterprise-licensing.html) and refresh the Admin UI
 
 The following page should be displayed:
 
 <img src="{{ 'images/v2.1/admin-ui-node-map-after-license.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 4. Set the latitudes and longitudes for the localities
+### Step 3. Set the latitudes and longitudes for the localities
 
 Launch the built-in SQL client:
 
@@ -145,13 +123,13 @@ Insert the approximate latitudes and longitudes of each region into the `system.
 
 For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates-for-reference).
 
-### Step 5. View the Node Map
+### Step 4. View the Node Map
 
 [Open the **Overview page**](admin-ui-access-and-navigate.html) and select **Node Map** from the **View** drop-down menu. The **Node Map** will be displayed:
 
 <img src="{{ 'images/v2.1/admin-ui-node-map-complete.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-### Step 6. Navigate the Node Map
+### Step 5. Navigate the Node Map
 
 Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
 
@@ -182,28 +160,28 @@ The **Node Map** is displayed only for the locality levels that have latitude/lo
 - If you assign the latitude/longitude coordinates at the region level, the **Node Map** shows the regions on the world map. However, when you drill down to the datacenter and further to the individual nodes, the world map disappears and the datacenters/nodes are plotted in a circular layout.  
 - If you assign the latitude/longitude coordinates at the datacenter level, the **Node Map** shows the regions with single datacenters at the same location assigned to the datacenter, while regions with multiple datacenters are shown at the center of the datacenter coordinates in the region. When you drill down to the datacenter levels, the **Node Map** shows the datacenter at their assigned coordinates. Further drilling down to individual nodes shows the nodes in a circular layout.
 
-[Assign latitude/longitude coordinates](#step-4-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
+[Assign latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities) at the locality level that you want to view on the **Node Map**.
 
 ## Known limitations
 
 ### Unable to assign latitude/longitude coordinates to localities
 
-{% include known_limitations/node-map.md %}
+{% include {{ page.version.version }}/known-limitations/node-map.md %}
 
 ### **Capacity Used** value displayed is more than configured Capacity
 
-{% include available-capacity-metric.md %}
+{% include v2.1/misc/available-capacity-metric.md %}
 
 ## Location coordinates for reference
 
 ### AWS locations
 
-{% include aws-locations.md %}
+{% include {{ page.version.version }}/misc/aws-locations.md %}
 
 ### Azure locations
 
-{% include azure-locations.md %}
+{% include {{ page.version.version }}/misc/azure-locations.md %}
 
 ### Google Cloud locations
 
-{% include gce-locations.md %}
+{% include {{ page.version.version }}/misc/gce-locations.md %}

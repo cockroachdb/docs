@@ -2,7 +2,9 @@
 layout: default
 ---
 
+<div class="cf-5329-area-16739"></div>
 <div class="post-header">
+
   <h1 class="post-title-main">{% if page.homepage == true %} {{site.homepage_title}} {% else %}{{ page.title }}{% endif %}</h1>
   {% unless page.contribute == false %}
       {% include contribute-options.html %}
@@ -14,18 +16,17 @@ layout: default
        TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
        page TOC to h2 headers only, set `toc_not_nested: true` in the page's
        front-matter.
-
-       TOC PLACEMENT: To place the toc at the top of the page, set `toc: true`
-       in the page's front-matter. To place the toc somewhere else, set `toc:
-       false` in the front-matter, and then include the below
-       <div> manually where you want it.
    -->
    {% if page.toc %}
       <div id="toc"></div>
    {% endif %}
 
-   {% if page.expand == true %}
-      {% include expand.html %}
+   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' %}
+      {% include unsupported-version.md %}
+   {% endif %}
+
+   {% if page.url contains 'v19.1' %}
+      {% include unsupported-version-soon.md %}
    {% endif %}
 
    {{content}}

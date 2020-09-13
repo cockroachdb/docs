@@ -1,14 +1,13 @@
 ---
 title: Orchestrate CockroachDB with Kubernetes
 summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
-toc: false
+toc: true
 ---
 
 This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
 
 {{site.data.alerts.callout_danger}}Deploying an <strong>insecure</strong> cluster is not recommended for data in production. We'll update this page after improving the process to deploy secure clusters.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Step 1. Choose your deployment environment
 
@@ -26,7 +25,7 @@ It might also be helpful to review some Kubernetes-specific terminology:
 Feature | Description
 --------|------------
 instance | A physical or virtual machine. In this tutorial, you'll run a Kubernetes script from your local workstation that will create 4 GCE or AWS instances and join them into a single Kubernetes cluster.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one or more Docker containers. In this tutorial, each pod will run on a separate instance and contain one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 
@@ -50,8 +49,8 @@ Feature | Description
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the Kubernetes documentation:
 
-- For GCE-specific instructions, see [Running Kubernetes on Google Compute Engine](http://kubernetes.io/docs/getting-started-guides/gce/).
-- For AWS-specific instructions, see [Running Kubernetes on AWS EC2](http://kubernetes.io/docs/getting-started-guides/aws/)
+- For GCE-specific instructions, see [Running Kubernetes on Google Compute Engine](https://kubernetes.io/docs/setup/turnkey/gce/).
+- For AWS-specific instructions, see [Running Kubernetes on AWS EC2](https://kubernetes.io/docs/setup/turnkey/aws/)
 
 The heart of this step is running a Kubernetes script that creates 4 GCE or AWS instances and joins them into a single Kubernetes cluster, all from your local workstation. You'll run subsequent steps from your local workstation as well.
 
@@ -98,7 +97,7 @@ Kubectl is now configured to use the cluster.
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
+3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -137,7 +136,7 @@ Kubectl is now configured to use the cluster.
     pv2       1Gi        RWO           Bound     default/datadir-cockroachdb-2             26s
     ~~~
 
-3. Wait a bit and then verify that three pods were created successfully. If you don't see three pods, wait longer and check again.
+3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -204,7 +203,7 @@ Based on the `replicas: 3` line in the StatefulSet configuration, Kubernetes ens
 
 To see this in action:
 
-1. Kill one of CockroachDB nodes:
+1. Stop one of CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -242,7 +241,7 @@ To see this in action:
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you don't have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
+The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed only on worker nodes, so to ensure that you do not have two pods on the same node (as recommended in our [production best practices](recommended-production-settings.html)), you need to add a new worker node and then edit your StatefulSet configuration to add another pod.
 
 1. Add a worker node:
   - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups/).

@@ -1,11 +1,10 @@
 ---
 title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
-<div id="toc"></div>
 
 ## Why is my process hanging when I try to start it in the background?
 
@@ -18,7 +17,7 @@ the right place.
 
 In order to keep your data consistent, CockroachDB only works when at least a
 majority of its nodes are running. This means that if only one node of a three
-node cluster is running, that one node won't be able to do anything. The
+node cluster is running, that one node will not be able to do anything. The
 `--background` flag of [`cockroach start`](start-a-node.html) causes the start
 command to wait until the node has fully initialized and is able to start
 serving queries.
@@ -27,7 +26,7 @@ Together, these two facts mean that the `--background` flag will cause
 `cockroach start` to hang until a majority of nodes are running. In order to
 restart your cluster, you should either use multiple terminals so that you can
 start multiple nodes at once or start each node in the background using your
-shell's functionality (e.g. `cockroach start &`) instead of the `--background`
+shell's functionality (e.g., `cockroach start &`) instead of the `--background`
 flag.
 
 ## Why is memory usage increasing despite lack of traffic?
@@ -116,17 +115,17 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 ## What happens when node clocks are not properly synchronized?
 
-{% include faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.md %}
 
 ## How can I tell how well node clocks are synchronized?
 
-{% include faq/clock-synchronization-monitoring.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-monitoring.html %}
 
 You can also see these metrics in [the Clock Offset graph](admin-ui-runtime-dashboard.html#clock-offset) on the Admin UI's Runtime dashboard as of the v2.0 release.
 
 ## How do I prepare for planned node maintenance?
 
-{% include faq/planned-maintenance.md %}
+{% include {{ page.version.version }}/faq/planned-maintenance.md %}
 
 ## See Also
 

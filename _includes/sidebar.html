@@ -1,69 +1,6 @@
-<div class="col-md-3 col-sidebar">
-  <script>
-    $(document).ready(function() {
-      // Initialize navgoco with default options
-      var $sidebar = $('#mysidebar'),
-          $versionSwitcher = $('#version-switcher').find('ul.nav')
-          $maincontent = $('#main-content'),
-          $contentcol = $('.content-col');
-
-      var navgocoOptions = {
-        caretHtml: '',
-        accordion: true,
-        openClass: 'active', // open
-        save: false, // leave false or nav highlighting doesn't work right
-        cookie: {
-          name: 'navgoco',
-          expires: false,
-          path: '/'
-        },
-        slide: {
-          duration: 150,
-          easing: 'swing'
-        }
-      };
-
-      function adjustMinHeight() {
-        setTimeout(function() {
-          var height = $sidebar.outerHeight();
-          if(height > 475) {
-            $maincontent.animate({ 'min-height' : 625 + (height - 475) }, 200);
-            $contentcol.css({ 'min-height' : 625 + (height - 475) });
-          } else {
-            $maincontent.animate({ 'min-height' : 625 }, 200);
-            $contentcol.css({ 'min-height' : 625 });
-          }
-        }, 400);
-      }
-
-      function closeVersionSwitcher() {
-        $('#version-switcher .tier-1 ul').slideUp();
-        $('#version-switcher').removeClass('open');
-      }
-
-      $sidebar.navgoco($.extend(navgocoOptions, {
-        onToggleAfter: function() {
-          adjustMinHeight();
-          if ($(this.el).attr('id') == 'mysidebar' &&
-              $('#version-switcher').hasClass('open')) {
-            closeVersionSwitcher();
-          }
-        }
-      }));
-
-      $versionSwitcher.navgoco($.extend(navgocoOptions, {
-        onToggleBefore: function() {
-          $('#version-switcher').toggleClass('open');
-        }
-      }));
-
-      $sidebar.show();
-      $versionSwitcher.show();
-      adjustMinHeight();
-    });
-  </script>
-
-  <ul id="mysidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
+<div class="col-sidebar">
+  <script src="{{ 'js/initSidebar.js' | relative_url }}"></script>
+  <ul id="sidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">
     <div class="sidenav-arrow"><div class="arrow-down"></div></div>
     <div class="collapsed-header">
       Docs Menu
@@ -80,14 +17,13 @@
     </div>
     <li class="search-wrap">
       <div class="search">
-        <span class="fa fa-search"></span>
-        <form method="GET" action="{{ 'search.html' | relative_url }}">
-          <input type="text" id="search-input" name="q" placeholder="Search docs">
+        <span class="fas fa-search"></span>
+        <form class="search-form" method="GET" action="{{ 'search.html' | relative_url }}">
+          <input type="text" id="search-input" name="query" placeholder="Search docs">
           <span class="clear-search"></span>
         </form>
       </div>
     </li>
-
     <script>
       (function () {
         var baseUrl = "{{ site.baseurl }}";
@@ -152,7 +88,10 @@
               return url;
             });
 
-            var active = (urls.indexOf(location.pathname) !== -1);
+            // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
+            var activePathname = location.pathname.slice(-5) === '.html' ? location.pathname : location.pathname + '.html';
+
+            var active = (urls.indexOf(activePathname) !== -1);
             if (active) {
               // This mutation inside an otherwise pure function is
               // unfortunate, but doing it here avoids a separate
@@ -192,72 +131,8 @@
       })();
     </script>
   </ul>
-
-  {% if page.version %}
-    <div id="version-switcher">
-      <ul class="nav" style="display: none">
-        <li class="tier-1">
-          <a href="#">
-            Version: <span class="version-name">{{ page.version.name }}</span>
-            <div class="arrow-down"></div>
-          </a>
-          <ul>
-            {% for v in page.versions %}
-              <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
-                <a
-                {% if v.url %}href="{{ v.url | relative_url }}"
-                {% else %}data-tooltip data-placement="right" data-container="body" title="This page does not exist in {{ v.version.version }}."{% endif %}>
-                  {{ v.version.name }}
-                  {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-    </div>
-  {% endif %}
-
-  <script>
-    $("#version-switcher").change(function () {
-      location.href = $(this).val();
-    });
-  </script>
+  <script src="{{ 'js/searchInputRendering.js' | relative_url }}"></script>
 </div>
 
 <!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above.-->
-<script>$("#mysidebar").find("li.active").parents('li').toggleClass("active");</script>
-
-{% if page.url == '/search.html' %}
-<script>
-$(document).ready(function() {
-  // this will make search appear instead of header in collapsed docs menu
-  $('.collapsed-header').hide();
-  $('.search-wrap').show();
-
-  // this will remove the class with custom styling for search page,
-  // so when we close the menu it reverts to normal styling
-  // needs to happen if any of these elements are clicked
-  $('.sidenav-arrow, #search-input, .clear-search').on('click', function() {
-    if ($('#mysidebar').hasClass('nav--search')) {
-      $('#mysidebar').removeClass('nav--search').addClass('nav--home');
-    }
-  });
-
-  // set search input value to query string
-  $('#search-input').val(QueryString.q.replace('+', ' '));
-
-  // on load, show close button if search input
-	if ($('#search-input').val() != '') $('.clear-search').show();
-
-  $('.clear-search').on('click', function() {
-    $('#search-input').val('');
-    $(this).hide();
-  });
-
-  $('#search-input').on('input', function() {
-    if ($(this).val() != '') $('.clear-search').show();
-  });
-});
-</script>
-{% endif %}
+<script>$("#sidebar").find("li.active").parents('li').toggleClass("active");</script>

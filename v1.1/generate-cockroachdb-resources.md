@@ -1,12 +1,11 @@
 ---
 title: Generate CockroachDB Resources
 summary: Use cockroach gen to generate command-line interface utlities, such as man pages, and example data.
-toc: false
+toc: true
 ---
 
 The `cockroach gen` command can generate command-line interface (CLI) utilities ([`man` pages](https://en.wikipedia.org/wiki/Man_page) and a`bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
 
-<div id="toc"></div>
 
 ## Subcommands
 

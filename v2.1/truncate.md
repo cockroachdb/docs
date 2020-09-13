@@ -1,24 +1,26 @@
 ---
 title: TRUNCATE
 summary: The TRUNCATE statement deletes all rows from specified tables.
-toc: false
+toc: true
 ---
 
-The `TRUNCATE` [statement](sql-statements.html) deletes all rows from specified tables.
+The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
 
-{{site.data.alerts.callout_info}}The <code>TRUNCATE</code> removes all rows from a table by dropping the table and recreating a new table with the same name. For large tables, this is much more performant than deleting each of the rows. However, for smaller tables, it's more performant to use a <a href="delete.html#delete-all-rows"><code>DELETE</code> statement without a <code>WHERE</code> clause</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+For smaller tables (with less than 1000 rows), using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
+{{site.data.alerts.end}}
 
-<div id="toc"></div>
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/truncate.html %}
+  {% include {{ page.version.version }}/sql/diagrams/truncate.html %}
 </div>
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the table.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
@@ -27,6 +29,10 @@ Parameter | Description
 `table_name` | The name of the table to truncate.
 `CASCADE` | Truncate all tables with [Foreign Key](foreign-key.html) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key](foreign-key.html) dependencies on it.
+
+## Limitations
+
+`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes](online-schema-changes.html).
 
 ## Examples
 
@@ -148,5 +154,6 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 ## See also
 
-- [`DELETE](delete.html)
+- [`DELETE`](delete.html)
 - [Foreign Key constraint](foreign-key.html)
+- [Online Schema Changes](online-schema-changes.html)

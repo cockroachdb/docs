@@ -1,11 +1,10 @@
 ---
 title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
-<div id="toc"></div>
 
 ## How do I bulk insert data into CockroachDB?
 
@@ -13,25 +12,25 @@ Currently, you can bulk insert data with batches of [`INSERT`](insert.html) stat
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ## How do I generate unique, slowly increasing sequential numbers in CockroachDB?
 
-{% include faq/sequential-numbers.md %}
+{% include {{ page.version.version }}/faq/sequential-numbers.md %}
 
 ## What are the differences between `UUID`, sequences, and `unique_rowid()`?
 
-{% include faq/differences-between-numberings.md %}
+{% include {{ page.version.version }}/faq/differences-between-numberings.md %}
 
 ## How do I order writes to a table to closely follow time in CockroachDB?
 
-{% include faq/sequential-transactions.md %}
+{% include {{ page.version.version }}/faq/sequential-transactions.md %}
 
 ## How do I get the last ID/SERIAL value inserted into a table?
 
 There’s no function in CockroachDB for returning last inserted values, but you can use the [`RETURNING` clause](insert.html#insert-and-return-values) of the `INSERT` statement.
 
-For example, this is how you’d use `RETURNING` to return an auto-generated [`SERIAL`](serial.html) value:
+For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
 ~~~ sql
 > CREATE TABLE users (id SERIAL, name STRING);
@@ -62,7 +61,7 @@ At this time, `LATERAL` (correlated) joins are not yet supported.
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together.
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
@@ -84,7 +83,7 @@ If you'd like to tell the query planner which index to use, you can do so via so
 
 ## How do I log SQL queries?
 
-{% include faq/sql-query-logging.md %}
+{% include {{ page.version.version }}/faq/sql-query-logging.md %}
 
 ## Does CockroachDB support a UUID type?
 

@@ -1,7 +1,7 @@
 ---
 title: Build a C# (.NET) App with CockroachDB
 summary: Learn how to use CockroachDB from a simple C# (.NET) application with a low-level client driver.
-toc: false
+toc: true
 twitter: true
 ---
 
@@ -9,11 +9,10 @@ This tutorial shows you how build a simple C# (.NET) application with CockroachD
 
 We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support, so that driver is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the [.NET SDK](https://www.microsoft.com/net/download/) for your OS.
+Make sure you have already [installed CockroachDB](install-cockroachdb.html) and the <a href="https://www.microsoft.com/net/download/" data-proofer-ignore>.NET SDK</a> for your OS.
 
 ## Step 1. Create a .NET project
 
@@ -85,7 +84,7 @@ Replace the contents of `cockraochdb-test-app/Program.cs` with the following cod
 
 {% include copy-clipboard.html %}
 ~~~ csharp
-{% include app/basic-sample.cs %}
+{% include {{ page.version.version }}/app/basic-sample.cs %}
 ~~~
 
 Then run the code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows:
@@ -109,7 +108,7 @@ Open `cockraochdb-test-app/Program.cs` again and replace the contents with the f
 
 {% include copy-clipboard.html %}
 ~~~ csharp
-{% include app/txn-sample.cs %}
+{% include {{ page.version.version }}/app/txn-sample.cs %}
 ~~~
 
 Then run the code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
@@ -153,4 +152,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [.NET Npgsql driver](http://www.npgsql.org/).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

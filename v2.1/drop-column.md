@@ -1,33 +1,32 @@
 ---
 title: DROP COLUMN
 summary: Use the ALTER COLUMN statement to remove columns from tables.
-toc: false
+toc: true
 ---
 
 The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and removes columns from a table.
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<section> {% include sql/{{ page.version.version }}/diagrams/drop_column.html %} </section>
+<section> {% include {{ page.version.version }}/sql/diagrams/drop_column.html %} </section>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table with the column you want to drop. |
-| `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped. |
-| `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br>`CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference. |
-| `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it. |
+ Parameter | Description
+-----------|-------------
+ `table_name` | The name of the table with the column you want to drop.
+ `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped.
+ `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. However, `CASCADE` will not drop dependent indexes; you must use [`DROP INDEX`](drop-index.html).<br><br>`CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.
+ `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 
@@ -60,15 +59,17 @@ If you want to drop the column and all of its dependent options, include the `CA
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE VIEW customer_view;
+> SHOW CREATE customer_view;
 ~~~
+
 ~~~
 +---------------+----------------------------------------------------------------+
-|     View      |                          CreateView                            |
+| table_name    | create_statement                                               |
 +---------------+----------------------------------------------------------------+
 | customer_view | CREATE VIEW customer_view AS SELECT customer FROM store.orders |
 +---------------+----------------------------------------------------------------+
 ~~~
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP COLUMN customer CASCADE;
@@ -76,8 +77,9 @@ If you want to drop the column and all of its dependent options, include the `CA
 
 {% include copy-clipboard.html %}
 ~~~
-> SHOW CREATE VIEW customer_view;
+> SHOW CREATE customer_view;
 ~~~
+
 ~~~
 pq: view "customer_view" does not exist
 ~~~

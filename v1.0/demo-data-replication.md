@@ -1,12 +1,11 @@
 ---
 title: Data Replication
 summary: Use a local cluster to explore how CockroachDB replicates and distributes data.
-toc: false
+toc: true
 ---
 
 This page walks you through a simple demonstration of how CockroachDB replicates and distributes data. Starting with a 1-node local cluster, you'll write some data, add 2 nodes, and watch how the data is replicated automatically. You'll then update the cluster to replicate 5 ways, add 2 more nodes, and again watch how all existing replicas are re-replicated to the new nodes.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -213,9 +212,9 @@ Back in the Admin UI, you'll see that there are now 5 nodes listed. Again, at fi
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last 2 nodes, the shutdown process will take longer (about a minute) and will eventually force kill the nodes. This is because, with only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time in the nodes' terminals.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last 2 nodes, the shutdown process will take longer (about a minute) and will eventually force stop the nodes. This is because, with only 2 nodes still online, a majority of replicas are no longer available (3 of 5), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time in the nodes' terminals.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell

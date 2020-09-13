@@ -1,83 +1,18 @@
 ---
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements.
-toc: false
+toc: true
 ---
 
 This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](sql-statements.html).
 
-{{site.data.alerts.callout_success}}The easiest way to try out these statements is to use the <a href="use-the-built-in-sql-client.html">built-in interactive SQL shell</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+Use an interactive SQL shell to try out these statements. If you have a cluster already running, use the [`cockroach sql`](use-the-built-in-sql-client.html) command. Otherwise, use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our <a href="sql-feature-support.html">SQL Feature Support</a> page for more details.{{site.data.alerts.end}}
-
-<div id="toc"></div>
-
-## Create a Database
-
-CockroachDB comes with a single default `system` database, which contains CockroachDB metadata and is read-only. To create a new database, use [`CREATE DATABASE`](create-database.html) followed by a database name:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE bank;
-~~~
-
-Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS bank;
-~~~
-
-When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP DATABASE bank;
-~~~
-
-## Show databases
-
-To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
-~~~
-
-~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(2 rows)
-~~~
-
-## Set the default database
-
-To set the default database, use the [`SET`](set-vars.html#examples) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET DATABASE = bank;
-~~~
-
-When working with the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASE;
-~~~
-
-~~~
-+----------+
-| database |
-+----------+
-| bank     |
-+----------+
-(1 row)
-~~~
+{{site.data.alerts.callout_info}}
+CockroachDB aims to provide standard SQL with extensions, but some standard SQL functionality is not yet available. See our [SQL Feature Support](sql-feature-support.html) page for more details.
+{{site.data.alerts.end}}
 
 ## Create a table
 
@@ -111,12 +46,10 @@ To show all of the columns from a table, use [`SHOW COLUMNS FROM`](show-columns.
 ~~~
 
 ~~~
-+---------+---------+-------+---------+-----------+
-|  Field  |  Type   | Null  | Default |  Indices  |
-+---------+---------+-------+---------+-----------+
-| id      | INT     | false | NULL    | {primary} |
-| balance | DECIMAL | true  | NULL    | {}        |
-+---------+---------+-------+---------+-----------+
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
+  id          | INT       |    false    | NULL           |                       | {"primary"} |   false
+  balance     | DECIMAL   |    true     | NULL           |                       | {}          |   false
 (2 rows)
 ~~~
 
@@ -137,34 +70,10 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| accounts |
-| users    |
-+----------+
-(2 rows)
-~~~
-
-To view tables in a database that's not active, use `SHOW TABLES FROM` followed by the name of the database:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM animals;
-~~~
-
-~~~
-+-----------+
-|   Table   |
-+-----------+
-| aardvarks |
-| elephants |
-| frogs     |
-| moles     |
-| pandas    |
-| turtles   |
-+-----------+
-(6 rows)
+  table_name
++------------+
+  accounts
+(1 row)
 ~~~
 
 ## Insert rows into a table
@@ -213,18 +122,16 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 ~~~
 
 ~~~
+  id | balance
 +----+---------+
-| id | balance |
-+----+---------+
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+   5 | NULL
+   6 | NULL
 (2 rows)
 ~~~
 
 ## Create an index
 
-[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](primary-key.html) of a table and any columns with a [Unique constraint](unique.html).
+[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](primary-key.html) of a table and any columns with a [`UNIQUE` constraint](unique.html).
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
@@ -254,13 +161,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
 
 ~~~
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-|  Table   |    Name     | Unique | Seq | Column  | Direction | Storing | Implicit |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
-| accounts | primary     | true   |   1 | id      | ASC       | false   | false    |
-| accounts | balance_idx | false  |   1 | balance | DESC      | false   | false    |
-| accounts | balance_idx | false  |   2 | id      | ASC       | false   | true     |
-+----------+-------------+--------+-----+---------+-----------+---------+----------+
+  table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+-------------+------------+--------------+-------------+-----------+---------+----------+
+  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
+  accounts   | balance_idx |    true    |            1 | balance     | DESC      |  false  |  false
+  accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true
 (3 rows)
 ~~~
 
@@ -274,16 +179,14 @@ To query a table, use [`SELECT`](select-clause.html) followed by a comma-separat
 ~~~
 
 ~~~
+  balance
 +----------+
-| balance  |
-+----------+
-| 10000.50 |
-| 25000.00 |
-|  8100.73 |
-|  9400.10 |
-| NULL     |
-| NULL     |
-+----------+
+  10000.50
+  25000.00
+   8100.73
+   9400.10
+  NULL
+  NULL
 (6 rows)
 ~~~
 
@@ -295,16 +198,14 @@ To retrieve all columns, use the `*` wildcard:
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8100.73 |
-|  4 |  9400.10 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8100.73
+   4 |  9400.10
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -316,13 +217,11 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
 (3 rows)
 ~~~
 
@@ -334,16 +233,14 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 ~~~
 
 ~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  2 |   25000 |
-|  1 | 10000.5 |
-|  4 |  9400.1 |
-|  3 | 8100.73 |
-|  5 | NULL    |
-|  6 | NULL    |
-+----+---------+
+  id | balance
++----+----------+
+   2 | 25000.00
+   1 | 10000.50
+   4 |  9400.10
+   3 |  8100.73
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -362,16 +259,14 @@ To update rows in a table, use [`UPDATE`](update.html) followed by the table nam
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-|  5 | NULL     |
-|  6 | NULL     |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
+   5 | NULL
+   6 | NULL
 (6 rows)
 ~~~
 
@@ -392,14 +287,12 @@ To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the ta
 ~~~
 
 ~~~
+  id | balance
 +----+----------+
-| id | balance  |
-+----+----------+
-|  1 | 10000.50 |
-|  2 | 25000.00 |
-|  3 |  8095.23 |
-|  4 |  9394.60 |
-+----+----------+
+   1 | 10000.50
+   2 | 25000.00
+   3 |  8095.23
+   4 |  9394.60
 (4 rows)
 ~~~
 

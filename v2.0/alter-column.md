@@ -1,18 +1,19 @@
 ---
 title: ALTER COLUMN
 summary: Use the ALTER COLUMN statement to set, change, or drop a column's Default constraint or to drop the Not Null constraint.
-toc: false
+toc: true
 ---
 
 The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and sets, changes, or drops a column's [Default constraint](default-value.html) or drops the [Not Null constraint](not-null.html).
 
 {{site.data.alerts.callout_info}}To manage other constraints, see <a href="add-constraint.html"><code>ADD CONSTRAINT</code></a> and <a href="drop-constraint.html"><code>DROP CONSTRAINT</code></a>{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/alter_column.html %}
+</div>
 
 ## Required Privileges
 
@@ -28,7 +29,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing Schema Changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 

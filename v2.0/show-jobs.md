@@ -1,19 +1,19 @@
 ---
 title: SHOW JOBS
 summary: The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed, including:
 
-- Schema changes through `ALTER TABLE`
-- Enterprise [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`IMPORT`](import.html)
+- Schema changes through `ALTER TABLE`.
+- [`IMPORT`](import.html).
+- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
 {{site.data.alerts.callout_info}} The <code>SHOW JOBS</code> statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the <a href="sql-audit-logging.html">SQL Audit Logging (Experimental)</a> feature.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -21,7 +21,9 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_jobs.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/show_jobs.html %}
+</div>
 
 ## Response
 

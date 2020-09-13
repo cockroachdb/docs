@@ -1,12 +1,11 @@
 ---
 title: Cross-Cloud Migration
 summary: Use a local cluster to simulate migrating from one cloud platform to another.
-toc: false
+toc: true
 ---
 
 CockroachDB's flexible [replication controls](configure-replication-zones.html) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page walks you through a local simulation of the process.
 
-<div id="toc"></div>
 
 ## Watch the demo
 
@@ -35,7 +34,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node1 \
---host=localhost \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~~
@@ -48,9 +48,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node2 \
---host=localhost \
---port=25258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -63,10 +62,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=1 \
 --store=cloud1node3 \
---host=localhost \
---port=25259 \
---http-port=8082 \
---join=localhost:26257 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -79,8 +76,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ## Step 4. Set up HAProxy load balancing
@@ -93,8 +89,7 @@ In a new terminal, run the [`cockroach gen haproxy`](generate-cockroachdb-resour
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that will not be used by the nodes you'll add later.
@@ -105,17 +100,22 @@ global
 
 defaults
     mode                tcp
+    # Timeout values should be configured for your specific use.
+    # See: https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-timeout%20connect
     timeout connect     10s
     timeout client      1m
     timeout server      1m
+    # TCP keep-alive on client side. Server already enables them.
+    option              clitcpka
 
 listen psql
     bind :26000
     mode tcp
     balance roundrobin
-    server cockroach1 localhost:26257
-    server cockroach2 localhost:26258
-    server cockroach3 localhost:26259
+    option httpchk GET /health?ready=1
+    server cockroach1 localhost:26257 check port 8080
+    server cockroach2 localhost:26258 check port 8081
+    server cockroach3 localhost:26259 check port 8082
 ~~~
 
 Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
@@ -160,9 +160,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -175,9 +174,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node5 \
---host=localhost \
---port=25261 \
---http-port=8084 \
+--advertise-addr=localhost:26261 \
+--http-addr=localhost:8084 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -190,9 +188,8 @@ $ cockroach start \
 --insecure \
 --locality=cloud=2 \
 --store=cloud2node6 \
---host=localhost \
---port=25262 \
---http-port=8085 \
+--advertise-addr=localhost:26262 \
+--http-addr=localhost:8085 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -209,11 +206,11 @@ Note that it takes a few minutes for the Admin UI to show accurate per-node repl
 
 So your cluster is replicating across two simulated clouds. But let's say that after experimentation, you're happy with cloud vendor 2, and you decide that you'd like to move everything there. Can you do that without interruption to your live client traffic? Yes, and it's as simple as running a single command to add a [hard constraint](configure-replication-zones.html#replication-constraints) that all replicas must be on nodes with `--locality=cloud=2`.
 
-In a new terminal, edit the default replication zone:
+In a new terminal, [edit the default replication zone](configure-zone.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ echo 'constraints: [+cloud=2]' | cockroach zone set .default --insecure --host=localhost -f -
+$ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING constraints='[+cloud=2]';" --insecure --host=localhost:26257
 ~~~
 
 ## Step 10. Verify the data migration
@@ -228,7 +225,7 @@ This indicates that all data has been migrated from cloud 1 to cloud 2. In a rea
 
 Once you're done with your cluster, stop YCSB by switching into its terminal and pressing **CTRL-C**. Then do the same for HAProxy and each CockroachDB node.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 
@@ -239,18 +236,13 @@ $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
 You may also want to learn other ways to control the location and number of replicas in a cluster:
 
 - [Even Replication Across Datacenters](configure-replication-zones.html#even-replication-across-datacenters)
 - [Multiple Applications Writing to Different Databases](configure-replication-zones.html#multiple-applications-writing-to-different-databases)
-- [Stricter Replication for a Specific Table](configure-replication-zones.html#stricter-replication-for-a-specific-table)
+- [Stricter Replication for a Table and Its Indexes](configure-replication-zones.html#stricter-replication-for-a-table-and-its-secondary-indexes)
 - [Tweaking the Replication of System Ranges](configure-replication-zones.html#tweaking-the-replication-of-system-ranges)

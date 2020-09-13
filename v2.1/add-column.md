@@ -1,33 +1,33 @@
 ---
 title: ADD COLUMN
 summary: Use the ADD COLUMN statement to add columns to tables.
-toc: false
+toc: true
 ---
 
 The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
 
-<div id="toc"></div>
-
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_column.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/add_column.html %}
+</div>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name` | The name of the table to which you want to add the column. |
-| `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  |
-| `typename` | The [data type](data-types.html) of the new column. |
-| `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>Note that it is not possible to add a column with the [`FOREIGN KEY`](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the `FOREIGN KEY` constraint to the column. |
+ Parameter | Description
+-----------|-------------
+ `table_name` | The name of the table to which you want to add the column.
+ `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  
+ `typename` | The [data type](data-types.html) of the new column.
+ `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>If the column family is not specified, the column will be added to the first column family. For more information about how column families are assigned, see [Column Families](column-families.html#assign-column-families-when-adding-columns).<br><br>Note that it is not possible to add a column with the [foreign key](foreign-key.html) constraint. As a workaround, you can add the column without the constraint, then use [`CREATE INDEX`](create-index.html) to index the column, and then use [`ADD CONSTRAINT`](add-constraint.html) to add the foreign key constraint to the column.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 
@@ -44,13 +44,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 ~~~
-+-----------+-------------------+-------+---------+-----------+
-|   Field   |       Type        | Null  | Default |  Indices  |
-+-----------+-------------------+-------+---------+-----------+
-| id        | INT               | false | NULL    | {primary} |
-| balance   | DECIMAL           | true  | NULL    | {}        |
-| names     | STRING            | true  | NULL    | {}        |
-+-----------+-------------------+-------+---------+-----------+
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL           |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}          |
+| names       | STRING    |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(3 rows)
 ~~~
 
 ### Add multiple columns
@@ -66,16 +67,16 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ~~~
 
 ~~~
-+-----------+-------------------+-------+---------+-----------+
-|   Field   |       Type        | Null  | Default |  Indices  |
-+-----------+-------------------+-------+---------+-----------+
-| id        | INT               | false | NULL    | {primary} |
-| balance   | DECIMAL           | true  | NULL    | {}        |
-| names     | STRING            | true  | NULL    | {}        |
-| location  | STRING            | true  | NULL    | {}        |
-| amount    | DECIMAL           | true  | NULL    | {}        |
-+-----------+-------------------+-------+---------+-----------+
-
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL           |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}          |
+| names       | STRING    |    true     | NULL           |                       | {}          |
+| location    | STRING    |    true     | NULL           |                       | {}          |
+| amount      | DECIMAL   |    true     | NULL           |                       | {}          |
++-------------+-----------+-------------+----------------+-----------------------+-------------+
+(5 rows)
 ~~~
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
@@ -90,16 +91,17 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 > SHOW COLUMNS FROM accounts;
 ~~~
 ~~~
-+-----------+-------------------+-------+---------------------------+-----------+
-|   Field   |       Type        | Null  |          Default          |  Indices  |
-+-----------+-------------------+-------+---------------------------+-----------+
-| id        | INT               | false | NULL                      | {primary} |
-| balance   | DECIMAL           | true  | NULL                      | {}        |
-| names     | STRING            | true  | NULL                      | {}        |
-| location  | STRING            | true  | NULL                      | {}        |
-| amount    | DECIMAL           | true  | NULL                      | {}        |
-| interest  | DECIMAL           | false | ('1.3':::STRING::DECIMAL) | {}        |
-+-----------+-------------------+-------+---------------------------+-----------+
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+| column_name | data_type | is_nullable |     column_default     | generation_expression |   indices   |
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+| id          | INT       |    false    | NULL                   |                       | {"primary"} |
+| balance     | DECIMAL   |    true     | NULL                   |                       | {}          |
+| names       | STRING    |    true     | NULL                   |                       | {}          |
+| location    | STRING    |    true     | NULL                   |                       | {}          |
+| amount      | DECIMAL   |    true     | NULL                   |                       | {}          |
+| interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {}          |
++-------------+-----------+-------------+------------------------+-----------------------+-------------+
+(6 rows)
 ~~~
 
 ### Add a column with `NOT NULL` and `UNIQUE` constraints

@@ -2,7 +2,7 @@
 title: Configure Replication Zones
 summary: In CockroachDB, you use replication zones to control the number and location of replicas for specific sets of data.
 keywords: ttl, time to live, availability zone
-toc: false
+toc: true
 ---
 
 In CockroachDB, you use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium. Initially, there is a single, default replication zone for the entire cluster. You can adjust this default zone as well as add zones for individual databases and tables as needed. For example, you might use the default zone to replicate most data in a cluster normally within a single datacenter, while creating a specific zone to more highly replicate a certain database or table across multiple datacenters and geographies.
@@ -11,7 +11,6 @@ This page explains how replication zones work and how to use the `cockroach zone
 
 {{site.data.alerts.callout_info}}Currently, only the <code>root</code> user can configure replication zones.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -337,19 +336,19 @@ Start each node with its datacenter location specified in the `--locality` flag:
 # Start the two nodes in datacenter 1:
 $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
 $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 
 # Start the two nodes in datacenter 2:
 $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-2 \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-2 \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 
 # Start the two nodes in datacenter 3:
 $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-3 \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-3 \
---join=<node1 hostname>:27257
+--join=<node1 hostname>:26257
 ~~~
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
@@ -371,17 +370,17 @@ There's no need to make zone configuration changes; by default, the cluster is c
     # Start the three nodes in datacenter 1:
     $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
     $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-1 \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-1 \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
 
     # Start the three nodes in datacenter 2:
     $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-2 \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-2 \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-2 \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     ~~~
 
 2. On any node, configure a replication zone for the database used by application 1:
@@ -456,19 +455,19 @@ There's no need to make zone configuration changes; by default, the cluster is c
     # Start the 5 nodes with SSD storage:
     $ cockroach start --insecure --host=<node1 hostname> --store=path=node1,attrs=ssd
     $ cockroach start --insecure --host=<node2 hostname> --store=path=node2,attrs=ssd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node3 hostname> --store=path=node3,attrs=ssd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node4 hostname> --store=path=node4,attrs=ssd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node5 hostname> --store=path=node5,attrs=ssd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
 
     # Start the 2 nodes with HDD storage:
     $ cockroach start --insecure --host=<node6 hostname> --store=path=node6,attrs=hdd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     $ cockroach start --insecure --host=<node7 hostname> --store=path=node2,attrs=hdd \
-    --join=<node1 hostname>:27257
+    --join=<node1 hostname>:26257
     ~~~
 
 2. On any node, configure a replication zone for the table that must be replicated more strictly:
@@ -517,17 +516,17 @@ There's no need to make zone configuration changes; by default, the cluster is c
    ~~~ shell
    $ cockroach start --insecure --host=<node1 hostname> --locality=datacenter=us-1
    $ cockroach start --insecure --host=<node2 hostname> --locality=datacenter=us-2 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    $ cockroach start --insecure --host=<node3 hostname> --locality=datacenter=us-3 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    $ cockroach start --insecure --host=<node4 hostname> --locality=datacenter=us-4 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    $ cockroach start --insecure --host=<node5 hostname> --locality=datacenter=us-5 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    $ cockroach start --insecure --host=<node6 hostname> --locality=datacenter=us-6 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    $ cockroach start --insecure --host=<node7 hostname> --locality=datacenter=us-7 \
-   --join=<node1 hostname>:27257
+   --join=<node1 hostname>:26257
    ~~~
 
 2. On any node, configure the default replication zone:

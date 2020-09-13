@@ -1,12 +1,14 @@
 ---
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
-toc: false
+toc: true
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
-<div id="toc"></div>
+{{site.data.alerts.callout_success}}
+For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html).
+{{site.data.alerts.end}}
 
 ## Multi-Row DML Best Practices
 
@@ -51,18 +53,20 @@ When a table is created, all columns are stored as a single column family. This 
 
 ## Unique ID Best Practices
 
-The common approach for generating unique IDs is one of the following:
+A traditional approach for generating unique IDs is one of the following:
 
- - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
- - Use `SERIAL` variables to generate random unique IDs
+- Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s.
+- Use the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs.
 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB.
+
+The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
 
 The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
 
 ### Use `UUID` to Generate Unique IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Use `INSERT` with the `RETURNING` Clause to Generate Unique IDs
 
@@ -112,7 +116,7 @@ Suppose the table schema is as follows:
 > CREATE TABLE X (
 	ID1 INT,
 	ID2 INT,
-	ID3 SERIAL,
+	ID3 INT DEFAULT unique_rowid(),
 	PRIMARY KEY (ID1,ID2)
 	);
 ~~~

@@ -1,14 +1,16 @@
 ---
 title: Column Families
 summary: A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store.
-toc: false
+toc: true
 ---
 
-A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store. The reduced number of keys results in a smaller storage overhead and, even more significantly, in improved performance during `INSERT`, `UPDATE`, and `DELETE` operations.
+A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store](architecture/storage-layer.html). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`](insert.html), [`UPDATE`](update.html), and [`DELETE`](delete.html) operations.
 
 This page explains how CockroachDB organizes columns into families as well as cases in which you might want to manually override the default behavior.
 
-<div id="toc"></div>
+{{site.data.alerts.callout_info}}
+[Secondary indexes](indexes.html) do not respect column families. All secondary indexes store values in a single column family.
+{{site.data.alerts.end}}
 
 ## Default behavior
 
@@ -37,20 +39,20 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE users;
+> SHOW CREATE users;
 ~~~
 
 ~~~
 +-------+---------------------------------------------+
 | Table |                 CreateTable                 |
 +-------+---------------------------------------------+
-| test  | CREATE TABLE test (␤                       |
-|       |     id INT NOT NULL,␤                       |
-|       |     last_accessed TIMESTAMP NULL,␤          |
-|       |     data BYTES NULL,␤                       |
-|       |     CONSTRAINT "primary" PRIMARY KEY (id),␤ |
-|       |     FAMILY f1 (id, last_accessed),␤         |
-|       |     FAMILY f2 (data)␤                       |
+| test  | CREATE TABLE test (                         |
+|       |     id INT NOT NULL,                        |
+|       |     last_accessed TIMESTAMP NULL,           |
+|       |     data BYTES NULL,                        |
+|       |     CONSTRAINT "primary" PRIMARY KEY (id),  |
+|       |     FAMILY f1 (id, last_accessed),          |
+|       |     FAMILY f2 (data)                        |
 |       | )                                           |
 +-------+---------------------------------------------+
 (1 row)
@@ -81,6 +83,13 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
   {% include copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
+  ~~~
+
+- If a column is added to a table and the family is not specified, it will be added to the first column family. For example, the following would add the new column to the `f1` family, since that is the first column family:
+
+  {% include copy-clipboard.html %}
+  ~~~ sql
+  > ALTER TABLE test ADD COLUMN last_name STRING;
   ~~~
 
 ## Compatibility with past releases

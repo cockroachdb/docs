@@ -1,12 +1,11 @@
 ---
 title: DROP TABLE
 summary: The DROP TABLE statement removes a table and all its indexes from a database.
-toc: false
+toc: true
 ---
 
 The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database. 
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,9 @@ The user must have the `DROP` [privilege](privileges.html) on the specified tabl
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_table.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/drop_table.html %}
+</div>
 
 ## Parameters
 

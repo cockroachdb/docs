@@ -1,11 +1,10 @@
 ---
 title: TIME
 summary: The TIME data type stores a time of day without a time zone.
-toc: false
+toc: true
 ---
 <span class="version-tag">New in v2.0:</span> The `TIME` [data type](data-types.html) stores the time of day without a time zone.
 
-<div id="toc"></div>
 
 ## Aliases
 

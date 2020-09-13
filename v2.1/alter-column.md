@@ -1,26 +1,25 @@
 ---
 title: ALTER COLUMN
-summary: Use the ALTER COLUMN statement to set, change, or drop a column's Default constraint or to drop the Not Null constraint.
-toc: false
+summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAULT constraint or to drop the NOT NULL constraint.
+toc: true
 ---
 
-The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and sets, changes, or drops a column's [Default constraint](default-value.html) or drops the [Not Null constraint](not-null.html).
+The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and sets, changes, or drops a column's [`DEFAULT` constraint](default-value.html) or drops the [`NOT NULL` constraint](not-null.html).
 
 {{site.data.alerts.callout_info}}
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/alter_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_column.html %}
 </div>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the table.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
@@ -32,7 +31,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing schema changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 
@@ -64,6 +63,10 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
+
+### Convert a computed column into a regular column
+
+<span class="version-tag">New in v2.1:</span> {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
 ## See also
 

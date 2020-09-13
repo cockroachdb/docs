@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="dialect">org.hibernate.dialect.CockroachDB201Dialect</property>
+        <property name="connection.url">jdbc:postgresql://127.0.0.1:26257/bank?sslmode=disable</property>
+        <property name="connection.username">maxroach</property>
+
+        <!-- Required so a table can be created from the 'Account' class in Sample.java -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <!-- Optional: Show SQL output for debugging -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+    </session-factory>
+</hibernate-configuration>

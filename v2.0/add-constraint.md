@@ -1,7 +1,7 @@
 ---
 title: ADD CONSTRAINT
 summary: Use the ADD CONSTRAINT statement to add constraints to columns.
-toc: false
+toc: true
 ---
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
@@ -13,11 +13,12 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 {{site.data.alerts.callout_info}}
 The <a href="primary-key.html">Primary Key</a> and <a href="not-null.html">Not Null</a> constraints can only be applied through <a href="create-table.html"><code>CREATE TABLE</code></a>. The <a href="default-value.html">Default</a> constraint is managed through <a href="alter-column.html"><code>ALTER COLUMN</code>.</a>{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_constraint.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/add_constraint.html %}
+</div>
 
 ## Required Privileges
 
@@ -33,7 +34,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing Schema Changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 
@@ -41,6 +42,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 Adding the [Unique constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
@@ -49,6 +51,7 @@ Adding the [Unique constraint](unique.html) requires that all of a column's valu
 
 Adding the [Check constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT total_0_check CHECK (total > 0);
 ~~~
@@ -59,6 +62,7 @@ Before you can add the [Foreign Key](foreign-key.html) constraint to columns, th
 
 For example, let's say you have two simple tables, `orders` and `customers`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE customers;
 ~~~
@@ -67,17 +71,18 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +-----------+-------------------------------------------------+
 |   Table   |                   CreateTable                   |
 +-----------+-------------------------------------------------+
-| customers | CREATE TABLE customers (␤                       |
-|           |     id INT NOT NULL,␤                           |
-|           |     "name" STRING NOT NULL,␤                    |
-|           |     address STRING NULL,␤                       |
-|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤ |
-|           |     FAMILY "primary" (id, "name", address)␤     |
+| customers | CREATE TABLE customers (                        |
+|           |     id INT NOT NULL,                            |
+|           |     "name" STRING NOT NULL,                     |
+|           |     address STRING NULL,                        |
+|           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),  |
+|           |     FAMILY "primary" (id, "name", address)      |
 |           | )                                               |
 +-----------+-------------------------------------------------+
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~
@@ -86,13 +91,13 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 +--------+-------------------------------------------------------------------------------------------------------------+
 | Table  |                                                 CreateTable                                                 |
 +--------+-------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                      |
-|        |     id INT NOT NULL,␤                                                                                       |
-|        |     customer_id INT NULL,␤                                                                                  |
-|        |     status STRING NOT NULL,␤                                                                                |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                             |
-|        |     FAMILY "primary" (id, customer_id, status),␤                                                            |
-|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))␤ |
+| orders | CREATE TABLE orders (                                                                                       |
+|        |     id INT NOT NULL,                                                                                        |
+|        |     customer_id INT NULL,                                                                                   |
+|        |     status STRING NOT NULL,                                                                                 |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                              |
+|        |     FAMILY "primary" (id, customer_id, status),                                                             |
+|        |     CONSTRAINT check_status CHECK (status IN ('open':::STRING, 'complete':::STRING, 'cancelled':::STRING))  |
 |        | )                                                                                                           |
 +--------+-------------------------------------------------------------------------------------------------------------+
 (1 row)
@@ -100,6 +105,7 @@ For example, let's say you have two simple tables, `orders` and `customers`:
 
 To ensure that each value in the `orders.customer_id` column matches a unique value in the `customers.id` column, you want to add the Foreign Key constraint to `orders.customer_id`. So you first create an index on `orders.customer_id`:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON orders (customer_id);
 ~~~
@@ -110,8 +116,11 @@ Then you add the Foreign Key constraint.
 
 In this example, let's use `ON DELETE CASCADE` (i.e., when referenced row is deleted, all dependent objects are also deleted).
 
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops or updates, so it should be used cautiously.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+`CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+{{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~

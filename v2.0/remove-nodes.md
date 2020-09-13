@@ -1,15 +1,13 @@
 ---
 title: Decommission Nodes
 summary: Permanently remove one or more nodes from a cluster.
-toc: false
-toc_not_nested: true
+toc: true
 ---
 
 This page shows you how to decommission and permanently remove one or more nodes from a CockroachDB cluster. You might do this, for example, when downsizing a cluster or reacting to hardware failures.
 
 For information about temporarily stopping a node (e.g., for planned maintenance), see [Stop a Node](stop-a-node.html).
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -25,8 +23,7 @@ Basic terms:
 
 ### Considerations
 
-- Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
-- If a node has died, for example, due to a hardware failure, do not use the `--wait=all` flag to decommission the node. Doing so will cause the decommission process to hang indefinitely. Instead, use `--wait=live`. See [Remove a Single Node (Dead)](#remove-a-single-node-dead) and [Remove Multiple Nodes](#remove-multiple-nodes) for more details.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.  See the [Examples](#examples) below for more details.
 
 ### Examples
 
@@ -36,7 +33,7 @@ In this scenario, each range is replicated 3 times, with each replica on a diffe
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the process will hang indefinitely because the cluster can't move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
+If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioned node's replicas to the other 2 nodes, which already have a replica of each range:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -60,7 +57,7 @@ In this scenario, a [custom replication zone](configure-replication-zones.html#c
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB won't allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
+If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommission process will hang indefinitely:
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
@@ -155,7 +152,7 @@ In about 5 minutes, you'll see the removed node listed under **Decommissioned No
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-<span class="version-tag">New in v2.0:</span> At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+<span class="version-tag">New in v2.0:</span> At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
 
 Also, if the node is restarted, it will not accept any client connections, and the cluster will not rebalance any data to it; to make the cluster utilize the node again, you'd have to [recommission](#recommission-nodes) it.
 
@@ -180,17 +177,15 @@ Open the Admin UI and select the **Node List** view. Note the ID of the node lis
 
 SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to officially decommission:
 
-{{site.data.alerts.callout_success}}Be sure to include <code>--wait=live</code>. If not specified, this flag defaults to <code>--wait=all</code>, which will cause the <code>node decommission</code> command to hang indefinitely.{{site.data.alerts.end}}
-
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~ shell
-$ cockroach node decommission 4 --wait=live --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 --certs-dir=certs --host=<address of live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 ~~~ shell
-$ cockroach node decommission 4 --wait=live --insecure --host=<address of live node>
+$ cockroach node decommission 4 --insecure --host=<address of live node>
 ~~~
 </div>
 
@@ -204,7 +199,7 @@ $ cockroach node decommission 4 --wait=live --insecure --host=<address of live n
 Decommissioning finished. Please verify cluster health before removing the nodes.
 ~~~
 
-<span class="version-tag">New in v2.0:</span> If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+<span class="version-tag">New in v2.0:</span> If you go back to the **Nodes List** page, in about 5 minutes, you'll see the node move from the **Dead Nodes** to **Decommissioned Nodes** list. At this point, the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -239,17 +234,15 @@ Select the **Replication** dashboard, and hover over the **Replicas per Store** 
 
 SSH to any live node in the cluster and run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to officially decommission:
 
-{{site.data.alerts.callout_success}}If there's a chance that one or more of the nodes will be offline during this process, be sure to include <code>--wait=live</code>. This will ensure that the command will not wait indefinitely for dead nodes to finish decommissioning.{{site.data.alerts.end}}
-
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --certs-dir=certs --host=<address of live node>
+$ cockroach node decommission 4 5 --certs-dir=certs --host=<address of live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 ~~~ shell
-$ cockroach node decommission 4 5 --wait=live --insecure --host=<address of live node>
+$ cockroach node decommission 4 5 --insecure --host=<address of live node>
 ~~~
 </div>
 
@@ -297,7 +290,7 @@ Then click **View nodes list** in the **Summary** area and make sure all nodes a
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-<span class="version-tag">New in v2.0:</span> In about 5 minutes, you'll see the node move to the **Decommissioned Nodes** list, and the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live.
+<span class="version-tag">New in v2.0:</span> In about 5 minutes, you'll see the node move to the **Decommissioned Nodes** list, and the node will no longer appear in timeseries graphs unless you are viewing a time range during which the node was live. However, it will never disappear from the **Decommissioned Nodes** list.
 
 <div style="text-align: center;"><img src="{{ 'images/v2.0/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -328,7 +321,7 @@ $ cockroach quit --insecure --host=<address of decommissioned node>
 
 If you accidentally decommissioned any nodes, or otherwise want decommissioned nodes to rejoin a cluster as active members, do the following:
 
-### Step 1. Identify the IDs of the decomissioned nodes
+### Step 1. Identify the IDs of the decommissioned nodes
 
 Open the Admin UI and select the **Node List** view. Note the IDs of the nodes listed under **Decommissioned Nodes**:
 

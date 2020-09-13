@@ -1,7 +1,7 @@
 @mixin button() {
 	@include button-text;
 	text-transform: uppercase;
-	@include rounded(100px);
+	@include rounded(5px);
 	@include groovy(all);
 	display: inline-block;
 	border: 2px solid $cl_green;
@@ -50,6 +50,8 @@
 	line-height: 13px;
 	background-color: $cl_green;
 	border-color: $cl_green;
+	border-width: 1px;
+	border-radius: 0px;
 	padding: 8.25px 16px;
 	color: #FFFFFF;
 	margin-right: 15px;
@@ -65,15 +67,61 @@
 	@include at-query($min, $screen-md) {
 		height: 40px;
 		font-size: 12px;
-		line-height: 12px;
-		margin-left: 10px;
-		padding: 13px 30px;
+		line-height: 40px;
+		margin-left: 5px;
+		padding: 0 17px;
 
 		&:hover {
 			background-color: #FFFFFF;
 			color: $cl_green;
-			border: 2px solid $cl_green;
+			border: 1px solid $cl_green;
 		}
+	}
+
+	@media (min-width: 1024px) {
+		margin-left: 10px;
+	}
+
+	&--alt {
+		background-color: #FFFFFF;
+		color: $cl_green;
+
+		&:focus, &:hover {
+			color: $cl_green;
+		}
+
+		@include at-query($min, $screen-md) {
+			&:hover {
+				background-color: $cl_green;
+				color: #FFFFFF;
+			}
+		}
+	}
+}
+
+.blue-arrow {
+	display: inline-block;
+	border: solid $cl_blue;
+	padding: 4px;
+	margin-left: 4px;
+	transition: transform 0.2s ease, margin-bottom 0.2s ease;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	float: right;
+	cursor: pointer;
+
+	@include at-query($min, $screen-md) {
+		display: none;
+	}
+
+	&--up {
+		border-width: 2px 0 0 2px;
+		margin-top: 3px;
+	}
+
+	&--down {
+		border-width: 0 2px 2px 0;
+		margin-bottom: 3px;
 	}
 }
 
@@ -87,7 +135,8 @@
   margin-bottom: 2px;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
 
   &--pre {
     transform: rotate(-45deg);
@@ -107,7 +156,8 @@
   margin-bottom: 0;
   transition: transform 0.2s ease, margin-bottom 0.2s ease;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
 
   &--pre {
     transform: rotate(-45deg);
@@ -123,9 +173,11 @@
 		@include button();
 		background-color: transparent;
 		border: none;
-		color: $cl_blue;
+		color: $cl_gray;
 		line-height: 40px;
 		padding: 0;
+		margin-top: 9px;
+		margin-right: 2px;
 		text-align: center;
 
 		&:focus {
@@ -140,7 +192,10 @@
 	.dropdown-menu {
 		border: none;
 		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
-		// box-shadow: 0 0 15px 0 rgba(0,0,0,0.06), 0 0 5px 0 rgba(0,0,0,0.06);
+
+		@include at-query($min, 571px) {
+			left: -60px;
+		}
 	}
 
 	.dropdown-menu > li > a {
@@ -159,6 +214,11 @@
 			background-color: transparent;
 			color: $cl_green;
 		}
+	}
+
+	.arrow-up,
+	.arrow-down {
+		border-color: $cl_gray;
 	}
 
 	.arrow-up {

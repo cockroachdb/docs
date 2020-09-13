@@ -1,14 +1,13 @@
 ---
 title: SQL Statements
 summary: SQL statements supported by CockroachDB.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help">built-in SQL shell</a>, use <code>\h [statement]</code> to get inline help about a specific statement.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Data Manipulation Statements
 
@@ -70,6 +69,7 @@ Statement | Usage
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
+[`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column.
 
 ## Transaction Management Statements
 
@@ -137,7 +137,7 @@ Statement | Usage
 
 ## Backup & Restore Statements (Enterprise)
 
-The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+The following statements are available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 
 {{site.data.alerts.callout_info}}For non-enterprise users, see <a href="back-up-data.html">Back up Data</a> and <a href="restore-data.html">Restore Data</a>.{{site.data.alerts.end}}
 

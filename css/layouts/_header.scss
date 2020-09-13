@@ -31,7 +31,9 @@ body.menu_open {
 		}
 	}
 
-	#content, .col-sidebar, #version-switcher {
+	#content,
+	.col-sidebar,
+	#version-switcher {
 		margin-left: -100vw;
 		box-shadow: none;
 	}
@@ -47,17 +49,6 @@ nav.mobile_expanded {
 	overflow:auto;
 	display: none;
 
-	a:not(.mobile-menu-dropdown__parent-link):not(.logo) {
-		border-bottom: 1px solid $cl_gray_medium;
-		@include button-text--heavy--large;
-		text-transform: uppercase;
-		width:100%;
-		float:left;
-		color: $cl_blue;
-		padding: 30px 0 30px 20px;
-		text-decoration: none;
-		@include groovy(color);
-	}
 	a:hover, a.current-menu-item {
 		color: $cl_green;
 	}
@@ -65,37 +56,56 @@ nav.mobile_expanded {
 		background:#efefef;
 	}
 
+	.mobile-nav {
+		&__link,
+		&__dropdown-label {
+			display: block;
+			color: $cl_blue;
+			@include type-button--uppercase;
+			@include groovy(color);
+			cursor: pointer;
+		}
+
+		&__link {
+			padding: 30px 0 30px 20px;
+			border-bottom: 1px solid #DADADA;
+		}
+	}
+
+	.mobile-subnav {
+		display: none;
+
+		&__section {
+			&:not(:last-child) {
+				margin-bottom: 30px;
+			}
+		}
+
+		&__label {
+			display: block;
+			margin: 20px 0 10px;
+			@include type-button--uppercase;
+			color: $cl_green;
+		}
+
+		&__link {
+			display: block;
+			margin-bottom: 10px;
+			color: $cl_blue;
+			@include type-caption;
+		}
+	}
+
 	.mobile-menu-dropdown {
 		width: 100%;
-		float: left;
-		@include button-text--heavy--large;
-		color: $cl_blue;
-		text-transform: uppercase;
 		padding: 30px 0 30px 20px;
 		border-bottom: 1px solid $cl_gray_medium;
 
-		&__parent-link {
-			color: $cl_blue;
-		}
-
-		a:not(.mobile-menu-dropdown__parent-link) {
-			position: relative;
-			display: block;
-			@include type-caption-3;
-			letter-spacing: normal;
-			text-transform: none;
-			border-bottom: none;
-			margin-top: 15px;
-			padding: 0;
-		}
-
-		.mobile-sub-nav {
-			display: none;
-		}
-
 		.blue-arrow {
-			margin-right: 25px;
 			display: block;
+			margin-top: 3px;
+			margin-right: 25px;
+			cursor: pointer;
 		}
 	}
 
@@ -115,6 +125,7 @@ nav.mobile_expanded {
 		margin-top:5px;
 		@include rotate(0deg);
 		@include groovy(all);
+		cursor: pointer;
 
 		span {
 			display: block;
@@ -158,7 +169,7 @@ nav.mobile_expanded {
 
 .logo {
 	width: 180px;
-	margin-top: 5px;
+	margin-top: 3px;
 	float:left;
 	line-height: 20px;
 	font-size: 0;
@@ -167,7 +178,7 @@ nav.mobile_expanded {
 		line-height: 23px;
 	}
 
-	@include at-query($min, $screen-lg) {
+	@include at-query($min, $screen-md) {
 		width: 209px;
 		margin-top: 3px;
 	}
@@ -178,29 +189,34 @@ header {
 	float:left;
   padding: 15px;
 	background: #FFFFFF;
-  border-bottom: 1px solid $cl_gray_medium;
 	height: 60px;
+
+	@include at-query($min, $screen-sm) {
+		// prevent 1px jump when we add border on scroll
+		border-bottom: 1px solid transparent;
+
+		.single-post & {
+			nav.desktop {
+				a.blog-nav {
+					color: $cl_green;
+					text-decoration: none;
+				}
+			}
+		}
+	}
 
 	@include at-query($min, $screen-md) {
 		height: 70px;
 	}
 
-	// return to regular padding when there is space
-	@include at-query($min, $screen-sm + 10px) {
-		padding: 15px;
-	}
+	&.navbar-fixed-top {
+		display: flex;
+		position: fixed;
+		justify-content: center;
+		border-bottom: 1px solid $cl_gray_medium;
 
-	.container {
-		position: relative;
-		margin: 0;
-
-		@include at-query($min, $screen-sm) {
-			width: 100%;
-			margin: 0 auto;
-		}
-
-		@include at-query($min, $screen-lg) {
-			max-width: $max-width;
+		@include at-query($min, $screen-md) {
+			border-bottom: unset;
 		}
 	}
 
@@ -209,135 +225,23 @@ header {
 		border-bottom: 1px solid $cl_gray_medium;
 	}
 
-	nav.desktop {
-		display:none;
-
-		a:not(.button--header) {
-			color: $cl_blue;
-			@include button-text--heavy--medium;
-			text-transform:uppercase;
-			line-height: 45px;
-			float:left;
-			margin:0 10px;
-			padding:0;
-			text-decoration: none;
-			@include groovy(color);
-
-			&.current-menu-item, &:hover {
-				color: $cl_green;
-				text-decoration: none;
-			}
-		}
-
-		.current-menu-item .menu-item-dropdown__parent-link a {
-			color: $cl_green;
-		}
-
-		.button--header {
-			@include at-query($min, $screen-sm) {
-				margin-right: 0;
-			}
-		}
-
-		@include at-query($min, $screen-md) {
-			display: inline-block;
-			float: right;
-		}
-
-		//
-		// dropdown nav items
-		//
-		.menu-dropdown {
-			position: absolute;
-			max-width: 280px;
-			margin-left: -31px;
-			background-color: #ffffff;
-			border-radius: 5px;
-			box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
-			text-transform: none;
-			letter-spacing: normal;
-			opacity: 0;
-			pointer-events: none;
-			transition: opacity 0.4s ease;
-			z-index: 1;
-
-			a {
-				padding: 20px 30px;
-				margin: 0;
-				width: 100%;
-
-				&:not(:last-child) {
-					padding-right: 45px;
-					border-bottom: solid 2px #e6e6e6;
-				}
-
-				.menu-dropdown {
-					&__title {
-						@include paragraph-type--medium;
-						color: $cl_blue;
-						text-transform: none;
-						letter-spacing: normal;
-						@include groovy(color);
-					}
-
-					&__info {
-						@include type-caption-3;
-						color: #4d4d4d;
-						text-transform: none;
-						letter-spacing: normal;
-					}
-				}
-
-				&:hover {
-					.menu-dropdown__title {
-						color: $cl_green;
-					}
-				}
-			}
-		}
-
-		.menu-item-dropdown {
-			float: left;
-			margin: 0 10px;
-			padding: 0;
-			@include button-text--heavy--medium;
-			line-height: 45px;
-			text-transform: uppercase;
-			@include groovy(color);
-
-			&__parent-link {
-				height: 40px;
-
-				a {
-					margin: 0;
-				}
-			}
-
-			&.current-menu-item {
-				color: $cl_green;
-			}
-
-			&:hover {
-				cursor: pointer;
-				color: $cl_green;
-
-				.menu-dropdown {
-					opacity: 1;
-					pointer-events: all;
-				}
-			}
-		}
+	.navbar-fixed-top--inner {
+		width: 100%;
+		max-width: $max-width;
 	}
 
 	nav.mobile {
 		float:right;
 
+		@include at-query($min, $screen-md) {
+  		display: none;
+  	}
+
   	.hamburger {
   		width:21px;
   		height: 20px;
   		float:right;
-  		margin-right:5px;
-  		margin-top:5px;
+  		margin-top: 5px;
   		position: relative;
   		@include rotate(0deg);
   	 	@include groovy(all);
@@ -367,17 +271,114 @@ header {
 				}
 			}
 		}
+	}
 
-  	.hamburger:hover {
-  		border-color: $cl_green_dark;
+	nav.desktop {
+		display: none;
 
-  		.hamburger_inner {
-	  		border-color: $cl_green_dark;
-  		}
-  	}
+		@include at-query($min, $screen-md) {
+			display: inline-block;
+			float: right;
+		}
 
-  	@include at-query($min, $screen-md) {
-  		display: none;
-  	}
+		.desktop-menu {
+			&__item,
+			&__item-link {
+				float: left;
+				padding: 0;
+				@include type-button;
+				line-height: 45px;
+				text-transform: uppercase;
+				color: $cl_blue;
+				@include groovy(color);
+
+				&.current-menu-item,
+				&:hover {
+					color: $cl_green;
+					text-decoration: none;
+				}
+			}
+
+			&__item {
+				position: relative;
+
+				&:hover {
+					cursor: pointer;
+					color: $cl_green;
+
+					.desktop-menu__dropdown-container {
+						opacity: 1;
+						pointer-events: all;
+					}
+				}
+			}
+
+			&__item-link {
+				margin: 0 5px;
+				text-decoration: none;
+
+				@media (min-width: 1024px) {
+					margin: 0 10px;
+				}
+			}
+
+			&__dropdown-container {
+				display: flex;
+				position: absolute;
+				width: fit-content;
+				top: 40px;
+				left: 0px;
+				padding: 15px;
+				background-color: #ffffff;
+				border-radius: 5px;
+				@include cl-box-shadow--blue;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.4s ease;
+				z-index: 1;
+			}
+
+			&__subnav {
+				&-section {
+					width: fit-content;
+					margin: 0 15px;
+
+					&:not(:last-child) {
+						border-right: 1px solid $cl_gray_medium;
+					}
+
+					&--product {
+						min-width: 180px;
+					}
+
+					&--resources {
+						min-width: 150px;
+					}
+				}
+
+				&-label {
+					display: block;
+				}
+
+				&-link {
+					display: block;
+					@include type-button;
+					letter-spacing: 0;
+					line-height: 35px;
+					text-transform: none;
+					color: $cl_blue;
+
+					&:hover {
+						color: $cl_green;
+					}
+				}
+			}
+		}
+
+		.button--header {
+			@include at-query($min, $screen-sm) {
+				margin-right: 0;
+			}
+		}
 	}
 }

@@ -1,14 +1,13 @@
 ---
 title: ALTER SEQUENCE
 summary: Use the ALTER SEQUENCE statement to change the name, increment values, and other settings of a sequence.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.
 
 {{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -16,7 +15,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/alter_sequence_options.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/alter_sequence_options.html %}</section>
 
 ## Parameters
 

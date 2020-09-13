@@ -1,14 +1,13 @@
 ---
 title: SQL Dump (Export)
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables and views. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
 {{site.data.alerts.callout_success}}CockroachDB <a href="https://www.cockroachlabs.com/pricing/">enterprise license</a> users can also back up their cluster's data using <a href="backup.html"><code>BACKUP</code></a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
@@ -57,13 +56,13 @@ The `dump` command supports the following [general-use](#general) and [logging](
 
 Flag | Description
 -----|------------
-`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstraion.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
+`--as-of` | Dump table schema and/or data as they appear at the specified [timestamp](timestamp.html). See this [example](#dump-table-data-as-of-a-specific-time) for a demonstration.<br><br>Note that historical data is available only within the garbage collection window, which is determined by the [`ttlseconds`](configure-replication-zones.html) replication setting for the table (25 hours by default). If this timestamp is earlier than that window, the dump will fail.<br><br>**Default:** Current time
 `--dump-mode` | Whether to dump table and view schemas, table data, or both.<br><br>To dump just table and view schemas, set this to `schema`. To dump just table data, set this to `data`. To dump both table and view schemas and table data, leave this flag out or set it to `both`.<br><br><span class="version-tag">New in v1.1:</span> Table and view schemas are dumped in the order in which they can successfully be recreated. For example, if a database includes a table, a second table with a foreign key dependency on the first, and a view that depends on the second table, the dump will list the schema for the first table, then the schema for the second table, and then the schema for the view.<br><br>**Default:** `both`
 `--echo-sql` | <span class="version-tag">New in v1.1:</span> Reveal the SQL statements sent implicitly by the command-line utility.
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -351,7 +350,7 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 ## Known Limitations
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}
 
 ## See Also
 

@@ -1,12 +1,11 @@
 ---
 title: EXPLAIN
 summary: The EXPLAIN statement provides information you can use to optimize SQL queries.
-toc: false
+toc: true
 ---
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](#explainable-statements). You can then use this information to optimize the query.
 
-<div id="toc"></div>
 
 ## Explainable Statements
 
@@ -51,7 +50,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/explain.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/explain.html %}</section>
 
 ## Required Privileges
 

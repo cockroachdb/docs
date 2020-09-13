@@ -1,7 +1,7 @@
 ---
 title: Join Expressions
 summary: Join expressions combine data from two or more table expressions.
-toc: false
+toc: true
 ---
 
 Join expressions, also called "joins", combine the results of two or
@@ -9,11 +9,10 @@ more table expressions based on conditions on the values of particular columns.
 
 Join expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/joined_table.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/joined_table.html %}</div>
 
 <div markdown="1"></div>
 

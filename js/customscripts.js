@@ -11,6 +11,13 @@ function renderTOC() {
     showSpeed: 0,
     headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
   });
+
+  $('#toc-right').toc({
+    minimumHeaders: 0,
+    listType: 'ul',
+    showSpeed: 0,
+    headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
+  });
 }
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
@@ -19,17 +26,18 @@ $(function() {
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
       $mobile_menu = $('nav.mobile_expanded'),
-      $sidebar = $('#mysidebar'),
+      $colSidebar = $('.col-sidebar'),
+      $sidebar = $('#sidebar'),
       $footer = $('section.footer'),
-      footertotop, scrolltop, difference,
       sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
-      $versionSwitcher = $('#version-switcher');
+      $versionSwitcher = $('#version-switcher'),
+      $tocColContents = $('.toc-col-contents');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
     $sidebar.css({height: sideNavHeight});
-    $('#mysidebar li').hide();
+    $('#sidebar li').hide();
     $('#version-switcher .tier-1 ul').slideUp();
     $versionSwitcher.removeClass('open');
   }
@@ -40,7 +48,7 @@ $(function() {
     $('body').removeClass('sidenav-open');
 
     if (winWidth >= 992) {
-      $('#mysidebar li').show();
+      $('#sidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
       $sidebar.css('height', '');
@@ -48,7 +56,7 @@ $(function() {
       $('.collapsed-header').show();
       $sidebar.addClass('nav--collapsed');
       $sidebar.css({height: sideNavHeight});
-      $('#mysidebar li').hide();
+      $('#sidebar li').hide();
     }
   }
 
@@ -100,45 +108,104 @@ $(function() {
     cachedWidth = _viewport_width;
   });
 
-  $(window).on('scroll', function(){
+  var tocHeight = 0; // outer var for TOC height reference maintained outside scroll handler
+
+  $(window).on('scroll', function(e) {
+    // If we calculate tocHeight inside of scroll handler, the true TOC height will be
+    // miscalculated as too small when a long TOC exceeds the top border of the footer.
+    // This will cause a long TOC to flicker when the user scrolls up.
+    //
+    // To solve this, we need to calculate the TOC height outside the event handler--
+    // however, the TOC is rendered *after* the 'ready' event on $(document) is fired, thus we cannot
+    // simply calculate the TOC height at the top of the 'ready' handler.  The `if` block below this is a hack
+    // to get the 'true' height of the TOC once it has been rendered on the page.
+    var tempTocHeight = $tocColContents.height()
+    if (tempTocHeight > tocHeight) {
+      tocHeight = tempTocHeight;
+    }
+
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var footerOffset = $footer.offset().top;
+    var viewportFooterDiff = (scrollTop + windowHeight) - footerOffset - 1;
+    var tocHeightInColumn = tocHeight + parseInt($tocColContents.css('top')),
     _viewport_width = window.innerWidth;
 
+    $sidebar.css('padding-top', '');
+
+    // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
-      if ($(window).scrollTop() + $(window).height() >= $('.footer').offset().top) {
-        $versionSwitcher.css({'position': 'absolute', 'bottom': '69px'});
+      if (scrollTop + windowHeight >= footerOffset) {
+        // $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
+        $colSidebar.css('bottom', viewportFooterDiff + 'px');
       } else {
-        $versionSwitcher.css({'position': 'fixed', 'bottom': '-1px'});
+        // $versionSwitcher.css({'bottom': '-1px'});
+        $colSidebar.css('bottom', '0');
       }
     } else { // mobile
       $sidebar.css('padding-top', 10);
+      $colSidebar.css('bottom', '');
+      $versionSwitcher.css({'bottom': '0'});
 
-      var scrolled = $('.col-sidebar').hasClass('col-sidebar--scrolled');
-      if ($sidebar.hasClass('nav--collapsed') && $(window).scrollTop() > 0 && !scrolled) {
-        $('.col-sidebar').addClass('col-sidebar--scrolled');
+      var scrolled = $colSidebar.hasClass('col-sidebar--scrolled');
+      if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
+        $colSidebar.addClass('col-sidebar--scrolled');
         $('.collapsed-header__pre').slideUp(250);
         sideNavHeight = '40px';
         $sidebar.animate({height: sideNavHeight}, {duration: 250});
       }
     }
+
+    // handle positoning of right-hand TOC when scrolling window
+    if (_viewport_width >= 1072 && scrollTop >= 31) {
+      $tocColContents.css({
+        position: 'fixed',
+        top: 140,
+        width: '260px'
+      });
+
+      // if footer in view and TOC overruns top of footer, set bottom property to top of footer
+      // otherwise, unset bottom property
+      if (scrollTop + tocHeightInColumn >= footerOffset) {
+        $tocColContents.css('bottom', viewportFooterDiff + 1 + 'px');
+      } else {
+        $tocColContents.css('bottom', '');
+      }
+    } else {
+      $tocColContents.css({
+        position: 'relative',
+        top: '',
+        width: ''
+      });
+    }
   });
+
   // Fire scroll event on load
   $(window).scroll();
 
-  // Section makes shell terminal prompt markers ($) totally unselectable in syntax-highlighted code samples
-  terminalMarkers = document.getElementsByClassName("gp");  // Rogue syntax highlighter styles all terminal markers with class gp
 
-  for(var i = 0; i < terminalMarkers.length; i++){
-    terminalMarkers[i].innerText="";    // Remove the existing on-page terminal marker
-    terminalMarkers[i].className += " noselect shellterminal"; // Add shellterminal class, which then displays the terminal marker as a ::before element
+  function isPromptMarker(el, ch) {
+    return el.innerText.trim() === ch && (!el.previousSibling || el.previousSibling.textContent.endsWith('\n'));
   }
 
-  // Section makes SQL terminal prompt markers (>) totally unselectable in syntax-highlighted code samples
-  sqlMarkers = document.getElementsByClassName("o");
-  for(var i = 0; i < sqlMarkers.length; i++){
-    if(sqlMarkers[i].innerText===">" && (!sqlMarkers[i].previousSibling || sqlMarkers[i].previousSibling.textContent==="\n"|| sqlMarkers[i].previousSibling.textContent==="\n\n")){
-      sqlMarkers[i].innerText="";    // Remove the existing on-page SQL marker
-      sqlMarkers[i].nextSibling.textContent="";
-      sqlMarkers[i].className += " noselect sqlterminal"; // Add sqlterminal class, which then displays the terminal marker as a ::before element
+  // This section makes shell terminal prompt markers ($) totally unselectable
+  // in syntax-highlighted code samples. The syntax highlighter styles all
+  // terminal markers with this class.
+  var terminalMarkers = document.getElementsByClassName("nv");
+  for (var i = 0; i < terminalMarkers.length; i++) {
+    if (isPromptMarker(terminalMarkers[i], "$")) {
+      // Remove the existing on-page terminal marker.
+      terminalMarkers[i].innerText = "";
+    }
+  }
+
+  // This section does the same for SQL terminal prompt markers (>).
+  var sqlMarkers = document.getElementsByClassName("o");
+  for (var i = 0; i < sqlMarkers.length; i++) {
+    if (isPromptMarker(sqlMarkers[i], ">")) {
+      // Remove the existing on-page SQL marker.
+      sqlMarkers[i].innerText = "";
+      sqlMarkers[i].nextSibling.textContent = "";
     }
   }
 
@@ -191,13 +258,13 @@ $(function() {
         $sidebar.removeClass('nav--collapsed');
         $sidebar.css('height', '');
 
-        var $active = $('#mysidebar .active');
+        var $active = $('#sidebar .active');
         if ($active.length > 0) {
           // if active drawer, we want to preserve that on expand
-          $('#mysidebar li.search-wrap').slideDown(250);
+          $('#sidebar li.search-wrap').slideDown(250);
           $active.slideDown(250);
 
-          $lastActive = $('#mysidebar li.active:last');
+          $lastActive = $('#sidebar li.active:last');
           if ($lastActive.hasClass('tier-3')) {
             $lastActive.siblings('li').slideDown(250);
           } else if ($lastActive.hasClass('tier-2')) {
@@ -211,7 +278,7 @@ $(function() {
           }
         } else {
           // otherwise, this should show top level
-          $('#mysidebar li').slideDown(250);
+          $('#sidebar li').slideDown(250);
         }
         $versionSwitcher.slideDown();
       } else {
@@ -232,7 +299,7 @@ $(function() {
     if ($sidebar.hasClass('nav--collapsed')) toggleSideNav();
   });
 
-  $('#mysidebar a').on('click', function() {
+  $('#sidebar a').on('click', function() {
     _viewport_width = window.innerWidth;
     // mobile only
     if (_viewport_width <= 992) {
@@ -248,7 +315,7 @@ $(function() {
     // if a top level menu item is clicked, this ensures no active list items
     // avoids third level item staying active, causing no items to appear on collapse/expand
     // this fires on desktop as well, to prevent an empty menu after resize
-    if ($(this).parent('li').parent('#mysidebar').length > 0) {
+    if ($(this).parent('li').parent('#sidebar').length > 0) {
       $('li.active').removeClass('active');
     }
   });
@@ -296,7 +363,7 @@ $(function() {
 
   // mobile menu
   $('.mobile-menu-dropdown').on('click', function() {
-    $(this).find('.mobile-sub-nav').slideToggle(200);
+    $(this).find('.mobile-subnav').slideToggle(200);
     flipArrow($(this));
   });
 });

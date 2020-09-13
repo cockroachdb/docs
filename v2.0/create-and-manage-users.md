@@ -1,21 +1,20 @@
 ---
 title: Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
-toc: false
+toc: true
 ---
 
 To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](privileges.html)), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-user.html"><code>CREATE USER</code></a> and <a href="drop-user.html"><code>DROP USER</code></a> statements to create and remove users.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
 - Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
-- {% include custom/remove-user-callout.html %}
+- {% include {{ page.version.version }}/misc/remove-user-callout.html %}
 
 ## Subcommands
 
@@ -60,7 +59,7 @@ Flag | Description
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -211,7 +210,7 @@ $ cockroach user get jpointsman --insecure
 
 ### Remove a User
 
-{{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}{% include {{ page.version.version }}/misc/remove-user-callout.html %}{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell

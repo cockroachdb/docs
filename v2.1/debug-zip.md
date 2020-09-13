@@ -1,23 +1,27 @@
 ---
 title: Collect Debug Information from Your Cluster
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
-toc: false
+toc: true
 ---
 
 The `debug zip` [command](cockroach-commands.html) connects to your cluster and gathers the following information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
+- Cluster events
 - Schema change events
 - Node liveness
 - Gossip data
 - Stack traces
 - Range lists
 - A list of databases and tables
-- Heap profiles (**new in v2.0**)
+- [Cluster Settings](cluster-settings.html)
+- [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
+- Alerts
+- Heap profiles
+- **New in v2.1:** Problem ranges
 
 {{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Details
 
@@ -28,8 +32,6 @@ There are two scenarios in which `debug zip` is useful:
 - To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. See more information [on this page](#collecting-log-files).
 
 - If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
-
-{{site.data.alerts.callout_danger}}The file produced by <code>cockroach debug zip</code> can contain highly sensitive, unanonymized information, such as usernames, passwords, and your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.{{site.data.alerts.end}}
 
 ### Collecting log files
 
@@ -58,7 +60,7 @@ It's important to understand that the `[flags]` here are used to connect to Cock
 
 ## Flags
 
-The `debug zip` subcommand supports the following [general-use](#general) and [logging](#logging) flags.
+The `debug zip` subcommand supports the following [general-use](#general), [client connection](#client-connection), and [logging](#logging) flags.
 
 ### General
 
@@ -68,6 +70,12 @@ Flag | Description
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+
+### Client connection
+
+Flag | Description
+-----|-----------
+`--url` | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 
 ### Logging
 

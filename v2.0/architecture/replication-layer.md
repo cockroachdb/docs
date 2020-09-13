@@ -1,20 +1,18 @@
 ---
 title: Replication Layer
-summary: 
-toc: false
+summary: The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between copies.
+toc: true
 ---
 
 The Replication Layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
-
 ## Overview
 
 High availability requires that your database can tolerate nodes going offline without interrupting service to your application. This means replicating data between nodes to ensure the data remains accessible.
 
-Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB users a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as Multi-Active Availability) requires 3 nodes.
+Ensuring consistency with nodes offline, though, is a challenge many databases fail. To solve this problem, CockroachDB uses a consensus algorithm to require that a quorum of replicas agrees on any changes to a range before those changes are committed. Because 3 is the smallest number that can achieve quorum (i.e., 2 out of 3), CockroachDB's high availability (known as Multi-Active Availability) requires 3 nodes.
 
 The number of failures that can be tolerated is equal to *(Replication factor - 1)/2*. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on. You can control the replication factor at the cluster, database, and table level using [Replication Zones](../configure-replication-zones.html).
 
@@ -71,7 +69,7 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. When the node disconnects, the epoch is considered changed, and the node immediately loses all of its leases.
 
-This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases don't expire until a node loses connection.
+This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases do not expire until a node loses connection.
 
 #### Expiration-Based Leases (Meta & System Ranges)
 

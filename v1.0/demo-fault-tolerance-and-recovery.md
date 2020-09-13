@@ -1,12 +1,11 @@
 ---
 title: Fault Tolerance & Recovery
 summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
-toc: false
+toc: true
 ---
 
 This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -330,9 +329,9 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ shell
 $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5

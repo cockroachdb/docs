@@ -1,18 +1,17 @@
 ---
 title: REVOKE
 summary: The REVOKE statement revokes privileges from users.
-toc: false
+toc: true
 ---
 
 The `REVOKE` [statement](sql-statements.html) revokes [privileges](privileges.html) from users.
 
 For the list of privileges that can be granted to and revoked from users, see [`GRANT`](grant.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/revoke.html %}
+{% include {{ page.version.version }}/sql/diagrams/revoke.html %}
 
 ## Required Privileges
 

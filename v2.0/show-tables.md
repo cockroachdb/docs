@@ -2,18 +2,19 @@
 title: SHOW TABLES
 summary: The SHOW TABLES statement lists the tables in a schema or database.
 keywords: reflection
-toc: false
+toc: true
 ---
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](views.html) in a schema or database.
 
 {{site.data.alerts.callout_info}}While a table or view is being <a href="drop-table.html">dropped</a>, <code>SHOW TABLES</code> will list the object with a <code>(dropped)</code> suffix.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/show_tables.html %}
+</div>
 
 ## Required Privileges
 

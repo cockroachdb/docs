@@ -1,14 +1,13 @@
 ---
 title: Cluster Settings
 summary: Learn about cluster settings that apply to all nodes of a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 This page shows you how to view and change CockroachDB's **cluster-wide settings**.
 
 {{site.data.alerts.callout_info}}In contrast to cluster-wide settings, node-level settings apply to a single node. They are defined by flags passed to the <code>cockroach start</code> command when starting a node and cannot be changed without stopping and restarting the node. For more details, see <a href="start-a-node.html">Start a Node</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -20,7 +19,7 @@ They can be updated anytime after a cluster has been started, but only by the `r
 
 {{site.data.alerts.callout_danger}}Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.{{site.data.alerts.end}}
 
-{% include settings/v2.0/settings.md %}
+{% include {{ page.version.version }}/sql/settings/settings.md %}
 
 ## View Current Cluster Settings
 

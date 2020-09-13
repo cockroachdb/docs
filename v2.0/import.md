@@ -1,14 +1,13 @@
 ---
 title: IMPORT
 summary: Import CSV data into your CockroachDB cluster.
-toc: false
+toc: true
 ---
 
-The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g. CSVs) into a single table.
+The `IMPORT` [statement](sql-statements.html) imports tabular data (e.g., CSVs) into a single table.
 
 {{site.data.alerts.callout_info}}For details about importing SQL dumps, see <a href="import-data.html">Import Data</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
@@ -49,7 +48,7 @@ The tabular data to import must be valid [CSV files](https://tools.ietf.org/html
 
 CockroachDB-specific requirements:
 
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [string literal](sql-constants.html#string-literals) beginning with the two characters `\`, `x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
 ### Object Dependencies
 
@@ -80,7 +79,7 @@ All nodes are used during tabular data conversion into key-value data, which mea
 
 ## Viewing and Controlling Import Jobs
 
-Whenever you initiate an import, CockroachDB registers it as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
+After CockroachDB successfully initiates an import, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
@@ -88,7 +87,9 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/import.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/import.html %}
+</div>
 
 {{site.data.alerts.callout_info}}The <code>IMPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
@@ -110,7 +111,7 @@ Only the `root` user can run [`IMPORT`](import.html).
 
 URLs for the files you want to import must use the following format:
 
-{% include external-urls-v2.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 ### Import Options
 

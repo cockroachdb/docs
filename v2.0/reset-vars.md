@@ -1,12 +1,11 @@
 ---
 title: RESET (session variable)
 summary: The SET statement resets a session variable to its default value.
-toc: false
+toc: true
 ---
 
 The `RESET` [statement](sql-statements.html) resets a [session variable](set-vars.html) to its default value for the client session.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,7 @@ No [privileges](privileges.html) are required to reset a session setting.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/reset_session.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/reset_session.html %}</section>
 
 ## Parameters
 

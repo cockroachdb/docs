@@ -1,14 +1,13 @@
 ---
 title: Use the Built-in SQL Client
 summary: CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line.
-toc: false
+toc: true
 ---
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
 To exit the interactive shell, use `\q` or `ctrl-d`.
 
-<div id="toc"></div>
 
 ## Synopsis
 

@@ -1,7 +1,7 @@
 ---
 title: Orchestrate CockroachDB with Docker Swarm
 summary: How to orchestrate the deployment and management of a secure three-node CockroachDB cluster as a Docker swarm.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ This page shows you how to orchestrate the deployment and management of a secure
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -132,7 +131,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Move the binary:
-    $ sudo mv cockroach /usr/local/bin
+    $ sudo mv cockroach /usr/local/bin/
     ~~~
 
 2. Create a `certs` directory and a safe directory to keep your CA key:

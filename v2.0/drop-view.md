@@ -1,12 +1,11 @@
 ---
 title: DROP VIEW
 summary: The DROP VIEW statement removes a view from a database.
-toc: false
+toc: true
 ---
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,7 @@ The user must have the `DROP` [privilege](privileges.html) on the specified view
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_view.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_view.html %}</section>
 
 ## Parameters
 

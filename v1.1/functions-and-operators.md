@@ -1,22 +1,21 @@
 ---
 title: Functions and Operators
 summary: CockroachDB supports many built-in functions, aggregate functions, and operators.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL functions and operators.
 
 {{site.data.alerts.callout_success}}In the <a href="use-the-built-in-sql-client.html#sql-shell-help-new-in-v1-1">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Built-in Functions
 
-{% include sql/{{ page.version.version }}/functions.md %}
+{% include {{ page.version.version }}/sql/functions.md %}
 
 ## Aggregate Functions
 
-{% include sql/{{ page.version.version }}/aggregates.md %}
+{% include {{ page.version.version }}/sql/aggregates.md %}
 
 ## Operators
 
@@ -63,7 +62,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported Operations
 
-{% include sql/{{ page.version.version }}/operators.md %}
+{% include {{ page.version.version }}/sql/operators.md %}
 
 <!--
 ## `CAST()`

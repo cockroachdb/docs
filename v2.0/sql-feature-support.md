@@ -1,11 +1,9 @@
 ---
 title: SQL Feature Support in CockroachDB v2.0
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
+toc: true
+redirect_from: detailed-sql-support.html
 ---
-
-<div id="toc"></div>
-
-## Overview
 
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
 
@@ -45,7 +43,7 @@ table tr td:nth-child(2) {
 | <span class="version-tag">New in v2.0:</span> JSON | ✓ | Common Extension | [`JSONB` documentation](jsonb.html) |
 | <span class="version-tag">New in v2.0:</span> `TIME` | ✓ | Standard | [`TIME` documentation](time.html) |
 | XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing. |
-| `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we don't plan to support it. |
+| `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it. |
 | `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms. |
 | `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
 
@@ -136,9 +134,9 @@ table tr td:nth-child(2) {
 |-----------|-----------|------|---------|
 | Common functions | ✓ | Standard | [Functions calls and SQL special forms documentation](scalar-expressions.html#function-calls-and-sql-special-forms)
 | Common operators | ✓ | Standard | [Operators documentation](scalar-expressions.html#unary-and-binary-operations) |
-| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
-| `AND`/`OR` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations) |
+| `IF`/`CASE`/`NULLIF` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions) |
+| `COALESCE`/`IFNULL` | ✓ | Standard | [Conditional expressions documentation](scalar-expressions.html#conditional-expressions) |
+| `AND`/`OR`/`NOT` | ✓ | Standard | [Logical operators documentation](scalar-expressions.html#logical-operators) |
 | `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](scalar-expressions.html#string-pattern-matching) |
 | `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](scalar-expressions.html#string-matching-using-sql-regular-expressions) |
 | Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](scalar-expressions.html#string-matching-using-posix-regular-expressions) |

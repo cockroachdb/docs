@@ -1,12 +1,11 @@
 ---
 title: Known Limitations in CockroachDB v1.0
 summary: Known limitations is CockroachDB v1.0.
-toc: false
+toc: true
 ---
 
 This page describes limitations we identified in the [CockroachDB v1.0](../releases/v1.0.html) release. For limitations that have been subsequently resolved, this page also calls out the release incuding the change.
 
-<div id="toc"></div>
 
 ## Removing all rows from large tables
 
@@ -24,7 +23,7 @@ As a workaround, when you need to remove all rows from a large table:
 
 Within a single [transaction](transactions.html):
 
-- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
+- DDL statements cannot be mixed with DML statements. As a workaround, you can split the statements into separate transactions.
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table. This also applies to running [`TRUNCATE`](truncate.html) on such a table because `TRUNCATE` implicitly drops and recreates the table.
 - A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
 
@@ -275,7 +274,7 @@ As a workaround, list the columns explicitly, for example:
 
 By default, CockroachDB periodically rotates the file it writes logs to, as well as a symlink pointing to the file it's currently using. However, on Windows, non-admin users cannot create symlinks, which prevents CockroachDB from starting because it cannot create logs.
 
-To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, e.g.:
+To resolve this issue, non-admin users must log to `stdout` (instead of files) by passing `--log-dir=` (with the empty value) to the `cockroach start` command, for example:
 
 ~~~ shell
 $ cockroach.exe start --log-dir= --insecure
@@ -283,7 +282,7 @@ $ cockroach.exe start --log-dir= --insecure
 
 ## Query planning for `OR` expressions
 
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it can't use both conditions at once.
+Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ## Privileges for `DELETE` and `UPDATE`
 

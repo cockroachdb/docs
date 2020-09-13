@@ -1,7 +1,7 @@
 ---
 title: NULL Handling
 summary: Learn how NULL values are handled in CockroachDB SQL.
-toc: false
+toc: true
 ---
 
 This page summarizes how `NULL` values are handled in CockroachDB
@@ -10,7 +10,6 @@ client](use-the-built-in-sql-client.html).
 
 {{site.data.alerts.callout_info}}When using the built-in client, <code>NULL</code> values are displayed using the word <code>NULL</code>. This distinguishes them from a character field that contains an empty string ("").{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## NULLs and Simple Comparisons
 
@@ -142,7 +141,7 @@ Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 ## NULLs and Conditional Operators
 
 The [conditional
-operators](scalar-expressions.html#conditional-expressions-and-boolean-short-circuit-operations)
+operators](scalar-expressions.html#conditional-expressions)
 (including `IF`, `COALESCE`, `IFNULL`) only evaluate some
 operands depending on the value of a condition operand, so their
 result is not always `NULL` depending on the given operands.
@@ -283,7 +282,7 @@ However, counting the number of distinct values excludes `NULL`s, which is consi
 
 ## NULLs as Other Values
 
-In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calcuations.
+In some cases, you may want to include `NULL` values in arithmetic or aggregate function calculations. To do so, use the `IFNULL()` function to substitute a value for `NULL` during calculations.
 
 For example, let's say you want to calculate the average value of column `b` as being the `SUM()` of all numbers in `b` divided by the total number of rows, regardless of whether `b`'s value is `NULL`. In this case, you would use `AVG(IFNULL(b, 0))`, where `IFNULL(b, 0)` substitutes a value of zero (0) for `NULL`s during the calculation.
 

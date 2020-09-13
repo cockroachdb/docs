@@ -1,14 +1,13 @@
 ---
 title: View Node Details
 summary: To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags.
-toc: false
+toc: true
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
 <span class="version-tag">New in v1.1:</span> The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 
-<div id="toc"></div>
 
 ## Subcommands
 
@@ -80,11 +79,11 @@ The `node decommission` subcommand also supports the following general flag:
 
 Flag | Description
 -----|------------
-`--wait` | When to return to the client. Possible values: `all`, `live`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command won't return to the client until those nodes are back online.<br><br>If `live`, the command returns to the client after all online nodes are fully decommissioned. Any specified nodes that are offline will automatically will be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
+`--wait` | When to return to the client. Possible values: `all`, `live`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `live`, the command returns to the client after all online nodes are fully decommissioned. Any specified nodes that are offline will automatically will be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters-with-url.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

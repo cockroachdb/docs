@@ -1,20 +1,20 @@
 ---
 title: DROP TABLE
 summary: The DROP TABLE statement removes a table and all its indexes from a database.
-toc: false
+toc: true
 ---
 
 The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.
 
-<div id="toc"></div>
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_table.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_table.html %}</section>
 
 ## Parameters
 
@@ -38,7 +38,7 @@ In this example, other objects do not depend on the table being dropped.
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | branches           |
@@ -63,7 +63,7 @@ DROP TABLE
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | user_accounts_view |
@@ -84,7 +84,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 
 ~~~
 +--------------------+
-|       Table        |
+| table_name         |
 +--------------------+
 | accounts           |
 | user_accounts_view |
@@ -116,10 +116,10 @@ DROP TABLE
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-+-------+
++------------+
+| table_name |
++------------+
++------------+
 (0 rows)
 ~~~
 
@@ -135,3 +135,4 @@ DROP TABLE
 - [`DELETE`](delete.html)
 - [`DROP INDEX`](drop-index.html)
 - [`DROP VIEW`](drop-view.html)
+- [Online Schema Changes](online-schema-changes.html)

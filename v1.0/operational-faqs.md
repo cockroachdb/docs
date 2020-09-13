@@ -1,10 +1,9 @@
 ---
 title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
-toc: false
+toc: true
 ---
 
-<div id="toc"></div>
 
 ## Why is my process hanging when I try to start it in the background?
 
@@ -17,7 +16,7 @@ the right place.
 
 In order to keep your data consistent, CockroachDB only works when at least a
 majority of its nodes are running. This means that if only one node of a three
-node cluster is running, that one node won't be able to do anything. The
+node cluster is running, that one node will not be able to do anything. The
 `--background` flag of [`cockroach start`](start-a-node.html) causes the start
 command to wait until the node has fully initialized and is able to start
 serving queries.
@@ -26,7 +25,7 @@ Together, these two facts mean that the `--background` flag will cause
 `cockroach start` to hang until a majority of nodes are running. In order to
 restart your cluster, you should either use multiple terminals so that you can
 start multiple nodes at once or start each node in the background using your
-shell's functionality (e.g. `cockroach start &`) instead of the `--background`
+shell's functionality (e.g., `cockroach start &`) instead of the `--background`
 flag.
 
 ## Why is memory usage increasing despite lack of traffic?
@@ -47,7 +46,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 CockroachDB needs moderately accurate time to preserve data consistency, so it's important to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-By default, CockroachDB's maximum allowed clock offset is 500ms. When a node detects that its clock offset, relative to other nodes, is half or more of the maximum allowed, it spontaneously shuts down. This is well in advance of the maximum offset (500ms by default), beyond which [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is not guaranteed and stale reads and write skews could occur. With NTP or other clock synchronization software running on each node, there's very little risk of ever exceeding the maximum offset and encountering such anomalies, and even on well-functioning hardware not running synchronization software, slow clock drift is most common, which CockroachDB handles safely.
+By default, CockroachDB's maximum allowed clock offset is 500ms. When a node detects that its clock offset, relative to other nodes, is half or more of the maximum allowed, it spontaneously shuts down. While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. With NTP or other clock synchronization software running on each node, there's very little risk of ever exceeding the maximum offset and encountering such anomalies, and even on well-functioning hardware not running synchronization software, slow clock drift is most common, which CockroachDB handles safely.
 
 The one rare case to note is when a node's clock suddenly jumps beyond the maximum offset before the node detects it. Although extremely unlikely, this could occur, for example, when running CockroachDB inside a VM and the VM hypervisor decides to migrate the VM to different hardware with a different time. In this case, there can be a small window of time between when the node's clock becomes unsynchronized and when the node spontaneously shuts down. During this window, it would be possible for a client to read stale data and write data derived from stale reads.
 

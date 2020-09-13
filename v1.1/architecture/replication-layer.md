@@ -1,14 +1,13 @@
 ---
 title: Replication Layer
 summary: 
-toc: false
+toc: true
 ---
 
 The Replication Layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -71,7 +70,7 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. When the node disconnects, the epoch is considered changed, and the node immediately loses all of its leases.
 
-This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases don't expire until a node loses connection.
+This mechanism lets us avoid tracking leases for every range, which eliminates a substantial amount of traffic we would otherwise incur. Instead, we assume leases do not expire until a node loses connection.
 
 #### Expiration-Based Leases (Meta & System Ranges)
 

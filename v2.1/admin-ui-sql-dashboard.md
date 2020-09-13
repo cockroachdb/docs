@@ -1,12 +1,11 @@
 ---
 title: SQL Dashboard
 summary: The SQL dashboard lets you monitor the performance of your SQL queries.
-toc: false
+toc: true
 ---
 
 The **SQL** dashboard in the CockroachDB Admin UI lets you monitor the performance of your SQL queries. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
 
-<div id="toc"></div>
 
 The **SQL** dashboard displays the following time series graphs:
 
@@ -32,21 +31,19 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 <img src="{{ 'images/v2.1/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
-## Transactions
+## SQL Query Errors
 
-<img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_sql_query_errors.png' | relative_url }}" alt="CockroachDB Admin UI SQL Query Errors" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows separately the current moving average, over the last 10 seconds, of the number of opened, committed, aborted, and rolled back transactions per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of SQL statements issued to the node that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling).
 
-- In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current transactions load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
+- In the cluster view, the graph shows the 10-second average of the number of SQL statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling) across all nodes.
 
-If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL queries. In that case, re-examine queries to lower contention.
-
-## Service Latency
+## Service Latency: SQL, 99th percentile
 
 <img src="{{ 'images/v2.1/admin_ui_service_latency_99_percentile.png' | relative_url }}" alt="CockroachDB Admin UI Service Latency" style="border:1px solid #eee;max-width:100%" />
 
@@ -55,6 +52,16 @@ Service latency is calculated as the time between when the cluster receives a qu
 - In the node view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the selected node.
 
 - In the cluster view, the graph displays the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for each node in the cluster.
+
+## Transactions
+
+<img src="{{ 'images/v2.1/admin_ui_transactions.png' | relative_url }}" alt="CockroachDB Admin UI Transactions" style="border:1px solid #eee;max-width:100%" />
+
+- In the node view, the graph shows the 10-second average of the number of opened, committed, aborted, and rolled back [transactions](transactions.html) per second issued by SQL clients on the node.
+
+- In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions](transactions.html) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
+
+If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL queries. In that case, re-examine queries to lower contention.
 
 ## Other graphs
 
@@ -66,7 +73,7 @@ The **SQL** dashboard shows other time series graphs that are important for Cock
 - Service Latency: DistSQL
 - Schema Changes
 
-For monitoring CockroachDB, it is sufficient to use the [**SQL Connections**](#sql-connections), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries**](#sql-queries), [**Service Latency**](#service-latency), and [**Transactions**](#transactions) graphs.
+For monitoring CockroachDB, it is sufficient to use the [**SQL Connections**](#sql-connections), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries**](#sql-queries), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
 
 ## See also
 

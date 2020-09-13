@@ -1,9 +1,10 @@
 ---
 title: Deploy CockroachDB On-Premises (Insecure)
 summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
-toc: false
+toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 redirect_from: manual-deployment-insecure.html
+
 ---
 
 <div class="filters filters-big clearfix">
@@ -15,31 +16,30 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/insecure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/insecure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 ## Step 1. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 2. Start nodes
 
-{% include prod_deployment/insecure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 3. Initialize the cluster
 
-{% include prod_deployment/insecure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 4. Test the cluster
 
-{% include prod_deployment/insecure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 5. Set up HAProxy load balancers
 
@@ -73,7 +73,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 	If you get a permissions error, prefix the command with `sudo`.
@@ -136,20 +136,20 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 ## Step 6. Run a sample workload
 
-{% include prod_deployment/insecure-test-load-balancing.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 7. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 8. Scale the cluster
 
-{% include prod_deployment/insecure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 9. Use the cluster
 
-{% include prod_deployment/use-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

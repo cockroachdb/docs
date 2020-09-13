@@ -16,7 +16,7 @@ Type | Description | Example
 [`FLOAT`](float.html) | A 64-bit, inexact, floating-point number. | `1.2345`
 [`BOOL`](bool.html) | A Boolean value. | `true`
 [`DATE`](date.html) | A date. | `DATE '2016-01-25'`
-[`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
+[`TIMESTAMP`<br>`TIMESTAMPTZ`](timestamp.html) | A date and time pairing in UTC. | `TIMESTAMP '2016-01-25 10:10:10'`<br>`TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`

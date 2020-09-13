@@ -1,12 +1,11 @@
 ---
 title: Troubleshoot Cluster Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
-toc: false
+toc: true
 ---
 
 If you're having trouble starting or scaling your cluster, this page will help you troubleshoot the issue.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -29,7 +28,7 @@ Proceed through the following steps until you locate the source of the issue wit
 
 ### 1. Start a Single-Node Cluster
 
-1. Stop any running `cockroach` processes and remove any old data:
+1. Terminate any running `cockroach` processes and remove any old data:
 
     ~~~ shell
     $ pkill -9 cockroach
@@ -78,14 +77,14 @@ Proceed through the following steps until you locate the source of the issue wit
 
 ### 2. Start a Multi-Node Cluster
 
-1. Stop any running `cockroach` processes and remove any old data on the additional machines::
+1. Terminate any running `cockroach` processes and remove any old data on the additional machines::
 
     ~~~ shell
     $ pkill -9 cockroach
     $ rm -r testStore
     ~~~
 
-    {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, skip this step. Running this command will kill your first node making it impossible to proceed.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}If you're running all nodes on the same machine, skip this step. Running this command will stop your first node making it impossible to proceed.{{site.data.alerts.end}}
 
 2. On each machine, start the CockroachDB node, joining it to the first node:
 
@@ -99,7 +98,7 @@ Proceed through the following steps until you locate the source of the issue wit
     Errors at this stage potentially include:
     - The same port and host issues from [running a single node](#1-start-a-single-node-cluster).
     - [Networking issues](#networking-troubleshooting)
-    - [Nodes not joining the cluster](#node-wont-join-cluster)
+    - [Nodes not joining the cluster](#node-will-not-join-cluster)
 
 3. Visit the Admin UI on any node at `http://[node host]:8080`. All nodes in the cluster should be listed and have data replicated onto them.
 
@@ -135,7 +134,7 @@ However, to efficiently troubleshoot the issue, it's important to understand whe
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
-### Node Won't Join Cluster
+### Node Will Not Join Cluster
 
 When joining a node to a cluster, you might receive one of the following errors:
 
@@ -183,12 +182,13 @@ If data is not being replicated to some nodes in the cluster, we recommend check
 - Check the [logs](debug-and-error-logs.html) for each node for further detail, as well as these common errors:
 
   - `connection refused`: [Troubleshoot your network](#networking-troubleshooting).
-  - `not connected to cluster` or `node [id] belongs to cluster...`: See [Node Won't Join Cluster](#node-wont-join-cluster) on this page.
+  - `not connected to cluster` or `node [id] belongs to cluster...`: See [Node Will Not Join Cluster](#node-will-not-join-cluster) on this page.
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

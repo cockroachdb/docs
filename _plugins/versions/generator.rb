@@ -1,7 +1,10 @@
 module JekyllVersions
  class JekyllGenerator < Jekyll::Generator
-    # Ensure we run after JekyllRedirectFrom so we can apply version aliases
-    # (e.g. stable) to redirects.
+    # Ordering requirements:
+    #   - Run after JekyllRedirectFrom so we can apply version aliases
+    #     (e.g. stable) to redirects.
+    #   - Run after FlavorSelector, so that we don't see pages that don't
+    #     apply to this flavor.
     priority :lowest
 
     def initialize(config)

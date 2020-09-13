@@ -1,12 +1,11 @@
 ---
 title: SHOW BACKUP
 summary: The SHOW BACKUP statement lists the contents of a backup.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of an enterprise backup created with the [`BACKUP`](backup.html) statement.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,9 @@ Only the `root` user can run `SHOW BACKUP`.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_backup.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
+</div>
 
 ## Parameters
 

@@ -1,14 +1,13 @@
 ---
 title: INT
 summary: CockroachDB supports various signed integer data types.
-toc: false
+toc: true
 ---
 
 CockroachDB supports various signed integer [data types](data-types.html).
 
 {{site.data.alerts.callout_info}}To auto-generate globally unique values, use the <a href="uuid.html"><code>UUID</code></a> or <a href="serial.html"><code>SERIAL</code></a> data type.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Names and Aliases
 

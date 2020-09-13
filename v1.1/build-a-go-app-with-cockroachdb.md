@@ -1,7 +1,7 @@
 ---
 title: Build a Go App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Go application with the Go pq driver.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -12,9 +12,8 @@ twitter: false
 
 This tutorial shows you how build a simple Go application with CockroachDB using a PostgreSQL-compatible driver or ORM.
 
-We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://jinzhu.me/gorm/) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [Go pq driver](https://godoc.org/github.com/lib/pq) and the [GORM ORM](http://gorm.io) enough to claim **beta-level** support, so those are featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -29,7 +28,7 @@ To install the [Go pq driver](https://godoc.org/github.com/lib/pq), run the foll
 $ go get -u github.com/lib/pq
 ~~~
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Go code
 
@@ -39,11 +38,11 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/basic-sample.go %}
+{% include {{ page.version.version }}/app/basic-sample.go %}
 ~~~
 
 Then run the code:
@@ -55,7 +54,7 @@ $ go run basic-sample.go
 
 The output should be:
 
-~~~ shell
+~~~
 Initial balances:
 1 1000
 2 250
@@ -65,11 +64,11 @@ Initial balances:
 
 Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
 
 {% include copy-clipboard.html %}
 ~~~ go
-{% include app/txn-sample.go %}
+{% include {{ page.version.version }}/app/txn-sample.go %}
 ~~~
 
 With the default `SERIALIZABLE` isolation level, CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. Clone the library into your `$GOPATH` as follows:
@@ -123,4 +122,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [Go pq driver](https://godoc.org/github.com/lib/pq).
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

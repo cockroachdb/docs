@@ -1,0 +1,32 @@
+- advisory: 50587
+  summary: TRUNCATE prevents table renaming
+  versions: 19.1.0-19.1.10, 19.2.0-19.2.8
+  date: July 6, 2020
+- advisory: 48860
+  summary: Data corruption/loss issue with snapshots and delete range
+  versions: 2.1.0-2.1.9, 19.1.0-19.1.8, 19.2.0-19.2.6
+  date: May 20, 2020
+- advisory: 44299
+  summary: Schema changes may cause cluster unavailability
+  versions: 19.1.0-19.1.7, 19.2.0-19.2.3
+  date: Feb 12, 2020
+- advisory: 44348
+  summary: Data leak in statement details
+  versions: 2.1.0-2.1.11, 19.1.0-19.1.7, 19.2.0-19.2.3
+  date: Feb 12, 2020
+- advisory: 44166
+  summary: <code>SHOW JOBS</code> and Jobs page can endanger cluster stability
+  versions: 19.2.0-19.2.2
+  date: Feb 12, 2020
+- advisory: 43870
+  summary: HTTP authentication for non-Enterprise users
+  versions: 2.1.10-onward, 19.1.6-onward, 19.2.2
+  date: Jan 22, 2020
+- advisory: 42567
+  summary: HTTP endpoint vulnerability
+  versions: 2.1.0-2.1.8, 19.1.0-19.1.5, 19.2.0-19.2.1
+  date: Jan 22, 2020
+- advisory: 30821
+  summary: Authentication bypass for internal RPCs
+  versions: 1.1.0-1.1.8, 2.0.0-2.0.4
+  date: Oct 1, 2018

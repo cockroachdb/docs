@@ -1,24 +1,26 @@
 ---
 title: ALTER VIEW
 summary: The ALTER VIEW statement changes the name of a view.
-toc: false
+toc: true
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) changes the name of a [view](views.html).
 
-{{site.data.alerts.callout_info}}
-It is not currently possible to change the `SELECT` statement executed by a view. Instead, you must drop the existing view and create a new view. Also, it is not currently possible to rename a view that other views depend on, but this ability may be added in the future (see [this issue](https://github.com/cockroachdb/cockroach/issues/10083)).
-{{site.data.alerts.end}}
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-<div id="toc"></div>
+{{site.data.alerts.callout_info}}
+It is not currently possible to change the `SELECT` statement executed by a view.  Instead, you must drop the existing view and create a new view.  Also, it is not currently possible to rename a view that other views depend on, but this ability may be added in the future (see [this issue](https://github.com/cockroachdb/cockroach/issues/10083)).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the view and the `CREATE` privilege on the parent database.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the view and the `CREATE` privilege on the parent database.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/alter_view.html %}
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/alter_view.html %}
+</div>
 
 ## Parameters
 
@@ -74,5 +76,6 @@ Parameter | Description
 
 - [Views](views.html)
 - [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE VIEW`](show-create-view.html)
+- [`SHOW CREATE`](show-create.html)
 - [`DROP VIEW`](drop-view.html)
+- [Online Schema Changes](online-schema-changes.html)

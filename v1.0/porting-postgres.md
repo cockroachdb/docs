@@ -1,7 +1,7 @@
 ---
 title: Porting from PostgreSQL
 summary: Porting an application from PostgreSQL
-toc: false
+toc: true
 ---
 
 Although CockroachDB supports PostgreSQL syntax and drivers, it does not offer exact compatibility. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
@@ -10,7 +10,6 @@ Note that some of these differences only apply to rare inputs, and so no change 
 
 {{site.data.alerts.callout_info}}This document currently only covers how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>, such as arrays or the <code>ENUM</code> type.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ### Overflow of `float`
 

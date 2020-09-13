@@ -1,7 +1,7 @@
 ---
 title: Table Expressions
 summary: Table expressions define a data source in selection clauses.
-toc: false
+toc: true
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of
@@ -9,7 +9,6 @@ Table expressions define a data source in the `FROM` sub-clause of
 TABLE AS`](create-table-as.html), [`INSERT`](insert.html) and
 [`UPSERT`](upsert.html) statements.
 
-<div id="toc"></div>
 
 ## Introduction
 

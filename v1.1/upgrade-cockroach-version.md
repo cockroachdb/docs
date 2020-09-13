@@ -1,7 +1,7 @@
 ---
 title: Upgrade to CockroachDB v1.1
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 {{site.data.alerts.callout_info}} When upgrading, you can skip patch releases, but you cannot skip full releases. Since v1.1 is the second full CockroachDB release, you do not have to go through intermediate releases. You can upgrade to any v1.1.x release from any v1.0.x release, or from any patch release in the v1.1.x series.<br><br>To upgrade within the v1.0.x series, see <a href="https://www.cockroachlabs.com/docs/v1.0/upgrade-cockroach-version.html">the v1.0 version of this page</a>. {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Step 1. Prepare to upgrade
 
@@ -39,7 +38,7 @@ For each node in your cluster, complete the following steps.
 
 1. Connect to the node.
 
-2. Stop the `cockroach` process.
+2. Terminate the `cockroach` process.
 
     Without a process manager, use this command:
 
@@ -68,13 +67,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
@@ -82,13 +79,11 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Get the CockroachDB tarball:
     $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    # Extract the binary:
     $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
@@ -104,7 +99,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -116,7 +111,7 @@ For each node in your cluster, complete the following steps.
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
+    i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
     {% include copy-clipboard.html %}
@@ -144,7 +139,7 @@ For each node in your cluster, complete the following steps.
     $ rm /usr/local/bin/cockroach_old
     ~~~
 
-    If you leave versioned binaries on your servers, you don't need to do anything.
+    If you leave versioned binaries on your servers, you do not need to do anything.
 
 8. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
 
@@ -164,7 +159,7 @@ Once you have monitored the upgraded cluster for at least one day:
 
 ### Finalize the upgrade
 
-{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the v1.1.x series, you don't need to take any further action.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}These final steps are required after upgrading from v1.0.x to v1.1. For upgrades within the v1.1.x series, you do not need to take any further action.{{site.data.alerts.end}}
 
 1. [Back up the cluster](back-up-data.html).
 

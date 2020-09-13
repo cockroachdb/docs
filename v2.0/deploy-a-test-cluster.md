@@ -1,14 +1,13 @@
 ---
 title: Deploy a Test Cluster
 summary: Use CockroachDB's CloudFormation template to deploy a Kubernetes-orchestrated test cluster on AWS.
-toc: false
+toc: true
 ---
 
 This page shows you the easiest way to test an insecure, multi-node CockroachDB cluster, using CockroachDB's [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template to simplify setup and [Kubernetes](https://kubernetes.io/) to automate deployment, maintenance, and load balancing of client workloads.
 
 <!-- {{site.data.alerts.callout_success}}This tutorial features the CockroachDB v2.0 alpha binary, which lets you evaluate pre-release functionality from <a href="https://github.com/cockroachdb/cockroach/wiki/Roadmap">our roadmap</a>. If you'd rather test the latest stable release, use the <a href="../v1.1/deploy-a-test-cluster.html">v1.1 version</a> of this page.{{site.data.alerts.end}} -->
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -156,7 +155,7 @@ To see this in action:
     cockroachdb-2   1/1       Running   0          1h
     ~~~
 
-3. Kill one of CockroachDB nodes:
+3. Stop one of CockroachDB nodes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -175,8 +174,8 @@ To see this in action:
 
 ## Step 6. Stop the cluster
 
-In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you don't delete these resources, AWS will continue to charge you for them.
+In the CloudFormation UI, select **Other Actions** > **Delete Stack**. This is essential for deleting all AWS resources tied to your cluster. If you do not delete these resources, AWS will continue to charge you for them.
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

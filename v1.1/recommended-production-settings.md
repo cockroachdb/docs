@@ -1,13 +1,12 @@
 ---
 title: Production Checklist
 summary: Recommended settings for production deployments.
-toc: false
+toc: true
 <!-- toc_not_nested: true -->
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
 
-<div id="toc"></div>
 
 ## Cluster Topology
 
@@ -90,11 +89,11 @@ Environment | Featured Approach
 
 ## Monitoring and Alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Clock Synchronization
 
-{% include faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.html %}
 
 ## Cache and SQL Memory Size <span class="version-tag">Changed in v1.1</span>
 
@@ -352,7 +351,7 @@ You should also confirm that the file descriptors limit for the entire Linux sys
 </div>
 <div id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
+CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
 
 </div>
 

@@ -1,12 +1,11 @@
 ---
 title: Cross-Cloud Migration
 summary: Use a local cluster to simulate migrating from one cloud platform to another.
-toc: false
+toc: true
 ---
 
 CockroachDB's flexible [replication controls](configure-replication-zones.html) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page walks you through a local simulation of the process.
 
-<div id="toc"></div>
 
 ## Watch a Live Demo
 
@@ -66,7 +65,6 @@ $ cockroach start \
 --host=localhost \
 --port=25259 \
 --http-port=8082 \
---join=localhost:26257 \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
@@ -97,7 +95,7 @@ $ cockroach gen haproxy \
 --port=26257
 ~~~
 
-This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that won't be used by the nodes you'll add later.
+This command generates an `haproxy.cfg` file automatically configured to work with the 3 nodes of your running cluster. In the file, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node and that will not be used by the nodes you'll add later.
 
 ~~~
 global
@@ -228,9 +226,9 @@ This indicates that all data has been migrated from cloud 1 to cloud 2. In a rea
 
 Once you're done with your cluster, stop YCSB by switching into its terminal and pressing **CTRL-C**. Then do the same for HAProxy and each CockroachDB node.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 
 {% include copy-clipboard.html %}
 ~~~ shell

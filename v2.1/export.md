@@ -1,16 +1,16 @@
 ---
 title: EXPORT
 summary: Export tabular data from a CockroachDB cluster in CSV format.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.1:</span> The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
 
 Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
-{{site.data.alerts.callout_danger}}The <code>EXPORT</code> feature is only available to <a href="https://www.cockroachlabs.com/product/cockroachdb/">enterprise</a> users. Also note that this feature is currently under development and is slated for full release in CockroachDB 2.1. The feature flags and behavior are subject to change. {{site.data.alerts.end}}
-
-<div id="toc"></div>
+{{site.data.alerts.callout_danger}}
+This is an [enterprise feature](enterprise-licensing.html). Also, it is in **beta** and is currently undergoing continued testing. Please [file a Github issue](file-an-issue.html) with us if you identify a bug.
+{{site.data.alerts.end}}
 
 ## Export file location
 
@@ -24,28 +24,28 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/export.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/export.html %}</div>
 
 {{site.data.alerts.callout_info}}The <code>EXPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
 ## Required privileges
 
-Only the `root` user can run [`EXPORT`](export.html).
+Only members of the `admin` role can run `EXPORT`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `file_location` | Specify the URL of the file location where you want to store the exported CSV data.|
-| `WITH kv_option` | Control your export's behavior with [these options](#export-options). |
-| `select_stmt` | Specify the query whose result you want to export to CSV format. |
-| `table_name` | Specify the name of the table you want to export to CSV format. |
+ Parameter | Description
+-----------|-------------
+ `file_location` | Specify the URL of the file location where you want to store the exported CSV data.
+ `WITH kv_option` | Control your export's behavior with [these options](#export-options).
+ `select_stmt` | Specify the query whose result you want to export to CSV format.
+ `table_name` | Specify the name of the table you want to export to CSV format.
 
 ### Export file URL
 
 URLs for the file directory location you want to export to must use the following format:
 
-{% include external-urls-v2.0.md %}
+{% include {{ page.version.version }}/misc/external-urls.md %}
 
 You can specify the base directory where you want to store the exported .csv files. CockroachDB will create several files in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...).
 
@@ -55,7 +55,7 @@ You can control the [`EXPORT`](export.html) process's behavior using any of the 
 
 #### `delimiter`
 
-If not using comma as your column delimiter, you can specify another Unicode character as the delimiter.
+If not using comma as your column delimiter, you can specify another ASCII character as the delimiter.
 
 <table>
 	<tbody>
@@ -69,7 +69,7 @@ If not using comma as your column delimiter, you can specify another Unicode cha
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The unicode character that delimits columns in your rows</td>
+			<td>The ASCII character that delimits columns in your rows.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -94,7 +94,7 @@ Convert SQL *NULL* values so they match the specified string.
 		</tr>
 		<tr>
 			<td><strong>Value</strong></td>
-			<td>The string that should be used to represent <em>NULL</em> values</td>
+			<td>The string that should be used to represent <em>NULL</em> values. To avoid collisions, it is important to pick <code>nullas</code> values that does not appear in the exported data.</td>
 		</tr>
 		<tr>
 			<td><strong>Example</strong></td>
@@ -128,6 +128,24 @@ Convert SQL *NULL* values so they match the specified string.
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+### View a running export
+
+View running exports by using [`SHOW QUERIES`](show-queries.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW QUERIES;
+~~~
+
+### Cancel a running export
+
+Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 ## Known limitation

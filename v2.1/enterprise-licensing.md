@@ -1,14 +1,13 @@
 ---
 title: Enterprise Licensing
 summary: Request and set trial and enterprise license keys for CockroachDB
-toc: false
+toc: true
 ---
 
 CockroachDB distributes a single binary that contains both core and [enterprise features](https://www.cockroachlabs.com/pricing/). You can use core features without any license key. However, to use the enterprise features, you need either a trial or an enterprise license key.
 
 This page shows you how to obtain and set trial and enterprise license keys for CockroachDB.
 
-<div id="toc"></div>
 
 ## Types of licenses
 
@@ -19,7 +18,7 @@ Type | Description
 
 ## Obtain a trial or enterprise license key
 
-To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/pricing/start-trial/) and receive your trial license key via email within a few minutes.
+To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license key via email within a few minutes.
 
 To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 
@@ -92,3 +91,4 @@ To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sa
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
+- [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html)

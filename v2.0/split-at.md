@@ -1,18 +1,17 @@
 ---
 title: SPLIT AT
 summary: The SPLIT AT statement forces a key-value layer range split at the specified row in a table or index.
-toc: false
+toc: true
 ---
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_table_at.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/split_table_at.html %}</section>
 
-<section>{% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/split_index_at.html %}</section>
 
 ## Required Privileges
 
@@ -51,6 +50,8 @@ the ranges that store tables or indexes:
   distribution of writes before applying the load. This can help avoid reduced
   workload performance that results when automatic splits are unable to keep up
   with write traffic.
+
+Note that when a table is [truncated](truncate.html), it is essentially re-created in a single new empty range, and the old ranges that used to constitute the table are garbage collected. Any pre-splitting you have performed on the old version of the table will not carry over to the new version. The new table will need to be pre-split again.
 
 ## Examples
 

@@ -1,7 +1,7 @@
 ---
 title: Start a Local Cluster (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
-toc: false
+toc: true
 toc_not_nested: true
 asciicast: true
 ---
@@ -15,7 +15,6 @@ Once you’ve [installed CockroachDB](install-cockroachdb.html), it’s simple t
 
 {{site.data.alerts.callout_info}}Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see <a href="manual-deployment.html">Manual Deployment</a>, <a href="cloud-deployment.html">Cloud Deployment</a>, or <a href="orchestration.html">Orchestration</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -217,9 +216,9 @@ Exit the SQL shell:
 
 Now stop nodes 2 and 3 by switching to their terminals and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For node 3, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -238,7 +237,7 @@ $ cockroach start --insecure \
 --host=localhost
 ~~~
 
-{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you won't see a response to the above command until after you restart the second node.
+{{site.data.alerts.callout_info}}With only 1 node back online, the cluster will not yet be operational, so you will not see a response to the above command until after you restart the second node.
 {{site.data.alerts.end}}
 
 In a new terminal, restart the second node from the parent directory of `node2/`:

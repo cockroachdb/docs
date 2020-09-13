@@ -1,14 +1,13 @@
 ---
 title: Import Data
 summary: Learn how to import data into a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 CockroachDB supports importing data from CSV/TSV or SQL dump files.
 
 {{site.data.alerts.callout_info}}To import/restore data from CockroachDB-generated <a href="backup.html">enterprise license backups</a>, see <a href="restore.html"><code>RESTORE</code></a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Import from Tabular Data (CSV)
 

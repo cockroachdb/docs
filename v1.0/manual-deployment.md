@@ -1,7 +1,7 @@
 ---
 title: Manual Deployment
 summary: Learn how to manually deploy a secure, multi-node CockroachDB cluster on multiple machines.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ This tutorial shows you how to manually deploy a secure multi-node CockroachDB c
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 
@@ -179,7 +178,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 	{% include copy-clipboard.html %}
 	~~~ shell
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new CockroachDB cluster with a single node:
@@ -217,7 +216,7 @@ At this point, your cluster is live and operational but contains only a single n
 	{% include copy-clipboard.html %}
 	~~~ shell
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new node that joins the cluster using the first node's address:
@@ -230,7 +229,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 address>:26257
 	~~~
 
-	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
+	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports will not cause conflicts.
 
 4. Repeat these steps for each node you want to add.
 
@@ -448,7 +447,7 @@ On this page, verify that the cluster is running as expected:
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
-{% include prometheus-callout.html %}
+{% include {{ page.version.version }}/misc/prometheus-callout.html %}
 
 ## See Also
 

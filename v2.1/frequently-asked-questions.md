@@ -2,10 +2,8 @@
 title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
-toc: false
+toc: true
 ---
-
-<div id="toc"></div>
 
 ## What is CockroachDB?
 
@@ -15,21 +13,15 @@ CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive
 
 ## When is CockroachDB a good choice?
 
-CockroachDB is well suited for applications that require reliable, available, and correct data regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
+CockroachDB is well suited for applications that require reliable, available, and correct data, and millisecond response times, regardless of scale. It is built to automatically replicate, rebalance, and recover with minimal configuration and operational overhead. Specific use cases include:
 
 - Distributed or replicated OLTP
 - Multi-datacenter deployments
 - Multi-region deployments
 - Cloud migrations
-- Cloud-native infrastructure initiatives
+- Infrastructure initiatives built for the cloud
 
-## When is CockroachDB not a good choice?
-
-CockroachDB is not a good choice when very low latency reads and writes are critical; use an in-memory database instead.
-
-Also, CockroachDB is not yet suitable for:
-
-- Heavy analytics / OLAP
+CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms or less, and supports a variety of [SQL and operational tuning practices](performance-tuning.html) for optimizing query performance. However, CockroachDB is not yet suitable for heavy analytics / OLAP.
 
 ## How easy is it to install CockroachDB?
 
@@ -78,7 +70,7 @@ The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is i
 - Partition Tolerance
 
 CockroachDB is a CP (consistent and partition tolerant) system. This means
-that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgements from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
+that, in the presence of partitions, the system will become unavailable rather than do anything which might cause inconsistent results. For example, writes require acknowledgments from a majority of replicas, and reads require a lease, which can only be transferred to a different node when writes are possible.
 
 Separately, CockroachDB is also Highly Available, although "available" here means something different than the way it is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
 
@@ -107,7 +99,7 @@ Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID sema
 
 No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s an open source database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-For more details on how CockroachDB handles unsychronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
+For more details on how CockroachDB handles unsynchronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
 
 ## What languages can I use to work with CockroachDB?
 
@@ -137,7 +129,7 @@ You can run a secure or insecure CockroachDB cluster. When secure, client/node a
 
 Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels.
 
-For more details, see our documentation on [privileges](privileges.html) and the [`GRANT`](grant.html) statement.
+For more details, see our [Security Overview](security-overview.html).
 
 ## How does CockroachDB compare to MySQL or PostgreSQL?
 
@@ -153,23 +145,26 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 
 ## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes, although CockroachDB is unlikely to be a drop-in replacement at this time. Due to differences in available features and syntax, migrating data from these databases to CockroachDB involves some manual effort.
+Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html) (both of which are in **beta** as of v2.1).  Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB.  Check those pages for details.
 
-As a first step, check our [SQL Feature Support](sql-feature-support.html) page against your application's high-level SQL requirements. If essential SQL features are missing, consider workarounds and/or reach out to us via [our forum](https://forum.cockroachlabs.com/) or <sales@cockroachlabs.com>.
-
-Once you're ready to migrate, we recommend [importing your data via CSV](import.html). The process may expose places where you need to make changes for compatability. When migrating from PostgreSQL, for example, be sure to check this list of [known differences for identical input](porting-postgres.html).
+We also fully support [importing your data via CSV](migrate-from-csv.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Not yet, but this is on our long-term roadmap.
+Yes. The Managed CockroachDB offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
 
-## Can I use CockroachDB as a key-value store?
+- No provisioning or deployment efforts for you
+- Daily full backups and hourly incremental backups of your data
+- Upgrades to the latest stable release of CockroachDB
+- Monitoring to provide SLA-level support
 
-{% include faq/simulate-key-value-store.html %}
+For more details, see the [Managed CockroachDB](../cockroachcloud/quickstart.html) docs.
 
 ## Have questions that weren’t answered?
 
-- [CockroachDB Community Forum](https://forum.cockroachlabs.com): Ask questions, find answers, and help other users.
-- [Join us on Gitter](https://gitter.im/cockroachdb/cockroach): This is the most immediate way to connect with CockroachDB engineers. To open Gitter without leaving these docs, click **Chat with Developers** in the lower-right corner of any page.
-- [SQL FAQs](sql-faqs.html): Get answers to frequently asked questions about CockroachDB SQL.
-- [Operational FAQS](operational-faqs.html): Get answers to frequently asked questions about operating CockroachDB.
+Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
+
+- [CockroachDB Community Forum](https://forum.cockroachlabs.com)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

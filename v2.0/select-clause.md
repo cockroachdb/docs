@@ -1,7 +1,7 @@
 ---
 title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
-toc: false
+toc: true
 redirect_from: select.html
 key: select.html
 ---
@@ -14,11 +14,12 @@ also called "the `SELECT` statement". However, it is also a
 [selection clause](selection-queries.html#selection-clauses) that can be combined
 with other constructs to form more complex [selection queries](selection-queries.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/simple_select_clause.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/simple_select_clause.html %}
+</div>
 
 <div markdown="1"></div>
 

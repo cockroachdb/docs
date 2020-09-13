@@ -1,16 +1,15 @@
 ---
 title: SQL Statements
 summary: SQL statements supported by CockroachDB.
-toc: false
+toc: true
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.
 
 {{site.data.alerts.callout_success}}
-In the [built-in SQL shell](use-the-built-in-sql-client.html#sql-shell-help), use `\h [statement]` to get inline help about a specific statement.
+In the [built-in SQL shell](use-the-built-in-sql-client.html#help), use `\h [statement]` to get inline help about a specific statement.
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Data manipulation statements
 
@@ -18,12 +17,10 @@ Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
-[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+[`EXPORT`](export.html) | <span class="version-tag">New in v2.1:</span> Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement is available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 [`IMPORT`](import.html) | Import an entire table's data via CSV files.
 [`INSERT`](insert.html) | Insert rows into a table.
 [`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
-[`SHOW TRACE`](show-trace.html) | Execute a statement and then return a trace of its actions through all of CockroachDB's software layers.
 [`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
 [`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
 [`UPDATE`](update.html) | Update rows in a table.
@@ -36,13 +33,16 @@ Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
-[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [Not Null constraint](not-null.html).
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or drop the [`NOT NULL` constraint](not-null.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
+[`ALTER RANGE`](alter-range.html) | <span class="version-tag">New in v2.1:</span> Change an existing system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
+[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v2.1:</span> Change a column's [data type](data-types.html).
 [`ALTER USER`](alter-user.html) | Add or change a user's password.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
+[`CONFIGURE ZONE`](configure-zone.html) | <span class="version-tag">New in v2.1:</span> Add, modify, reset, and remove [replication zones](configure-replication-zones.html).
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
@@ -64,15 +64,15 @@ Statement | Usage
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE SEQUENCE`](show-create-sequence.html) | View the `CREATE SEQUENCE` statement that would create a copy of the specified sequence.
-[`SHOW CREATE TABLE`](show-create-table.html) | View the `CREATE TABLE` statement that would create a copy of the specified table.
-[`SHOW CREATE VIEW`](show-create-view.html) | View the `CREATE VIEW` statement that would create a copy of the specified view.
+[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW INDEX`](show-index.html) | View index information for a table.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html) | Show range information about a specific table or index.
+[`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | <span class="version-tag">New in v2.1:</span> List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a key-value layer range split at the specified row in the table or index.
+[`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column.
 
 ## Transaction management statements
 
@@ -83,21 +83,21 @@ Statement | Usage
 [`RELEASE SAVEPOINT`](release-savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), commit the transaction's changes once there are no retryable errors.
 [`ROLLBACK`](rollback-transaction.html) | Discard all updates made by the current [transaction](transactions.html) or, when using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), rollback to the `cockroach_restart` savepoint and retry the transaction.
 [`SAVEPOINT`](savepoint.html) | When using the CockroachDB-provided function for client-side [transaction retries](transactions.html#transaction-retries), start a retryable transaction.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for the session or for an individual [transaction](transactions.html).
+[`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
 
 ## Access management statements
 
 Statement | Usage
 ----------|------------
-[`CREATE ROLE`](create-role.html) | Create SQL [roles](roles.html), which are groups containing any number of roles and users as members.
-[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](privileges.html) on your databases and tables.
-[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](roles.html).
+[`CREATE ROLE`](create-role.html) | Create SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members.
+[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](authorization.html#assign-privileges) on your databases and tables.
+[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](roles.html).
-[`GRANT <roles>`](grant-roles.html) | Add a [role](roles.html) or [user](create-and-manage-users.html) as a member to a role.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](roles.html).
-[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](roles.html) or [user's](create-and-manage-users.html) membership to a role.
+[`GRANT <privileges>`](grant.html) | Grant privileges to [users](create-and-manage-users.html) or [roles](authorization.html#create-and-manage-roles).
+[`GRANT <roles>`](grant-roles.html) | Add a [role](authorization.html#create-and-manage-roles) or [user](create-and-manage-users.html) as a member to a role.
+[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](create-and-manage-users.html) or [roles](authorization.html#create-and-manage-roles).
+[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](authorization.html#create-and-manage-roles) or [user's](create-and-manage-users.html) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
@@ -108,7 +108,8 @@ Statement | Usage
 ----------|------------
 [`RESET`](reset-vars.html) | Reset a session variable to its default value.
 [`SET`](set-vars.html) | Set a current session variable.
-[`SET TRANSACTION`](set-transaction.html) | Set the isolation level or priority for an individual [transaction](transactions.html).
+[`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
+[`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
 [`SHOW`](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster management statements
@@ -128,23 +129,33 @@ Statement | Usage
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
 [`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
 
+## Query planning statements
+
+Statement | Usage
+----------|------------
+[`CREATE STATISTICS`](create-statistics.html) | <span class="version-tag">New in v2.1:</span> Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
+[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
+[`EXPLAIN ANALYZE`](explain-analyze.html) | <span class="version-tag">New in v2.1:</span> Execute the query and generate a physical query plan with execution statistics.
+[`SHOW STATISTICS`](show-statistics.html) | <span class="version-tag">New in v2.1:</span> List table statistics used by the [cost-based optimizer](cost-based-optimizer.html).
+
+
 ## Job management statements
 
 Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, or `IMPORT` job.
-[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, or `IMPORT` job.
-[`RESUME JOB`](resume-job.html) | Resume paused `BACKUP`, `RESTORE`, or `IMPORT` jobs.
+[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
 ## Backup and restore statements (Enterprise)
 
-The following statements are availably only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
+The following statements are available only to [enterprise](https://www.cockroachlabs.com/product/cockroachdb/) users.
 
 {{site.data.alerts.callout_info}}
-For non-enterprise users, see [Back up Data](back-up-data.html) and [Restore Data](restore-data.html).
+For non-enterprise users, see [Back up Data](backup.html) and [Restore Data](restore.html).
 {{site.data.alerts.end}}
 
 Statement | Usage
@@ -152,3 +163,15 @@ Statement | Usage
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
+
+## Changefeed statements (Enterprise)
+
+<span class="version-tag">New in v2.1:</span> [Change data capture](change-data-capture.html) (CDC) provides row-level change feeds into Apache Kafka for downstream processing.
+
+{{site.data.alerts.callout_info}}
+CDC is an enterprise feature. There will be a core version in a future release.
+{{site.data.alerts.end}}
+
+Statement | Usage
+----------|------------
+[`CREATE CHANGEFEED`](create-changefeed.html) | Create a new changefeed, which provides row-level change subscriptions.

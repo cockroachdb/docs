@@ -1,12 +1,11 @@
 ---
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
-toc: false
+toc: true
 ---
 
 On [accessing the CockroachDB Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), the **Overview** is shown by default. This dashboard lets you monitor important SQL performance, replication, and storage metrics.
 
-<div id="toc"></div>
 
 The **Overview** dashboard displays the following time series graphs:
 
@@ -59,5 +58,5 @@ Available | The free storage capacity available to CockroachDB.
 Used | Disk space used by the data in the CockroachDB store. Note that this value is less than (Capacity - Available) because Capacity and Available metrics consider the entire disk and all applications on the disk including CockroachDB, whereas Used metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include available-capacity-metric.md %}
+{% include v1.1/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}

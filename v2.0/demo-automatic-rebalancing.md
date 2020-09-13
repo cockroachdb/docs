@@ -1,12 +1,11 @@
 ---
 title: Automatic Rebalancing
 summary: Use a local cluster to explore how CockroachDB automatically rebalances data as you scale.
-toc: false
+toc: true
 ---
 
 This page walks you through a simple demonstration of how CockroachDB automatically rebalances data as you scale. Starting with a 3-node local cluster, you'll lower the maximum size for a single range, the unit of data that is replicated in CockroachDB. You'll then download and run the `block_writer` example program, which continuously inserts data into your cluster, and watch the replica count quickly increase as ranges split. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -24,7 +23,7 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 # In a new terminal, start node 1:
 $ cockroach start --insecure \
 --store=scale-node1 \
---host=localhost
+--host=localhost \
 --port=26257 \
 --http-port=8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
@@ -189,9 +188,9 @@ Back in the Admin UI, you'll now see 5 nodes listed. At first, the bytes and rep
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell

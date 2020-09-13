@@ -1,12 +1,10 @@
 ---
 title: Fault Tolerance & Recovery
 summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
-toc: false
+toc: true
 ---
 
 This page walks you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 3-node local cluster, you'll remove a node and see how the cluster continues uninterrupted. You'll then write some data while the node is offline, rejoin the node, and see how it catches up with the rest of the cluster. Finally, you'll add a fourth node, remove a node again, and see how missing replicas eventually re-replicate to the new node.
-
-<div id="toc"></div>
 
 ## Before you begin
 
@@ -22,9 +20,8 @@ Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 $ cockroach start \
 --insecure \
 --store=fault-node1 \
---host=localhost
---port=26257 \
---http-port=8080 \
+--listen-addr=localhost:26257 \
+--http-addr=localhost:8080 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -34,9 +31,8 @@ $ cockroach start \
 $ cockroach start \
 --insecure \
 --store=fault-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -46,9 +42,8 @@ $ cockroach start \
 $ cockroach start \
 --insecure \
 --store=fault-node3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
+--listen-addr=localhost:26259 \
+--http-addr=localhost:8082 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -60,8 +55,7 @@ In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command
 ~~~ shell
 $ cockroach init \
 --insecure \
---host=localhost \
---port=26257
+--host=localhost:26257
 ~~~
 
 ## Step 3. Verify that the cluster is live
@@ -70,7 +64,7 @@ In a new terminal, use the [`cockroach sql`](use-the-built-in-sql-client.html) c
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26257
+$ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 {% include copy-clipboard.html %}
@@ -79,12 +73,12 @@ $ cockroach sql --insecure --port=26257
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| system             |
-+--------------------+
-(1 row)
+  database_name
++---------------+
+  defaultdb
+  postgres
+  system
+(3 rows)
 ~~~
 
 Exit the SQL shell:
@@ -102,7 +96,7 @@ Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost:26258
 ~~~
 
 ~~~
@@ -116,7 +110,7 @@ Switch to the terminal for the built-in SQL shell and reconnect the shell to nod
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
@@ -125,13 +119,12 @@ $ cockroach sql --insecure --port=26259
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| bank               |
-| system             |
-+--------------------+
-(2 rows)
+  database_name
++---------------+
+  defaultdb
+  postgres
+  system
+(3 rows)
 ~~~
 
 As you see, despite one node being offline, the cluster continues uninterrupted because a majority of replicas (2/3) remains available. If you were to remove another node, however, leaving only one node live, the cluster would be unresponsive until another node was brought back online.
@@ -145,29 +138,19 @@ Exit the SQL shell:
 
 ## Step 6. Write data while the node is offline
 
-In the same terminal, use the [`cockroach gen`](generate-cockroachdb-resources.html) command to generate an example `startrek` database:
+In the same terminal, use the [`cockroach workload`](cockroach-workload.html) command to generate an example `startrek` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --insecure
-~~~
-
-~~~
-CREATE DATABASE
-SET
-DROP TABLE
-DROP TABLE
-CREATE TABLE
-INSERT 79
-CREATE TABLE
-INSERT 200
+$ cockroach workload init startrek \
+'postgresql://root@localhost:26257?sslmode=disable'
 ~~~
 
 Then reconnect the SQL shell to node 1 (port `26257`) or node 3 (port `26259`) and verify that the new `startrek` database was added with two tables, `episodes` and `quotes`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26259
+$ cockroach sql --insecure --host=localhost:26259
 ~~~
 
 {% include copy-clipboard.html %}
@@ -176,13 +159,13 @@ $ cockroach sql --insecure --port=26259
 ~~~
 
 ~~~
-+--------------------+
-|      Database      |
-+--------------------+
-| startrek           |
-| system             |
-+--------------------+
-(2 rows)
+  database_name
++---------------+
+  defaultdb
+  postgres
+  startrek
+  system
+(4 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -191,36 +174,35 @@ $ cockroach sql --insecure --port=26259
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| episodes |
-| quotes   |
-+----------+
-(2 rows)
+  table_name
++------------+
+  episodes
+  quotes
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.episodes LIMIT 10;
+> SELECT * FROM startrek.episodes WHERE stardate > 5500;
 ~~~
 
 ~~~
-+----+--------+-----+--------------------------------+----------+
-| id | season | num |             title              | stardate |
-+----+--------+-----+--------------------------------+----------+
-|  1 |      1 |   1 | The Man Trap                   |   1531.1 |
-|  2 |      1 |   2 | Charlie X                      |   1533.6 |
-|  3 |      1 |   3 | Where No Man Has Gone Before   |   1312.4 |
-|  4 |      1 |   4 | The Naked Time                 |   1704.2 |
-|  5 |      1 |   5 | The Enemy Within               |   1672.1 |
-|  6 |      1 |   6 | Mudd's Women                   |   1329.8 |
-|  7 |      1 |   7 | What Are Little Girls Made Of? |   2712.4 |
-|  8 |      1 |   8 | Miri                           |   2713.5 |
-|  9 |      1 |   9 | Dagger of the Mind             |   2715.1 |
-| 10 |      1 |  10 | The Corbomite Maneuver         |   1512.2 |
-+----+--------+-----+--------------------------------+----------+
-(10 rows)
+  id | season | num |               title               | stardate
++----+--------+-----+-----------------------------------+----------+
+  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
+  62 |      3 |   7 | Day of the Dove                   |   5630.3
+  64 |      3 |   9 | The Tholian Web                   |   5693.2
+  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
+  66 |      3 |  11 | Wink of an Eye                    |   5710.5
+  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
+  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
+  73 |      3 |  18 | The Lights of Zetar               |   5725.3
+  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
+  75 |      3 |  20 | The Way to Eden                   |   5832.3
+  76 |      3 |  21 | The Cloud Minders                 |   5818.4
+  77 |      3 |  22 | The Savage Curtain                |   5906.4
+  78 |      3 |  23 | All Our Yesterdays                |   5943.7
+  79 |      3 |  24 | Turnabout Intruder                |   5928.5
+(14 rows)
 ~~~
 
 Exit the SQL shell:
@@ -238,9 +220,8 @@ Switch to the terminal for node 2, and rejoin the node to the cluster, using the
 ~~~ shell
 $ cockroach start --insecure \
 --store=fault-node2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
+--listen-addr=localhost:26258 \
+--http-addr=localhost:8081 \
 --join=localhost:26257
 ~~~
 
@@ -262,30 +243,32 @@ Switch to the terminal for the built-in SQL shell, connect the shell to the rejo
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --port=26258
+$ cockroach sql --insecure --host=localhost:26258
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.episodes LIMIT 10;
+> SELECT * FROM startrek.episodes WHERE stardate > 5500;
 ~~~
 
 ~~~
-+----+--------+-----+--------------------------------+----------+
-| id | season | num |             title              | stardate |
-+----+--------+-----+--------------------------------+----------+
-|  1 |      1 |   1 | The Man Trap                   |   1531.1 |
-|  2 |      1 |   2 | Charlie X                      |   1533.6 |
-|  3 |      1 |   3 | Where No Man Has Gone Before   |   1312.4 |
-|  4 |      1 |   4 | The Naked Time                 |   1704.2 |
-|  5 |      1 |   5 | The Enemy Within               |   1672.1 |
-|  6 |      1 |   6 | Mudd's Women                   |   1329.8 |
-|  7 |      1 |   7 | What Are Little Girls Made Of? |   2712.4 |
-|  8 |      1 |   8 | Miri                           |   2713.5 |
-|  9 |      1 |   9 | Dagger of the Mind             |   2715.1 |
-| 10 |      1 |  10 | The Corbomite Maneuver         |   1512.2 |
-+----+--------+-----+--------------------------------+----------+
-(10 rows)
+  id | season | num |               title               | stardate
++----+--------+-----+-----------------------------------+----------+
+  60 |      3 |   5 | Is There in Truth No Beauty?      |   5630.7
+  62 |      3 |   7 | Day of the Dove                   |   5630.3
+  64 |      3 |   9 | The Tholian Web                   |   5693.2
+  65 |      3 |  10 | Plato's Stepchildren              |   5784.2
+  66 |      3 |  11 | Wink of an Eye                    |   5710.5
+  69 |      3 |  14 | Whom Gods Destroy                 |   5718.3
+  70 |      3 |  15 | Let That Be Your Last Battlefield |   5730.2
+  73 |      3 |  18 | The Lights of Zetar               |   5725.3
+  74 |      3 |  19 | Requiem for Methuselah            |   5843.7
+  75 |      3 |  20 | The Way to Eden                   |   5832.3
+  76 |      3 |  21 | The Cloud Minders                 |   5818.4
+  77 |      3 |  22 | The Savage Curtain                |   5906.4
+  78 |      3 |  23 | All Our Yesterdays                |   5943.7
+  79 |      3 |  24 | Turnabout Intruder                |   5928.5
+(14 rows)
 ~~~
 
 At first, while node 2 is catching up, it acts as a proxy to one of the other nodes with the data. This shows that even when a copy of the data is not local to the node, it has seamless access.
@@ -305,9 +288,8 @@ Now, to prepare the cluster for a permanent node failure, open a new terminal an
 $ cockroach start \
 --insecure \
 --store=fault-node4 \
---host=localhost \
---port=26260 \
---http-port=8083 \
+--listen-addr=localhost:26260 \
+--http-addr=localhost:8083 \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
@@ -331,7 +313,7 @@ Alternatively, you can open a new terminal and run the [`cockroach quit`](stop-a
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --port=26258
+$ cockroach quit --insecure --host=localhost:26258
 ~~~
 
 ~~~
@@ -354,7 +336,7 @@ After about 10 minutes, node 2 will move into a **Dead Nodes** section, indicati
 
 Once you're done with your test cluster, stop each node by switching to its terminal and pressing **CTRL-C**.
 
-{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force kill the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For the last node, the shutdown process will take longer (about a minute) and will eventually force stop the node. This is because, with only 1 node still online, a majority of replicas are no longer available (2 of 3), and so the cluster is not operational. To speed up the process, press <strong>CTRL-C</strong> a second time.{{site.data.alerts.end}}
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
@@ -365,11 +347,6 @@ $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5
 
 ## What's next?
 
-Use a local cluster to explore these other core CockroachDB features:
+Explore other core CockroachDB benefits and features:
 
-- [Data Replication](demo-data-replication.html)
-- [Automatic Rebalancing](demo-automatic-rebalancing.html)
-- [Cross-Cloud Migration](demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](demo-follow-the-workload.html)
-- [Orchestration](orchestrate-a-local-cluster-with-kubernetes-insecure.html)
-- [JSON Support](demo-json-support.html)
+{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

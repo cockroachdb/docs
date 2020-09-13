@@ -1,7 +1,7 @@
 ---
 title: Manual Deployment (Insecure)
 summary: Learn how to manually deploy an insecure, multi-node CockroachDB cluster on multiple machines.
-toc: false
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -13,7 +13,6 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
@@ -47,7 +46,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new CockroachDB cluster with a single node:
@@ -57,7 +56,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	--host=<node1 internal address>
 	~~~
 
-	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely don't want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
+	This commands starts an insecure node and identifies the address at which other nodes can reach it, in this case an internal address since you likely do not want applications outside your network reaching an insecure cluster. Otherwise, it uses all available defaults. For example, the node stores data in the `cockroach-data` directory, listens for internal and client communication on port 26257, and listens for HTTP requests from the Admin UI on port 8080. To set these options manually, see [Start a Node](start-a-node.html).
 
 ## Step 2. Add nodes to the cluster
 
@@ -76,7 +75,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new node that joins the cluster using the first node's address:
@@ -87,7 +86,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--join=<node1 internal address>:26257
 	~~~
 
-	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports won't cause conflicts.
+	The only difference when adding a node is that you connect it to the cluster with the `--join` flag, which takes the address and port of the first node. Otherwise, it's fine to accept all defaults; since each node is on a unique machine, using identical ports will not cause conflicts.
 
 4. Repeat these steps for each node you want to add.
 
@@ -167,7 +166,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 4. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
@@ -296,7 +295,7 @@ On this page, verify that the cluster is running as expected:
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
-{% include prometheus-callout.html %}
+{% include {{ page.version.version }}/misc/prometheus-callout.html %}
 
 ## See Also
 

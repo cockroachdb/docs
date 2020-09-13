@@ -1,19 +1,26 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{% if site.cockroachcloud %}
+<meta name="description" content="{% if page.summary %}{% if page.homepage == true %}CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.{% else %}{{ page.summary | strip_html | strip_newlines | truncate: 160 | replace: "CockroachDB", "CockroachCloud" }}{% endif %}{% endif %}">
+{% else %}
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
+{% endif %}
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
-{% if page.block_search == true %}
+{% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
 <meta name="robots" content="noarchive">
 <meta name="robots" content="nocache">
 {% endif %}
+{% if site.cockroachcloud %}
+<title>{{ page.title | replace: "CockroachDB", "CockroachCloud" }} | {{ site.site_title | replace: "CockroachDB", "CockroachCloud" }}</title>
+{% else %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
+{% endif %}
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
-<link rel="stylesheet" type="text/css" href="{{ 'css/font-awesome.min.css' | relative_url }}">
 <link rel="stylesheet" type="text/css" href="{{ 'css/lavish-bootstrap.css' | relative_url }}">
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
 <link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
@@ -22,16 +29,19 @@
 
 <script>
 var pageConfig = {
-    tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
+  tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
 };
 </script>
+
+{% include vwo.html %}
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
 <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}"></script>
 <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}"></script>
 <script src="{{ 'js/bootstrap.min.js' | relative_url }}"></script>
-<script src="{{ 'js/algoliasearch.min.js' | relative_url }}"></script>
-<script src="{{ 'js/autocomplete.jquery.min.js' | relative_url }}"></script>
+<script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
+<script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
+
 <script src="{{ 'js/toc.js' | relative_url }}"></script>
 <script src="{{ 'js/cookieUtils.js' | relative_url }}"></script>
 <script src="{{ 'js/clipboard.min.js' | relative_url }}"></script>
@@ -44,4 +54,7 @@ var pageConfig = {
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
 {% endif %}
 {% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
+{% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
 <script src="//js.hsforms.net/forms/v2.js"></script>
+<script async src="//js.convertflow.co/production/websites/5329.js"></script>
+<script src="https://kit.fontawesome.com/4e4d5754e5.js" crossorigin="anonymous"></script>

@@ -23,7 +23,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
@@ -53,7 +53,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -62,7 +62,7 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
@@ -92,7 +92,7 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -255,9 +255,9 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 <span class="c1"># Remove the containers:</span>
 <span class="nb">PS </span>C:\Users\username&gt; docker rm roach1 roach2 roach3</code></pre></div>
 
-If you don't plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; rm -rf cockroach-data</span></code></pre></div>
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code>Remove-Item C:\Users\username&gt; cockroach-data -recurse</code></pre></div>
 
 </div>
 

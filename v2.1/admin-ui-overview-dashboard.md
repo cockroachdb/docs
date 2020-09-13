@@ -1,12 +1,11 @@
 ---
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
-toc: false
+toc: true
 ---
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
-<div id="toc"></div>
 
 The **Overview** dashboard displays the following time series graphs:
 
@@ -14,7 +13,7 @@ The **Overview** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v2.1/admin_ui_sql_queries.png' | relative_url }}" alt="CockroachDB Admin UI SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the SQL Queries graph shows the current moving average, over the last 10 seconds, of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
@@ -58,12 +57,12 @@ On hovering over the graph, the values for the following metrics are displayed:
 
 Metric | Description
 --------|----
-Capacity | The maximum storage capacity allocated to CockroachDB. You can configure the maximum allocated storage capacity for CockroachDB using the <code>--store</code> flag. For more information, see [Start a Node](start-a-node.html#store).
-Available | The free storage capacity available to CockroachDB.
-Used | Disk space used by the data in the CockroachDB store. Note that this value is less than (Capacity - Available) because Capacity and Available metrics consider the entire disk and all applications on the disk including CockroachDB, whereas Used metric tracks only the store's disk usage.
+**Capacity** | The maximum storage capacity allocated to CockroachDB. You can configure the maximum storage capacity for a given node using the `--store` flag. For more information, see [Start a Node](start-a-node.html#store).
+**Available** | The free storage capacity available to CockroachDB.
+**Used** | Disk space used by the data in the CockroachDB store. Note that this value is less than (**Capacity** - **Available**) because **Capacity** and **Available** metrics consider the entire disk and all applications on the disk, including CockroachDB, whereas **Used** metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include available-capacity-metric.md %}
+{% include v2.1/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ## See also

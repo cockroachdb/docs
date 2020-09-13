@@ -2,24 +2,22 @@
 title: SHOW TABLES
 summary: The SHOW TABLES statement lists the tables in a schema or database.
 keywords: reflection
-toc: false
+toc: true
 ---
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the tables or [views](views.html) in a schema or database.
 
 {{site.data.alerts.callout_info}}While a table or view is being <a href="drop-table.html">dropped</a>, <code>SHOW TABLES</code> will list the object with a <code>(dropped)</code> suffix.{{site.data.alerts.end}}
 
-<div id="toc"></div>
-
 ## Synopsis
 
 <div>
-{% include sql/{{ page.version.version }}/diagrams/show_tables.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_tables.html %}
 </div>
 
 ## Required privileges
 
-No [privileges](privileges.html) are required to list the tables in a schema or database.
+No [privileges](authorization.html#assign-privileges) are required to list the tables in a schema or database.
 
 ## Parameters
 
@@ -42,7 +40,7 @@ These example assumes that the `bank` database has been set as the current datab
 
 ~~~
 +---------------+
-|     Table     |
+| table_name    |
 +---------------+
 | accounts      |
 | user_accounts |
@@ -66,7 +64,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ~~~
 +-----------------------------------+
-|               Table               |
+|            table_name             |
 +-----------------------------------+
 | administrable_role_authorizations |
 | applicable_roles                  |
@@ -75,8 +73,10 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 | constraint_column_usage           |
 | enabled_roles                     |
 | key_column_usage                  |
+| parameters                        |
 | referential_constraints           |
 | role_table_grants                 |
+| routines                          |
 | schema_privileges                 |
 | schemata                          |
 | sequences                         |
@@ -87,7 +87,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 | user_privileges                   |
 | views                             |
 +-----------------------------------+
-(18 rows)
+(20 rows)
 ~~~
 
 ### Show tables in a different database
@@ -104,7 +104,7 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ~~~
 +-------------------+
-|       Table       |
+| table_name        |
 +-------------------+
 | episodes          |
 | quotes            |

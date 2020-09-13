@@ -1,27 +1,27 @@
 ---
 title: DROP DATABASE
 summary: The DROP DATABASE statement removes a database and all its objects from a CockroachDB cluster.
-toc: false
+toc: true
 ---
 
 The `DROP DATABASE` [statement](sql-statements.html) removes a database and all its objects from a CockroachDB cluster.
 
-<div id="toc"></div>
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](privileges.html) on the database and on all tables in the database.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the database and on all tables in the database.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_database.html %} </section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_database.html %} </section>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
-`name`  | The name of the database you want to drop.
+`name`  | The name of the database you want to drop. You cannot drop a database if it is set as the [current database](sql-name-resolution.html#current-database) or if [`sql_safe_updates = true`](set-vars.html).
 `CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT` | Do not drop the database if it contains any [tables](create-table.html) or [views](create-view.html).
 
@@ -37,12 +37,12 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 
@@ -72,12 +72,12 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 ~~~
 
 ~~~
-+-------+
-| Table |
-+-------+
-| t1    |
-| v1    |
-+-------+
++------------+
+| table_name |
++------------+
+| t1         |
+| v1         |
++------------+
 (2 rows)
 ~~~
 
@@ -97,3 +97,4 @@ pq: database "db2" is not empty and CASCADE was not specified
 - [`RENAME DATABASE`](rename-database.html)
 - [`SET DATABASE`](set-vars.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

@@ -1,12 +1,10 @@
 ---
 title: Production Checklist
 summary: Recommended settings for production deployments.
-toc: false
+toc: true
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
-
-<div id="toc"></div>
 
 ## Cluster Topology
 
@@ -28,16 +26,16 @@ Term | Definition
 
 - When deploying in a single datacenter:
     - To be able to tolerate the failure of any 1 node, use at least 3 nodes with the [default 3-way replication factor](configure-replication-zones.html#view-the-default-replication-zone). In this case, if 1 node fails, each range retains 2 of its 3 replicas, a majority.
-    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the replication factor to 5](configure-replication-zones.html#edit-the-default-replication-zone). In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
+    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes, [increase the default replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to 5, and [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5 as well. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
 - When deploying across multiple datacenters in one or more regions:
     - To be able to tolerate the failure of 1 entire datacenter, use at least 3 datacenters and set `--locality` on each node to spread data evenly across datacenters (see next bullet for more details). In this case, if 1 datacenter goes offline, the 2 remaining datacenters retain a majority of replicas.
     - When starting each node, use the [`--locality`](start-a-node.html#locality) flag to describe the node's location, for example, `--locality=region=west,datacenter=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
         - CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. However, locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
         - When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](demo-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must [increase the replication factor](configure-replication-zones.html#edit-the-default-replication-zone) to match the total number of datacenters.
-        - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.        
+        - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.
 
-{{site.data.alerts.callout_success}}For added context about CockroachDB's fault tolerance and automated repair capabilities, see <a href="training/fault-tolerance-and-automated-repair.html">this training</a>.{{site.data.alerts.end}}
+- When running a cluster of 5 nodes or more, it's safest to [increase the replication factor for important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) to 5, even if you do not do so for user data. For the cluster as a whole to remain available, the ranges for this internal data must always retain a majority of their replicas.
 
 ## Hardware
 
@@ -54,7 +52,10 @@ Term | Definition
 
 - For best resilience:
     - Use many smaller nodes instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
-    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database) or [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table).
+    - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition-new-in-v2-0) (enterprise-only).
+        {{site.data.alerts.callout_danger}}
+        {% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+        {{site.data.alerts.end}}
 
 ### Cloud-Specific Recommendations
 
@@ -100,6 +101,44 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to us
 
     Alternatively, CockroachDB supports [password authentication](create-and-manage-users.html#user-authentication), although we typically recommend using client certificates instead.
 
+## Networking
+
+### Networking flags
+
+When [starting a node](start-a-node.html), two main flags are used to control its network connections:
+
+- `--host` determines which address(es) to listen on for connections from other nodes and clients.
+- `--advertise-host` determines which address to tell other nodes to use.
+
+The effect depends on how these two flags are used in combination:
+
+| | `--host` not specified | `--host` specified |
+|-|----------------------------|------------------------|
+| **`--advertise-host` not specified** | Node listens on all of its IP addresses and advertises its canonical hostname to other nodes. | Node listens on the IP address or hostname specified in `--host` and advertises this value to other nodes.
+| **`--advertise-host` specified** | Node listens on all of its IP addresses and advertises the value specified in `--advertise-host` to other nodes. **Recommended for most cases.** | Node listens on the IP address or hostname specified in `--host` and advertises the value specified in `--advertise-host` to other nodes.
+
+{{site.data.alerts.callout_success}}
+When using hostnames, make sure they resolve properly (e.g., via DNS or `etc/hosts`). In particular, be careful about the value advertised to other nodes, either via `--advertise-host` or via `--host` when `--advertise-host` is not specified.
+{{site.data.alerts.end}}
+
+### Cluster on a single network
+
+When running a cluster on a single network, the setup depends on whether the network is private. In a private network, machines have addresses restricted to the network, not accessible to the public internet. Using these addresses is more secure and usually provides lower latency than public addresses.
+
+Private? | Recommended setup
+---------|------------------
+Yes | Start each node with `--host` set to its private IP address and do not specify `--advertise-host`. This will tell other nodes to use the private IP address advertised. Load balancers/clients in the private network must use it as well.
+No | Start each node with `--advertise-host` set to a stable public IP address that routes to the node and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>If load balancers/clients are outside the network, also configure firewalls to allow external traffic to reach the cluster.
+
+### Cluster spanning multiple networks
+
+When running a cluster across multiple networks, the setup depends on whether nodes can reach each other across the networks.
+
+Nodes reachable across networks? | Recommended setup
+---------------------------------|------------------
+Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-host` set to the address that is reachable from other networks and do not specify `--host`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.
+
 ## Load Balancing
 
 Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to ensure client performance and reliability, it's important to use load balancing:
@@ -121,11 +160,11 @@ Environment | Featured Approach
 
 ## Monitoring and Alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Clock Synchronization
 
-{% include faq/clock-synchronization-effects.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-effects.md %}
 
 ## Cache and SQL Memory Size
 
@@ -383,7 +422,7 @@ You should also confirm that the file descriptors limit for the entire Linux sys
 </div>
 <div id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a native Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
+CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
 
 </div>
 

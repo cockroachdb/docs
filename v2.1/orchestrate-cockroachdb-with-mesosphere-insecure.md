@@ -1,14 +1,13 @@
 ---
 title: Orchestrate CockroachDB with Mesosphere DC/OS (Insecure)
 summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Mesosphere DC/OS.
-toc: false
+toc: true
 ---
 
 This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Mesosphere DC/OS](https://mesosphere.com/).
 
 {{site.data.alerts.callout_danger}}Deploying an <strong>insecure</strong> cluster is not recommended for data in production. We'll update this page once it's possible to orchestrate a secure cluster with Mesosphere DC/OS.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 
@@ -205,19 +204,19 @@ $ dcos node ssh --master-proxy --leader
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }} node status --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
+$ docker run -it {{ page.release_info.docker_image }}:{{ page.release_info.version }} node status --all --insecure --host=pg.cockroachdb.l4lb.thisdcos.directory
 ~~~
 
 ~~~
-+----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
-| id |                                 address                                  | build  |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | replicas_leaders | replicas_leaseholders | ranges | ranges_unavailable | ranges_underreplicated |
-+----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
-|  1 | cockroachdb-0-node-init.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.1.3 | 2017-12-11 20:59:12 | 2017-12-11 19:14:42 |   41183973 |      1769 |    41187432 |            0 |         6018 |                2 |                     2 |      2 |                  0 |                      0 |
-|  2 | cockroachdb-1-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.1.3 | 2017-12-11 20:59:12 | 2017-12-11 19:14:52 |     115448 |     71037 |      209282 |            0 |         6218 |                4 |                     4 |      4 |                  0 |                      0 |
-|  3 | cockroachdb-2-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.1.3 | 2017-12-11 20:59:03 | 2017-12-11 19:14:53 |     120325 |     72652 |      217422 |            0 |         6732 |                4 |                     3 |      4 |                  0 |                      0 |
-|  4 | cockroachdb-3-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.1.3 | 2017-12-11 20:59:03 | 2017-12-11 20:21:43 |   41248030 |     79147 |    41338632 |            0 |         6569 |                1 |                     1 |      1 |                  0 |                      0 |
-|  5 | cockroachdb-4-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | v1.1.3 | 2017-12-11 20:59:04 | 2017-12-11 20:56:54 |   41211967 |     30550 |    41181417 |            0 |         6854 |                1 |                     1 |      1 |                  0 |                      0 |
-+----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+------------------------+
++----+--------------------------------------------------------------------------+----------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+-----------------------+
+| id |                                 address                                  | build                |     updated_at      |     started_at      | live_bytes | key_bytes | value_bytes | intent_bytes | system_bytes | replicas_leaders | replicas_leaseholders | ranges | ranges_unavailable | ranges_underreplicated |
++----+--------------------------------------------------------------------------+----------------------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+-----------------------+
+|  1 | cockroachdb-0-node-init.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:12 | 2017-12-11 19:14:42 |   41183973 |      1769 |    41187432 |            0 |         6018 |                2 |                     2 |      2 |                  0 |                      0 |
+|  2 | cockroachdb-1-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:12 | 2017-12-11 19:14:52 |     115448 |     71037 |      209282 |            0 |         6218 |                4 |                     4 |      4 |                  0 |                      0 |
+|  3 | cockroachdb-2-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:03 | 2017-12-11 19:14:53 |     120325 |     72652 |      217422 |            0 |         6732 |                4 |                     3 |      4 |                  0 |                      0 |
+|  4 | cockroachdb-3-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:03 | 2017-12-11 20:21:43 |   41248030 |     79147 |    41338632 |            0 |         6569 |                1 |                     1 |      1 |                  0 |                      0 |
+|  5 | cockroachdb-4-node-join.cockroachdb.autoip.dcos.thisdcos.directory:26257 | {{ page.release_info.version }} | 2017-12-11 20:59:04 | 2017-12-11 20:56:54 |   41211967 |     30550 |    41181417 |            0 |         6854 |                1 |                     1 |      1 |                  0 |                      0 |
++----+--------------------------------------------------------------------------+--------+---------------------+---------------------+------------+-----------+-------------+--------------+--------------+------------------+-----------------------+--------+--------------------+-------------+-----------------------+
 (5 rows)
 ~~~
 
@@ -392,4 +391,4 @@ To shut down the CockroachDB cluster:
 
 ## See also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

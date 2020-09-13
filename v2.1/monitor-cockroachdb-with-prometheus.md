@@ -1,14 +1,13 @@
 ---
 title: Monitor CockroachDB with Prometheus
 summary: Use Prometheus to monitor CockroachDB.
-toc: false
+toc: true
 ---
 
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
 {{site.data.alerts.callout_success}}For details about other monitoring options, see <a href="monitoring-and-alerting.html">Monitoring and Alerting</a>. {{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before you begin
 
@@ -48,7 +47,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
     - `scrape_interval: 10s` defines the scrape interval.
-    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint f    scraping time series metrics.
+    - `metrics_path: '/_status/vars'` defines the Prometheus-specific CockroachDB endpoint for scraping time series metrics.
     - `scheme: 'http'` specifies that the cluster being scraped is insecure.
     - `targets: ['localhost:8080']` specifies the hostname and `http-port` of the Cockroach node to collect time series metrics on.
 

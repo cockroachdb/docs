@@ -1,18 +1,172 @@
 ---
 title: Known Limitations in CockroachDB v2.1
 summary: Known limitations in CockroachDB v2.1.
-toc: false
+toc: true
 ---
 
-This page describes newly identified limitations in the CockroachDB v2.1 release as well as unresolved limitations identified in earlier releases.
-
-<div id="toc"></div>
+This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New limitations
 
-None identified yet.
+### Adding stores to a node
+
+{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+
+### Change data capture
+
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
+
+{% include {{page.version.version}}/known-limitations/cdc.md %}
+
+### Cold starts of large clusters may require manual intervention
+
+If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
+
+To exit this state, you should:
+  1. Stop all nodes.
+  2. Set the following environment variables: `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
+  3. Restart the cluster.
+
+Once restarted, you should monitor the Replica Quiescence graph on the Replication Dashboard. When >90% of the replicas have become Quiescent, you can conduct a rolling restart and remove the environment variables. Be sure to ensure that underreplicated ranges do not increase between restarts.
+
+Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [range_max_bytes](https://www.cockroachlabs.com/docs/stable/configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to max_range_bytes in a development environment before making changes on production.
+
+[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
+
+### Admin UI may become inaccessible for secure clusters
+
+Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+
+### `AS OF SYSTEM TIME` in `SELECT` statements
+
+`AS OF SYSTEM TIME` can only be used in a top-level `SELECT` statement. That is, we do not support statements like `INSERT INTO t SELECT * FROM t2 AS OF SYSTEM TIME <time>` or two subselects in the same statement with differing `AS OF SYSTEM TIME` arguments.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30534)
+
+### Large index keys can impair performance
+
+The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for RocksDB SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
+
+To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
+
+### Admin UI: Statements page latency reports
+
+The Statements page does not correctly report "mean latency" or "latency by phase" for statements that result in schema changes or other background jobs.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30381)
+
+### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
+
+CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
+
+### Using SQLAlchemy with CockroachDB
+
+Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB 2.1.
+
+### Admin UI: CPU percentage calculation
+
+For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
+
+### Admin UI: CPU count in containerized environments
+
+When CockroachDB is run in a containerized environment (e.g., Kubernetes), the Admin UI does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
+
+### `GROUP BY` referring to `SELECT` aliases
+
+Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28059)
+
+### `TRUNCATE` does not behave like `DELETE`
+
+`TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes
+: Limitations](online-schema-changes.html#limitations)
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
+
+### Using columns in `SELECT` not listed in `GROUP BY`
+
+Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
+
+To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list (e.g., `SELECT a GROUP BY b, a`), or `DISTINCT` should also be used (e.g., `SELECT DISTINCT a GROUP BY b`).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
+
+### Cannot `DELETE` multiple rows with self-referencing FKs
+
+Because CockroachDB checks foreign keys eagerly (i.e., per row), it cannot trivially delete multiple rows from a table with a self-referencing foreign key.
+
+To successfully delete multiple rows with self-referencing foreign keys, you need to ensure they're deleted in an order that doesn't violate the foreign key constraint.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/25809)
+
+### `DISTINCT` operations cannot operate over JSON values
+
+CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT` filters from working on them.
+
+As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g., `SELECT DISTINCT col->>'field'...`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/24436)
+
+### Current sequence value not checked when updating min/max value
+
+Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/23719)
+
+### Using common table expressions in `VALUES` and `UNION` clauses
+
+When the [cost-based optimizer](cost-based-optimizer.html) is disabled (which is the default), or when it does not support a query, a common table expression defined outside of a `VALUES` or `UNION `clause will not be available inside it. For example `...WITH a AS (...) SELECT ... FROM (VALUES(SELECT * FROM a))`.
+
+This limitation will be lifted when the cost-based optimizer covers all queries. Until then applications can work around this limitation by including the entire CTE query in the place where it is used.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/22418)
+
+### Conversion of integers to date/time values
+
+CockroachDB supports an experimental extension to the SQL standard where an integer value can be converted to a `DATE`/`TIME`/`TIMESTAMP` value, taking the number as a number of seconds since the Unix epoch.
+
+This conversion is currently only well defined for a small range of integers, i.e., large absolute values are not properly converted. For example, `(-9223372036854775808):::int64::date` converts to `1970-01-01 00:00:00+00:00`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/20136)
+
+### Importing data using the PostgreSQL COPY protocol
+
+Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
+
+### Importing an interleaved table from a `cockroach dump` output
+
+{% include {{page.version.version}}/known-limitations/import-interleaved-table.md %}
 
 ## Unresolved limitations
+
+### Location-based time zone names on Windows
+
+Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. On most distributions, it is therefore required to [install and keep up-to-date the `tzdata` library](recommended-production-settings.html#dependencies). However, on Windows, even with this library installed, location-based time zone names may not resolve.
+
+To work around this limitation, install the Go toolchain on the Windows machines running CockroachDB nodes. In this case, the CockroachDB nodes will use the timezone data from that toolchain.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
+
+### Database and table renames are not transactional
+
+Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
+
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+
+### Changes to the default replication zone are not applied to existing replication zones
+
+{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
 
 ### Silent validation error with `DECIMAL` values
 
@@ -24,20 +178,6 @@ Under the following conditions, the value received by CockroachDB will be differ
 
 Most client drivers and frameworks use the text format to pass placeholder values and are thus unaffected by this limitation. However, we know that the [Ecto framework](https://github.com/elixir-ecto/ecto) for Elixir is affected, and others may be as well. If in doubt, use [SQL statement logging](query-behavior-troubleshooting.html#cluster-wide-execution-logs) to control how CockroachDB receives decimal values from your client.
 
-### Enterprise backup/restore during rolling upgrades
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24493">#24493</a>.{{site.data.alerts.end}}
-
-In the upgrade process, after upgrading all binaries to v2.1, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.1 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
-
-### Memory flags with non-integer values and a unit suffix
-
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180416.html">v2.1.0-alpha.20180416</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24381">#24381</a>.{{site.data.alerts.end}}
-
-The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
-
-As a workaround, use integer values or a percentage, for example, `--cache=1536MiB`.
-
 ### Import with a high amount of disk contention
 
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
@@ -47,165 +187,80 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
 
-### Check constraints with `INSERT ... ON CONFLICT`
-
-[`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE ab (a INT PRIMARY KEY, b INT, CHECK (b < 1));
-~~~
-
-A simple `INSERT` statement that fails the Check constraint fails as it should:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a,b) VALUES (1, 12312);
-~~~
-
-~~~
-pq: failed to satisfy CHECK constraint (b < 1)
-~~~
-
-However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds and results in a row that fails the constraint:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0); -- create some initial valid value
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM ab;
-~~~
-
-~~~
-+---+--------+
-| a |   b    |
-+---+--------+
-| 1 | 123132 |
-+---+--------+
-(1 row)
-~~~
-
 ### Referring to a CTE by name more than once
 
-{% include known_limitations/cte-by-name.md %}
+{% include {{ page.version.version }}/known-limitations/cte-by-name.md %}
 
-### Using CTEs with data-modifying statements
-
-{% include known_limitations/cte-with-dml.md %}
-
-### Using CTEs with views
-
-{% include known_limitations/cte-with-view.md %}
-
-### Using CTEs with `VALUES` clauses
-
-{% include known_limitations/cte-in-values-clause.md %}
-
-### Using CTEs with set operations
-
-{% include known_limitations/cte-in-set-expression.md %}
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/31095)
 
 ### Assigning latitude/longitude for the Node Map
 
-{% include known_limitations/node-map.md %}
+{% include {{ page.version.version }}/known-limitations/node-map.md %}
 
 ### Placeholders in `PARTITION BY`
 
-{% include known_limitations/partitioning-with-placeholders.md %}
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-### Adding a column with certain `DEFAULT` values
+### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> CREATE TABLE t (x INT);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> CREATE SEQUENCE s;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+~~~
+
+~~~
+ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
 ### Available capacity metric in the Admin UI
 
-{% include available-capacity-metric.md %}
+{% include {{page.version.version}}/misc/available-capacity-metric.md %}
 
 ### Schema changes within transactions
 
-Within a single [transaction](transactions.html):
-
-- DDL statements cannot follow DML statements. As a workaround, arrange DML statements before DDL statements, or split the statements into separate transactions.
-- A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
-- A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+{% include {{page.version.version}}/misc/schema-changes-within-transactions.md %}
 
 ### Schema changes between executions of prepared statements
 
-When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE users (id INT PRIMARY KEY);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> PREPARE prep1 AS SELECT * FROM users;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users ADD COLUMN name STRING;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO users VALUES (1, 'Max Roach');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXECUTE prep1;
-~~~
-
-~~~
-+----+-----------+
-| id |   name    |
-+----+-----------+
-|  1 | Max Roach |
-+----+-----------+
-(1 row)
-~~~
-
-It's therefore recommended to **not** use `SELECT *` in queries that will be repeated, via prepared statements or otherwise.
-
-Also, a prepared [`INSERT`](insert.html), [`UPSERT`](upsert.html), or [`DELETE`](delete.html) statement acts inconsistently when the schema of the table being written to is changed before the prepared statement is executed:
-
-- If the number of columns has increased, the prepared statement returns an error but nonetheless writes the data.
-- If the number of columns remains the same but the types have changed, the prepared statement writes the data and does not return an error.
+{% include {{page.version.version}}/misc/schema-changes-between-prepared-statements.md %}
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
 
-This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](frequently-asked-questions.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
+This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
+
+### Write and update limits for a single statement
+
+A single statement can perform at most 64MiB of combined updates. When a statement exceeds these limits, its transaction gets aborted. Currently, `INSERT INTO ... SELECT FROM` and `CREATE TABLE AS SELECT` queries may encounter these limits.
+
+To increase these limits, you can update the [cluster-wide setting](cluster-settings.html) `kv.raft.command.max_size`, but note that increasing this setting can affect the memory utilization of nodes in the cluster. For `INSERT INTO .. SELECT FROM` queries in particular, another workaround is to manually page through the data you want to insert using separate transactions.
+
+In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of changes done by all statements) and capped both the number and the size of update. In this release, there's only a size limit, and it applies independently to each statement. Note that even though not directly restricted any more, large transactions can have performance implications on the cluster.
 
 ### Using `\|` to perform a large input in the SQL shell
 
-In the [built-in SQL shell](use-the-built-in-sql-client.html), using the [`\|`](use-the-built-in-sql-client.html#sql-shell-commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
+In the [built-in SQL shell](use-the-built-in-sql-client.html), using the [`\|`](use-the-built-in-sql-client.html#commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
 
 As a workaround, [execute the file from the command line](use-the-built-in-sql-client.html#execute-sql-statements-from-a-file) with `cat data.sql | cockroach sql` instead of from within the interactive shell.
 
@@ -259,6 +314,8 @@ Many string operations are not properly overloaded for [collated strings](collat
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/10679)
+
 ### Max size of a single column family
 
 When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (64MiB by default) for the table, the operation may fail, or cluster performance may suffer.
@@ -281,10 +338,10 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 ### Privileges for `DELETE` and `UPDATE`
 
-Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](privileges.html) on the table.
+Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
 ### `cockroach dump` does not support cyclic foreign key references
 
 {{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
 
-{% include known_limitations/dump-cyclic-foreign-keys.md %}
+{% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

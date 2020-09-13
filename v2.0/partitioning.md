@@ -1,14 +1,13 @@
 ---
 title: Define Table Partitions
 summary: Partitioning is an enterprise feature that gives you row-level control of how and where your data is stored.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0</span> CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {{site.data.alerts.callout_info}}Table partitioning is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Why Use Table Partitioning
 
@@ -40,7 +39,7 @@ For more details about these flags, see the [`cockroach start`](start-a-node.htm
 
 You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-Note that the following features don't work with an **expired license**:
+Note that the following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
@@ -67,7 +66,7 @@ You can define partitions and subpartitions over one or more columns of a table.
 
 To partition a table by list, use the [`PARTITION BY LIST`](partition-by.html) syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
 
-See [Partition by List](#partition-by-list) example below for more details.
+See [Partition by List](#define-table-partitions-by-list) example below for more details.
 
 #### Partition by Range
 
@@ -79,7 +78,7 @@ To define a table partition by range, use the [`PARTITION BY RANGE`](partition-b
 
 Partition values can be any SQL expression, but it’s only evaluated once. If you create a partition with value `< (now() - '1d')` on 2017-01-30, it would be contain all values less than 2017-01-29. It would not update the next day, it would continue to contain values less than 2017-01-29.
 
-See [Partition by Range](#partition-by-range) example below for more details.
+See [Partition by Range](#define-table-partitions-by-range) example below for more details.
 
 #### Partition using Primary Key
 
@@ -90,7 +89,7 @@ For instance, consider the database of a global online learning portal that has 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
@@ -156,7 +155,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 ~~~ shell
 # Start the node in the US datacenter:
 $ cockroach start --insecure \
---locality=region=us-1  \
+--locality=datacenter=us1  \
 --store=node1 \
 --host=<node1 hostname> \
 --port=26257 \
@@ -168,7 +167,7 @@ $ cockroach start --insecure \
 ~~~ shell
 # Start the node in the AUS datacenter:
 $ cockroach start --insecure \
---locality=region=aus-1 \
+--locality=datacenter=au1 \
 --store=node2 \
 --host=<node2 hostname> \
 --port=26258 \
@@ -185,7 +184,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
@@ -292,7 +291,7 @@ $ cockroach start --insecure \
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
-   id SERIAL,
+   id INT DEFAULT unique_rowid(),
    name STRING,
    email STRING,                                                                                           
    country STRING,
@@ -376,7 +375,7 @@ Start a node in the US datacenter:
 ~~~ shell
 $ cockroach start --insecure \
 --host=<node1 hostname> \
---locality=datacenter=us-1 \
+--locality=datacenter=us1 \
 --store=path=/mnt/1,attrs=ssd \
 --store=path=/mnt/2,attrs=hdd \
 ~~~
@@ -387,7 +386,7 @@ Start a node in the AUS datacenter:
 ~~~ shell
 $ cockroach start --insecure \
 --host=<node2 hostname> \
---locality=datacenter=aus-1 \
+--locality=datacenter=au1 \
 --store=path=/mnt/3,attrs=ssd \
 --store=path=/mnt/4,attrs=hdd \
 --join=<node1 hostname>:26257
@@ -409,7 +408,7 @@ To set the enterprise license, see [Set the Trial or Enterprise License Key](ent
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
@@ -543,7 +542,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 ## Known Limitations
 
-{% include known_limitations/partitioning-with-placeholders.md %}
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
 ## See Also
 

@@ -1,12 +1,11 @@
 ---
 title: SHOW INDEX
 summary: The SHOW INDEX statement returns index information for a table.
-toc: false
+toc: true
 ---
 
 The `SHOW INDEX` [statement](sql-statements.html) returns index information for a table.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -21,7 +20,7 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_index.html %}
 
 ## Parameters
 
@@ -42,7 +41,7 @@ Field | Description
 `Column` | The indexed column.
 `Direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns.
 `Storing` | Whether or not the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
-`Implicit` | Whether or not the column is part of the index despite not being explictly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>At this time, [primary key](primary-key.html) columns are the only columns that get implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
+`Implicit` | Whether or not the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>At this time, [primary key](primary-key.html) columns are the only columns that get implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
 
 ## Examples
 

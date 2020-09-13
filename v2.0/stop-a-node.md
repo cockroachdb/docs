@@ -1,14 +1,13 @@
 ---
 title: Stop a Node
 summary: Learn how to temporarily stop a CockroachDB node.
-toc: false
+toc: true
 ---
 
 This page shows you how to use the `cockroach quit` [command](cockroach-commands.html) to temporarily stop a node that you plan to restart, for example, during the process of [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or to perform planned maintenance (e.g., upgrading system software).
 
 For information about permanently removing nodes to downsize a cluster or react to hardware failures, see [Remove Nodes](remove-nodes.html).
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -33,7 +32,7 @@ Basic terms:
 
 ### Considerations
 
-{% include faq/planned-maintenance.md %}
+{% include {{ page.version.version }}/faq/planned-maintenance.md %}
 
 ## Synopsis
 
@@ -57,7 +56,7 @@ Flag | Description
 
 ### Client Connection
 
-{% include sql/{{ page.version.version }}/connection-parameters.md %}
+{% include {{ page.version.version }}/sql/connection-parameters.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

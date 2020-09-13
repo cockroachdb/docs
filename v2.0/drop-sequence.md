@@ -1,12 +1,11 @@
 ---
 title: DROP SEQUENCE
 summary:
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,7 @@ The user must have the `DROP` [privilege](privileges.html) on the specified sequ
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_sequence.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_sequence.html %}</section>
 
 ## Parameters
 

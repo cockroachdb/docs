@@ -1,16 +1,17 @@
 ---
 title: DROP INDEX
 summary: The DROP INDEX statement removes indexes from tables.
-toc: false
+toc: true
 ---
 
 The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_index.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/drop_index.html %}
+</div>
 
 ## Required Privileges
 

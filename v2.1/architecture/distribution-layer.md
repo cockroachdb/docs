@@ -1,7 +1,7 @@
 ---
 title: Distribution Layer
-summary:
-toc: false
+summary: The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.
+toc: true
 ---
 
 The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.
@@ -10,11 +10,9 @@ The distribution layer of CockroachDB's architecture provides a unified view of 
 If you haven't already, we recommend reading the [Architecture Overview](overview.html).
 {{site.data.alerts.end}}
 
-<div id="toc"></div>
-
 ## Overview
 
-To make all data in your cluster accessible from any node, CockroachDB stores data in a monolithic sorted map of key-value pairs. This keyspace describes all of the data in your cluster, as well as its location, and is divided into what we call "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+To make all data in your cluster accessible from any node, CockroachDB stores data in a monolithic sorted map of key-value pairs. This key-space describes all of the data in your cluster, as well as its location, and is divided into what we call "ranges", contiguous chunks of the key-space, so that every key can always be found in a single range.
 
 CockroachDB implements a sorted map to enable:
 
@@ -32,7 +30,7 @@ The monolithic sorted map is comprised of two fundamental elements:
 
 The locations of all ranges in your cluster are stored in a two-level index at the beginning of your key-space, known as meta ranges, where the first level (`meta1`) addresses the second, and the second (`meta2`) addresses data in the cluster. Importantly, every node has information on where to locate the `meta1` range (known as its range descriptor, detailed below), and the range is never split.
 
-This meta range structure lets us address up to 4EB of user data by default: we can address 2^(18 + 18) = 2^36 ranges; each range addresses 2^26 B, and altogether we address 2^(36+26) B = 2^62 B = 4EB. However, with larger range sizes, it's possible to expand this capacity even further.
+This meta range structure lets us address up to 4EiB of user data by default: we can address 2^(18 + 18) = 2^36 ranges; each range addresses 2^26 B, and altogether we address 2^(36+26) B = 2^62 B = 4EiB. However, with larger range sizes, it's possible to expand this capacity even further.
 
 Meta ranges are treated mostly like normal ranges and are accessed and replicated just like other elements of your cluster's KV data.
 
@@ -42,9 +40,11 @@ Each node caches values of the `meta2` range it has accessed before, which optim
 
 After the node's meta ranges is the KV data your cluster stores.
 
-This data is broken up into 64MiB sections of contiguous key-space known as ranges. This size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
+Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 64 MiB in size, it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index. 
 
-These ranges are replicated (in the aptly named replication layer), and have the addresses of each replica stored in the `meta2` range.
+The default 64MiB range size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
+
+These table ranges are replicated (in the aptly named replication layer), and have the addresses of each replica stored in the `meta2` range.
 
 ### Using the monolithic sorted map
 
@@ -105,7 +105,7 @@ Here's an example:
 meta2/M -> node1:26257, node2:26257, node3:26257
 ~~~
 
-In this case, the replica on `node1` is the Leaseholder, and nodes 2 and 3 also contain replicas.
+In this case, the replica on `node1` is the leaseholder, and nodes 2 and 3 also contain replicas.
 
 #### Example
 

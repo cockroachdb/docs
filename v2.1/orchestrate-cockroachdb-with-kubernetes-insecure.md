@@ -1,21 +1,21 @@
 ---
-title: Orchestrate CockroachDB with Kubernetes (Insecure)
-summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
-toc: false
+title: Orchestrate CockroachDB in a Single Kubernetes Cluster (Insecure)
+summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
+toc: true
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="orchestrate-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button>
-  <button class="filter-button current"><strong>Insecure</strong></button></a>
+  <a href="orchestrate-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button></a>
+  <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
-This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.
+This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) Kubernetes package manager.
 
-{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
-{{site.data.alerts.callout_success}}For details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see <a href="kubernetes-performance.html">CockroachDB Performance on Kubernetes</a>.{{site.data.alerts.end}}
-
-<div id="toc"></div>
+{{site.data.alerts.callout_danger}}
+If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
+{{site.data.alerts.end}}
 
 ## Before you begin
 
@@ -26,36 +26,56 @@ Before getting started, it's helpful to review some Kubernetes-specific terminol
 Feature | Description
 --------|------------
 instance | A physical or virtual machine. In this tutorial, you'll create GCE or AWS instances and join them into a single Kubernetes cluster from your local workstation.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
+[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one or more Docker containers. In this tutorial, each pod will run on a separate instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
-{% include orchestration/kubernetes-limitations.md %}
 
-{% include orchestration/start-kubernetes.md %}
+### Limitations
 
-## Step 3. Start CockroachDB nodes
+{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-{% include orchestration/start-cluster.md %}
+## Step 1. Start Kubernetes
 
-## Step 4. Initialize the cluster
+{% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
-{% include orchestration/initialize-cluster-insecure.md %}
+## Step 2. Start CockroachDB
 
-## Step 5. Test the cluster
+To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
 
-{% include orchestration/test-cluster-insecure.md %}
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="helm">Use Helm</button>
+    <button class="filter-button" data-scope="manual">Use Configs</button>
+</div>
 
-## Step 6. Monitor the cluster
+<section class="filter-content" markdown="1" data-scope="manual">
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
+</section>
 
-{% include orchestration/monitor-cluster.md %}
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
+</section>
 
-## Step 7. Simulate node failure
+## Step 3. Use the built-in SQL client
 
-{% include orchestration/kubernetes-simulate-failure.md %}
+{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
-## Step 8. Scale the cluster
+## Step 4. Access the Admin UI
 
-{% include orchestration/kubernetes-scale-cluster.md %}
+{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
+
+## Step 5. Simulate node failure
+
+{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
+
+## Step 6. Set up monitoring and alerting
+
+{% include {{ page.version.version }}/orchestration/kubernetes-prometheus-alertmanager.md %}
+
+## Step 7. Maintain the cluster
+
+### Add nodes
+
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
 3. Verify that a fourth pod was added successfully:
 
@@ -64,28 +84,24 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
     $ kubectl get pods
     ~~~
 
-    ~~~
-    NAME            READY     STATUS    RESTARTS   AGE
-    cockroachdb-0   1/1       Running   0          2h
-    cockroachdb-1   1/1       Running   0          2h
-    cockroachdb-2   1/1       Running   0          9m
-    cockroachdb-3   1/1       Running   0          46s
-    ~~~
+### Remove nodes
 
-## Step 9. Upgrade the cluster
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
 
-{% include orchestration/kubernetes-upgrade-cluster_v2.1.md %}
+### Upgrade the cluster
 
-## Step 10. Stop the cluster
+{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
+
+### Stop the cluster
 
 To shut down the CockroachDB cluster:
 
 1. Delete all of the resources you created, including the logs and remote persistent volumes:
 
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
-    -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
 
     ~~~
@@ -93,7 +109,7 @@ To shut down the CockroachDB cluster:
     pod "cockroachdb-1" deleted
     pod "cockroachdb-2" deleted
     pod "cockroachdb-3" deleted
-    statefulset "cockroachdb" deleted
+    service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
     persistentvolumeclaim "datadir-cockroachdb-0" deleted
@@ -101,13 +117,73 @@ To shut down the CockroachDB cluster:
     persistentvolumeclaim "datadir-cockroachdb-2" deleted
     persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget "cockroachdb-budget" deleted
+    job "cluster-init" deleted
+    clusterrolebinding "prometheus" deleted
+    clusterrole "prometheus" deleted
+    serviceaccount "prometheus" deleted
+    alertmanager "cockroachdb" deleted
+    prometheus "cockroachdb" deleted
+    prometheusrule "prometheus-cockroachdb-rules" deleted
+    servicemonitor "cockroachdb" deleted
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=my-release-cockroachdb
     ~~~
 
-2. Stop Kubernetes:
+    ~~~
+    pod "my-release-cockroachdb-0" deleted
+    pod "my-release-cockroachdb-1" deleted
+    pod "my-release-cockroachdb-2" deleted
+    pod "my-release-cockroachdb-3" deleted
+    service "alertmanager-cockroachdb" deleted
+    service "my-release-cockroachdb" deleted
+    service "my-release-cockroachdb-public" deleted
+    persistentvolumeclaim "datadir-my-release-cockroachdb-0" deleted
+    persistentvolumeclaim "datadir-my-release-cockroachdb-1" deleted
+    persistentvolumeclaim "datadir-my-release-cockroachdb-2" deleted
+    persistentvolumeclaim "datadir-my-release-cockroachdb-3" deleted
+    poddisruptionbudget "cockroachdb-budget" deleted
+    job "cluster-init" deleted
+    clusterrolebinding "prometheus" deleted
+    clusterrole "prometheus" deleted
+    serviceaccount "prometheus" deleted
+    alertmanager "cockroachdb" deleted
+    prometheus "cockroachdb" deleted
+    prometheusrule "prometheus-cockroachdb-rules" deleted
+    servicemonitor "cockroachdb" deleted
+    ~~~
+    </section>
 
-{% include orchestration/stop-kubernetes.md %}
+2. Stop Kubernetes:
+    - Hosted GKE:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ gcloud container clusters delete cockroachdb
+        ~~~
+    - Manual GCE:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ cluster/kube-down.sh
+        ~~~
+    - Manual AWS:
+
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ cluster/kube-down.sh
+        ~~~
+
+    {{site.data.alerts.callout_danger}}
+    If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
+    {{site.data.alerts.end}}
 
 ## See also
 
+- [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

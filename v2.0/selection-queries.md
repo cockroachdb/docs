@@ -1,7 +1,7 @@
 ---
 title: Selection Queries
 summary: Selection Queries can read and process data.
-toc: false
+toc: true
 redirect_from: selection-clauses.html
 key: selection-clauses.html
 ---
@@ -18,11 +18,10 @@ Selection queries can occur:
 - Between parentheses as a [subquery](table-expressions.html#subqueries-as-table-expressions).
 - As [operand to other statements](#using-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html) or [`ALTER ... SPLIT AT`](split-at.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/select.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/select.html %}</div>
 
 <div markdown="1"></div>
 
@@ -56,7 +55,9 @@ Form | Usage
 
 ### Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/select_clause.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/select_clause.html %}
+</div>
 
 <div markdown="1"></div>
 
@@ -67,7 +68,9 @@ Form | Usage
 
 #### Syntax
 
-{% include sql/{{ page.version.version }}/diagrams/values_clause.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/values_clause.html %}
+</div>
 
 A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
@@ -98,7 +101,9 @@ names. [These names can be modified with
 
 #### Syntax
 
-{% include sql/{{ page.version.version }}/diagrams/table_clause.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/table_clause.html %}
+</div>
 
 <div markdown="1"></div>
 
@@ -150,7 +155,7 @@ set operations or as main component in a selection query.
 
 ### Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/set_operation.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/set_operation.html %}</div>
 
 <div markdown="1"></div>
 
@@ -456,11 +461,11 @@ in a future version of CockroachDB.{{site.data.alerts.end}}
 
 ### Using `VALUES` Clauses with Common Table Expressions
 
-{% include known_limitations/cte-in-values-clause.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-values-clause.md %}
 
 ### Using Set Operations with Common Table Expressions
 
-{% include known_limitations/cte-in-set-expression.md %}
+{% include {{ page.version.version }}/known-limitations/cte-in-set-expression.md %}
 
 ## See Also
 

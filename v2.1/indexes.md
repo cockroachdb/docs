@@ -1,13 +1,12 @@
 ---
 title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-<div id="toc"></div>
 
 ## How do indexes work?
 
@@ -23,15 +22,15 @@ Each table automatically has an index created called `primary`, which indexes ei
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
-- By applying the Unique constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
+- By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
 To create the most useful secondary indexes, you should also check out our [best practices](#best-practices).
 
 ### Selection
 
-Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/), which will show you how to use the [`EXPLAIN`](https://www.cockroachlabs.com/docs/v19.1/explain.html) statement for your query to see which index is being used.
 
 To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
 
@@ -45,16 +44,16 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 
 ### Performance
 
-Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
+Indexes create a trade-off: they greatly improve the speed of queries, but may slightly slow down writes to an affected column (because new values have to be written for both the table _and_ the index).
 
 To maximize your indexes' performance, we recommend following a few [best practices](#best-practices).
 
 ## Best practices
 
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
+We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
+- [Store columns](#storing-columns) that are _only_ in the `SELECT` clause.
 
 ### Indexing columns
 
@@ -67,29 +66,55 @@ When designing indexes, it's important to consider which columns you index and t
 
 ### Storing columns
 
-Storing a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but do not filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
-
-However, for SQL to use stored columns, queries must filter another column in the same index.
+The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the primary index.
 
 ### Example
 
-If you wanted to optimize the performance of the following queries:
+Say we have a table with three columns, two of which are indexed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT col1 FROM tbl WHERE col1 = 10;
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
+~~~
+
+If we filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+~~~
+
+~~~
+       tree       |    field    |      description
++-----------------+-------------+-----------------------+
+  render          |             |
+   └── index-join |             |
+        │         | table       | tbl@primary
+        │         | key columns | rowid
+        └── scan  |             |
+                  | table       | tbl@tbl_col1_col2_idx
+                  | spans       | /10/2-/11
+~~~
+
+However, if we store `col3` in the index, the index join is no longer necessary. This means our query only needs to read from the secondary index, so it will be more efficient.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
 
-You could create a single index of `col1` and `col2` that stores `col3`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON tbl (col1, col2) STORING (col3);
+~~~
+    tree    |    field    |    description
++-----------+-------------+-------------------+
+  render    |             |
+   └── scan |             |
+            | table       | tbl@tbl_col1_col2_idx
+            | spans       | /10/2-/11
 ~~~
 
 ## See also

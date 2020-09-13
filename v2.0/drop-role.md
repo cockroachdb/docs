@@ -1,14 +1,13 @@
 ---
 title: DROP ROLE (Enterprise)
 summary: The DROP ROLE statement removes one or more SQL roles.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 {{site.data.alerts.callout_info}}<code>DROP ROLE</code> is an <a href="enterprise-licensing.html">enterprise-only</a> feature.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
@@ -21,7 +20,7 @@ Roles can only be dropped by super users, i.e., members of the `admin` role.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/drop_role.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/drop_role.html %}</section>
 
 
 ## Parameters

@@ -1,16 +1,15 @@
 ---
 title: ADD COLUMN
 summary: Use the ADD COLUMN statement to add columns to tables.
-toc: false
+toc: true
 ---
 
 The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/add_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/add_column.html %}
 
 ## Required Privileges
 

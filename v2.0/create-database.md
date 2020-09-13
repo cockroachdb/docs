@@ -1,12 +1,11 @@
 ---
 title: CREATE DATABASE
 summary: The CREATE DATABASE statement creates a new CockroachDB database.
-toc: false
+toc: true
 ---
 
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,9 @@ Only the `root` user can create databases.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/create_database.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/create_database.html %}
+</div>
 
 ## Parameters
 

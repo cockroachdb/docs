@@ -1,7 +1,7 @@
 ---
 title: FLOAT
 summary: The FLOAT data type stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point.
-toc: false
+toc: true
 ---
 
 The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers with up to 17 digits of decimal precision.
@@ -9,7 +9,6 @@ The `FLOAT` [data type](data-types.html) stores inexact, floating-point numbers 
 They are handled internally using the [standard double-precision
 (64-bit binary-encoded) IEEE754 format](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
-<div id="toc"></div>
 
 ## Aliases
 

@@ -1,7 +1,7 @@
 ---
 title: Start a Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
-toc: false
+toc: true
 asciicast: true
 allowed_hashes: [os-mac, os-linux, os-windows]
 ---
@@ -25,17 +25,15 @@ Running a stateful application like CockroachDB in Docker is more complex and er
 <div id="toc" style="display: none"></div>
 
 <div class="filter-content current" markdown="1" data-scope="os-mac">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
 When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080`, and click **Metrics** on the left-hand navigation bar.
 
-<img src="{{ 'images/v2.1/admin_ui_overview_dashboard.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Node** graph and hover over the line:
 
-As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
-
-<img src="{{ 'images/v2.1/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
@@ -64,17 +62,15 @@ $ rm -rf cockroach-data
 </div>
 
 <div class="filter-content" markdown="1" data-scope="os-linux">
-{% include start_in_docker/mac-linux-steps.md %}
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 
 ## Step 5. Monitor the cluster
 
 When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the Admin UI metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080` and click **Metrics** on the left.
 
-<img src="{{ 'images/v1.1/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Node** graph and hover over the line:
 
-As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
-
-<img src="{{ 'images/v1.1/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
@@ -252,11 +248,9 @@ When you're done, exit the SQL shell on node 2:
 
 When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host. To check out the [Admin UI](admin-ui-overview.html) metrics for your cluster, point your browser to that port on `localhost`, i.e., `http://localhost:8080` and click **Metrics** on the left.
 
-<img src="{{ 'images/v2.1/admin_ui.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Node** graph and hover over the line:
 
-As mentioned earlier, CockroachDB automatically replicates your data behind-the-scenes. To verify that data written in the previous step was replicated successfully, scroll down to the **Replicas per Store** graph and hover over the line:
-
-<img src="{{ 'images/v2.1/admin_ui_replicas.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/admin_ui_replicas_per_node.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
 The replica count on each node is identical, indicating that all data in the cluster was replicated 3 times (the default).
 
@@ -276,7 +270,7 @@ Use the `docker stop` and `docker rm` commands to stop and remove the containers
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">PS </span>C:\Users\username&gt; rm -rf cockroach-data</span></code></pre></div>
+<div class="language-powershell highlighter-rouge"><pre class="highlight"><code>Remove-Item C:\Users\username&gt; cockroach-data -recurse</code></pre></div>
 
 </div>
 

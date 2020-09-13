@@ -1,7 +1,7 @@
 ---
 title: Build a Ruby App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Ruby application with the ActiveRecord ORM.
-toc: false
+toc: true
 twitter: false
 ---
 
@@ -16,7 +16,6 @@ We have tested the [Ruby pg driver](https://rubygems.org/gems/pg) and the [Activ
 
 {{site.data.alerts.callout_success}}For a more realistic use of ActiveRecord with CockroachDB, see our <a href="https://github.com/cockroachdb/examples-orms"><code>examples-orms</code></a> repository.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Before You Begin
 
@@ -33,18 +32,18 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 
 {{site.data.alerts.callout_success}}The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter.{{site.data.alerts.end}}
 
-{% include app/common-steps.md %}
+{% include {{ page.version.version }}/app/common-steps.md %}
 
 ## Step 5. Run the Ruby code
 
 The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) ORM to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
 
 Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/app/activerecord-basic-sample.rb" download>download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/activerecord-basic-sample.rb" download>download it directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include app/activerecord-basic-sample.rb %}
+{% include {{ page.version.version }}/app/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:
@@ -98,4 +97,4 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 Read more about using the [ActiveRecord ORM](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

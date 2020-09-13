@@ -1,26 +1,27 @@
 ---
 title: INSERT
 summary: The INSERT statement inserts one or more rows into a table.
-toc: false
+toc: true
 ---
 
 The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.
 
-<div id="toc"></div>
 
 ## Performance best practices
 
-- A single [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement is faster than multiple single-row `INSERT` statements. To bulk-insert data into an existing table, use a multi-row `INSERT` instead of multiple single-row `INSERT` statements.
-- The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
+- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+- To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](privileges.html) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
+The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table. To use `ON CONFLICT DO UPDATE`, the user must also have the `UPDATE` privilege on the table.
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/insert.html %}</div>
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/insert.html %}
+</div>
 
 ## Parameters
 
@@ -32,11 +33,13 @@ Parameter | Description
 `column_name` | The name of a column to populate during the insert.
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
 `DEFAULT VALUES` | To fill all columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). See the [Insert and Return Values](#insert-and-return-values) example below.<br><br>Within a [transaction](transactions.html), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). See the [Insert and Return Values](#insert-and-return-values) example below.
 
 ### `ON CONFLICT` clause
 
-<div>{% include sql/{{ page.version.version }}/diagrams/on_conflict.html %}</div>
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/on_conflict.html %}
+</div>
 
 Normally, when inserted values
 conflict with a `UNIQUE` constraint on one or more columns, CockroachDB
@@ -56,8 +59,8 @@ CockroachDB will return an error.
 
 As a short-hand alternative to the `ON
 CONFLICT` clause, you can use the [`UPSERT`](upsert.html)
-statement. However, `UPSERT` does not let you specify the column with
-the unique constraint; it assumes that the column is the primary
+statement. However, `UPSERT` does not let you specify the column(s) with
+the unique constraint; it always uses the column(s) from the primary
 key. Using `ON CONFLICT` is therefore more flexible.
 
 ## Examples
@@ -100,12 +103,13 @@ If you do not list column names, the statement will use the columns of the table
 ~~~
 
 ~~~
-+---------+---------+-------+----------------+
-|  Field  |  Type   | Null  |    Default     |
-+---------+---------+-------+----------------+
-| id      | INT     | false | unique_rowid() |
-| balance | DECIMAL | true  | NULL           |
-+---------+---------+-------+----------------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| id          | INT       |    true     | unique_rowid() |                       | {}      |
+| balance     | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -164,12 +168,13 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ~~~
 
 ~~~
-+--------+---------+-------+---------+
-| Field  |  Type   | Null  | Default |
-+--------+---------+-------+---------+
-| number | INT     | false | NULL    |
-| amount | DECIMAL | true  | NULL    |
-+--------+---------+-------+---------+
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| column_name | data_type | is_nullable | column_default | generation_expression | indices |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+| number      | INT       |    true     | NULL           |                       | {}      |
+| amount      | DECIMAL   |    true     | NULL           |                       | {}      |
++-------------+-----------+-------------+----------------+-----------------------+---------+
+(2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -252,8 +257,6 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 ### Insert and return values
 
 In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `unique_rowid()` function. The language-specific versions assume that you have installed the relevant [client drivers](install-client-drivers.html).
-
-</div>
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
@@ -652,6 +655,50 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 | 10 |     450 |
 +----+---------+
 ~~~
+
+### Import data containing duplicates rows using `ON CONFLICT` and `DISTINCT ON`
+
+If the input data for `INSERT ON CONFLICT` contains duplicate rows,
+you must use [`DISTINCT
+ON`](select-clause.html#eliminate-duplicate-rows) to remove these
+duplicates.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  INSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance FROM inputrows) -- de-duplicate the input rows
+    ON CONFLICT (id)
+    DO NOTHING;
+~~~
+
+The `DISTINCT ON` clause does not guarantee which of the duplicates is
+considered. To force the selection of a particular duplicate, use an
+`ORDER BY` clause:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> WITH
+    -- the following data contains duplicates on the conflict column "id":
+    inputrows AS (VALUES (8, 130), (8, 140))
+
+  INSERT INTO accounts (id, balance)
+    (SELECT DISTINCT ON(id) id, balance
+	 FROM inputrows
+     ORDER BY balance) -- pick the lowest balance as value to update in each account
+    ON CONFLICT (id)
+    DO NOTHING;
+~~~
+
+{{site.data.alerts.callout_info}}
+Using `DISTINCT ON` incurs a performance cost to search and eliminate duplicates.
+For best performance, avoid using it when the input is known to not contain duplicates.
+{{site.data.alerts.end}}
 
 ## See also
 

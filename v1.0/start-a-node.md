@@ -1,14 +1,13 @@
 ---
 title: Start a Node
 summary: To start a new CockroachDB cluster, or add a node to an existing cluster, run the cockroach start command.
-toc: false
+toc: true
 ---
 
 To start a new CockroachDB cluster, or add a node to an existing cluster, run the `cockroach start` [command](cockroach-commands.html) with appropriate flags.
 
 {{site.data.alerts.callout_info}}Node-level settings are defined by flags passed to the <code>cockroach start</code> command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see <a href="cluster-settings.html">Cluster Settings</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
@@ -61,7 +60,7 @@ Flag | Description
 
 By default, `cockroach start` writes all messages to log files, and prints nothing to `stderr`. However, you can control the process's [logging](debug-and-error-logs.html) behavior with the following flags:
 
-{% include custom/logging-flags.md %}
+{% include {{ page.version.version }}/misc/logging-flags.md %}
 
 #### Defaults
 
@@ -115,7 +114,7 @@ Field | Description
 `locality` | If values describing the locality of the node were specified in the `--locality` field, they are listed in this field. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `store[n]` | The directory containing store data, where `[n]` is the index of the store, e.g., `store[0]` for the first store, `store[1]` for the second store.<br><br>If store-level attributes were specified in the `attrs` field of the [`--store`](#store) flag, they are listed in this field as well. These details are potentially useful for [configuring replication zones](configure-replication-zones.html).
 `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
-`clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the [troubleshooting](cluster-setup-troubleshooting.html#node-wont-join-cluster) docs.
+`clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the [troubleshooting](cluster-setup-troubleshooting.html#node-will-not-join-cluster) docs.
 `nodeID` | The ID of the node.
 
 ## Examples

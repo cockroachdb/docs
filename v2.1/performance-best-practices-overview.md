@@ -1,12 +1,14 @@
 ---
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
-toc: false
+toc: true
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
 
-<div id="toc"></div>
+{{site.data.alerts.callout_success}}
+For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html).
+{{site.data.alerts.end}}
 
 ## Multi-row DML best practices
 
@@ -25,7 +27,7 @@ For more information, see:
 
 The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
-## Bulk insert best tractices
+## Bulk insert best practices
 
 ### Use multi-row `INSERT` statements for bulk inserts into existing tables
 
@@ -34,10 +36,6 @@ To bulk-insert data into an existing table, batch multiple rows in one multi-row
 ### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
-
-## Execute statements in parallel
-
-CockroachDB supports parallel execution of [independent](parallel-statement-execution.html#when-to-use-parallel-statement-execution) [`INSERT`](insert.html), [`UPDATE`](update.html), [`UPSERT`](upsert.html), and [`DELETE`](delete.html) statements within a single [transaction](transactions.html). Executing statements in parallel helps reduce aggregate latency and improve performance. To execute statements in parallel, append the `RETURNING NOTHING` clause to the statements in a transaction. For more information, see [Parallel Statement Execution](parallel-statement-execution.html).
 
 ## Assign column families
 
@@ -49,20 +47,43 @@ When a table is created, all columns are stored as a single column family. This 
 
 [Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
 
+However, the above is only true for tables where all operations (e.g., [`SELECT`](selection-queries.html) or [`INSERT`](insert.html)) are performed on a single value shared between both tables. The following types of operations may actually become slower after interleaving:
+
+- Operations that span multiple values.
+- Operations that do not specify the interleaved parent ID.
+
+This happens because when data is interleaved, queries that work on the parent table(s) will need to "skip over" the data in interleaved children, which increases the read and write latencies to the parent in proportion to the number of interleaved values.
+
 ## Unique ID best practices
 
-The common approach for generating unique IDs is one of the following:
+A traditional approach for generating unique IDs is one of the following:
 
- - Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s
- - Use `SERIAL` variables to generate random unique IDs
+- Monotonically increase `INT` IDs by using transactions with roundtrip `SELECT`s.
+- Use the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs.
 
-The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
+The first approach does not take advantage of the parallelization possible in a distributed database like CockroachDB. It also causes all new records to be inserted onto the same node.
 
-The best practice in CockroachDB is to generate unique IDs using the `UUID` type, which generates random unique IDs in parallel, thus improving performance.
+The bottleneck with the second approach is that IDs generated temporally near each other have similar values and are located physically near each other in a table. This can cause a hotspot for reads and writes in a table.
+
+There are two schema design patterns that can mitigate these issues.
+
+One pattern in CockroachDB is to generate unique IDs for the primary key using the `UUID` type, which generates random unique IDs in parallel, thus improving performance. This will distribute the insert load as well as any later queries of the table, but has the disadvantage of creating a primary key that may not be useful in a query directly, and will require a join with another table or a secondary index.
+
+An alternative pattern which requires careful planning at the schema design phase but which can yield even better performance would be to use a multi-column Primary Key that is unique, but which is also useful in a query. The trick is to ensure that any monotonically increasing field is located after the first column.
+
+For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a Primary Key might be `(username, post_timestamp)`. This would make the following query efficient:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM posts
+          WHERE username = 'alyssa'
+       ORDER BY post_timestamp DESC
+          LIMIT 10;
+~~~
 
 ### Use `UUID` to generate unique IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
@@ -116,7 +137,7 @@ Suppose the table schema is as follows:
 > CREATE TABLE X (
 	ID1 INT,
 	ID2 INT,
-	ID3 SERIAL,
+	ID3 INT DEFAULT unique_rowid(),
 	PRIMARY KEY (ID1,ID2)
   );
 ~~~
@@ -148,9 +169,9 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 You can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [Unique constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
-- By applying the Unique constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
+- By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
 To create the most useful secondary indexes, check out our [best practices](indexes.html#best-practices).
 

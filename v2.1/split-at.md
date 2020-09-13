@@ -1,33 +1,32 @@
 ---
 title: SPLIT AT
 summary: The SPLIT AT statement forces a key-value layer range split at the specified row in a table or index.
-toc: false
+toc: true
 ---
 
 The `SPLIT AT` [statement](sql-statements.html) forces a key-value layer range split at the specified row in a table or index.
 
-<div id="toc"></div>
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/split_table_at.html %}
+  {% include {{ page.version.version }}/sql/diagrams/split_table_at.html %}
 </div>
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/split_index_at.html %}
+  {% include {{ page.version.version }}/sql/diagrams/split_index_at.html %}
 </div>
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](privileges.html) on the table or index.
+The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table or index.
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split. |
-| `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index. |
+ Parameter | Description
+-----------|-------------
+ `table_name`<br>`table_name @ index_name` | The name of the table or index that should be split.
+ `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table or index.
 
 ## Why manually split a range?
 
@@ -56,6 +55,8 @@ the ranges that store tables or indexes:
   workload performance that results when automatic splits are unable to keep up
   with write traffic.
 
+Note that when a table is [truncated](truncate.html), it is essentially re-created in a single new empty range, and the old ranges that used to constitute the table are garbage collected. Any pre-splitting you have performed on the old version of the table will not carry over to the new version. The new table will need to be pre-split again.
+
 ## Examples
 
 ### Split a table
@@ -67,7 +68,7 @@ the ranges that store tables or indexes:
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | NULL    |       72 | {1}      |            1 |
 +-----------+---------+----------+----------+--------------+
@@ -97,7 +98,7 @@ the ranges that store tables or indexes:
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /10     |       72 | {1}      |            1 |
 | /10       | /20     |       73 | {1}      |            1 |
@@ -145,7 +146,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /5/1    |      151 | {2,3,5}  |            5 |
 | /5/1      | /5/2    |      152 | {2,3,5}  |            5 |
@@ -180,7 +181,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /3      |      155 | {2,3,5}  |            5 |
 | /3        | NULL    |      165 | {2,3,5}  |            5 |
@@ -202,7 +203,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | NULL    |       75 | {1}      |            1 |
 +-----------+---------+----------+----------+--------------+
@@ -232,7 +233,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ~~~
 +-----------+---------+----------+----------+--------------+
-| Start Key | End Key | Range ID | Replicas | Lease Holder |
+| start_key | end_key | range_id | replicas | lease_holder |
 +-----------+---------+----------+----------+--------------+
 | NULL      | /"a"    |       75 | {1}      |            1 |
 | /"a"      | /"b"    |       76 | {1}      |            1 |

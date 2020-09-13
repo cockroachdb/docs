@@ -5,7 +5,14 @@ source "https://rubygems.org"
 # docs-builder Docker image to keep things speedy in CI. See ci/README.md for
 # instructions.
 
-gem "jekyll", "~> 3.4"
-gem "jekyll-redirect-from", "~> 0.12"
-gem "jekyll-sitemap", "~> 1.1.1"
+# Jekyll v4.1.0 
+gem "jekyll", github: "jekyll", ref: "930c65f"
+gem "jekyll-redirect-from", "~> 0.15"
+gem "jekyll-sitemap", "~> 1.3.1"
+gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.4"
+gem "sassc", "~> 2.2"
+
+group :jekyll_plugins do
+    gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
+  end

@@ -1,7 +1,7 @@
 ---
 title: INTERLEAVE IN PARENT
 summary: Interleaving tables improves query performance by optimizing the key-value structure of closely related table's data.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -9,7 +9,6 @@ Interleaving tables improves query performance by optimizing the key-value struc
 
 {{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## How Interleaved Tables Work
 
@@ -45,7 +44,7 @@ By writing data in this way, related data is more likely to remain on the same k
 
 ## When to Interleave Tables
 
-{% include faq/when-to-interleave-tables.html %}
+{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
 
 ### Interleaved Hierarchy
 
@@ -77,7 +76,9 @@ In general, reads, writes, and joins of values related through the interleave pr
 
 ## Syntax
 
-{% include sql/{{ page.version.version }}/diagrams/interleave.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+</div>
 
 ## Parameters
 
@@ -159,16 +160,16 @@ It can be easier to understand what interleaving tables does by seeing what it l
   (2, 1003, 70.00);
 ~~~
 
-Using an illustrative format of the key-value store (keys are represented in colors; values are represented by `-> value`), the data would be written like this:
+Using an illustrative format of the key-value store (keys are on the left; values are represented by `-> value`), the data would be written like this:
 
-<pre class="highlight">
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;customers.id = 1&gt;</span> -> 'Ha-Yun'
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;orders.customer = 1&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#ef2da8">&lt;orders.id = 1000&gt;</span> -> 100.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#47924a">&lt;orders.customer = 1&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#c4258a">&lt;orders.id = 1002&gt;</span> -> 80.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;customers.id = 2&gt;</span> -> 'Emanuela'
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;orders.customer = 2&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#EF2D56">&lt;orders.id = 1001&gt;</span> -> 90.00
-<span style="color:#62B6CB">/customers/</span><span style="color:#2f6246">&lt;orders.customer = 2&gt;</span><span style="color:#FC9E4F">/orders/</span><span style="color:#c42547">&lt;orders.id = 1003&gt;</span> -> 70.00
-</pre>
+~~~
+/customers/<customers.id = 1> -> 'Ha-Yun'
+/customers/<orders.customer = 1>/orders/<orders.id = 1000> -> 100.00
+/customers/<orders.customer = 1>/orders/<orders.id = 1002> -> 80.00
+/customers/<customers.id = 2> -> 'Emanuela'
+/customers/<orders.customer = 2>/orders/<orders.id = 1001> -> 90.00
+/customers/<orders.customer = 2>/orders/<orders.id = 1003> -> 70.00
+~~~
 
 You'll notice that `customers.id` and `orders.customer` are written into the same position in the key-value store. This is how CockroachDB relates the two table's data for the interleaved structure. By storing data this way, accessing any of the `orders` data alongside the `customers` is much faster.
 

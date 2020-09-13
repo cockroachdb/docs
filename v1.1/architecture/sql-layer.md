@@ -1,14 +1,13 @@
 ---
 title: SQL Layer
 summary: 
-toc: false
+toc: true
 ---
 
 The SQL Layer of CockroachDB's architecture exposes its SQL API to developers, and converts these statements into key-value operations used by the rest of the database.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Overview
 
@@ -50,11 +49,11 @@ After your node ultimately receives a SQL request from a client, CockroachDB par
 
 Received queries are parsed against our `yacc` file (which describes our supported syntax), and converts the string version of each query into [Abstract Syntax Trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
-#### Planning
+#### Planning and semantic analysis
 
-With the AST, CockroachDB begins planning the query's execution by generating a tree of `planNodes`. Each of the `planNodes` contain a set of code that uses KV operations; this is ultimately how SQL statements are converted into KV operations.
+With the AST, CockroachDB begins [semantic analysis](https://en.wikipedia.org/wiki/Semantic_analysis_(compilers)), which includes checking whether the query is valid, resolving names, eliminating unneeded intermediate computations, and finalizing which data types to use for intermediate results.
 
-This step also includes steps analyzing the client's SQL statements against the expected AST expressions, which include things like type checking.
+At the same time, CockroachDB starts planning the query's execution by generating a tree of `planNodes`. Each of the `planNodes` contain a set of code that uses KV operations; this is ultimately how SQL statements are converted into KV operations.
 
 You can see the `planNodes` a query generates using [`EXPLAIN`](../explain.html).
 

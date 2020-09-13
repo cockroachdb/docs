@@ -1,14 +1,12 @@
 ---
 title: Transactions
 summary: CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction.
-toc: false
+toc: true
 ---
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
 
 {{site.data.alerts.callout_info}}For a detailed discussion of CockroachDB transaction semantics, see <a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/">How CockroachDB Does Distributed Atomic Transactions</a> and <a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/">Serializable, Lockless, Distributed: Isolation in CockroachDB</a>. Note that the explanation of the transaction model described in this blog post is slightly out of date. See the <a href="#transaction-retries">Transaction Retries</a> section for more details.{{site.data.alerts.end}}
-
-<div id="toc"></div>
 
 ## SQL Statements
 
@@ -59,7 +57,7 @@ Type | Description
 
 ## Transaction Contention
 
-Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which much be retried.
+Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be retried.
 
 For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
@@ -74,11 +72,26 @@ There are two cases for handling transaction retries:
 
 ### Automatic Retries
 
-CockroachDB automatically retries individual statements and transactions sent from the client as a single batch.
+CockroachDB automatically retries individual statements (implicit transactions)
+and transactions sent from the client as a single batch, as long as the size of
+the results being produced for the client (including protocol overhead) is less
+than 16KiB. Once that buffer overflows, CockroachDB starts streaming results back to
+the client, at which point automatic retries cannot be performed any more. As
+long as the results of a single statement or batch of statements are known to
+stay clear of this limit, the client does not need to worry about transaction
+retries.
+
+In future versions of CockroachDB, we plan on providing stronger guarantees for
+read-only queries that return at most one row, regardless of the size of that
+row.
 
 #### Individual Statements
 
-Individual statements are treated as implicit transactions, for example:
+Individual statements are treated as implicit transactions, and so they fall
+under the rules described above. If the results are small enough, they will be
+automatically retried. In particular, `INSERT/UPDATE/DELETE` statements without
+a `RETURNING` clause are guaranteed to have minuscule result sizes.
+For example, the following statement would be automatically retried by CockroachDB:
 
 ~~~ sql
 > DELETE FROM customers WHERE id = 1;
@@ -106,7 +119,18 @@ Batching is generally controlled by your driver or client's behavior. Technicall
     )
     ~~~
 
-{{site.data.alerts.callout_info}}Within a batch of statements, CockroachDB infers that the statements are not conditional on the results of previous statements, so it can retry all of them. However, if the transaction relies on conditional logic (e.g., statement 2 is executed only for some results of statement 1), and results for some statements in the transaction have already been delivered to the client (e.g., results of statement 1 have been delivered), CockroachDB cannot automatically retry statement 2 alone. Instead, you should write your transactions to use <a href="#client-side-intervention">client-side intervention</a>, so that the client gets to retry statement 1.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Within a batch of statements, CockroachDB infers that the statements are not
+conditional on the results of previous statements, so it can retry all of them.
+Of course, if the transaction relies on conditional logic (e.g., statement 2 is
+executed only for some results of statement 1), then the transaction cannot be
+all sent to CockroachDB as a single batch. In these common cases, CockroachDB
+cannot retry, say, statement 2 in isolation. Since results for statement 1 have
+already been delivered to the client by the time statement 2 is forcing the
+transaction to retry, the client needs to be involved in retrying the whole
+transaction and so you should write your transactions to use
+[client-side intervention](#client-side-intervention).
+{{site.data.alerts.end}}
 
 ### Client-Side Intervention
 
@@ -170,13 +194,13 @@ For greater detail, here's the process a retryable transaction goes through.
 
 4. If a statement returns a retryable error (identified via the `40001` error code or `retry transaction` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT cockroach_restart`](rollback-transaction.html) statement to restart the transaction. Alternately, the original `SAVEPOINT cockroach_restart` statement can be reissued to restart the transaction.
 
-  You must now issue the statements in the transaction again.
+    You must now issue the statements in the transaction again.
 
-  In cases where you do not want the application to retry the transaction, you can simply issue `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
+    In cases where you do not want the application to retry the transaction, you can simply issue `ROLLBACK` at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
 5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
-  In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
+    In some cases, the `RELEASE SAVEPOINT` statement itself can fail with a retryable error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retryable error is handled as described in step 4.
 
 ## Transaction Parameters
 

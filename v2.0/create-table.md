@@ -1,12 +1,11 @@
 ---
 title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
-toc: false
+toc: true
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -20,36 +19,50 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
-{% include sql/{{ page.version.version }}/diagrams/create_table.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
+</div>
 
 **column_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/column_def.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
+</div>
 
 **col_qualification ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/col_qualification.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
+</div>
 
 **index_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/index_def.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
+</div>
 
 **family_def ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/family_def.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
+</div>
 
 **table_constraint ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/table_constraint.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
+</div>
 
 **opt_interleave ::=**
 
-{% include sql/{{ page.version.version }}/diagrams/opt_interleave.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
+</div>
 
 </div>
 
@@ -75,7 +88,7 @@ By default, tables are created in the default replication zone but can be placed
 
 ## Row-Level Replication <span class="version-tag">New in v2.0</span>
 
-CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-partition-new-in-v2-0) for more information.
+CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-table-or-secondary-index-partition-new-in-v2-0) for more information.
 
 {{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
@@ -219,7 +232,7 @@ We also have other resources on indexes:
 
 ### Create a Table with Auto-Generated Unique Row IDs
 
-{% include faq/auto-generate-unique-ids_v1.1.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Create a Table with a Foreign Key Constraint
 
@@ -259,13 +272,13 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 +--------+---------------------------------------------------------------------------------------------------------------------+
 | Table  |                                                     CreateTable                                                     |
 +--------+---------------------------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                                              |
-|        |     id INT NOT NULL,␤                                                                                               |
-|        |     customer_id INT NULL,␤                                                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),␤                                                                     |
-|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,␤ |
-|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),␤                                        |
-|        |     FAMILY "primary" (id, customer_id)␤                                                                             |
+| orders | CREATE TABLE orders (                                                                                               |
+|        |     id INT NOT NULL,                                                                                                |
+|        |     customer_id INT NULL,                                                                                           |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id ASC),                                                                      |
+|        |     CONSTRAINT fk_customer_id_ref_customers FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,  |
+|        |     INDEX orders_auto_index_fk_customer_id_ref_customers (customer_id ASC),                                         |
+|        |     FAMILY "primary" (id, customer_id)                                                                              |
 |        | )                                                                                                                   |
 +--------+---------------------------------------------------------------------------------------------------------------------+
 ```
@@ -298,7 +311,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 ### Create a Table that Mirrors Key-Value Storage
 
-{% include faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
 ### Create a Table from a `SELECT` Statement
 
@@ -334,7 +347,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 ### Create a Table with a Computed Column <span class="version-tag">New in v2.0</span>
 
-{% include computed-columns/simple.md %}
+{% include {{ page.version.version }}/computed-columns/simple.md %}
 
 ### Create a Table with Partitions <span class="version-tag">New in v2.0</span>
 
@@ -347,11 +360,11 @@ In this example, we create a table and [define partitions by list](partitioning.
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
-    id SERIAL,
+    id INT DEFAULT unique_rowid(),
     name STRING,
     email STRING,
     country STRING,
-    expected_graduation_date DATE,   
+    expected_graduation_date DATE,
     PRIMARY KEY (country, id))
     PARTITION BY LIST (country)
       (PARTITION north_america VALUES IN ('CA','US'),
@@ -366,7 +379,7 @@ In this example, we create a table and [define partitions by range](partitioning
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
-   id SERIAL,
+   id INT DEFAULT unique_rowid(),
    name STRING,
    email STRING,                                                                                           
    country STRING,
@@ -390,13 +403,13 @@ To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-tab
 +--------+----------------------------------------------------------+
 | Table  |                       CreateTable                        |
 +--------+----------------------------------------------------------+
-| logoff | CREATE TABLE logoff (␤                                   |
-|        |     user_id INT NOT NULL,␤                               |
-|        |     user_email STRING(50) NULL,␤                         |
-|        |     logoff_date DATE NULL,␤                              |
-|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),␤         |
-|        |     UNIQUE INDEX logoff_user_email_key (user_email),␤    |
-|        |     FAMILY "primary" (user_id, user_email, logoff_date)␤ |
+| logoff | CREATE TABLE logoff (                                    |
+|        |     user_id INT NOT NULL,                                |
+|        |     user_email STRING(50) NULL,                          |
+|        |     logoff_date DATE NULL,                               |
+|        |     CONSTRAINT "primary" PRIMARY KEY (user_id),          |
+|        |     UNIQUE INDEX logoff_user_email_key (user_email),     |
+|        |     FAMILY "primary" (user_id, user_email, logoff_date)  |
 |        | )                                                        |
 +--------+----------------------------------------------------------+
 (1 row)

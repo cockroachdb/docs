@@ -1,18 +1,17 @@
 ---
 title: Join Expressions
 summary: Join expressions combine data from two or more table expressions.
-toc: false
+toc: true
 ---
 
 Join expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
 
 Join expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<div>{% include sql/{{ page.version.version }}/diagrams/joined_table.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/joined_table.html %}</div>
 
 <div markdown="1"></div>
 
@@ -129,7 +128,7 @@ Hash joins are performed on two tables as follows:
 
 ### Lookup joins
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 <span class="version-tag">New in v2.1:</span> A lookup join is beneficial to use when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
 

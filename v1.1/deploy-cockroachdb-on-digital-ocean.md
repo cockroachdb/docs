@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Digital Ocean
 summary: Learn how to deploy CockroachDB on Digital Ocean.
-toc: false
+toc: true
 toc_not_nested: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
 ---
@@ -15,15 +15,14 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-<div id="toc"></div>
 
 ## Requirements
 
-{% include prod_deployment/secure-requirements.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 ## Recommendations
 
-{% include prod_deployment/secure-recommendations.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 - If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
 
@@ -39,7 +38,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 
 ## Step 2. Synchronize clocks
 
-{% include prod_deployment/synchronize-clocks.md %}
+{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 3. Set up load balancing
 
@@ -75,32 +74,32 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 5. Generate certificates
 
-{% include prod_deployment/secure-generate-certificates.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
-{% include prod_deployment/secure-start-nodes.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include prod_deployment/secure-initialize-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test the cluster
 
-{% include prod_deployment/secure-test-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Set up monitoring and alerting
 
-{% include prod_deployment/monitor-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include prod_deployment/secure-scale-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 11. Use the database
 
-{% include prod_deployment/use-cluster.md %}
+{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See Also
 
-{% include prod_deployment/prod-see-also.md %}
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

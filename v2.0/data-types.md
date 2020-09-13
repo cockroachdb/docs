@@ -10,7 +10,7 @@ CockroachDB supports the following data types. Click a type for more details.
 
 Type | Description | Example
 -----|-------------|--------
-[`ARRAY`](array.html) | A 1-dimensional, 1-indexed, homogenous array of any non-array data type. | `{"sky","road","car"}`
+[`ARRAY`](array.html) | A 1-dimensional, 1-indexed, homogeneous array of any non-array data type. | `{"sky","road","car"}`
 [`BOOL`](bool.html) | A Boolean value. | `true`
 [`BYTES`](bytes.html) | A string of binary characters. | `b'\141\061\142\062\143\063'`
 [`COLLATE`](collate.html) | The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations. | `'a1b2c3' COLLATE en`
@@ -21,10 +21,10 @@ Type | Description | Example
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`](interval.html) | A span of time. | `INTERVAL '2h30m30s'`
 [`JSONB`](jsonb.html) | <span class="version-tag">New in v2.0:</span> JSON (JavaScript Object Notation) data. | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
-[`SERIAL`](serial.html) | A unique 64-bit signed integer. | `148591304110702593 `
+[`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html). | `148591304110702593 `
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
 [`TIME`](time.html) | <span class="version-tag">New in v2.0:</span> A time of day with no time zone. | `TIME '01:23:45.123456'`
-[`TIMESTAMP`](timestamp.html) | A date and time pairing. | `TIMESTAMP '2016-01-25 10:10:10'`
+[`TIMESTAMP`<br>`TIMESTAMPTZ`](timestamp.html) | A date and time pairing in UTC. | `TIMESTAMP '2016-01-25 10:10:10'`<br>`TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`
 [`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
 
 ## Data Type Conversions & Casts

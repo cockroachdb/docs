@@ -1,7 +1,7 @@
 ---
 title: SHOW EXPERIMENTAL_RANGES
 summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
-toc: false
+toc: true
 redirect_from: show-testing-ranges.html
 ---
 
@@ -17,14 +17,13 @@ This information is useful for verifying that:
 - The ["follow-the-workload"](demo-follow-the-workload.html) feature is operating as expected.
 - Range splits specified by the [`SPLIT AT`](split-at.html) statement were created as expected.
 
-{% include experimental-warning.md %}
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-<div id="toc"></div>
 
 ## Synopsis
 
 <div>
-  {% include sql/{{ page.version.version }}/diagrams/show_ranges.html %}
+  {% include {{ page.version.version }}/sql/diagrams/show_ranges.html %}
 </div>
 
 ## Required Privileges
@@ -40,7 +39,7 @@ Parameter | Description
 
 ## Examples
 
-The examples in this section operate on a hypothetical "user credit information" table filled with dummy data, running on a 5-node cluster.
+The examples in this section operate on a hypothetical "user credit information" table filled with placeholder data, running on a 5-node cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql

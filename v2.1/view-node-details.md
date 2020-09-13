@@ -1,14 +1,13 @@
 ---
 title: View Node Details
 summary: To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags.
-toc: false
+toc: true
 ---
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
 The `cockroach node` command is also used in the process of decommissioning nodes for permanent removal. See [Remove Nodes](remove-nodes.html) for more details.
 
-<div id="toc"></div>
 
 ## Subcommands
 
@@ -65,7 +64,7 @@ All `node` subcommands support the following [general-use](#general) and [loggin
 
 Flag | Description
 -----|------------
-`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `pretty`, `records`, `sql`, `html`.<br><br>**Default:** `tsv`
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `records`, `sql`, `html`.<br><br>**Default:** `tsv`
 
 The `node ls` subcommand also supports the following general flags:
 
@@ -87,11 +86,11 @@ The `node decommission` subcommand also supports the following general flag:
 
 Flag | Description
 -----|------------
-`--wait` | When to return to the client. Possible values: `all`, `live`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `live`, the command returns to the client after all online nodes are fully decommissioned. Any specified nodes that are offline will automatically will be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
+`--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all specified nodes are fully decommissioned. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for decommissioning to finish; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioned; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 
 ### Client connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
@@ -130,7 +129,8 @@ Field | Description
 `value_bytes` | The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
 `intent_bytes` | The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br><br>**Required flag:** `--stats` or `--all`
 `system_bytes` | The amount of data used just by the CockroachDB system.<br><br>**Required flag:** `--stats` or `--all`
-`is_live` | If `true`, the node is currently live.<br><br>**Required flag:** None
+`is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
+`is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive Admin UI), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.<br><br>**Required flag:** `--decommission` or `--all`
@@ -141,7 +141,7 @@ Field | Description
 ------|------------
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
-`gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
+`replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.
 
@@ -151,7 +151,7 @@ Field | Description
 ------|------------
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
-`gossiped_replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
+`replicas` | The number of replicas on the node that are active members of a range. After decommissioning, this should be 0.
 `is_decommissioning` | If `true`, the node is marked for decommissioning. See [Remove Nodes](remove-nodes.html) for more details.
 `is_draining` | If `true`, the range replicas and range leases are being moved off the node. This happens when a live node is being decommissioned. See [Remove Nodes](remove-nodes.html) for more details.
 
@@ -161,7 +161,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node ls --insecure
+$ cockroach node ls --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
@@ -180,7 +180,7 @@ $ cockroach node ls --insecure
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status 1 --insecure
+$ cockroach node status 1 --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
@@ -196,21 +196,65 @@ $ cockroach node status 1 --insecure
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node status --insecure
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
 ~~~
 
 ~~~
-+----+-----------------------+---------+---------------------+---------------------+---------+
-| id |        address        |  build  |     updated_at      |     started_at      | is_live |
-+----+-----------------------+---------+---------------------+---------------------+---------+
-|  1 | 165.227.60.76:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:30:13 | true    |
-|  2 | 192.241.239.201:26257 | 91a299d | 2017-09-07 18:16:05 | 2017-09-07 16:30:45 | true    |
-|  3 | 67.207.91.36:26257    | 91a299d | 2017-09-07 18:16:06 | 2017-09-07 16:31:06 | true    |
-|  4 | 138.197.12.74:26257   | 91a299d | 2017-09-07 18:16:03 | 2017-09-07 16:44:23 | true    |
-|  5 | 174.138.50.192:26257  | 91a299d | 2017-09-07 18:10:07 | 2017-09-07 17:12:57 | false   |
-+----+-----------------------+---------+---------------------+---------------------+---------+
-(5 rows)
+  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:25:20.351483+00:00 | true         | true     
+   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:23.984197+00:00 | true         | true     
+   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:25:20.535474+00:00 | true         | true
+(3 rows)
 ~~~
+
+### Identify live nodes in an unavailable cluster
+
+The `is_live` and `is_available` fields are marked as `true` as long as a majority of the nodes are up, and a quorum can be reached:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --host=192.241.239.201 --certs-dir=certs
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
+~~~
+
+~~~
+   id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++-----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+    1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:54:21.894586+00:00 | true         | true     
+    2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:17.839323+00:00 | 2018-09-18 17:52:06.172624+00:00 | false        | false    
+    3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:50:10.961166+00:00 | 2018-09-18 17:54:24.925007+00:00 | true         | true     
+(3 rows)
+~~~
+
+If a majority of nodes are down and a quorum cannot be reached, the `is_live` field is marked as `true` for the nodes that are up, but the `is_available` field is marked as `false` for all nodes:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach quit --host=67.207.91.36 --certs-dir=certs
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach node status --host=165.227.60.76 --certs-dir=certs
+~~~
+
+~~~
+  id |     address           |                build                 |            started_at            |            updated_at            | is_available | is_live  
++----+-----------------------+--------------------------------------+----------------------------------+----------------------------------+--------------+---------+
+   1 | 165.227.60.76:26257   | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:30.797131+00:00 | 2018-09-18 17:30:48.860329+00:00 | false        | true     
+   2 | 192.241.239.201:26257 | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:38.914482+00:00 | 2018-09-18 17:25:31.137222+00:00 | false        | false    
+   3 | 67.207.91.36:26257    | v2.1.0-beta.20180917-146-g19ca36c89a | 2018-09-18 17:24:57.957116+00:00 | 2018-09-18 17:30:49.943822+00:00 | false        | false    
+(3 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+You need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds.
+{{site.data.alerts.end}}
 
 ### Decommission nodes
 

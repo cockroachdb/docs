@@ -1,18 +1,17 @@
 ---
 title: GRANT &lt;privileges&gt;
 summary: The GRANT statement grants user privileges for interacting with specific databases and tables.
-toc: false
+toc: true
 ---
 
 The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](roles.html) or [user's](create-and-manage-users.html) SQL [privileges](privileges.html) for interacting with specific databases and tables.
 
 For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/grant_privileges.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/grant_privileges.html %}</section>
 
 ## Required Privileges
 
@@ -42,8 +41,8 @@ Privilege | Levels
 
 Parameter | Description
 ----------|------------
-`table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but won't affect tables created after the grant.
-`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but don't affect existing tables in the database.
+`table_name` | A comma-separated list of table names. Alternately, to grant privileges to all tables, use `*`. `ON TABLE table.*` grants apply to all existing tables in a database but will not affect tables created after the grant.
+`database_name` | A comma-separated list of database names.<br><br>Privileges granted on databases will be inherited by any new tables created in the databases, but do not affect existing tables in the database.
 `user_name` | A comma-separated list of [users](create-and-manage-users.html) and/or [roles](roles.html) to whom you want to grant privileges.
 
 ## Examples

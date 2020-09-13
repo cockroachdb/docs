@@ -1,14 +1,13 @@
 ---
 title: ARRAY
-summary: The ARRAY data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array data types.
-toc: false
+summary: The ARRAY data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array data types.
+toc: true
 ---
 
-The `ARRAY` data type stores one-dimensional, 1-indexed, homogenous arrays of any non-array [data type](data-types.html).
+The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type](data-types.html).
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 
-<div id="toc"></div>
 
 {{site.data.alerts.callout_info}}
 CockroachDB does not support nested arrays, creating database indexes on arrays, and ordering by arrays.
@@ -26,6 +25,10 @@ A value of data type `ARRAY` can be expressed in the following ways:
 The size of an `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
 
 ## Examples
+
+{{site.data.alerts.callout_success}}
+For a complete list of array functions built into CockroachDB, see the [documentation on array functions](functions-and-operators.html#array-functions).
+{{site.data.alerts.end}}
 
 ### Creating an array column by appending square brackets
 
@@ -194,12 +197,9 @@ Arrays in CockroachDB are 1-indexed.
 ~~~
 
 ~~~
-+--------------------------------+
-|       ARRAY[true, false,       |
-|          true]::INT[]          |
-+--------------------------------+
-| {1,0,1}                        |
-+--------------------------------+
+   array
++---------+
+  {1,0,1}
 (1 row)
 ~~~
 
@@ -210,6 +210,32 @@ Arrays in CockroachDB are 1-indexed.
 
 ~~~
 pq: invalid cast: bool[] -> TIMESTAMP[]
+~~~
+
+<span class="version-tag">New in v2.1:</span> You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT ARRAY[1,NULL,3]::string;
+~~~
+
+~~~
+    array
++------------+
+  {1,NULL,3}
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT ARRAY[(1,'a b'),(2,'c"d')]::string;
+~~~
+
+~~~
+               array
++----------------------------------+
+  {"(1,\"a b\")","(2,\"c\"\"d\")"}
+(1 row)
 ~~~
 
 ## See also

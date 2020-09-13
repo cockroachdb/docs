@@ -1,11 +1,10 @@
 ---
 title: Runtime Dashboard
-toc: false
+toc: true
 ---
 
 The **Runtime** dashboard in the CockroachDB Admin UI lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Runtime**.
 
-<div id="toc"></div>
 
 The **Runtime** dashboard displays the following time series graphs:
 
@@ -50,7 +49,7 @@ On hovering over the CPU Time graph, the values for the following metrics are di
 Metric | Description
 --------|----
 User CPU Time | Total CPU seconds per second used by the CockroachDB process across all nodes.
-Sys CPU Time | Total CPU seconds per second used by the system calls made by CockroachDB across all nodes.
+Sys CPU Time | Total CPU seconds per second used for CockroachDB system-level operations across all nodes.
 
 ## Clock Offset
 

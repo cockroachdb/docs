@@ -1,7 +1,7 @@
 ---
 title: Deploy CockroachDB on Microsoft Azure (Insecure)
 summary: Learn how to deploy CockroachDB on Microsoft Azure.
-toc: false
+toc: true
 toc_not_nested: true
 ---
 
@@ -14,7 +14,6 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 {{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Requirements
 
@@ -63,7 +62,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
         | Priority | Any value > 1000 |
     - **Application support**:
 
-        {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you won't need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
+        {{site.data.alerts.callout_success}}If your application is also hosted on the same Azure     Virtual Network, you will not need to create a firewall rule for your application to communicate     with your load balancer.{{site.data.alerts.end}}
 
         | Field | Recommended Value |
         |-------|-------------------|
@@ -123,7 +122,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new CockroachDB cluster with a single node:
@@ -157,7 +156,7 @@ At this point, your cluster is live and operational but contains only a single n
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
-	$ sudo mv cockroach /usr/local/bin
+	$ sudo mv cockroach /usr/local/bin/
 	~~~
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
@@ -287,7 +286,7 @@ On this page, verify that the cluster is running as expected:
 
 2. Click the **Databases** tab on the left to verify that `insecurenodetest` is listed.
 
-{% include prometheus-callout.html %}
+{% include {{ page.version.version }}/misc/prometheus-callout.html %}
 
 ## Step 9. Use the database
 

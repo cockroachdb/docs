@@ -1,20 +1,19 @@
 ---
 title: JSONB
 summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Alias
 
 In CockroachDB, `JSON` is an alias for `JSONB`.
 
-{{site.data.alerts.callout_info}}In PosgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
+{{site.data.alerts.callout_info}}In PostgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
 {{site.data.alerts.end}}
 
 ## Considerations
@@ -184,7 +183,7 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 ### Create a Table with a `JSONB` Column and a Computed Column
 
-{% include computed-columns/jsonb.md %}
+{% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
 ## Supported Casting & Conversion
 

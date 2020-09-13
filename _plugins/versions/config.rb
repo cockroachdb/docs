@@ -1,7 +1,7 @@
 module JekyllVersions
   class Config
-    attr_reader :versions, :release_info
-    
+    attr_reader :versions, :release_info, :cockroachcloud
+
     def initialize(config)
       ['versions', 'release_info'].each do |key|
         raise "Config missing `#{key}` key" if config[key].nil?
@@ -12,6 +12,7 @@ module JekyllVersions
       end
       @versions = config['versions']
       @release_info = config['release_info']
+      @cockroachcloud = !!config['cockroachcloud']
     end
 
     def stable_version

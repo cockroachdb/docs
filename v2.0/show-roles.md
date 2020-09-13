@@ -1,16 +1,15 @@
 ---
 title: SHOW ROLES
 summary: The SHOW ROLES statement lists the roles for all databases.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v2.0:</span> The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
-<div id="toc"></div>
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_roles.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_roles.html %}</section>
 
 ## Required Privileges
 

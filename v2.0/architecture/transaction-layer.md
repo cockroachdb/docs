@@ -1,14 +1,12 @@
 ---
 title: Transaction Layer
-summary:
-toc: false
+summary: The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
+toc: true
 ---
 
 The Transaction Layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
 
 {{site.data.alerts.callout_info}}If you haven't already, we recommend reading the <a href="overview.html">Architecture Overview</a>.{{site.data.alerts.end}}
-
-<div id="toc"></div>
 
 ## Overview
 
@@ -30,7 +28,7 @@ When the Transaction Layer executes write operations, it doesn't directly write 
 
 - **Write Intents** for all of a transaction’s writes, which represent a provisional, uncommitted state. These are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the Transaction Record stored on the cluster.
 
-As Write Intents are created, CockroachDB checks for newer committed values––if they exist, the transaction is restarted––and existing Write Intents for the same keys––which is resolved as a [transaction conflict](#transaction-conflicts).
+As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents for the same keys exist, it is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 
@@ -64,7 +62,7 @@ In relationship to other layers in CockroachDB, the Transaction Layer:
 
 ### Time & Hybrid Logical Clocks
 
-In distributed systems, ordering and causality are difficult problems to solve. While it's possible to rely entirely on Raft consensus to maintain serializability, it would be inefficient for reading data. To optimize performance of reads, CockroachDB implements hybrid-logical clocks (HLC) which are composed of a physical component (thought of as and always close to local wall time) and a logical component (used to distinguish between events with the same physical component). This means that HLC time is always greater than or equal to the wall time. You can find more detail in the [HLC paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf).
+In distributed systems, ordering and causality are difficult problems to solve. While it's possible to rely entirely on Raft consensus to maintain serializability, it would be inefficient for reading data. To optimize performance of reads, CockroachDB implements hybrid-logical clocks (HLC) which are composed of a physical component (always close to local wall time) and a logical component (used to distinguish between events with the same physical component). This means that HLC time is always greater than or equal to the wall time. You can find more detail in the [HLC paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf).
 
 In terms of transactions, the gateway node picks a timestamp for the transaction using HLC time. Whenever a transaction's timestamp is mentioned, it's an HLC value. This timestamp is used to both track versions of values (through [multiversion concurrency control](storage-layer.html#mvcc)), as well as provide our transactional isolation guarantees.
 
@@ -74,17 +72,17 @@ This then lets the node primarily responsible for the range (i.e., the Leasehold
 
 #### Max Clock Offset Enforcement
 
-CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of synch with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), **it crashes immediately**.
+CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), **it crashes immediately**.
 
-This avoids the risk of violating [serializable consistency](https://en.wikipedia.org/wiki/Serializability) and causing stale reads and write skews, but it's important to prevent clocks from drifting too far in the first place by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
+While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
 ### Timestamp Cache
 
-To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a Timestamp Cache, which shows the high-water mark for values being read.
+To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
-Whenever a write occurs, its timestamp is checked against the Timestamp Cache. If the timestamp is less than the Timestamp Cache's latest value, we attempt to move the timestamp for its transaction forward to a later time. In the case of serializable transactions, this causes them to restart in the second phase of the transaction.
+Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. In the case of serializable transactions, this might cause them to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
 
 ### client.Txn and TxnCoordSender
 
@@ -147,7 +145,7 @@ To make this simpler to understand, we'll call the first transaction `TxnA` and 
 
 CockroachDB proceeds through the following steps until one of the transactions is aborted, has its timestamp pushed, or enters the `TxnWaitQueue`.
 
-1. If the transaction has an explicit priority set (i.e. `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
+1. If the transaction has an explicit priority set (i.e., `HIGH`, or `LOW`), the transaction with the lower priority is aborted (in the writer/write case) or has its timestamp pushed (in the write/read case).
 
 2. `TxnB` tries to push `TxnA`'s timestamp forward.
 
@@ -155,7 +153,7 @@ CockroachDB proceeds through the following steps until one of the transactions i
 
 3. `TxnB` enters the `TxnWaitQueue` to wait for `TxnA` to complete.
 
-Additionally, the following types of conflicts that don't involve running into intents can arise:
+Additionally, the following types of conflicts that do not involve running into intents can arise:
 
 - **Write after read**, when a write with a lower timestamp encounters a later read. This is handled through the [Timestamp Cache](#timestamp-cache).
 - **Read within uncertainty window**, when a read encounters a value with a higher timestamp but it's ambiguous whether the value should be considered to be in the future or in the past of the transaction because of possible *clock skew*. This is handled by attempting to push the transaction's timestamp beyond the uncertain value (see [read refreshing](#read-refreshing)). Note that, if the transaction has to be retried, reads will never encounter uncertainty issues on any node which was previously visited, and that there's never any uncertainty on values read from the transaction's gateway node.
@@ -179,13 +177,7 @@ Blocked transactions also check the status of their own transaction to ensure th
 
 If there is a deadlock between transactions (i.e., they're each blocked by each other's Write Intents), one of the transactions is randomly aborted. In the above example, this would happen if `TxnA` blocked `TxnB` on `key1` and `TxnB` blocked `TxnA` on `key2`.
 
-### Timestamp Cache
-
-To provide serializability, whenever an operation reads a value, we store the operation's timestamp in a Timestamp Cache, which shows the high-water mark for values being read.
-
-Whenever a write occurs, its timestamp is checked against the Timestamp Cache. If the timestamp is less than the Timestamp Cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. In the case of serializable transactions, this might cause them to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
-
-### Read Refreshing
+### Read refreshing
 
 Whenever a transaction's timestamp has been pushed, additional checks are required before allowing serializable transactions to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
 If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.

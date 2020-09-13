@@ -55,6 +55,18 @@
   }
 }
 
+@mixin cl-box-shadow {
+  box-shadow: 0 3px 6px 0 rgba(36,67,112,0.15), 0 6px 20px 0 rgba(36,67,112,0.15);
+}
+
+@mixin cl-box-shadow--light {
+  box-shadow: 0 1px 10px 0 rgba(36, 67, 112, 0.1);
+}
+
+@mixin cl-box-shadow--blue {
+  box-shadow: 0 2px 5px 0 rgba(17, 29, 57, 0.10), 0 4px 20px 0 rgba(17, 29, 57, 0.12);
+}
+
 /*============================================================================
   Dependency-free breakpoint mixin
     - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/

@@ -1,21 +1,21 @@
 ---
 title: Manage Users
 summary: To create and manage your cluster's users (which lets you control SQL-level privileges), use the cockroach user command with appropriate flags.
-toc: false
+toc: true
 ---
 
-To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](privileges.html)), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
+To create, manage, and remove your cluster's users (which lets you control SQL-level [privileges](authorization.html#assign-privileges), use the `cockroach user` [command](cockroach-commands.html) with appropriate flags.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-user.html"><code>CREATE USER</code></a> and <a href="drop-user.html"><code>DROP USER</code></a> statements to create and remove users.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
 - Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
-- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
-- {% include custom/remove-user-callout.html %}
+- All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
+- On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](authentication.html#client-authentication).
+- {% include {{ page.version.version }}/misc/remove-user-callout.html %}
 
 ## Subcommands
 
@@ -56,15 +56,15 @@ Flag | Description
 -----|------------
 `--password` | Enable password authentication for the user; you will be prompted to enter the password on the command line.<br/><br/>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-`--pretty` | Format table rows printed to the standard output using ASCII art and disable escaping of special characters.<br><br>When disabled with `--pretty=false`, or when the standard output is not a terminal, table rows are printed as tab-separated values, and special characters are escaped. This makes the output easy to parse by other programs.<br><br>**Default:** `true` when output is a terminal, `false` otherwise
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](use-the-built-in-sql-client.html#session-and-output-types); `tsv` otherwise.
 
 ### Client connection
 
-{% include sql/{{ page.version.version }}/connection-parameters-with-url.md %}
+{% include {{ page.version.version }}/sql/connection-parameters.md %}
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 
-Currently, only the `root` user can create users.
+Currently, only members of the `admin` role can create users. By default, the `root` user belongs to the `admin` role.
 
 {{site.data.alerts.callout_info}}
 Password creation is supported only in secure clusters for non-<code>root</code> users. The <code>root</code> user must authenticate with a client certificate and key.
@@ -75,18 +75,6 @@ Password creation is supported only in secure clusters for non-<code>root</code>
 By default, the `user` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
-
-## User authentication
-
-Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers two methods for this:
-
-- [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-
-- [Password authentication](#secure-clusters-with-passwords), which is available to non-`root` users who you've created passwords for. To set a password for a non-`root` user, include the `--password` flag in the `cockroach user set` command.
-
-    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
-
-    Password creation is supported only in secure clusters.
 
 ## Examples
 
@@ -127,7 +115,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 </div>
 
-### Authenticate as a specific user
+### Log in as a specific user
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
@@ -211,7 +199,7 @@ $ cockroach user get jpointsman --insecure
 
 ### Remove a user
 
-{{site.data.alerts.callout_danger}}{% include custom/remove-user-callout.html %}{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}{% include {{ page.version.version }}/misc/remove-user-callout.html %}{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -236,11 +224,11 @@ DELETE 1
 
 ## See also
 
+- [Authorization](authorization.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
-- [Manage Roles](roles.html)
 - [Other Cockroach Commands](cockroach-commands.html)

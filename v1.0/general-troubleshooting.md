@@ -1,19 +1,18 @@
 ---
 title: General Troubleshooting
 summary: Learn how to troubleshoot issues with a single-node cluster
-toc: false
+toc: true
 ---
 
 This page helps with general troubleshooting steps that apply to many different scenarios, such as not being able to connect to a node.
 
-{{site.data.alerts.callout_info}}If you can't find what you're looking for, we also have more detailed <a href="troubleshooting-overview.html">troubleshooting steps for specific issues</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}If you cannot find what you're looking for, we also have more detailed <a href="troubleshooting-overview.html">troubleshooting steps for specific issues</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Common Troubleshooting Steps
 
 If you run into issues with CockroachDB, there are a few steps you can always take:
- 
+
 - Check your [logs](debug-and-error-logs.html) for errors related to your issue. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](debug-zip.html).
 
 - [Stop](stop-a-node.html) and [restart](start-a-node.html) problematic nodes with the `--logtostderr` flag. This option prints logs to your terminal through `stderr`, letting you see all of your cluster's activities as they occur.
@@ -30,7 +29,7 @@ To resolve this issue, you must do one of the following:
 - If you specified a `--host` flag when starting your node, you must include it with all other [`cockroach` commands](cockroach-commands.html).
 - If you specified a `--port` flag when starting your node, you must include it with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_PORT` environment variable.
 
-If you're not sure what the `--host` and `--port` values might have been, you can kill the `cockroach` process, and then restart the node:
+If you're not sure what the `--host` and `--port` values might have been, you can end the `cockroach` process, and then restart the node:
 
 ~~~ shell
 $ pkill cockroach
@@ -69,9 +68,9 @@ See [Configure Replication Zones](configure-replication-zones.html) for more det
 
 ## Something Else?
 
-If we don't have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
 
-- [Other troubleshooting pages](troubleshooting-overview.html)
-- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on Gitter](https://gitter.im/cockroachdb/cockroach) (To open Gitter without leaving these docs, click **Help** in the lower-right corner of any page.)
+- [CockroachDB Community Slack](https://cockroachdb.slack.com)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
+- [CockroachDB Support Portal](https://support.cockroachlabs.com)

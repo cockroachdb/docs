@@ -1,32 +1,33 @@
 ---
 title: CREATE USER
 summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
-toc: false
+toc: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 
-{{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user set</code></a> command to create and manage users.{{site.data.alerts.end}}
-
-<div id="toc"></div>
+{{site.data.alerts.callout_success}}
+You can also use the [`cockroach user set`](create-and-manage-users.html) command to create and manage users.
+{{site.data.alerts.end}}
 
 ## Considerations
 
-- Role names:
+- Usernames:
     - Are case-insensitive
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, or underscores
     - Must be between 1 and 63 characters.
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
+- All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 - On secure clusters, you must [create client certificates for users](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
 
 ## Required privileges
 
-The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on the `system.users` table.
+The user must have the `INSERT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the `system.users` table.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_user.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
 
 ## Parameters
 
@@ -36,10 +37,10 @@ table td:first-child {
 }
 </style>
 
-| Parameter | Description |
-|-----------|-------------|
-|`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.|
-|`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.|
+ Parameter | Description
+-----------|-------------
+`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+`password` | Let the user [authenticate their access to a secure cluster](#user-authentication) using this password. Passwords must be entered as [string](string.html) values surrounded by single quotes (`'`).<br><br>Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.
 
 ## User authentication
 
@@ -131,5 +132,5 @@ $ cockroach sql --insecure --user=jpointsman
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](create-security-certificates.html)
-- [Manage Roles](roles.html)
+- [Manage Roles](authorization.html#create-and-manage-roles)
 - [Other SQL Statements](sql-statements.html)

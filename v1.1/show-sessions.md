@@ -1,7 +1,7 @@
 ---
 title: SHOW SESSIONS
 summary: The SHOW SESSIONS statement lists all currently active sessions across the cluster or on the local node.
-toc: false
+toc: true
 ---
 
 <span class="version-tag">New in v1.1:</span> The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
@@ -14,15 +14,14 @@ toc: false
 
 These details let you monitor the overall state of client connections and identify those that may need further investigation or adjustment.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
-No [privileges](privileges.html) are required to execute this statement. However, note that non-`root` users see only their own currently active sessions, wherease the `root` user sees all users' currently active sessions.
+No [privileges](privileges.html) are required to execute this statement. However, note that non-`root` users see only their own currently active sessions, whereas the `root` user sees all users' currently active sessions.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/show_sessions.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/show_sessions.html %}</section>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.
 - To list the active sessions just on the local node, use `SHOW LOCAL SESSIONS`.

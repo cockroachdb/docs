@@ -1,14 +1,13 @@
 ---
 title: Monitoring and Alerting
 summary: Monitor the health and performance of a cluster and alert on critical events and metrics.
-toc: false
+toc: true
 ---
 
 Despite CockroachDB's various [built-in safeguards against failure](high-availability.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 This page explains available monitoring tools and critical events and metrics to alert on.
 
-<div id="toc"></div>
 
 ## Monitoring Tools
 
@@ -154,7 +153,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
 
-- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
+- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
 
 ### CA certificate expires soon
 

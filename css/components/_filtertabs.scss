@@ -147,7 +147,7 @@
 		color: $cl_blue !important;
 		text-decoration: none !important;
 		padding: 15px;
-		margin: 1%;
+		margin: 15px 15px 15px 0px;
 		outline: none;
 
 		&:hover {
@@ -157,6 +157,10 @@
 		&.current {
 			border: 1px solid $cl_green;
 			background-color: #F0FFE8;
+		}
+
+		&.page-level {
+			margin: 15px 15px 0px 0px;
 		}
 	}
 
@@ -175,8 +179,10 @@
 
 @media (min-width: 700px) {
 	#os-tabs {
+
 		button {
 			width: 140px;
+			margin: 0 10px 15px 0;
 
 			&:before {
 				font-family: 'FontAwesome';
@@ -187,31 +193,37 @@
 			}
 
 			&#mac {
-				margin: 0 2% 2% 0;
+
 				&:before {
 					content: "\f179";
-	         	}
+	        }
 			}
 
 			&#linux {
-				margin: 0 2% 2% 0;
 
 				&:before {
 					content: "\f17c";
-	         	}
+	        }
 			}
 
 			&#windows {
-				margin: 0 2% 0 0;
+
 				&:before {
 					content: "\f17a";
-	         	}
+	        }
 			}
 
 			&#source {
-				margin: 0 2% 0 0;
+
 				&:before {
 					content: "\f1c6";
+				}
+			}
+
+			&#docker {
+
+				&:before {
+					content: "\f395";
 				}
 			}
 		}
@@ -230,7 +242,6 @@
 
 	.filters {
 		.filter-button {
-			margin: 0 0.5%;
 			@include avenir_r(16px);
 			line-height: 20px;
 		}

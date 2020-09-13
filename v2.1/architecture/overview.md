@@ -1,7 +1,7 @@
 ---
 title: Architecture Overview
-summary:
-toc: false
+summary: An overview of the CockroachDB architecture.
+toc: true
 key: cockroachdb-architecture.html
 redirect_from: index.html
 ---
@@ -10,13 +10,11 @@ CockroachDB was designed to create the open-source database our developers would
 
 However, you definitely do not need to understand the underlying architecture to use CockroachDB. These pages give serious users and database enthusiasts a high-level framework to explain what's happening under the hood.
 
-<div id="toc"></div>
-
 ## Using this guide
 
 This guide is broken out into pages detailing each layer of CockroachDB. It's recommended to read through the layers sequentially, starting with this overview and then proceeding to the SQL layer.
 
-If you're looking for a high-level understanding of CockroachDB, you can simply read the **Overview** section of each layer. For more technical detail––for example, if you're interested in [contributing to the project](../contribute-to-cockroachdb.html)––you should read the **Components** sections as well.
+If you're looking for a high-level understanding of CockroachDB, you can simply read the **Overview** section of each layer. For more technical detail––for example, if you're interested in [contributing to the project](https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB)––you should read the **Components** sections as well.
 
 {{site.data.alerts.callout_info}}This guide details how CockroachDB is built, but does not explain how <em>you</em> should architect an application using CockroachDB. For help with your own application's architecture using CockroachDB, check out our <a href="https://cockroachlabs.com/docs/stable">user documentation</a>.{{site.data.alerts.end}}
 
@@ -38,13 +36,7 @@ With the confluence of these features, we hope that CockroachDB lets teams easil
 
 It's helpful to understand a few terms before reading our architecture documentation.
 
-Term | Definition
------|-----------
-**Cluster** | Your CockroachDB deployment, which acts as a single logical application that contains one or more databases.
-**Node** | An individual machine running CockroachDB. Many nodes join to create your cluster.
-**Range** | A set of sorted, contiguous data from your cluster.
-**Replicas** | Copies of your ranges, which are stored on at least 3 nodes to ensure survivability.
-**Range Lease** | For each range, one of the replicas holds the "range lease." This replica, referred to as the "leaseholder," is the one that receives and coordinates all read and write requests for the range.
+{% include {{ page.version.version }}/misc/basic-terms.md %}
 
 ### Concepts
 
@@ -54,7 +46,7 @@ Term | Definition
 -----|-----------
 **Consistency** | CockroachDB uses "consistency" in both the sense of [ACID semantics](https://en.wikipedia.org/wiki/Consistency_(database_systems)) and the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem), albeit less formally than either definition. What we try to express with this term is that your data should be anomaly-free.
 **Consensus** | When a range receives a write, a quorum of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.<br/><br/>When a write *doesn't* achieve consensus, forward progress halts to maintain consistency within the cluster.
-**Replication** | Replication involves creating and distributing copies of data, as well as ensuring copies remain consistent. However, there are multiple types of replication: namely, synchronous and asynchronous.<br/><br/>Synchronous replication requires all writes to propagate to a quorum of copies of the data before being considered committed. To ensure consistency with your data, this is the kind of replication CockroachDB uses.<br/><br/>Aysnchronous replication only requires a single node to receive the write to be considered committed; it's propagated to each copy of the data after the fact. This is more or less equivalent to "eventual consistency", which was popularized by NoSQL databases. This method of replication is likely to cause anomalies and loss of data.
+**Replication** | Replication involves creating and distributing copies of data, as well as ensuring copies remain consistent. However, there are multiple types of replication: namely, synchronous and asynchronous.<br/><br/>Synchronous replication requires all writes to propagate to a quorum of copies of the data before being considered committed. To ensure consistency with your data, this is the kind of replication CockroachDB uses.<br/><br/>Asynchronous replication only requires a single node to receive the write to be considered committed; it's propagated to each copy of the data after the fact. This is more or less equivalent to "eventual consistency", which was popularized by NoSQL databases. This method of replication is likely to cause anomalies and loss of data.
 **Transactions** | A set of operations performed on your database that satisfy the requirements of [ACID semantics](https://en.wikipedia.org/wiki/Database_transaction). This is a crucial component for a consistent system to ensure developers can trust the data in their database.
 **Multi-Active Availability** | Our consensus-based notion of high availability that lets each node in the cluster handle reads and writes for a subset of the stored data (on a per-range basis). This is in contrast to active-passive replication, in which the active node receives 100% of request traffic, as well as active-active replication, in which all nodes accept requests but typically cannot guarantee that reads are both up-to-date and fast.
 

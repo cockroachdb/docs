@@ -42,7 +42,7 @@ module JekyllVersions
     end
 
     def <=>(other)
-      version <=> other.version
+      Gem::Version.new(version.sub(/^v/, "")) <=> Gem::Version.new(other.version.sub(/^v/, ""))
     end
 
     alias_method :eql?, :==

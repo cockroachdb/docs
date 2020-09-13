@@ -1,12 +1,11 @@
 ---
 title: SHOW CREATE TABLE
 summary: The SHOW CREATE TABLE statement shows the CREATE TABLE statement that would create a carbon copy of the specified table. 
-toc: false
+toc: true
 ---
 
 The `SHOW CREATE TABLE` [statement](sql-statements.html) shows the `CREATE TABLE` statement that would create a carbon copy of the specified table.
 
-<div id="toc"></div>
 
 ## Required Privileges
 
@@ -14,7 +13,7 @@ The user must have any [privilege](privileges.html) on the target table.
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/show_create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_create_table.html %}
 
 ## Parameters
 
@@ -49,17 +48,17 @@ Field | Description
 +--------+--------------------------------------------------------------------------------------------------+
 | Table  |                                           CreateTable                                            |
 +--------+--------------------------------------------------------------------------------------------------+
-| orders | CREATE TABLE orders (␤                                                                           |
-|        |     id INT NOT NULL DEFAULT unique_rowid(),␤                                                     |
-|        |     date TIMESTAMP NOT NULL,␤                                                                    |
-|        |     priority INT NULL DEFAULT 1,␤                                                                |
-|        |     customer_id INT NULL,␤                                                                       |
-|        |     status STRING NULL DEFAULT 'open',␤                                                          |
-|        |     CONSTRAINT "primary" PRIMARY KEY (id),␤                                                      |
-|        |     UNIQUE INDEX orders_customer_id_key (customer_id),␤                                          |
-|        |     FAMILY fam_0_id_date_priority_customer_id_status (id, date, priority, customer_id, status),␤ |
-|        |     CHECK (priority BETWEEN 1 AND 5),␤                                                           |
-|        |     CHECK (status IN ('open', 'in progress', 'done', 'cancelled'))␤                              |
+| orders | CREATE TABLE orders (                                                                            |
+|        |     id INT NOT NULL DEFAULT unique_rowid(),                                                      |
+|        |     date TIMESTAMP NOT NULL,                                                                     |
+|        |     priority INT NULL DEFAULT 1,                                                                 |
+|        |     customer_id INT NULL,                                                                        |
+|        |     status STRING NULL DEFAULT 'open',                                                           |
+|        |     CONSTRAINT "primary" PRIMARY KEY (id),                                                       |
+|        |     UNIQUE INDEX orders_customer_id_key (customer_id),                                           |
+|        |     FAMILY fam_0_id_date_priority_customer_id_status (id, date, priority, customer_id, status),  |
+|        |     CHECK (priority BETWEEN 1 AND 5),                                                            |
+|        |     CHECK (status IN ('open', 'in progress', 'done', 'cancelled'))                               |
 |        | )                                                                                                |
 +--------+--------------------------------------------------------------------------------------------------+
 (1 row)

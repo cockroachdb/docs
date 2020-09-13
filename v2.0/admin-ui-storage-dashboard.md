@@ -1,12 +1,11 @@
 ---
 title: Storage Dashboard
 summary: The Storage dashboard lets you monitor the storage utilization for your cluster.
-toc: false
+toc: true
 ---
 
 The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Storage**.
 
-<div id="toc"></div>
 
 The **Storage** dashboard displays the following time series graphs:
 
@@ -29,7 +28,7 @@ Available | The free storage capacity available to CockroachDB.
 Used | Disk space used by the data in the CockroachDB store. Note that this value is less than (Capacity - Available) because Capacity and Available metrics consider the entire disk and all applications on the disk including CockroachDB, whereas Used metric tracks only the store's disk usage.
 
 {{site.data.alerts.callout_info}}
-{% include available-capacity-metric.md %}
+{% include v2.0/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors

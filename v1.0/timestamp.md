@@ -1,12 +1,11 @@
 ---
-title: TIMESTAMP
-summary: The TIMESTAMP data type stores a date and time pair in UTC, whereas TIMESTAMPTZ stores a date and time pair with a time zone offset from UTC.
-toc: false
+title: TIMESTAMP / TIMESTAMPTZ
+summary: The TIMESTAMP and TIMESTAMPTZ data types stores a date and time pair in UTC.
+toc: true
 ---
 
-The `TIMESTAMP` [data type](data-types.html) stores a date and time pair in UTC.
+The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) stores a date and time pair in UTC.
 
-<div id="toc"></div>
 
 ## Time Zone Details
 
@@ -103,10 +102,10 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 
 Type | Details
 -----|--------
-`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
-`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970)
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`SERIAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `DATE` | ––
 `STRING` | ––
 

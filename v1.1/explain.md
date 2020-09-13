@@ -1,12 +1,11 @@
 ---
 title: EXPLAIN
 summary: The EXPLAIN statement provides information you can use to optimize SQL queries.
-toc: false
+toc: true
 ---
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's query plan for an [explainable statement](#explainable-statements). You can then use this information to optimize the query.
 
-<div id="toc"></div>
 
 ## Explainable Statements
 
@@ -50,7 +49,7 @@ For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-t
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/explain.html %}
+{% include {{ page.version.version }}/sql/diagrams/explain.html %}
 
 ## Required Privileges
 
@@ -159,7 +158,7 @@ When looking at the **Ordering** column, we can also sort by descending (`DESC`)
 +-------+------+-------+-------------+---------+--------------+
 ~~~
 
-{{site.data.alerts.callout_info}}In some cases the <strong>Ordering</strong> details report a column ordering with an equal sign (e.g. <code>=k</code>). This is a side effect of the internal ordering analysis performed by CockroachDB and merely indicates that CockroachDB has found that only one row matches a <code>WHERE</code> expression.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In some cases the <strong>Ordering</strong> details report a column ordering with an equal sign (e.g., <code>=k</code>). This is a side effect of the internal ordering analysis performed by CockroachDB and merely indicates that CockroachDB has found that only one row matches a <code>WHERE</code> expression.{{site.data.alerts.end}}
 
 ### `QUALIFY` Option
 

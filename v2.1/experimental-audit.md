@@ -1,7 +1,7 @@
 ---
 title: EXPERIMENTAL_AUDIT
 summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or off for a table.
-toc: false
+toc: true
 ---
 
 `EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn [SQL audit logging](sql-audit-logging.html) on or off for a table.
@@ -15,28 +15,26 @@ The audit logs contain detailed information about queries being executed against
 
 For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
 
-{% include experimental-warning.md %}
-
-<div id="toc"></div>
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 ## Synopsis
 
 <div>
-{% include sql/{{page.version.version}}/diagrams/experimental_audit.html %}
+{% include {{ page.version.version }}/sql/diagrams/experimental_audit.html %}
 </div>
 
 ## Required privileges
 
-Only the `root` user can enable audit logs on a table.
+Only members of the `admin` role can enable audit logs on a table. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
-| Parameter    | Description                                              |
-|--------------+----------------------------------------------------------|
-| `table_name` | The name of the table you want to create audit logs for. |
-| `READ`       | Log all table reads to the audit log file.               |
-| `WRITE`      | Log all table writes to the audit log file.              |
-| `OFF`        | Turn off audit logging.                                  |
+ Parameter    | Description                                              
+--------------+----------------------------------------------------------
+ `table_name` | The name of the table you want to create audit logs for.
+ `READ`       | Log all table reads to the audit log file.               
+ `WRITE`      | Log all table writes to the audit log file.              
+ `OFF`        | Turn off audit logging.                                  
 
 {{site.data.alerts.callout_info}}
 As of version 2.0, this command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). In a future release, this should change to allow logging only reads, only writes, or both.

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export JEKYLL_VERSION=4
+export JEKYLL_CONFIG=_config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml
+docker run --rm \
+  -p 4000:4000 \
+  --volume="$PWD:/srv/jekyll" \
+  --volume="$PWD/vendor/bundle:/usr/local/bundle" \
+  -it jekyll/jekyll:$JEKYLL_VERSION \
+  jekyll serve --config $JEKYLL_CONFIG --incremental --port 4000

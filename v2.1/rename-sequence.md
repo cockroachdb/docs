@@ -1,7 +1,7 @@
 ---
 title: RENAME SEQUENCE
 summary: The RENAME SEQUENCE statement changes the name of a sequence.
-toc: false
+toc: true
 ---
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.
@@ -10,15 +10,14 @@ The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](a
 
 {{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](privileges.html) on the parent database.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/rename_sequence.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/rename_sequence.html %}</section>
 
 ## Parameters
 

@@ -1,18 +1,19 @@
 ---
 title: DROP CONSTRAINT
 summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
-toc: false
+toc: true
 ---
 
 The `DROP CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and removes Check and Foreign Key constraints from columns.
 
 {{site.data.alerts.callout_info}}For information about removing other constraints, see <a href="constraints.html#remove-constraints">Constraints: Remove Constraints</a>.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Synopsis
 
-{% include sql/{{ page.version.version }}/diagrams/drop_constraint.html %}
+<div>
+{% include {{ page.version.version }}/sql/diagrams/drop_constraint.html %}
+</div>
 
 ## Required Privileges
 
@@ -27,7 +28,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ## Viewing Schema Changes
 
-{% include custom/schema-change-view-job.md %}
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Example
 

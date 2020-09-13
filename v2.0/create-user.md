@@ -1,14 +1,13 @@
 ---
 title: CREATE USER
 summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
-toc: false
+toc: true
 ---
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](privileges.html) on your databases and tables.
 
 {{site.data.alerts.callout_success}}You can also use the <a href="create-and-manage-users.html"><code>cockroach user set</code></a> command to create and manage users.{{site.data.alerts.end}}
 
-<div id="toc"></div>
 
 ## Considerations
 
@@ -26,7 +25,7 @@ The user must have the `INSERT` and `UPDATE` [privileges](privileges.html) on th
 
 ## Synopsis
 
-<section>{% include sql/{{ page.version.version }}/diagrams/create_user.html %}</section>
+<section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
 
 ## Parameters
 
