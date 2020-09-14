@@ -1,6 +1,9 @@
 {
   "title": "CockroachCloud",
   "is_top_level": true,
+  "urls": [
+    "/cockroachcloud/index.html"
+    ],
   "items": [
     {
       "title": "Get Started",

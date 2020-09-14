@@ -10,6 +10,9 @@
   {
     "title": "CockroachDB",
     "is_top_level": true,
+    "urls": [
+      "/${VERSION}/index.html"
+    ],
     "items": [
       {
 	"title": "Guides",
