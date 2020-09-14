@@ -96,6 +96,7 @@ Parameter | Description
 `LIKE table_name like_table_option_list` | <span class="version-tag">New in v20.2:</span> Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+`opt_where_clause` | <span class="version-tag">New in v20.2:</span> An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 
 ## Table-level replication
 
