@@ -110,27 +110,28 @@ For examples, see [Delete with index hints](#delete-with-index-hints).
 
 ## Batch deletes
 
-To delete a large number of rows, we recommend looping through subsets of the rows that you want to delete until all of the unwanted rows have been deleted. You can write a script to do this, or you can write the loop into your application.
+To delete a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively deleting subsets of the rows that you want to delete, until all of the unwanted rows have been deleted. You can write a script to do this, or you can write a loop into your application.
 
-### Batch-delete on an indexed column
+In the sections below, we provide guidance on batch deleting with the `DELETE` query filter [on an indexed column](#batch-delete-on-an-indexed-column) and [on a non-indexed column](#batch-delete-on-a-non-indexed-column). Filtering on an indexed column is both simpler to implement and more efficient, but adding an index to a table can slow down insertions to the table and may cause bottlenecks. Queries that filter on a non-indexed column must perform at least one full-table scan, a process that takes time proportional to the size of the entire table.
 
-Each iteration of the batch loop should execute a single `DELETE` query. When writing the query:
+### Batch delete on an indexed column
 
-- Use a `WHERE` clause to filter on a column that identifies the unwanted rows. If the filtering column is not the primary key, the column should have [a secondary index](indexes.html).
-- To ensure that rows are efficiently scanned, add an [`ORDER BY`](query-order.html) clause on the filtering column.
+For high-performance batch deletes, we recommending filtering the `DELETE` query on an [indexed column](indexes.html).
+
+{{site.data.alerts.callout_info}}
+Having an indexed filtering column can make delete operations faster, but it might lead to bottlenecks in execution, especially if the filtering column is a [timestamp](timestamp.html).
+{{site.data.alerts.end}}
+
+Each iteration of a batch-delete loop should execute a transaction containing a single `DELETE` query. When writing this `DELETE` query:
+
+- Use a `WHERE` clause to filter on a column that identifies the unwanted rows. If the filtering column is not the primary key, the column should have [a secondary index](indexes.html). Note that if the filtering column is not already indexed, it might not be a good idea to add an index just to speed up batch deletes. Instead, consider [batch deleting on non-indexed columns](#batch-delete-on-a-non-indexed-column).
+- To ensure that rows are efficiently scanned in the `DELETE` query, add an [`ORDER BY`](query-order.html) clause on the filtering column.
 - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows to the desired batch size. To determine the optimal batch size, try out different batch sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.) and monitor the change in performance.
-- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows the scan to the fewest rows possible, and [preserves the performance of the deletes over time](#preserving-delete-performance-over-time).
+- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows each query's scan to the fewest rows possible, and [preserves the performance of the deletes over time](#preserving-delete-performance-over-time). This pattern assumes that no new rows are generated that match on the `DELETE` filter during the time that it takes to perform the delete.
 
-For example, suppose you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `order_line` table where `ol_amount` is less than `5000`, in batches of 5,000 rows.
+For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table where `no_w_id` is less than `5`, in batches of 5,000 rows. To do this, you can write a script that loops over batches of 5,000 rows, following the `DELETE` query guidance provided above. Note that in this case, `no_w_id` is the first column in the primary index, and, as a result, you do not need to create a secondary index on the column.
 
-First, [index the filtering column](indexes.html) (i.e., `ol_amount`):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON order_line(ol_amount);
-~~~
-
-Then, write a script that loops over the batches of 5,000 rows, following the `DELETE` query guidance provided above. In Python, the script would look similar to the following:
+In Python, the script would look similar to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -138,121 +139,80 @@ Then, write a script that loops over the batches of 5,000 rows, following the `D
 
 import psycopg2
 import psycopg2.sql
-import sys
 import os
 
 conn = psycopg2.connect(os.environ.get('DB_URI'))
-filter = "< 5000"
+filter = 4
 lastrow = None
 
 while True:
     with conn.cursor() as cur:
         if lastrow:
-            filter = "<= {0}".format(lastrow[0])
-        query = psycopg2.sql.SQL("DELETE FROM order_line WHERE ol_amount {0} ORDER BY ol_amount DESC LIMIT 5000 RETURNING ol_amount").format(psycopg2.sql.SQL(filter))
-        cur.execute(query)
+            filter = lastrow[0]
+        query = psycopg2.sql.SQL("DELETE FROM new_order WHERE no_w_id <= %s ORDER BY no_w_id DESC LIMIT 5000 RETURNING no_w_id")
+        cur.execute(query, (filter,))
         if cur.rowcount == 0:
-            sys.exit()
+            break
         lastrow = cur.fetchone()
     conn.commit()
 
 conn.close()
 ~~~
 
-The script deletes 5,000 rows, working iteratively in batches of 5,000 until all of the rows where `ol_amount < 5000` are deleted. Note that at each iteration, the filter is updated to match a narrower subset of rows.
+This script iteratively deletes rows in batches of 5,000, until all of the rows where `no_w_id <= 4` are deleted. Note that at each iteration, the filter is updated to match a narrower subset of rows.
 
-### Batch-delete using an `AS OF SYSTEM TIME` query
+### Batch delete on a non-indexed column
 
-If you cannot index the column that identifies the unwanted rows, we recommend defining the batch loop to execute two separate queries at each iteration:
+If you cannot index the column that identifies the unwanted rows, or if the filtering column is a [timestamp](timestamp.html), we recommend defining the batch loop to execute separate read and write operations at each iteration:
 
 1. Execute a [`SELECT` query](selection-queries.html) that returns the primary key values for the rows that you want to delete. When writing the `SELECT` query:
     - Use a `WHERE` clause that filters on the column identifying the rows.
-    - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#using-as-of-system-time-in-transactions). This can help reduce [transaction contention](transactions.html#transaction-contention).
-    - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to the batch size. To determine the optimal batch size, try out different batch sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance.
+    - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#using-as-of-system-time-in-transactions). This helps to reduce [transaction contention](transactions.html#transaction-contention).
+    - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
     - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`](query-order.html) clause on the primary key.
 
-2. Execute a `DELETE` query that filters on the primary key values returned by the `SELECT` query.
+2. Write a nested `DELETE` loop over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. To determine the optimal `DELETE` batch size, try out different sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance. We recommend committing each `DELETE` in a separate transaction.
 
-For example, suppose you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `order_line` table where `ol_amount` is less than `5000`, in batches of 5,000 rows, and the `ol_amount` column is *not* indexed.
+For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `history` table that are older than a month. You can create a script that loops over the data and deletes unwanted rows in batches, following the query guidance provided above.
 
-You can write a script that loops over the batches of 5,000 rows, following the query guidance provided above. In Python, the script would look similar to the following:
+In Python, the script would look similar to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
 import psycopg2
-import sys
 import os
 import time
 
 conn = psycopg2.connect(os.environ.get('DB_URI'))
-filter = "< 5000"
 
 while True:
     with conn.cursor() as cur:
         cur.execute("SET TRANSACTION AS OF SYSTEM TIME '-5s'")
-        cur.execute("SELECT (ol_w_id, ol_d_id, ol_o_id, ol_number) FROM order_line WHERE ol_amount < 5000 ORDER BY (ol_w_id, ol_d_id, ol_o_id, ol_number) LIMIT 5000")
+        cur.execute("SELECT h_w_id, rowid FROM history WHERE h_date < current_date() - INTERVAL '1 MONTH' ORDER BY h_w_id, rowid LIMIT 20000")
         if cur.rowcount == 0:
-            sys.exit()
-        pkvals = tuple(eval(row[0][1:-1]) for row in cur)
+            break
+        pkvals = tuple(cur)
         conn.commit()
-        cur.execute("DELETE FROM order_line WHERE (ol_w_id, ol_d_id, ol_o_id, ol_number) IN %s", [pkvals])
-        print(cur.statusmessage)
+        while True:
+            cur.execute("DELETE FROM history WHERE (h_w_id, rowid) IN %s LIMIT 5000", (pkvals, ))
+            conn.commit()
+            if cur.rowcount == 0:
+                break
         del pkvals
         time.sleep(5)
-    conn.commit()
 
 conn.close()
 ~~~
 
-At each iteration, the selection query returns the primary key values of up to 5,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, in a separate transaction, the `DELETE` query deletes a batch of rows, filtering on the primary key values returned from the selection query. The time delay after the `DELETE` query ensures that the selection query reads historical data from the table *after the last iteration's `DELETE`*.
+At each iteration, the selection query returns the primary key values of up to 20,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, a nested loop iterates over the returned primary key values in smaller batches of 5,000 rows. At each iteration of the nested `DELETE` loop, a batch of rows is deleted in a single transaction. After the nested `DELETE` loop deletes all of the rows from the initial selection query, a time delay ensures that the next selection query reads historical data from the table after the last iteration's `DELETE` final delete.
 
 ### Batch-delete "expired" data
 
 CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process using a job scheduler like `cron`.
 
-For example, suppose that every morning you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `history` table that are older than a month.
-
-First, you need to [index the timestamped column](indexes.html) on which you are filtering (i.e., `h_date`):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON history(h_date);
-~~~
-
-Then, you can create a script that loops over the expired data and deletes unwanted rows in batches, following the [`DELETE` query guidance above](#batch-delete-on-an-indexed-column). In Python, the script would look similar to the following:
-
-{% include copy-clipboard.html %}
-~~~ python
-#!/usr/bin/env python3
-
-import psycopg2
-import psycopg2.sql
-import sys
-import os
-
-conn = psycopg2.connect(os.environ.get('DB_URI'))
-filter = "< current_date() - INTERVAL '1 MONTH'"
-lastrow = None
-
-while True:
-    with conn.cursor() as cur:
-        if lastrow:
-            filter = "<= '{0}'".format(lastrow[0])
-        query = psycopg2.sql.SQL("DELETE from history WHERE h_date {0} ORDER BY h_date DESC LIMIT 10000 RETURNING h_date").format(psycopg2.sql.SQL(filter))
-        cur.execute(query)
-        if cur.rowcount == 0:
-            sys.exit()
-        lastrow = cur.fetchone()
-    conn.commit()
-~~~
-
-This script deletes all rows older than a month, working iteratively in batches of 10,000 rows. Note that at each iteration, the filter is updated to match a narrower subset of rows.
-
-{{site.data.alerts.callout_success}}
-If the timestamp column (`h_date`, in this example) is not indexed, we recommend using [batch-delete using an `AS OF SYSTEM TIME` query](#batch-delete-using-an-as-of-system-time-query) instead.
-{{site.data.alerts.end}}
+For example, suppose that every morning you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `history` table that are older than a month. To do this, you could use the example Python script that [batch deletes on the non-indexed `h_date` column](#batch-delete-on-a-non-indexed-column).
 
 To run the script with a daily `cron` job:
 
@@ -284,8 +244,8 @@ This means that with the default settings, each iteration of your `DELETE` state
 To preserve performance over iterative `DELETE` queries, we recommend taking one of the following approaches:
 
 - At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter](#batch-delete-on-an-indexed-column) above.
-- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a `DELETE`, filtering on the primary key values. For an example, see [Batch-delete using an `AS OF SYSTEM TIME` query](#batch-delete-using-an-as-of-system-time-query) above.
-- To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and then run your `DELETE` statement once per GC interval. If you take this approach, we strongly recommend returning `gc.ttlseconds` to the default value after the deletion is complete.
+- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column](#batch-delete-on-a-non-indexed-column) above.
+- To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and then run your `DELETE` statement once per GC interval.
 
 ## Examples
 
