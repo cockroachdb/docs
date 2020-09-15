@@ -40,7 +40,7 @@ To set up a secure cluster without using an existing certificate authority, you'
 
 ### Client authentication
 
-CockroachDB offers three methods for client authentication:
+CockroachDB offers four methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
@@ -67,6 +67,8 @@ CockroachDB offers three methods for client authentication:
   ~~~
 
    Note that the client still needs the CA certificate to validate the nodes' certificates.
+
+- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the Admin UI.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
