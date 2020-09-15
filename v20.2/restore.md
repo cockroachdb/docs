@@ -54,6 +54,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
+`detached`                                                          | N/A                                         | <span class="version-tag">New in v20.2:</span> When a restore runs in `detached` mode, the restore job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish.
 
 ### Backup file URLs
 
@@ -147,7 +148,6 @@ Restore Type | Parameters
 Full backup | Include only the path to the full backup.
 Full backup + <br>incremental backups | If the full backup and incremental backups were sent to the same destination, include only the path to the full backup (e.g., `RESTORE FROM 'full_backup_location';`).<br><br>If the incremental backups were sent to a different destination from the full backup, include the path to the full backup as the first argument and the subsequent incremental backups from oldest to newest as the following arguments (e.g., `RESTORE FROM 'full_backup_location', 'incremental_location_1', 'incremental_location_2';`).
 
-
 ## Performance
 
 The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
@@ -225,6 +225,25 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 If you are restoring from HTTP storage, provide the previous full and incremental backup locations in a comma-separated list. You cannot use the simplified syntax.
 {{site.data.alerts.end}}
 
+### Restore a backup asynchronously
+
+<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the restore job asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM \
+'gs://acme-co-backup/test-cluster' \
+WITH detached;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
 
 ### Other restore usages
 
