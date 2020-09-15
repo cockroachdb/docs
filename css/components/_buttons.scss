@@ -171,21 +171,17 @@
 .contribute {
 	.btn-contribute {
 		@include button();
-		background-color: transparent;
-		border: none;
-		color: $cl_gray;
-		line-height: 40px;
-		padding: 0;
+		border: 1px solid #D6DBE7;
+		color: #242A35;
 		margin-top: 9px;
-		margin-right: 2px;
+		margin-right: 55px;
 		text-align: center;
 
 		&:focus {
-			color: $cl_green;
-		}
-
-		&:hover {
-			color: $cl_green;
+                        outline: 0;
+                        box-shadow: 0 0 0 3px #E7ECF3;
+                        border: 1px solid #7E89A9;
+                        border-radius: 3px;
 		}
 	}
 
@@ -200,38 +196,19 @@
 
 	.dropdown-menu > li > a {
 		@include caption;
-		color: $cl_blue;
+                color: #394455;
 		margin: 7px 0 7px;
 
 		&:focus {
+                        color: #394455;
 			text-decoration: none;
 			background-color: transparent;
-			color: $cl_green;
 		}
 
 		&:hover {
+                        color: #394455;
 			text-decoration: none;
 			background-color: transparent;
-			color: $cl_green;
-		}
-	}
-
-	.arrow-up,
-	.arrow-down {
-		border-color: $cl_gray;
-	}
-
-	.arrow-up {
-		display: none;
-	}
-
-	&.open {
-		.arrow-down {
-			display: none;
-		}
-
-		.arrow-up {
-			display: inline-block;
 		}
 	}
 }
