@@ -29,17 +29,17 @@ For instructions showing how to get started using CockroachDB Spatial, see [Work
 
 {% include copy-clipboard.html %}
 ~~~ shell
-wget https://binaries.cockroachdb.com/cockroach-v20.2.0-alpha.3.darwin-10.9-amd64.tgz
+wget https://binaries.cockroachdb.com/cockroach-v20.2.0-beta.1.darwin-10.9-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-tar xzvf cockroach-v20.2.0-alpha.3.darwin-10.9-amd64.tgz
+tar xzvf cockroach-v20.2.0-beta.1.darwin-10.9-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cd cockroach-v20.2.0-alpha.3.darwin-10.9-amd64
+cd cockroach-v20.2.0-beta.1.darwin-10.9-amd64
 ~~~
 
 ## Step 2. Copy the binary and libraries to the appropriate locations
@@ -145,17 +145,17 @@ If you are having difficulties installing CockroachDB Spatial, please see our [S
 
 {% include copy-clipboard.html %}
 ~~~ shell
-wget https://binaries.cockroachdb.com/cockroach-v20.2.0-alpha.3.linux-amd64.tgz
+wget https://binaries.cockroachdb.com/cockroach-v20.2.0-beta.1.linux-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-tar xzvf cockroach-v20.2.0-alpha.3.linux-amd64.tgz
+tar xzvf cockroach-v20.2.0-beta.1.linux-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cd cockroach-v20.2.0-alpha.3.linux-amd64
+cd cockroach-v20.2.0-beta.1.linux-amd64
 ~~~
 
 ## Step 2. Copy the binary and libraries to the appropriate directories
