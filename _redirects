@@ -3,6 +3,7 @@ layout: null
 ---
 
 {%- if site.baseurl == "/docs" %}
+/* /docs/stable/404.html
 / /docs/ 301!
 /docs /docs/stable/ 301!
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301!
