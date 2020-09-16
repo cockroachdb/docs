@@ -332,6 +332,11 @@ If you encounter behavior that you think is due to a performance issue, please g
 
 ## See also
 
+- [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Migrate from GeoJSON](migrate-from-geojson.html)
+- [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial functions](functions-and-operators.html#geospatial-functions)
 - [Troubleshooting overview](troubleshooting-overview.html)
 - [Support resources](support-resources.html)
-- [Geospatial functions](functions-and-operators.html#geospatial-functions)
