@@ -27,7 +27,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Language | ORM | Recommended version | Support level |
 |----------+-----+---------------------+---------------|
-| Go | [GORM](build-a-go-app-with-cockroachdb-gorm.html) | [1.9.11](https://github.com/jinzhu/gorm/releases) | Full |
+| Go | [GORM](build-a-go-app-with-cockroachdb-gorm.html)<hr>[upper/db](build-a-go-app-with-cockroachdb-upperdb.html) | [1.9.11](https://github.com/jinzhu/gorm/releases)<hr>[v4](https://github.com/upper/db/releases) | Full<hr>Full |
 | Java | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)<hr>[jOOQ](build-a-java-app-with-cockroachdb-jooq.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | [5.4.19](https://hibernate.org/orm/releases/)<hr>[3.13.2](https://www.jooq.org/download/versions) (must be 3.13.0 or higher)<hr>[3.5.5 and higher](https://mybatis.org/mybatis-3/) | Full<hr>Full |
 | Node.js | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html) | [sequelize 5.21.9](https://www.npmjs.com/package/sequelize)<br>[sequelize-cockroachdb 1.1.0](https://www.npmjs.com/package/sequelize-cockroachdb) | Beta |
 | Ruby | [ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html) | [activerecord 5.2](https://rubygems.org/gems/activerecord)<br>[activerecord-cockroachdb-adpater 5.2.0](https://rubygems.org/gems/activerecord-cockroachdb-adapter) | Full |
