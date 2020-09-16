@@ -15,6 +15,10 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
+{{site.data.alerts.callout_danger}}
+The `--insecure` flag used in this tutorial is intended for internal use. The flag **will be deprecated** and replaced with new options in v21.1 that are equally usable for testing but more secure.
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
