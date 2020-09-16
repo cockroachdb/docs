@@ -12,13 +12,18 @@ toc: true
 
 ## Create a new backup schedule
 
+To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement:
+
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 > CREATE SCHEDULE schedule_name
   FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
     WITH revision_history
-    RECURRING '@daily';
+    RECURRING '@daily'
+    WITH SCHEDULE OPTIONS first_run = '2020-09-15 00:00:00.00';
 ~~~
+
+In this example, a schedule called `schedule_name` is created to take daily backups with revision history in AWS S3, with the first backup being taken at midnight on September 15, 2020.
 
 For more information, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
 
