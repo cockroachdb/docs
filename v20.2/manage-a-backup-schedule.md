@@ -29,7 +29,7 @@ For more information, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-bac
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you monitor your backup schedule and alert on metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expectFor more information, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
+We recommend that you monitor your backup schedule and alert on metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect. For more information, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
 ## View and control the backup schedule
 

@@ -1,14 +1,10 @@
 ---
 title: DROP SCHEDULES
-summary: The DROP SCHEDULES statement lets you destroy specified backup schedules.
+summary: The DROP SCHEDULES statement lets you remove specified backup schedules.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `DROP SCHEDULES` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, schema changes, [user-created table statistics](create-statistics.html) jobs, [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html), and [schema change](online-schema-changes.html) jobs.
-
-## Limitations
-
-When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+<span class="version-tag">New in v20.2:</span> The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html).
 
 ## Required privileges
 
