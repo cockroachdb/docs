@@ -75,7 +75,7 @@ All jobs created by `maxroach` will be resumed.
 
 ### Resume jobs for a schedule
 
-<span class="version-tag">New in v20.2:</span> To resume jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+<span class="version-tag">New in v20.2:</span> To resume jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

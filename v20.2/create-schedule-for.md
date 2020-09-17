@@ -1,16 +1,22 @@
 ---
-title: CREATE SCHEDULE FOR BACKUP
-summary: The CREATE SCHEDULE FOR BACKUP statement creates a schedule for periodic backups.
+title: CREATE SCHEDULE FOR
+summary: The CREATE SCHEDULE FOR statement creates a schedule for periodic backups.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `CREATE SCHEDULE FOR BACKUP` [statement](sql-statements.html) creates a schedule for periodic [backups](backup.html).
+<span class="version-tag">New in v20.2:</span> The `CREATE SCHEDULE FOR` [statement](sql-statements.html) creates a schedule for periodic [backups](backup.html).
 
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule](manage-a-backup-schedule.html).
 
+{{site.data.alerts.callout_info}}
+Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables.
+
+To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
-Only members of the `admin` role can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
+Only members of the `admin` role can run `CREATE SCHEDULE FOR`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -56,12 +62,12 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 If you encounter a bug, please [file an issue](file-an-issue.html).
 {{site.data.alerts.end}}
 
- Option                     | Value                             | Description
-----------------------------+-----------------------------------+------------------------------
-`first_run`                 | [`TIMESTAMPTZ`](timestamp.html)   | Execute the schedule at the specified time in the future. If not specified, the default is to execute the scheduled based on it's next `RECURRING` time.
-`on_execution_failure`      | `retry` / `reschedule` / `pause`  | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>Default: `reschedule`
-`on_previous_running`       | `start` / `skip` / `wait`         | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expresssion.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>Default: `wait`
-`ignore_existing_backups`   | N/A                               | If backups were already created in the [destination](use-cloud-storage-for-bulk-operations.html) in which a new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.
+ Option                     | Value                                   | Description
+----------------------------+-----------------------------------------+------------------------------
+`first_run`                 | [`TIMESTAMPTZ`](timestamp.html) / `now` | Execute the schedule at the specified time in the future. If not specified, the default is to execute the scheduled based on it's next `RECURRING` time.
+`on_execution_failure`      | `retry` / `reschedule` / `pause`        | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>Default: `reschedule`
+`on_previous_running`       | `start` / `skip` / `wait`               | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expresssion.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>Default: `wait`
+`ignore_existing_backups`   | N/A                                     | If backups were already created in the [destination](use-cloud-storage-for-bulk-operations.html) in which a new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.
 
 ## Considerations
 
@@ -97,23 +103,24 @@ You can also visit the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI 
 
 ### Create a schedule for full backups only (core)
 
-Core users can only use backup scheduling for full backups:
+Core users can only use backup scheduling for full backups of clusters, databases, or tables. Full backups are taken with the `FULL BACKUP ALWAYS` clause, for example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEDULE core_schedule_name
+> CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
-    WITH revision_history RECURRING '@daily'
-    FULL BACKUP ALWAYS;
+    RECURRING '@daily'
+    FULL BACKUP ALWAYS
+    WITH SCHEDULE OPTIONS first_run = 'now';
 ~~~
 ~~~
-     schedule_id     |        name        | status |         first_run         | schedule |                                                                                       backup_stmt
----------------------+--------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  588799238330220545 | core_schedule_name | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+     schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
+---------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
 (1 row)
 ~~~
 
-To use the other backup scheduling features, you need an [enterprise license](enterprise-licensing.html).
+To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
 
 ### Create a scheduled backup for a cluster
 
@@ -121,17 +128,17 @@ This example creates a schedule for a cluster backup with revision history that'
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEDULE schedule_name
+> CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
     WITH revision_history
     RECURRING '@daily';
 ~~~
 
 ~~~
-     schedule_id     |     name      |                     status                     |            first_run             | schedule |                                                                               backup_stmt
----------------------+---------------+------------------------------------------------+----------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
-  588796190000218113 | schedule_name | PAUSED: Waiting for initial backup to complete | NULL                             | @daily   | BACKUP INTO LATEST IN 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
-  588796190012702721 | schedule_name | ACTIVE                                         | 2020-09-10 16:52:17.280821+00:00 | @weekly  | BACKUP INTO 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+     schedule_id     |     name       |                     status                     |            first_run             | schedule |                                                                               backup_stmt
+---------------------+----------------+------------------------------------------------+----------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  588796190000218113 | schedule_label | PAUSED: Waiting for initial backup to complete | NULL                             | @daily   | BACKUP INTO LATEST IN 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  588796190012702721 | schedule_label | ACTIVE                                         | 2020-09-10 16:52:17.280821+00:00 | @weekly  | BACKUP INTO 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
 (2 rows)
 ~~~
 

@@ -172,7 +172,7 @@ Statement | Usage
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | <span class="version-tag">New in v20.2:</span> Create a schedule for periodic backups.
+[`CREATE SCHEDULE FOR`](create-schedule-for.html) | <span class="version-tag">New in v20.2:</span> Create a schedule for periodic backups.
 [`SHOW SCHEDULES`](show-schedules.html) | <span class="version-tag">New in v20.2:</span> View information on backup schedules.
 [`PAUSE SCHEDULES`](pause-schedules.html) | <span class="version-tag">New in v20.2:</span> Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | <span class="version-tag">New in v20.2:</span> Resume paused backup schedules.

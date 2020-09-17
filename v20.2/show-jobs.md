@@ -160,7 +160,7 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 
 ### Show jobs for a schedule
 
-<span class="version-tag">New in v20.2:</span> To view jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+<span class="version-tag">New in v20.2:</span> To view jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

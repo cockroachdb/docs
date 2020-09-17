@@ -1204,9 +1204,9 @@
     		    ]
     		  },
     		  {
-    		    "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
+    		    "title": "<code>CREATE SCHEDULE FOR</code>",
     		    "urls": [
-    		      "/${VERSION}/create-schedule-for-backup.html"
+    		      "/${VERSION}/create-schedule-for.html"
     		    ]
     		  },
     		  {

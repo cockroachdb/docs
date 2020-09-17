@@ -96,7 +96,7 @@ To permanently disable automatic table statistics jobs, disable the `sql.stats.a
 
 ### Pause jobs for a schedule
 
-<span class="version-tag">New in v20.2:</span> To pause jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+<span class="version-tag">New in v20.2:</span> To pause jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
