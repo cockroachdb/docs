@@ -104,7 +104,7 @@ The `field` and `description` columns describe a set of properties, some global 
 - `table`:`episodes@primary`
   <br>The table is scanned on the `primary` index.
 - `spans`:`ALL`
-  <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+  <br>The table is scanned on *all* key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 - `filter`: `season > 3`
   <br>The scan filters on the `season` column.
 

@@ -20,12 +20,12 @@ You'll get generally poor performance when retrieving a single row based on a co
 ~~~
 
 ~~~
-                   id                  | city  |      name      |      address      | credit_card  
-+--------------------------------------+-------+----------------+-------------------+-------------+
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739   
+                   id                  | city  |      name      |      address      | credit_card
+---------------------------------------+-------+----------------+-------------------+--------------
+  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Time: 4.059ms
+Time: 1.589ms
 ~~~
 
 To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
@@ -66,12 +66,12 @@ The query will now return much faster:
 ~~~
 
 ~~~
-                   id                  | city  |      name      |      address      | credit_card  
-+--------------------------------------+-------+----------------+-------------------+-------------+
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739   
+                   id                  | city  |      name      |      address      | credit_card
+---------------------------------------+-------+----------------+-------------------+--------------
+  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Time: 1.457ms
+Time: 720µs
 ~~~
 
 To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -111,12 +111,12 @@ For example, let's say you frequently retrieve a user's name and credit card num
 ~~~
 
 ~~~
-       name      | credit_card  
-+----------------+-------------+
-  Cheyenne Smith | 4374468739   
+       name      | credit_card
+-----------------+--------------
+  Cheyenne Smith | 4374468739
 (1 row)
 
-Time: 1.302ms
+Time: 1.54ms
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
@@ -179,12 +179,12 @@ This results in even faster performance:
 ~~~
 
 ~~~
-       name      | credit_card  
-+----------------+-------------+
-  Cheyenne Smith | 4374468739   
+       name      | credit_card
+-----------------+--------------
+  Cheyenne Smith | 4374468739
 (1 row)
 
-Time: 906µs
+Time: 746µs
 ~~~
 
 To reset the database for following examples, let's drop the index on `name`:
@@ -206,12 +206,10 @@ For example, let's say you want to count the number of users who started rides o
 ~~~
 
 ~~~
-  count  
-+-------+
-     13  
+  count
+---------
+     14
 (1 row)
-
-Time: 3.625ms
 ~~~
 
 To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
@@ -238,7 +236,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
              │        | spans       | FULL SCAN
              │        | filter      | (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')
              └── scan |             |
-                      | table       | users@users_name_idx
+                      | table       | users@primary
                       | spans       | FULL SCAN
 (16 rows)
 ~~~
@@ -264,12 +262,12 @@ Adding the secondary index reduced the query time:
 ~~~
 
 ~~~
-  count  
-+-------+
-     13  
+  count
+---------
+     14
 (1 row)
 
-Time: 2.367ms
+Time: 2.667ms
 ~~~
 
 To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -343,24 +341,23 @@ To speed up the query, you can provide the primary key to allow the cost-based o
 ~~~
 
 ~~~
-         tree         |       field        |           description
-----------------------+--------------------+----------------------------------
-                      | distributed        | true
-                      | vectorized         | false
-  render              |                    |
-   └── limit          |                    |
-        │             | count              | 1
-        └── hash-join |                    |
-             │        | type               | inner
-             │        | equality           | (vehicle_id, city) = (id, city)
-             │        | right cols are key |
-             ├── scan |                    |
-             │        | table              | rides@primary
-             │        | spans              | FULL SCAN
-             └── scan |                    |
-                      | table              | vehicles@primary
-                      | spans              | FULL SCAN
-(15 rows)
+          tree          |         field         |           description
+------------------------+-----------------------+----------------------------------
+                        | distributed           | true
+                        | vectorized            | false
+  render                |                       |
+   └── limit            |                       |
+        │               | count                 | 1
+        └── lookup-join |                       |
+             │          | table                 | vehicles@primary
+             │          | type                  | inner
+             │          | equality              | (city, vehicle_id) = (city, id)
+             │          | equality cols are key |
+             │          | parallel              |
+             └── scan   |                       |
+                        | table                 | rides@primary
+                        | spans                 | FULL SCAN
+(14 rows)
 ~~~
 
 ## See also

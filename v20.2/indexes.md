@@ -105,19 +105,17 @@ If we filter on the indexed columns but retrieve the unindexed column, this requ
 ~~~
 
 ~~~
-       tree       |    field    |      description
-------------------+-------------+------------------------
-                  | distributed | false
-                  | vectorized  | false
-  render          |             |
-   └── index-join |             |
-        │         | table       | tbl@primary
-        │         | key columns | rowid
-        └── scan  |             |
-                  | table       | tbl@tbl_col1_col2_idx
-                  | spans       | /10/2-/11
-(9 rows)
-
+     tree    |     field     |      description
+-------------+---------------+------------------------
+             | distribution  | local
+             | vectorized    | false
+  index join |               |
+   │         | table         | tbl@primary
+   └── scan  |               |
+             | missing stats |
+             | table         | tbl@tbl_col1_col2_idx
+             | spans         | [/10/2 - /10]
+(8 rows)
 ~~~
 
 However, if we store `col3` in the index, the index join is no longer necessary. This means our query only needs to read from the secondary index, so it will be more efficient.
@@ -133,14 +131,14 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 ~~~
 
 ~~~
-    tree    |    field    |      description
-------------+-------------+------------------------
-            | distributed | false
-            | vectorized  | false
-  render    |             |
-   └── scan |             |
-            | table       | tbl@tbl_col1_col2_idx
-            | spans       | /10/2-/11
+  tree |     field     |      description
+-------+---------------+------------------------
+       | distribution  | local
+       | vectorized    | false
+  scan |               |
+       | missing stats |
+       | table         | tbl@tbl_col1_col2_idx
+       | spans         | [/10/2 - /10]
 (6 rows)
 ~~~
 

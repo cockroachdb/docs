@@ -315,14 +315,15 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |    field    |     description
--------+-------------+-----------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | postal_codes@primary
-       | spans       | /1-/1/#
-(5 rows)
+  tree |        field        |     description
+-------+---------------------+-----------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@primary
+       | spans               | [/1 - /1]
+(6 rows)
 ~~~
 
 As expected, the node in the EU uses the `idx_eu` index.
@@ -333,14 +334,15 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |    field    |     description
--------+-------------+----------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | postal_codes@idx_eu
-       | spans       | /1-/2
-(5 rows)
+  tree |        field        |     description
+-------+---------------------+----------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@idx_eu
+       | spans               | [/1 - /1]
+(6 rows)
 ~~~
 
 As expected, the node in APAC uses the `idx_apac` index.
@@ -351,14 +353,15 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |    field    |      description
--------+-------------+------------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | postal_codes@idx_apac
-       | spans       | /1-/2
-(5 rows)
+  tree |        field        |      description
+-------+---------------------+------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@idx_apac
+       | spans               | [/1 - /1]
+(6 rows)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
@@ -506,22 +509,68 @@ Next let's [check our zone configurations](show-zone-configurations.html) to mak
 The output should include the following:
 
 ~~~
-TABLE auth.public.token                      | ALTER TABLE auth.public.token CONFIGURE ZONE USING
-                                             |     num_replicas = 5,
-                                             |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                             |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
-INDEX auth.public.token@token_id_east_idx    | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
-                                             |     num_replicas = 5,
-                                             |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                             |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
-INDEX auth.public.token@token_id_central_idx | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
-                                             |     num_replicas = 5,
-                                             |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
-                                             |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
-INDEX auth.public.token@token_id_west_idx    | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
-                                             |     num_replicas = 5,
-                                             |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
-                                             |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+                       target                      |                                    raw_config_sql
+---------------------------------------------------+---------------------------------------------------------------------------------------
+  RANGE default                                    | ALTER RANGE default CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 3,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  DATABASE system                                  | ALTER DATABASE system CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE meta                                       | ALTER RANGE meta CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 3600,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE system                                     | ALTER RANGE system CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE liveness                                   | ALTER RANGE liveness CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 600,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE system.public.replication_constraint_stats | ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING
+                                                   |     gc.ttlseconds = 600,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE system.public.replication_stats            | ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING
+                                                   |     gc.ttlseconds = 600,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE auth.public.token                          | ALTER TABLE auth.public.token CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                                   |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+  INDEX auth.public.token@token_id_east_idx        | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                                   |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
+  INDEX auth.public.token@token_id_central_idx     | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                                   |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
+  INDEX auth.public.token@token_id_west_idx        | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                                   |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+(11 rows)
 ~~~
 
 Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of placeholder data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
@@ -575,14 +624,14 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West
 ~~~
 
 ~~~
-    tree    |    field    |                                        description
-------------+-------------+--------------------------------------------------------------------------------------------
-            | distributed | false
-            | vectorized  | false
-  render    |             |
-   └── scan |             |
-            | table       | token@token_id_east_idx
-            | spans       | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
+  tree |        field        |                                     description
+-------+---------------------+--------------------------------------------------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | token@token_id_east_idx
+       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
 (6 rows)
 ~~~
 
@@ -605,14 +654,14 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 ~~~
 
 ~~~
-    tree    |    field    |                                        description
-------------+-------------+--------------------------------------------------------------------------------------------
-            | distributed | false
-            | vectorized  | false
-  render    |             |
-   └── scan |             |
-            | table       | token@token_id_east_idx
-            | spans       | /"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"-/"2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9"/PrefixEnd
+  tree |        field        |                                     description
+-------+---------------------+--------------------------------------------------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | token@token_id_east_idx
+       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
 (6 rows)
 ~~~
 
