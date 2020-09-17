@@ -812,6 +812,12 @@
             "urls": [
               "/${VERSION}/migrate-from-geopackage.html"
             ]
+          },
+          {
+            "title": "Import Performance Best Practices",
+            "urls": [
+              "/${VERSION}/import-performance-best-practices.html"
+            ]
           }
         ]
       },
