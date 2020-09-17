@@ -45,7 +45,7 @@ Each node should have **at least 2 vCPUs**. For best performance, we recommend a
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
 
       {{site.data.alerts.callout_info}}
-      Based on internal testing, 32 vCPUs is a sweet spot for OLTP workloads. It is not a hard limit, especially for deployments using phsyical hardware rather than cloud instances.
+      Based on internal testing, 32 vCPUs is a sweet spot for OLTP workloads. It is not a hard limit, especially for deployments using physical hardware rather than cloud instances.
       {{site.data.alerts.end}}
 
       {{site.data.alerts.callout_info}}
