@@ -7,20 +7,19 @@ asciicast: true
 ---
 
 <div class="filters filters-big clearfix">
-    <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
     <a href="secure-a-cluster.html"><button class="filter-button">Secure</button></a>
+    <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
 </div>
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
 
-{{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html), and review the [Production Checklist](recommended-production-settings.html).
-{{site.data.alerts.end}}
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html), and review the [Production Checklist](recommended-production-settings.html).
 
 <!-- TODO: Update the asciicast
 Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.

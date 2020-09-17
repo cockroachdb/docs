@@ -1,6 +1,5 @@
 {
   "title": "Releases",
-  "is_top_level": true,
   "items": [
     {
       "title": "Production Releases",
@@ -8,13 +7,13 @@
         {
           "title": "Latest v20.1",
           "urls": [
-            "/releases/v20.1.4.html"
+            "/releases/v20.1.5.html"
           ]
         },
         {
           "title": "Latest v19.2",
           "urls": [
-            "/releases/v19.2.9.html"
+            "/releases/v19.2.10.html"
           ]
         },
         {
@@ -35,9 +34,9 @@
       "title": "Testing Releases",
       "items": [
         {
-          "title": "Latest v20.2 Alpha",
+          "title": "Latest v20.2 Beta",
           "urls": [
-            "/releases/v20.2.0-alpha.2.html"
+            "/releases/v20.2.0-beta.1.html"
           ]
         },
         {

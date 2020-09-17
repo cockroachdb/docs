@@ -355,7 +355,7 @@ This page walks you through some of the most essential CockroachDB SQL statement
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](cockroachcloud-connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
 
 ## Create a database
 
@@ -403,7 +403,7 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement 
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](cockroachcloud-connect-to-your-cluster.html#step-3-select-a-connection-method).
+It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#step-3-select-a-connection-method).
 
 {% include copy-clipboard.html %}
 ~~~ sql

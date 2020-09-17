@@ -34,7 +34,7 @@ Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
-[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or [`NOT NULL` constraint](not-null.html).
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
@@ -42,7 +42,7 @@ Statement | Usage
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
+[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
 [`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
 [`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
 [`ALTER VIEW`](alter-view.html) | Rename a view.
@@ -53,6 +53,7 @@ Statement | Usage
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
+[`CREATE TYPE`](create-type.html) | <span class="version-tag">New in v20.2:</span> Create a user-defined, [enumerated data type](enum.html).
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DROP COLUMN`](drop-column.html) | Remove columns from a table.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
@@ -60,6 +61,7 @@ Statement | Usage
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
+[`DROP TYPE`](drop-type.html) | <span class="version-tag">New in v20.2:</span> Remove a user-defined, [enumerated data type](enum.html).
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
@@ -73,6 +75,7 @@ Statement | Usage
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
+[`SHOW ENUMS`](show-enums.html) |  <span class="version-tag">New in v20.2:</span> List user-defined, [enumerated data types](enum.html) in the cluster.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
@@ -178,7 +181,7 @@ Statement | Usage
 
 ## Changefeed statements (Enterprise)
 
-[Change data capture](change-data-capture.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
+[Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------

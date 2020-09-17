@@ -13,7 +13,7 @@ Use the following guides to deploy CockroachDB manually on-premises or on popula
 - [Google Cloud Platform (GCE)](deploy-cockroachdb-on-google-cloud-platform.html)
 - [Microsoft Azure](deploy-cockroachdb-on-microsoft-azure.html)
 
-{{site.data.alerts.callout_success}}If you're just getting started with CockroachDB, you might want <a href="start-a-local-cluster.html">use a local cluster</a> to learn the basics of the database.{{site.data.alerts.end}}
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## See also
 

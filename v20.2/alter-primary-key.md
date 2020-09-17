@@ -6,6 +6,10 @@ toc: true
 
   The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
 
+## Watch the demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MPx-LXY2D-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Details
 
 - You cannot change the primary key of a table that is currently undergoing a primary key change, or any other [schema change](online-schema-changes.html).

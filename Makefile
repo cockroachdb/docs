@@ -53,14 +53,6 @@ cockroachdb: bootstrap
 .PHONY: standard
 standard: cockroachdb
 
-.PHONY: cockroachcloud-build
-cockroachcloud-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachcloud.yml$(extra-config) $(JEKYLLFLAGS)
-
-.PHONY: cockroachcloud
-cockroachcloud: jekyll-action := serve --port 4001
-cockroachcloud: cockroachcloud-build
-
 .PHONY: test
 test:
 	go get -u github.com/cockroachdb/htmltest

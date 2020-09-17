@@ -14,8 +14,6 @@ The `ARRAY` data type is useful for ensuring compatibility with ORMs and other t
 CockroachDB does not support nested arrays.
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/vectorized-support.md %}
-
 ## Syntax
 
 A value of data type `ARRAY` can be expressed in the following ways:

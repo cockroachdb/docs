@@ -53,8 +53,8 @@
 
     > a {
       @include button-text--heavy--small;
-      text-transform: uppercase;
       line-height: 26px;
+      font-size: 13px;
     }
 
     .arrow-down { margin-top: 7px; }
@@ -281,6 +281,25 @@ body.sidenav-open {
 
                   @include at-query($min, $screen-md) {
                     font-size: 13px;
+                  }
+                }
+
+                > ul {
+                  padding-left: 15px;
+
+                  //5th level
+                  > li {
+                    list-style: none;
+
+                    > a {
+                      @include avenir_r(13px);
+                      line-height: 20px;
+
+                      @include at-query($min, $screen-md) {
+                        font-size: 13px;
+                      }
+                    }
+
                   }
                 }
               }

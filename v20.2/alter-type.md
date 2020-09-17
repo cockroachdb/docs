@@ -1,85 +1,86 @@
 ---
 title: ALTER TYPE
-summary: Use the ALTER TYPE statement to change a column's data type.
+summary: The ALTER TYPE statement modifies a user-defined data type in a database.
 toc: true
 ---
 
-The `ALTER TYPE` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes a column's [data type](data-types.html).
-
-{% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
-
-## Considerations
-
-You can use the `ALTER TYPE` subcommand if the following conditions are met:
-
-- On-disk representation of the column remains unchanged. For example, you cannot change the column data type from `STRING` to an `INT`, even if the string is just a number.
-- The existing data remains valid. For example, you can change the column data type from `STRING[10]` to `STRING[20]`, but not to `STRING [5]` since that will invalidate the existing data.
+<span class="version-tag">New in v20.2:</span> The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in a database.
 
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/alter_type.html %}
+  {% include {{ page.version.version }}/sql/diagrams/alter_type.html %}
 </div>
-
-## Required privileges
-
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
 
 ## Parameters
 
-| Parameter | Description
-|-----------|-------------
-| `table_name` | The name of the table with the column whose data type you want to change.
-| `column_name` | The name of the column whose data type you want to change.
-| `typename` | The new [data type](data-types.html) you want to use.
+Parameter | Description
+----------|------------
+`type_name` | The name of the user-defined type.
+`ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value. 
+`RENAME TO name` | Rename the user-defined type.
+`RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
+`SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
+`OWNER TO`  | Change the [role specification](grant-roles.html) for the user-defined type's owner.
 
-## Viewing schema changes
+## Required privileges
 
-{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+- To [alter a type](alter-type.html), the user must be the owner of the type.
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema and the `DROP` privilege
+on the type.
+- To alter the owner of a user-defined type:
+    - The user executing the command must be a member of the new owner role.
+    - The new owner role must have the `CREATE` privilege on the schema the type belongs to.
 
-## Examples
-
-### Success scenario
-
-The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE customer ALTER c_credit_lim type DECIMAL (12,2);
-~~~
-
-~~~
-ALTER TABLE
-
-Time: 80.814044ms
-~~~
-
-### Error scenarios
-
-Changing a column data type from `DECIMAL` to `INT` would change the on-disk representation of the column. Therefore, attempting to do so results in an error:
+## Example
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE customer ALTER c_credit_lim type INT;
+> CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
-
-~~~
-pq: type conversion not yet implemented
-~~~
-
-Changing a column data type from `DECIMAL(12,2)` to `DECIMAL (8,2)` would invalidate the existing data. Therefore, attempting to do so results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE customer ALTER c_credit_lim type DECIMAL (8,2);
+> SHOW ENUMS;
 ~~~
 
 ~~~
-pq: type conversion not yet implemented
+  schema |  name  |        value
+---------+--------+-----------------------
+  public | status | open|closed|inactive
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TYPE status ADD VALUE 'pending';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TYPE status RENAME VALUE 'open' TO 'active';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TYPE status RENAME TO account_status;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ENUMS;
+~~~
+
+~~~
+  schema |      name      |             value
+---------+----------------+---------------------------------
+  public | account_status | active|closed|inactive|pending
+(1 row)
 ~~~
 
 ## See also
 
-- [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
-- [`SHOW JOBS`](show-jobs.html)
+- [`CREATE TYPE`](create-type.html)
+- [`ENUM`](enum.html)
+- [`SHOW ENUMS`](show-enums.html)
+- [`DROP TYPE`](drop-type.html)

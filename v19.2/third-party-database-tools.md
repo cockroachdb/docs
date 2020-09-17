@@ -16,6 +16,7 @@ We offer the following levels of support with third-party tools:
 ## Graphical User Interface
 
 - [DBeaver](dbeaver.html) _(comprehensive support)_
+- [Beekeeper Studio](https://www.beekeeperstudio.io) _(comprehensive support)_
 
 ## Integrated Development Environment (IDE)
 

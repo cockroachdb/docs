@@ -5,6 +5,10 @@ toc: true
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
+{{site.data.alerts.callout_info}}
+[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns.
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -23,27 +27,29 @@ Parameter      | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### List table statistics
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS students ON id FROM students_by_list;
+> SHOW STATISTICS FOR TABLE rides;
 ~~~
 
 ~~~
-CREATE STATISTICS
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW STATISTICS FOR TABLE students_by_list;
-~~~
-
-~~~
-  statistics_name | column_names |             created              | row_count | distinct_count | null_count | histogram_id
-+-----------------+--------------+----------------------------------+-----------+----------------+------------+--------------+
-  students        | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
-(1 row)
+  statistics_name |  column_names   |             created              | row_count | distinct_count | null_count |    histogram_id
+------------------+-----------------+----------------------------------+-----------+----------------+------------+---------------------
+  __auto__        | {city}          | 2020-08-26 17:17:13.852138+00:00 |       500 |              9 |          0 | 584554361172525057
+  __auto__        | {vehicle_city}  | 2020-08-26 17:17:13.852138+00:00 |       500 |              9 |          0 | 584554361179242497
+  __auto__        | {id}            | 2020-08-26 17:17:13.852138+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {rider_id}      | 2020-08-26 17:17:13.852138+00:00 |       500 |             50 |          0 |               NULL
+  __auto__        | {vehicle_id}    | 2020-08-26 17:17:13.852138+00:00 |       500 |             15 |          0 |               NULL
+  __auto__        | {start_address} | 2020-08-26 17:17:13.852138+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {end_address}   | 2020-08-26 17:17:13.852138+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {start_time}    | 2020-08-26 17:17:13.852138+00:00 |       500 |             30 |          0 |               NULL
+  __auto__        | {end_time}      | 2020-08-26 17:17:13.852138+00:00 |       500 |            367 |          0 |               NULL
+  __auto__        | {revenue}       | 2020-08-26 17:17:13.852138+00:00 |       500 |            100 |          0 |               NULL
+(10 rows)
 ~~~
 
 ### Delete statistics
