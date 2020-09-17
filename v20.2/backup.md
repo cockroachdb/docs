@@ -217,7 +217,7 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [`SHOW BACKUP`](show-backup.html)
-- [`CREATE SCHEDULE FOR`](create-schedule-for.html)
+- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
 - [`RESTORE`](restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 

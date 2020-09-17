@@ -4,7 +4,7 @@ summary: The PAUSE SCHEDULES statement lets you temporarily halt the process of 
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for.html).
+<span class="version-tag">New in v20.2:</span> The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html).
 
 After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](resume-schedules.html).
 
