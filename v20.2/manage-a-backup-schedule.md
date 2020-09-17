@@ -12,20 +12,20 @@ toc: true
 
 ## Create a new backup schedule
 
-To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement:
+To create a new backup schedule, use the [`CREATE SCHEDULE FOR`](create-schedule-for.html) statement. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEDULE schedule_name
+> CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
     WITH revision_history
     RECURRING '@daily'
-    WITH SCHEDULE OPTIONS first_run = '2020-09-15 00:00:00.00';
+    WITH SCHEDULE OPTIONS first_run = 'now';
 ~~~
 
-In this example, a schedule called `schedule_name` is created to take daily backups with revision history in AWS S3, with the first backup being taken at midnight on September 15, 2020.
+In this example, a schedule labeled `schedule_label` is created to take daily (incremental) backups with revision history in AWS S3, with the first backup being taken now. A second [schedule for weekly full backups](create-schedule-for.html#full-backup-clause) is also created by default. Both schedules have the same `label` (i.e., `schedule_label`).
 
-For more information, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
+For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR`](create-schedule-for.html).
 
 ## Set up monitoring for the backup schedule
 
@@ -98,13 +98,17 @@ Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside th
 
 For more information, see [`DROP SCHEDULES`](drop-schedules.html).
 
+{{site.data.alerts.callout_danger}}
+`DROP SCHEDULE` does **not** cancel any in progress jobs started by the schedule. Before you drop a schedule, [cancel any in progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
+{{site.data.alerts.end}}
+
 ## View and control a backup initiated by a schedule
 
 After CockroachDB successfully initiates a scheduled backup, it registers the backup as a job. You can [view](#view-the-backup-job), [pause](#pause-the-backup-job), [resume](#resume-the-backup-job), or [cancel](#cancel-the-backup-job) each individual backup job.
 
 ### View the backup job
 
-To view jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To view jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -136,7 +140,7 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
 
 ### Pause the backup job
 
-To pause jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To pause jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -161,7 +165,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 ### Resume the backup job
 
-To resume jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To resume jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -186,7 +190,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 ### Cancel the backup job
 
-To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To cancel jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -211,7 +215,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ## See also
 
-- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
+- [`CREATE SCHEDULE FOR`](create-schedule-for.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`SHOW BACKUP`](show-backup.html)

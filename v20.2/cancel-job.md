@@ -77,7 +77,7 @@ Canceling an automatic table statistics job is not useful since the system will 
 
 ### Cancel jobs for a schedule
 
-<span class="version-tag">New in v20.2:</span> To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+<span class="version-tag">New in v20.2:</span> To cancel jobs for a specific [backup schedule](create-schedule-for.html), use the schedule's `id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

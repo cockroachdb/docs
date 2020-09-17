@@ -4,11 +4,11 @@ summary: The SHOW SCHEDULES statement lists all currently active backup schedule
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `SHOW SCHEDULES` [statement](sql-statements.html) lists all of the currently active [backup schedules](create-schedule-for-backup.html).
+<span class="version-tag">New in v20.2:</span> The `SHOW SCHEDULES` [statement](sql-statements.html) lists all of the currently active [backup schedules](create-schedule-for.html).
 
 ## Required privileges
 
-By default, only the `root` user can execute `SHOW SCHEDULES`.
+Only members of the `admin` role can resume a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -38,7 +38,7 @@ Field | Description
 `jobsrunning` | The number of [jobs](show-jobs.html) currently running for the schedule.
 `owner` | The [user](create-user.html) who created the backup schedule. Users with active schedules cannot be dropped.
 `created` | The [`TIMESTAMP`](timestamp.html) when the job was created.
-`command` | The [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement used
+`command` | The command that the schedule will run to take the backup. This is derived from the [`CREATE SCHEDULE FOR`](create-schedule-for.html) statement used.
 
 ## Examples
 
