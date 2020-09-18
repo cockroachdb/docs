@@ -6,8 +6,7 @@ from random import random
 
 Base = declarative_base()
 
-# The code below assumes you are running as 'root' and have run
-# the following SQL statements against an insecure cluster.
+# The code below assumes you have run the following SQL statements.
 
 # CREATE DATABASE pointstore;
 
@@ -21,11 +20,11 @@ Base = declarative_base()
 # );
 
 engine = create_engine(
-    'cockroachdb://root@localhost:26257/pointstore',
-    connect_args={
-        'sslmode': 'disable',
-    },
-    echo=True
+    # For cockroach demo:
+    'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
+    # For CockroachCloud:
+    # 'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>',
+    echo=True                   # Log SQL queries to stdout
 )
 
 

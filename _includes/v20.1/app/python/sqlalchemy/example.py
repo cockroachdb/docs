@@ -1,8 +1,8 @@
 """This module performs the following steps sequentially:
     1. Reads in existing account IDs (if any) from the bank database.
-    2. Creates additional accounts with randomly generated IDs. 
+    2. Creates additional accounts with randomly generated IDs.
        Then, it adds a bit of money to each new account.
-    3. Chooses two accounts at random and takes half of the money from the first 
+    3. Chooses two accounts at random and takes half of the money from the first
        and deposits it into the second.
 """
 
@@ -30,22 +30,11 @@ class Account(Base):
 # For more information, see
 # https://github.com/cockroachdb/sqlalchemy-cockroachdb.
 
-SECURE_CLUSTER = True           # Set to False for insecure clusters
-connect_args = {}
-
-if SECURE_CLUSTER:
-    connect_args = {
-        'sslmode': 'require',
-        'sslrootcert': 'certs/ca.crt',
-        'sslkey': 'certs/client.maxroach.key',
-        'sslcert': 'certs/client.maxroach.crt'
-    }
-else:
-    connect_args = {'sslmode': 'disable'}
-
 engine = create_engine(
-    'cockroachdb://maxroach@localhost:26257/bank',
-    connect_args=connect_args,
+    # For cockroach demo:
+    'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
+    # For CockroachCloud:
+    # 'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>',
     echo=True                   # Log SQL queries to stdout
 )
 
