@@ -1,3 +1,7 @@
+- advisory: 54418
+  summary: Incorrect behavior with large batch UPSERTs
+  versions: 20.1.4, 20.1.5
+  date: September 21, 2020
 - advisory: 50587
   summary: TRUNCATE prevents table renaming
   versions: 19.1.0-19.1.10, 19.2.0-19.2.8
