@@ -1,9 +1,7 @@
 """This module performs the following steps sequentially:
     1. Reads in existing account IDs (if any) from the bank database.
-    2. Creates additional accounts with randomly generated IDs. 
-       Then, it adds a bit of money to each new account.
-    3. Chooses two accounts at random and takes half of the money from the first 
-       and deposits it into the second.
+    2. Creates additional accounts with randomly generated IDs. Then, it adds a bit of money to each new account.
+    3. Chooses two accounts at random and takes half of the money from the first and deposits it into the second.
 """
 
 import random
@@ -14,6 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from cockroachdb.sqlalchemy import run_transaction
 
 Base = declarative_base()
+
 
 
 class Account(Base):
@@ -30,22 +29,11 @@ class Account(Base):
 # For more information, see
 # https://github.com/cockroachdb/sqlalchemy-cockroachdb.
 
-SECURE_CLUSTER = True           # Set to False for insecure clusters
-connect_args = {}
-
-if SECURE_CLUSTER:
-    connect_args = {
-        'sslmode': 'require',
-        'sslrootcert': 'certs/ca.crt',
-        'sslkey': 'certs/client.maxroach.key',
-        'sslcert': 'certs/client.maxroach.crt'
-    }
-else:
-    connect_args = {'sslmode': 'disable'}
-
 engine = create_engine(
-    'cockroachdb://maxroach@localhost:26257/bank',
-    connect_args=connect_args,
+    # For cockroach demo:
+    'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
+    # For CockroachCloud:
+    # 'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>',
     echo=True                   # Log SQL queries to stdout
 )
 
@@ -62,7 +50,6 @@ seen_account_ids = set()
 
 def create_random_accounts(sess, num):
     """Create N new accounts with random IDs and random account balances.
-
     Note that since this is a demo, we don't do any work to ensure the
     new IDs don't collide with existing IDs.
     """
@@ -85,7 +72,6 @@ run_transaction(sessionmaker(bind=engine),
                 lambda s: create_random_accounts(s, 100))
 
 
-
 def get_random_account_id():
     """ Helper function for getting random existing account IDs.
     """
@@ -95,7 +81,6 @@ def get_random_account_id():
 
 def transfer_funds_randomly(session):
     """Transfer money randomly between accounts (during SESSION).
-
     Cuts a randomly selected account's balance in half, and gives the
     other half to some other randomly selected account.
     """
