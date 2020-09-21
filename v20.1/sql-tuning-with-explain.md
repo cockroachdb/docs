@@ -293,7 +293,7 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
              │        | table       | rides@rides_start_time_idx
              │        | spans       | /2018-12-20T00:00:00Z-/2018-12-21T00:00:00.000000001Z
              └── scan |             |
-                      | table       | users@users_name_idx
+                      | table       | users@primary
                       | spans       | FULL SCAN
 (15 rows)
 ~~~

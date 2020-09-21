@@ -53,9 +53,9 @@ The DistSQL Plan Viewer displays the physical query plan, as well as execution s
 
 Field | Description | Execution engine
 ------+-------------+----------------
-&lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
+&lt;Processor&gt;/&lt;id&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
 &lt;index&gt;@&lt;table&gt; | The index used by the processor. | Both
-Spans | The columns used by the processor. | Both
+Spans | The interval of the key space read by the processor. For example, `[/1 - /1]` indicates that only the key with value `1` is read by the processor. | Both
 Out | The output columns. | Both
 batches output | The number of batches of columnar data output. | Vectorized engine only
 tuples output | The number of rows output. | Vectorized engine only
@@ -65,12 +65,13 @@ bytes read | The size of the data read by the processor. | Both
 rows read | The number of rows read by the processor. | Both
 @&lt;n&gt; | The index of the column relative to the input. | Both
 max memory used | How much memory (if any) is used to buffer rows. | Row-oriented engine only
+max disk used | How much disk (if any) is used to buffer data. Routers and processors will spill to disk buffering if there is not enough memory to buffer the data. | Row-oriented engine only
 execution time | How long the engine spent executing the processor. | Vectorized engine only
 max vectorized memory allocated | How much memory is allocated to the processor to buffer batches of columnar data. | Vectorized engine only
-max disk used | How much disk (if any) is used to buffer data. Routers and processors will spill to disk buffering if there is not enough memory to buffer the data. | Both
+max vectorized disk used | How much disk (if any) is used to buffer columnar data. Processors will spill to disk buffering if there is not enough memory to buffer the data. | Vectorized engine only
 left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join. | Both
 stored side | The smaller table that was stored as an in-memory hash table. | Both
-rows routed | How many rows were sent by routers, which can be used to understand network usage. | Both
+rows routed | How many rows were sent by routers, which can be used to understand network usage. | Row-oriented engine only
 bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication. | Both
 Render | The stage that renders the output. | Both
 by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows. | Both
