@@ -17,9 +17,7 @@ This page walks you through a simple demonstration, using the open-source [Kuber
 To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](orchestration.html). To deploy a 30-day free CockroachCloud cluster instead of running CockroachDB yourself, see the [Quickstart](../cockroachcloud/quickstart.html).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}
-The `--insecure` flag used in this tutorial is intended for internal use. The flag **will be deprecated** and replaced with new options in v21.1 that are equally usable for testing but more secure.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 {% include {{ page.version.version }}/orchestration/local-start-kubernetes.md %}
 
