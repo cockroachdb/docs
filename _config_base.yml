@@ -44,11 +44,11 @@ release_info:
     build_time: 2020/08/24 11:00:26 (go1.12.12)
     start_time: 2020-08-24 11:01:26.34274101 +0000 UTC
   v20.1:
-    name: v20.1.5
-    version: v20.1.5
+    name: v20.1.6
+    version: v20.1.6
     docker_image: cockroachdb/cockroach
-    build_time: 2020/08/31 11:00:26 (go1.13.4)
-    start_time: 2020-08-31 11:01:26.34274101 +0000 UTC
+    build_time: 2020/09/24 11:00:26 (go1.13.4)
+    start_time: 2020-09-24 11:01:26.34274101 +0000 UTC
   v20.2:
     name: v20.2.0
     version: v20.2.0-beta.1
