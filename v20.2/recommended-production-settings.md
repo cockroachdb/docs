@@ -40,9 +40,13 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 #### CPU and memory
 
-Each node should have **at least 2 vCPUs**. For best performance, we recommend between 4 and 32 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
+Each node should have **at least 2 vCPUs**. For best performance, we recommend at least 4 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
+
+      {{site.data.alerts.callout_info}}
+      Based on internal testing, 32 vCPUs is a sweet spot for OLTP workloads. It is not a hard limit, especially for deployments using physical hardware rather than cloud instances.
+      {{site.data.alerts.end}}
 
       {{site.data.alerts.callout_info}}
       The benefits to having more RAM decrease as the number of vCPUs increases.
@@ -60,9 +64,9 @@ Underprovisioning RAM results in reduced performance (due to reduced caching and
 
 #### Storage
 
-We recommend provisioning volumes with **60 GiB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The maximum recommended storage capacity per node is 4 TiB, regardless of the number of vCPUs. See [Node density testing configuration](#node-density-testing-configuration).
+- The maximum recommended storage capacity per node is 2.5 TiB, regardless of the number of vCPUs.
 
 - Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
