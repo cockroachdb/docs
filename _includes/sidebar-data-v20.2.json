@@ -562,6 +562,12 @@
                 "urls": [
                   "/${VERSION}/take-and-restore-locality-aware-backups.html"
                 ]
+              },
+              {
+                "title": "Scheduled Backups",
+                "urls": [
+                  "/${VERSION}/manage-a-backup-schedule.html"
+                ]
               }
             ]
           },
@@ -1141,6 +1147,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
+    		    "urls": [
+    		      "/${VERSION}/create-schedule-for-backup.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>CREATE SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/create-sequence.html"
@@ -1222,6 +1234,12 @@
     		    "title": "<code>DROP ROLE</code>",
     		    "urls": [
     		      "/${VERSION}/drop-role.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>DROP SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/drop-schedules.html"
     		    ]
     		  },
     		  {
@@ -1315,6 +1333,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>PAUSE SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/pause-schedules.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>RENAME COLUMN</code>",
     		    "urls": [
     		      "/${VERSION}/rename-column.html"
@@ -1378,6 +1402,12 @@
     		    "title": "<code>RESUME JOB</code>",
     		    "urls": [
     		      "/${VERSION}/resume-job.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>RESUME SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/resume-schedules.html"
     		    ]
     		  },
     		  {
@@ -1534,6 +1564,12 @@
     		    "title": "<code>SHOW ROLES</code>",
     		    "urls": [
     		      "/${VERSION}/show-roles.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-schedules.html"
     		    ]
     		  },
     		  {

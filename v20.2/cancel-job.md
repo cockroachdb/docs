@@ -4,7 +4,15 @@ summary: The CANCEL JOB statement stops long-running jobs.
 toc: true
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, schema changes, [user-created table statistics](create-statistics.html) jobs, [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html), and [schema change](online-schema-changes.html) jobs.
+The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include:
+
+- [`IMPORT`](import.html) jobs
+- [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
+- [User-created table statistics](create-statistics.html) jobs
+- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
+- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Schema change](online-schema-changes.html) jobs
+- <span class="version-tag">New in v20.2:</span> [Scheduled backup](manage-a-backup-schedule.html) jobs
 
 ## Limitations
 
@@ -26,6 +34,7 @@ Parameter | Description
 ----------|------------
 `job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`](show-jobs.html).
 `select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to cancel.
+`for_schedules_clause` | <span class="version-tag">New in v20.2:</span> The schedule you want to cancel jobs for. You can cancel jobs for a specific schedule (`FOR SCHEDULE id`) or cancel jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#cancel-jobs-for-a-schedule) below.
 
 ## Examples
 
@@ -64,6 +73,29 @@ Canceling an automatic table statistics job is not useful since the system will 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
+
+### Cancel jobs for a schedule
+
+<span class="version-tag">New in v20.2:</span> To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL JOBS FOR SCHEDULE 590204387299262465;
+~~~
+~~~
+CANCEL JOBS FOR SCHEDULES 1
+~~~
+
+You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CANCEL JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+~~~
+
+~~~
+CANCEL JOBS FOR SCHEDULES 2
 ~~~
 
 ## See also

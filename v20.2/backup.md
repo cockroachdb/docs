@@ -61,10 +61,7 @@ The `BACKUP` statement cannot be used within a [transaction](transactions.html).
 
 ### Options
 
- Option                                                          | Value                   | Description
------------------------------------------------------------------+-------------------------+------------------------------
-`revision_history`<a name="with-revision-history"></a>           | N/A                     | Create a backup with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](take-and-restore-encrypted-backups.html) and to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html).
+{% include {{ page.version.version }}/backups/backup-options.md %}
 
 ### Backup file URLs
 
@@ -220,6 +217,7 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [`SHOW BACKUP`](show-backup.html)
+- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
 - [`RESTORE`](restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 
