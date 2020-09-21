@@ -8,7 +8,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the `admin` role can resume a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](authorization.html#default-roles) can resume a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

@@ -8,7 +8,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the `admin` role can resume a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](authorization.html#default-roles) can resume a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -33,7 +33,7 @@ Field | Description
 `label` | The name used to identify the backup schedule, given at the time of schedule creation.
 `schedule_status` | The schedule's current status.
 `next_run`  | The [`TIMESTAMP`](timestamp.html) at which the next backup in the schedule is slated to run.
-`state` | Displays last known errors or messages about the backup schedule.
+`state` | Displays last-known errors or messages about the backup schedule.
 `recurrence` | How often the backup is taken, which is set at the time of schedule creation.
 `jobsrunning` | The number of [jobs](show-jobs.html) currently running for the schedule.
 `owner` | The [user](create-user.html) who created the backup schedule. Users with active schedules cannot be dropped.

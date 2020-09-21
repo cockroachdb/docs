@@ -102,6 +102,7 @@ To permanently disable automatic table statistics jobs, disable the `sql.stats.a
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULE 590204387299262465;
 ~~~
+
 ~~~
 PAUSE JOBS FOR SCHEDULES 1
 ~~~

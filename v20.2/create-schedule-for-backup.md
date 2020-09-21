@@ -16,7 +16,7 @@ To use the other backup features, you need an [enterprise license](enterprise-li
 
 ## Required privileges
 
-Only members of the `admin` role can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](authorization.html#default-roles) can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -40,7 +40,7 @@ Targets:
 `label`                                 | The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name `BACKUP`.
 `table_pattern`                         | The [table(s)](create-table.html) or [view(s)](views.html) you want to back up.
 `database_name`                         | The name of the [database(s)](create-database.html) you want to back up (i.e., create backups of all tables and views in the database).
-`location`                              | The URI where you want to store the backup. The backup files will be stored in to be year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), nodelocal, or userfile.
+`location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), `nodelocal`, or `userfile`.
 `backup_options`                        | Control the backup behavior with a comma-separated list of [options](#backup-options).
 `RECURRING crontab`                     | Specifies when the backup should be taken. By default, these are incremental backups that capture changes since the last backup and append to the current full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 <a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. For free users, `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
@@ -64,14 +64,15 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 
  Option                     | Value                                   | Description
 ----------------------------+-----------------------------------------+------------------------------
-`first_run`                 | [`TIMESTAMPTZ`](timestamp.html) / `now` | Execute the schedule at the specified time in the future. If not specified, the default is to execute the scheduled based on it's next `RECURRING` time.
-`on_execution_failure`      | `retry` / `reschedule` / `pause`        | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>Default: `reschedule`
-`on_previous_running`       | `start` / `skip` / `wait`               | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expresssion.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>Default: `wait`
-`ignore_existing_backups`   | N/A                                     | If backups were already created in the [destination](use-cloud-storage-for-bulk-operations.html) in which a new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.
+`first_run`                 | [`TIMESTAMPTZ`](timestamp.html) / `now` | Execute the schedule at the specified time in the future. If not specified, the default behavior is to execute the schedule based on its next `RECURRING` time.
+`on_execution_failure`      | `retry` / `reschedule` / `pause`        | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>**Default**: `reschedule`
+<a name="on-previous-running-option"></a>`on_previous_running`       | `start` / `skip` / `wait`               | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expresssion.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>**Default**: `wait`
+`ignore_existing_backups`   | N/A                                     | If backups were already created in the [destination](use-cloud-storage-for-bulk-operations.html) that the new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.
 
 ## Considerations
 
-- We recommend that you schedule your backups at a cadence that your cluster can keep up with; that is, if a previous backup is still running when it is time to start the next one, the schedule should be adjusted so the backups do not end up falling behind.
+- We recommend that you schedule your backups at a cadence that your cluster can keep up with; for example, if a previous backup is still running when it is time to start the next one, adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
+- To prevent scheduled backups from falling behind, first determine how long a single backup takes and use that as your starting point for the schedule's cadence.
 - Ensure you are monitoring your backup schedule (e.g., [Prometheus](monitor-cockroachdb-with-prometheus.html)) and alerting metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect.
 - Ensure that your [GC window](configure-replication-zones.html#gc-ttlseconds) is long enough to accommodate your backup schedule, otherwise your incremental backups will fail. For example, if you set up your schedule to be `RECURRING '@daily'` but your GC window is less than 1 day, all your incremental backups will fail.
 
@@ -142,7 +143,7 @@ This example creates a schedule for a cluster backup with revision history that'
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` <= 1 day.
+Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
 
 ### Create a scheduled backup for a database
 
@@ -164,7 +165,7 @@ This example creates a schedule for a backup of the database `movr` with revisio
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` <= 1 day.
+Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
 
 ### Create a scheduled backup for a table
 
@@ -209,7 +210,7 @@ This example creates a schedule for a backup of the table `movr.vehicles` with r
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 day.
+Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
 ## See also
 
