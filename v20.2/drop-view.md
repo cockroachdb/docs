@@ -20,6 +20,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
  Parameter | Description
 ----------|-------------
+`MATERIALIZED` | <span class="version-tag">New in v20.2:</span> Drop a [materialized view](views.html#materialized-views).
  `IF EXISTS`   | Drop the view if it exists; if it does not exist, do not return an error.
  `table_name`  | A comma-separated list of view names. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
  `CASCADE` | Drop other views that depend on the view being dropped.<br><br>`CASCADE` does not list views it drops, so should be used cautiously.
