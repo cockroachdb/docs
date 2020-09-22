@@ -24,6 +24,7 @@ Area | Description
 [Replication Dashboard](admin-ui-replication-dashboard.html) | Metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 [Changefeeds Dashboard](admin-ui-cdc-dashboard.html) | Metrics about the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster.
 [Databases](admin-ui-databases-page.html) | Details about the system and user databases in the cluster.
+[Sessions](admin-ui-sessions-page.html) | Details about open sessions on the cluster.
 [Statements](admin-ui-statements-page.html) | Frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
 [Network Latency](admin-ui-network-latency-page.html) | Latencies and lost connections between all nodes in your cluster.
 [Jobs](admin-ui-jobs-page.html) | Details of jobs running in the cluster.
