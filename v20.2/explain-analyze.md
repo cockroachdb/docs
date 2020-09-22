@@ -49,31 +49,35 @@ By default, `EXPLAIN ANALYZE` uses the `DISTQL` option, which generates a physic
 
 ### DistSQL Plan Viewer
 
-The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics:
+The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html).
 
-Field | Description
-------+------------
-&lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, an "aggregator" aggregates input rows.
-&lt;index&gt;@&lt;table&gt; | The index used.
-Out | The output columns.
-@&lt;n&gt; | The index of the column relative to the input.
-Render | The stage that renders the output.
-unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order.
-&lt;data type&gt; |  If [`EXPLAIN(DISTSQL, TYPES)`](explain.html#distsql-option) is specified, lists the data types of the input columns.
-left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join.
-rows read | The number of rows read by the processor.
-stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time).
-stored side | The smaller table that was stored as an in-memory hash table.
-max memory used | How much memory (if any) is used to buffer rows.
-by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows.
-max disk used | How much disk (if any) is used to buffer rows. Routers and processors will spill to disk buffering if there is not enough memory to buffer the rows.
-rows routed | How many rows were sent by routers, which can be used to understand network usage.
-bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication.
-Response | The response back to the client.
-
-{{site.data.alerts.callout_info}}
-Any or all of the above fields may display for a given query plan.
-{{site.data.alerts.end}}
+Field | Description | Execution engine
+------+-------------+----------------
+&lt;Processor&gt;/&lt;id&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
+&lt;index&gt;@&lt;table&gt; | The index used by the processor. | Both
+Spans | The interval of the key space read by the processor. For example, `[/1 - /1]` indicates that only the key with value `1` is read by the processor. | Both
+Out | The output columns. | Both
+batches output | The number of batches of columnar data output. | Vectorized engine only
+tuples output | The number of rows output. | Vectorized engine only
+IO time | How long the TableReader processor spent reading data from disk. | Vectorized engine only
+stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time). | Row-oriented engine only
+bytes read | The size of the data read by the processor. | Both
+rows read | The number of rows read by the processor. | Both
+@&lt;n&gt; | The index of the column relative to the input. | Both
+max memory used | How much memory (if any) is used to buffer rows. | Row-oriented engine only
+max disk used | How much disk (if any) is used to buffer data. Routers and processors will spill to disk buffering if there is not enough memory to buffer the data. | Row-oriented engine only
+execution time | How long the engine spent executing the processor. | Vectorized engine only
+max vectorized memory allocated | How much memory is allocated to the processor to buffer batches of columnar data. | Vectorized engine only
+max vectorized disk used | How much disk (if any) is used to buffer columnar data. Processors will spill to disk buffering if there is not enough memory to buffer the data. | Vectorized engine only
+left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join. | Both
+stored side | The smaller table that was stored as an in-memory hash table. | Both
+rows routed | How many rows were sent by routers, which can be used to understand network usage. | Row-oriented engine only
+bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication. | Both
+Render | The stage that renders the output. | Both
+by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows. | Both
+unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order. | Both
+&lt;data type&gt; |  If [`EXPLAIN(DISTSQL, TYPES)`](explain.html#distsql-option) is specified, lists the data types of the input columns. | Both
+Response | The response back to the client. | Both
 
 ## `DEBUG` option
 
@@ -84,7 +88,8 @@ Any or all of the above fields may display for a given query plan.
 `stats-<table>.sql` | Contains [statistics](create-statistics.html) for a table in the query.
 `schema.sql`        | Contains [`CREATE`](create-table.html) statements for objects in the query.
 `env.sql`           | Contains information about the CockroachDB environment.
-`trace.json`        | Contains [statement traces](show-trace.html).
+`trace.txt`         | Contains [statement traces](show-trace.html) in plaintext format.
+`trace.json`        | Contains [statement traces](show-trace.html) in JSON format.
 `distsql.html`      | The query's [physical query plan](#distsql-plan-viewer). This diagram is identical to the one generated by [`EXPLAIN(DISTSQL)`](explain.html#distsql-option)
 `plan.txt`          | The query execution plan. This is identical to the output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option).
 `opt-vv.txt`        | The query plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), with cost details and input column data types. This is identical to the output of [`EXPLAIN (OPT, TYPES)`](explain.html#opt-option).
@@ -131,9 +136,12 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
                                       text
 --------------------------------------------------------------------------------
   Statement diagnostics bundle generated. Download from the Admin UI (Advanced
-  Debug -> Statement Diagnostics History) or use the direct link below.
-  Admin UI: http://127.0.0.1:12345
-  Direct link: http://127.0.0.1:12345/_admin/v1/stmtbundle/...
+  Debug -> Statement Diagnostics History), via the direct link below, or using
+  the command line.
+  Admin UI: http://127.0.0.1:26258
+  Direct link: http://127.0.0.1:26258/_admin/v1/stmtbundle/...
+  Command line: cockroach statement-diag list / download
+(6 rows)
 ~~~
 
 Navigating to the URL will automatically download the ZIP file. As the output suggests, you can also obtain the bundle by navigating to the **Statement Diagnostics History** page in the [Admin UI](admin-ui-overview.html).

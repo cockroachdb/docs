@@ -263,31 +263,25 @@ Now suppose you want to delete the two users named "Jon Snow". You can use the [
 ~~~
 
 ~~~
-                                     text
--------------------------------------------------------------------------------
+                                        text
+------------------------------------------------------------------------------------
   delete users
    ├── scan users@users_name_city_idx
-   │    └── constraint: /8/7/6: [/'Jon Snow' - /'Jon Snow']
+   │    └── constraint: /10/9/8: [/'Jon Snow' - /'Jon Snow']
    └── f-k-checks
         ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
-        │    └── semi-join (hash)
+        │    └── semi-join (lookup vehicles@vehicles_auto_index_fk_city_ref_users)
         │         ├── with-scan &1
-        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
-        │         └── filters
-        │              ├── city = vehicles.city
-        │              └── id = owner_id
+        │         └── filters (true)
         ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
         │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
         │         ├── with-scan &1
         │         └── filters (true)
         └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
-             └── semi-join (hash)
+             └── semi-join (lookup user_promo_codes)
                   ├── with-scan &1
-                  ├── scan user_promo_codes
-                  └── filters
-                       ├── city = user_promo_codes.city
-                       └── id = user_id
-(22 rows)
+                  └── filters (true)
+(16 rows)
 ~~~
 
 The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the delete. This makes sense, as you are performing a delete based on the `name` column.
@@ -300,6 +294,8 @@ Now suppose that instead you want to perform a delete, but using the `id` column
 ~~~
 
 ~~~
+                                                     text
+---------------------------------------------------------------------------------------------------------------
   delete users
    ├── select
    │    ├── scan users@users_name_city_idx

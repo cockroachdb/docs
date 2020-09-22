@@ -115,14 +115,14 @@ When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimiz
 ~~~
 
 ~~~
-  tree |    field    |       description
--------+-------------+---------------------------
-       | distributed | true
-       | vectorized  | false
-  scan |             |
-       | table       | bydate@primary
-       | spans       | FULL SCAN
-       | filter      | a > (now() - '01:00:00')
+  tree |     field     |            description
+-------+---------------+-------------------------------------
+       | distribution  | local
+       | vectorized    | false
+  scan |               |
+       | missing stats |
+       | table         | bydate@bydate_a_idx
+       | spans         | [/'2020-09-17 13:40:49.493119' - ]
 (6 rows)
 ~~~
 
