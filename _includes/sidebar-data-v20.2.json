@@ -1339,6 +1339,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>REFRESH</code>",
+    		    "urls": [
+    		      "/${VERSION}/refresh.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>RENAME COLUMN</code>",
     		    "urls": [
     		      "/${VERSION}/rename-column.html"

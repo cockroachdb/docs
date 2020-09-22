@@ -377,10 +377,6 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
     > SELECT now();
     ~~~
 
-- [Views](views.html)
-
-    CockroachDB does not have a materialized view implementation.
-
 - [Window functions](window-functions.html)
 
 ## See also
