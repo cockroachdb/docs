@@ -146,15 +146,16 @@ filter = 4
 lastrow = None
 
 while True:
+  with conn:
     with conn.cursor() as cur:
         if lastrow:
             filter = lastrow[0]
         query = psycopg2.sql.SQL("DELETE FROM new_order WHERE no_w_id <= %s ORDER BY no_w_id DESC LIMIT 5000 RETURNING no_w_id")
         cur.execute(query, (filter,))
+        print(cur.statusmessage)
         if cur.rowcount == 0:
             break
         lastrow = cur.fetchone()
-    conn.commit()
 
 conn.close()
 ~~~
@@ -163,7 +164,7 @@ This script iteratively deletes rows in batches of 5,000, until all of the rows 
 
 ### Batch delete on a non-indexed column
 
-If you cannot index the column that identifies the unwanted rows, or if the filtering column is a [timestamp](timestamp.html), we recommend defining the batch loop to execute separate read and write operations at each iteration:
+If you cannot index the column that identifies the unwanted rows, we recommend defining the batch loop to execute separate read and write operations at each iteration:
 
 1. Execute a [`SELECT` query](selection-queries.html) that returns the primary key values for the rows that you want to delete. When writing the `SELECT` query:
     - Use a `WHERE` clause that filters on the column identifying the rows.
@@ -171,7 +172,7 @@ If you cannot index the column that identifies the unwanted rows, or if the filt
     - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
     - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`](query-order.html) clause on the primary key.
 
-2. Write a nested `DELETE` loop over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. To determine the optimal `DELETE` batch size, try out different sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance. We recommend committing each `DELETE` in a separate transaction.
+2. Write a nested `DELETE` loop over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. To determine the optimal `DELETE` batch size, try out different sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance. Where possible, we recommend executing each `DELETE` in a separate transaction.
 
 For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `history` table that are older than a month. You can create a script that loops over the data and deletes unwanted rows in batches, following the query guidance provided above.
 
@@ -188,25 +189,29 @@ import time
 conn = psycopg2.connect(os.environ.get('DB_URI'))
 
 while True:
-    with conn.cursor() as cur:
-        cur.execute("SET TRANSACTION AS OF SYSTEM TIME '-5s'")
-        cur.execute("SELECT h_w_id, rowid FROM history WHERE h_date < current_date() - INTERVAL '1 MONTH' ORDER BY h_w_id, rowid LIMIT 20000")
-        if cur.rowcount == 0:
-            break
-        pkvals = tuple(cur)
-        conn.commit()
-        while True:
-            cur.execute("DELETE FROM history WHERE (h_w_id, rowid) IN %s LIMIT 5000", (pkvals, ))
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute("SET TRANSACTION AS OF SYSTEM TIME '-5s'")
+            cur.execute("SELECT h_w_id, rowid FROM history WHERE h_date < current_date() - INTERVAL '1 MONTH' ORDER BY h_w_id, rowid LIMIT 20000")
+            pkvals = tuple(cur)
             conn.commit()
-            if cur.rowcount == 0:
-                break
-        del pkvals
-        time.sleep(5)
+            if not pkvals:
+                return
+            while pkvals:
+                batch = pkvals[:5000]
+                pkvals = pkvals[5000:]
+                with conn:
+                    with conn.cursor() as cur:
+                        cur.execute("DELETE FROM history WHERE (h_w_id, rowid) IN %s", (batch,))
+                        print(cur.statusmessage)
+            del batch
+            del pkvals
+            time.sleep(5)
 
 conn.close()
 ~~~
 
-At each iteration, the selection query returns the primary key values of up to 20,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, a nested loop iterates over the returned primary key values in smaller batches of 5,000 rows. At each iteration of the nested `DELETE` loop, a batch of rows is deleted in a single transaction. After the nested `DELETE` loop deletes all of the rows from the initial selection query, a time delay ensures that the next selection query reads historical data from the table after the last iteration's `DELETE` final delete.
+At each iteration, the selection query returns the primary key values of up to 20,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, a nested loop iterates over the returned primary key values in smaller batches of 5,000 rows. At each iteration of the nested `DELETE` loop, a batch of rows is deleted. After the nested `DELETE` loop deletes all of the rows from the initial selection query, a time delay ensures that the next selection query reads historical data from the table after the last iteration's `DELETE` final delete.
 
 ### Batch-delete "expired" data
 
