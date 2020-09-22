@@ -26,6 +26,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 Parameter | Description
 ----------|------------
+`MATERIALIZED` | <span class="version-tag">New in v20.2:</span> Rename a [materialized view](views.html#materialized-views).
 `IF EXISTS` | Rename the view only if a view of `view_name` exists; if one does not exist, do not return an error.
 `view_name` | The name of the view to rename. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
 `name` | The new [`name`](sql-grammar.html#name) for the view, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
