@@ -12,7 +12,7 @@ This page details how CockroachDB performs **name resolution** to answer this qu
 
 A CockroachDB cluster can store multiple databases, and each database can store multiple tables/views/sequences. This **two-level structure for stored data** is commonly called the "logical schema" in relational database management systems.
 
-Meanwhile, CockroachDB aims to provide compatibility with PostgreSQL
+CockroachDB aims to provide compatibility with PostgreSQL
 client applications and thus supports PostgreSQL's semantics for SQL
 queries. To achieve this, CockroachDB supports a **three-level
 structure for names**. This is called the "naming hierarchy".
@@ -37,13 +37,13 @@ Name resolution occurs separately to **look up existing objects** and to
 The rules to look up an existing object are as follows:
 
 1. If the name already fully specifies the database and schema, use that information.
-2. If the name has a single component prefix, try to find a schema with the prefix name in the [current database](#current-database) and [current schema](#current-schema). If that fails, try to find the object in the `public` schema of a database with the prefix name.
+2. If the name has a single-component prefix (e.g., a schema name), try to find a schema with the prefix name in the [current database](#current-database) and [current schema](#current-schema). If that fails, try to find the object in the `public` schema of a database with the prefix name.
 3. If the name has no prefix, use the [search path](#search-path) with the [current database](#current-database).
 
 Similarly, the rules to decide the full name of a new object are as follows:
 
 1. If the name already fully specifies the database and schema, use that.
-2. If the name has a single component prefix, try to find a schema with that name. If no such schema exists, use the `public` schema in the database with the prefix name.
+2. If the name has a single-component prefix (e.g., a schema name), try to find a schema with that name. If no such schema exists, use the `public` schema in the database with the prefix name.
 3. If the name has no prefix, use the [current schema](#current-schema) in the [current database](#current-database).
 
 ## Parameters for name resolution
@@ -61,15 +61,14 @@ database`](show-vars.html) and change it with [`SET database`](set-vars.html).
 
 ### Search path
 
-The search path is used when a name is unqualified (has no prefix). It lists the schemas where objects are looked up. Its first element is also the [current schema](#current-schema) where new objects are created.
+The search path is used when a name is unqualified (i.e., has no prefix). It lists the schemas where objects are looked up. Its first element is also the [current schema](#current-schema) where new objects are created.
 
 - You can set the current search path with [`SET search_path`](set-vars.html) and inspected it with [`SHOW
 search_path`](show-vars.html).
 
 - You can inspect the list of valid schemas that can be listed in `search_path` with [`SHOW SCHEMAS`](show-schemas.html).
 
-- By default, the search path contains `public` and `pg_catalog`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with
-`SET search_path`.
+- By default, the search path contains `$user`, `public`, and `pg_catalog`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with `SET search_path`.
 
 ### Current schema
 
@@ -116,9 +115,7 @@ An unqualified name is a name with no prefix, that is, a simple identifier.
 > SELECT * FROM mytable;
 ~~~
 
-This uses the search path over the current database. The search path
-is `public` by default, in the current database. The resolved name is
-`mydb.public.mytable`.
+This uses the search path over the current database. The search path is `$user` by default, in the current database. If a `$user` schema does not exist, the search path resolves to the `public` schema. In this case, there is no `$user` schema, and the resolved name is `mydb.public.mytable`.
 
 {% include copy-clipboard.html %}
 ~~~ sql

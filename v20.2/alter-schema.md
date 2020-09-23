@@ -1,6 +1,6 @@
 ---
 title: ALTER SCHEMA
-summary: The ALTER SCHEMA statement modifies a user-defined data type in a database.
+summary: The ALTER SCHEMA statement modifies a user-defined schema in a database.
 toc: true
 ---
 

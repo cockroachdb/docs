@@ -1,10 +1,10 @@
 ---
 title: CREATE SCHEMA
-summary: The CREATE SCHEMA statement creates a new, user-defined schema.
+summary: The CREATE SCHEMA statement creates a new user-defined schema.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces). With multiple schemas, you can create databases of the same name that belong to separate schemas.
+<span class="version-tag">New in v20.2</span>: The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces).
 
 ## Required privileges
 
@@ -105,13 +105,76 @@ SQL does not generate an error, even though a new schema wasn't created.
 (6 rows)
 ~~~
 
+### Create two tables of the same name, in the same database
+
+You can create tables of the same name in the same database if they are in separate schemas.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEMA IF NOT EXISTS org_one;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEMA IF NOT EXISTS org_two;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SCHEMAS;
+~~~
+
+~~~
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(7 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE org_one.employees (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        desk_no INT UNIQUE
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE org_two.employees (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        desk_no INT UNIQUE
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES;
+~~~
+
+~~~
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  org_one     | employees  | table |                   0
+  org_two     | employees  | table |                   0
+(2 rows)
+~~~
+
 ### Create a schema with authorization
 
 To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE SCHEMA` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max;
+> CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
 {% include copy-clipboard.html %}
@@ -160,6 +223,86 @@ WHERE
 ----------+----------
   max     | max
 (1 row)
+~~~
+
+When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
+
+For example, suppose that you [grant the `admin` role](grant-roles.html) to the `max` user:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT admin TO max;
+~~~
+
+Then, `max` [accesses the cluster](cockroach-sql.html) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE max.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        balance DECIMAL
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE public.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        balance DECIMAL
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES;
+~~~
+
+~~~
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  max         | accounts   | table |                   0
+  public      | accounts   | table |                   0
+(2 rows)
+~~~
+
+`max` then inserts some values into the `accounts` table, without specifying a schema.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO accounts (name, balance) VALUES ('checking', 1000), ('savings', 15000);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM accounts;
+~~~
+
+~~~
+                   id                  |   name   | balance
+---------------------------------------+----------+----------
+  7610607e-4928-44fb-9f4e-7ae6d6520666 | savings  |   15000
+  860b7891-cde4-4aff-a318-f928d47374bc | checking |    1000
+(2 rows)
+~~~
+
+Because `max` is the current user, all unqualified `accounts` table names resolve as `max.accounts`, and not `public.accounts`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM public.accounts;
+~~~
+
+~~~
+  id | name | balance
+-----+------+----------
+(0 rows)
 ~~~
 
 ## See also
