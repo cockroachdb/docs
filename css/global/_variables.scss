@@ -94,12 +94,24 @@ $theme-colors: (
 
 $secondary: $neutral-400;
 $body-color: #242A35;
-
+$green-new: #B4F1AA;
 $border-color: $neutral-300;
 $border-radius: 3px;
 
+$input-btn-padding-y:         0.5rem;
+$input-btn-padding-x:         1rem;
+
 $input-btn-padding-y-sm:      3px;
 $input-btn-padding-x-sm:      14px;
+
+$btn-padding-y-sm: $input-btn-padding-y-sm;
+$btn-padding-x-sm: $input-btn-padding-x-sm;
 $input-btn-focus-width: 3px;
 
 $line-height-base: 1.725;
+$link-color: $blue-300;
+$link-hover-color: $blue-300;
+
+$box-shadow:  0px 7px 13px rgba($neutral-600, 0.301);
+$box-shadow-lg: 0px 12px 24px rgba($neutral-600, 0.54);
+

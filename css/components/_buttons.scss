@@ -5,7 +5,7 @@
 	@include groovy(all);
 	display: inline-block;
 	border: $btn-border-width solid transparent;
-	padding: $btn-padding-y $btn-padding-x;
+	// padding: $btn-padding-y $btn-padding-x;
 	line-height: $line-height-base;
 	white-space: nowrap;
 }
@@ -26,13 +26,35 @@
 	}
 }
 
+.btn-redirect {
+	@include button();
+	color: #FFFFFF;
+	background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+	box-shadow: none;
+	&:hover {
+		color: #fff;
+	}
+	&:focus {
+		border: 1px solid #237300;
+		box-shadow: none;
+		color: #FFFFFF;
+	}
+	
+	&:active {
+		&:focus {
+			border: 1px solid #237300;
+			box-shadow: none;
+			color: #FFFFFF;
+		}
+	}
+}
+
 .btn-outline-secondary {
 	@include button();
-	color: $neutral-700;
+	color: $neutral-700; 
 	text-align: center;
 	background-color: #FFFFFF;
 	border-color: $neutral-400;
-	padding: $btn-padding-y-sm $btn-padding-x-sm;
 	&:focus {
 		border-color: $neutral-500;
 		background-color: $neutral-100;

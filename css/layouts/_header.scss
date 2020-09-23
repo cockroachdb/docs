@@ -184,6 +184,7 @@ nav.mobile_expanded {
 	}
 }
 
+// TODO: Cleanup may not be used, not un source or built site files
 header {
 	width:100%;
 	float:left;
@@ -379,6 +380,27 @@ header {
 			@include at-query($min, $screen-sm) {
 				margin-right: 0;
 			}
+		}
+	}
+}
+
+.home-header {
+	@media (min-width: $screen-md){
+		margin-left: -3rem;
+		margin-right: -3rem;
+	}
+	background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+}
+
+.card-link {
+	box-shadow: $box-shadow;
+	&:hover {
+		box-shadow: $box-shadow-lg;
+		transition: $transition-base;
+	}
+	a {
+		&:hover {
+			text-decoration: none;
 		}
 	}
 }

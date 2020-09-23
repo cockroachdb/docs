@@ -1,17 +1,17 @@
 ---
 layout: default
 ---
-
 <div class="cf-5329-area-16739"></div>
+{% if page.homepage != true %}
 <div class="post-header">
-
-  <h1 class="post-title-main">{% if page.homepage == true %} {{site.homepage_title}} {% else %}{{ page.title }}{% endif %}</h1>
+  <h1 class="post-title-main">{{ page.title }}</h1>
   {% unless page.contribute == false %}
       {% include contribute-options.html %}
   {% endunless %}
 </div>
+{% endif %}
 
-<div class="post-content px-lg-3">
+<div class="post-content">
   <!--
        TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
        page TOC to h2 headers only, set `toc_not_nested: true` in the page's

@@ -7,6 +7,56 @@ contribute: false
 build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
+<div class="home-header mb-5" style="height:350px;background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+">
+  <div class="p-lg-5">
+  <h1 class="m-0 text-white">Documentation</h1>
+  <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
+    <div class="row d-lg-flex">
+      <div class="col-lg-4">
+        <div class="card card-link h-100">
+        <a href="#">
+          <div class="card-body p-4">
+            <img src="{{ 'images/lightning.svg' | relative_url }}"/>
+            <h3 class="m-0 mt-3">Getting started</h3>
+            <h4 class="mt-0 text-gray-500">Learn how to install CockroachDB, start a cluster locally, and interact with it via the built-in SQL client.</h4>
+          </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-link h-100">
+        <a href="#">
+          <div class="card-body p-4">
+          <img src="{{ 'images/browser-code-alt.svg' | relative_url }}"/>
+            <h3 class="m-0 mt-3">Sample applications</h3>
+            <h4 class="mt-0 text-gray-500"">Lorem ipsum dolor sit amet cons ectetur adipiscing elit. Gravida eget vestibulum proin aliquam.</h4>
+          </div>
+          </a>
+        </div>
+        </div>
+      <div class="col-lg-4">
+        <div class="card card-link h-100">
+        <a href="#">
+          <div class="card-body p-4">
+          <img src="{{ 'images/partly-cloudy.svg' | relative_url }}"/>
+            <h3 class="m-0 mt-3">Deploy with CockroachCloud</h3>
+            <h4 class="mt-0 text-gray-500"">Lorem ipsum dolor sit amet cons ectetur adipiscing elit. Gravida eget vestibulum proin aliquam.</h4>
+          </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row pt-4">
+<div class="col-lg-8">
+<h1 class="mb-0">What is CockroachDB?</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis facilisis eget nibh consectetur. Ultrices eu dictumst pulvinar est scelerisque euismod. Convallis turpis interdum at varius. Lobortis nibh turpis blandit nunc. At consectetur feugiat at pellentesque est cras. Et vel, mauris velit nibh sodales in commodo velit.</p>
+<a class="btn btn-redirect" href="#">Try CockroachDB <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+</div>
+</div>
 
 {% if site.cockroachcloud %}
 CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
@@ -35,102 +85,86 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 {% else %}
 
-CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.
+<h2 class="mb-0">Recommended articles</h2>
 
 <div class="container">
   <div class="row display-flex">
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Get Started</p>
+    <div class="col-xs-12 col-sm-6 col-lg-3">
+      <h3 class="">Get Started</h3>
       <div class="landing-column-content">
-        <p><a href="https://university.cockroachlabs.com/catalog">Online Training</a></p>
-        <p><a href="install-cockroachdb.html">Install CockroachDB</a></p>
-        <p><a href="start-a-local-cluster.html">Start a Local Cluster</a></p>
-        <p><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></p>
-        <p><a href="build-an-app-with-cockroachdb.html">Hello, World!</a></p>
-        <p><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></p>
+      <ul>
+        <li><a href="https://university.cockroachlabs.com/catalog">Online Training</a></li>
+        <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
+        <li><a href="start-a-local-cluster.html">Start a Local Cluster</a></li>
+        <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
+        <li><a href="build-an-app-with-cockroachdb.html">Hello, World!</a></li>
+        <li><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
+        </ul>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Develop</p>
+    <div class="col-xs-12 col-sm-6 col-lg-3">
+      <h3 class="">Develop</h3>
       <div class="landing-column-content">
-        <p><a href="install-client-drivers.html">Client Drivers</a></p>
-        <p><a href="connection-parameters.html">Connection Parameters</a></p>
-        <p><a href="performance-best-practices-overview.html">SQL Best Practices</a></p>
-        <p><a href="sql-statements.html">SQL Statements</a></p>
-        <p><a href="data-types.html">SQL Data Types</a></p>
-        <p><a href="sql-tuning-with-explain.html">SQL Tuning</a></p>
+      <ul>
+        <li><a href="install-client-drivers.html">Client Drivers</a></li>
+        <li><a href="connection-parameters.html">Connection Parameters</a></li>
+        <li><a href="performance-best-practices-overview.html">SQL Best Practices</a></li>
+        <li><a href="sql-statements.html">SQL Statements</a></li>
+        <li><a href="data-types.html">SQL Data Types</a></li>
+        <li><a href="sql-tuning-with-explain.html">SQL Tuning</a></li>
+        </ul>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Deploy</p>
+    <div class="col-xs-12 col-sm-6 col-lg-3">
+      <h3 class="">Deploy</h3>
       <div class="landing-column-content">
-        <p><a href="recommended-production-settings.html">Production Checklist</a></p>
-        <p><a href="topology-patterns.html">Topology Patterns</a></p>
-        <p><a href="manual-deployment.html">Manual Deployment</a></p>
-        <p><a href="orchestration.html">Orchestration</a></p>
-        <p><a href="performance.html">Performance</a></p>
-        <p><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></p>
+      <ul>
+        <li><a href="recommended-production-settings.html">Production Checklist <span class="badge-new">NEW</span></a></li>
+        <li><a href="topology-patterns.html">Topology Patterns</a></li>
+        <li><a href="manual-deployment.html">Manual Deployment</a></li>
+        <li><a href="orchestration.html">Orchestration</a></li>
+        <li><a href="performance.html">Performance</a></li>
+        <li><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></li>
+        </ul>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Migrate</p>
+    <div class="col-xs-12 col-sm-6 col-lg-3">
+      <h3 class="">Migrate</h3>
       <div class="landing-column-content">
-        <p><a href="migration-overview.html">Overview</a></p>
-        <p><a href="migrate-from-oracle.html">Migrate from Oracle</a></p>
-        <p><a href="migrate-from-postgres.html">Migrate from Postgres</a></p>
-        <p><a href="migrate-from-mysql.html">Migrate from MySQL</a></p>
-        <p><a href="migrate-from-csv.html">Migrate from CSV</a></p>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Troubleshoot</p>
-      <div class="landing-column-content">
-        <p><a href="common-errors.html">Overview</a></p>
-        <p><a href="common-errors.html">Common Errors</a></p>
-        <p><a href="cluster-setup-troubleshooting.html">Cluster Setup</a></p>
-        <p><a href="query-behavior-troubleshooting.html">Query Behavior</a></p>
-        <p><a href="support-resources.html">Support Resources</a></p>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Reference</p>
-      <div class="landing-column-content">
-        <p><a href="sql-feature-support.html">SQL</a></p>
-        <p><a href="cockroach-commands.html">CLI</a></p>
-        <p><a href="cluster-settings.html">Cluster Settings</a></p>
-        <p><a href="admin-ui-overview.html">Admin UI</a></p>
-        <p><a href="third-party-database-tools.html">Third-Party Tools</a></p>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Learn More</p>
-      <div class="landing-column-content">
-        <p><a href="architecture/overview.html">Architecture</a></p>
-        <p><a href="sql-feature-support.html">SQL Feature Support</a></p>
-        <p><a href="https://www.cockroachlabs.com/guides/">Whitepapers</a></p>
-        <p><a href="https://www.cockroachlabs.com/community/tech-talks/">Videos & Webinars</a></p>
-        <p><a href="cockroachdb-in-comparison.html">DB Comparisons</a></p>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">FAQs</p>
-      <div class="landing-column-content">
-        <p><a href="frequently-asked-questions.html">Product FAQs</a></p>
-        <p><a href="sql-faqs.html">SQL FAQs</a></p>
-        <p><a href="operational-faqs.html">Operational FAQs</a></p>
-        <p><a href="operational-faqs.html">Availability FAQs</a></p>        
-        <p><a href="licensing-faqs.html">Licensing FAQs</a></p>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <p class="landing-column-title">Releases</p>
-      <div class="landing-column-content">
-        <p><a href="../releases/{{page.release_info.version}}.html">Latest Stable Release</a></p>
-        <p><a href="../releases/#production-releases">All Stable Releases</a></p>
-        <p><a href="../releases/#testing-releases">All Testing Releases</a></p>
-        <p><a href="known-limitations.html">Known Limitations</a></p>
+      <ul>
+        <li><a href="migration-overview.html">Overview</a></li>
+        <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
+        <li><a href="migrate-from-postgres.html">Migrate from Postgres</a></li>
+        <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
+        <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
+        </ul>
       </div>
     </div>
   </div>
 </div>
+
+<h2 class="mb-0">What’s new in docs</h2>
+
+<div class="row">
+    <div class="col-lg-8">
+    <div class="row mb-3">
+      <div class="col-lg-2 text-gray-500 border-bottom">June 25, 2020</div>
+      <div class="col-lg-8 border-bottom">
+        <div><p class="font-weight-bold m-0 ">Enterprise edition changes</p></div>
+        <div class="text-gray-600 pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam dignissim et mattis <a href="#">scelerisque donec</a> habitasse ut hac. Eget.</div>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-lg-2 text-gray-500 border-bottom">June 25, 2020</div>
+      <div class="col-lg-8 border-bottom">
+        <div><p class="font-weight-bold m-0 ">Enterprise edition changes</p></div>
+        <div class="text-gray-600 pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam dignissim et mattis <a href="#">scelerisque donec</a> habitasse ut hac. Eget.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<a class="btn btn-outline-secondary" href="#">See all the latest</a>
+
 {% endif %}

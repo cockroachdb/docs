@@ -172,3 +172,8 @@
   @include source_code_r(14px);
   line-height: 25px;
 }
+
+
+@each $color, $value in $grays {
+  @include text-emphasis-variant(".text-gray-#{$color}", $value, true);
+}

@@ -7,7 +7,6 @@ contribute: false
 build_for: [cockroachdb]
 cta: false
 ---
-
 {% if site.cockroachcloud %}
 CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 

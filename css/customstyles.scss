@@ -32,6 +32,7 @@
 @import "components/algolia";
 @import "components/version-switcher";
 @import "components/navbar";
+@import "components/badge";
 
 html {
   height: 100%;
@@ -40,12 +41,12 @@ html {
 body {
   height: 100%;
   @include paragraph-type;
-  color: $cl_blue;
+  // color: $cl_blue;
 }
 
 p {
   @include paragraph-type;
-  color: $cl_blue;
+  // color: $cl_blue;
 
   strong, b {
     @include paragraph-type--heavy;
@@ -71,13 +72,13 @@ h3, h4, h5, h6 {
 }
 
 h1 {
-  @include graphik_sb(36px);
-  line-height: 45px;
+  @include sourcesanspro_r(28px);
+  line-height: 64px;
   color: $cl_blue;
 }
 
 h2 {
-  @include graphik_sb(30px);
+  @include sourcesanspro_m(28px);
   line-height: 40px;
   color: $cl_blue;
 
@@ -92,8 +93,8 @@ h2 {
 }
 
 h3 {
-  @include avenir_h(24px);
-  line-height: 35px;
+  @include sourcesanspro_r(20px);
+  line-height: 32px;
   color: $cl_blue;
 
   &.clickable-header {
@@ -110,16 +111,16 @@ h3 {
 }
 
 h4 {
-  @include subhead-avenir-sm;
-
+  @include sourcesanspro_r(16px);
+  line-height: 24px;
   code {
     font-size: 17px;
   }
 }
 
 h5 {
-  @include graphik_ri(17px);
-
+  @include sourcesanspro_m(16px);
+  line-height: 24px;
   code {
     font-size: 17px;
   }
@@ -143,6 +144,9 @@ pre, code {
 
 ul {
   padding-left: 25px;
+  li {
+    margin-bottom: 10px;
+  }
 }
 
 a code:hover {
