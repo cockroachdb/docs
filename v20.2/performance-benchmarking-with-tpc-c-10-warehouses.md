@@ -29,6 +29,8 @@ Warehouses | Data size | Cluster size
 
 ## Step 1. Start CockroachDB
 
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
 1. Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes:
 
     {% include copy-clipboard.html %}

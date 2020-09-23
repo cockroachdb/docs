@@ -86,6 +86,8 @@ CockroachDB requires TCP communication on two ports:
 
 ## Step 2. Start CockroachDB
 
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
 1. SSH to the first VM where you want to run a CockroachDB node.
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
