@@ -6015,6 +6015,10 @@ header {
   .card-link a:hover {
     text-decoration: none; }
 
+.bg-blackk-texture-logo {
+  background: url(/docs/images/bg-black-texture-logo.png);
+  background-size: cover; }
+
 #sidebar {
   width: 100%;
   padding: 10px 15px 5px 15px;
@@ -8656,12 +8660,12 @@ p .version-tag, .clickable-header .version-tag {
   max-height: none; }
 .select2-container .select2-results__option {
   text-align: center;
-  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-family: 'SourceSansPro-SemiBold', sans-serif;
   font-size: 12px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 15px;
+  line-height: 20px;
   border-bottom: 1px solid #F3F3F3;
   padding: 20px 0;
   -webkit-transition: all 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -9386,5 +9390,16 @@ a.accordion-toggle {
 #search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
   color: #497EDA;
   font-weight: 900; }
+
+.caption-sm {
+  font-family: 'SourceSansPro-SemiBold', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 20px; }
+
+.bg-white-transparent {
+  background: rgba(255, 255, 255, 0.16); }
 
 /*# sourceMappingURL=customstyles.css.map */

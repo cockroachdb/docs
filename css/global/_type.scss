@@ -132,8 +132,8 @@
 }
 
 @mixin caption--small {
-  @include sourcesanspro_r(12px);
-  line-height: 15px;
+  @include sourcesanspro_m(12px);
+  line-height: 20px;
 }
 
 // this matches the name on the hugo site

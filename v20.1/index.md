@@ -167,4 +167,18 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 </div>
 <a class="btn btn-outline-secondary" href="#">See all the latest</a>
 
+<div class="row pt-5">
+
+<div class="col-lg-12 text-center">
+        <div class="card shadow">
+          <div class="card-body p-5  text-white bg-blackk-texture-logo m-3">
+            <p class="d-inline-block rounded py-1 px-3 caption-sm m-0 bg-white-transparent text-white font-weight-bold">Learning Resources</p>
+            <h1 class="m-0 text-white">Cockroach University</h1>
+            <h4 class="mt-0 pb-3">Free online learning platform covering distributed databases, cloud-native <br>applications, general purpose SQL databases & moch more!</h4>
+            <a class="btn btn-redirect mb-3" href="#">Start free course <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+          </div>
+        </div>
+</div>
+
+</div>
 {% endif %}

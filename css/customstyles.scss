@@ -630,3 +630,11 @@ a.accordion-toggle {
   color: #497EDA;
   font-weight: 900;
 }
+
+.caption-sm {
+  @include caption--small;
+}
+
+.bg-white-transparent {
+  background: rgba(255,255,255,0.16);
+}
