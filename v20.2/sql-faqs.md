@@ -140,17 +140,6 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 {% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
-## Why are my deletes getting slower over time?
-
-> I need to delete a large amount of data. I'm iteratively deleting a certain number of rows using a [`DELETE`](delete.html) statement with a [`LIMIT`](limit-offset.html) clause, but it's getting slower over time. Why?
-
-CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed.  By default, this period is 25 hours.
-
-This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within the last 25 hours. This means that if you try to delete 10,000 rows 10 times within the same 25 hour period, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
-
-If you need to iteratively delete rows in constant time, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and run your `DELETE` statement once per GC interval. We strongly recommend returning `gc.ttlseconds` to the default value after your large deletion is completed.
-
-For instructions showing how to delete specific rows, see [Delete specific rows](delete.html#delete-specific-rows).
 
 ## See also
 
