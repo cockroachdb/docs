@@ -46,8 +46,6 @@ or the escaped format otherwise.
 
 `STRING` values accept [collations](collate.html), which lets you sort strings according to language- and country-specific rules.
 
-{{site.data.alerts.callout_danger}}You cannot current use collated strings in indexes or primary keys; doing so causes CockroachDB to crash. If you're interested in using collated strings in these contexts, you can follow <a href="https://github.com/cockroachdb/cockroach/issues/2473">this issue on GitHub</a> to be notified when it's resolved.{{site.data.alerts.end}}
-
 ## Size
 
 The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.   
