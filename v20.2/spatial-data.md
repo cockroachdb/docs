@@ -32,14 +32,14 @@ Get the spatial build of CockroachDB:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-docker pull otanatcockroach/cockroachdb-geospatial
+docker pull cockroachdb/cockroach-unstable:v20.2.0-beta.2
 ~~~
 
 Start the server:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  otanatcockroach/cockroachdb-geospatial start-single-node --insecure
+docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  cockroachdb/cockroach-unstable:v20.2.0-beta.2 start-single-node --insecure
 ~~~
 
 The example above uses some Docker networking and file location settings that map from the container to the host using CockroachDB's default network ports.
