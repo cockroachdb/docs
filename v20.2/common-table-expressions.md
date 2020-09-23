@@ -28,7 +28,7 @@ Parameter | Description
 `table_alias_name` | The name to use to refer to the common table expression from the accompanying query or statement.
 `name` | A name for one of the columns in the newly defined common table expression.
 `preparable_stmt` | The statement or subquery to use as common table expression.
-`MATERIALIZED`/`NOT MATERIALIZED` | <span class="version-tag">New in v20.2:</span> Override the optimizer's decision to materialize (i.e., store the results) of the common table expression.
+`MATERIALIZED`/`NOT MATERIALIZED` | <span class="version-tag">New in v20.2:</span> Override the [optimizer](cost-based-optimizer.html)'s decision to materialize (i.e., store the results) of the common table expression. By default, the optimizer materializes the common table expression if it affects other objects in the database, or if it is used in the query multiple times.
 
 ## Overview
 
