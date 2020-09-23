@@ -6831,30 +6831,36 @@ section.footer {
 #toc-right > ul {
   list-style-type: none;
   width: 100%;
-  padding: 0 0 0 10px;
-  border-left: 5px solid #F3F3F3; }
+  padding: 0 0 0 10px; }
   #toc > ul li,
   #toc-right > ul li {
     margin: 6px 0 7px;
     list-style: none;
-    line-height: 1.1;
+    line-height: 22px;
     white-space: nowrap; }
     #toc > ul li a,
     #toc-right > ul li a {
-      font-family: 'AvenirLTStd-Roman', serif;
-      font-size: 13px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 14px;
       font-weight: normal;
+      line-height: 22px;
+      display: inline-flex;
+      letter-spacing: 0.1px;
+      padding: 0 0 0 20px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      color: #152849; }
+      color: #475872; }
       #toc > ul li a:hover,
       #toc-right > ul li a:hover {
-        color: #54B30E;
+        font-weight: bold;
         text-decoration: none;
         border-bottom: none; }
       #toc > ul li a.active--scroll,
       #toc-right > ul li a.active--scroll {
-        color: #54B30E; }
+        border-left: 2px solid #0788FF;
+        font-weight: bold; }
+      #toc-right > ul li a.anchorjs-link {
+        visibility: hidden; }
     #toc > ul li a:first-child,
     #toc-right > ul li a:first-child {
       position: relative;
@@ -6868,15 +6874,18 @@ section.footer {
       padding: 0 0 0 10px; }
   #toc > ul:before,
   #toc-right > ul:before {
-    content: "Contents";
-    font-family: 'AvenirLTStd-Heavy', serif;
-    font-size: 14px;
-    font-weight: normal;
+    content: "On this page";
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 30px;
-    color: #152849;
-    display: block; }
+    line-height: 14px;
+    letter-spacing: 1.5px;
+    padding-bottom: 20px;
+    color: #242A35;
+    display: flex; }
 #toc code,
 #toc-right code {
   color: inherit;
