@@ -8,7 +8,7 @@ toc: true
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the schema and on all tables in the schema.
+The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
 
 ## Syntax
 
