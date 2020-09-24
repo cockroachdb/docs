@@ -159,28 +159,6 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
 
-An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. You can see it using [`SHOW INDEXES`](show-index.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM vehicles;
-~~~
-
-~~~
-  table_name |          index_name          | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary                      |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary                      |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_users_fk |    true    |            1 | city        | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_users_fk |    true    |            2 | owner_id    | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_users_fk |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
-~~~
-
-{{site.data.alerts.callout_info}}
-Adding a foreign key for a non-empty table without an appropriate index will fail, since foreign key columns must be indexed. For more information about the requirements for creating foreign keys, see [Rules for creating foreign keys](foreign-key.html#rules-for-creating-foreign-keys).
-{{site.data.alerts.end}}
-
 ### Drop and add a primary key constraint
 
 Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
