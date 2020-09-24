@@ -160,6 +160,13 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
+
+{{site.data.alerts.callout_info}}
+With queries on [interleaved tables](interleave-in-parent.html), the optimizer might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
+
+<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fk` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
+
 ### Additional considerations
 
 - This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that:

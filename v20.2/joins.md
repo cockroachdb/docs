@@ -140,6 +140,12 @@ Lookup joins are performed on two tables as follows:
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
+{{site.data.alerts.callout_info}}
+With queries on [interleaved tables](interleave-in-parent.html), the [optimizer](cost-based-optimizer.html) might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
+
+<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fk` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
+
 The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
 ## `LATERAL` joins

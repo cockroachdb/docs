@@ -211,6 +211,18 @@
 
   <tr>
    <td>
+    <code>prefer_lookup_joins_for_fk</code>
+   </td>
+   <td><span class="version-tag">New in v20.2</span>: If <code>on</code>, the optimizer prefers <a href="joins.html#lookup-joins"><code>lookup joins</code></a> to <a href="joins.html#merge-joins"><code>merge joins</code></a> when performing <a href="foreign-key.html"><code>foreign key</code></a> checks.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>reorder_joins_limit</code>
    </td>
    <td>Maximum number of joins that the optimizer will attempt to reorder when searching for an optimal query execution plan. For more information, see <a href="cost-based-optimizer.html#join-reordering">Join reordering</a>.</td>
