@@ -22,7 +22,7 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist. If one does exist, do not return an error.
 `schemaname` | The name of the schema to create, which must be unique and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema. You can specify the owner with a string literal, or the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
+`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema. You can specify the owner with a [string literal](https://en.wikipedia.org/wiki/String_literal), or the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
 
@@ -272,7 +272,7 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 (2 rows)
 ~~~
 
-`max` then inserts some values into the `accounts` table, without specifying a schema.
+`max` then inserts some values into the `accounts` table, without specifying a schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql

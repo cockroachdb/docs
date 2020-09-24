@@ -17,8 +17,8 @@ ALTER SCHEMA ... OWNER TO {<newowner> | CURRENT_USER | SESSION_USER }
 
 Parameter | Description
 ----------|------------
-`RENAME TO ...` | Rename the schema.
-`OWNER TO ...` | Change the owner of the schema. You can specify the new owner with a string literal or the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).
+`RENAME TO ...` | Rename the schema. The new schema name must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
+`OWNER TO ...` | Change the owner of the schema. You can specify the new owner with a [string literal](https://en.wikipedia.org/wiki/String_literal) or the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).
 
 ## Required privileges
 
@@ -120,7 +120,7 @@ WHERE
 (1 row)
 ~~~
 
-Rename the schema as its owner:
+As its owner, you can rename the schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql
