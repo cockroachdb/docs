@@ -15,6 +15,8 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
 
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
