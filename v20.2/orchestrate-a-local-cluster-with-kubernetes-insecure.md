@@ -17,8 +17,6 @@ This page walks you through a simple demonstration, using the open-source [Kuber
 To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](orchestration.html). To deploy a 30-day free CockroachCloud cluster instead of running CockroachDB yourself, see the [Quickstart](../cockroachcloud/quickstart.html).
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
 {% include {{ page.version.version }}/orchestration/local-start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB

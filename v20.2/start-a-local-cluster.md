@@ -15,8 +15,6 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
 ## Before you begin
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
