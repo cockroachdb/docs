@@ -3,6 +3,12 @@
     - date: Sep 24, 2020
       version: v20.1.6
       latest: true
+    - date: Aug 31, 2020
+      version: v20.1.5
+      withdrawn: true
+    - date: Aug 3, 2020
+      version: v20.1.4
+      withdrawn: true
     - date: Jun 29, 2020
       version: v20.1.3
     - date: Jun 17, 2020
