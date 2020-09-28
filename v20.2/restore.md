@@ -54,7 +54,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`detached`                                                          | N/A                                         | <span class="version-tag">New in v20.2:</span> When a restore runs in `detached` mode, the restore job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that the job ID will not be returned when the job finishes. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement.
+`detached`                                                          | N/A                                         | <span class="version-tag">New in v20.2:</span> When a restore runs in `detached` mode, the restore job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that the job completion status will not be returned. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement.
 
 ### Backup file URLs
 
@@ -206,7 +206,7 @@ To restore multiple tables:
 
 ### Restore from incremental backups
 
- Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -299,6 +299,7 @@ WITH into_db = 'newdb';
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
+- <span class="version-tag">New in v20.2:</span> [Manage a Backup Schedule](manage-a-backup-schedule.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`ENUM`](enum.html)
 - [`CREATE TYPE`](create-type.html)
