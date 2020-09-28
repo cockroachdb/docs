@@ -10,7 +10,7 @@ toc_not_nested: true
   <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
-This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) Kubernetes package manager. If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
+This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) Kubernetes package manager.
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
