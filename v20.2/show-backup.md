@@ -21,7 +21,7 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 Parameter | Description
 ----------|------------
 `SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
-`SHOW BACKUP SCHEMAS` | Show the schema details of the backup. [See the example below](#show-a-backup-with-schemas).
+`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
 `SHOW BACKUPS IN location` | <span class="version-tag">New in v20.2:</span> List the full backup's subdirectories in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
 `SHOW BACKUP subdirectory IN location` | <span class="version-tag">New in v20.2:</span> List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
 `kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
@@ -187,7 +187,10 @@ To view a list of which users and roles had which privileges on each database an
           path
 ------------------------
   2020/09/24-204152.88
-(1 row)
+  2020/09/24-204623.44
+  2020/09/24-205612.40
+  2020/09/24-207328.36
+(4 rows)
 ~~~
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
