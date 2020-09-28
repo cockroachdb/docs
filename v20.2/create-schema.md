@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2</span>: The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces) in the current database.
 
+{{site.data.alerts.callout_info}}
+You can also create a user-defined schema by converting an existing database to a schema using [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
