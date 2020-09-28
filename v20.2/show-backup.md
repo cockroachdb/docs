@@ -41,8 +41,8 @@ Field | Description
 ------|------------
 `database_name` | The database name.
 `parent_schema_name` | <span class="version-tag">New in v20.2:</span> The name of the [parent schema]((sql-name-resolution.html#logical-schemas-and-namespaces)).
-`object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or [schema](create-schema.html). Note: This column used to be called `table_name` in previous versions of CockroachDB (this is a breaking change).
-`object_type` | <span class="version-tag">New in v20.2:</span> The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or [schema](create-schema.html).
+`object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema. Note: This column used to be called `table_name` in previous versions of CockroachDB (this is a breaking change).
+`object_type` | <span class="version-tag">New in v20.2:</span> The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `start_time` | The earliest data encapsulated in the backup. For a full backup, this is `NULL`. For an incremental backup, changes that occurred between the `start_time` and `end_time` are captured.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.

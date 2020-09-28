@@ -228,12 +228,12 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ## Restore from a scheduled backup
 
-To restore from a scheduled backup, use the [`RESTORE`] statement:
+To restore from a scheduled backup, use the [`RESTORE`](restore.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE
-    FROM 's3://test/backups/test_schedule_1/20200819/035600.00?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    FROM 's3://test/backups/test_schedule_1/2020/08/19-035600.00?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
     AS OF SYSTEM TIME '2020-08-19 03:50:00+00:00';
 ~~~
 
