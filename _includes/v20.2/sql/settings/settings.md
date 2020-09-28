@@ -29,6 +29,8 @@
 <tr><td><code>kv.snapshot_recovery.max_rate</code></td><td>byte size</td><td><code>8.0 MiB</code></td><td>the rate limit (bytes/sec) to use for recovery snapshots</td></tr>
 <tr><td><code>kv.transaction.max_intents_bytes</code></td><td>integer</td><td><code>262144</code></td><td>maximum number of bytes used to track locks in transactions</td></tr>
 <tr><td><code>kv.transaction.max_refresh_spans_bytes</code></td><td>integer</td><td><code>256000</code></td><td>maximum number of bytes used to track refresh spans in serializable transactions</td></tr>
+<tr><td><code>security.ocsp.mode</code></td><td>string</td><td><code>off</code></td><td>if set to <code>lax</code> or <code>strict</code>, enables certificate revocation for custom CA certificate setups running an OCSP server.</td></tr>
+<tr><td><code>security.ocsp.timeout</code></td><td>duration</td><td><code>3s</code></td><td>duration after which an OCSP server is considered down</td></tr>
 <tr><td><code>server.auth_log.sql_connections.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, log SQL client connect and disconnect events (note: may hinder performance on loaded nodes)</td></tr>
 <tr><td><code>server.auth_log.sql_sessions.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, log SQL session login/disconnection events (note: may hinder performance on loaded nodes)</td></tr>
 <tr><td><code>server.clock.forward_jump_check_enabled</code></td><td>boolean</td><td><code>false</code></td><td>if enabled, forward clock jumps > max_offset/2 will cause a panic</td></tr>
