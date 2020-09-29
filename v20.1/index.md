@@ -7,6 +7,7 @@ contribute: false
 build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
+
 <div class="home-header mb-5" style="height:350px;background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
 ">
   <div class="p-lg-5">
@@ -168,17 +169,100 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 <a class="btn btn-outline-secondary" href="#">See all the latest</a>
 
 <div class="row pt-5">
-
-<div class="col-lg-12 text-center">
-        <div class="card shadow">
-          <div class="card-body p-5  text-white bg-blackk-texture-logo m-3">
-            <p class="d-inline-block rounded py-1 px-3 caption-sm m-0 bg-white-transparent text-white font-weight-bold">Learning Resources</p>
-            <h1 class="m-0 text-white">Cockroach University</h1>
-            <h4 class="mt-0 pb-3">Free online learning platform covering distributed databases, cloud-native <br>applications, general purpose SQL databases & moch more!</h4>
-            <a class="btn btn-redirect mb-3" href="#">Start free course <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
-          </div>
-        </div>
+  <div class="col-lg-12 text-center mb-5">
+    <div class="card shadow position-relative alert alert-dismissable">
+      <a
+        class="close close-card position-absolute"
+        href=""
+        data-dismiss="alert"
+        aria-label="Close"
+        ><img class="m-0" src="{{ 'images/icon-cancel.svg' | relative_url }}"
+      /></a>
+      <div class="card-body p-5 text-white bg-blackk-texture-logo m-3">
+        <p
+          class="d-inline-block rounded py-1 px-3 caption-sm m-0 bg-white-transparent text-white font-weight-bold"
+        >
+          Learning Resources
+        </p>
+        <h1 class="m-0 text-white">Cockroach University</h1>
+        <h4 class="mt-0 pb-3">
+          Free online learning platform covering distributed databases,
+          cloud-native <br />applications, general purpose SQL databases & moch
+          more!
+        </h4>
+        <a class="btn btn-redirect mb-3" href="#"
+          >Start free course
+          <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"
+        /></a>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow position-relative alert alert-dismissable">
+      <a
+        class="close close-card position-absolute"
+        href="#"
+        data-dismiss="alert"
+        aria-label="Close"
+        ><svg
+          width="11"
+          height="11"
+          viewBox="0 0 11 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M1.75373 0.387174C1.37633 0.00977659 0.764449 0.00977659 0.387052 0.387174C0.00965453 0.764571 0.00965453 1.37645 0.387052 1.75385L3.73733 5.10413L0.387052 8.4544C0.00965451 8.8318 0.00965451 9.44368 0.387052 9.82108C0.764449 10.1985 1.37633 10.1985 1.75373 9.82108L5.104 6.4708L8.45428 9.82108C8.83168 10.1985 9.44356 10.1985 9.82096 9.82108C10.1984 9.44368 10.1984 8.8318 9.82096 8.4544L6.47068 5.10413L9.82096 1.75385C10.1984 1.37645 10.1984 0.764571 9.82096 0.387174C9.44356 0.00977658 8.83168 0.00977658 8.45428 0.387174L5.104 3.73745L1.75373 0.387174Z"
+            fill="black"
+          />
+        </svg>
+      </a>
+      <div class="row no-gutters p-3">
+        <div class="col-md-4 m-0">
+          <img
+            src="{{ 'images/disk-spilling.png' | relative_url }}"
+            class="card-img m-0"
+            alt="..."
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body p-0 pl-4">
+            <p
+              class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
+            >
+              Engineering
+            </p>
+            <h2 class="card-title font-weight-bold mt-3">
+              Disk Spilling in a Vectorized Execution Engine
+            </h2>
+            <div class="d-flex align-items-center">
+              <div>
+                <img
+                  class="m-0"
+                  width="40"
+                  src="{{ 'images/alfonso-subioto-marquez.png' | relative_url }}"
+                  alt=""
+                />
+              </div>
+              <div class="ml-3 d-flex flex-column justify-content-center">
+                <div class="card-text m-0 lh-n">Alfonso Subioto Marquez</div>
+                <p class="card-text m-0 lh-n">
+                  <small class="text-muted">June 30, 2020</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center">
+<a class="btn btn-outline-secondary mt-3" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
 </div>
 {% endif %}

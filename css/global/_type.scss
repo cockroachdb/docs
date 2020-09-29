@@ -148,14 +148,14 @@
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 14px;
+    line-height: 24px;
   }
 }
 
 @mixin paragraph-type--medium {
-  @include sourcesanspro_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_r(14px);
+  line-height: 24px;
 }
 
 @mixin paragraph-type--heavy {
@@ -163,8 +163,8 @@
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 14px;
+    line-height: 24px;
   }
 }
 

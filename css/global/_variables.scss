@@ -15,8 +15,8 @@ $cl_green_bright: #69CC00;
 $cl_green_light: #F0FFE8;
 $cl_blue: #152849;
 $cl_blue_dark: #111D39;
-$cl_blue_pale: #ECF7FF;
-$cl_blue_note: #3A7DE1;
+$cl_blue_pale: #E0EEFB;
+$cl_blue_note: #0788FF;
 $cl_gray: #A2A2A2;
 $cl_gray_dark: #333333;
 $cl_gray_medium: #DADADA;
@@ -87,6 +87,8 @@ $blue-300: #0788FF;
 $blue-400: #0788FF;
 $blue-500: #00294D;
 
+$purple-300: #542ABD;
+
 $theme-colors: (
   "primary": #0074d9,
   "danger": #ff4136
@@ -97,6 +99,7 @@ $body-color: #242A35;
 $green-new: #B4F1AA;
 $border-color: $neutral-300;
 $border-radius: 3px;
+$border-radius-lg: 5px;
 
 $input-btn-padding-y:         0.5rem;
 $input-btn-padding-x:         1rem;

@@ -1,13 +1,18 @@
 .bs-callout {
-  padding: 30px 40px 30px 25px;
+  padding: 12px 40px 18px 23px;
   margin: 15px 0;
   border-left: 5px solid #eee;
+  border-radius: $border-radius-lg;
   @include paragraph-type;
   color: $cl_blue;
 
   h4 {
     margin-top: 0;
     margin-bottom: 5px;
+  }
+
+  p {
+    margin-top: map-get($spacers, 1);
   }
 
   p:last-child {
@@ -24,7 +29,7 @@
   }
 
   &__label {
-    @include subhead-avenir-sm;
+    @include type-body-medium;
   }
 
   &--success {
@@ -50,7 +55,7 @@
     border-left-color: $cl_blue_note;
 
     h4, .bs-callout__label {
-      color: $cl_blue_note;
+      // color: $cl_blue_note;
     }
   }
 }

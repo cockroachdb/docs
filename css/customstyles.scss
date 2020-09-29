@@ -638,3 +638,20 @@ a.accordion-toggle {
 .bg-white-transparent {
   background: rgba(255,255,255,0.16);
 }
+
+.bg-purple-transparent {
+  background: rgba(206,192,242,0.16);
+}
+
+.close-card {
+  right: 39px;
+  top: 30px;
+  z-index: 1;
+}
+
+.text-purple-300 {
+  color: $purple-300;
+}
+.lh-n {
+  line-height: normal;
+}

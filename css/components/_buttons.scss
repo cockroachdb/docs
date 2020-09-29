@@ -213,9 +213,18 @@
 .contribute {
 	.btn-contribute {
 		@include button();
+                font-size: 14px;
+                font-weight: 600;
+                font-style: normal;
 		border: 1px solid #D6DBE7;
+                box-sizing: border-box;
+                background: #F5F7FA;
                 color: #242A35;
 		line-height: 24px;
+                letter-spacing: 0.1px;
+                align-items: center;
+                width: 134px;
+                height: 32px;
 		margin-top: 9px;
 		margin-right: 55px;
 		text-align: center;
@@ -226,6 +235,10 @@
                         border: 1px solid #7E89A9;
                         border-radius: 3px;
 		}
+
+		@include at-query($min, 571px) {
+			margin-left: 3px;
+		}
 	}
 
 	.dropdown-menu {
@@ -233,12 +246,14 @@
 		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
 
 		@include at-query($min, 571px) {
-			left: -60px;
+			left: 1px;
 		}
 	}
 
 	.dropdown-menu > li > a {
 		@include caption;
+                font-size: 14px;
+                line-height: 22px;
 		color: #394455;
 		margin: 7px 0 7px;
 
