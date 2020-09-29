@@ -385,6 +385,14 @@ header {
 }
 
 .home-header {
+	height: auto;
+	@media (min-width: $screen-md){
+			
+	}
+	@include media-breakpoint-up(xl) {
+		height:350px;
+	}
+
 	@media (min-width: $screen-md){
 		margin-left: -3rem;
 		margin-right: -3rem;
@@ -408,4 +416,10 @@ header {
 .bg-blackk-texture-logo {
 	background: url(/docs/images/bg-black-texture-logo.png);
     background-size: cover;
+}
+
+.navbar-brand {
+	@include media-breakpoint-up(md){
+		width: 180px;
+	}
 }
