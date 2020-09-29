@@ -46,7 +46,7 @@ Statement | Usage
 [`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
 [`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
 [`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
-[`ALTER VIEW`](alter-view.html) | Rename a view.
+[`ALTER VIEW`](alter-view.html) | Apply a schema change to a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
@@ -74,6 +74,7 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`SET SCHEMA`](set-schema.html) | <span class="version-tag">New in v20.2</span>: Change the schema of a table, sequence, or view.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
