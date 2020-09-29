@@ -179,7 +179,7 @@ Because this pattern balances the replicas for the table and its secondary index
 
 ## Alternatives
 
-- If reads from a table can be historical (48 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
+- If reads from a table can be historical (4.8 seconds or more in the past), consider the [Follower Reads](topology-follower-reads.html) pattern.
 - If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern. Both patterns avoid extra secondary indexes, which increase data replication and, therefore, higher throughput and less storage.
 
 ## Tutorial

@@ -40,6 +40,7 @@ Statement | Usage
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
+[`ALTER SCHEMA`](alter-schema.html) | <span class="version-tag">New in v20.2</span>: Alter a user-defined schema.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
@@ -50,6 +51,7 @@ Statement | Usage
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
+[`CREATE SCHEMA`](create-schema.html) | <span class="version-tag">New in v20.2</span>: Create a user-defined schema.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
@@ -59,6 +61,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP SCHEMA`](drop-schema.html) | <span class="version-tag">New in v20.2</span>: Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
 [`DROP TYPE`](drop-type.html) | <span class="version-tag">New in v20.2:</span> Remove a user-defined, [enumerated data type](enum.html).
@@ -165,19 +168,19 @@ Statement | Usage
 [`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
-## Backup and restore statements (Enterprise)
-
-The following statements require an [enterprise license](enterprise-licensing.html).
-
-{{site.data.alerts.callout_info}}
-For non-enterprise users, see [Back up Data](backup.html) and [Restore Data](restore.html).
-{{site.data.alerts.end}}
+## Backup and restore statements
 
 Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | <span class="version-tag">New in v20.2:</span> Create a schedule for periodic backups.
+[`SHOW SCHEDULES`](show-schedules.html) | <span class="version-tag">New in v20.2:</span> View information on backup schedules.
+[`PAUSE SCHEDULES`](pause-schedules.html) | <span class="version-tag">New in v20.2:</span> Pause backup schedules.
+[`RESUME SCHEDULES`](resume-schedules.html) | <span class="version-tag">New in v20.2:</span> Resume paused backup schedules.
+[`DROP SCHEDULES`](drop-schedules.html) | <span class="version-tag">New in v20.2:</span> Drop backup schedules.
+
 
 ## Changefeed statements (Enterprise)
 

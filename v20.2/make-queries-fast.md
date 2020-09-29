@@ -61,14 +61,14 @@ SHOW TABLES;
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  promo_codes
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |              250000
+  public      | rides                      | table |              125000
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |               12500
+  public      | vehicle_location_histories | table |              250000
+  public      | vehicles                   | table |                3750
 (6 rows)
 ~~~
 
@@ -81,8 +81,8 @@ SHOW CREATE TABLE users;
 
 ~~~
   table_name |                      create_statement
-+------------+-------------------------------------------------------------+
-  users      | CREATE TABLE users (
+-------------+--------------------------------------------------------------
+  users      | CREATE TABLE public.users (
              |     id UUID NOT NULL,
              |     city VARCHAR NOT NULL,
              |     name VARCHAR NULL,
@@ -91,6 +91,7 @@ SHOW CREATE TABLE users;
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
              |     FAMILY "primary" (id, city, name, address, credit_card)
              | )
+(1 row)
 ~~~
 
 There's no information about the number of rides taken here, nor anything about the days on which rides occurred. Luckily, there is also a `rides` table. Let's look at it:
@@ -102,8 +103,8 @@ SHOW CREATE TABLE rides;
 
 ~~~
   table_name |                                                        create_statement
-+------------+---------------------------------------------------------------------------------------------------------------------------------+
-  rides      | CREATE TABLE rides (
+-------------+----------------------------------------------------------------------------------------------------------------------------------
+  rides      | CREATE TABLE public.rides (
              |     id UUID NOT NULL,
              |     city VARCHAR NOT NULL,
              |     vehicle_city VARCHAR NULL,
@@ -115,11 +116,14 @@ SHOW CREATE TABLE rides;
              |     end_time TIMESTAMP NULL,
              |     revenue DECIMAL(10,2) NULL,
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, rider_id) REFERENCES public.users(city, id),
+             |     CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (vehicle_city, vehicle_id) REFERENCES public.vehicles(city, id),
              |     INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
              |     INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
              |     FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
              |     CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
              | )
+(1 row)
 ~~~
 
 There is a `rider_id` field that we can use to match each ride to a user. There is also a `start_time` field that we can use to filter the rides by date.
@@ -141,7 +145,7 @@ SELECT
 FROM
 	users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
 	name
 ORDER BY
@@ -151,21 +155,22 @@ LIMIT
 ~~~
 
 ~~~
-        name        | sum
-+-------------------+-----+
-  William Brown     |   6
-  Joseph Smith      |   5
-  Laura Marsh       |   5
-  Arthur Nielsen    |   4
-  Elizabeth Miller  |   4
-  Christopher Allen |   4
-  David Martinez    |   4
-  Donald Young      |   4
-  Michael Garcia    |   4
-  Jennifer Johnson  |   4
+        name       | sum
+-------------------+------
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jennifer Johnson |   8
+  Jeffrey Walker   |   8
+  Joseph Jones     |   7
+  James Williams   |   7
+  Thomas Smith     |   7
 (10 rows)
 
-Time: 162.217ms
+Server Execution Time: 103.41ms
+Network Latency: 822µs
 ~~~
 
 Unfortunately, this query is a bit slow. 160 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and we're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
@@ -189,30 +194,29 @@ LIMIT
 ~~~
 
 ~~~
-              tree              |    field    |                                         description
---------------------------------+-------------+----------------------------------------------------------------------------------------------
-                                | distributed | true
-                                | vectorized  | false
-  limit                         |             |
-   │                            | count       | 10
-   └── sort                     |             |
-        │                       | order       | -sum
-        └── group               |             |
-             │                  | aggregate 0 | name
-             │                  | aggregate 1 | count(id)
-             │                  | group by    | name
-             └── render         |             |
-                  └── hash-join |             |
-                       │        | type        | inner
-                       │        | equality    | (rider_id) = (id)
-                       ├── scan |             |
-                       │        | table       | rides@primary
-                       │        | spans       | FULL SCAN
-                       │        | filter      | (start_time >= '2018-12-31 00:00:00+00:00') AND (start_time <= '2019-01-01 00:00:00+00:00')
-                       └── scan |             |
-                                | table       | users@users_name_city_idx
-                                | spans       | FULL SCAN
-(21 rows)
+              tree              |        field        |                                   description
+--------------------------------+---------------------+----------------------------------------------------------------------------------
+                                | distribution        | full
+                                | vectorized          | true
+  limit                         |                     |
+   │                            | count               | 10
+   └── sort                     |                     |
+        │                       | order               | -count_rows
+        └── group               |                     |
+             │                  | group by            | name
+             └── hash join      |                     |
+                  │             | equality            | (id) = (rider_id)
+                  ├── scan      |                     |
+                  │             | estimated row count | 12500
+                  │             | table               | users@primary
+                  │             | spans               | FULL SCAN
+                  └── filter    |                     |
+                       │        | filter              | (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2019-01-01 00:00:00')
+                       └── scan |                     |
+                                | estimated row count | 125000
+                                | table               | rides@primary
+                                | spans               | FULL SCAN
+(20 rows)
 ~~~
 
 The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | FULL SCAN`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
@@ -230,7 +234,7 @@ SHOW INDEXES FROM rides;
 
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
-+------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+----------+
+-------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
   rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
   rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
   rides      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city         | ASC       |  false  |  false
@@ -238,8 +242,9 @@ SHOW INDEXES FROM rides;
   rides      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id           | ASC       |  false  |   true
   rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            1 | vehicle_city | ASC       |  false  |  false
   rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id   | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | city         | ASC       |  false  |   true
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | id           | ASC       |  false  |   true
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | id           | ASC       |  false  |   true
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | city         | ASC       |  false  |   true
+(9 rows)
 ~~~
 
 As we suspected, there are no indexes on `start_time` or `rider_id`, so we'll need to create indexes on those columns.
@@ -271,23 +276,24 @@ LIMIT
 
 ~~~
         name       | sum
-+------------------+-----+
+-------------------+------
   William Brown    |   6
-  Joseph Smith     |   5
   Laura Marsh      |   5
-  Donald Young     |   4
-  Elizabeth Miller |   4
-  William Mitchell |   4
-  David Mitchell   |   4
-  Veronica Lindsey |   4
+  Joseph Smith     |   5
+  David Martinez   |   4
   Michael Garcia   |   4
-  Jennifer Ford    |   4
+  David Mitchell   |   4
+  Arthur Nielsen   |   4
+  Michael Bradford |   4
+  William Mitchell |   4
+  Jennifer Johnson |   4
 (10 rows)
 
-Time: 23.354ms
+Server Execution Time: 24.523ms
+Network Latency: 325µs
 ~~~
 
-This query is now running about 7x faster than it was before we added the indexes (160ms vs. 25ms). This means we have an extra 135 milliseconds we can budget towards other areas of our application.
+This query is now running much faster than it was before we added the indexes (160ms vs. 25ms). This means we have an extra 135 milliseconds we can budget towards other areas of our application.
 
 To see what changed, let's look at the [`EXPLAIN`](explain.html) output:
 
@@ -307,32 +313,30 @@ LIMIT
 	10;
 ~~~
 
-As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column.
+As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (3975 rows instead of 125000).
 
 ~~~
-              tree              |    field    |                      description
---------------------------------+-------------+--------------------------------------------------------
-                                | distributed | true
-                                | vectorized  | false
-  limit                         |             |
-   │                            | count       | 10
-   └── sort                     |             |
-        │                       | order       | -sum
-        └── group               |             |
-             │                  | aggregate 0 | name
-             │                  | aggregate 1 | count(id)
-             │                  | group by    | name
-             └── render         |             |
-                  └── hash-join |             |
-                       │        | type        | inner
-                       │        | equality    | (rider_id) = (id)
-                       ├── scan |             |
-                       │        | table       | rides@rides_start_time_idx
-                       │        | spans       | /2018-12-31T00:00:00Z-/2019-01-01T00:00:00.000000001Z
-                       └── scan |             |
-                                | table       | users@users_name_city_idx
-                                | spans       | FULL SCAN
-(20 rows)
+            tree           |        field        |                    description
+---------------------------+---------------------+----------------------------------------------------
+                           | distribution        | full
+                           | vectorized          | true
+  limit                    |                     |
+   │                       | count               | 10
+   └── sort                |                     |
+        │                  | order               | -count_rows
+        └── group          |                     |
+             │             | group by            | name
+             └── hash join |                     |
+                  │        | equality            | (id) = (rider_id)
+                  ├── scan |                     |
+                  │        | estimated row count | 12500
+                  │        | table               | users@primary
+                  │        | spans               | FULL SCAN
+                  └── scan |                     |
+                           | estimated row count | 3975
+                           | table               | rides@rides_start_time_idx
+                           | spans               | [/'2018-12-31 00:00:00' - /'2019-01-01 00:00:00']
+(18 rows)
 ~~~
 
 
@@ -370,41 +374,46 @@ LIMIT
 ~~~
 
 ~~~
-        name        | sum
-+-------------------+-----+
-  William Brown     |   6
-  Laura Marsh       |   5
-  Joseph Smith      |   5
-  Christopher Allen |   4
-  Veronica Lindsey  |   4
-  David Martinez    |   4
-  David Mitchell    |   4
-  Jennifer Ford     |   4
-  Donald Young      |   4
-  Michael Bradford  |   4
+        name       | sum
+-------------------+------
+  William Brown    |   6
+  Laura Marsh      |   5
+  Joseph Smith     |   5
+  Michael Garcia   |   4
+  David Mitchell   |   4
+  David Martinez   |   4
+  Arthur Nielsen   |   4
+  Jennifer Johnson |   4
+  William Mitchell |   4
+  Michael Bradford |   4
 (10 rows)
 
-Time: 2.071285s
+Server Execution Time: 881.797ms
+Network Latency: 402µs
 ~~~
 
-The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier. It takes about 2 seconds to run.
+The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
 
-The query is also not faster when we force CockroachDB to use a merge join:
+The query is a little faster when we force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT
-	name, count(rides.id) AS sum
-FROM
-	users INNER MERGE JOIN rides ON users.id = rides.rider_id
-WHERE
-	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
-GROUP BY
-	name
-ORDER BY
-	sum DESC
-LIMIT
-	10;
+        name       | sum
+-------------------+------
+  William Brown    |   6
+  Laura Marsh      |   5
+  Joseph Smith     |   5
+  David Martinez   |   4
+  Michael Garcia   |   4
+  David Mitchell   |   4
+  Arthur Nielsen   |   4
+  Jennifer Johnson |   4
+  William Mitchell |   4
+  Michael Bradford |   4
+(10 rows)
+
+Server Execution Time: 23.573ms
+Network Latency: 623µs
 ~~~
 
 ~~~

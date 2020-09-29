@@ -207,7 +207,8 @@
           		    "urls": [
           		      "/${VERSION}/build-a-go-app-with-cockroachdb.html",
           		      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
-          		      "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
+          		      "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+          		      "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
           		    ]
           		  },
           		  {
@@ -561,6 +562,12 @@
                 "urls": [
                   "/${VERSION}/take-and-restore-locality-aware-backups.html"
                 ]
+              },
+              {
+                "title": "Scheduled Backups",
+                "urls": [
+                  "/${VERSION}/manage-a-backup-schedule.html"
+                ]
               }
             ]
           },
@@ -790,6 +797,30 @@
             ]
           },
           {
+            "title": "Migrate from Shapefiles",
+            "urls": [
+              "/${VERSION}/migrate-from-shapefiles.html"
+            ]
+          },
+          {
+            "title": "Migrate from OpenStreetMap",
+            "urls": [
+              "/${VERSION}/migrate-from-openstreetmap.html"
+            ]
+          },
+          {
+            "title": "Migrate from GeoJSON",
+            "urls": [
+              "/${VERSION}/migrate-from-geojson.html"
+            ]
+          },
+          {
+            "title": "Migrate from GeoPackage",
+            "urls": [
+              "/${VERSION}/migrate-from-geopackage.html"
+            ]
+          },
+          {
             "title": "Import Performance Best Practices",
             "urls": [
               "/${VERSION}/import-performance-best-practices.html"
@@ -1008,6 +1039,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>ALTER SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/alter-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>ALTER SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/alter-sequence.html"
@@ -1116,6 +1153,18 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
+    		    "urls": [
+    		      "/${VERSION}/create-schedule-for-backup.html"
+            ]
+          },
+          {
+    		    "title": "<code>CREATE SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/create-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>CREATE SEQUENCE</code>",
     		    "urls": [
     		      "/${VERSION}/create-sequence.html"
@@ -1197,6 +1246,18 @@
     		    "title": "<code>DROP ROLE</code>",
     		    "urls": [
     		      "/${VERSION}/drop-role.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>DROP SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/drop-schedules.html"
+            ]
+          },
+          {
+    		    "title": "<code>DROP SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/drop-schema.html"
     		    ]
     		  },
     		  {
@@ -1290,6 +1351,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>PAUSE SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/pause-schedules.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>RENAME COLUMN</code>",
     		    "urls": [
     		      "/${VERSION}/rename-column.html"
@@ -1353,6 +1420,12 @@
     		    "title": "<code>RESUME JOB</code>",
     		    "urls": [
     		      "/${VERSION}/resume-job.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>RESUME SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/resume-schedules.html"
     		    ]
     		  },
     		  {
@@ -1509,6 +1582,12 @@
     		    "title": "<code>SHOW ROLES</code>",
     		    "urls": [
     		      "/${VERSION}/show-roles.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW SCHEDULES</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-schedules.html"
     		    ]
     		  },
     		  {

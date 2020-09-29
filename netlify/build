@@ -9,6 +9,7 @@ bundle install
 build _config_cockroachdb.yml
 
 cp _site/docs/_redirects _site/_redirects
+cp _site/docs/404.html _site/404.html
 cat _site/docs/cockroachcloud/_redirects >> _site/_redirects
 
 # Run Algolia if building master

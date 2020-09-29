@@ -6,3 +6,7 @@
   <button class="filter-button" data-scope="secure">Secure</button>
   <button class="filter-button" data-scope="insecure">Insecure</button>
 </div>
+
+<section class="filter-content" markdown="1" data-scope="insecure">
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+</section>

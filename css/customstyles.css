@@ -9467,4 +9467,22 @@ a.accordion-toggle {
 .lh-n {
   line-height: normal; }
 
+.page-not-found {
+  width: 60%;
+  margin: 0 auto;
+  padding: 50px;
+  text-align: center; }
+
+#page-not-found-heading {
+  color: #212B36;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  line-height: 32px; }
+
+#page-not-found-body {
+  color: #637282;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 22px; }
+
 /*# sourceMappingURL=customstyles.css.map */

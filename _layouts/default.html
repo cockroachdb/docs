@@ -9,7 +9,7 @@
         <a id="{{ hash }}" style="display: none"></a>
     {% endfor %}
 
-    <div class="container">
+    <div class="container-xl">
       <div class="row">
         <div class="col-md-12">
           {% include topnav.html %}
@@ -18,7 +18,7 @@
       <div class="row">
         <nav
           id="sidebarMenu"
-          class="col-md-3 col-lg-2 d-md-block sidebar collapse border-right"
+          class="col-md-3 col-lg-3 col-xl-2 d-md-block sidebar collapse border-right"
         >
           <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
@@ -100,7 +100,7 @@
             </ul>
           </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-lg-5">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-9 col-xl-10 px-lg-5 px-sm-0">
             {{content}}
         </main>
         {% if page.toc == true %}
