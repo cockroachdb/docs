@@ -33,7 +33,7 @@ For more information about the different options available when creating a backu
 
 We recommend that you monitor your backup schedule and alert on metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect. For more information, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
-### View scheduled backups details
+## View scheduled backups details
 
 <span class="version-tag">New in v20.2:</span> When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
 
