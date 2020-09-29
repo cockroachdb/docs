@@ -8997,24 +8997,24 @@ h3 {
   h3 code {
     font-size: 16px; }
 
-h4 {
+h4, .h4 {
   font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px; }
-  h4 code {
+  h4 code, .h4 code {
     font-size: 17px; }
 
-h5 {
+h5, .h5 {
   font-family: 'SourceSansPro-SemiBold', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px; }
-  h5 code {
+  h5 code, .h5 code {
     font-size: 17px; }
 
 pre {
