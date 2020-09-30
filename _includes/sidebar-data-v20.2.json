@@ -1333,6 +1333,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>OWNER TO</code>",
+    		    "urls": [
+    		      "/${VERSION}/owner-to.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>PARTITION BY</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/partition-by.html"
