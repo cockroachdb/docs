@@ -13,6 +13,7 @@ The `ALTER DATABASE` [statement](sql-statements.html) applies a schema change to
 Subcommand | Description
 -----------|------------
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a database.
+[`OWNER TO`](owner-to.html) | <span class="version-tag">New in v20.2</span>: Change the owner of a database.
 [`RENAME`](rename-database.html) | Change the name of a database.
 
 ## Viewing schema changes

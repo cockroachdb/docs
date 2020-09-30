@@ -23,6 +23,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs. | Yes
+[`OWNER TO`](owner-to.html) | <span class="version-tag">New in v20.2</span>: Change the owner of the table.
 [`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
