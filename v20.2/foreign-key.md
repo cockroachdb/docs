@@ -25,7 +25,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - A foreign key column cannot be a [computed column](computed-columns.html).
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.2:</span> Foreign key columns do not need to be indexed.
+<span class="version-tag">New in v20.2:</span> Foreign key columns do not need to be indexed. In versions < v20.2, an index on referencing foreign key columns is required.
 {{site.data.alerts.end}}
 
 **Referenced Columns**
