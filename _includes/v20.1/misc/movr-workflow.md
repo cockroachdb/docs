@@ -5,7 +5,9 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > SELECT id, city, status, ... FROM vehicles WHERE city = <user location>
     ~~~
+    
     Executable example:
+    
     ~~~ sql
     > SELECT id, city, status FROM vehicles WHERE city='amsterdam' limit 25;
     ~~~   
@@ -15,7 +17,9 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > INSERT INTO users (id, name, address, ...) VALUES ...
     ~~~
+    
      Executable example:
+     
      ~~~ sql
     > INSERT INTO users (id, name, address, city, credit_card) values ('66666666-6666-4400-8000-00000000000f','Mariah Lam','88194 Angela Gardens Suite 60','amsterdam','123245696');
     ~~~      
@@ -27,7 +31,9 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > INSERT INTO vehicles (id, city, type, ...) VALUES ...
     ~~~
+    
     Executable example:
+    
      ~~~ sql
     > INSERT INTO vehicles (id, city, type, owner_id,creation_time,status, current_location, ext) VALUES ('ffffffff-ffff-4400-8000-00000000000f','amsterdam', 'skateboard','66666666-6666-4400-8000-00000000000f',current_timestamp(),'available','88194 Angela Gardens Suite 60','{"color": "blue"}');
     ~~~   
@@ -44,7 +50,9 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > INSERT INTO rides (id, city, start_addr, ...) VALUES ...
     ~~~
+    
     Executable examples:
+    
     ~~~ sql
     > SELECT code FROM user_promo_codes WHERE user_id ='66666666-6666-4400-8000-00000000000f';
     ~~~
@@ -62,7 +70,9 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > INSERT INTO vehicle_location_histories (city, ride_id, timestamp, lat, long) VALUES ...
     ~~~
+    
     Executable example:
+    
     ~~~ sql
     > INSERT INTO vehicle_location_histories (city, ride_id, timestamp, lat, long) VALUES ('amsterdam','cd032f56-cf1a-4800-8000-00000000066f',current_timestamp(), -101, 60);
     ~~~    
@@ -77,6 +87,7 @@ The workflow for MovR is as follows (with approximations of the corresponding SQ
     ~~~ sql
     > UPDATE rides SET end_address = <value>, end_time = <value>, ... WHERE ...
     ~~~
+    
     Executable examples:
     
     ~~~ sql
