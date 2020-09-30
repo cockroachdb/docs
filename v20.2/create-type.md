@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.
 
+{{site.data.alerts.callout_danger}}
+CockroachDB currently only supports [enumerated user-defined types](enum.html).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
