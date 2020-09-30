@@ -1633,6 +1633,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>SHOW TYPES</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-types.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>SHOW USERS</code>",
     		    "urls": [
     		      "/${VERSION}/show-users.html"

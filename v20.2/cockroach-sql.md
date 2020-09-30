@@ -146,6 +146,7 @@ Command | Usage
 `\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
 `\l` | List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
 `\dt`<br>`d` | Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
+`\dT` | <span class="version-tag">New in v20.2:</span> Show the [user-defined types](enum.html) in the current database. This command is equivalent to [`SHOW ENUMS`](show-enums.html) and [`SHOW TYPES`](show-types.html).
 `\du` | List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
 `\d <table>` | Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
 
