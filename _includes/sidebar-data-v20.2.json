@@ -1129,6 +1129,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>CONVERT TO SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/convert-to-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/create-changefeed.html"
