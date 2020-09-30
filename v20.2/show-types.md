@@ -1,16 +1,20 @@
 ---
-title: SHOW ENUMS
-summary: The SHOW ENUMS statement lists the enumerated data types in a database.
+title: SHOW TYPES
+summary: The SHOW TYPES statement lists the user-defined data types in a database.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the current database.
+<span class="version-tag">New in v20.2:</span> The `SHOW TYPES` statement lists the user-defined [data types](data-types.html) in the current database.
 
-## Synopsis
+{{site.data.alerts.callout_danger}}
+CockroachDB currently only supports [enumerated user-defined types](enum.html). As a result, [`SHOW ENUMS`](show-enums.html) and `SHOW TYPES` return the same results.
+{{site.data.alerts.end}}
 
-<div>
-  {% include {{ page.version.version }}/sql/diagrams/show_enums.html %}
-</div>
+## Syntax
+
+~~~
+SHOW TYPES
+~~~
 
 ## Examples
 
@@ -26,7 +30,7 @@ toc: true
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ENUMS;
+> SHOW TYPES;
 ~~~
 
 ~~~
