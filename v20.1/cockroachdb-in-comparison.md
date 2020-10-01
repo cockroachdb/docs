@@ -16,6 +16,7 @@ This page shows you how key features of CockroachDB stack up against other datab
         <option value="MySQL">MySQL</option>
         <option value="PostgreSQL">PostgreSQL</option>
         <option value="Oracle">Oracle</option>
+        <option value="AWS Aurora">AWS Aurora</option>
         <option value="Cassandra">Cassandra</option>
         <option value="MongoDB" selected>MongoDB</option>
         <option value="Spanner">Spanner</option>
@@ -27,6 +28,7 @@ This page shows you how key features of CockroachDB stack up against other datab
         <option value="MySQL">MySQL</option>
         <option value="PostgreSQL" selected>PostgreSQL</option>
         <option value="Oracle">Oracle</option>
+        <option value="AWS Aurora">AWS Aurora</option>
         <option value="Cassandra">Cassandra</option>
         <option value="MongoDB">MongoDB</option>
         <option value="Spanner">Spanner</option>
