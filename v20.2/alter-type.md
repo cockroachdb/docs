@@ -4,7 +4,11 @@ summary: The ALTER TYPE statement modifies a user-defined data type in a databas
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in a database.
+<span class="version-tag">New in v20.2:</span> The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.
+
+{{site.data.alerts.callout_info}}
+You can only reference a user-defined type from the database that contains the type.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
@@ -17,7 +21,7 @@ toc: true
 Parameter | Description
 ----------|------------
 `type_name` | The name of the user-defined type.
-`ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value. 
+`ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value.
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
 `SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
