@@ -21,7 +21,17 @@ Collated strings are important because different languages have [different rules
 
 ## Supported collations
 
-CockroachDB supports the collations provided by Go's [language package](https://godoc.org/golang.org/x/text/language#Tag). The `<collation>` argument is the BCP 47 language tag at the end of each line, immediately preceded by `//`. For example, Afrikaans is supported as the `af` collation.
+CockroachDB supports the collation locales provided by Go's [language package](https://godoc.org/golang.org/x/text/language#Tag), using [BCP47-based](https://tools.ietf.org/html/bcp47) identifiers and extensions.
+
+For example, the identifier `es-419` specifies Latin American Spanish, and `en_US_u_ks_level1` specifies case-insensitive American English.
+
+For a list of supported locales, query the `pg_catalog.pg_collation` table (e.g., `SELECT collname FROM pg_catalog.pg_collation`).
+
+For a full list of identifier tags and subtags, see [the documentation for the BCP47-based Unicode Language and Locale Identifiers](http://cldr.unicode.org/core-spec#Identifiers).
+
+{{site.data.alerts.callout_info}}
+CockroachDB supports [deterministic and non-deterministic collations](https://unicode.org/reports/tr10/#Deterministic_Sorting).
+{{site.data.alerts.end}}
 
 ## SQL syntax
 
@@ -76,6 +86,30 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
   Bär
   Baz
 (3 rows)
+~~~
+
+### Specify collations with subtags
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (greeting STRING COLLATE en_US_u_ks_level2);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Hello, friend.' COLLATE en_US_u_ks_level2), ('Hi. My name is Petee.' COLLATE en_US_u_ks_level2);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM nocase_strings WHERE greeting = ('hi. my name is petee.' COLLATE en_us_u_ks_level2);
+~~~
+
+~~~
+        greeting
+-------------------------
+  Hi. My name is Petee.
+(1 row)
 ~~~
 
 ### Order by non-default collation
